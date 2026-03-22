@@ -1,0 +1,12 @@
+.DS_Store
+*.swp
+*~
+.claude/settings.local.json
+
+# 큰 바이너리 파일
+05_발표/ppt 레이아웃*
+05_발표/slides/png/
+05_발표/*.pdf
+05_발표/*.pptx
+케어 플랫폼 발표*
+02_시장조사/케어플랫폼 레퍼런스*
