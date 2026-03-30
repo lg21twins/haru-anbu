@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>하루안부 — 발표자료 Part 1</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#4A7FBF;--blue-light:#E8F0FA;--blue-dark:#3A6A9E;
+  --green:#5BAE8C;--green-light:#EAF6F0;
+  --beige:#D4A574;--beige-light:#FDF5ED;
+  --bg:#FAFAF7;--surface:#FFFFFF;
+  --text:#1E2A3A;--text-2:#5A6472;--text-3:#8C939A;
+  --positive:#4CAF50;--warning:#FFB74D;--danger:#E53935;
+  --gradient:linear-gradient(135deg,#4A7FBF 0%,#5BAE8C 100%);
+}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{
+  font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+  background:#1a1a2e;color:var(--text);margin:0;
+}
+.slide{
+  width:1920px;height:1080px;position:relative;overflow:hidden;
+  margin:0 auto 40px;flex-shrink:0;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+
+/* === SLIDE 1: 표지 === */
+.s1{background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column}
+.s1::before{
+  content:'';position:absolute;top:-200px;right:-200px;
+  width:800px;height:800px;
+  background:radial-gradient(circle,rgba(74,127,191,.08),transparent 70%);border-radius:50%;
+}
+.s1::after{
+  content:'';position:absolute;bottom:-300px;left:-200px;
+  width:900px;height:900px;
+  background:radial-gradient(circle,rgba(91,174,140,.06),transparent 70%);border-radius:50%;
+}
+.s1 .logo-symbol{
+  width:120px;height:120px;margin-bottom:32px;position:relative;z-index:1;
+}
+.s1 .logo-symbol svg{width:100%;height:100%}
+.s1 .title{
+  font-size:72px;font-weight:800;letter-spacing:-.06em;
+  color:var(--text);position:relative;z-index:1;
+}
+.s1 .title span{color:var(--blue)}
+.s1 .slogan{
+  font-size:28px;font-weight:400;color:var(--text-2);
+  margin-top:16px;letter-spacing:-.02em;position:relative;z-index:1;
+}
+.s1 .team{
+  position:absolute;bottom:60px;
+  font-size:18px;color:var(--text-3);font-weight:500;
+}
+.s1 .color-bar{
+  position:absolute;bottom:0;left:0;right:0;height:6px;
+  background:linear-gradient(90deg,var(--blue) 33%,var(--green) 33% 66%,var(--beige) 66%);
+}
+
+/* === SLIDE 2: 문제 정의 === */
+.s2{background:var(--bg);padding:100px 140px}
+.s2 .headline{
+  font-size:52px;font-weight:800;letter-spacing:-.05em;
+  line-height:1.3;color:var(--text);margin-bottom:60px;
+}
+.s2 .headline em{
+  font-style:normal;color:var(--danger);
+  text-decoration:underline;text-decoration-color:rgba(229,57,53,.3);
+  text-underline-offset:6px;
+}
+.disconnect{
+  display:flex;align-items:center;justify-content:center;gap:40px;
+  margin-bottom:60px;
+}
+.persona{
+  width:340px;background:var(--surface);border-radius:24px;
+  padding:40px 32px;text-align:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);
+}
+.persona .emoji{font-size:56px;margin-bottom:16px}
+.persona .role{font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px}
+.persona .quote{
+  font-size:17px;color:var(--text-2);line-height:1.6;
+  font-style:italic;
+}
+.disconnect .arrow{
+  font-size:40px;color:var(--danger);font-weight:800;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.disconnect .arrow span{font-size:14px;font-weight:600}
+.s2 .bottom-line{
+  background:linear-gradient(90deg,var(--danger),transparent);
+  -webkit-background-clip:text;background-clip:text;
+  font-size:22px;font-weight:600;color:var(--text-2);
+  text-align:center;padding:24px 0;
+  border-top:1px solid rgba(0,0,0,.06);
+}
+.s2 .bottom-line strong{color:var(--text)}
+
+/* === SLIDE 3: 솔루션 === */
+.s3{background:var(--gradient);padding:100px 140px;color:#fff}
+.s3 .label{
+  font-size:18px;font-weight:600;opacity:.7;
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;
+}
+.s3 .headline{
+  font-size:52px;font-weight:800;letter-spacing:-.05em;
+  line-height:1.3;margin-bottom:60px;
+}
+.connection{
+  display:flex;align-items:center;justify-content:center;gap:32px;
+  margin-bottom:60px;
+}
+.conn-card{
+  width:300px;background:rgba(255,255,255,.12);
+  backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.15);
+  border-radius:24px;padding:36px 28px;text-align:center;
+}
+.conn-card .device{font-size:48px;margin-bottom:12px}
+.conn-card .crole{font-size:22px;font-weight:700;margin-bottom:4px}
+.conn-card .cdevice{font-size:16px;opacity:.7}
+.conn-arrow{font-size:36px;opacity:.5}
+.killer-features{
+  display:flex;gap:24px;justify-content:center;
+}
+.kf{
+  flex:1;max-width:400px;
+  background:rgba(255,255,255,.1);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:32px;text-align:center;
+}
+.kf .kf-icon{font-size:40px;margin-bottom:12px}
+.kf .kf-title{font-size:20px;font-weight:700;margin-bottom:6px}
+.kf .kf-desc{font-size:15px;opacity:.75;line-height:1.5}
+.s3 .diff{
+  position:absolute;bottom:60px;left:140px;right:140px;
+  text-align:center;font-size:20px;opacity:.7;
+  border-top:1px solid rgba(255,255,255,.15);padding-top:20px;
+}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: 표지 -->
+<div class="slide s1">
+  <div class="logo-symbol">
+    <svg viewBox="0 0 2526 2526" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#4A7FBF"/>
+      <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#4A7FBF"/>
+    </svg>
+  </div>
+  <div class="title">하루<span>안부</span></div>
+  <div class="slogan">"오늘 하루도, 안녕하셨습니다"</div>
+  <div class="team">DCP · 하루안부 팀 · 2026.03</div>
+  <div class="color-bar"></div>
+</div>
+
+<!-- SLIDE 2: 문제 정의 -->
+<div class="slide s2">
+  <div class="headline">요양시설에 입소하면,<br>가족과의 소통은 <em>끊깁니다</em>.</div>
+  <div class="disconnect">
+    <div class="persona">
+      <div class="emoji">👩</div>
+      <div class="role">보호자</div>
+      <div class="quote">"어머니가 잘 지내시는지<br>알 수가 없어요"</div>
+    </div>
+    <div class="arrow">
+      <span>단절</span>
+      ✕
+    </div>
+    <div class="persona">
+      <div class="emoji">👩‍⚕️</div>
+      <div class="role">의료진</div>
+      <div class="quote">"보호자에게 매일 상황을<br>전달할 방법이 없어요"</div>
+    </div>
+    <div class="arrow">
+      <span>단절</span>
+      ✕
+    </div>
+    <div class="persona">
+      <div class="emoji">👵</div>
+      <div class="role">환자</div>
+      <div class="quote">"가족이 보고 싶어요"</div>
+    </div>
+  </div>
+  <div class="bottom-line">
+    기존 앱은 시설 검색·입소 전 정보만 제공 → <strong>입소 '후' 소통 도구는 없다</strong>
+  </div>
+</div>
+
+<!-- SLIDE 3: 솔루션 -->
+<div class="slide s3">
+  <div class="label">Solution</div>
+  <div class="headline">3자 실시간<br>케어 커뮤니케이션 플랫폼</div>
+  <div class="connection">
+    <div class="conn-card">
+      <div class="device">📱</div>
+      <div class="crole">보호자</div>
+      <div class="cdevice">모바일</div>
+    </div>
+    <div class="conn-arrow">⟷</div>
+    <div class="conn-card">
+      <div class="device">💻</div>
+      <div class="crole">의료진</div>
+      <div class="cdevice">PC + 모바일</div>
+    </div>
+    <div class="conn-arrow">⟷</div>
+    <div class="conn-card">
+      <div class="device">📱</div>
+      <div class="crole">환자</div>
+      <div class="cdevice">태블릿 + 모바일</div>
+    </div>
+  </div>
+  <div class="killer-features">
+    <div class="kf">
+      <div class="kf-icon">📊</div>
+      <div class="kf-title">실시간 케어 대시보드</div>
+      <div class="kf-desc">식사·투약·위생·활동<br>케어 현황을 실시간으로</div>
+    </div>
+    <div class="kf">
+      <div class="kf-icon">🤖</div>
+      <div class="kf-title">AI 자동 리포트</div>
+      <div class="kf-desc">"오늘 어머님은 이렇게<br>보내셨어요" 매일 자동 생성</div>
+    </div>
+    <div class="kf">
+      <div class="kf-icon">🚨</div>
+      <div class="kf-title">SOS 30초 긴급알림</div>
+      <div class="kf-desc">위급 상황 발생 시<br>30초 이내 즉시 전달</div>
+    </div>
+  </div>
+  <div class="diff">핵심 차별점: 입소 '후' 투명한 일상 소통</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>하루안부 — 주제발표</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+:root {
+    --primary: #0891B2;
+    --primary-light: #E0F7FA;
+    --green: #059669;
+    --green-light: #D1FAE5;
+    --red: #DC2626;
+    --red-light: #FEE2E2;
+    --amber: #D97706;
+    --amber-light: #FEF3C7;
+    --text: #0F172A;
+    --text-60: #475569;
+    --text-40: #94A3B8;
+    --bg: #F8FAFC;
+    --card: #FFFFFF;
+    --border: #E2E8F0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Pretendard', sans-serif; background: #D4D4D4; }
+
+@media print {
+    @page { size: 1920px 1080px; margin: 0; }
+    body { background: #FFFFFF; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .slide {
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+        page-break-inside: avoid;
+        width: 1920px !important;
+        height: 1080px !important;
+    }
+}
+
+.slide {
+    width: 1920px; height: 1080px;
+    background: #FFFFFF;
+    position: relative; overflow: hidden;
+    margin: 20px auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+.pad { padding: 64px 80px; height: 100%; display: flex; flex-direction: column; }
+
+/* Typography */
+.t-display { font-size: 80px; font-weight: 800; letter-spacing: -3px; line-height: 1.1; color: var(--text); }
+.t-h1 { font-size: 52px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.15; color: var(--text); }
+.t-h2 { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; color: var(--text); }
+.t-h3 { font-size: 28px; font-weight: 700; line-height: 1.3; color: var(--text); }
+.t-body { font-size: 20px; font-weight: 400; line-height: 1.6; color: var(--text-60); }
+.t-sm { font-size: 17px; font-weight: 400; line-height: 1.5; color: var(--text-60); }
+.t-cap { font-size: 14px; font-weight: 500; color: var(--text-40); }
+.t-label { font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+.accent { color: var(--primary); }
+
+/* Layout */
+.row { display: flex; gap: 24px; }
+.col { flex: 1; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+.g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
+.g5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; }
+.g64 { display: grid; grid-template-columns: 6fr 4fr; gap: 40px; align-items: center; }
+.g46 { display: grid; grid-template-columns: 4fr 6fr; gap: 40px; align-items: center; }
+.center { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.grow { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.mt-auto { margin-top: auto; }
+
+/* Slide header */
+.s-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-shrink: 0; }
+.s-num { font-size: 14px; font-weight: 500; color: var(--text-40); letter-spacing: 1px; }
+.s-cat { font-size: 13px; font-weight: 600; color: var(--primary); letter-spacing: 1.5px; text-transform: uppercase; }
+
+/* Cards */
+.card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+}
+.card-accent {
+    background: var(--primary-light);
+    border: 1px solid #B2EBF2;
+    border-radius: 16px;
+    padding: 28px;
+}
+
+/* Stat */
+.stat { text-align: center; }
+.stat-v { font-size: 52px; font-weight: 800; letter-spacing: -2px; color: var(--primary); }
+.stat-l { font-size: 15px; color: var(--text-60); margin-top: 6px; }
+
+/* Flow */
+.flow { display: flex; align-items: center; gap: 12px; }
+.flow-box { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 24px 16px; text-align: center; }
+.flow-arr { font-size: 24px; color: var(--text-40); flex-shrink: 0; }
+
+/* Compare */
+.cmp { display: flex; align-items: center; gap: 20px; margin-bottom: 16px; }
+.cmp-l { flex: 1; background: var(--bg); border-radius: 12px; padding: 18px 24px; font-size: 19px; color: var(--text-60); }
+.cmp-a { font-size: 28px; color: var(--primary); font-weight: 700; flex-shrink: 0; }
+.cmp-r { flex: 1; background: var(--primary-light); border: 1px solid #B2EBF2; border-radius: 12px; padding: 18px 24px; font-size: 19px; color: var(--primary); font-weight: 600; }
+
+/* Persona */
+.persona-av { width: 100px; height: 100px; border-radius: 20px; background: linear-gradient(135deg, var(--primary), var(--green)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.persona-av svg { width: 48px; height: 48px; stroke: #fff; fill: none; stroke-width: 1.5; }
+
+/* Color circle */
+.cc { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 16px; }
+
+/* Badge */
+.badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+
+/* SVG icon */
+.ico { display: inline-flex; align-items: center; justify-content: center; }
+.ico svg { stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+
+/* Bottom bar */
+.bbar { position: absolute; bottom: 40px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-size: 13px; color: var(--text-40); }
+
+/* Decorative shapes (CSS only) */
+.deco-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.06;
+}
+.deco-dots {
+    position: absolute;
+    width: 200px; height: 200px;
+    background-image: radial-gradient(circle, var(--primary) 1.5px, transparent 1.5px);
+    background-size: 20px 20px;
+    opacity: 0.08;
+}
+.deco-line {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+    opacity: 0.1;
+}
+.deco-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    opacity: 0.06;
+}
+
+/* Bar chart */
+.bars { display: flex; gap: 6px; align-items: flex-end; height: 160px; }
+.bar-w { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.bar { width: 100%; border-radius: 4px; }
+.bar-d { font-size: 13px; color: var(--text-40); margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ===== SLIDE 01 — 표지 ===== -->
+<div class="slide">
+    <div class="deco-circle" style="width:600px;height:600px;background:var(--primary);top:-200px;right:-150px"></div>
+    <div class="deco-circle" style="width:400px;height:400px;background:var(--green);bottom:-100px;left:-100px"></div>
+    <div class="deco-dots" style="top:100px;right:200px"></div>
+    <div class="deco-ring" style="width:300px;height:300px;bottom:150px;right:300px"></div>
+    <div class="deco-line" style="width:600px;top:50%;left:0"></div>
+    <div class="pad center">
+        <div class="t-label" style="color:var(--text-40);margin-bottom:32px">Digital Content Production 03</div>
+        <div class="t-display" style="font-size:110px">하루<span class="accent">안부</span></div>
+        <div class="t-body" style="margin-top:20px">보호자 · 의료진 · 환자를 잇는 AI 케어 소통 플랫폼</div>
+        <div class="t-sm" style="color:var(--text-40);margin-top:24px">"오늘 하루도, 안녕하셨습니다"</div>
+    </div>
+    <div class="bbar">
+        <span>PROF. 남궁경</span>
+        <span>노인과 바다 그리고 네잎클로버</span>
+        <span>김지욱 · 손예찬 · 고해은</span>
+        <span>THE 4TH MEMBER: AI</span>
+    </div>
+</div>
+
+<!-- ===== SLIDE 02 — 문제 ===== -->
+<div class="slide">
+    <div class="deco-dots" style="bottom:80px;right:80px"></div>
+    <div class="deco-circle" style="width:500px;height:500px;background:var(--primary);top:-150px;right:200px"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">02 / 19</span><span class="s-cat">Problem</span></div>
+        <div class="g64 grow">
+            <div>
+                <div class="t-h1" style="font-size:56px;line-height:1.2">오늘 부모님이<br><span class="accent">밥을 드셨는지,</span><br><span class="accent">약을 드셨는지</span><br>모릅니다.</div>
+                <div class="t-body" style="margin-top:24px;max-width:560px">요양시설에 계신 부모님을 매일 찾아뵐 수 없는 맞벌이 부부, 멀리 사는 자녀, 바쁜 일상 속 보호자 모두가 겪는 현실입니다.</div>
+            </div>
+            <div>
+                <div class="card" style="margin-bottom:16px;text-align:center"><div class="stat-v">68%</div><div class="stat-l">면회 제한 시설 비율</div></div>
+                <div class="card" style="margin-bottom:16px;text-align:center"><div class="stat-v">46.3%</div><div class="stat-l">보호자 심각한 스트레스</div></div>
+                <div class="card" style="text-align:center"><div class="stat-v">117만</div><div class="stat-l">장기요양 이용자 수</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 03 — 퍼소나 ===== -->
+<div class="slide">
+    <div class="deco-ring" style="width:250px;height:250px;top:100px;right:100px"></div>
+    <div class="deco-dots" style="bottom:60px;left:80px"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">03 / 19</span><span class="s-cat">Persona</span></div>
+        <div class="t-label accent" style="margin-bottom:16px">Primary Persona</div>
+        <div class="row" style="gap:40px;align-items:center;margin-bottom:36px">
+            <div class="persona-av"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div style="flex:1">
+                <div class="t-h2">김미영 (52세)</div>
+                <div class="t-body" style="margin-top:4px">중견기업 과장, 맞벌이 · 치매 초기 어머니(78세)를 요양원에 모심</div>
+                <div style="margin-top:16px;padding:20px 24px;background:var(--primary-light);border-radius:12px;border-left:4px solid var(--primary);font-size:20px;color:var(--primary);font-style:italic;line-height:1.5">"퇴근하고 전화하면 안 받을 때가 많아요. 그때 제일 불안합니다."</div>
+            </div>
+        </div>
+        <div class="g4">
+            <div class="card"><div class="t-h3 accent" style="margin-bottom:8px">목표</div><div class="t-sm">오늘 엄마가 괜찮은지 알고 싶다</div></div>
+            <div class="card"><div class="t-h3" style="color:var(--red);margin-bottom:8px">불만</div><div class="t-sm">전화 연결 안 됨<br>비용 복잡, 정보 없음</div></div>
+            <div class="card"><div class="t-h3" style="color:var(--green);margin-bottom:8px">기술</div><div class="t-sm">카카오톡, 토스, 배민<br>일상적 사용</div></div>
+            <div class="card"><div class="t-h3" style="color:var(--amber);margin-bottom:8px">감정</div><div class="t-sm">불안, 죄책감, 답답함<br>퇴근 후 매일 전화</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 04 — As-Is ===== -->
+<div class="slide">
+    <div class="deco-line" style="width:1920px;top:55%;left:0"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">04 / 19</span><span class="s-cat">As-Is Journey</span></div>
+        <div class="t-h2" style="margin-bottom:8px"><span class="accent">지금</span> 김미영의 하루</div>
+        <div class="t-body" style="margin-bottom:40px">하루안부가 없는 지금, 감정은 계속 떨어집니다</div>
+        <div class="g5">
+            <div class="card" style="text-align:center;padding:24px 16px"><div style="font-size:52px;margin-bottom:12px">😰</div><div class="t-h3">입소 결정</div><div class="t-sm" style="margin-top:6px">요양원 검색</div><div style="margin-top:12px;font-size:22px;font-weight:700;color:var(--text-40)">2/5</div><div style="margin-top:12px;height:6px;background:#E2E8F0;border-radius:3px"><div style="width:40%;height:100%;background:var(--text-40);border-radius:3px"></div></div></div>
+            <div class="card" style="text-align:center;padding:24px 16px"><div style="font-size:52px;margin-bottom:12px">😟</div><div class="t-h3">일상</div><div class="t-sm" style="margin-top:6px">퇴근 후 전화</div><div style="margin-top:12px;font-size:22px;font-weight:700;color:var(--text-40)">2/5</div><div style="margin-top:12px;height:6px;background:#E2E8F0;border-radius:3px"><div style="width:40%;height:100%;background:var(--text-40);border-radius:3px"></div></div></div>
+            <div class="card" style="text-align:center;padding:24px 16px;border-color:var(--red);border-width:2px"><div style="font-size:52px;margin-bottom:12px">😤</div><div class="t-h3">궁금할 때</div><div class="t-sm" style="margin-top:6px">전화 안 받음</div><div style="margin-top:12px;font-size:22px;font-weight:700;color:var(--red)">1/5</div><div style="margin-top:12px;height:6px;background:#FEE2E2;border-radius:3px"><div style="width:20%;height:100%;background:var(--red);border-radius:3px"></div></div></div>
+            <div class="card" style="text-align:center;padding:24px 16px;border-color:var(--red);border-width:2px"><div style="font-size:52px;margin-bottom:12px">😱</div><div class="t-h3">긴급 상황</div><div class="t-sm" style="margin-top:6px">전화 대기</div><div style="margin-top:12px;font-size:22px;font-weight:700;color:var(--red)">1/5</div><div style="margin-top:12px;height:6px;background:#FEE2E2;border-radius:3px"><div style="width:20%;height:100%;background:var(--red);border-radius:3px"></div></div></div>
+            <div class="card" style="text-align:center;padding:24px 16px"><div style="font-size:52px;margin-bottom:12px">😵</div><div class="t-h3">비용/행정</div><div class="t-sm" style="margin-top:6px">청구서 확인</div><div style="margin-top:12px;font-size:22px;font-weight:700;color:var(--text-40)">2/5</div><div style="margin-top:12px;height:6px;background:#E2E8F0;border-radius:3px"><div style="width:40%;height:100%;background:var(--text-40);border-radius:3px"></div></div></div>
+        </div>
+        <div class="t-sm" style="color:var(--red);font-weight:600;margin-top:24px">5단계 중 4단계에서 부정 감정</div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 05 — 포지셔닝 ===== -->
+<div class="slide">
+    <div class="deco-circle" style="width:700px;height:700px;background:var(--primary);top:-200px;right:-200px"></div>
+    <div class="deco-dots" style="top:300px;left:80px"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">05 / 19</span><span class="s-cat">Market Gap</span></div>
+        <div class="g64 grow">
+            <div>
+                <div class="t-h1" style="margin-bottom:40px">시장에서<br><span class="accent">비어있는 자리</span></div>
+                <div class="g2" style="gap:16px">
+                    <div class="card" style="padding:20px;text-align:center"><div class="t-h3 accent">4,640</div><div class="t-cap" style="margin-top:4px">전국 요양원</div></div>
+                    <div class="card" style="padding:20px;text-align:center"><div class="t-h3 accent">68%</div><div class="t-cap" style="margin-top:4px">면회 제한</div></div>
+                    <div class="card" style="padding:20px;text-align:center"><div class="t-h3 accent">46.3%</div><div class="t-cap" style="margin-top:4px">보호자 스트레스</div></div>
+                    <div class="card" style="padding:20px;text-align:center"><div class="t-h3 accent">117만</div><div class="t-cap" style="margin-top:4px">장기요양 이용자</div></div>
+                </div>
+            </div>
+            <div style="text-align:center">
+                <div style="font-size:220px;font-weight:800;color:var(--primary);line-height:1;letter-spacing:-10px">0</div>
+                <div class="t-h2 accent" style="margin-top:-16px">개</div>
+                <div class="t-body" style="margin-top:16px">실시간 연결 플랫폼<br>국내 시장 부재</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 06 — 서비스 소개 ===== -->
+<div class="slide">
+    <div class="deco-ring" style="width:400px;height:400px;top:200px;left:50%;transform:translateX(-50%)"></div>
+    <div class="pad center">
+        <div class="s-head" style="width:100%;position:absolute;top:64px;left:80px;right:80px"><span class="s-num">06 / 19</span><span class="s-cat">Solution</span></div>
+        <div class="t-label accent" style="margin-bottom:20px">하나의 앱, 세 개의 역할</div>
+        <div class="t-body" style="margin-bottom:48px">역할에 따라 완전히 다른 UI를 제공하지만 앱은 하나입니다</div>
+        <div class="flow">
+            <div class="card" style="width:360px;text-align:center;padding:40px 32px"><div class="t-h3" style="margin-bottom:12px">보호자 · 환자</div><div class="t-sm">케어 현황 확인<br>처방전 열람, 일과 확인</div></div>
+            <div class="flow-arr">↔</div>
+            <div style="width:220px;height:220px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--green));display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0"><div class="t-h3" style="color:#fff">하루안부</div><div class="t-sm" style="color:rgba(255,255,255,0.7);margin-top:4px">AI 케어 허브</div></div>
+            <div class="flow-arr">↔</div>
+            <div class="card" style="width:360px;text-align:center;padding:40px 32px"><div class="t-h3" style="margin-bottom:12px">의료진</div><div class="t-sm">케어 기록, 처방전 작성<br>보호자 소통</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 07 — JTBD ===== -->
+<div class="slide">
+    <div class="deco-dots" style="top:80px;right:80px"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">07 / 19</span><span class="s-cat">JTBD</span></div>
+        <div class="t-h2" style="margin-bottom:8px"><span class="accent">진짜 문제는</span> 이것입니다</div>
+        <div class="t-body" style="margin-bottom:32px">보호자가 말하는 것과, 진짜 원하는 것은 다릅니다</div>
+        <div class="cmp"><div class="cmp-l">요양원에 전화하고 싶다</div><div class="cmp-a">→</div><div class="cmp-r">오늘 엄마가 괜찮은지 확인하고 싶다</div></div>
+        <div class="cmp"><div class="cmp-l">간호사한테 물어보고 싶다</div><div class="cmp-a">→</div><div class="cmp-r">불안한 마음을 해소하고 싶다</div></div>
+        <div class="cmp"><div class="cmp-l">비용을 알고 싶다</div><div class="cmp-a">→</div><div class="cmp-r">경제적 부담을 예측하고 싶다</div></div>
+        <div class="cmp"><div class="cmp-l">응급 시 연락받고 싶다</div><div class="cmp-a">→</div><div class="cmp-r">위험할 때 즉시 알림받고 싶다</div></div>
+        <div class="t-h3" style="margin-top:32px">보호자가 진짜 원하는 건 전화가 아닙니다. <span class="accent">안심</span>입니다.</div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 08 — To-Be ===== -->
+<div class="slide">
+    <div class="deco-line" style="width:1920px;top:55%;left:0;background:linear-gradient(90deg,var(--green),transparent)"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">08 / 19</span><span class="s-cat">To-Be Journey</span></div>
+        <div class="t-h2" style="margin-bottom:8px">김미영의 하루가 <span class="accent">바뀝니다</span></div>
+        <div class="t-body" style="margin-bottom:40px">하루안부와 함께하는 하루</div>
+        <div class="g5">
+            <div class="card" style="text-align:center;padding:24px 16px;border-color:var(--green);border-width:2px"><div style="font-size:52px;margin-bottom:12px">😊</div><div class="t-h3">AI 요양원 검색</div><div class="t-sm" style="margin-top:6px">조건별 검색</div><div style="margin-top:12px;font-size:22px;font-weight:700;color:var(--green)">4/5</div><div style="margin-top:12px;height:6px;background:var(--green-light);border-radius:3px"><div style="width:80%;height:100%;background:var(--green);border-radius:3px"></div></div></div>
+            <div class="card" style="text-align:center;padding:24px 16px;border-color:var(--green);border-width:2px"><div style="font-size:52px;margin-bottom:12px">😌</div><div class="t-h3">실시간 대시보드</div><div class="t-sm" style="margin-top:6px">3초 내 반영</div><div style="margin-top:12px;font-size:22px;font-weight:700;color:var(--green)">4/5</div><div style="margin-top:12px;height:6px;background:var(--green-light);border-radius:3px"><div style="width:80%;height:100%;background:var(--green);border-radius:3px"></div></div></div>
+            <div class="card" style="text-align:center;padding:24px 16px;border-color:var(--green);border-width:2px"><div style="font-size:52px;margin-bottom:12px">😊</div><div class="t-h3">AI 리포트</div><div class="t-sm" style="margin-top:6px">매일 자동 요약</div><div style="margin-top:12px;font-size:22px;font-weight:700;color:var(--green)">4/5</div><div style="margin-top:12px;height:6px;background:var(--green-light);border-radius:3px"><div style="width:80%;height:100%;background:var(--green);border-radius:3px"></div></div></div>
+            <div class="card" style="text-align:center;padding:24px 16px;border-color:var(--green);border-width:2px"><div style="font-size:52px;margin-bottom:12px">😮</div><div class="t-h3">SOS 30초</div><div class="t-sm" style="margin-top:6px">즉시 푸시</div><div style="margin-top:12px;font-size:22px;font-weight:700;color:var(--green)">3/5</div><div style="margin-top:12px;height:6px;background:var(--green-light);border-radius:3px"><div style="width:60%;height:100%;background:var(--green);border-radius:3px"></div></div></div>
+            <div class="card" style="text-align:center;padding:24px 16px;border-color:var(--green);border-width:2px"><div style="font-size:52px;margin-bottom:12px">😊</div><div class="t-h3">AI 비용 계산</div><div class="t-sm" style="margin-top:6px">시설 vs 재가</div><div style="margin-top:12px;font-size:22px;font-weight:700;color:var(--green)">4/5</div><div style="margin-top:12px;height:6px;background:var(--green-light);border-radius:3px"><div style="width:80%;height:100%;background:var(--green);border-radius:3px"></div></div></div>
+        </div>
+        <div class="t-body" style="margin-top:24px">평균 감정 1.6점 → <span style="color:var(--primary);font-weight:700">3.8점</span> <span style="color:var(--text-40)">(+2.2점 상승)</span></div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 09 — 기능① ===== -->
+<div class="slide">
+    <div class="deco-circle" style="width:400px;height:400px;background:var(--primary);bottom:-100px;right:-100px"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">09 / 19</span><span class="s-cat">Feature 01</span></div>
+        <div class="g46 grow">
+            <div>
+                <div class="t-label accent" style="margin-bottom:12px">실시간 케어 공유</div>
+                <div class="t-display accent" style="font-size:96px">3초</div>
+                <div class="t-h3" style="margin-top:8px">이내 반영</div>
+                <div class="t-body" style="margin-top:16px">의료진이 체크하면,<br>보호자가 바로 봅니다</div>
+                <div class="badge" style="margin-top:20px;background:var(--primary-light);color:var(--primary)">Supabase Realtime 기반</div>
+            </div>
+            <div>
+                <div class="card" style="margin-bottom:16px"><div class="t-h3" style="margin-bottom:12px">의료진 PC 체크리스트</div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span class="t-sm">✅ 오전 투약 완료</span><span class="t-cap">09:00</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span class="t-sm">✅ 혈압 측정 120/80</span><span class="t-cap">09:30</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span class="t-sm">✅ 재활운동 30분</span><span class="t-cap">10:00</span></div><div style="display:flex;justify-content:space-between;padding:10px 0"><span class="t-sm" style="color:var(--text-40)">⬜ 오후 투약</span><span class="t-cap">14:00</span></div></div>
+                <div class="card-accent"><div class="t-sm" style="color:var(--primary);font-weight:600">보호자 대시보드 — 실시간 반영</div><div style="margin-top:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span class="t-cap" style="width:40px">투약</span><div style="flex:1;height:8px;background:#E2E8F0;border-radius:4px"><div style="width:100%;height:100%;background:var(--primary);border-radius:4px"></div></div><span class="t-cap accent">100%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span class="t-cap" style="width:40px">재활</span><div style="flex:1;height:8px;background:#E2E8F0;border-radius:4px"><div style="width:70%;height:100%;background:var(--primary);border-radius:4px"></div></div><span class="t-cap accent">70%</span></div><div style="display:flex;align-items:center;gap:8px"><span class="t-cap" style="width:40px">식사</span><div style="flex:1;height:8px;background:#E2E8F0;border-radius:4px"><div style="width:80%;height:100%;background:var(--green);border-radius:4px"></div></div><span class="t-cap" style="color:var(--green)">80%</span></div></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 10 — SOS ===== -->
+<div class="slide">
+    <div class="deco-circle" style="width:600px;height:600px;background:var(--red);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+    <div class="pad center">
+        <div class="s-head" style="width:100%;position:absolute;top:64px;left:80px;right:80px"><span class="s-num">10 / 19</span><span class="s-cat" style="color:var(--red)">Feature 02</span></div>
+        <div class="t-label" style="color:var(--red);margin-bottom:16px">SOS 긴급 알림</div>
+        <div class="t-display" style="font-size:140px;color:var(--red);letter-spacing:-5px">30초</div>
+        <div class="t-body" style="margin-top:12px">응급 상황 발생 시, 30초 안에 보호자에게 도달</div>
+        <div class="flow" style="margin-top:48px">
+            <div class="flow-box"><div class="t-h3">의료진 SOS</div><div class="t-cap" style="margin-top:4px">상황 메모 입력</div></div>
+            <div class="flow-arr">→</div>
+            <div class="flow-box"><div class="t-h3">푸시 알림</div><div class="t-cap" style="margin-top:4px">FCM 30초 이내</div></div>
+            <div class="flow-arr">→</div>
+            <div class="flow-box"><div class="t-h3">보호자 확인</div><div class="t-cap" style="margin-top:4px">응답 기록</div></div>
+            <div class="flow-arr">→</div>
+            <div class="flow-box"><div class="t-h3">미응답 재알림</div><div class="t-cap" style="margin-top:4px">5분 후 자동</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 11 — 채팅 ===== -->
+<div class="slide">
+    <div class="deco-dots" style="top:100px;right:100px"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">11 / 19</span><span class="s-cat">Feature 03</span></div>
+        <div class="g64 grow">
+            <div>
+                <div class="t-label accent" style="margin-bottom:12px">1:1 채팅</div>
+                <div class="t-h1">보호자-의료진<br><span class="accent">실시간 소통</span></div>
+                <div class="t-body" style="margin-top:20px">텍스트 + 사진 첨부<br>읽음 확인 + 재알림</div>
+                <div class="g2" style="margin-top:24px;gap:12px">
+                    <div class="badge" style="background:var(--primary-light);color:var(--primary)">Supabase Realtime</div>
+                    <div class="badge" style="background:var(--green-light);color:var(--green)">이미지 Storage</div>
+                </div>
+            </div>
+            <div class="card" style="padding:0;overflow:hidden">
+                <div style="background:var(--bg);padding:16px 24px;border-bottom:1px solid var(--border);font-weight:600;font-size:16px">김간호사 · 담당 간호사 · 101호</div>
+                <div style="padding:20px 24px">
+                    <div style="background:var(--bg);border-radius:4px 16px 16px 16px;padding:14px 18px;max-width:80%;margin-bottom:8px"><div class="t-sm" style="color:var(--text)">오늘 어머님 컨디션이 좋아지셨어요.</div><div class="t-cap" style="margin-top:4px">10:30</div></div>
+                    <div style="background:var(--primary);color:#fff;border-radius:16px 4px 16px 16px;padding:14px 18px;max-width:70%;margin-left:auto;margin-bottom:8px"><div class="t-sm" style="color:#fff">감사합니다. 식사는 잘 하셨나요?</div><div class="t-cap" style="color:rgba(255,255,255,0.6);margin-top:4px">10:32</div></div>
+                    <div style="background:var(--bg);border-radius:4px 16px 16px 16px;padding:14px 18px;max-width:85%;margin-bottom:8px"><div class="t-sm" style="color:var(--text)">아침 80% 드셨고 투약도 완료했습니다.</div><div class="t-cap" style="margin-top:4px">10:33</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 12 — AI 가이드 ===== -->
+<div class="slide">
+    <div class="deco-circle" style="width:400px;height:400px;background:var(--primary);top:-100px;right:200px"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">12 / 19</span><span class="s-cat">Feature 04 — Core</span></div>
+        <div class="t-label accent" style="margin-bottom:8px">핵심 차별화</div>
+        <div class="t-h1" style="margin-bottom:8px"><span class="accent">AI</span> 케어 가이드</div>
+        <div class="t-body" style="margin-bottom:28px">5개 모드로 보호자의 모든 질문에 답합니다</div>
+        <div class="g3" style="gap:16px;margin-bottom:16px">
+            <div class="card-accent"><div class="t-h3 accent" style="margin-bottom:6px">백과사전 40%</div><div class="t-sm">요양·건강 정보<br>절차, 서류, 비용 안내</div></div>
+            <div class="card" style="border-left:4px solid var(--amber)"><div class="t-h3" style="color:var(--amber);margin-bottom:6px">감정 지원 20%</div><div class="t-sm">감정 감지 → 공감 전환<br>전문 상담 기관 안내</div></div>
+            <div class="card" style="border-left:4px solid var(--green)"><div class="badge" style="background:var(--green-light);color:var(--green);margin-bottom:8px">NEW</div><div class="t-h3" style="color:var(--green)">요양원 찾기</div><div class="t-sm" style="margin-top:4px">대화형 조건 검색<br>공공 데이터 기반</div></div>
+        </div>
+        <div class="g2" style="gap:16px">
+            <div class="card" style="border-left:4px solid var(--green)"><div class="badge" style="background:var(--green-light);color:var(--green);margin-bottom:8px">NEW</div><div class="t-h3" style="color:var(--green)">요양보호사 안내</div><div class="t-sm" style="margin-top:4px">정보 안내 + 외부 서비스 연결</div></div>
+            <div class="card" style="border-left:4px solid var(--green)"><div class="badge" style="background:var(--green-light);color:var(--green);margin-bottom:8px">NEW</div><div class="t-h3" style="color:var(--green)">요양비 계산</div><div class="t-sm" style="margin-top:4px">복합 조건 비용 시뮬레이션 · 시설 vs 재가 비교</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 13 — AI 리포트 ===== -->
+<div class="slide">
+    <div class="deco-ring" style="width:350px;height:350px;bottom:50px;right:80px"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">13 / 19</span><span class="s-cat">Feature 05</span></div>
+        <div class="g46 grow">
+            <div>
+                <div class="t-label accent" style="margin-bottom:12px">매일 저녁 7시</div>
+                <div class="t-h1"><span class="accent">AI</span>가 하루를<br>요약합니다</div>
+                <div class="t-body" style="margin-top:16px">Claude API가 당일 케어 데이터를<br>자연어로 요약 → 자동 발송</div>
+                <div class="badge" style="margin-top:20px;background:var(--primary-light);color:var(--primary)">Claude API 자동 생성 · 95% 성공률</div>
+            </div>
+            <div>
+                <div class="g3" style="gap:16px;margin-bottom:24px">
+                    <div class="card" style="text-align:center;padding:24px"><div class="stat-v">80%</div><div class="stat-l">식사량 평균</div></div>
+                    <div class="card" style="text-align:center;padding:24px"><div class="stat-v">3/3</div><div class="stat-l">투약 완료</div></div>
+                    <div class="card" style="text-align:center;padding:24px"><div class="stat-v">30분</div><div class="stat-l">재활운동</div></div>
+                </div>
+                <div class="card-accent" style="font-size:17px;line-height:1.7;color:var(--text)">오늘 어머님은 전반적으로 <b style="color:var(--primary)">양호한 컨디션</b>을 보이셨습니다.<br><br>식사 — 아침 80%, 점심 85% 섭취<br>투약 — 3회 모두 완료<br>활동 — 재활 30분 + 산책 20분<br><br><span style="color:var(--text-40);font-style:italic">오늘 하루도, 안녕하셨습니다.</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 14 — 시간표 ===== -->
+<div class="slide">
+    <div class="deco-dots" style="bottom:80px;left:80px"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">14 / 19</span><span class="s-cat">Feature 06</span></div>
+        <div class="t-label accent" style="margin-bottom:8px">시간표 + 의료 타임라인</div>
+        <div class="t-h2" style="margin-bottom:32px">환자 일과와 진료·처방·검사 이력을 <span class="accent">한눈에</span></div>
+        <div class="g2">
+            <div class="card"><div class="t-h3 accent" style="margin-bottom:16px">환자 일과표</div><div style="display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)"><span class="t-cap" style="width:50px">07:00</span><span class="badge" style="background:var(--amber-light);color:var(--amber)">조식</span></div><div style="display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)"><span class="t-cap" style="width:50px">09:00</span><span class="badge" style="background:var(--green-light);color:var(--green)">오전 투약</span></div><div style="display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)"><span class="t-cap" style="width:50px">10:00</span><span class="badge" style="background:var(--primary-light);color:var(--primary)">재활운동 30분</span></div><div style="display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)"><span class="t-cap" style="width:50px">12:00</span><span class="badge" style="background:var(--amber-light);color:var(--amber)">점심 식사</span></div><div style="display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)"><span class="t-cap" style="width:50px">14:00</span><span class="badge" style="background:#F3E8FF;color:#7C3AED">산책</span></div><div style="display:flex;gap:8px;align-items:center;padding:10px 0"><span class="t-cap" style="width:50px">17:00</span><span class="badge" style="background:var(--amber-light);color:var(--amber)">석식</span></div></div>
+            <div class="card"><div class="t-h3" style="color:var(--green);margin-bottom:16px">의료 타임라인</div><div style="display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)"><div style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;flex-shrink:0">D</div><div><div class="t-cap">2026.03.14</div><div class="t-sm" style="font-weight:600;color:var(--text)">정기 건강검진</div><div class="t-cap">전반적 건강 양호</div></div><div style="margin-left:auto"><span class="badge" style="background:var(--primary-light);color:var(--primary)">진료</span></div></div><div style="display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)"><div style="width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;flex-shrink:0">P</div><div><div class="t-cap">2026.03.12</div><div class="t-sm" style="font-weight:600;color:var(--text)">혈압약 용량 조정</div><div class="t-cap">5mg → 10mg</div></div><div style="margin-left:auto"><span class="badge" style="background:var(--green-light);color:var(--green)">처방</span></div></div><div style="display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)"><div style="width:36px;height:36px;border-radius:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;flex-shrink:0">E</div><div><div class="t-cap">2026.03.10</div><div class="t-sm" style="font-weight:600;color:var(--text)">혈액검사</div><div class="t-cap">간·신장 기능 정상</div></div><div style="margin-left:auto"><span class="badge" style="background:var(--amber-light);color:var(--amber)">검사</span></div></div><div style="display:flex;gap:12px;align-items:flex-start;padding:12px 0"><div style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;flex-shrink:0">D</div><div><div class="t-cap">2026.03.05</div><div class="t-sm" style="font-weight:600;color:var(--text)">내과 진료</div><div class="t-cap">소화 불량 호전</div></div><div style="margin-left:auto"><span class="badge" style="background:var(--primary-light);color:var(--primary)">진료</span></div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 15 — 톤앤매너 ===== -->
+<div class="slide">
+    <div class="pad">
+        <div class="s-head"><span class="s-num">15 / 19</span><span class="s-cat">Design</span></div>
+        <div class="t-label accent" style="margin-bottom:8px">Tone & Mood</div>
+        <div class="t-h1" style="margin-bottom:40px"><span class="accent">따뜻하지만</span> 전문적인</div>
+        <div class="g2" style="gap:60px;align-items:start">
+            <div>
+                <div class="t-h3" style="margin-bottom:20px">컬러 팔레트</div>
+                <div class="g3" style="text-align:center">
+                    <div><div class="cc" style="background:linear-gradient(135deg,#4A7FBF,#6BA3D6)"></div><div class="t-h3">안심 블루</div><div class="t-cap" style="margin-top:4px">#4A7FBF · 보호자</div></div>
+                    <div><div class="cc" style="background:linear-gradient(135deg,#5BAE8C,#7BC4A8)"></div><div class="t-h3">케어 그린</div><div class="t-cap" style="margin-top:4px">#5BAE8C · 의료진</div></div>
+                    <div><div class="cc" style="background:linear-gradient(135deg,#D4A574,#E8C9A0)"></div><div class="t-h3">편안 베이지</div><div class="t-cap" style="margin-top:4px">#D4A574 · 환자</div></div>
+                </div>
+            </div>
+            <div>
+                <div class="t-h3" style="margin-bottom:20px">시멘틱 컬러</div>
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px"><div style="width:48px;height:48px;border-radius:50%;background:var(--green)"></div><div><div class="t-sm" style="font-weight:600;color:var(--text)">완료</div><div class="t-cap">#059669</div></div></div>
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px"><div style="width:48px;height:48px;border-radius:50%;background:var(--amber)"></div><div><div class="t-sm" style="font-weight:600;color:var(--text)">주의</div><div class="t-cap">#D97706</div></div></div>
+                <div style="display:flex;align-items:center;gap:16px"><div style="width:48px;height:48px;border-radius:50%;background:var(--red)"></div><div><div class="t-sm" style="font-weight:600;color:var(--text)">긴급</div><div class="t-cap">#DC2626</div></div></div>
+                <div class="t-sm" style="color:var(--text-40);margin-top:24px;font-style:italic">색마다 이유가 있습니다 — 의도가 있는 디자인</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 16 — 벤치마킹 ===== -->
+<div class="slide">
+    <div class="pad">
+        <div class="s-head"><span class="s-num">16 / 19</span><span class="s-cat">Benchmarking</span></div>
+        <div class="t-label accent" style="margin-bottom:8px">비주얼 컨셉 벤치마킹</div>
+        <div class="t-h2" style="margin-bottom:32px">6개 서비스에서 배우고, <span class="accent">하루안부에 통합</span></div>
+        <div class="g3" style="gap:16px">
+            <div class="card"><div style="height:120px;background:var(--bg);border-radius:8px;margin-bottom:16px;display:flex;align-items:center;justify-content:center"><span class="t-cap">[토스 스크린샷]</span></div><div class="t-h3" style="margin-bottom:4px">토스</div><div class="t-sm">카드 UI + 정보 계층</div><div class="t-cap accent" style="margin-top:4px;font-weight:600">→ 대시보드</div></div>
+            <div class="card"><div style="height:120px;background:var(--bg);border-radius:8px;margin-bottom:16px;display:flex;align-items:center;justify-content:center"><span class="t-cap">[당근 스크린샷]</span></div><div class="t-h3" style="margin-bottom:4px">당근</div><div class="t-sm">따뜻한 말투 + 접근성</div><div class="t-cap accent" style="margin-top:4px;font-weight:600">→ UX 카피</div></div>
+            <div class="card"><div style="height:120px;background:var(--bg);border-radius:8px;margin-bottom:16px;display:flex;align-items:center;justify-content:center"><span class="t-cap">[밀리의서재 스크린샷]</span></div><div class="t-h3" style="margin-bottom:4px">밀리의서재</div><div class="t-sm">여백 + 감성</div><div class="t-cap accent" style="margin-top:4px;font-weight:600">→ AI 리포트</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 17 — AI 활용 ===== -->
+<div class="slide">
+    <div class="deco-circle" style="width:500px;height:500px;background:var(--primary);bottom:-150px;left:-150px"></div>
+    <div class="pad center">
+        <div class="s-head" style="width:100%;position:absolute;top:64px;left:80px;right:80px"><span class="s-num">17 / 19</span><span class="s-cat">AI Strategy</span></div>
+        <div class="t-label accent" style="margin-bottom:12px">프로젝트 전 과정에서</div>
+        <div class="t-h1" style="margin-bottom:48px"><span class="accent">AI</span>를 활용합니다</div>
+        <div class="flow">
+            <div class="card-accent" style="flex:1;text-align:center;padding:32px 20px"><div class="t-h3 accent">AI</div><div class="t-sm" style="margin-top:8px">기획</div><div class="t-cap" style="margin-top:8px">PRD, 시장 조사<br>사용자 분석</div></div>
+            <div class="flow-arr">→</div>
+            <div class="card" style="flex:1;text-align:center;padding:32px 20px"><div class="t-h3">Code</div><div class="t-sm" style="margin-top:8px">디자인</div><div class="t-cap" style="margin-top:8px">UI/UX 설계<br>Figma 목업</div></div>
+            <div class="flow-arr">→</div>
+            <div class="card" style="flex:1;text-align:center;padding:32px 20px"><div class="t-h3">C+A</div><div class="t-sm" style="margin-top:8px">개발</div><div class="t-cap" style="margin-top:8px">React + Supabase<br>API 연동</div></div>
+            <div class="flow-arr">→</div>
+            <div class="card-accent" style="flex:1;text-align:center;padding:32px 20px"><div class="t-h3 accent">AI</div><div class="t-sm" style="margin-top:8px">제출</div><div class="t-cap" style="margin-top:8px">발표 자료<br>시연 시나리오</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 18 — 비즈니스 ===== -->
+<div class="slide">
+    <div class="deco-dots" style="top:80px;right:200px"></div>
+    <div class="pad">
+        <div class="s-head"><span class="s-num">18 / 19</span><span class="s-cat">Business</span></div>
+        <div class="t-label accent" style="margin-bottom:8px">비즈니스 모델</div>
+        <div class="t-h2" style="margin-bottom:32px"><span class="accent">16.1조</span> 원 시장, 연 8%+ 성장</div>
+        <div class="g2" style="gap:16px">
+            <div class="card-accent"><div class="t-h3 accent" style="margin-bottom:8px">가치 제안</div><div class="t-body">입소 후 가족-의료진-환자<br>실시간 소통 + AI 케어</div></div>
+            <div class="card"><div class="t-h3 accent" style="margin-bottom:8px">고객</div><div class="t-body">보호자 (B2C) · 요양원 (B2B)</div></div>
+            <div class="card"><div class="t-h3" style="color:var(--amber);margin-bottom:8px">수익 모델</div><div class="t-body">보호자 프리미엄 9,900~19,900원/월<br>요양원 B2B SaaS 월 구독</div></div>
+            <div class="card" style="background:linear-gradient(135deg,var(--primary-light),var(--green-light));border-color:var(--primary)"><div class="t-h3" style="color:var(--green);margin-bottom:8px">경쟁 우위</div><div class="t-body">3자 네트워크 효과 + AI 5개 모드<br><b style="color:var(--primary)">국내 유일 — 경쟁자 0</b></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SLIDE 19 — 마무리 ===== -->
+<div class="slide">
+    <div class="deco-circle" style="width:800px;height:800px;background:var(--primary);top:-300px;right:-200px"></div>
+    <div class="deco-circle" style="width:500px;height:500px;background:var(--green);bottom:-200px;left:-100px"></div>
+    <div class="deco-ring" style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+    <div class="pad center">
+        <div class="t-h1" style="font-size:56px;line-height:1.3">가족이 안심할 수 있도록,<br>케어의 모든 순간을 <span class="accent">연결</span>합니다.</div>
+        <div class="t-body" style="margin-top:32px;font-size:24px">"오늘 하루도, 안녕하셨습니다"</div>
+    </div>
+    <div class="bbar" style="justify-content:center;gap:40px">
+        <span>E.O.D. — 이 기획서 자체를 AI로 작성했습니다.</span>
+        <span style="color:var(--primary)">노인과 바다 그리고 네잎클로버 · 2026. 03</span>
+    </div>
+</div>
+
+</body>
+</html>

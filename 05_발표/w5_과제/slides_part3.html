@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>하루안부 — 발표자료 Part 3 (역할별 기능)</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#4A7FBF;--blue-light:#E8F0FA;
+  --green:#5BAE8C;--green-light:#EAF6F0;
+  --beige:#D4A574;--beige-light:#FDF5ED;
+  --bg:#FAFAF7;--surface:#FFFFFF;
+  --text:#1E2A3A;--text-2:#5A6472;--text-3:#8C939A;
+  --danger:#E53935;
+}
+body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#1a1a2e;margin:0}
+.slide{width:1920px;height:1080px;position:relative;overflow:hidden;margin:0 auto 40px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+
+/* === BENTO GRID COMMON === */
+.bento-slide{padding:60px 80px}
+.bento-header{display:flex;align-items:center;gap:16px;margin-bottom:32px}
+.bento-badge{
+  font-size:14px;font-weight:700;padding:6px 16px;border-radius:24px;
+  text-transform:uppercase;letter-spacing:.06em;
+}
+.bento-title{font-size:40px;font-weight:800;letter-spacing:-.04em;color:var(--text)}
+.bento-sub{font-size:18px;color:var(--text-3);font-weight:400;margin-left:auto}
+.bento{display:grid;gap:16px;height:calc(100% - 120px)}
+
+/* bento cell */
+.cell{
+  background:var(--surface);border-radius:20px;padding:28px;
+  box-shadow:0 2px 12px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);
+  display:flex;flex-direction:column;overflow:hidden;position:relative;
+}
+.cell .cell-icon{font-size:36px;margin-bottom:12px}
+.cell .cell-title{font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.02em}
+.cell .cell-desc{font-size:15px;color:var(--text-2);line-height:1.6}
+.cell .cell-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:12px;font-weight:600;padding:4px 10px;border-radius:8px;
+  margin-top:auto;align-self:flex-start;
+}
+.cell.hero{position:relative}
+.cell.hero::after{
+  content:'';position:absolute;top:0;right:0;bottom:0;width:40%;
+  border-radius:0 20px 20px 0;opacity:.06;
+}
+
+/* === SLIDE 7: 보호자 === */
+.s7{background:var(--bg)}
+.s7 .bento{grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr}
+.s7 .c1{grid-row:1/3;background:linear-gradient(135deg,rgba(74,127,191,.04),rgba(74,127,191,.01))}
+.s7 .c1::after{background:linear-gradient(135deg,var(--blue),transparent)}
+.s7 .cell-tag.blue{background:var(--blue-light);color:var(--blue)}
+
+/* === SLIDE 8: 의료진 === */
+.s8{background:var(--bg)}
+.s8 .bento{grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr}
+.s8 .c1{grid-row:1/3;background:linear-gradient(135deg,rgba(91,174,140,.04),rgba(91,174,140,.01))}
+.s8 .c1::after{background:linear-gradient(135deg,var(--green),transparent)}
+.s8 .cell-tag.green{background:var(--green-light);color:var(--green)}
+
+/* === SLIDE 9: 환자 === */
+.s9{background:var(--bg)}
+.s9 .bento{grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr}
+.s9 .c1{grid-row:1/3;background:linear-gradient(135deg,rgba(212,165,116,.04),rgba(212,165,116,.01))}
+.s9 .c1::after{background:linear-gradient(135deg,var(--beige),transparent)}
+.s9 .cell-tag.beige{background:var(--beige-light);color:var(--beige)}
+
+.star{font-size:13px;color:var(--blue);font-weight:700;background:var(--blue-light);padding:2px 8px;border-radius:6px;display:inline-block;margin-bottom:8px}
+.star.green{color:var(--green);background:var(--green-light)}
+.star.beige{color:var(--beige);background:var(--beige-light)}
+
+.feature-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.feature-item{font-size:14px;color:var(--text-2);display:flex;align-items:center;gap:6px}
+.feature-item::before{content:'•';color:var(--blue);font-weight:800}
+.s8 .feature-item::before{color:var(--green)}
+.s9 .feature-item::before{color:var(--beige)}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 7: 보호자 벤또 그리드 -->
+<div class="slide s7 bento-slide">
+  <div class="bento-header">
+    <div class="bento-badge" style="background:var(--blue-light);color:var(--blue)">보호자</div>
+    <div class="bento-title">보호자 — 주요 기능</div>
+    <div class="bento-sub">📱 모바일 · 안심 블루</div>
+  </div>
+  <div class="bento">
+    <div class="cell hero c1">
+      <div class="star">★ 킬러 기능</div>
+      <div class="cell-icon">🤖</div>
+      <div class="cell-title">AI 데일리 리포트</div>
+      <div class="cell-desc">"오늘 어머님은 아침 식사를 잘 드시고, 오전에 산책도 하셨어요."<br><br>매일 자동 생성되는 케어 요약 리포트. 식사·투약·활동·정서까지 한눈에 확인.</div>
+      <div class="feature-list">
+        <div class="feature-item">Claude API 기반 자동 생성</div>
+        <div class="feature-item">체크리스트 데이터 → 자연어 요약</div>
+        <div class="feature-item">매일 오후 5시 자동 발송</div>
+      </div>
+      <div class="cell-tag blue">F-05 · AI Report</div>
+    </div>
+    <div class="cell">
+      <div class="cell-icon">🚨</div>
+      <div class="cell-title">SOS 알림 수신</div>
+      <div class="cell-desc">긴급 상황 발생 시 30초 이내 푸시 알림. 대응 타임라인으로 실시간 상황 확인.</div>
+      <div class="cell-tag blue">F-03 · SOS</div>
+    </div>
+    <div class="cell">
+      <div class="cell-icon">💬</div>
+      <div class="cell-title">1:1 채팅</div>
+      <div class="cell-desc">담당 간호사와 실시간 메시지. 사진 첨부로 어르신 일상 공유.</div>
+      <div class="cell-tag blue">F-04 · Chat</div>
+    </div>
+    <div class="cell">
+      <div class="cell-icon">📊</div>
+      <div class="cell-title">실시간 대시보드</div>
+      <div class="cell-desc">오늘 케어 현황을 카드로. 식사·투약·위생·활동 완료율 시각화.</div>
+      <div class="cell-tag blue">F-02 · Dashboard</div>
+    </div>
+    <div class="cell" style="grid-column:2/4">
+      <div style="display:flex;gap:40px">
+        <div style="flex:1">
+          <div class="cell-icon">🧠</div>
+          <div class="cell-title">AI 케어 가이드</div>
+          <div class="cell-desc">5가지 모드로 보호자의 모든 궁금증 해결</div>
+          <div class="feature-list">
+            <div class="feature-item">백과사전 — 질환·케어 정보</div>
+            <div class="feature-item">감정지원 — 보호자 심리 케어</div>
+            <div class="feature-item">시설검색 — 요양원 찾기</div>
+            <div class="feature-item">요양비 계산 — 보조금 안내</div>
+            <div class="feature-item">맞춤 가이드 — 건강 모니터링</div>
+          </div>
+        </div>
+        <div style="flex:1">
+          <div class="cell-icon">📋</div>
+          <div class="cell-title">일과표 · 처방전 열람</div>
+          <div class="cell-desc">투약·식사·활동 스케줄과 의료 기록을 언제든 확인 가능.</div>
+          <div class="cell-tag blue" style="margin-top:16px">F-08, F-09</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: 의료진 벤또 그리드 -->
+<div class="slide s8 bento-slide">
+  <div class="bento-header">
+    <div class="bento-badge" style="background:var(--green-light);color:var(--green)">의료진</div>
+    <div class="bento-title">의료진 — 주요 기능</div>
+    <div class="bento-sub">💻 PC + 📱 모바일 · 케어 그린</div>
+  </div>
+  <div class="bento">
+    <div class="cell hero c1">
+      <div class="star green">★ 핵심 업무</div>
+      <div class="cell-icon">✅</div>
+      <div class="cell-title">케어 체크리스트</div>
+      <div class="cell-desc">환자별 식사·투약·위생·활동을 체크. 타임스탬프가 자동 저장되어 기록 누락 방지.</div>
+      <div class="feature-list">
+        <div class="feature-item">카테고리별 체크 (식사/투약/위생/활동)</div>
+        <div class="feature-item">체크 시 시간 자동 기록</div>
+        <div class="feature-item">Realtime 구독 — 즉시 대시보드 반영</div>
+        <div class="feature-item">완료율 프로그레스 바</div>
+      </div>
+      <div class="cell-tag green">F-01 · Checklist</div>
+    </div>
+    <div class="cell">
+      <div class="cell-icon">🚨</div>
+      <div class="cell-title">SOS 긴급 발송</div>
+      <div class="cell-desc">SOS 버튼 한 번으로 보호자에게 긴급 알림. 상황 메모 입력 가능.</div>
+      <div class="cell-tag green">F-03 · SOS</div>
+    </div>
+    <div class="cell">
+      <div class="cell-icon">💬</div>
+      <div class="cell-title">1:1 채팅</div>
+      <div class="cell-desc">보호자와 실시간 소통. 환자별 채팅방 구분, 파일 첨부.</div>
+      <div class="cell-tag green">F-04 · Chat</div>
+    </div>
+    <div class="cell">
+      <div class="cell-icon">👥</div>
+      <div class="cell-title">환자 관리 대시보드</div>
+      <div class="cell-desc">환자 리스트 + 상태 뱃지 (양호/주의/경고). 한눈에 전체 파악.</div>
+      <div class="cell-tag green">Dashboard</div>
+    </div>
+    <div class="cell" style="grid-column:2/4">
+      <div style="display:flex;gap:40px">
+        <div style="flex:1">
+          <div class="cell-icon">📝</div>
+          <div class="cell-title">AI 인수인계 리포트</div>
+          <div class="cell-desc">근무 교대 시 AI가 자동 요약. 주의 환자를 하이라이트하여 놓치는 정보 없이.</div>
+          <div class="feature-list">
+            <div class="feature-item">전체 요약 (양호/주의/경고 환자 수)</div>
+            <div class="feature-item">주의 환자 상세 + 조치 사항</div>
+            <div class="feature-item">미완료 항목 인계</div>
+          </div>
+        </div>
+        <div style="flex:1">
+          <div class="cell-icon">📅</div>
+          <div class="cell-title">스케줄 · 투약 관리</div>
+          <div class="cell-desc">근무 스케줄 확인, 환자별 투약 시간표 설정 및 처방전 작성/관리.</div>
+          <div class="cell-tag green" style="margin-top:16px">F-08, F-09</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: 환자 벤또 그리드 -->
+<div class="slide s9 bento-slide">
+  <div class="bento-header">
+    <div class="bento-badge" style="background:var(--beige-light);color:var(--beige)">환자</div>
+    <div class="bento-title">환자 — 주요 기능</div>
+    <div class="bento-sub">📱 태블릿 + 모바일 · 편안 베이지</div>
+  </div>
+  <div class="bento">
+    <div class="cell hero c1">
+      <div class="star beige">★ 접근성 강조</div>
+      <div class="cell-icon">📱</div>
+      <div class="cell-title">큰 글씨 홈 + 투약 알림</div>
+      <div class="cell-desc">"약 드실 시간이에요" — 18px+ 큰 글씨와 큰 확인 버튼으로 고령자도 쉽게 사용.</div>
+      <div class="feature-list">
+        <div class="feature-item">글씨 크기 18px 이상</div>
+        <div class="feature-item">터치 타겟 56px+ (큰 버튼)</div>
+        <div class="feature-item">메뉴 3탭 이하 (홈/가족/도움)</div>
+        <div class="feature-item">다음 일정 대형 표시</div>
+        <div class="feature-item">투약 시간 + 큰 확인 버튼</div>
+      </div>
+      <div class="cell-tag beige">접근성 · Accessible</div>
+    </div>
+    <div class="cell">
+      <div class="cell-icon">🚨</div>
+      <div class="cell-title">간편 SOS</div>
+      <div class="cell-desc">원터치 긴급 도움 요청. 큰 빨간 버튼으로 위급 시 즉시 발송.</div>
+      <div class="cell-tag beige">SOS</div>
+    </div>
+    <div class="cell">
+      <div class="cell-icon">😊</div>
+      <div class="cell-title">기분 체크</div>
+      <div class="cell-desc">이모지 4개로 오늘 기분 기록. 넓은 터치 영역, 주간 기분 추이.</div>
+      <div class="cell-tag beige">Mood</div>
+    </div>
+    <div class="cell">
+      <div class="cell-icon">👨‍👩‍👧</div>
+      <div class="cell-title">가족 소식</div>
+      <div class="cell-desc">가족이 보낸 사진과 메시지를 큰 카드로 표시. 따뜻한 연결.</div>
+      <div class="cell-tag beige">Family</div>
+    </div>
+    <div class="cell" style="grid-column:2/4">
+      <div style="display:flex;gap:40px">
+        <div style="flex:1">
+          <div class="cell-icon">📋</div>
+          <div class="cell-title">일과표 · 처방전 확인</div>
+          <div class="cell-desc">큰 글씨로 오늘 일과 확인. 약물명 크게, 복용법 간단하게 표시.</div>
+          <div class="cell-tag beige" style="margin-top:16px">F-08, F-09</div>
+        </div>
+        <div style="flex:1">
+          <div class="cell-icon">🤖</div>
+          <div class="cell-title">AI 도우미 + 간호사 호출</div>
+          <div class="cell-desc">2×2 큰 버튼 그리드로 간호사 호출, 가족 연락, AI 도우미, 일정 확인을 한 화면에.</div>
+          <div class="cell-tag beige">Help Grid</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

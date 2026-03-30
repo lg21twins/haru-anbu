@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>하루안부 — 발표자료 Part 4 (레퍼런스 + 엔딩)</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#4A7FBF;--blue-light:#E8F0FA;
+  --green:#5BAE8C;--green-light:#EAF6F0;
+  --beige:#D4A574;--beige-light:#FDF5ED;
+  --bg:#FAFAF7;--surface:#FFFFFF;
+  --text:#1E2A3A;--text-2:#5A6472;--text-3:#8C939A;
+}
+body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#1a1a2e;margin:0}
+.slide{width:1920px;height:1080px;position:relative;overflow:hidden;margin:0 auto 40px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+
+/* === REFERENCE SLIDES === */
+.ref-slide{background:var(--bg);padding:60px 80px}
+.ref-header{margin-bottom:32px}
+.ref-label{font-size:16px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.ref-title{font-size:40px;font-weight:800;letter-spacing:-.04em;color:var(--text)}
+.ref-sub{font-size:18px;color:var(--text-3);font-weight:400;margin-top:4px}
+
+.ref-content{display:flex;gap:32px;height:calc(100% - 140px)}
+.ref-left{flex:3;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ref-right{flex:2;display:flex;flex-direction:column;gap:16px}
+
+.ref-img{
+  background:var(--surface);border-radius:16px;overflow:hidden;
+  box-shadow:0 2px 12px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);
+  display:flex;flex-direction:column;
+}
+.ref-img img{
+  width:100%;flex:1;object-fit:cover;object-position:top;
+  border-radius:16px 16px 0 0;
+}
+.ref-img .ref-caption{
+  padding:10px 14px;font-size:13px;color:var(--text-3);font-weight:500;
+  display:flex;align-items:center;gap:6px;
+  border-top:1px solid rgba(0,0,0,.04);
+}
+.ref-img .ref-caption .app-name{color:var(--text);font-weight:600}
+
+.our-mockup{
+  flex:1;background:var(--surface);border-radius:20px;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.04);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.our-mockup .om-label{
+  padding:14px 20px;font-size:14px;font-weight:700;
+  border-bottom:1px solid rgba(0,0,0,.04);
+  display:flex;align-items:center;gap:8px;
+}
+.our-mockup .om-label .dot{width:8px;height:8px;border-radius:50%}
+.our-mockup img{width:100%;flex:1;object-fit:cover;object-position:top;padding:8px}
+
+.ref-points{
+  background:var(--surface);border-radius:16px;padding:18px 20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.04);
+}
+.ref-points .rp-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px}
+.ref-points .rp-item{font-size:14px;color:var(--text-2);line-height:1.8;display:flex;align-items:center;gap:6px}
+.ref-points .rp-item::before{content:'→';color:var(--blue);font-weight:700}
+
+/* === SLIDE 14: 엔딩 === */
+.s14{
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+}
+.s14::before{
+  content:'';position:absolute;top:-200px;right:-200px;
+  width:800px;height:800px;
+  background:radial-gradient(circle,rgba(74,127,191,.08),transparent 70%);border-radius:50%;
+}
+.s14::after{
+  content:'';position:absolute;bottom:-300px;left:-200px;
+  width:900px;height:900px;
+  background:radial-gradient(circle,rgba(91,174,140,.06),transparent 70%);border-radius:50%;
+}
+.s14 .logo-wrap{
+  display:flex;align-items:center;gap:20px;margin-bottom:24px;
+  position:relative;z-index:1;
+}
+.s14 .logo-wrap svg{width:80px;height:80px}
+.s14 .logo-wrap .wordmark{font-size:56px;font-weight:800;color:var(--text);letter-spacing:-.05em}
+.s14 .logo-wrap .wordmark span{color:var(--blue)}
+.s14 .tagline{
+  font-size:28px;font-weight:500;color:var(--text-2);
+  letter-spacing:-.02em;position:relative;z-index:1;margin-bottom:48px;
+}
+.s14 .three-colors{
+  display:flex;gap:16px;position:relative;z-index:1;
+}
+.s14 .color-dot{
+  display:flex;align-items:center;gap:8px;
+  font-size:15px;color:var(--text-3);font-weight:500;
+}
+.s14 .color-dot .dot{width:24px;height:24px;border-radius:8px}
+.s14 .thanks{
+  position:absolute;bottom:80px;font-size:24px;font-weight:600;
+  color:var(--text-3);z-index:1;
+}
+.s14 .color-bar{
+  position:absolute;bottom:0;left:0;right:0;height:6px;
+  background:linear-gradient(90deg,var(--blue) 33%,var(--green) 33% 66%,var(--beige) 66%);
+}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 10: 카드 & 대시보드 레퍼런스 -->
+<div class="slide ref-slide">
+  <div class="ref-header">
+    <div class="ref-label">UI Reference 01</div>
+    <div class="ref-title">카드 기반 정보 설계</div>
+    <div class="ref-sub">상태 카드, 완료율 차트, 퀵액션 그리드</div>
+  </div>
+  <div class="ref-content">
+    <div class="ref-left">
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/Main card screens/Main card screens 5.png" alt="Cal AI">
+        <div class="ref-caption"><span class="app-name">Cal AI</span> — 카드형 대시보드</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/Main card screens/Main card screens 3.png" alt="Apple Wallet">
+        <div class="ref-caption"><span class="app-name">Apple Wallet</span> — 주간 차트 카드</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/Main card screens/Main card screens 1.png" alt="State Farm">
+        <div class="ref-caption"><span class="app-name">State Farm</span> — 스코어 카드</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/Main card screens/Main card screens 8.png" alt="Peloton">
+        <div class="ref-caption"><span class="app-name">Peloton</span> — 활동 대시보드</div>
+      </div>
+    </div>
+    <div class="ref-right">
+      <div class="our-mockup">
+        <div class="om-label"><div class="dot" style="background:var(--blue)"></div>우리 적용 — 보호자 홈</div>
+        <img src="../../07_디자인/mockup/v4_최신/guardian.png" alt="Guardian Mockup">
+      </div>
+      <div class="ref-points">
+        <div class="rp-title">적용 포인트</div>
+        <div class="rp-item">상태 요약 카드 (양호 / 85% / 3/3)</div>
+        <div class="rp-item">퀵 액션 그리드 4개 버튼</div>
+        <div class="rp-item">케어 현황 리스트 카드</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: 타임라인 & 일정 관리 -->
+<div class="slide ref-slide">
+  <div class="ref-header">
+    <div class="ref-label">UI Reference 02</div>
+    <div class="ref-title">타임라인 기반 케어 기록</div>
+    <div class="ref-sub">세로 타임라인, 이벤트 카드, 탭바 구조</div>
+  </div>
+  <div class="ref-content">
+    <div class="ref-left">
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/timeline screens/timeline screens 0.png" alt="Paired">
+        <div class="ref-caption"><span class="app-name">Paired</span> — 세로 타임라인</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/timeline screens/timeline screens 2.png" alt="Fresha">
+        <div class="ref-caption"><span class="app-name">Fresha</span> — 예약 타임라인</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/하단탭바 screens/하단탭바 screens 0.png" alt="HelloFresh">
+        <div class="ref-caption"><span class="app-name">HelloFresh</span> — 탭바 + 카드</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/Toast screens/Toast screens 0.png" alt="Toast">
+        <div class="ref-caption"><span class="app-name">Turo</span> — 정보 카드</div>
+      </div>
+    </div>
+    <div class="ref-right">
+      <div class="our-mockup">
+        <div class="om-label"><div class="dot" style="background:var(--green)"></div>우리 적용 — 의료진 홈</div>
+        <img src="../../07_디자인/mockup/v4_최신/nurse.png" alt="Nurse Mockup">
+      </div>
+      <div class="ref-points">
+        <div class="rp-title">적용 포인트</div>
+        <div class="rp-item">케어 타임라인 (세로 시간순)</div>
+        <div class="rp-item">스케줄 바 (컬러 코드)</div>
+        <div class="rp-item">5탭 하단 네비게이션</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: 접근성 & 상태 피드백 -->
+<div class="slide ref-slide">
+  <div class="ref-header">
+    <div class="ref-label">UI Reference 03</div>
+    <div class="ref-title">고령자 접근성 + 상태 피드백</div>
+    <div class="ref-sub">큰 버튼, 빈 화면 일러스트, 스켈레톤 로딩</div>
+  </div>
+  <div class="ref-content">
+    <div class="ref-left">
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/환자용 screens/환자용 screens 0.png" alt="Accessible">
+        <div class="ref-caption"><span class="app-name">Buddy</span> — 큰 버튼 그리드</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/환자용 screens/환자용 screens 1.png" alt="Senior">
+        <div class="ref-caption"><span class="app-name">Polestar</span> — 대형 텍스트 UI</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/Empty state screens/Empty state screens 0.png" alt="Empty">
+        <div class="ref-caption"><span class="app-name">Uber</span> — 빈 화면 일러스트</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/Skeleton screens/Skeleton screens 0.png" alt="Skeleton">
+        <div class="ref-caption"><span class="app-name">Careem</span> — 스켈레톤 로딩</div>
+      </div>
+    </div>
+    <div class="ref-right">
+      <div class="our-mockup">
+        <div class="om-label"><div class="dot" style="background:var(--beige)"></div>우리 적용 — 환자 홈</div>
+        <img src="../../07_디자인/mockup/v4_최신/patient.png" alt="Patient Mockup">
+      </div>
+      <div class="ref-points">
+        <div class="rp-title">적용 포인트</div>
+        <div class="rp-item">18px+ 큰 글씨 전체 적용</div>
+        <div class="rp-item">2×2 큰 버튼 도움 요청 그리드</div>
+        <div class="rp-item">3탭 최소 네비게이션</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13: 채팅 & 커뮤니케이션 -->
+<div class="slide ref-slide">
+  <div class="ref-header">
+    <div class="ref-label">UI Reference 04</div>
+    <div class="ref-title">따뜻한 소통 경험</div>
+    <div class="ref-sub">말풍선, AI 채팅, Bottom sheet 필터</div>
+  </div>
+  <div class="ref-content">
+    <div class="ref-left">
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/chat screens/chat screens 0.png" alt="KakaoTalk">
+        <div class="ref-caption"><span class="app-name">카카오톡</span> — 1:1 채팅</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/chat screens/chat screens 2.png" alt="ChatGPT">
+        <div class="ref-caption"><span class="app-name">ChatGPT</span> — AI 대화</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/Bottom sheet screens/Bottom sheet screens 2.png" alt="BottomSheet">
+        <div class="ref-caption"><span class="app-name">HelloFresh</span> — 필터 시트</div>
+      </div>
+      <div class="ref-img">
+        <img src="../../화면_레퍼런스_ver1/Bottom sheet screens/Bottom sheet screens 0.png" alt="Grab">
+        <div class="ref-caption"><span class="app-name">Grab</span> — Bottom Sheet</div>
+      </div>
+    </div>
+    <div class="ref-right">
+      <div class="our-mockup">
+        <div class="om-label"><div class="dot" style="background:var(--blue)"></div>우리 적용 — 보호자 채팅</div>
+        <img src="../../07_디자인/mockup/v4_최신/guardian.png" alt="Chat Mockup">
+      </div>
+      <div class="ref-points">
+        <div class="rp-title">적용 포인트</div>
+        <div class="rp-item">둥근 말풍선 (받은/보낸 구분)</div>
+        <div class="rp-item">AI 케어 가이드 채팅 UI</div>
+        <div class="rp-item">사진 첨부 카드 형태</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 14: 엔딩 -->
+<div class="slide s14">
+  <div class="logo-wrap">
+    <svg viewBox="0 0 2526 2526" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#4A7FBF"/>
+      <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#4A7FBF"/>
+    </svg>
+    <div class="wordmark">하루<span>안부</span></div>
+  </div>
+  <div class="tagline">"안심을 디자인하다"</div>
+  <div class="three-colors">
+    <div class="color-dot"><div class="dot" style="background:var(--blue)"></div>안심 블루</div>
+    <div class="color-dot"><div class="dot" style="background:var(--green)"></div>케어 그린</div>
+    <div class="color-dot"><div class="dot" style="background:var(--beige)"></div>편안 베이지</div>
+  </div>
+  <div class="thanks">감사합니다.</div>
+  <div class="color-bar"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>하루안부 — 발표자료 Part 2 (키 비주얼)</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#4A7FBF;--blue-light:#E8F0FA;
+  --green:#5BAE8C;--green-light:#EAF6F0;
+  --beige:#D4A574;--beige-light:#FDF5ED;
+  --bg:#FAFAF7;--surface:#FFFFFF;
+  --text:#1E2A3A;--text-2:#5A6472;--text-3:#8C939A;
+  --positive:#4CAF50;--warning:#FFB74D;--danger:#E53935;--info:#42A5F5;
+}
+body{
+  font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+  background:#1a1a2e;margin:0;
+}
+.slide{
+  width:1920px;height:1080px;position:relative;overflow:hidden;
+  margin:0 auto 40px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+
+/* === SLIDE 4: 브랜드 아이덴티티 === */
+.s4{background:var(--bg);padding:80px 140px}
+.s4 .section-label{font-size:16px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.s4 .headline{font-size:48px;font-weight:800;letter-spacing:-.05em;color:var(--text);margin-bottom:48px}
+.s4 .headline span{color:var(--blue)}
+
+.brand-formula{
+  display:flex;align-items:center;gap:20px;
+  background:var(--surface);border-radius:20px;padding:28px 36px;
+  margin-bottom:48px;box-shadow:0 2px 12px rgba(0,0,0,.04);
+  border:1px solid rgba(0,0,0,.04);
+}
+.brand-formula .example{
+  font-size:18px;color:var(--text-3);font-weight:500;
+  display:flex;align-items:center;gap:6px;
+}
+.brand-formula .example b{color:var(--text);font-weight:700}
+.brand-formula .divider{width:1px;height:40px;background:rgba(0,0,0,.08);margin:0 8px}
+.brand-formula .ours{
+  font-size:22px;font-weight:800;color:var(--blue);
+  background:var(--blue-light);padding:8px 20px;border-radius:12px;
+}
+
+.color-system{display:flex;gap:24px;margin-bottom:40px}
+.color-card{
+  flex:1;background:var(--surface);border-radius:20px;
+  overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.04);
+  border:1px solid rgba(0,0,0,.04);
+}
+.color-swatch{height:120px;display:flex;align-items:flex-end;padding:16px}
+.color-swatch .hex{color:rgba(255,255,255,.9);font-size:16px;font-weight:700;letter-spacing:.02em}
+.color-info{padding:20px 24px}
+.color-info .cname{font-size:20px;font-weight:700;color:var(--text)}
+.color-info .crole{font-size:14px;color:var(--text-3);margin-top:2px}
+.color-info .ctype{
+  display:inline-block;font-size:12px;font-weight:600;
+  padding:3px 10px;border-radius:6px;margin-top:8px;
+  background:var(--blue-light);color:var(--blue);
+}
+
+.sub-colors{
+  display:flex;gap:16px;
+}
+.sub-color-group{
+  flex:1;background:var(--surface);border-radius:16px;padding:20px 24px;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.04);
+}
+.sub-color-group .group-title{font-size:14px;font-weight:700;color:var(--text-3);margin-bottom:12px}
+.sub-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sub-row:last-child{margin-bottom:0}
+.sub-chip{width:28px;height:28px;border-radius:8px;flex-shrink:0;border:1px solid rgba(0,0,0,.06)}
+.sub-row .sname{font-size:14px;color:var(--text);font-weight:500}
+.sub-row .scode{font-size:13px;color:var(--text-3);font-weight:400;margin-left:auto}
+
+/* === SLIDE 5: 로고 === */
+.s5{background:var(--bg);padding:80px 140px}
+.s5 .section-label{font-size:16px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.s5 .headline{font-size:44px;font-weight:800;letter-spacing:-.04em;color:var(--text);margin-bottom:48px}
+
+.logo-grid{display:flex;gap:32px;margin-bottom:40px}
+.logo-main{
+  flex:2;background:var(--surface);border-radius:24px;
+  padding:60px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);
+}
+.logo-main svg{width:180px;height:180px;margin-bottom:24px}
+.logo-main .wordmark{font-size:48px;font-weight:800;color:var(--text);letter-spacing:-.04em}
+.logo-main .wordmark span{color:var(--blue)}
+.logo-main .type-label{font-size:14px;color:var(--text-3);margin-top:8px;font-weight:500}
+
+.logo-variants{flex:1;display:flex;flex-direction:column;gap:16px}
+.logo-variant{
+  flex:1;background:var(--surface);border-radius:16px;
+  padding:24px;display:flex;align-items:center;justify-content:center;
+  gap:16px;box-shadow:0 2px 8px rgba(0,0,0,.03);
+  border:1px solid rgba(0,0,0,.04);
+}
+.logo-variant.dark{background:var(--text);color:#fff}
+.logo-variant svg{width:48px;height:48px}
+.logo-variant .vtext{font-size:28px;font-weight:800;letter-spacing:-.04em}
+.logo-variant .vtext span{color:var(--blue)}
+.logo-variant.dark .vtext{color:#fff}
+.logo-variant.dark .vtext span{color:#8BB8DE}
+.logo-variant .vlabel{
+  position:absolute;bottom:8px;right:16px;
+  font-size:11px;color:var(--text-3);font-weight:500;
+}
+
+.logo-specs{display:flex;gap:24px}
+.logo-spec{
+  flex:1;background:var(--surface);border-radius:16px;padding:24px;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.04);
+}
+.logo-spec .ls-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px}
+.logo-spec .ls-body{font-size:14px;color:var(--text-2);line-height:1.7}
+
+/* === SLIDE 6: 톤앤무드 === */
+.s6{background:var(--bg);padding:80px 140px}
+.s6 .section-label{font-size:16px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.s6 .headline{font-size:44px;font-weight:800;letter-spacing:-.04em;color:var(--text);margin-bottom:12px}
+.s6 .sub-headline{font-size:24px;font-weight:500;color:var(--text-2);margin-bottom:48px}
+
+.mood-columns{display:flex;gap:32px;margin-bottom:40px}
+.mood-col{flex:1}
+.mood-col-title{
+  font-size:18px;font-weight:700;padding:12px 20px;
+  border-radius:12px;margin-bottom:16px;
+}
+.mood-col-title.do{background:var(--blue-light);color:var(--blue)}
+.mood-col-title.dont{background:rgba(229,57,53,.08);color:var(--danger)}
+.mood-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 0;font-size:16px;color:var(--text);line-height:1.5;
+}
+.mood-item .bullet{font-size:18px;flex-shrink:0;margin-top:1px}
+
+.typo-section{
+  background:var(--surface);border-radius:20px;padding:32px 40px;
+  box-shadow:0 2px 12px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);
+  display:flex;gap:60px;align-items:center;
+}
+.typo-left{flex:1}
+.typo-left .tl-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:16px}
+.typo-scale{display:flex;flex-direction:column;gap:8px}
+.typo-row{display:flex;align-items:baseline;gap:16px}
+.typo-row .usage{font-size:13px;color:var(--text-3);min-width:80px;text-align:right}
+.typo-row .sample-28{font-size:28px;font-weight:700;color:var(--text)}
+.typo-row .sample-22{font-size:22px;font-weight:600;color:var(--text)}
+.typo-row .sample-16{font-size:16px;font-weight:400;color:var(--text)}
+.typo-row .sample-18{font-size:18px;font-weight:400;color:var(--beige)}
+.typo-row .sample-13{font-size:13px;font-weight:400;color:var(--text-3)}
+
+.typo-right{flex:1}
+.ux-writing{display:flex;flex-direction:column;gap:12px}
+.ux-row{display:flex;gap:16px;align-items:center}
+.ux-bad{
+  flex:1;background:rgba(229,57,53,.05);border-radius:12px;
+  padding:12px 16px;font-size:15px;color:var(--danger);
+  text-decoration:line-through;text-decoration-color:rgba(229,57,53,.4);
+}
+.ux-good{
+  flex:1;background:var(--blue-light);border-radius:12px;
+  padding:12px 16px;font-size:15px;color:var(--blue);font-weight:600;
+}
+.ux-arrow{font-size:20px;color:var(--text-3);flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 4: 브랜드 아이덴티티 -->
+<div class="slide s4">
+  <div class="section-label">Brand Identity</div>
+  <div class="headline">하루안부 = <span>안심 블루</span></div>
+
+  <div class="brand-formula">
+    <div class="example"><b>카카오뱅크</b> = 옐로</div>
+    <div class="divider"></div>
+    <div class="example"><b>토스</b> = 화이트 &amp; 블루</div>
+    <div class="divider"></div>
+    <div class="example"><b>당근</b> = 당근 캐릭터</div>
+    <div class="divider"></div>
+    <div class="ours">하루안부 = 안심 블루 ☀️💬</div>
+  </div>
+
+  <div class="color-system">
+    <div class="color-card">
+      <div class="color-swatch" style="background:linear-gradient(135deg,#4A7FBF,#6BA3D6)">
+        <div class="hex">#4A7FBF</div>
+      </div>
+      <div class="color-info">
+        <div class="cname">안심 블루</div>
+        <div class="crole">신뢰 · 안심 — "괜찮구나"의 감정</div>
+        <div class="ctype" style="background:var(--blue-light);color:var(--blue)">Primary · 보호자</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:linear-gradient(135deg,#5BAE8C,#7BC4A8)">
+        <div class="hex">#5BAE8C</div>
+      </div>
+      <div class="color-info">
+        <div class="cname">케어 그린</div>
+        <div class="crole">전문성 · 건강 — 돌보는 손길</div>
+        <div class="ctype" style="background:var(--green-light);color:var(--green)">Secondary · 의료진</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:linear-gradient(135deg,#D4A574,#E8C9A0)">
+        <div class="hex">#D4A574</div>
+      </div>
+      <div class="color-info">
+        <div class="cname">편안 베이지</div>
+        <div class="crole">따뜻함 · 편안함 — 부담 없는 느낌</div>
+        <div class="ctype" style="background:var(--beige-light);color:var(--beige)">Accent · 환자</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-colors">
+    <div class="sub-color-group">
+      <div class="group-title">배경 & 텍스트</div>
+      <div class="sub-row"><div class="sub-chip" style="background:#FAFAF7"></div><div class="sname">웜 화이트</div><div class="scode">#FAFAF7</div></div>
+      <div class="sub-row"><div class="sub-chip" style="background:#FFFFFF"></div><div class="sname">카드 배경</div><div class="scode">#FFFFFF</div></div>
+      <div class="sub-row"><div class="sub-chip" style="background:#1E2A3A"></div><div class="sname">다크 네이비</div><div class="scode">#1E2A3A</div></div>
+      <div class="sub-row"><div class="sub-chip" style="background:#8C939A"></div><div class="sname">보조 텍스트</div><div class="scode">#8C939A</div></div>
+    </div>
+    <div class="sub-color-group">
+      <div class="group-title">시멘틱 컬러</div>
+      <div class="sub-row"><div class="sub-chip" style="background:#4CAF50"></div><div class="sname">완료</div><div class="scode">#4CAF50</div></div>
+      <div class="sub-row"><div class="sub-chip" style="background:#FFB74D"></div><div class="sname">주의</div><div class="scode">#FFB74D</div></div>
+      <div class="sub-row"><div class="sub-chip" style="background:#E53935"></div><div class="sname">긴급</div><div class="scode">#E53935</div></div>
+      <div class="sub-row"><div class="sub-chip" style="background:#42A5F5"></div><div class="sname">정보</div><div class="scode">#42A5F5</div></div>
+    </div>
+    <div class="sub-color-group">
+      <div class="group-title">그라디언트</div>
+      <div class="sub-row"><div class="sub-chip" style="background:linear-gradient(135deg,#4A7FBF,#5BAE8C);border:none"></div><div class="sname">브랜드</div><div class="scode">블루 → 그린</div></div>
+      <div class="sub-row"><div class="sub-chip" style="background:linear-gradient(135deg,#4A7FBF,#6BA3D6);border:none"></div><div class="sname">보호자</div><div class="scode">블루 → 라이트블루</div></div>
+      <div class="sub-row"><div class="sub-chip" style="background:linear-gradient(135deg,#5BAE8C,#7BC4A8);border:none"></div><div class="sname">의료진</div><div class="scode">그린 → 라이트그린</div></div>
+      <div class="sub-row"><div class="sub-chip" style="background:linear-gradient(135deg,#D4A574,#E8C9A0);border:none"></div><div class="sname">환자</div><div class="scode">베이지 → 라이트베이지</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: 로고 -->
+<div class="slide s5">
+  <div class="section-label">Logo System</div>
+  <div class="headline">로고 & 심볼</div>
+
+  <div class="logo-grid">
+    <div class="logo-main">
+      <svg viewBox="0 0 2526 2526" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#4A7FBF"/>
+        <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#4A7FBF"/>
+      </svg>
+      <div class="wordmark">하루<span>안부</span></div>
+      <div class="type-label">콤비네이션 마크 (심볼 + 워드마크)</div>
+    </div>
+    <div class="logo-variants">
+      <div class="logo-variant" style="position:relative">
+        <svg viewBox="0 0 2526 2526" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#4A7FBF"/>
+          <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#4A7FBF"/>
+        </svg>
+        <div class="vtext">하루<span>안부</span></div>
+      </div>
+      <div class="logo-variant dark" style="position:relative">
+        <svg viewBox="0 0 2526 2526" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#8BB8DE"/>
+          <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#8BB8DE"/>
+        </svg>
+        <div class="vtext">하루<span>안부</span></div>
+      </div>
+      <div class="logo-variant" style="position:relative;flex-direction:column;gap:4px">
+        <svg viewBox="0 0 2526 2526" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:36px;height:36px">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#4A7FBF"/>
+          <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#4A7FBF"/>
+        </svg>
+        <div style="font-size:14px;font-weight:700;color:var(--text)">심볼 단독 (앱 아이콘)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="logo-specs">
+    <div class="logo-spec">
+      <div class="ls-title">☀️💬 의미</div>
+      <div class="ls-body">해(하루) + 말풍선(안부)<br>설명 없이 이해되는 직관적 심볼</div>
+    </div>
+    <div class="logo-spec">
+      <div class="ls-title">🎨 컬러 규정</div>
+      <div class="ls-body">메인: 안심 블루 #4A7FBF<br>밝은 배경 → 블루 / 어두운 배경 → 라이트 블루</div>
+    </div>
+    <div class="logo-spec">
+      <div class="ls-title">📏 최소 사이즈</div>
+      <div class="ls-body">심볼 단독: 24px 이상<br>콤비네이션: 120px 이상</div>
+    </div>
+    <div class="logo-spec">
+      <div class="ls-title">⚠️ 금지 사항</div>
+      <div class="ls-body">색상 임의 변경 / 비율 왜곡<br>그림자·외곽선 추가 금지</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: 톤앤무드 -->
+<div class="slide s6">
+  <div class="section-label">Tone & Mood</div>
+  <div class="headline">따뜻하지만 전문적인</div>
+  <div class="sub-headline">"안심을 디자인하다" — 따뜻 · 전문 · 안심 · 소프트</div>
+
+  <div class="mood-columns">
+    <div class="mood-col">
+      <div class="mood-col-title do">✓ DO — 가야 할 느낌</div>
+      <div class="mood-item"><span class="bullet">💌</span>가족에게 보내는 안심 편지 같은 앱</div>
+      <div class="mood-item"><span class="bullet">☕</span>카페에서 편하게 열어보는 앱</div>
+      <div class="mood-item"><span class="bullet">⭕</span>둥근 모서리 (border-radius: 16px+)</div>
+      <div class="mood-item"><span class="bullet">🫧</span>여백 넉넉 — "덜 보여주는 용기"</div>
+      <div class="mood-item"><span class="bullet">✏️</span>라인 일러스트 포인트 — 간결하고 따뜻</div>
+      <div class="mood-item"><span class="bullet">💬</span>부드러운 말투 — "~하셨어요", "~해보세요"</div>
+      <div class="mood-item"><span class="bullet">🃏</span>카드 기반 레이아웃 — 정보를 카드 단위로</div>
+    </div>
+    <div class="mood-col">
+      <div class="mood-col-title dont">✕ DON'T — 피해야 할 느낌</div>
+      <div class="mood-item"><span class="bullet">🏥</span>차가운 병원 차트 느낌</div>
+      <div class="mood-item"><span class="bullet">🖥️</span>의료 키오스크 느낌</div>
+      <div class="mood-item"><span class="bullet">📐</span>날카로운 직선, 각진 UI</div>
+      <div class="mood-item"><span class="bullet">📊</span>빽빽한 데이터 나열</div>
+      <div class="mood-item"><span class="bullet">🖼️</span>스톡 사진 과다</div>
+      <div class="mood-item"><span class="bullet">📋</span>딱딱한 말투 — "~하십시오", "~바랍니다"</div>
+      <div class="mood-item"><span class="bullet">🔴</span>불안을 자극하는 빨간색 과다 사용</div>
+    </div>
+  </div>
+
+  <div class="typo-section">
+    <div class="typo-left">
+      <div class="tl-title">Typography Scale</div>
+      <div class="typo-scale">
+        <div class="typo-row"><div class="usage">제목 H1</div><div class="sample-28">Pretendard Bold 28px</div></div>
+        <div class="typo-row"><div class="usage">소제목 H2</div><div class="sample-22">Pretendard SemiBold 22px</div></div>
+        <div class="typo-row"><div class="usage">본문</div><div class="sample-16">Pretendard Regular 16px</div></div>
+        <div class="typo-row"><div class="usage">환자용</div><div class="sample-18">Pretendard Regular 18px+ (고령자)</div></div>
+        <div class="typo-row"><div class="usage">캡션</div><div class="sample-13">Pretendard Regular 13px 보조 정보</div></div>
+      </div>
+    </div>
+    <div class="typo-right">
+      <div class="tl-title" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:16px">UX Writing</div>
+      <div class="ux-writing">
+        <div class="ux-row"><div class="ux-bad">"투약 처리 완료"</div><div class="ux-arrow">→</div><div class="ux-good">"오전 투약이 완료되었어요 ✅"</div></div>
+        <div class="ux-row"><div class="ux-bad">"일일 보고서 생성됨"</div><div class="ux-arrow">→</div><div class="ux-good">"오늘 어머님은 이렇게 보내셨어요"</div></div>
+        <div class="ux-row"><div class="ux-bad">"긴급 상황 발생"</div><div class="ux-arrow">→</div><div class="ux-good">"어머님 관련 긴급 알림이 도착했어요"</div></div>
+        <div class="ux-row"><div class="ux-bad">"데이터 없음"</div><div class="ux-arrow">→</div><div class="ux-good">"아직 오늘의 기록이 없어요"</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
