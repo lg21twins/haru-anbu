@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="guardian">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>하루안부 — 1:1 채팅</title>
+  <link rel="stylesheet" href="../common.css">
+  <style>
+    body {
+      background: linear-gradient(180deg, var(--surface) 72px, var(--bg) 72px);
+      max-width: 430px; padding-top:72px;
+      margin: 0 auto;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-lg);
+      padding-bottom: 140px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      -webkit-overflow-scrolling: touch;
+    }
+    .chat-messages::-webkit-scrollbar { display: none; }
+
+    .chat-date-divider {
+      text-align: center;
+      font-size: var(--text-mini);
+      color: var(--text-tertiary);
+      padding: var(--space-sm) 0;
+    }
+
+    .msg {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: var(--space-xs);
+      max-width: 85%;
+    }
+    .msg.in { align-self: flex-start; }
+    .msg.out { align-self: flex-end; flex-direction: row-reverse; }
+    .msg-sender {
+      font-size: var(--text-mini);
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+      padding-left: 2px;
+      width: 100%;
+    }
+    .msg-bubble {
+      padding: var(--space-md) var(--space-lg);
+      font-size: var(--text-body);
+      line-height: var(--line-height-normal);
+      word-break: break-word;
+      max-width: 75%;
+    }
+    .msg.in .msg-bubble {
+      background: var(--surface);
+      border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-xs);
+      box-shadow: var(--shadow-sm);
+    }
+    .msg.out .msg-bubble {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-radius: var(--radius-lg) var(--radius-lg) var(--radius-xs) var(--radius-lg);
+    }
+    .msg-time {
+      font-size: var(--text-mini);
+      color: var(--text-tertiary);
+      align-self: flex-end;
+      flex-shrink: 0;
+      padding-bottom: 4px;
+    }
+    .msg-read {
+      font-size: var(--text-mini);
+      color: var(--primary);
+      width: 100%;
+      text-align: right;
+    }
+
+    .chat-input-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-lg);
+      background: var(--surface);
+      border-top: 0.5px solid var(--divider);
+      flex-shrink: 0;
+      position: fixed;
+      bottom: 84px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 430px;
+      width: 100%;
+      z-index: var(--z-sticky);
+    }
+    .chat-input-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 42px;
+      border: 1px solid var(--divider);
+      border-radius: var(--radius-full);
+      background: var(--bg);
+      padding: 0 var(--space-sm);
+      transition: border-color .2s;
+    }
+    .chat-input-wrap:focus-within {
+      border-color: var(--primary);
+    }
+    .chat-input {
+      flex: 1;
+      height: 100%;
+      padding: 0 var(--space-xs);
+      border: none;
+      border-radius: 0;
+      font-family: var(--font-family);
+      font-size: var(--text-callout);
+      outline: none;
+      background: transparent;
+    }
+    .chat-input::placeholder { color: var(--text-tertiary); }
+    .chat-emoji-btn {
+      width: 44px; height: 44px;
+      border: none;
+      border-radius: var(--radius-full);
+      background: transparent;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      padding: 0;
+      transition: color .15s;
+    }
+    .chat-emoji-btn:active {
+      color: var(--primary);
+    }
+    .chat-attach-btn {
+      width: 44px; height: 44px;
+      border: none;
+      border-radius: var(--radius-full);
+      background: var(--divider);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      padding: 0;
+      transition: background .15s, color .15s;
+    }
+    .chat-attach-btn:active {
+      background: var(--text-tertiary);
+      color: var(--surface);
+    }
+    .chat-send {
+      width: 44px; height: 44px;
+      border: none;
+      border-radius: var(--radius-full);
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      padding: 0;
+      transition: background .15s, transform .1s;
+    }
+    .chat-send:active {
+      background: var(--primary-dark, #2563eb);
+      transform: scale(.92);
+    }
+
+    .tabbar {
+      position: relative;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>  <!-- Header -->
+  <div style="flex-shrink:0; background:var(--surface); border-bottom:0.5px solid var(--divider); padding:var(--space-sm) var(--space-lg) var(--space-md);">
+    <div style="display:flex; align-items:center; gap:var(--space-md);">
+      <a href="g01-home.html" class="btn-icon" aria-label="뒤로 가기" style="flex-shrink:0;">‹</a>
+      <a href="g05-mypage.html" style="display:flex; align-items:center; gap:var(--space-md); flex:1; outline:none;">
+        <div style="width:40px; height:40px; border-radius:var(--radius-full); background:var(--primary-light); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          <i data-lucide="user" style="width:20px;height:20px;color:var(--primary);"></i>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:var(--text-headline); font-weight:var(--weight-semibold);">김미영 간호사</div>
+          <div style="font-size:var(--text-mini); color:var(--text-secondary);">정간호사 · 3층 담당 · 오전 근무 중</div>
+        </div>
+        <i data-lucide="chevron-right" style="width:16px;height:16px;color:var(--text-tertiary);"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="chat-messages">
+    <!-- Empty State (hidden by default - toggle for demo) -->
+    <div class="empty-state" style="display:none;">
+      <div class="empty-state-icon"><i data-lucide="message-circle" style="width:56px;height:56px;color:var(--text-tertiary)"></i></div>
+      <h3 class="empty-state-title">아직 메시지가 없어요</h3>
+      <p class="empty-state-desc">담당 간호사에게 먼저 인사해보세요</p>
+      <button class="btn btn-primary btn-sm btn-pill" style="margin-top:var(--space-lg);" onclick="document.querySelector('.chat-input').focus()">메시지 보내기</button>
+    </div>
+    <div class="chat-date-divider">오늘</div>
+
+    <div class="msg in">
+      <span class="msg-sender">김미영 간호사</span>
+      <div class="msg-bubble">안녕하세요, 예찬님. 어머님 오전 투약 완료되었습니다.</div>
+      <span class="msg-time">오전 8:15</span>
+    </div>
+
+    <div class="msg out">
+      <div class="msg-bubble">감사합니다! 아침 식사는 잘 하셨나요?</div>
+      <span class="msg-time">오전 8:20</span>
+      <span class="msg-read">읽음</span>
+    </div>
+
+    <div class="msg in">
+      <span class="msg-sender">김미영 간호사</span>
+      <div class="msg-bubble">네, 죽이랑 반찬 두 가지 드셨어요. 평소보다 잘 드신 편이에요.</div>
+      <span class="msg-time">오전 8:22</span>
+    </div>
+
+    <div class="msg out">
+      <div class="msg-bubble">다행이네요. 점심때도 잘 부탁드릴게요</div>
+      <span class="msg-time">오전 8:25</span>
+      <span class="msg-read">읽음</span>
+    </div>
+
+    <div class="msg in">
+      <span class="msg-sender">김미영 간호사</span>
+      <div class="msg-bubble">네, 걱정 마세요. 점심 후에 또 말씀드릴게요!</div>
+      <span class="msg-time">오전 8:26</span>
+    </div>
+
+    <div class="msg in">
+      <span class="msg-sender">김미영 간호사</span>
+      <div class="msg-bubble">점심 식사 완료되었어요. 밥이랑 국, 반찬 3가지 드셨는데 80% 정도 드셨습니다. 오후에 산책 프로그램 참여하실 예정이에요.</div>
+      <span class="msg-time">오후 12:15</span>
+    </div>
+
+    <div class="msg out">
+      <div class="msg-bubble">네 감사합니다! 산책 다녀오시면 사진 한 장 부탁드려도 될까요?</div>
+      <span class="msg-time">오후 12:20</span>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-bar">
+    <button class="chat-attach-btn" aria-label="사진/파일 첨부">
+      <i data-lucide="plus" style="width:18px;height:18px;"></i>
+    </button>
+    <div class="chat-input-wrap">
+      <input class="chat-input" type="text" placeholder="메시지 입력" aria-label="메시지 입력">
+      <button class="chat-emoji-btn" aria-label="이모지 선택">
+        <i data-lucide="smile" style="width:20px;height:20px;"></i>
+      </button>
+    </div>
+    <button class="chat-send" aria-label="메시지 보내기"><i data-lucide="send-horizontal" style="width:18px;height:18px;"></i></button>
+  </div>
+
+      <nav class="tabbar" role="navigation" aria-label="메인 내비게이션" style="position:fixed; bottom:0; left:50%; transform:translateX(-50%); max-width:430px; width:100%;">
+    <a href="g01-home.html" class="tab">
+      <span class="tab-icon"><i data-lucide="home"></i></span>
+      <span class="tab-label">홈</span>
+    </a>
+    <a href="g03-chat.html" class="tab active" aria-current="page">
+      <span class="tab-icon"><i data-lucide="message-circle"></i></span>
+      <span class="tab-label">채팅</span>
+    </a>
+    <a href="g04-ai-guide.html" class="tab">
+      <span class="tab-icon"><i data-lucide="wand-sparkles"></i></span>
+      <span class="tab-label">AI 가이드</span>
+    </a>
+    <a href="g02-ai-report.html" class="tab">
+      <span class="tab-icon"><i data-lucide="clipboard-list"></i></span>
+      <span class="tab-label">리포트</span>
+    </a>
+    <a href="g05-mypage.html" class="tab">
+      <span class="tab-icon"><i data-lucide="menu"></i></span>
+      <span class="tab-label">더보기</span>
+    </a>
+  </nav>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+<div class="ios-home-indicator"></div>
+</body>
+</html>

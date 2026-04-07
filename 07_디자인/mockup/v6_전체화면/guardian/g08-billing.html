@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="guardian">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>하루안부 — 결제 / 청구</title>
+  <link rel="stylesheet" href="../common.css">
+  <style>
+    body { background:var(--bg); max-width:430px; padding-top:72px; margin:0 auto; min-height:100vh; padding-bottom:100px; }
+    .content { padding:0 var(--space-lg); }
+
+    .total-card {
+      background: var(--bg);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      box-shadow: var(--shadow-md);
+      text-align: center;
+      margin-top: var(--space-lg);
+    }
+    .total-label {
+      font-size: var(--text-callout);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-sm);
+    }
+    .total-amount {
+      font-size: 36px;
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .total-period {
+      font-size: var(--text-caption);
+      color: var(--text-secondary);
+    }
+    .total-status {
+      display: inline-flex; align-items: center; gap: var(--space-xs);
+      margin-top: var(--space-md);
+      padding: 6px var(--space-md);
+      background: #FFF3E0;
+      color: #E65100;
+      border-radius: var(--radius-full);
+      font-size: var(--text-caption);
+      font-weight: var(--weight-semibold);
+    }
+
+    .breakdown-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-sm);
+    }
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) 0;
+      font-size: var(--text-callout);
+    }
+    .breakdown-row + .breakdown-row {
+      border-top: 1px solid var(--divider);
+    }
+    .breakdown-label { color: var(--text-secondary); }
+    .breakdown-value { font-weight: var(--weight-semibold); }
+    .breakdown-total {
+      font-size: var(--text-headline);
+      font-weight: var(--weight-bold);
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: var(--space-sm);
+    }
+    .history-icon {
+      width: 40px; height: 40px;
+      border-radius: var(--radius-md);
+      background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .history-info { flex: 1; }
+    .history-label { font-size: var(--text-callout); font-weight: var(--weight-medium); }
+    .history-date { font-size: var(--text-mini); color: var(--text-secondary); margin-top: 1px; }
+    .history-amount {
+      font-size: var(--text-callout);
+      font-weight: var(--weight-bold);
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>  <div class="header">
+    <div class="header-left"><a href="g05-mypage.html" class="btn-icon" aria-label="뒤로 가기">‹</a></div>
+    <span class="header-title">결제 / 청구</span>
+    <div class="header-right"></div>
+  </div>
+
+  <div class="content">
+
+    <!-- 이번 달 총액 -->
+    <div class="section">
+      <div class="total-card">
+        <div class="total-label">이번 달 청구 금액</div>
+        <div class="total-amount">1,200,000원</div>
+        <div class="total-period">2026년 4월 1일 ~ 4월 30일</div>
+        <span class="total-status"><i data-lucide="clock" style="width:14px;height:14px;"></i> 납부 예정</span>
+      </div>
+    </div>
+
+    <!-- 상세 내역 -->
+    <div class="section">
+      <div class="section-header"><h2 class="section-title">청구 내역</h2></div>
+      <div class="breakdown-card">
+        <div class="breakdown-row">
+          <span class="breakdown-label">요양 서비스 이용료</span>
+          <span class="breakdown-value">800,000원</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-label">식비</span>
+          <span class="breakdown-value">180,000원</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-label">간병비</span>
+          <span class="breakdown-value">150,000원</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-label">기타 (약품비 등)</span>
+          <span class="breakdown-value">70,000원</span>
+        </div>
+        <div class="breakdown-row" style="border-top:2px solid var(--text-primary);">
+          <span class="breakdown-total">합계</span>
+          <span class="breakdown-total">1,200,000원</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 납부 이력 -->
+    <div class="section">
+      <div class="section-header"><h2 class="section-title">납부 이력</h2></div>
+      <div class="history-item">
+        <div class="history-icon"><i data-lucide="check-circle" style="width:20px;height:20px;color:var(--success)"></i></div>
+        <div class="history-info">
+          <div class="history-label">3월 청구</div>
+          <div class="history-date">2026.03.28 납부 완료</div>
+        </div>
+        <span class="history-amount">1,150,000원</span>
+      </div>
+      <div class="history-item">
+        <div class="history-icon"><i data-lucide="check-circle" style="width:20px;height:20px;color:var(--success)"></i></div>
+        <div class="history-info">
+          <div class="history-label">2월 청구</div>
+          <div class="history-date">2026.02.27 납부 완료</div>
+        </div>
+        <span class="history-amount">1,150,000원</span>
+      </div>
+      <div class="history-item">
+        <div class="history-icon"><i data-lucide="check-circle" style="width:20px;height:20px;color:var(--success)"></i></div>
+        <div class="history-info">
+          <div class="history-label">1월 청구</div>
+          <div class="history-date">2026.01.28 납부 완료</div>
+        </div>
+        <span class="history-amount">1,180,000원</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="tabbar" role="navigation" aria-label="메인 내비게이션" style="position:fixed; bottom:0; left:50%; transform:translateX(-50%); max-width:430px; width:100%;">
+    <a href="g01-home.html" class="tab"><span class="tab-icon"><i data-lucide="home"></i></span><span class="tab-label">홈</span></a>
+    <a href="g03-chat.html" class="tab"><span class="tab-icon"><i data-lucide="message-circle"></i></span><span class="tab-label">채팅</span></a>
+    <a href="g04-ai-guide.html" class="tab"><span class="tab-icon"><i data-lucide="wand-sparkles"></i></span><span class="tab-label">AI 가이드</span></a>
+    <a href="g02-ai-report.html" class="tab"><span class="tab-icon"><i data-lucide="clipboard-list"></i></span><span class="tab-label">리포트</span></a>
+    <a href="g05-mypage.html" class="tab active" aria-current="page"><span class="tab-icon"><i data-lucide="menu"></i></span><span class="tab-label">더보기</span></a>
+  </nav>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+<div class="ios-home-indicator"></div>
+</body>
+</html>

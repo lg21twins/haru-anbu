@@ -10,3 +10,8 @@
 05_발표/*.pptx
 케어 플랫폼 발표*
 02_시장조사/케어플랫폼 레퍼런스*
+
+# npm/puppeteer
+node_modules/
+package.json
+package-lock.json

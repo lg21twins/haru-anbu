@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="guardian">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>하루안부 — 긴급 알림</title>
+  <link rel="stylesheet" href="../common.css">
+  <style>
+    body {
+      background: var(--bg);
+      max-width: 430px; padding-top:72px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 100px;
+    }
+    .content { padding: 0 var(--space-lg); }
+
+    /* 긴급 히어로 */
+    .alert-hero {
+      background: linear-gradient(135deg, #FF3B30, #c0392b);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      color: white;
+      text-align: center;
+      box-shadow: 0 8px 28px rgba(255, 59, 48, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .alert-hero::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+    .alert-hero-icon {
+      width: 64px; height: 64px;
+      border-radius: var(--radius-full);
+      background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto var(--space-lg);
+      position: relative; z-index: 1;
+    }
+    .alert-hero-title {
+      font-size: var(--text-title);
+      font-weight: var(--weight-bold);
+      margin-bottom: var(--space-xs);
+      position: relative; z-index: 1;
+    }
+    .alert-hero-time {
+      font-size: var(--text-callout);
+      opacity: 0.85;
+      position: relative; z-index: 1;
+    }
+
+    /* 상황 설명 카드 */
+    .situation-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-sm);
+    }
+    .situation-title {
+      font-size: var(--text-headline);
+      font-weight: var(--weight-bold);
+      margin-bottom: var(--space-md);
+    }
+    .situation-row {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--space-sm) 0;
+      font-size: var(--text-callout);
+    }
+    .situation-row + .situation-row {
+      border-top: 1px solid var(--divider);
+    }
+    .situation-label { color: var(--text-secondary); }
+    .situation-value { font-weight: var(--weight-semibold); }
+
+    /* 대응 안내 */
+    .response-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-sm);
+    }
+    .response-title {
+      font-size: var(--text-headline);
+      font-weight: var(--weight-bold);
+      margin-bottom: var(--space-lg);
+    }
+    .response-step {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-md);
+      padding: var(--space-sm) 0;
+    }
+    .response-step + .response-step {
+      border-top: 1px solid var(--divider);
+    }
+    .response-num {
+      width: 28px; height: 28px;
+      border-radius: var(--radius-full);
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: var(--text-caption);
+      font-weight: var(--weight-bold);
+      flex-shrink: 0;
+    }
+    .response-text {
+      font-size: var(--text-callout);
+      line-height: var(--line-height-relaxed);
+      color: var(--text-primary);
+      padding-top: 4px;
+    }
+
+    /* 경과 타임라인 */
+    .timeline-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-sm);
+    }
+    .tl-list {
+      position: relative;
+      padding-left: 20px;
+    }
+    .tl-list::before {
+      content: '';
+      position: absolute;
+      left: 7px; top: 8px; bottom: 8px;
+      width: 2px;
+      background: var(--divider);
+    }
+    .tl-item {
+      position: relative;
+      padding: var(--space-sm) 0;
+    }
+    .tl-dot {
+      width: 14px; height: 14px;
+      border-radius: var(--radius-full);
+      position: absolute;
+      left: -20px; top: 12px;
+      z-index: 1;
+    }
+    .tl-dot--alert { background: var(--critical); }
+    .tl-dot--action { background: var(--primary); }
+    .tl-dot--done { background: var(--success); }
+    .tl-text {
+      font-size: var(--text-callout);
+      color: var(--text-primary);
+      font-weight: var(--weight-medium);
+    }
+    .tl-time {
+      font-size: var(--text-mini);
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
+    /* CTA 버튼 */
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      height: 52px;
+      border-radius: var(--radius-lg);
+      font-family: var(--font-family);
+      font-size: var(--text-body);
+      font-weight: var(--weight-semibold);
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      outline: none;
+    }
+    .cta-btn--primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+    .cta-btn--secondary {
+      background: var(--surface);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+    }
+    .cta-btn--emergency {
+      background: var(--critical);
+      color: white;
+      box-shadow: 0 4px 16px rgba(255, 59, 48, 0.3);
+    }
+  </style>
+</head>
+<body>  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <a href="g01-home.html" class="btn-icon" aria-label="뒤로 가기">‹</a>
+    </div>
+    <span class="header-title">긴급 알림</span>
+    <div class="header-right"></div>
+  </div>
+
+  <div class="content">
+
+    <!-- 긴급 히어로 -->
+    <div class="section">
+      <div class="alert-hero">
+        <div class="alert-hero-icon">
+          <i data-lucide="alert-triangle" style="width:32px;height:32px;"></i>
+        </div>
+        <h1 class="alert-hero-title">긴급 알림이 도착했어요</h1>
+        <p class="alert-hero-time">10분 전 · 오후 2:30</p>
+      </div>
+    </div>
+
+    <!-- 상황 설명 -->
+    <div class="section">
+      <div class="situation-card">
+        <h2 class="situation-title">어떤 상황인가요?</h2>
+        <div class="situation-row">
+          <span class="situation-label">대상</span>
+          <span class="situation-value">손정희님 (어머님)</span>
+        </div>
+        <div class="situation-row">
+          <span class="situation-label">호실</span>
+          <span class="situation-value">302호</span>
+        </div>
+        <div class="situation-row">
+          <span class="situation-label">유형</span>
+          <span class="situation-value" style="color:var(--critical);">혈압 이상 감지</span>
+        </div>
+        <div class="situation-row">
+          <span class="situation-label">측정값</span>
+          <span class="situation-value" style="color:var(--critical);">150/95 mmHg</span>
+        </div>
+        <div class="situation-row">
+          <span class="situation-label">담당 간호사</span>
+          <span class="situation-value">김미영</span>
+        </div>
+        <div class="situation-row">
+          <span class="situation-label">현재 상태</span>
+          <span class="situation-value" style="color:var(--primary);">대응 중</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 대응 안내 -->
+    <div class="section">
+      <div class="response-card">
+        <h2 class="response-title">현재 대응 상황</h2>
+        <div class="response-step">
+          <div class="response-num">1</div>
+          <div class="response-text">담당 김미영 간호사가 확인 후 <strong>재측정을 진행</strong>하고 있어요.</div>
+        </div>
+        <div class="response-step">
+          <div class="response-num">2</div>
+          <div class="response-text">재측정 결과에 따라 <strong>당직의에게 보고</strong>될 예정이에요.</div>
+        </div>
+        <div class="response-step">
+          <div class="response-num">3</div>
+          <div class="response-text">추가 조치가 필요하면 <strong>바로 연락</strong>드릴게요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 경과 타임라인 -->
+    <div class="section">
+      <div class="timeline-card">
+        <div class="section-header" style="margin-bottom:var(--space-lg);">
+          <h2 class="section-title">경과 기록</h2>
+        </div>
+        <div class="tl-list">
+          <div class="tl-item">
+            <div class="tl-dot tl-dot--action"></div>
+            <div class="tl-text">김미영 간호사 혈압 재측정 중</div>
+            <div class="tl-time">오후 2:35 · 현재</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot tl-dot--action"></div>
+            <div class="tl-text">김미영 간호사 302호 도착</div>
+            <div class="tl-time">오후 2:32</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot tl-dot--alert"></div>
+            <div class="tl-text">혈압 이상 감지 — 150/95 mmHg</div>
+            <div class="tl-time">오후 2:30</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot tl-dot--done"></div>
+            <div class="tl-text">오전 혈압 정상 — 130/85 mmHg</div>
+            <div class="tl-time">오전 9:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="section">
+      <div class="cta-group">
+        <a href="g03-chat.html" class="cta-btn cta-btn--primary">
+          <i data-lucide="message-circle" style="width:20px;height:20px;"></i> 담당 간호사에게 바로 연락하기
+        </a>
+        <a href="g04-ai-guide.html" class="cta-btn cta-btn--secondary">
+          <i data-lucide="wand-sparkles" style="width:20px;height:20px;"></i> AI에게 혈압 관련 질문하기
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 탭바 -->
+  <nav class="tabbar" role="navigation" aria-label="메인 내비게이션" style="position:fixed; bottom:0; left:50%; transform:translateX(-50%); max-width:430px; width:100%;">
+    <a href="g01-home.html" class="tab">
+      <span class="tab-icon"><i data-lucide="home"></i></span>
+      <span class="tab-label">홈</span>
+    </a>
+    <a href="g03-chat.html" class="tab">
+      <span class="tab-icon"><i data-lucide="message-circle"></i></span>
+      <span class="tab-label">채팅</span>
+    </a>
+    <a href="g04-ai-guide.html" class="tab">
+      <span class="tab-icon"><i data-lucide="wand-sparkles"></i></span>
+      <span class="tab-label">AI 가이드</span>
+    </a>
+    <a href="g02-ai-report.html" class="tab">
+      <span class="tab-icon"><i data-lucide="clipboard-list"></i></span>
+      <span class="tab-label">리포트</span>
+    </a>
+    <a href="g05-mypage.html" class="tab">
+      <span class="tab-icon"><i data-lucide="menu"></i></span>
+      <span class="tab-label">더보기</span>
+    </a>
+  </nav>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+<div class="ios-home-indicator"></div>
+</body>
+</html>

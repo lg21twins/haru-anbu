@@ -1,0 +1,660 @@
+
+CARE PLATFORM
+시스템 아키텍처 설계서
+보호자 · 환자 · 의료진을 잇는 AI 케어 소통 플랫폼
+v1.0 | 2026.03
+
+01  아키텍처 개요
+케어 플랫폼은 React 기반 단일 웹 애플리케이션으로, Supabase BaaS와 Vercel 서버리스를 백엔드로 활용하며, Claude API로 AI 기능을 제공합니다. 3개 역할(보호자/의료진/환자)이 하나의 앱에서 역할별 최적화된 UI로 접근합니다.
+시스템 전체 구조
+시스템은 크게 4개 계층으로 구성됩니다.
+계층
+구성 요소
+역할
+클라이언트
+React SPA (PC + 모바일 반응형)
+3역할 분기 UI, 실시간 데이터 표시
+호스팅/서버리스
+Vercel (Edge Runtime)
+SPA 호스팅, API 프록시, Cron Job
+백엔드 (BaaS)
+Supabase (PostgreSQL + Realtime + Auth + Storage)
+DB, 인증, 실시간 동기화, 파일 저장
+외부 서비스
+Claude API (Anthropic) + Firebase (FCM)
+AI 기능, 푸시 알림
+
+데이터 흐름 개요
+흐름
+경로
+지연 목표
+체크리스트 → 대시보드
+의료진 → Supabase Realtime → 보호자
+3초 이내
+SOS 긴급 알림
+의료진 → Vercel Function → FCM → 보호자
+30초 이내
+AI 케어 가이드
+보호자 → Vercel Proxy → Claude API → 보호자
+2초 내 첫 응답
+AI 일일 리포트
+Cron → Supabase → Claude API → FCM → 보호자
+매일 저녁 자동
+1:1 채팅
+보호자 ↔ Supabase Realtime ↔ 의료진
+실시간
+
+02  기술 스택 상세
+프론트엔드
+기술
+버전
+용도
+선택 이유
+React
+19.x
+UI 프레임워크
+컴포넌트 재사용, 단일 코드베이스 3역할 분기
+TypeScript
+5.x
+타입 안전성
+3인 협업 시 타입 에러 조기 발견
+Tailwind CSS
+4.x
+스타일링
+유틸리티 퍼스트, AI 코드 생성 최적화
+React Router
+7.x
+라우팅
+역할 기반 라우트 가드, 중첩 레이아웃
+Zustand
+5.x
+전역 상태 관리
+경량, 보일러플레이트 최소, 학습 곡선 낮음
+TanStack Query
+5.x
+서버 상태 관리
+캐싱, 리페칭, Supabase 연동 최적화
+date-fns
+4.x
+날짜 처리
+시간표, 타임라인, 타임스탬프 포맷팅
+
+백엔드 (BaaS)
+기술
+용도
+선택 이유
+Supabase
+DB + Auth + Realtime + Storage
+올인원 BaaS, 백엔드 코드 최소화
+PostgreSQL
+메인 데이터베이스
+Supabase 내장, 관계형 데이터 처리
+Row-Level Security
+역할별 데이터 접근 제어
+DB 레벨 보안, 클라이언트 직접 접근 안전
+Supabase Realtime
+실시간 데이터 동기화
+체크리스트 → 대시보드, 채팅 메시지
+Supabase Storage
+파일 저장
+버킷 기반 접근 제어, CDN
+Supabase Auth
+사용자 인증
+소셜 로그인(카카오/구글) 내장 지원
+
+서버리스 / 외부 서비스
+기술
+용도
+선택 이유
+Vercel
+호스팅 + Serverless Functions
+GitHub 연동 자동 배포, Edge 성능
+Claude API (Anthropic)
+AI 케어 가이드, 일일 리포트
+프로젝트 AI 스택 통일, 한국어 품질 우수
+Firebase Cloud Messaging
+푸시 알림
+크로스 플랫폼 무료 푸시
+
+03  데이터베이스 설계
+총 11개 테이블로 구성되며, Supabase PostgreSQL 위에서 동작합니다. 모든 테이블에 Row-Level Security(RLS)를 적용하여 역할별 데이터 접근을 DB 레벨에서 강제합니다.
+테이블 목록
+#
+테이블명
+설명
+주요 컬럼
+비고
+1
+users
+사용자
+id, role, name, email, facility_id, fcm_token
+3역할 통합
+2
+patients
+환자
+id, name, age, type, grade, medical_staff_id, family_id
+환자-보호자 연결
+3
+care_records
+케어 기록
+id, patient_id, type, status, note, timestamp, staff_id
+F-01 체크리스트
+4
+alerts
+알림
+id, type, message, patient_id, sent_by, sent_to, status
+F-03 SOS
+5
+messages
+채팅 메시지
+id, sender_id, receiver_id, content, media_url, read_at
+F-04 채팅
+6
+daily_reports
+AI 일일 리포트
+id, patient_id, date, care_summary, ai_generated_text
+F-05 리포트
+7
+ai_chat_sessions
+AI 채팅 세션
+id, user_id, type, messages_json, topic
+F-06 가이드
+8
+schedules
+시간표
+id, patient_id, type, title, start_time, end_time, staff_id
+F-08 시간표
+9
+prescriptions
+처방전
+id, patient_id, doctor_id, drug_name, dosage, frequency
+F-09 처방전
+10
+medical_records
+진료기록
+id, patient_id, doctor_id, diagnosis, opinion, visibility
+F-09 진료기록
+11
+medical_timeline_events
+의료 타임라인
+id, patient_id, event_type, title, summary, event_date
+F-09 타임라인
+
+RLS (Row-Level Security) 정책 요약
+각 역할이 접근할 수 있는 데이터 범위를 DB 레벨에서 강제합니다.
+테이블
+보호자 (family)
+의료진 (medical)
+환자 (patient)
+care_records
+연결된 환자만 열람
+담당 환자 작성/열람
+—
+alerts
+수신 알림만
+발신 알림만
+—
+messages
+본인 송수신만
+본인 송수신만
+—
+prescriptions
+연결 환자 열람
+전체 작성/열람
+본인 처방전만
+medical_records
+연결 환자 요약만
+전체 작성/열람
+제한적
+schedules
+연결 환자 열람
+담당 환자 작성/열람
+본인 일과만
+daily_reports
+연결 환자 열람
+담당 환자 열람
+—
+
+04  프론트엔드 아키텍처
+폴더 구조 (Features 기반)
+기능 단위로 모듈을 분리하여 각 팀원이 독립적으로 개발할 수 있는 구조입니다.
+디렉토리
+역할
+포함 내용
+src/app/
+앱 진입점
+App.tsx, router.tsx, providers.tsx
+src/features/auth/
+F-07 인증 + 역할 분기
+로그인, 온보딩, 역할 라우팅
+src/features/checklist/
+F-01 케어 체크리스트
+체크리스트 카드, 아이템, 입력 페이지
+src/features/dashboard/
+F-02 보호자 대시보드
+케어 현황 카드, 완료율 시각화
+src/features/sos/
+F-03 SOS 긴급 알림
+SOS 버튼, 모달, 타임라인
+src/features/chat/
+F-04 1:1 채팅
+메시지 버블, 입력, 이미지 업로드
+src/features/report/
+F-05 AI 일일 리포트
+리포트 카드, 열람 페이지
+src/features/ai-guide/
+F-06 AI 케어 가이드
+채팅 UI, 모드 전환 토글
+src/features/schedule/
+F-08 시간표
+일과 스케줄, 케어 타임라인
+src/features/medical/
+F-09 처방전·진료기록
+처방전 폼/뷰, 진료기록, 의료 타임라인
+src/layouts/
+역할별 레이아웃
+FamilyLayout, MedicalLayout, PatientLayout
+src/shared/
+공통 모듈
+컴포넌트, 훅, 유틸리티, 타입
+
+역할별 레이아웃
+역할
+레이아웃
+네비게이션
+최적화 포인트
+의료진 (medical)
+PC 데스크톱 최적화
+좌측 사이드바 + 상단 헤더
+넓은 화면 활용, 키보드 단축키
+보호자 (family)
+모바일 반응형
+하단 탭 네비게이션
+터치 최적화, 카드형 UI
+환자 (patient)
+모바일/태블릿 반응형
+하단 탭 (최소 항목)
+큰 글자(18pt+), 고대비, 단순 구조
+
+상태 관리 전략
+계층
+도구
+담당 데이터
+특징
+서버 상태
+TanStack Query
+케어 기록, 알림, 메시지, 처방전
+Supabase 데이터 캐싱 + Realtime 무효화
+전역 상태
+Zustand
+인증(user, role), 알림 카운트, UI 상태
+경량 스토어, 보일러플레이트 최소
+로컬 상태
+React useState
+폼 입력값, 토글, 임시 UI
+컴포넌트 단위 관리
+
+역할 기반 라우팅
+역할
+경로 접두사
+주요 페이지
+공통
+/
+로그인, 온보딩
+보호자
+/family/*
+대시보드, 채팅, AI 가이드, 리포트, 시간표, 처방전, SOS 수신
+의료진
+/medical/*
+체크리스트, 환자 목록, SOS 발신, 채팅, 시간표, 처방전 입력, 진료기록
+환자
+/patient/*
+홈, 시간표, 처방전 확인
+
+05  주요 데이터 플로우
+5.1  케어 체크리스트 → 대시보드 실시간 반영
+단계
+주체
+동작
+기술
+1
+의료진 (PC)
+환자별 식사/투약/위생/활동 체크 입력
+React Form → Supabase INSERT
+2
+Supabase
+care_records 테이블에 저장 + Realtime 브로드캐스트
+PostgreSQL + Realtime
+3
+보호자 (모바일)
+Realtime 이벤트 수신 → 대시보드 카드 자동 갱신
+Supabase Realtime 구독
+목표: 체크 입력 후 3초 이내에 보호자 대시보드에 반영
+
+5.2  SOS 긴급 알림
+단계
+주체
+동작
+기술
+1
+의료진 (PC)
+SOS 버튼 클릭 + 상황 메모 입력
+React → Supabase INSERT alerts
+2
+Vercel Function
+alerts INSERT 트리거 → FCM 발송 요청
+Supabase Webhook → Edge Function
+3
+FCM
+보호자 디바이스에 푸시 알림 전송
+Firebase Cloud Messaging
+4
+보호자 (모바일)
+알림 확인 → responded_at 업데이트
+Supabase UPDATE
+5
+시스템
+5분 미응답 시 자동 재알림
+Vercel Cron / setTimeout
+목표: SOS 버튼 클릭 후 30초 이내에 보호자에게 알림 도달
+
+5.3  AI 케어 가이드 대화
+단계
+주체
+동작
+기술
+1
+보호자
+질문 입력 (예: "장기요양등급 신청은 어떻게?")
+React 채팅 UI
+2
+Vercel Function
+System Prompt + 대화 히스토리 조합 → Claude API 호출
+Edge Function (API 키 보호)
+3
+Claude API
+스트리밍 응답 생성
+claude-sonnet-4-6, stream: true
+4
+보호자
+응답 실시간 표시 + 세션 저장
+SSE → React UI 렌더링
+전환
+시스템
+감정 신호 감지 시 System Prompt 변경 → 감정 지원 모드
+키워드 + 문맥 분석
+
+5.4  AI 일일 케어 리포트 자동 생성
+단계
+주체
+동작
+기술
+1
+Vercel Cron
+매일 저녁 트리거 → 오늘 care_records 조회
+Cron Job → Supabase Query
+2
+Claude API
+케어 데이터를 자연어 요약으로 변환
+claude-haiku-4-5 (비용 절감)
+3
+Supabase
+daily_reports 테이블에 리포트 저장
+INSERT
+4
+FCM
+보호자에게 "오늘의 케어 리포트" 푸시 알림
+Firebase Cloud Messaging
+
+06  AI 시스템 설계
+AI 케어 가이드 프롬프트 구조
+구성 요소
+내용
+Base System Prompt
+역할: 전문적이지만 따뜻한 요양 상담사 지식 범위: 요양원 정보, 건강 정보, 복지 제도 제한: 의료 진단 X, 처방 X, 법적 자문 X 면책: "최종 판단은 의료진이 합니다" 포함
+백과사전 모드 (기본)
+객관적 정보 제공, 절차/서류/비용 구체적 안내, 출처 기반 답변
+감정 지원 모드 (전환)
+공감 + 위로 톤, 피로도 높을 시 전문 상담 기관 안내 법적 프레이밍: "감정 체크인 서비스"
+전환 트리거
+키워드: 힘들다, 지친다, 울고싶다, 죄책감 등 문맥: 연속 부정적 감정 표현
+
+모델 선택 및 비용 관리
+기능
+모델
+이유
+max_tokens
+AI 케어 가이드
+claude-sonnet-4-6
+복잡한 대화, 높은 품질 필요
+1,024
+AI 일일 리포트
+claude-haiku-4-5
+정형화된 요약, 비용 90% 절감
+512
+
+AI 비용 절감 전략
+전략
+적용 대상
+예상 효과
+Haiku 모델 사용
+일일 리포트 (정형 요약)
+토큰 비용 약 90% 절감
+응답 캐싱
+FAQ성 질문 (등급 신청 절차 등)
+반복 호출 약 50% 절감
+max_tokens 제한
+전체 API 호출
+불필요한 장문 응답 방지
+대화 히스토리 제한
+케어 가이드 세션
+최근 10턴만 포함하여 입력 토큰 절감
+
+07  보안 아키텍처
+5계층 보안 구조
+계층
+기술
+보호 대상
+설명
+Layer 1
+HTTPS / TLS
+전송 데이터
+모든 통신 암호화 (Vercel + Supabase 기본 제공)
+Layer 2
+Supabase Auth + JWT
+사용자 인증
+카카오/구글 소셜 로그인, JWT 토큰 기반 인증
+Layer 3
+Row-Level Security (RLS)
+데이터 접근 제어
+역할별(family/medical/patient) DB 레벨 접근 강제
+Layer 4
+AES-256 암호화
+의료 데이터
+처방전, 진료기록 등 민감 의료 정보 암호화 저장
+Layer 5
+환경변수 관리
+API 키
+Claude API, Supabase 키를 Vercel 환경변수로 보호
+
+인증 플로우
+단계
+동작
+기술
+1
+사용자가 카카오/구글 소셜 로그인 클릭
+React UI
+2
+Supabase Auth가 OAuth 프로바이더로 리다이렉트
+Supabase Auth
+3
+OAuth 인증 완료 → JWT 발급
+Supabase Auth
+4
+users 테이블에서 role 조회
+Supabase Query
+5
+role에 따라 보호자/의료진/환자 화면으로 자동 분기
+React Router
+
+법적 프레이밍 (의료법 대응)
+기능
+사용하지 않는 표현
+사용하는 표현
+이유
+AI 케어 가이드
+의료 진단, 의료 상담
+요양·건강 정보 안내
+의료법 저촉 회피
+감정 지원
+심리 치료, 심리 상담
+감정 체크인 서비스
+의료법 저촉 회피
+처방전·진료기록
+진료, 의료 행위
+케어 기록 열람
+의료법 저촉 회피
+전체 알림
+—
+"최종 판단은 의료진이 합니다" 면책 문구
+법적 리스크 최소화
+
+08  배포 아키텍처
+배포 환경
+환경
+브랜치
+도메인
+용도
+Production
+main
+care-platform.vercel.app
+공모전 제출용 프로덕션
+Preview
+PR 브랜치
+pr-123.vercel.app (자동)
+PR 리뷰용 미리보기
+Development
+dev
+dev.care-platform.vercel.app
+개발 통합 테스트
+
+브랜치 전략
+브랜치
+용도
+병합 대상
+규칙
+main
+프로덕션 배포
+—
+PR 머지만 허용, 직접 push 금지
+dev
+개발 통합
+main
+기능 브랜치 머지 후 통합 테스트
+feature/F-XX-*
+기능 개발
+dev
+기능별 독립 개발, PR로 머지
+hotfix/*
+긴급 수정
+main + dev
+프로덕션 긴급 버그 수정
+
+환경변수 관리
+변수
+접근 범위
+용도
+NEXT_PUBLIC_SUPABASE_URL
+클라이언트 + 서버
+Supabase 프로젝트 URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+클라이언트 + 서버
+Supabase 익명 키 (RLS 적용)
+SUPABASE_SERVICE_ROLE_KEY
+서버 전용
+Supabase 관리자 키 (RLS 우회)
+ANTHROPIC_API_KEY
+서버 전용
+Claude API 인증
+FCM_SERVER_KEY
+서버 전용
+Firebase 푸시 알림 발송
+
+09  성능 목표 및 모니터링
+지표
+목표
+측정 방법
+페이지 초기 로드 (LCP)
+2초 이내
+Vercel Analytics
+체크리스트 → 대시보드 반영
+3초 이내
+Supabase Realtime 타임스탬프 차이
+SOS 알림 발송
+30초 이내
+FCM 발송 로그 타임스탬프
+AI 가이드 첫 응답 (TTFB)
+2초 이내
+스트리밍 시작 시간 측정
+AI 가이드 응답 성공률
+95% 이상
+Claude API 에러율 모니터링
+AI 리포트 생성 성공률
+95% 이상
+Cron Job 실행 로그
+번들 사이즈
+300KB 이내 (gzip)
+Vercel 빌드 로그
+
+
+Care Platform | 시스템 아키텍처 설계서 v1.0 | 2026.03
+
+v2.0 업데이트: AI 케어 가이드 5개 모드 확장
+기존 2개 모드(백과사전, 감정 지원)에 3개 신규 모드를 추가합니다. 모든 모드는 동일한 채팅 UI 내에서 동작하며, 사용자 질문에 따라 자동 전환됩니다.
+모드
+트리거
+데이터 소스
+모델
+출력
+백과사전 (기본)
+일반 질문
+내장 지식
+Sonnet
+텍스트 답변
+감정 지원
+감정 키워드 감지
+내장 지식
+Sonnet
+공감 + 기관 안내
+요양원 찾기 (NEW)
+"요양원 찾아줘" 등
+공단 장기요양기관 데이터
+Sonnet
+조건 질문 → 결과 카드
+요양보호사 안내 (NEW)
+"요양보호사" 등
+users 테이블 + 외부 딥링크
+Sonnet
+안내 + 딥링크 버튼
+요양비 계산 (NEW)
+"비용", "얼마" 등
+공단 고시 데이터
+Sonnet
+비용 비교표 + 총액
+
+요양비 계산 데이터 플로우
+단계
+동작
+기술
+1
+보호자가 "3등급이면 한 달에 얼마?" 질문
+React 채팅 UI
+2
+AI가 추가 조건 수집 (서비스유형, 감경여부)
+Claude API 대화형
+3
+공단 고시 데이터 기반 비용 계산
+System Prompt 내 계산 로직
+4
+시설 vs 재가 비교 + 총비용 카드 표시
+React 카드 컴포넌트
