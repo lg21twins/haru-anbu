@@ -527,6 +527,150 @@
 
     /* 내부 콘텐츠 z-index */
     .total-card > *, .breakdown-card > *, .insurance-card > * { position: relative; z-index: 1; }
+
+    /* ══ A. 자동이체 현황 카드 ══ */
+    .autodebit-card {
+      background: rgba(255,255,255,0.26);
+      backdrop-filter: blur(56px) saturate(180%) brightness(1.06);
+      -webkit-backdrop-filter: blur(56px) saturate(180%) brightness(1.06);
+      border: 0.5px solid rgba(255,255,255,0.55);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg) var(--space-xl);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.65) inset, 0 4px 20px rgba(0,0,0,0.05);
+      display: flex; align-items: center; gap: 14px;
+      position: relative; overflow: hidden;
+    }
+    .autodebit-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .autodebit-icon {
+      width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
+      background: linear-gradient(135deg, #0891B2, #38BDF8);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(8,145,178,0.30);
+      position: relative; z-index: 1;
+    }
+    .autodebit-body { flex: 1; position: relative; z-index: 1; }
+    .autodebit-bank {
+      font-size: var(--text-caption); color: var(--text-secondary);
+      font-weight: var(--weight-medium); margin-bottom: 3px;
+    }
+    .autodebit-main {
+      font-size: var(--text-callout); font-weight: var(--weight-bold);
+      color: var(--text-primary); margin-bottom: 6px;
+    }
+    .autodebit-dday {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: var(--radius-full);
+      background: rgba(8,145,178,0.10); border: 0.5px solid rgba(8,145,178,0.25);
+      font-size: 11px; font-weight: 700; color: var(--guardian);
+    }
+    .autodebit-actions { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; position: relative; z-index: 1; }
+    .autodebit-btn {
+      font-size: 11px; font-weight: var(--weight-semibold);
+      color: var(--guardian); padding: 5px 10px;
+      background: rgba(8,145,178,0.08); border: 0.5px solid rgba(8,145,178,0.20);
+      border-radius: var(--radius-sm); cursor: pointer; text-align: center;
+      white-space: nowrap; text-decoration: none;
+    }
+
+    /* ══ B. 한도 잔여 프로그레스 ══ */
+    .quota-wrap { margin-top: 14px; position: relative; z-index: 1; }
+    .quota-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 7px;
+    }
+    .quota-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; }
+    .quota-pct { font-size: 11px; font-weight: 700; color: var(--guardian); }
+    .quota-track {
+      height: 6px; border-radius: 999px;
+      background: rgba(8,145,178,0.12);
+    }
+    .quota-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, #0891B2, #38BDF8);
+      transition: width 0.6s cubic-bezier(.4,0,.2,1);
+    }
+    .quota-info {
+      display: flex; justify-content: space-between; margin-top: 5px;
+      font-size: 10.5px; color: var(--text-secondary);
+    }
+    .quota-remain { color: var(--guardian); font-weight: 600; }
+
+    /* ══ C. 변동 뱃지 ══ */
+    .change-badge {
+      font-size: 10px; font-weight: 600;
+      padding: 2px 6px; border-radius: 5px; flex-shrink: 0;
+    }
+    .change-up   { color: #DC2626; background: rgba(220,38,38,0.08); }
+    .change-down { color: #2ca87f; background: rgba(44,168,127,0.08); }
+    .change-same { font-size: 10px; color: var(--text-secondary); }
+
+    /* ══ D. 연간 납부 집계 카드 ══ */
+    .annual-card {
+      background: rgba(8,145,178,0.05);
+      border: 0.5px solid rgba(8,145,178,0.18);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg) var(--space-xl);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      position: relative; overflow: hidden;
+    }
+    .annual-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      background: linear-gradient(135deg, rgba(8,145,178,0.08) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .annual-header {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; color: var(--guardian);
+      margin-bottom: 10px; position: relative; z-index: 1;
+    }
+    .annual-amount {
+      font-size: 28px; font-weight: 800;
+      color: var(--text-primary); letter-spacing: -0.03em;
+      position: relative; z-index: 1;
+    }
+    .annual-meta {
+      font-size: 12px; color: var(--text-secondary); margin-top: 2px;
+      position: relative; z-index: 1;
+    }
+    .annual-deduction {
+      display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 10px; padding: 5px 12px;
+      background: rgba(8,145,178,0.10); border-radius: var(--radius-full);
+      font-size: 12px; font-weight: 600; color: var(--guardian);
+      border: 0.5px solid rgba(8,145,178,0.20);
+      position: relative; z-index: 1;
+      text-decoration: none; cursor: pointer;
+    }
+
+    /* ══ E. 경감 혜택 배너 ══ */
+    .benefit-banner {
+      background: rgba(245,158,11,0.07);
+      border: 0.5px solid rgba(245,158,11,0.25);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .benefit-icon {
+      width: 36px; height: 36px; border-radius: 11px; flex-shrink: 0;
+      background: rgba(245,158,11,0.14);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .benefit-body { flex: 1; }
+    .benefit-title {
+      font-size: var(--text-callout); font-weight: var(--weight-semibold);
+      color: #92400E; margin-bottom: 3px;
+    }
+    .benefit-desc { font-size: 12px; color: rgba(146,64,14,0.75); line-height: 1.5; }
+    .benefit-cta {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 8px; font-size: 12px; font-weight: 700;
+      color: #B45309; text-decoration: none;
+    }
   </style>
 </head>
 <body>
@@ -550,6 +694,27 @@
           <iconify-icon icon="fluent:payment-24-filled" style="font-size:18px;"></iconify-icon>
           납부하기
         </a>
+      </div>
+    </div>
+
+    <!-- A. 자동이체 현황 카드 -->
+    <div class="section">
+      <div class="autodebit-card">
+        <div class="autodebit-icon">
+          <iconify-icon icon="fluent:building-bank-24-filled" style="font-size:22px;color:#fff;"></iconify-icon>
+        </div>
+        <div class="autodebit-body">
+          <div class="autodebit-bank">국민은행 123-456-***789 · 자동이체</div>
+          <div class="autodebit-main">매월 15일 출금</div>
+          <span class="autodebit-dday">
+            <iconify-icon icon="fluent:calendar-24-filled" style="font-size:11px;"></iconify-icon>
+            D-3 · 4월 15일 출금 예정
+          </span>
+        </div>
+        <div class="autodebit-actions">
+          <a href="#" class="autodebit-btn">계좌 변경</a>
+          <a href="#" class="autodebit-btn">알림 설정</a>
+        </div>
       </div>
     </div>
 
@@ -604,6 +769,20 @@
           <span class="insurance-row-label">실 청구 금액</span>
           <span class="insurance-row-value">1,200,000원</span>
         </div>
+        <!-- B. 한도 잔여 프로그레스 -->
+        <div class="quota-wrap">
+          <div class="quota-header">
+            <span class="quota-label">이달 한도 사용 현황</span>
+            <span class="quota-pct">71.7%</span>
+          </div>
+          <div class="quota-track">
+            <div class="quota-fill" style="width:71.7%"></div>
+          </div>
+          <div class="quota-info">
+            <span>1,200,000 / 1,672,700원</span>
+            <span class="quota-remain">잔여 472,700원</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -613,19 +792,31 @@
       <div class="breakdown-card">
         <div class="breakdown-row">
           <span class="breakdown-label">요양 서비스 이용료</span>
-          <span class="breakdown-value">800,000원</span>
+          <span style="display:flex;align-items:center;gap:5px;">
+            <span class="breakdown-value">800,000원</span>
+            <span class="change-same">=</span>
+          </span>
         </div>
         <div class="breakdown-row">
           <span class="breakdown-label">식비</span>
-          <span class="breakdown-value">180,000원</span>
+          <span style="display:flex;align-items:center;gap:5px;">
+            <span class="breakdown-value">180,000원</span>
+            <span class="change-badge change-up">↑ +30,000</span>
+          </span>
         </div>
         <div class="breakdown-row">
           <span class="breakdown-label">간병비</span>
-          <span class="breakdown-value">150,000원</span>
+          <span style="display:flex;align-items:center;gap:5px;">
+            <span class="breakdown-value">150,000원</span>
+            <span class="change-same">=</span>
+          </span>
         </div>
         <div class="breakdown-row">
           <span class="breakdown-label">기타 (약품비 등)</span>
-          <span class="breakdown-value">70,000원</span>
+          <span style="display:flex;align-items:center;gap:5px;">
+            <span class="breakdown-value">70,000원</span>
+            <span class="change-badge change-up">↑ +20,000</span>
+          </span>
         </div>
         <div class="breakdown-row" style="border-top:1px solid rgba(8,145,178,0.30) !important;">
           <span class="breakdown-total">합계</span>
@@ -727,6 +918,22 @@
       </div>
     </div>
 
+    <!-- D. 연간 납부 집계 카드 -->
+    <div class="section">
+      <div class="annual-card">
+        <div class="annual-header">
+          <iconify-icon icon="fluent:data-bar-vertical-24-filled" style="font-size:14px;"></iconify-icon>
+          2026년 납부 현황
+        </div>
+        <div class="annual-amount">4,680,000원</div>
+        <div class="annual-meta">1~4월 누적 · 월 평균 1,170,000원</div>
+        <a href="#" class="annual-deduction">
+          <iconify-icon icon="ph:receipt-fill" style="font-size:13px;"></iconify-icon>
+          의료비 세액공제 전액 해당 · 영수증 받기 →
+        </a>
+      </div>
+    </div>
+
     <!-- ⑦ 납부 이력 (영수증 보기 추가) -->
     <div class="section">
       <div class="section-header"><h2 class="section-title">납부 이력</h2></div>
@@ -816,6 +1023,23 @@
         <iconify-icon icon="fluent:chevron-down-24-filled" style="font-size:16px;"></iconify-icon>
         이전 납부 이력 보기
       </button>
+    </div>
+
+    <!-- E. 본인부담 경감 혜택 배너 -->
+    <div class="section">
+      <div class="benefit-banner">
+        <div class="benefit-icon">
+          <iconify-icon icon="fluent:lightbulb-24-filled" style="font-size:18px;color:#D97706;"></iconify-icon>
+        </div>
+        <div class="benefit-body">
+          <div class="benefit-title">본인부담금 경감 혜택 확인하세요</div>
+          <div class="benefit-desc">차상위계층·의료급여수급자는 본인부담금 최대 60% 감경 가능해요. 해당 여부를 확인해 혜택을 받아보세요.</div>
+          <a href="#" class="benefit-cta">
+            해당 여부 확인하기
+            <iconify-icon icon="fluent:chevron-right-24-filled" style="font-size:12px;"></iconify-icon>
+          </a>
+        </div>
+      </div>
     </div>
 
   </div>
