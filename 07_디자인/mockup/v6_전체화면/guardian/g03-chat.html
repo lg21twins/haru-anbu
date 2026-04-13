@@ -144,8 +144,9 @@
       width: 44px; height: 44px;
       border: none;
       border-radius: var(--radius-full);
-      background: var(--divider);
-      color: var(--text-secondary);
+      background: rgba(255,255,255,0.28);
+      border: 0.5px solid rgba(255,255,255,0.5);
+      color: rgba(28,28,30,0.55);
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
@@ -216,14 +217,16 @@
     .tab.active { background: rgba(255,255,255,0.22) !important; color: #1C1C1E !important; }
     /* 채팅 입력바 + 말풍선 글라스 */
     .chat-input-bar {
-      background: rgba(255,255,255,0.12) !important;
+      background: rgba(255,255,255,0.10) !important;
       backdrop-filter: blur(72px) saturate(190%) brightness(1.08) !important;
       -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.08) !important;
-      border-top: 0.5px solid rgba(255,255,255,0.55) !important;
-      bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 61px + 8px) !important;
+      border-top: 0.5px solid rgba(255,255,255,0.45) !important;
+      border-bottom: none !important;
+      /* 탭바 바로 위에 붙임 — 틈 없음 */
+      bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 61px) !important;
     }
     .chat-input-wrap {
-      background: rgba(255,255,255,0.20) !important;
+      background: rgba(255,255,255,0.22) !important;
       border-color: rgba(255,255,255,0.55) !important;
     }
     .msg.in .msg-bubble {
@@ -233,8 +236,9 @@
       border: 0.5px solid rgba(255,255,255,0.55) !important;
       box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 2px 8px rgba(0,0,0,0.04) !important;
     }
+    /* 메시지 영역 padding — 입력바(58px) + 탭바위치 + 여유 */
     .chat-messages {
-      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 61px + 8px + 60px) !important;
+      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 61px + 58px + 16px) !important;
       position: relative; z-index: 1;
     }
   </style>
