@@ -153,6 +153,47 @@
       box-shadow: 0 1px 0 rgba(255,255,255,0.65) inset, 0 4px 20px rgba(0,0,0,0.05) !important;
     }
     .breakdown-row + .breakdown-row { border-top: 0.5px solid rgba(255,255,255,0.28) !important; }
+
+    /* ═══ LQ 버튼 ═══ */
+    .btn-icon {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
+      -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
+      border: 0.5px solid rgba(255,255,255,0.55);
+      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.18s ease;
+      color: rgba(28,28,30,0.7);
+      text-decoration: none; font-size: 22px; font-weight: 300;
+    }
+    .btn-icon:active { transform: scale(0.94); }
+    /* ═══ 카드 shimmer ═══ */
+    .total-card, .breakdown-card, .history-item {
+      position: relative; overflow: hidden;
+      transition: box-shadow 0.28s cubic-bezier(.4,0,.2,1);
+    }
+    .total-card::before, .breakdown-card::before {
+      content: '';
+      position: absolute; inset: 0; border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 55%);
+      pointer-events: none; z-index: 0;
+    }
+    /* ═══ total-status glass ═══ */
+    .total-status {
+      background: rgba(230,81,0,0.08) !important;
+      border: 0.5px solid rgba(230,81,0,0.22) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+    }
+    /* ═══ history-icon glass ═══ */
+    .history-icon {
+      background: rgba(255,255,255,0.18) !important;
+      border: 0.5px solid rgba(255,255,255,0.45) !important;
+      backdrop-filter: blur(40px) !important;
+      -webkit-backdrop-filter: blur(40px) !important;
+    }
   </style>
 </head>
 <body>  <div class="header">
@@ -193,7 +234,7 @@
           <span class="breakdown-label">기타 (약품비 등)</span>
           <span class="breakdown-value">70,000원</span>
         </div>
-        <div class="breakdown-row" style="border-top:2px solid var(--text-primary);">
+        <div class="breakdown-row" style="border-top:1px solid rgba(44,122,252,0.30) !important;">
           <span class="breakdown-total">합계</span>
           <span class="breakdown-total">1,200,000원</span>
         </div>

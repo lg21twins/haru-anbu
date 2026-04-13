@@ -260,6 +260,29 @@
     }
     .menu-item + .menu-item { border-top: 0.5px solid rgba(255,255,255,0.28) !important; }
     .care-detail-header { border-bottom: 0.5px solid rgba(255,255,255,0.28) !important; }
+
+    /* ═══ 카드 shimmer ═══ */
+    .care-detail, .menu-group {
+      position: relative; overflow: hidden;
+      transition: box-shadow 0.28s cubic-bezier(.4,0,.2,1);
+    }
+    .care-detail::before, .menu-group::before {
+      content: '';
+      position: absolute; inset: 0; border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 55%);
+      pointer-events: none; z-index: 0;
+    }
+    /* ═══ 메뉴 아이템 터치 반응 ═══ */
+    .menu-item { transition: background 0.18s ease; }
+    .menu-item:active { background: rgba(255,255,255,0.22); }
+    /* ═══ 로그아웃 red glass ═══ */
+    .logout-btn {
+      background: rgba(239,68,68,0.06) !important;
+      border: 0.5px solid rgba(239,68,68,0.20) !important;
+      color: #EF4444 !important;
+      transition: background 0.18s ease;
+    }
+    .logout-btn:active { background: rgba(239,68,68,0.12) !important; }
   </style>
 </head>
 <body>  <div class="content">

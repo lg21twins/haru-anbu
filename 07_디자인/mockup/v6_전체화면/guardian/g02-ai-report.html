@@ -291,6 +291,56 @@
       box-shadow: 0 1px 0 rgba(255,255,255,0.65) inset, 0 4px 20px rgba(0,0,0,0.05) !important;
     }
     .score-item + .score-item { border-top: 0.5px solid rgba(255,255,255,0.28) !important; }
+
+    /* ═══ LQ 버튼 ═══ */
+    .btn-icon {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
+      -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
+      border: 0.5px solid rgba(255,255,255,0.55);
+      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .btn-icon:active { transform: scale(0.94); }
+    /* ═══ 카드 shimmer ═══ */
+    .score-strip, .summary-card, .detail-card {
+      position: relative; overflow: hidden;
+      transition: transform 0.28s cubic-bezier(.4,0,.2,1), box-shadow 0.28s cubic-bezier(.4,0,.2,1);
+    }
+    .score-strip::before, .summary-card::before, .detail-card::before {
+      content: '';
+      position: absolute; inset: 0; border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 55%);
+      pointer-events: none; z-index: 0;
+    }
+    /* ═══ note-card: amber glass ═══ */
+    .note-card {
+      background: rgba(245,158,11,0.07) !important;
+      border: 0.5px solid rgba(245,158,11,0.25) !important;
+      backdrop-filter: blur(40px) saturate(160%) !important;
+      -webkit-backdrop-filter: blur(40px) saturate(160%) !important;
+    }
+    .note-title { color: rgba(180,83,9,0.9); }
+    /* ═══ AI insight 카드 ═══ */
+    .ai-insight-card {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 16px; border-radius: 18px;
+      background: rgba(44,122,252,0.06);
+      border: 0.5px solid rgba(44,122,252,0.18);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      margin-bottom: 0;
+    }
+    .ai-insight-icon {
+      width: 36px; height: 36px; border-radius: 12px; flex-shrink: 0;
+      background: linear-gradient(135deg, #60A5FA, #2C7AFC);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ai-insight-label { font-size: 0.72rem; font-weight: 600; color: #2C7AFC; margin-bottom: 3px; }
+    .ai-insight-body { font-size: 0.85rem; color: #1C1C1E; line-height: 1.45; }
   </style>
 </head>
 <body>  <!-- Header -->
@@ -309,6 +359,17 @@
       <div class="report-hero">
         <h1 class="report-hero-title">오늘의 케어 리포트</h1>
         <p class="report-hero-date">2026년 4월 2일 수요일 · 오후 5:00</p>
+      </div>
+    </div>
+
+    <!-- AI 인사이트 카드 -->
+    <div class="section">
+      <div class="ai-insight-card">
+        <div class="ai-insight-icon"><i data-lucide="sparkles" style="width:18px;height:18px;color:white;"></i></div>
+        <div>
+          <div class="ai-insight-label">AI 케어 분석</div>
+          <div class="ai-insight-body">오늘 손정희님은 전반적으로 안정적입니다. 투약 3회 모두 완료, 식사량은 평소의 85% 수준이에요.</div>
+        </div>
       </div>
     </div>
 
