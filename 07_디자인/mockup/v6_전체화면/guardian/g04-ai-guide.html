@@ -6,8 +6,21 @@
   <title>하루안부 — AI 케어 가이드</title>
   <link rel="stylesheet" href="../common.css">
   <style>
+    html { background: #EEF5FF; }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(100,178,255,0.55)  0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at 104%   0%,  rgba(56,189,248,0.48)   0%, transparent 60%),
+        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(99,102,241,0.42)   0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(44,122,252,0.38)   0%, transparent 60%),
+        radial-gradient(ellipse 42% 32% at  50%  50%,  rgba(255,255,255,0.58)  0%, transparent 65%),
+        #E4EEFC;
+      pointer-events: none;
+    }
     body {
-      background: linear-gradient(180deg, var(--surface) 72px, var(--bg) 72px);
+      background: transparent;
       max-width: 430px; padding-top:72px;
       margin: 0 auto;
       height: 100vh;
@@ -231,7 +244,7 @@
   <div class="chat-messages">
     <!-- AI 웰컴 + 모드 통합 -->
     <div class="ai-welcome">
-      <div class="ai-welcome-avatar"><i data-lucide="bot" style="width:26px;height:26px;color:var(--primary);"></i></div>
+      <div class="ai-welcome-avatar"><img src="../../logo/haru.svg" style="width:26px;height:26px;display:block;"></div>
       <div class="ai-welcome-name">무엇이 궁금하세요?</div>
       <div class="ai-welcome-desc">어머님 케어에 대해 물어보세요</div>
       <div class="mode-chips">

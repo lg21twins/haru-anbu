@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — 긴급 알림</title>
-  <link rel="stylesheet" href="../common.css">
+  <link rel="stylesheet" href="common.css">
   <style>
     body {
       background: var(--bg);
@@ -223,28 +223,13 @@
     .btn-icon {
       position: relative; display: flex; align-items: center; justify-content: center;
       width: 36px; height: 36px; border-radius: 999px;
-      background: rgba(255,255,255,0.10); backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
-      -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
+      background: rgba(255,255,255,0.38); backdrop-filter: blur(24px) saturate(140%) brightness(1.04);
+      -webkit-backdrop-filter: blur(24px) saturate(140%) brightness(1.04);
       border: 0.5px solid rgba(255,255,255,0.55);
       box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 4px 12px rgba(0,0,0,0.05);
       transition: transform 0.18s ease; color: rgba(28,28,30,0.7); text-decoration: none; font-size: 22px; font-weight: 300;
     }
     .btn-icon:active { transform: scale(0.94); }
-    .tabbar {
-      position: fixed !important; bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px) !important;
-      left: 50% !important; transform: translateX(-50%) !important;
-      width: calc(100% - 32px) !important; max-width: 398px !important;
-      height: 68px !important; padding: 0 2px !important; padding-bottom: 0 !important;
-      border-top: none !important; border-radius: 999px !important;
-      background: rgba(255,255,255,0.07) !important;
-      backdrop-filter: blur(72px) saturate(190%) brightness(1.10) !important;
-      -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.10) !important;
-      border: 0.5px solid rgba(255,255,255,0.55) !important;
-      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 -0.5px 0.5px rgba(255,255,255,0.25) inset, 0 4px 16px rgba(0,0,0,0.08) !important;
-      align-items: stretch !important; right: auto !important; gap: 0 !important; z-index: 40 !important;
-    }
-    .tab { flex-direction: column !important; gap: 2px !important; padding: 8px 4px !important; border-radius: 999px !important; font-size: 0.75rem !important; font-weight: 500 !important; color: rgba(28,28,30,0.45) !important; }
-    .tab.active { background: rgba(255,255,255,0.22) !important; color: #1C1C1E !important; }
     /* 글라스 카드 */
     .situation-card, .response-card, .timeline-card {
       background: rgba(255,255,255,0.26) !important; position: relative; overflow: hidden;
@@ -264,7 +249,7 @@
 <body>  <!-- Header -->
   <div class="header">
     <div class="header-left">
-      <a href="g01-home.html" class="btn-icon" aria-label="뒤로 가기">‹</a>
+      <a href="g-guardian-live.html" class="btn-icon" aria-label="뒤로 가기">‹</a>
     </div>
     <span class="header-title">긴급 알림</span>
     <div class="header-right"></div>
@@ -276,7 +261,7 @@
     <div class="section">
       <div class="alert-hero">
         <div class="alert-hero-icon">
-          <i data-lucide="alert-triangle" style="width:32px;height:32px;"></i>
+          <iconify-icon icon="fluent:warning-24-filled" style="font-size:32px;"></iconify-icon>
         </div>
         <h1 class="alert-hero-title">긴급 알림이 도착했어요</h1>
         <p class="alert-hero-time">10분 전 · 오후 2:30</p>
@@ -368,10 +353,10 @@
     <div class="section">
       <div class="cta-group">
         <a href="g03-chat.html" class="cta-btn cta-btn--primary">
-          <i data-lucide="message-circle" style="width:20px;height:20px;"></i> 담당 간호사에게 바로 연락하기
+          <iconify-icon icon="fluent:chat-24-filled" style="font-size:20px;"></iconify-icon> 담당 간호사에게 바로 연락하기
         </a>
-        <a href="g04-ai-guide.html" class="cta-btn cta-btn--secondary">
-          <i data-lucide="wand-sparkles" style="width:20px;height:20px;"></i> AI에게 혈압 관련 질문하기
+        <a href="g03-chat.html" class="cta-btn cta-btn--secondary">
+          <iconify-icon icon="ph:sparkle-fill" style="font-size:20px;"></iconify-icon> AI에게 혈압 관련 질문하기
         </a>
       </div>
     </div>
@@ -379,25 +364,52 @@
   </div>
 
   <nav class="tabbar" role="navigation" aria-label="메인 내비게이션">
-    <a href="../../v7_홈화면시안/g-guardian-live.html" class="tab active" aria-current="page">
-      <span class="tab-icon"><i data-lucide="home" style="width:20px;height:20px;"></i></span><span>홈</span>
+    <a href="g-guardian-live.html" class="tab active" aria-current="page">
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="currentColor">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+        </svg>
+      </span><span>홈</span>
     </a>
     <a href="g03-chat.html" class="tab">
-      <span class="tab-icon"><i data-lucide="message-circle" style="width:20px;height:20px;"></i></span><span>채팅</span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/>
+        </svg>
+      </span><span>채팅</span>
     </a>
     <a href="g02-ai-report.html" class="tab">
-      <span class="tab-icon"><i data-lucide="clipboard-list" style="width:20px;height:20px;"></i></span><span>기록</span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="4" y="12" width="4" height="8" rx="2"/>
+          <rect x="10" y="6" width="4" height="14" rx="2"/>
+          <rect x="16" y="9" width="4" height="11" rx="2"/>
+        </svg>
+      </span><span>기록</span>
     </a>
     <a href="g08-billing.html" class="tab">
-      <span class="tab-icon"><i data-lucide="credit-card" style="width:20px;height:20px;"></i></span><span>결제</span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="2" y="5" width="20" height="16" rx="3"/>
+          <rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/>
+          <rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
+        </svg>
+      </span><span>결제</span>
     </a>
     <a href="g05-mypage.html" class="tab">
-      <span class="tab-icon"><i data-lucide="user" style="width:20px;height:20px;"></i></span><span>마이</span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="8" r="4.5"/>
+          <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/>
+        </svg>
+      </span><span>마이</span>
     </a>
   </nav>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script>lucide.createIcons();</script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script>
+</script>
 <div class="ios-home-indicator"></div>
 </body>
 </html>

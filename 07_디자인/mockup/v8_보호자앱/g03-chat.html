@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="guardian">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>하루안부 — 채팅</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    body {
+      background: transparent;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-top: calc(max(env(safe-area-inset-top, 0px), 44px) + 56px);
+      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 16px);
+    }
+
+    /* ═══ 배경 ═══ */
+    html { background: #EEF5FF; }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(100,178,255,0.55)  0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at 104%   0%,  rgba(56,189,248,0.48)   0%, transparent 60%),
+        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(99,102,241,0.42)   0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(44,122,252,0.38)   0%, transparent 60%),
+        radial-gradient(ellipse 42% 32% at  50%  50%,  rgba(255,255,255,0.58)  0%, transparent 65%),
+        #E4EEFC;
+      pointer-events: none;
+    }
+
+    /* ═══ 헤더 ═══ */
+    .chat-header {
+      position: fixed;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 430px;
+      background: transparent;
+      padding-top: max(env(safe-area-inset-top, 0px), 44px);
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+      padding-bottom: var(--space-md);
+      z-index: 10;
+    }
+    .chat-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .chat-header-title {
+      font-size: var(--text-title);
+      font-weight: var(--weight-bold);
+    }
+    .header-edit-btn {
+      width: 36px; height: 36px;
+      border: none;
+      border-radius: var(--radius-full);
+      background: rgba(255,255,255,0.42);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 0.5px solid rgba(255,255,255,0.50);
+      color: var(--primary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
+    }
+
+    /* ═══ 전체 래퍼 ═══ */
+    .chat-list-wrap {
+      padding: var(--space-xs) var(--space-lg) 0;
+    }
+
+    .section-label {
+      font-size: var(--text-caption);
+      font-weight: var(--weight-semibold);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: var(--space-md) 0 var(--space-xs);
+    }
+
+
+    /* ═══ 케어 현황 카드 ═══ */
+    .care-status-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.42);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      border: 0.5px solid rgba(255,255,255,0.60);
+      border-radius: var(--radius-xl);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.75) inset,
+        0 4px 16px rgba(0,0,0,0.05);
+      margin-bottom: var(--space-xs);
+    }
+    .care-status-icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3B82F6, #0EA5E9);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .care-status-icon::after {
+      content: '';
+      position: absolute; bottom: 1px; right: 1px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #34D399;
+      border: 2px solid white;
+    }
+    .care-status-body { flex: 1; min-width: 0; }
+    .care-status-name {
+      font-size: var(--text-footnote);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .care-status-sub {
+      font-size: var(--text-mini);
+      color: var(--text-secondary);
+    }
+    .care-status-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .care-unread-badge {
+      background: rgba(239,68,68,0.12);
+      color: #EF4444;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+    .care-last-time {
+      font-size: var(--text-mini);
+      color: var(--text-tertiary);
+    }
+
+    /* ═══ 채팅 목록 ═══ */
+    .chat-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: 14px var(--space-lg);
+      background: rgba(255,255,255,0.42);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      border: 0.5px solid rgba(255,255,255,0.60);
+      border-radius: var(--radius-xl);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.75) inset,
+        0 4px 16px rgba(0,0,0,0.05);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.15s ease, background 0.15s ease;
+      position: relative;
+    }
+    .chat-item:active {
+      transform: scale(0.97);
+      background: rgba(255,255,255,0.32);
+    }
+
+
+    .chat-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+      font-weight: 700;
+      border: 0.5px solid rgba(255,255,255,0.5);
+    }
+    .avatar-nurse   { background: linear-gradient(135deg, #3B82F6, #0EA5E9); color: white; }
+    .avatar-patient { background: linear-gradient(135deg, #F59E0B, #FBBF24); color: white; }
+    .avatar-family  { background: linear-gradient(135deg, #10B981, #34D399); color: white; }
+    .avatar-ai      { background: linear-gradient(135deg, #2C7AFC, #7C3AED); color: white; }
+
+    .chat-item-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .chat-item-name {
+      font-size: var(--text-callout);
+      font-weight: var(--weight-semibold);
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chat-item-name-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(44,122,252,0.15), rgba(124,58,237,0.15));
+      color: #6D28D9;
+    }
+    .chat-item-preview {
+      font-size: var(--text-footnote);
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-item-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .chat-item-time {
+      font-size: var(--text-mini);
+      color: var(--text-tertiary);
+    }
+    .chat-item-badge {
+      background: var(--primary);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 7px;
+      min-width: 20px;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .badge-hidden { visibility: hidden; }
+
+    /* ═══ 플로팅 필 탭바 ═══ */
+    html { background: #EEF5FF; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chat-header-inner">
+      <span class="chat-header-title">채팅</span>
+      <button class="header-edit-btn" aria-label="새 채팅">
+        <iconify-icon icon="fluent:compose-24-filled" style="font-size:18px;color:var(--guardian);"></iconify-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="chat-list-wrap">
+
+    <!-- 케어 현황 카드 -->
+    <div class="care-status-card">
+      <div class="care-status-icon">
+        <iconify-icon icon="ph:stethoscope" style="font-size:20px;color:white;"></iconify-icon>
+      </div>
+      <div class="care-status-body">
+        <div class="care-status-name">김미영 간호사 · 오후 근무 중</div>
+        <div class="care-status-sub">마지막 메시지 오후 2:14</div>
+      </div>
+      <div class="care-status-meta">
+        <span class="care-unread-badge">미읽음 2건</span>
+        <span class="care-last-time">오늘</span>
+      </div>
+    </div>
+
+
+    <!-- AI 어시스턴트 섹션 -->
+    <div class="section-label">AI 어시스턴트</div>
+    <div class="chat-list" style="margin-bottom: var(--space-md);">
+      <a href="g03-chat-ai.html" class="chat-item chat-item-ai">
+        <div class="chat-avatar avatar-ai">
+          <svg width="20" height="20" viewBox="0 0 2526 2526" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+            <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+          </svg>
+        </div>
+        <div class="chat-item-body">
+          <div class="chat-item-name">
+            하루 AI
+            <span class="chat-item-name-badge">AI</span>
+          </div>
+          <div class="chat-item-preview">요양·케어 정보, 감정 지원, 요양원 찾기 등</div>
+        </div>
+        <div class="chat-item-meta">
+          <span class="chat-item-time">항상</span>
+          <span class="chat-item-badge badge-hidden">0</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- 채팅방 섹션 -->
+    <div class="section-label">채팅방</div>
+    <div class="chat-list">
+
+      <!-- 간호사 채팅 -->
+      <a href="g03-chat-nurse.html" class="chat-item">
+        <div class="chat-avatar avatar-nurse">
+          <iconify-icon icon="ph:stethoscope" style="font-size:22px;"></iconify-icon>
+        </div>
+        <div class="chat-item-body">
+          <div class="chat-item-name">김미영 간호사</div>
+          <div class="chat-item-preview">오후에 혈압이 살짝 올라서 추가 측정 중이에요. 곧 알려드릴게요!</div>
+        </div>
+        <div class="chat-item-meta">
+          <span class="chat-item-time">오후 2:14</span>
+          <span class="chat-item-badge">2</span>
+        </div>
+      </a>
+
+      <!-- 환자 채팅 -->
+      <a href="g03-chat-patient.html" class="chat-item">
+        <div class="chat-avatar avatar-patient">
+          <iconify-icon icon="fluent:heart-24-filled" style="font-size:22px;"></iconify-icon>
+        </div>
+        <div class="chat-item-body">
+          <div class="chat-item-name">손정희 어머니</div>
+          <div class="chat-item-preview">예찬아~ 오늘 날씨 좋아서 마당 나왔다 왔어 😊</div>
+        </div>
+        <div class="chat-item-meta">
+          <span class="chat-item-time">오후 1:05</span>
+          <span class="chat-item-badge">3</span>
+        </div>
+      </a>
+
+      <!-- 가족 그룹 채팅 -->
+      <a href="g03-chat-family.html" class="chat-item">
+        <div class="chat-avatar avatar-family">
+          <iconify-icon icon="ph:users" style="font-size:22px;"></iconify-icon>
+        </div>
+        <div class="chat-item-body">
+          <div class="chat-item-name">가족 그룹 채팅</div>
+          <div class="chat-item-preview">손예린: 오빠 이번 일요일 면회 같이 가자. 오전 괜찮아?</div>
+        </div>
+        <div class="chat-item-meta">
+          <span class="chat-item-time">오전 9:42</span>
+          <span class="chat-item-badge">1</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <nav class="tabbar" role="navigation" aria-label="메인 내비게이션">
+    <a href="g-guardian-live.html" class="tab">
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="currentColor">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+        </svg>
+      </span>
+      <span>홈</span>
+    </a>
+    <a href="g03-chat.html" class="tab active" aria-current="page">
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/>
+        </svg>
+      </span>
+      <span>채팅</span>
+    </a>
+    <a href="g02-ai-report.html" class="tab">
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="4" y="12" width="4" height="8" rx="2"/>
+          <rect x="10" y="6" width="4" height="14" rx="2"/>
+          <rect x="16" y="9" width="4" height="11" rx="2"/>
+        </svg>
+      </span>
+      <span>기록</span>
+    </a>
+    <a href="g08-billing.html" class="tab">
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="2" y="5" width="20" height="16" rx="3"/>
+          <rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/>
+          <rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
+        </svg>
+      </span>
+      <span>결제</span>
+    </a>
+    <a href="g05-mypage.html" class="tab">
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="8" r="4.5"/>
+          <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/>
+        </svg>
+      </span>
+      <span>마이</span>
+    </a>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <div class="ios-home-indicator"></div>
+</body>
+</html>
