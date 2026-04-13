@@ -93,7 +93,7 @@
       border-top: none;
       /* 위치: 탭바 위 12px 갭 */
       position: fixed;
-      bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 61px + 12px);
+      bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 12px);
       left: 50%;
       transform: translateX(-50%);
       width: calc(100% - 32px);
@@ -211,7 +211,7 @@
       bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px) !important;
       left: 50% !important; transform: translateX(-50%) !important;
       width: calc(100% - 32px) !important; max-width: 398px !important;
-      height: 61px !important; padding: 0 2px !important; padding-bottom: 0 !important;
+      height: 68px !important; padding: 0 2px !important; padding-bottom: 0 !important;
       border-top: none !important; border-radius: 999px !important;
       background: rgba(255,255,255,0.07) !important;
       backdrop-filter: blur(72px) saturate(190%) brightness(1.10) !important;
@@ -223,7 +223,7 @@
     .tab {
       flex-direction: column !important; gap: 2px !important;
       padding: 8px 4px !important; border-radius: 999px !important;
-      font-size: 0.65rem !important; font-weight: 500 !important;
+      font-size: 0.75rem !important; font-weight: 500 !important;
       color: rgba(28,28,30,0.45) !important;
     }
     .tab.active { background: rgba(255,255,255,0.22) !important; color: #1C1C1E !important; }
@@ -237,7 +237,7 @@
     }
     /* 메시지 영역 padding — 탭바(61px) + 갭(12px) + 입력필(52px) + 갭(16px) */
     .chat-messages {
-      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 61px + 12px + 52px + 16px) !important;
+      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 12px + 52px + 16px) !important;
       position: relative; z-index: 1;
     }
     /* ═══ LQ 버튼 ═══ */
@@ -287,7 +287,7 @@
           <div style="font-size:var(--text-headline); font-weight:var(--weight-semibold);">김미영 간호사</div>
           <div style="font-size:var(--text-mini); color:var(--text-secondary);">정간호사 · 3층 담당 · 오전 근무 중</div>
         </div>
-        <i data-lucide="chevron-right" style="width:16px;height:16px;color:var(--text-tertiary);"></i>
+        <i data-lucide="chevron-right" style="width:20px;height:20px;color:var(--text-tertiary);"></i>
       </a>
     </div>
   </div>
@@ -361,23 +361,23 @@
 
       <nav class="tabbar" role="navigation" aria-label="메인 내비게이션">
     <a href="../../v7_홈화면시안/g-guardian-live.html" class="tab">
-      <span class="tab-icon"><i data-lucide="home" style="width:16px;height:16px;"></i></span>
+      <span class="tab-icon"><i data-lucide="home" style="width:20px;height:20px;"></i></span>
       <span>홈</span>
     </a>
     <a href="g03-chat.html" class="tab active" aria-current="page">
-      <span class="tab-icon"><i data-lucide="message-circle" style="width:16px;height:16px;"></i></span>
+      <span class="tab-icon"><i data-lucide="message-circle" style="width:20px;height:20px;"></i></span>
       <span>채팅</span>
     </a>
     <a href="g02-ai-report.html" class="tab">
-      <span class="tab-icon"><i data-lucide="clipboard-list" style="width:16px;height:16px;"></i></span>
+      <span class="tab-icon"><i data-lucide="clipboard-list" style="width:20px;height:20px;"></i></span>
       <span>기록</span>
     </a>
     <a href="g08-billing.html" class="tab">
-      <span class="tab-icon"><i data-lucide="credit-card" style="width:16px;height:16px;"></i></span>
+      <span class="tab-icon"><i data-lucide="credit-card" style="width:20px;height:20px;"></i></span>
       <span>결제</span>
     </a>
     <a href="g05-mypage.html" class="tab">
-      <span class="tab-icon"><i data-lucide="user" style="width:16px;height:16px;"></i></span>
+      <span class="tab-icon"><i data-lucide="user" style="width:20px;height:20px;"></i></span>
       <span>마이</span>
     </a>
   </nav>
