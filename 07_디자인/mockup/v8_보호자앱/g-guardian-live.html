@@ -184,7 +184,7 @@
 
     /* ─── AI 프롬프트 제안 ─── */
     .ai-prompts-zone {
-      padding: 18px 0 0;
+      padding: 4px 20px 14px;
     }
     .ai-prompt-item {
       display: block; width: 100%;
@@ -516,7 +516,7 @@
     }
     .tab.active {
       background: rgba(255,255,255,0.22);
-      color: #1C1C1E;
+      color: #0891B2;
     }
     .tab-icon { display: flex; align-items: center; }
 
@@ -712,15 +712,10 @@
           </div>
         </div>
 
-        <!-- 인삿말 + AI 프롬프트 -->
+        <!-- 인삿말 -->
         <div class="greeting-zone">
           <h1 class="greeting-main" id="greetingMain">오늘도 수고하셨어요,<br>정희님 잘 있어요</h1>
           <p class="greeting-sub" id="greetingSub">저녁 일과도 잘 되고 있어요.</p>
-          <div class="ai-prompts-zone">
-            <button class="ai-prompt-item" onclick="fillPrompt('오늘 정희님 상태 어때요?')">오늘 정희님 상태 어때요?</button>
-            <button class="ai-prompt-item" onclick="fillPrompt('담당 간호사와 대화하기')">담당 간호사와 대화하기</button>
-            <button class="ai-prompt-item" onclick="fillPrompt('이번 주 케어 요약해줘')">이번 주 케어 요약해줘</button>
-          </div>
         </div>
 
         <!-- 스페이서 -->
@@ -728,6 +723,11 @@
 
         <!-- 하단 AI 입력 -->
         <div class="sec-chat-bottom">
+          <div class="ai-prompts-zone">
+            <button class="ai-prompt-item" onclick="fillPrompt('오늘 정희님 상태 어때요?')">오늘 정희님 상태 어때요?</button>
+            <button class="ai-prompt-item" onclick="fillPrompt('담당 간호사와 대화하기')">담당 간호사와 대화하기</button>
+            <button class="ai-prompt-item" onclick="fillPrompt('이번 주 케어 요약해줘')">이번 주 케어 요약해줘</button>
+          </div>
           <div class="qchip-scroll">
             <button class="qchip" onclick="scrollToCare(); setTimeout(() => showSheet(), 400)">
               <iconify-icon icon="ph:sparkle-fill" style="font-size:13px;color:rgba(28,28,30,0.5);"></iconify-icon>

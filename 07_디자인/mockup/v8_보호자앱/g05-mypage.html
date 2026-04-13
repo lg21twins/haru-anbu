@@ -35,7 +35,7 @@
     body {
       background: transparent;
       max-width: 430px;
-      padding-top: calc(max(env(safe-area-inset-top, 0px), 44px) + 20px);
+      padding-top: calc(max(env(safe-area-inset-top, 0px), 44px) + 12px + 44px);
       margin: 0 auto;
       min-height: 100vh;
       padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 24px);
@@ -79,14 +79,46 @@
     .lq > * { position: relative; z-index: 1; }
 
     /* ══════════════════════════════════════════
-       페이지 타이틀
+       고정 헤더
     ══════════════════════════════════════════ */
-    .page-title {
-      font-size: var(--text-title);
+    .page-header {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      padding-top: max(env(safe-area-inset-top, 0px), 44px);
+      padding-bottom: 12px;
+      padding-left: 16px;
+      padding-right: 16px;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(40px) saturate(160%);
+      -webkit-backdrop-filter: blur(40px) saturate(160%);
+      border-bottom: 0.5px solid rgba(255,255,255,0.18);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-header-title {
+      font-size: var(--text-headline);
       font-weight: var(--weight-bold);
       color: var(--text-primary);
-      padding: var(--space-xs) 0 var(--space-md);
     }
+    .page-header-btn {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-full);
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
+      -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
+      border: 0.5px solid rgba(255,255,255,0.55);
+      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 4px 12px rgba(0,0,0,0.05);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-primary);
+    }
+    /* 스크롤 콘텐츠 상단 여백 조정 */
+    .page-title { display: none; }
 
     /* ══════════════════════════════════════════
        프로필 카드
@@ -458,8 +490,17 @@
   </style>
 </head>
 <body>
-  <div class="content">
 
+  <!-- 고정 헤더 -->
+  <header class="page-header">
+    <div style="width:36px;"></div>
+    <span class="page-header-title">내 정보</span>
+    <div class="page-header-btn">
+      <iconify-icon icon="ph:gear-six" style="font-size:18px;"></iconify-icon>
+    </div>
+  </header>
+
+  <div class="content">
     <h2 class="page-title">내 정보</h2>
 
     <!-- ── 프로필 카드 ── -->
