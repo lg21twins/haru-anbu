@@ -6,7 +6,7 @@
   <title>하루안부 — 결제 / 청구</title>
   <link rel="stylesheet" href="../common.css">
   <style>
-    body { background:transparent; max-width:430px; padding-top:72px; margin:0 auto; min-height:100vh; padding-bottom:calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 61px + 16px); }
+    body { background:transparent; max-width:430px; padding-top:calc(max(env(safe-area-inset-top, 0px), 44px) + 52px); margin:0 auto; min-height:100vh; padding-bottom:calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 61px + 16px); }
     .content { padding:0 var(--space-lg); position: relative; z-index: 1; }
 
     .total-card {
@@ -111,7 +111,11 @@
       position: fixed !important; top: 0 !important;
       left: 50% !important; transform: translateX(-50%) !important;
       width: 100% !important; max-width: 430px !important;
-      z-index: 10 !important; height: 60px !important;
+      z-index: 10 !important; height: auto !important;
+      padding-top: max(env(safe-area-inset-top, 0px), 44px) !important;
+      padding-bottom: 12px !important;
+      padding-left: 16px !important; padding-right: 16px !important;
+      display: flex !important; align-items: center !important; justify-content: space-between !important;
       background: rgba(255,255,255,0.12) !important;
       backdrop-filter: blur(72px) saturate(190%) brightness(1.08) !important;
       -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.08) !important;
