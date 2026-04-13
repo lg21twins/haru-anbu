@@ -155,7 +155,7 @@
     .nav-btn {
       width: 38px; height: 38px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      color: #1C1C1E; position: relative; text-decoration: none;
+      color: #2C7AFC; position: relative; text-decoration: none;
       transition: transform 0.1s;
     }
     .nav-btn:active { transform: scale(0.93); }
@@ -169,7 +169,7 @@
     .avatar-btn {
       width: 38px; height: 38px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.94rem; font-weight: 700; color: #3B0764;
+      color: #2C7AFC;
       transition: transform 0.1s;
     }
     .avatar-btn:active { transform: scale(0.93); }
@@ -192,7 +192,7 @@
       background: none; border: none; padding: 9px 0;
       font-size: 1.18rem; font-weight: 600; color: rgba(28,28,30,0.30);
       letter-spacing: -0.4px; line-height: 1.2;
-      transition: color 0.15s, opacity 0.15s;
+      transition: color 0.6s ease;
     }
     .ai-prompt-item:active { color: rgba(28,28,30,0.65); }
 
@@ -325,12 +325,12 @@
     }
     .ai-insight-icon {
       width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, #22D3EE, #0891B2);
+      background: linear-gradient(135deg, #22D3EE, #2C7AFC);
       display: flex; align-items: center; justify-content: center;
       margin-top: 1px;
     }
     .ai-insight-text { font-size: 0.88rem; line-height: 1.6; color: #1C1C1E; flex: 1; }
-    .ai-insight-text b { color: #0891B2; font-weight: 700; }
+    .ai-insight-text b { color: #2C7AFC; font-weight: 700; }
 
     /* 상세 케어 카드 */
     .detail-card {
@@ -370,7 +370,7 @@
       font-size: 0.88rem; font-weight: 700;
     }
     .dc-badge--warn { color: #FF3B30; background: rgba(255,59,48,0.08); border: 0.5px solid rgba(255,59,48,0.20); }
-    .dc-badge--good { color: #0891B2; background: rgba(8,145,178,0.10); border: 0.5px solid rgba(8,145,178,0.20); }
+    .dc-badge--good { color: #2C7AFC; background: rgba(8,145,178,0.10); border: 0.5px solid rgba(8,145,178,0.20); }
 
     /* 메트릭 (큰 숫자) */
     .dc-metric {
@@ -396,7 +396,7 @@
       height: 100%; border-radius: 99px;
       transition: width 0.6s ease;
     }
-    .dc-progress-fill--good { background: linear-gradient(90deg, #22D3EE, #0891B2); }
+    .dc-progress-fill--good { background: linear-gradient(90deg, #22D3EE, #2C7AFC); }
     .dc-progress-fill--warn { background: linear-gradient(90deg, #FCA5A5, #FF3B30); }
 
     /* 타임라인 (약/식사) */
@@ -468,7 +468,7 @@
       border: 0.5px solid rgba(8,145,178,0.25);
       box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
       cursor: pointer; transition: transform 0.12s;
-      font-size: 1rem; font-weight: 700; color: #0891B2;
+      font-size: 1rem; font-weight: 700; color: #2C7AFC;
       font-family: inherit;
       position: relative; overflow: hidden;
     }
@@ -515,7 +515,7 @@
     }
     .tab.active {
       background: rgba(255,255,255,0.22);
-      color: #0891B2;
+      color: #2C7AFC;
     }
     .tab-icon { display: flex; align-items: center; }
 
@@ -650,18 +650,17 @@
               <div class="logo">
                 <svg width="30" height="30" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g transform="translate(50,50) scale(0.163)">
-                    <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#0891B2"/>
-                    <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#0891B2"/>
+                    <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/>
+                    <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/>
                   </g>
                 </svg>
-                <span>하루안부</span>
               </div>
               <div class="top-nav-right">
                 <a href="#" class="nav-btn lq" aria-label="알림">
-                  <iconify-icon icon="fluent:alert-24-filled" style="font-size:20px;"></iconify-icon>
+                  <iconify-icon icon="fluent:alert-24-filled" style="font-size:20px;color:#2C7AFC;"></iconify-icon>
                   <span class="notif-dot"></span>
                 </a>
-                <div class="avatar-btn lq">예</div>
+                <div class="avatar-btn lq"><iconify-icon icon="fluent:person-24-filled" style="font-size:20px;color:#2C7AFC;"></iconify-icon></div>
               </div>
             </nav>
           </div>
@@ -707,9 +706,9 @@
           </div>
           <div class="ai-input-bar">
             <div class="ai-input-inner lq">
-              <span class="ai-placeholder">정희님에 대해 물어보세요...</span>
+              <span class="ai-placeholder">무엇이든 물어보세요...</span>
               <button class="ai-mic-btn" aria-label="음성 입력">
-                <iconify-icon icon="fluent:mic-24-filled" style="font-size:17px;color:#0891B2;"></iconify-icon>
+                <iconify-icon icon="fluent:mic-24-filled" style="font-size:17px;color:#2C7AFC;"></iconify-icon>
               </button>
             </div>
           </div>
@@ -756,12 +755,12 @@
                 <span class="dc-badge dc-badge--warn">주의</span>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:2rem;font-weight:800;letter-spacing:-1.5px;color:#0891B2;line-height:1;">1<span style="font-size:1rem;font-weight:500;color:rgba(28,28,30,0.30);margin-left:2px;">/3</span></div>
+                <div style="font-size:2rem;font-weight:800;letter-spacing:-1.5px;color:#2C7AFC;line-height:1;">1<span style="font-size:1rem;font-weight:500;color:rgba(28,28,30,0.30);margin-left:2px;">/3</span></div>
                 <div style="font-size:0.88rem;color:rgba(28,28,30,0.40);margin-top:4px;">복용 완료</div>
               </div>
               <div style="display:flex;gap:5px;margin-bottom:12px;">
                 <div class="dc-tl-item">
-                  <div class="dc-tl-dot dc-tl-dot--done"><iconify-icon icon="fluent:checkmark-24-filled" style="font-size:10px;color:#0891B2;"></iconify-icon></div>
+                  <div class="dc-tl-dot dc-tl-dot--done"><iconify-icon icon="fluent:checkmark-24-filled" style="font-size:10px;color:#2C7AFC;"></iconify-icon></div>
                   <span class="dc-tl-label">아침</span>
                   <span class="dc-tl-time">08:20</span>
                 </div>
@@ -786,22 +785,22 @@
               </div>
               <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:6px 0;">
                 <div style="width:44px;height:44px;border-radius:50%;background:rgba(8,145,178,0.10);display:flex;align-items:center;justify-content:center;">
-                  <iconify-icon icon="ph:smiley-fill" style="font-size:24px;color:#0891B2;"></iconify-icon>
+                  <iconify-icon icon="ph:smiley-fill" style="font-size:24px;color:#2C7AFC;"></iconify-icon>
                 </div>
                 <div style="font-size:0.88rem;font-weight:700;color:#1C1C1E;">오늘 밝음</div>
                 <div style="font-size:0.88rem;color:rgba(28,28,30,0.38);">특이사항 없음</div>
               </div>
               <div style="display:flex;gap:4px;margin-top:12px;">
                 <div style="flex:1;background:rgba(0,0,0,0.04);border-radius:8px;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <iconify-icon icon="ph:smiley-fill" style="font-size:13px;color:#0891B2;"></iconify-icon>
+                  <iconify-icon icon="ph:smiley-fill" style="font-size:13px;color:#2C7AFC;"></iconify-icon>
                   <div style="font-size:0.88rem;color:rgba(28,28,30,0.38);">오전</div>
                 </div>
                 <div style="flex:1;background:rgba(0,0,0,0.04);border-radius:8px;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <iconify-icon icon="ph:smiley-meh-fill" style="font-size:13px;color:#0891B2;"></iconify-icon>
+                  <iconify-icon icon="ph:smiley-meh-fill" style="font-size:13px;color:#2C7AFC;"></iconify-icon>
                   <div style="font-size:0.88rem;color:rgba(28,28,30,0.38);">오후</div>
                 </div>
                 <div style="flex:1;background:rgba(0,0,0,0.04);border-radius:8px;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <iconify-icon icon="ph:smiley-fill" style="font-size:13px;color:#0891B2;"></iconify-icon>
+                  <iconify-icon icon="ph:smiley-fill" style="font-size:13px;color:#2C7AFC;"></iconify-icon>
                   <div style="font-size:0.88rem;color:rgba(28,28,30,0.38);">저녁</div>
                 </div>
               </div>
@@ -818,17 +817,17 @@
                 <div style="width:0.5px;background:rgba(0,0,0,0.07);flex-shrink:0;align-self:stretch;"></div>
                 <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px;">
                   <div style="display:flex;align-items:center;gap:8px;">
-                    <iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:14px;color:#0891B2;flex-shrink:0;"></iconify-icon>
+                    <iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:14px;color:#2C7AFC;flex-shrink:0;"></iconify-icon>
                     <span style="font-size:0.88rem;color:#1C1C1E;flex:1;">아침</span>
                     <span style="font-size:0.88rem;color:rgba(28,28,30,0.36);">08:10</span>
                   </div>
                   <div style="display:flex;align-items:center;gap:8px;">
-                    <iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:14px;color:#0891B2;flex-shrink:0;"></iconify-icon>
+                    <iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:14px;color:#2C7AFC;flex-shrink:0;"></iconify-icon>
                     <span style="font-size:0.88rem;color:#1C1C1E;flex:1;">점심</span>
                     <span style="font-size:0.88rem;color:rgba(28,28,30,0.36);">12:05</span>
                   </div>
                   <div style="display:flex;align-items:center;gap:8px;">
-                    <iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:14px;color:#0891B2;flex-shrink:0;"></iconify-icon>
+                    <iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:14px;color:#2C7AFC;flex-shrink:0;"></iconify-icon>
                     <span style="font-size:0.88rem;color:#1C1C1E;flex:1;">저녁</span>
                     <span style="font-size:0.88rem;color:rgba(28,28,30,0.36);">18:30</span>
                   </div>
@@ -848,19 +847,19 @@
                 </div>
               </div>
               <div style="height:4px;background:rgba(0,0,0,0.07);border-radius:99px;margin-bottom:14px;overflow:hidden;">
-                <div style="width:83%;height:100%;background:linear-gradient(90deg,#22D3EE,#0891B2);border-radius:99px;"></div>
+                <div style="width:83%;height:100%;background:linear-gradient(90deg,#22D3EE,#2C7AFC);border-radius:99px;"></div>
               </div>
               <div style="display:flex;flex-direction:column;gap:8px;">
                 <div style="display:flex;align-items:center;gap:10px;">
                   <div style="width:28px;height:28px;border-radius:8px;background:rgba(8,145,178,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <iconify-icon icon="fluent:weather-sunny-24-filled" style="font-size:13px;color:#0891B2;"></iconify-icon>
+                    <iconify-icon icon="fluent:weather-sunny-24-filled" style="font-size:13px;color:#2C7AFC;"></iconify-icon>
                   </div>
                   <span style="font-size:0.88rem;color:#1C1C1E;flex:1;">오전 산책</span>
                   <span style="font-size:0.88rem;font-weight:700;color:#1C1C1E;">15<span style="font-size:0.88rem;font-weight:400;color:rgba(28,28,30,0.38);">분</span></span>
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;">
                   <div style="width:28px;height:28px;border-radius:8px;background:rgba(8,145,178,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <iconify-icon icon="ph:heartbeat-fill" style="font-size:13px;color:#0891B2;"></iconify-icon>
+                    <iconify-icon icon="ph:heartbeat-fill" style="font-size:13px;color:#2C7AFC;"></iconify-icon>
                   </div>
                   <span style="font-size:0.88rem;color:#1C1C1E;flex:1;">재활 체조</span>
                   <span style="font-size:0.88rem;font-weight:700;color:#1C1C1E;">10<span style="font-size:0.88rem;font-weight:400;color:rgba(28,28,30,0.38);">분</span></span>
@@ -1092,6 +1091,21 @@
       ph.style.color = 'rgba(28,28,30,0.75)';
       ph.style.fontWeight = '500';
     }
+
+    // 프롬프트 아이템 순차 강조 (하나씩 켜졌다 꺼짐, 반복)
+    (function() {
+      const items = document.querySelectorAll('.ai-prompt-item');
+      const original = 'rgba(28,28,30,0.30)';
+      const active   = '#1C1C1E';
+      let idx = 0;
+      function step() {
+        items.forEach(el => el.style.color = original);
+        items[idx].style.color = active;
+        idx = (idx + 1) % items.length;
+        setTimeout(step, 2000);
+      }
+      setTimeout(step, 500);
+    })();
   </script>
 </body>
 </html>
