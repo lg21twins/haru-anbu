@@ -9,7 +9,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body { height: 100%; overflow: hidden; }
-    html { background: #EEF5FF; font-size: 17px; }
+    html { background: #E6F8FA; font-size: 17px; }
     body { font-size: 1rem; }
 
     /* 전체 화면 고정 배경 레이어 */
@@ -17,12 +17,12 @@
       content: '';
       position: fixed; inset: 0; z-index: -1;
       background:
-        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(100,178,255,0.55)  0%, transparent 62%),
+        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(34,211,238,0.55)  0%, transparent 62%),
         radial-gradient(ellipse 58% 38% at 104%   0%,  rgba(56,189,248,0.48)   0%, transparent 60%),
-        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(99,102,241,0.42)   0%, transparent 62%),
-        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(44,122,252,0.38)   0%, transparent 60%),
+        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(6,182,212,0.35)   0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(8,145,178,0.38)   0%, transparent 60%),
         radial-gradient(ellipse 42% 32% at  50%  50%,  rgba(255,255,255,0.58)  0%, transparent 65%),
-        #E4EEFC;
+        #DFF6FA;
       pointer-events: none;
     }
 
@@ -306,21 +306,21 @@
     /* AI 인사이트 카드 */
     .ai-insight {
       border-radius: 16px; padding: 14px 16px; margin-bottom: 10px;
-      background: rgba(44,122,252,0.06);
+      background: rgba(8,145,178,0.06);
       backdrop-filter: blur(40px) saturate(160%);
       -webkit-backdrop-filter: blur(40px) saturate(160%);
-      border: 0.5px solid rgba(44,122,252,0.18);
+      border: 0.5px solid rgba(8,145,178,0.18);
       box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
       display: flex; align-items: flex-start; gap: 10px;
     }
     .ai-insight-icon {
       width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, #60A5FA, #2C7AFC);
+      background: linear-gradient(135deg, #22D3EE, #0891B2);
       display: flex; align-items: center; justify-content: center;
       margin-top: 1px;
     }
     .ai-insight-text { font-size: 0.88rem; line-height: 1.6; color: #1C1C1E; flex: 1; }
-    .ai-insight-text b { color: #2C7AFC; font-weight: 700; }
+    .ai-insight-text b { color: #0891B2; font-weight: 700; }
 
     /* 상세 케어 카드 */
     .detail-card {
@@ -362,7 +362,7 @@
       font-size: 0.88rem; font-weight: 700;
     }
     .dc-badge--warn { color: #FF3B30; background: rgba(255,59,48,0.08); border: 0.5px solid rgba(255,59,48,0.20); }
-    .dc-badge--good { color: #2C7AFC; background: rgba(44,122,252,0.10); border: 0.5px solid rgba(44,122,252,0.20); }
+    .dc-badge--good { color: #0891B2; background: rgba(8,145,178,0.10); border: 0.5px solid rgba(8,145,178,0.20); }
 
     /* 메트릭 (큰 숫자) */
     .dc-metric {
@@ -388,7 +388,7 @@
       height: 100%; border-radius: 99px;
       transition: width 0.6s ease;
     }
-    .dc-progress-fill--good { background: linear-gradient(90deg, #60A5FA, #2C7AFC); }
+    .dc-progress-fill--good { background: linear-gradient(90deg, #22D3EE, #0891B2); }
     .dc-progress-fill--warn { background: linear-gradient(90deg, #FCA5A5, #FF3B30); }
 
     /* 타임라인 (약/식사) */
@@ -405,7 +405,7 @@
       width: 22px; height: 22px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
-    .dc-tl-dot--done  { background: rgba(44,122,252,0.12); }
+    .dc-tl-dot--done  { background: rgba(8,145,178,0.12); }
     .dc-tl-dot--warn  { background: rgba(255,59,48,0.10); }
     .dc-tl-dot--empty { background: rgba(0,0,0,0.06); }
     .dc-tl-label { font-size: 0.88rem; font-weight: 600; color: rgba(28,28,30,0.50); }
@@ -454,13 +454,13 @@
     .report-cta {
       display: flex; align-items: center; justify-content: center; gap: 6px;
       padding: 16px; border-radius: 16px; margin-top: 4px;
-      background: rgba(44,122,252,0.10);
+      background: rgba(8,145,178,0.10);
       backdrop-filter: blur(40px) saturate(160%);
       -webkit-backdrop-filter: blur(40px) saturate(160%);
-      border: 0.5px solid rgba(44,122,252,0.25);
+      border: 0.5px solid rgba(8,145,178,0.25);
       box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
       cursor: pointer; transition: transform 0.12s;
-      font-size: 1rem; font-weight: 700; color: #2C7AFC;
+      font-size: 1rem; font-weight: 700; color: #0891B2;
       font-family: inherit;
       position: relative; overflow: hidden;
     }
@@ -647,7 +647,7 @@
     /* ─── 스와이프 전환 오버레이 ─── */
     .chat-swipe-overlay {
       position: fixed; inset: 0; z-index: 500;
-      background: rgba(44,122,252,0.08);
+      background: rgba(8,145,178,0.08);
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
       opacity: 0; pointer-events: none;
@@ -661,10 +661,10 @@
   <!-- 스와이프 힌트 (섹션1에서만 노출) -->
   <div class="swipe-hint" id="swipeHint" aria-hidden="true">
     <div class="swipe-hint-icon">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(44,122,252,0.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(8,145,178,0.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="9 18 15 12 9 6"/>
       </svg>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(44,122,252,0.4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(8,145,178,0.4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="9 18 15 12 9 6"/>
       </svg>
     </div>
@@ -687,8 +687,8 @@
               <div class="logo">
                 <svg width="30" height="30" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g transform="translate(50,50) scale(0.163)">
-                    <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/>
-                    <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/>
+                    <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#0891B2"/>
+                    <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#0891B2"/>
                   </g>
                 </svg>
                 <span>하루안부</span>
@@ -741,7 +741,7 @@
             <div class="ai-input-inner lq">
               <span class="ai-placeholder">정희님에 대해 물어보세요...</span>
               <button class="ai-mic-btn" aria-label="음성 입력">
-                <i data-lucide="mic" style="width:17px;height:17px;color:#2C7AFC;"></i>
+                <i data-lucide="mic" style="width:17px;height:17px;color:#0891B2;"></i>
               </button>
             </div>
           </div>
@@ -788,12 +788,12 @@
                 <span class="dc-badge dc-badge--warn">주의</span>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:2rem;font-weight:800;letter-spacing:-1.5px;color:#2C7AFC;line-height:1;">1<span style="font-size:1rem;font-weight:500;color:rgba(28,28,30,0.30);margin-left:2px;">/3</span></div>
+                <div style="font-size:2rem;font-weight:800;letter-spacing:-1.5px;color:#0891B2;line-height:1;">1<span style="font-size:1rem;font-weight:500;color:rgba(28,28,30,0.30);margin-left:2px;">/3</span></div>
                 <div style="font-size:0.88rem;color:rgba(28,28,30,0.40);margin-top:4px;">복용 완료</div>
               </div>
               <div style="display:flex;gap:5px;margin-bottom:12px;">
                 <div class="dc-tl-item">
-                  <div class="dc-tl-dot dc-tl-dot--done"><i data-lucide="check" style="width:10px;height:10px;color:#2C7AFC;"></i></div>
+                  <div class="dc-tl-dot dc-tl-dot--done"><i data-lucide="check" style="width:10px;height:10px;color:#0891B2;"></i></div>
                   <span class="dc-tl-label">아침</span>
                   <span class="dc-tl-time">08:20</span>
                 </div>
@@ -817,23 +817,23 @@
                 <span class="dc-badge dc-badge--good">밝음</span>
               </div>
               <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:6px 0;">
-                <div style="width:44px;height:44px;border-radius:50%;background:rgba(44,122,252,0.10);display:flex;align-items:center;justify-content:center;">
-                  <i data-lucide="smile" style="width:24px;height:24px;color:#2C7AFC;"></i>
+                <div style="width:44px;height:44px;border-radius:50%;background:rgba(8,145,178,0.10);display:flex;align-items:center;justify-content:center;">
+                  <i data-lucide="smile" style="width:24px;height:24px;color:#0891B2;"></i>
                 </div>
                 <div style="font-size:0.88rem;font-weight:700;color:#1C1C1E;">오늘 밝음</div>
                 <div style="font-size:0.88rem;color:rgba(28,28,30,0.38);">특이사항 없음</div>
               </div>
               <div style="display:flex;gap:4px;margin-top:12px;">
                 <div style="flex:1;background:rgba(0,0,0,0.04);border-radius:8px;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <i data-lucide="smile" style="width:13px;height:13px;color:#2C7AFC;"></i>
+                  <i data-lucide="smile" style="width:13px;height:13px;color:#0891B2;"></i>
                   <div style="font-size:0.88rem;color:rgba(28,28,30,0.38);">오전</div>
                 </div>
                 <div style="flex:1;background:rgba(0,0,0,0.04);border-radius:8px;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <i data-lucide="meh" style="width:13px;height:13px;color:#2C7AFC;"></i>
+                  <i data-lucide="meh" style="width:13px;height:13px;color:#0891B2;"></i>
                   <div style="font-size:0.88rem;color:rgba(28,28,30,0.38);">오후</div>
                 </div>
                 <div style="flex:1;background:rgba(0,0,0,0.04);border-radius:8px;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <i data-lucide="smile" style="width:13px;height:13px;color:#2C7AFC;"></i>
+                  <i data-lucide="smile" style="width:13px;height:13px;color:#0891B2;"></i>
                   <div style="font-size:0.88rem;color:rgba(28,28,30,0.38);">저녁</div>
                 </div>
               </div>
@@ -850,17 +850,17 @@
                 <div style="width:0.5px;background:rgba(0,0,0,0.07);flex-shrink:0;align-self:stretch;"></div>
                 <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px;">
                   <div style="display:flex;align-items:center;gap:8px;">
-                    <i data-lucide="check-circle" style="width:14px;height:14px;color:#2C7AFC;flex-shrink:0;"></i>
+                    <i data-lucide="check-circle" style="width:14px;height:14px;color:#0891B2;flex-shrink:0;"></i>
                     <span style="font-size:0.88rem;color:#1C1C1E;flex:1;">아침</span>
                     <span style="font-size:0.88rem;color:rgba(28,28,30,0.36);">08:10</span>
                   </div>
                   <div style="display:flex;align-items:center;gap:8px;">
-                    <i data-lucide="check-circle" style="width:14px;height:14px;color:#2C7AFC;flex-shrink:0;"></i>
+                    <i data-lucide="check-circle" style="width:14px;height:14px;color:#0891B2;flex-shrink:0;"></i>
                     <span style="font-size:0.88rem;color:#1C1C1E;flex:1;">점심</span>
                     <span style="font-size:0.88rem;color:rgba(28,28,30,0.36);">12:05</span>
                   </div>
                   <div style="display:flex;align-items:center;gap:8px;">
-                    <i data-lucide="check-circle" style="width:14px;height:14px;color:#2C7AFC;flex-shrink:0;"></i>
+                    <i data-lucide="check-circle" style="width:14px;height:14px;color:#0891B2;flex-shrink:0;"></i>
                     <span style="font-size:0.88rem;color:#1C1C1E;flex:1;">저녁</span>
                     <span style="font-size:0.88rem;color:rgba(28,28,30,0.36);">18:30</span>
                   </div>
@@ -880,19 +880,19 @@
                 </div>
               </div>
               <div style="height:4px;background:rgba(0,0,0,0.07);border-radius:99px;margin-bottom:14px;overflow:hidden;">
-                <div style="width:83%;height:100%;background:linear-gradient(90deg,#60A5FA,#2C7AFC);border-radius:99px;"></div>
+                <div style="width:83%;height:100%;background:linear-gradient(90deg,#22D3EE,#0891B2);border-radius:99px;"></div>
               </div>
               <div style="display:flex;flex-direction:column;gap:8px;">
                 <div style="display:flex;align-items:center;gap:10px;">
-                  <div style="width:28px;height:28px;border-radius:8px;background:rgba(44,122,252,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i data-lucide="sun" style="width:13px;height:13px;color:#2C7AFC;"></i>
+                  <div style="width:28px;height:28px;border-radius:8px;background:rgba(8,145,178,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i data-lucide="sun" style="width:13px;height:13px;color:#0891B2;"></i>
                   </div>
                   <span style="font-size:0.88rem;color:#1C1C1E;flex:1;">오전 산책</span>
                   <span style="font-size:0.88rem;font-weight:700;color:#1C1C1E;">15<span style="font-size:0.88rem;font-weight:400;color:rgba(28,28,30,0.38);">분</span></span>
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;">
-                  <div style="width:28px;height:28px;border-radius:8px;background:rgba(44,122,252,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i data-lucide="activity" style="width:13px;height:13px;color:#2C7AFC;"></i>
+                  <div style="width:28px;height:28px;border-radius:8px;background:rgba(8,145,178,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i data-lucide="activity" style="width:13px;height:13px;color:#0891B2;"></i>
                   </div>
                   <span style="font-size:0.88rem;color:#1C1C1E;flex:1;">재활 체조</span>
                   <span style="font-size:0.88rem;font-weight:700;color:#1C1C1E;">10<span style="font-size:0.88rem;font-weight:400;color:rgba(28,28,30,0.38);">분</span></span>

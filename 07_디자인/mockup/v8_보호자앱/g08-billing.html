@@ -40,8 +40,8 @@
     .dday-badge {
       display: inline-flex; align-items: center; gap: 3px;
       padding: 3px 8px;
-      background: rgba(44,122,252,0.10);
-      border: 0.5px solid rgba(44,122,252,0.28);
+      background: rgba(8,145,178,0.10);
+      border: 0.5px solid rgba(8,145,178,0.28);
       border-radius: var(--radius-full);
       font-size: 11px;
       font-weight: var(--weight-semibold);
@@ -65,11 +65,11 @@
       display: flex; align-items: center; justify-content: center; gap: 8px;
       width: 100%; margin-top: var(--space-lg);
       padding: 14px 0;
-      background: linear-gradient(135deg, rgba(44,122,252,0.90) 0%, rgba(56,189,248,0.85) 100%);
+      background: linear-gradient(135deg, rgba(8,145,178,0.90) 0%, rgba(56,189,248,0.85) 100%);
       backdrop-filter: blur(40px) saturate(180%);
       -webkit-backdrop-filter: blur(40px) saturate(180%);
       border: 0.5px solid rgba(255,255,255,0.55);
-      box-shadow: 0 1px 0 rgba(255,255,255,0.40) inset, 0 4px 16px rgba(44,122,252,0.30);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.40) inset, 0 4px 16px rgba(8,145,178,0.30);
       border-radius: var(--radius-full);
       color: #fff;
       font-size: var(--text-callout);
@@ -80,7 +80,7 @@
       transition: transform 0.18s ease, box-shadow 0.18s ease;
       position: relative; z-index: 1;
     }
-    .btn-pay:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(44,122,252,0.20); }
+    .btn-pay:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(8,145,178,0.20); }
 
     /* ══ 청구 내역 카드 ══ */
     .breakdown-card {
@@ -121,8 +121,8 @@
     .insurance-grade {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 4px 10px;
-      background: rgba(44,122,252,0.12);
-      border: 0.5px solid rgba(44,122,252,0.25);
+      background: rgba(8,145,178,0.12);
+      border: 0.5px solid rgba(8,145,178,0.25);
       border-radius: var(--radius-full);
       font-size: 12px; font-weight: var(--weight-semibold);
       color: #1e6ce8;
@@ -151,7 +151,7 @@
     }
     .insurance-divider {
       height: 0.5px;
-      background: rgba(44,122,252,0.30);
+      background: rgba(8,145,178,0.30);
       margin: 4px 0;
       position: relative; z-index: 1;
     }
@@ -193,9 +193,9 @@
       transition: height 0.3s ease;
     }
     .trend-bar.current {
-      background: linear-gradient(180deg, rgba(44,122,252,0.85) 0%, rgba(56,189,248,0.75) 100%);
-      border-color: rgba(44,122,252,0.50);
-      box-shadow: 0 2px 8px rgba(44,122,252,0.25);
+      background: linear-gradient(180deg, rgba(8,145,178,0.85) 0%, rgba(56,189,248,0.75) 100%);
+      border-color: rgba(8,145,178,0.50);
+      box-shadow: 0 2px 8px rgba(8,145,178,0.25);
     }
     .trend-month {
       font-size: 10px;
@@ -228,10 +228,10 @@
       padding: var(--space-xl);
       overflow: hidden; position: relative;
       background: linear-gradient(135deg,
-        rgba(44,122,252,0.18) 0%,
+        rgba(8,145,178,0.18) 0%,
         rgba(99,102,241,0.12) 50%,
         rgba(56,189,248,0.10) 100%) !important;
-      border: 0.5px solid rgba(44,122,252,0.35) !important;
+      border: 0.5px solid rgba(8,145,178,0.35) !important;
     }
     .ai-insight-card::before {
       content: '';
@@ -247,8 +247,8 @@
     .ai-badge {
       display: flex; align-items: center; gap: 5px;
       padding: 4px 10px;
-      background: linear-gradient(135deg, rgba(44,122,252,0.25), rgba(99,102,241,0.20));
-      border: 0.5px solid rgba(44,122,252,0.35);
+      background: linear-gradient(135deg, rgba(8,145,178,0.25), rgba(99,102,241,0.20));
+      border: 0.5px solid rgba(8,145,178,0.35);
       border-radius: var(--radius-full);
       font-size: 11px; font-weight: var(--weight-bold);
       color: #1e6ce8;
@@ -282,8 +282,8 @@
       display: flex; align-items: center; justify-content: center; gap: 6px;
       width: 100%; margin-top: var(--space-md);
       padding: 11px 0;
-      background: rgba(44,122,252,0.12);
-      border: 0.5px solid rgba(44,122,252,0.35);
+      background: rgba(8,145,178,0.12);
+      border: 0.5px solid rgba(8,145,178,0.35);
       border-radius: var(--radius-full);
       color: #1e6ce8;
       font-size: var(--text-caption);
@@ -349,7 +349,7 @@
       font-weight: var(--weight-bold);
     }
     .history-receipt-btn {
-      font-size: 10px; color: rgba(44,122,252,0.80);
+      font-size: 10px; color: rgba(8,145,178,0.80);
       font-weight: var(--weight-medium);
       cursor: pointer; white-space: nowrap;
     }
@@ -357,17 +357,17 @@
     /* ══════════════════════════════
        Glassmorphism — 홈화면 통일
     ══════════════════════════════ */
-    html { background: #EEF5FF; }
+    html { background: #E6F8FA; }
     body::after {
       content: '';
       position: fixed; inset: 0; z-index: -1;
       background:
-        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(100,178,255,0.55)  0%, transparent 62%),
+        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(34,211,238,0.55)  0%, transparent 62%),
         radial-gradient(ellipse 58% 38% at 104%   0%,  rgba(56,189,248,0.48)   0%, transparent 60%),
-        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(99,102,241,0.42)   0%, transparent 62%),
-        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(44,122,252,0.38)   0%, transparent 60%),
+        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(6,182,212,0.35)   0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(8,145,178,0.38)   0%, transparent 60%),
         radial-gradient(ellipse 42% 32% at  50%  50%,  rgba(255,255,255,0.58)  0%, transparent 65%),
-        #E4EEFC;
+        #DFF6FA;
       pointer-events: none;
     }
     .header {
@@ -418,10 +418,10 @@
     /* AI 인사이트만 덮어쓰기 */
     .ai-insight-card {
       background: linear-gradient(135deg,
-        rgba(44,122,252,0.16) 0%,
+        rgba(8,145,178,0.16) 0%,
         rgba(99,102,241,0.10) 50%,
         rgba(56,189,248,0.09) 100%) !important;
-      border: 0.5px solid rgba(44,122,252,0.32) !important;
+      border: 0.5px solid rgba(8,145,178,0.32) !important;
     }
     .breakdown-row + .breakdown-row { border-top: 0.5px solid rgba(255,255,255,0.28) !important; }
     .insurance-row + .insurance-row { border-top: 0.5px solid rgba(255,255,255,0.28); }
@@ -538,7 +538,7 @@
           <span class="breakdown-label">기타 (약품비 등)</span>
           <span class="breakdown-value">70,000원</span>
         </div>
-        <div class="breakdown-row" style="border-top:1px solid rgba(44,122,252,0.30) !important;">
+        <div class="breakdown-row" style="border-top:1px solid rgba(8,145,178,0.30) !important;">
           <span class="breakdown-total">합계</span>
           <span class="breakdown-total">1,200,000원</span>
         </div>
@@ -612,7 +612,7 @@
             <span>연말정산 의료비 공제 대상 금액: <strong style="color:#1e6ce8">누계 4,680,000원</strong></span>
           </div>
         </div>
-        <a href="g-ai.html" class="btn-ask-ai" aria-label="AI에게 비용 질문하기">
+        <a href="g03-chat.html" class="btn-ask-ai" aria-label="AI에게 비용 질문하기">
           <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
           AI에게 비용 더 물어보기
         </a>
