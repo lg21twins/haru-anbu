@@ -566,8 +566,8 @@ a.btn-link {
   position: fixed;
   bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px);
   left: 50%; transform: translateX(-50%);
-  width: calc(100% - 32px); max-width: 398px;
-  height: 68px;
+  width: calc(100% - 80px); max-width: 320px;
+  height: 64px;
   padding: 0 2px;
   display: flex;
   align-items: stretch;
@@ -593,7 +593,7 @@ a.btn-link {
   justify-content: center;
   gap: 2px;
   flex: 1;
-  padding: 8px 4px;
+  padding: 6px 2px;
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 500;
