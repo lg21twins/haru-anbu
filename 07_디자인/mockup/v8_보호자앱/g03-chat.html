@@ -65,7 +65,7 @@
       box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
     }
 
-    /* ═══ 채팅 목록 ═══ */
+    /* ═══ 전체 래퍼 ═══ */
     .chat-list-wrap {
       padding: var(--space-xs) var(--space-lg) 0;
     }
@@ -79,6 +79,72 @@
       padding: var(--space-md) 0 var(--space-xs);
     }
 
+
+    /* ═══ 케어 현황 카드 ═══ */
+    .care-status-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.42);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      border: 0.5px solid rgba(255,255,255,0.60);
+      border-radius: var(--radius-xl);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.75) inset,
+        0 4px 16px rgba(0,0,0,0.05);
+      margin-bottom: var(--space-xs);
+    }
+    .care-status-icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3B82F6, #0EA5E9);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .care-status-icon::after {
+      content: '';
+      position: absolute; bottom: 1px; right: 1px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #34D399;
+      border: 2px solid white;
+    }
+    .care-status-body { flex: 1; min-width: 0; }
+    .care-status-name {
+      font-size: var(--text-footnote);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .care-status-sub {
+      font-size: var(--text-mini);
+      color: var(--text-secondary);
+    }
+    .care-status-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .care-unread-badge {
+      background: rgba(239,68,68,0.12);
+      color: #EF4444;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+    .care-last-time {
+      font-size: var(--text-mini);
+      color: var(--text-tertiary);
+    }
+
+    /* ═══ 채팅 목록 ═══ */
     .chat-list {
       display: flex;
       flex-direction: column;
@@ -108,6 +174,12 @@
       background: rgba(255,255,255,0.32);
     }
 
+    /* AI 채팅 아이템 강조 */
+    .chat-item-ai {
+      background: rgba(241,236,255,0.55);
+      border-color: rgba(139,92,246,0.25);
+    }
+
     .chat-avatar {
       width: 52px; height: 52px;
       border-radius: 50%;
@@ -117,9 +189,10 @@
       font-weight: 700;
       border: 0.5px solid rgba(255,255,255,0.5);
     }
-    .avatar-nurse  { background: linear-gradient(135deg, #3B82F6, #0EA5E9); color: white; }
+    .avatar-nurse   { background: linear-gradient(135deg, #3B82F6, #0EA5E9); color: white; }
     .avatar-patient { background: linear-gradient(135deg, #F59E0B, #FBBF24); color: white; }
     .avatar-family  { background: linear-gradient(135deg, #10B981, #34D399); color: white; }
+    .avatar-ai      { background: linear-gradient(135deg, #2C7AFC, #7C3AED); color: white; }
 
     .chat-item-body {
       flex: 1;
@@ -129,6 +202,17 @@
       font-size: var(--text-callout);
       font-weight: var(--weight-semibold);
       margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chat-item-name-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(44,122,252,0.15), rgba(124,58,237,0.15));
+      color: #6D28D9;
     }
     .chat-item-preview {
       font-size: var(--text-footnote);
@@ -163,6 +247,7 @@
     .badge-hidden { visibility: hidden; }
 
     /* ═══ 플로팅 필 탭바 ═══ */
+    html { background: #EEF5FF; }
   </style>
 </head>
 <body>
@@ -177,8 +262,47 @@
     </div>
   </div>
 
-  <!-- Chat List -->
+  <!-- Content -->
   <div class="chat-list-wrap">
+
+    <!-- 케어 현황 카드 -->
+    <div class="care-status-card">
+      <div class="care-status-icon">
+        <iconify-icon icon="ph:stethoscope" style="font-size:20px;color:white;"></iconify-icon>
+      </div>
+      <div class="care-status-body">
+        <div class="care-status-name">김미영 간호사 · 오전 근무 중</div>
+        <div class="care-status-sub">마지막 메시지 오후 12:20</div>
+      </div>
+      <div class="care-status-meta">
+        <span class="care-unread-badge">미읽음 4건</span>
+        <span class="care-last-time">오늘</span>
+      </div>
+    </div>
+
+
+    <!-- AI 어시스턴트 섹션 -->
+    <div class="section-label">AI 어시스턴트</div>
+    <div class="chat-list" style="margin-bottom: var(--space-md);">
+      <a href="g03-chat-ai.html" class="chat-item chat-item-ai">
+        <div class="chat-avatar avatar-ai">
+          <iconify-icon icon="fluent:bot-24-filled" style="font-size:24px;"></iconify-icon>
+        </div>
+        <div class="chat-item-body">
+          <div class="chat-item-name">
+            하루 AI
+            <span class="chat-item-name-badge">AI</span>
+          </div>
+          <div class="chat-item-preview">요양·케어 정보, 감정 지원, 요양원 찾기 등</div>
+        </div>
+        <div class="chat-item-meta">
+          <span class="chat-item-time">항상</span>
+          <span class="chat-item-badge badge-hidden">0</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- 채팅방 섹션 -->
     <div class="section-label">채팅방</div>
     <div class="chat-list">
 
@@ -193,36 +317,6 @@
         </div>
         <div class="chat-item-meta">
           <span class="chat-item-time">오후 12:20</span>
-          <span class="chat-item-badge badge-hidden">0</span>
-        </div>
-      </a>
-
-      <!-- 간호사 2 -->
-      <a href="#" class="chat-item">
-        <div class="chat-avatar avatar-nurse" style="background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 100%);">
-          <iconify-icon icon="ph:stethoscope" style="font-size:22px;"></iconify-icon>
-        </div>
-        <div class="chat-item-body">
-          <div class="chat-item-name">박지수 간호사</div>
-          <div class="chat-item-preview">어머님 밤새 잘 주무셨어요. 활력징후 정상입니다.</div>
-        </div>
-        <div class="chat-item-meta">
-          <span class="chat-item-time">오전 7:30</span>
-          <span class="chat-item-badge">1</span>
-        </div>
-      </a>
-
-      <!-- 담당의 -->
-      <a href="#" class="chat-item">
-        <div class="chat-avatar" style="background: linear-gradient(135deg, #059669 0%, #34D399 100%);">
-          <iconify-icon icon="ph:user-circle" style="font-size:22px;"></iconify-icon>
-        </div>
-        <div class="chat-item-body">
-          <div class="chat-item-name">이수진 원장</div>
-          <div class="chat-item-preview">다음 진료는 4월 20일로 예약되어 있습니다.</div>
-        </div>
-        <div class="chat-item-meta">
-          <span class="chat-item-time">어제</span>
           <span class="chat-item-badge badge-hidden">0</span>
         </div>
       </a>
@@ -310,8 +404,6 @@
   </nav>
 
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
-  <script>
-</script>
   <div class="ios-home-indicator"></div>
 </body>
 </html>
