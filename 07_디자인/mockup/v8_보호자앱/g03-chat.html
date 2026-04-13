@@ -3,215 +3,172 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>하루안부 — 1:1 채팅</title>
+  <title>하루안부 — 채팅</title>
   <link rel="stylesheet" href="common.css">
   <style>
     body {
       background: transparent;
       max-width: 430px;
       margin: 0 auto;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      min-height: 100vh;
+      padding-top: calc(max(env(safe-area-inset-top, 0px), 44px) + 56px);
+      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 16px);
     }
 
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: var(--space-lg);
-      padding-bottom: 140px;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-md);
-      -webkit-overflow-scrolling: touch;
-    }
-    .chat-messages::-webkit-scrollbar { display: none; }
-
-    .chat-date-divider {
-      text-align: center;
-      font-size: var(--text-mini);
-      color: var(--text-tertiary);
-      padding: var(--space-sm) 0;
-    }
-
-    .msg {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      gap: var(--space-xs);
-      max-width: 85%;
-    }
-    .msg.in { align-self: flex-start; }
-    .msg.out { align-self: flex-end; flex-direction: row-reverse; }
-    .msg-sender {
-      font-size: var(--text-mini);
-      color: var(--text-secondary);
-      margin-bottom: 2px;
-      padding-left: 2px;
-      width: 100%;
-    }
-    .msg-bubble {
-      padding: var(--space-md) var(--space-lg);
-      font-size: var(--text-body);
-      line-height: var(--line-height-normal);
-      word-break: break-word;
-      max-width: 75%;
-    }
-    .msg.in .msg-bubble {
-      background: var(--surface);
-      border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-xs);
-      box-shadow: var(--shadow-sm);
-    }
-    .msg.out .msg-bubble {
-      background: var(--primary);
-      color: #FFFFFF;
-      border-radius: var(--radius-lg) var(--radius-lg) var(--radius-xs) var(--radius-lg);
-    }
-    .msg-time {
-      font-size: var(--text-mini);
-      color: var(--text-tertiary);
-      align-self: flex-end;
-      flex-shrink: 0;
-      padding-bottom: 4px;
-    }
-    .msg-read {
-      font-size: var(--text-mini);
-      color: var(--primary);
-      width: 100%;
-      text-align: right;
-    }
-
-    /* ─── 플로팅 필 입력바 ─── */
-    .chat-input-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      /* 필 모양 */
-      border-radius: 999px;
-      padding: 8px 8px 8px 12px;
-      border-top: none;
-      /* 위치: 탭바 위 12px 갭 */
-      position: fixed;
-      bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 12px);
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 32px);
-      max-width: 398px;
-      z-index: 41;
-      /* 글라스 */
-      background: rgba(255,255,255,0.10);
-      backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
-      -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
-      border: 0.5px solid rgba(255,255,255,0.55);
-      box-shadow:
-        0 1px 1px rgba(255,255,255,0.6) inset,
-        0 -0.5px 0.5px rgba(255,255,255,0.2) inset,
-        0 4px 16px rgba(0,0,0,0.06);
-    }
-    .chat-input-wrap {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 0;
-      height: 36px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.18);
-      border: 0.5px solid rgba(255,255,255,0.5);
-      padding: 0 10px;
-      transition: background .2s, border-color .2s;
-    }
-    .chat-input-wrap:focus-within {
-      background: rgba(255,255,255,0.28);
-      border-color: rgba(8,145,178,0.4);
-    }
-    .chat-input {
-      flex: 1;
-      height: 100%;
-      padding: 0 var(--space-xs);
-      border: none;
-      border-radius: 0;
-      font-family: var(--font-family);
-      font-size: var(--text-callout);
-      outline: none;
-      background: transparent;
-    }
-    .chat-input::placeholder { color: var(--text-tertiary); }
-    .chat-emoji-btn {
-      width: 44px; height: 44px;
-      border: none;
-      border-radius: var(--radius-full);
-      background: transparent;
-      color: var(--text-tertiary);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      padding: 0;
-      transition: color .15s;
-    }
-    .chat-emoji-btn:active {
-      color: var(--primary);
-    }
-    .chat-attach-btn {
-      width: 44px; height: 44px;
-      border: none;
-      border-radius: var(--radius-full);
-      background: rgba(255,255,255,0.28);
-      border: 0.5px solid rgba(255,255,255,0.5);
-      color: rgba(28,28,30,0.55);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      padding: 0;
-      transition: background .15s, color .15s;
-    }
-    .chat-attach-btn:active {
-      background: var(--text-tertiary);
-      color: var(--surface);
-    }
-    .chat-send {
-      width: 36px; height: 36px;
-      border: none;
-      border-radius: var(--radius-full);
-      background: var(--primary);
-      color: white;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      padding: 0;
-      transition: background .15s, transform .1s;
-    }
-    .chat-send:active {
-      background: var(--primary-dark, #2563eb);
-      transform: scale(.92);
-    }
-
-    .tabbar {
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    /* ═══ 홈화면 통일 디자인 ═══ */
-    html { background: #E6F8FA; }
+    /* ═══ 배경 ═══ */
+    html { background: #EEF5FF; }
     body::after {
       content: '';
       position: fixed; inset: 0; z-index: -1;
       background:
-        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(34,211,238,0.55)  0%, transparent 62%),
+        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(100,178,255,0.55)  0%, transparent 62%),
         radial-gradient(ellipse 58% 38% at 104%   0%,  rgba(56,189,248,0.48)   0%, transparent 60%),
-        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(6,182,212,0.35)   0%, transparent 62%),
-        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(8,145,178,0.38)   0%, transparent 60%),
+        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(99,102,241,0.42)   0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(44,122,252,0.38)   0%, transparent 60%),
         radial-gradient(ellipse 42% 32% at  50%  50%,  rgba(255,255,255,0.58)  0%, transparent 65%),
-        #DFF6FA;
+        #E4EEFC;
       pointer-events: none;
     }
-    /* 플로팅 필 탭바 */
+
+    /* ═══ 헤더 ═══ */
+    .chat-header {
+      position: fixed;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 430px;
+      background: transparent;
+      padding-top: max(env(safe-area-inset-top, 0px), 44px);
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+      padding-bottom: var(--space-md);
+      z-index: 10;
+    }
+    .chat-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .chat-header-title {
+      font-size: var(--text-title);
+      font-weight: var(--weight-bold);
+    }
+    .header-edit-btn {
+      width: 36px; height: 36px;
+      border: none;
+      border-radius: var(--radius-full);
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border: 0.5px solid rgba(255,255,255,0.50);
+      color: var(--primary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
+    }
+
+    /* ═══ 채팅 목록 ═══ */
+    .chat-list-wrap {
+      padding: var(--space-xs) var(--space-lg) 0;
+    }
+
+    .section-label {
+      font-size: var(--text-caption);
+      font-weight: var(--weight-semibold);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: var(--space-md) 0 var(--space-xs);
+    }
+
+    .chat-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: 14px var(--space-lg);
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(40px) saturate(160%);
+      -webkit-backdrop-filter: blur(40px) saturate(160%);
+      border: 0.5px solid rgba(255,255,255,0.60);
+      border-radius: var(--radius-xl);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.75) inset,
+        0 4px 16px rgba(0,0,0,0.05);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.15s ease, background 0.15s ease;
+      position: relative;
+    }
+    .chat-item:active {
+      transform: scale(0.97);
+      background: rgba(255,255,255,0.32);
+    }
+
+    .chat-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+      font-weight: 700;
+      border: 0.5px solid rgba(255,255,255,0.5);
+    }
+    .avatar-nurse  { background: linear-gradient(135deg, #3B82F6, #0EA5E9); color: white; }
+    .avatar-patient { background: linear-gradient(135deg, #F59E0B, #FBBF24); color: white; }
+    .avatar-family  { background: linear-gradient(135deg, #10B981, #34D399); color: white; }
+
+    .chat-item-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .chat-item-name {
+      font-size: var(--text-callout);
+      font-weight: var(--weight-semibold);
+      margin-bottom: 3px;
+    }
+    .chat-item-preview {
+      font-size: var(--text-footnote);
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-item-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .chat-item-time {
+      font-size: var(--text-mini);
+      color: var(--text-tertiary);
+    }
+    .chat-item-badge {
+      background: var(--primary);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 7px;
+      min-width: 20px;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .badge-hidden { visibility: hidden; }
+
+    /* ═══ 플로팅 필 탭바 ═══ */
     .tabbar {
       position: fixed !important;
       bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px) !important;
       left: 50% !important; transform: translateX(-50%) !important;
       width: calc(100% - 32px) !important; max-width: 398px !important;
-      height: 68px !important; padding: 0 2px !important; padding-bottom: 0 !important;
+      height: 68px !important; padding: 0 2px !important;
       border-top: none !important; border-radius: 999px !important;
       background: rgba(255,255,255,0.07) !important;
       backdrop-filter: blur(72px) saturate(190%) brightness(1.10) !important;
@@ -227,167 +184,125 @@
       color: rgba(28,28,30,0.45) !important;
     }
     .tab.active { background: rgba(255,255,255,0.22) !important; color: #1C1C1E !important; }
-    /* 말풍선 글라스 */
-    .msg.in .msg-bubble {
-      background: rgba(255,255,255,0.26) !important;
-      backdrop-filter: blur(40px) saturate(160%) !important;
-      -webkit-backdrop-filter: blur(40px) saturate(160%) !important;
-      border: 0.5px solid rgba(255,255,255,0.70) !important;
-      box-shadow: 0 1px 0 rgba(255,255,255,0.80) inset, 0 6px 20px rgba(0,0,0,0.09), 0 2px 6px rgba(0,0,0,0.05) !important;
-    }
-    /* 메시지 영역 padding — 탭바(61px) + 갭(12px) + 입력필(52px) + 갭(16px) */
-    .chat-messages {
-      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 12px + 52px + 16px) !important;
-      position: relative; z-index: 1;
-    }
-    /* ═══ LQ 버튼 ═══ */
-    .btn-icon {
-      position: relative;
-      display: flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; border-radius: 999px;
-      background: rgba(255,255,255,0.10);
-      backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
-      -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.10);
-      border: 0.5px solid rgba(255,255,255,0.55);
-      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 4px 12px rgba(0,0,0,0.05);
-      transition: transform 0.18s ease;
-      color: rgba(28,28,30,0.7);
-      text-decoration: none; font-size: 22px; font-weight: 300;
-    }
-    .btn-icon:active { transform: scale(0.94); }
-    /* ═══ 채팅 버블 shimmer ═══ */
-    .msg-bubble { position: relative; overflow: hidden; }
-    .msg.in .msg-bubble::before, .msg.out .msg-bubble::before {
-      content: ''; position: absolute; inset: 0; border-radius: inherit;
-      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 55%);
-      pointer-events: none;
-    }
-    /* ═══ attach 버튼 LQ 업그레이드 ═══ */
-    .chat-attach-btn {
-      background: rgba(255,255,255,0.10) !important;
-      border: 0.5px solid rgba(255,255,255,0.55) !important;
-      backdrop-filter: blur(72px) saturate(190%) brightness(1.10) !important;
-      -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.10) !important;
-      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 4px 12px rgba(0,0,0,0.05) !important;
-      color: rgba(28,28,30,0.55) !important;
-      transition: transform 0.18s ease !important;
-    }
-    .chat-attach-btn:active { transform: scale(0.94) !important; background: rgba(255,255,255,0.22) !important; }
   </style>
 </head>
-<body>  <!-- Header -->
-  <div style="flex-shrink:0; background:rgba(255,255,255,0.04); backdrop-filter:blur(40px) saturate(160%); -webkit-backdrop-filter:blur(40px) saturate(160%); border-bottom:0.5px solid rgba(255,255,255,0.18); padding-top:max(env(safe-area-inset-top,0px),44px); padding-left:var(--space-lg); padding-right:var(--space-lg); padding-bottom:var(--space-md); position:relative; z-index:2;">
-    <div style="display:flex; align-items:center; gap:var(--space-md);">
-      <a href="g-guardian-live.html" class="btn-icon" aria-label="뒤로 가기" style="flex-shrink:0;">‹</a>
-      <a href="g05-mypage.html" style="display:flex; align-items:center; gap:var(--space-md); flex:1; outline:none;">
-        <div style="width:40px; height:40px; border-radius:var(--radius-full); background:var(--primary-light); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-          <i data-lucide="user" style="width:20px;height:20px;color:var(--primary);"></i>
-        </div>
-        <div style="flex:1;">
-          <div style="font-size:var(--text-headline); font-weight:var(--weight-semibold);">김미영 간호사</div>
-          <div style="font-size:var(--text-mini); color:var(--text-secondary);">정간호사 · 3층 담당 · 오전 근무 중</div>
-        </div>
-        <i data-lucide="chevron-right" style="width:20px;height:20px;color:var(--text-tertiary);"></i>
-      </a>
-    </div>
-  </div>
+<body>
 
-  <!-- Messages -->
-  <div class="chat-messages">
-    <!-- Empty State (hidden by default - toggle for demo) -->
-    <div class="empty-state" style="display:none;">
-      <div class="empty-state-icon"><i data-lucide="message-circle" style="width:56px;height:56px;color:var(--text-tertiary)"></i></div>
-      <h3 class="empty-state-title">아직 메시지가 없어요</h3>
-      <p class="empty-state-desc">담당 간호사에게 먼저 인사해보세요</p>
-      <button class="btn btn-primary btn-sm btn-pill" style="margin-top:var(--space-lg);" onclick="document.querySelector('.chat-input').focus()">메시지 보내기</button>
-    </div>
-    <div class="chat-date-divider">오늘</div>
-
-    <div class="msg in">
-      <span class="msg-sender">김미영 간호사</span>
-      <div class="msg-bubble">안녕하세요, 예찬님. 어머님 오전 투약 완료되었습니다.</div>
-      <span class="msg-time">오전 8:15</span>
-    </div>
-
-    <div class="msg out">
-      <div class="msg-bubble">감사합니다! 아침 식사는 잘 하셨나요?</div>
-      <span class="msg-time">오전 8:20</span>
-      <span class="msg-read">읽음</span>
-    </div>
-
-    <div class="msg in">
-      <span class="msg-sender">김미영 간호사</span>
-      <div class="msg-bubble">네, 죽이랑 반찬 두 가지 드셨어요. 평소보다 잘 드신 편이에요.</div>
-      <span class="msg-time">오전 8:22</span>
-    </div>
-
-    <div class="msg out">
-      <div class="msg-bubble">다행이네요. 점심때도 잘 부탁드릴게요</div>
-      <span class="msg-time">오전 8:25</span>
-      <span class="msg-read">읽음</span>
-    </div>
-
-    <div class="msg in">
-      <span class="msg-sender">김미영 간호사</span>
-      <div class="msg-bubble">네, 걱정 마세요. 점심 후에 또 말씀드릴게요!</div>
-      <span class="msg-time">오전 8:26</span>
-    </div>
-
-    <div class="msg in">
-      <span class="msg-sender">김미영 간호사</span>
-      <div class="msg-bubble">점심 식사 완료되었어요. 밥이랑 국, 반찬 3가지 드셨는데 80% 정도 드셨습니다. 오후에 산책 프로그램 참여하실 예정이에요.</div>
-      <span class="msg-time">오후 12:15</span>
-    </div>
-
-    <div class="msg out">
-      <div class="msg-bubble">네 감사합니다! 산책 다녀오시면 사진 한 장 부탁드려도 될까요?</div>
-      <span class="msg-time">오후 12:20</span>
-    </div>
-  </div>
-
-  <!-- Input -->
-  <div class="chat-input-bar">
-    <button class="chat-attach-btn" aria-label="사진/파일 첨부">
-      <i data-lucide="plus" style="width:18px;height:18px;"></i>
-    </button>
-    <div class="chat-input-wrap">
-      <input class="chat-input" type="text" placeholder="메시지 입력" aria-label="메시지 입력">
-      <button class="chat-emoji-btn" aria-label="이모지 선택">
-        <i data-lucide="smile" style="width:20px;height:20px;"></i>
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chat-header-inner">
+      <span class="chat-header-title">채팅</span>
+      <button class="header-edit-btn" aria-label="새 채팅">
+        <iconify-icon icon="ph:edit-3" style="font-size:16px;"></iconify-icon>
       </button>
     </div>
-    <button class="chat-send" aria-label="메시지 보내기"><i data-lucide="send-horizontal" style="width:18px;height:18px;"></i></button>
   </div>
 
-      <nav class="tabbar" role="navigation" aria-label="메인 내비게이션">
+  <!-- Chat List -->
+  <div class="chat-list-wrap">
+    <div class="section-label">채팅방</div>
+    <div class="chat-list">
+
+      <!-- 간호사 채팅 -->
+      <a href="g03-chat-nurse.html" class="chat-item">
+        <div class="chat-avatar avatar-nurse">
+          <iconify-icon icon="ph:stethoscope" style="font-size:22px;"></iconify-icon>
+        </div>
+        <div class="chat-item-body">
+          <div class="chat-item-name">김미영 간호사</div>
+          <div class="chat-item-preview">산책 다녀오시면 사진 한 장 부탁드려도 될까요?</div>
+        </div>
+        <div class="chat-item-meta">
+          <span class="chat-item-time">오후 12:20</span>
+          <span class="chat-item-badge badge-hidden">0</span>
+        </div>
+      </a>
+
+      <!-- 환자 채팅 -->
+      <a href="g03-chat-patient.html" class="chat-item">
+        <div class="chat-avatar avatar-patient">
+          <iconify-icon icon="fluent:heart-24-filled" style="font-size:22px;"></iconify-icon>
+        </div>
+        <div class="chat-item-body">
+          <div class="chat-item-name">손정희 어머니</div>
+          <div class="chat-item-preview">잘 있어요~ 걱정 마세요 ♡</div>
+        </div>
+        <div class="chat-item-meta">
+          <span class="chat-item-time">오전 11:30</span>
+          <span class="chat-item-badge">2</span>
+        </div>
+      </a>
+
+      <!-- 가족 그룹 채팅 -->
+      <a href="g03-chat-family.html" class="chat-item">
+        <div class="chat-avatar avatar-family">
+          <iconify-icon icon="ph:users" style="font-size:22px;"></iconify-icon>
+        </div>
+        <div class="chat-item-body">
+          <div class="chat-item-name">가족 그룹 채팅</div>
+          <div class="chat-item-preview">손예린: 오빠 이번 주말에 같이 면회 갈 수 있어?</div>
+        </div>
+        <div class="chat-item-meta">
+          <span class="chat-item-time">어제</span>
+          <span class="chat-item-badge">1</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <nav class="tabbar" role="navigation" aria-label="메인 내비게이션">
     <a href="g-guardian-live.html" class="tab">
-      <span class="tab-icon"><i data-lucide="home" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="currentColor">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+        </svg>
+      </span>
       <span>홈</span>
     </a>
     <a href="g03-chat.html" class="tab active" aria-current="page">
-      <span class="tab-icon"><i data-lucide="message-circle" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/>
+        </svg>
+      </span>
       <span>채팅</span>
     </a>
     <a href="g02-ai-report.html" class="tab">
-      <span class="tab-icon"><i data-lucide="clipboard-list" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="4" y="12" width="4" height="8" rx="2"/>
+          <rect x="10" y="6" width="4" height="14" rx="2"/>
+          <rect x="16" y="9" width="4" height="11" rx="2"/>
+        </svg>
+      </span>
       <span>기록</span>
     </a>
     <a href="g08-billing.html" class="tab">
-      <span class="tab-icon"><i data-lucide="credit-card" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="2" y="5" width="20" height="16" rx="3"/>
+          <rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/>
+          <rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
+        </svg>
+      </span>
       <span>결제</span>
     </a>
     <a href="g05-mypage.html" class="tab">
-      <span class="tab-icon"><i data-lucide="user" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="8" r="4.5"/>
+          <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/>
+        </svg>
+      </span>
       <span>마이</span>
     </a>
   </nav>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
   <script>
-    lucide.createIcons();
-    var chatMessages = document.querySelector('.chat-messages');
-    if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
-  </script>
-<div class="ios-home-indicator"></div>
+</script>
+  <div class="ios-home-indicator"></div>
 </body>
 </html>

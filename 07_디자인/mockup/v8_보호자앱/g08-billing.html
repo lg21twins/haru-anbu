@@ -6,8 +6,9 @@
   <title>하루안부 — 결제 / 청구</title>
   <link rel="stylesheet" href="common.css">
   <style>
-    body { background:transparent; max-width:430px; padding-top:calc(max(env(safe-area-inset-top, 0px), 44px) + 52px); margin:0 auto; min-height:100vh; padding-bottom:calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 16px); }
+    body { background:transparent; max-width:430px; padding-top:calc(max(env(safe-area-inset-top, 0px), 44px) + 12px); margin:0 auto; min-height:100vh; padding-bottom:calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 16px); }
     .content { padding:0 var(--space-lg); position: relative; z-index: 1; }
+    .page-title { font-size:var(--text-title); font-weight:var(--weight-bold); padding:var(--space-xs) 0 var(--space-md); }
 
     /* ══ 총액 카드 ══ */
     .total-card {
@@ -357,17 +358,17 @@
     /* ══════════════════════════════
        Glassmorphism — 홈화면 통일
     ══════════════════════════════ */
-    html { background: #E6F8FA; }
+    html { background: #EEF5FF; }
     body::after {
       content: '';
       position: fixed; inset: 0; z-index: -1;
       background:
-        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(34,211,238,0.55)  0%, transparent 62%),
+        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(100,178,255,0.55)  0%, transparent 62%),
         radial-gradient(ellipse 58% 38% at 104%   0%,  rgba(56,189,248,0.48)   0%, transparent 60%),
-        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(6,182,212,0.35)   0%, transparent 62%),
-        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(8,145,178,0.38)   0%, transparent 60%),
+        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(99,102,241,0.42)   0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(44,122,252,0.38)   0%, transparent 60%),
         radial-gradient(ellipse 42% 32% at  50%  50%,  rgba(255,255,255,0.58)  0%, transparent 65%),
-        #DFF6FA;
+        #E4EEFC;
       pointer-events: none;
     }
     .header {
@@ -466,13 +467,8 @@
   </style>
 </head>
 <body>
-  <div class="header">
-    <div class="header-left"><a href="g05-mypage.html" class="btn-icon" aria-label="뒤로 가기">‹</a></div>
-    <span class="header-title">결제 / 청구</span>
-    <div class="header-right"></div>
-  </div>
-
   <div class="content">
+    <h2 class="page-title">결제 / 청구</h2>
 
     <!-- ① 이번 달 총액 + 납부하기 버튼 -->
     <div class="section">
@@ -481,14 +477,14 @@
         <div class="total-amount">1,200,000원</div>
         <div class="total-period-row">
           <span class="total-period">2026년 4월 1일 ~ 4월 30일</span>
-          <span class="dday-badge"><i data-lucide="calendar" style="width:11px;height:11px;"></i> D-12</span>
+          <span class="dday-badge"><iconify-icon icon="fluent:calendar-24-filled" style="font-size:11px;"></iconify-icon> D-12</span>
         </div>
         <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:var(--space-md);">
-          <span class="total-status"><i data-lucide="clock" style="width:14px;height:14px;"></i> 납부 예정</span>
+          <span class="total-status"><iconify-icon icon="fluent:clock-24-filled" style="font-size:14px;"></iconify-icon> 납부 예정</span>
           <span style="font-size:var(--text-caption);color:var(--text-secondary);">마감 4월 25일</span>
         </div>
         <a href="#" class="btn-pay" role="button" aria-label="이번 달 결제하기">
-          <i data-lucide="credit-card" style="width:18px;height:18px;"></i>
+          <iconify-icon icon="fluent:payment-24-filled" style="font-size:18px;"></iconify-icon>
           납부하기 · 1,200,000원
         </a>
       </div>
@@ -499,7 +495,7 @@
       <div class="section-header"><h2 class="section-title">장기요양보험 적용 현황</h2></div>
       <div class="insurance-card">
         <div class="insurance-grade">
-          <i data-lucide="shield-check" style="width:13px;height:13px;"></i>
+          <iconify-icon icon="ph:shield-check" style="font-size:13px;"></iconify-icon>
           요양 3등급 · 본인부담률 20%
         </div>
         <div class="insurance-row">
@@ -593,7 +589,7 @@
     <div class="section">
       <div class="ai-insight-card">
         <div class="ai-insight-header">
-          <div class="ai-badge"><i data-lucide="sparkles" style="width:12px;height:12px;"></i> AI 비용 인사이트</div>
+          <div class="ai-badge"><iconify-icon icon="ph:sparkle-fill" style="font-size:12px;"></iconify-icon> AI 비용 인사이트</div>
         </div>
         <div class="ai-insight-body">
           이달 전체 비용 중 <strong>요양 서비스(67%)</strong>가 가장 큰 비중을 차지해요.
@@ -613,7 +609,7 @@
           </div>
         </div>
         <a href="g03-chat.html" class="btn-ask-ai" aria-label="AI에게 비용 질문하기">
-          <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
+          <iconify-icon icon="fluent:chat-24-filled" style="font-size:15px;"></iconify-icon>
           AI에게 비용 더 물어보기
         </a>
       </div>
@@ -625,21 +621,21 @@
       <div class="receipt-section">
         <a href="#" class="btn-receipt" role="button" aria-label="청구서 PDF 다운로드">
           <div class="btn-receipt-inner">
-            <i data-lucide="file-down" style="width:20px;height:20px;color:var(--primary)"></i>
+            <iconify-icon icon="ph:file-down" style="font-size:20px;color:var(--primary)"></iconify-icon>
             <span>청구서 PDF</span>
             <span class="btn-sub">이번 달 · 4월</span>
           </div>
         </a>
         <a href="#" class="btn-receipt" role="button" aria-label="의료비 영수증 발급 (연말정산용)">
           <div class="btn-receipt-inner">
-            <i data-lucide="receipt" style="width:20px;height:20px;color:var(--primary)"></i>
+            <iconify-icon icon="fluent:receipt-24-filled" style="font-size:20px;color:var(--primary)"></iconify-icon>
             <span>의료비 영수증</span>
             <span class="btn-sub">연말정산 공제용</span>
           </div>
         </a>
         <a href="#" class="btn-receipt" role="button" aria-label="세금계산서 발급">
           <div class="btn-receipt-inner">
-            <i data-lucide="landmark" style="width:20px;height:20px;color:var(--primary)"></i>
+            <iconify-icon icon="ph:landmark" style="font-size:20px;color:var(--primary)"></iconify-icon>
             <span>세금계산서</span>
             <span class="btn-sub">사업자용</span>
           </div>
@@ -651,7 +647,7 @@
     <div class="section">
       <div class="section-header"><h2 class="section-title">납부 이력</h2></div>
       <div class="history-item">
-        <div class="history-icon"><i data-lucide="check-circle" style="width:20px;height:20px;color:var(--success)"></i></div>
+        <div class="history-icon"><iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:20px;color:var(--success)"></iconify-icon></div>
         <div class="history-info">
           <div class="history-label">3월 청구</div>
           <div class="history-date">2026.03.28 납부 완료</div>
@@ -662,7 +658,7 @@
         </div>
       </div>
       <div class="history-item">
-        <div class="history-icon"><i data-lucide="check-circle" style="width:20px;height:20px;color:var(--success)"></i></div>
+        <div class="history-icon"><iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:20px;color:var(--success)"></iconify-icon></div>
         <div class="history-info">
           <div class="history-label">2월 청구</div>
           <div class="history-date">2026.02.27 납부 완료</div>
@@ -673,7 +669,7 @@
         </div>
       </div>
       <div class="history-item">
-        <div class="history-icon"><i data-lucide="check-circle" style="width:20px;height:20px;color:var(--success)"></i></div>
+        <div class="history-icon"><iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:20px;color:var(--success)"></iconify-icon></div>
         <div class="history-info">
           <div class="history-label">1월 청구</div>
           <div class="history-date">2026.01.28 납부 완료</div>
@@ -689,29 +685,56 @@
 
   <nav class="tabbar" role="navigation" aria-label="메인 내비게이션">
     <a href="g-guardian-live.html" class="tab">
-      <span class="tab-icon"><i data-lucide="home" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="currentColor">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+        </svg>
+      </span>
       <span>홈</span>
     </a>
     <a href="g03-chat.html" class="tab">
-      <span class="tab-icon"><i data-lucide="message-circle" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/>
+        </svg>
+      </span>
       <span>채팅</span>
     </a>
     <a href="g02-ai-report.html" class="tab">
-      <span class="tab-icon"><i data-lucide="clipboard-list" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="4" y="12" width="4" height="8" rx="2"/>
+          <rect x="10" y="6" width="4" height="14" rx="2"/>
+          <rect x="16" y="9" width="4" height="11" rx="2"/>
+        </svg>
+      </span>
       <span>기록</span>
     </a>
     <a href="g08-billing.html" class="tab active" aria-current="page">
-      <span class="tab-icon"><i data-lucide="credit-card" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="2" y="5" width="20" height="16" rx="3"/>
+          <rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/>
+          <rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
+        </svg>
+      </span>
       <span>결제</span>
     </a>
     <a href="g05-mypage.html" class="tab">
-      <span class="tab-icon"><i data-lucide="user" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="8" r="4.5"/>
+          <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/>
+        </svg>
+      </span>
       <span>마이</span>
     </a>
   </nav>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script>lucide.createIcons();</script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script>
+</script>
   <div class="ios-home-indicator"></div>
 </body>
 </html>

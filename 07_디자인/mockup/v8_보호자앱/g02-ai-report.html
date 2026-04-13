@@ -231,17 +231,17 @@
     }
 
     /* ═══ 홈화면 통일 디자인 ═══ */
-    html { background: #E6F8FA; }
+    html { background: #EEF5FF; }
     body::after {
       content: '';
       position: fixed; inset: 0; z-index: -1;
       background:
-        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(34,211,238,0.55)  0%, transparent 62%),
+        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(100,178,255,0.55)  0%, transparent 62%),
         radial-gradient(ellipse 58% 38% at 104%   0%,  rgba(56,189,248,0.48)   0%, transparent 60%),
-        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(6,182,212,0.35)   0%, transparent 62%),
-        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(8,145,178,0.38)   0%, transparent 60%),
+        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(99,102,241,0.42)   0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(44,122,252,0.38)   0%, transparent 60%),
         radial-gradient(ellipse 42% 32% at  50%  50%,  rgba(255,255,255,0.58)  0%, transparent 65%),
-        #DFF6FA;
+        #E4EEFC;
       pointer-events: none;
     }
     /* 글라스 헤더 */
@@ -365,7 +365,7 @@
     <!-- AI 인사이트 카드 -->
     <div class="section">
       <div class="ai-insight-card">
-        <div class="ai-insight-icon"><i data-lucide="sparkles" style="width:18px;height:18px;color:white;"></i></div>
+        <div class="ai-insight-icon"><iconify-icon icon="ph:sparkle-fill" style="font-size:18px;color:white;"></iconify-icon></div>
         <div>
           <div class="ai-insight-label">AI 케어 분석</div>
           <div class="ai-insight-body">오늘 손정희님은 전반적으로 안정적입니다. 투약 3회 모두 완료, 식사량은 평소의 85% 수준이에요.</div>
@@ -377,7 +377,7 @@
     <div class="section">
       <div class="score-strip">
         <div class="score-item">
-          <div class="score-icon" style="background:#D9F0F7;"><i data-lucide="activity" style="width:18px;height:18px;color:var(--primary);"></i></div>
+          <div class="score-icon" style="background:#D9F0F7;"><iconify-icon icon="ph:heartbeat-fill" style="font-size:18px;color:var(--primary);"></iconify-icon></div>
           <div class="score-body">
             <div class="score-label">케어 완료율</div>
             <div class="score-sub">식사 · 투약 · 위생 · 활동</div>
@@ -385,7 +385,7 @@
           <div class="score-value" style="color:var(--primary);">73%</div>
         </div>
         <div class="score-item">
-          <div class="score-icon" style="background:#E8F8ED;"><i data-lucide="pill" style="width:18px;height:18px;color:var(--success);"></i></div>
+          <div class="score-icon" style="background:#E8F8ED;"><iconify-icon icon="tabler:pill-filled" style="font-size:18px;color:var(--success);"></iconify-icon></div>
           <div class="score-body">
             <div class="score-label">투약</div>
             <div class="score-sub">아침 · 점심 · 오후 모두 완료</div>
@@ -393,7 +393,7 @@
           <div class="score-value" style="color:var(--success);">3/3</div>
         </div>
         <div class="score-item">
-          <div class="score-icon" style="background:#FFF3E0;"><i data-lucide="alert-circle" style="width:18px;height:18px;color:var(--warning);"></i></div>
+          <div class="score-icon" style="background:#FFF3E0;"><iconify-icon icon="fluent:error-circle-24-filled" style="font-size:18px;color:var(--warning);"></iconify-icon></div>
           <div class="score-body">
             <div class="score-label">특이사항</div>
             <div class="score-sub">점심 식사량 감소</div>
@@ -412,15 +412,15 @@
         </div>
         <div style="display:flex; flex-direction:column; gap:var(--space-sm);">
           <div style="display:flex; align-items:flex-start; gap:var(--space-sm);">
-            <i data-lucide="check-circle" style="width:20px;height:20px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+            <iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:20px;color:var(--success);flex-shrink:0;margin-top:2px;"></iconify-icon>
             <span style="font-size:var(--text-callout); color:var(--text-secondary); line-height:var(--line-height-relaxed);">아침·점심 식사를 잘 드셨고, 투약 3회 모두 완료</span>
           </div>
           <div style="display:flex; align-items:flex-start; gap:var(--space-sm);">
-            <i data-lucide="check-circle" style="width:20px;height:20px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+            <iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:20px;color:var(--success);flex-shrink:0;margin-top:2px;"></iconify-icon>
             <span style="font-size:var(--text-callout); color:var(--text-secondary); line-height:var(--line-height-relaxed);">오전 스트레칭 참여, 오후 산책 프로그램 진행 중</span>
           </div>
           <div style="display:flex; align-items:flex-start; gap:var(--space-sm);">
-            <i data-lucide="alert-circle" style="width:20px;height:20px;color:var(--warning);flex-shrink:0;margin-top:2px;"></i>
+            <iconify-icon icon="fluent:error-circle-24-filled" style="font-size:20px;color:var(--warning);flex-shrink:0;margin-top:2px;"></iconify-icon>
             <span style="font-size:var(--text-callout); color:var(--text-secondary); line-height:var(--line-height-relaxed);">점심 식사량 평소 대비 소폭 감소 → 저녁 경과 관찰 예정</span>
           </div>
         </div>
@@ -433,7 +433,7 @@
 
       <div class="detail-card">
         <div class="detail-header">
-          <div class="detail-icon detail-icon--meal"><i data-lucide="utensils" style="color:#d97706;width:20px;height:20px;"></i></div>
+          <div class="detail-icon detail-icon--meal"><iconify-icon icon="fluent:food-24-filled" style="color:#d97706;font-size:20px;"></iconify-icon></div>
           <span class="detail-title">식사</span>
           <span class="detail-status" style="color:var(--warning);">2/3</span>
         </div>
@@ -468,7 +468,7 @@
 
       <div class="detail-card">
         <div class="detail-header">
-          <div class="detail-icon detail-icon--med"><i data-lucide="pill" style="color:var(--info);width:20px;height:20px;"></i></div>
+          <div class="detail-icon detail-icon--med"><iconify-icon icon="tabler:pill-filled" style="color:var(--info);font-size:20px;"></iconify-icon></div>
           <span class="detail-title">투약</span>
           <span class="detail-status" style="color:var(--success);">완료</span>
         </div>
@@ -503,7 +503,7 @@
 
       <div class="detail-card">
         <div class="detail-header">
-          <div class="detail-icon detail-icon--hygiene"><i data-lucide="droplets" style="color:var(--success);width:20px;height:20px;"></i></div>
+          <div class="detail-icon detail-icon--hygiene"><iconify-icon icon="ph:droplets" style="color:var(--success);font-size:20px;"></iconify-icon></div>
           <span class="detail-title">위생</span>
           <span class="detail-status" style="color:var(--warning);">1/2</span>
         </div>
@@ -531,7 +531,7 @@
 
       <div class="detail-card">
         <div class="detail-header">
-          <div class="detail-icon detail-icon--activity"><i data-lucide="footprints" style="color:#a855f7;width:20px;height:20px;"></i></div>
+          <div class="detail-icon detail-icon--activity"><iconify-icon icon="fluent:walk-24-filled" style="color:#a855f7;font-size:20px;"></iconify-icon></div>
           <span class="detail-title">활동</span>
           <span class="detail-status" style="color:var(--primary);">진행 중</span>
         </div>
@@ -562,44 +562,69 @@
     <div class="section">
       <div class="section-header"><h2 class="section-title">특이사항</h2></div>
       <div class="note-card">
-        <div class="note-title"><i data-lucide="alert-triangle" style="width:20px;height:20px;"></i> 참고해주세요</div>
+        <div class="note-title"><iconify-icon icon="fluent:warning-24-filled" style="font-size:20px;"></iconify-icon> 참고해주세요</div>
         <p class="note-text">점심 식사량이 평소보다 약간 적었어요. 컨디션에는 이상이 없으나, 저녁 식사 때 경과를 지켜볼 예정이에요.</p>
       </div>
     </div>
 
     <!-- CTA -->
     <div class="report-cta">
-      <a href="g03-chat.html" class="btn btn-secondary btn-full btn-sm"><i data-lucide="message-circle" style="width:18px;height:18px;"></i> 담당자에게 문의</a>
-      <a href="g03-chat.html" class="btn btn-primary btn-full btn-sm"><i data-lucide="wand-sparkles" style="width:18px;height:18px;"></i> AI에게 질문</a>
+      <a href="g03-chat.html" class="btn btn-secondary btn-full btn-sm"><iconify-icon icon="fluent:chat-24-filled" style="font-size:18px;"></iconify-icon> 담당자에게 문의</a>
+      <a href="g03-chat.html" class="btn btn-primary btn-full btn-sm"><iconify-icon icon="ph:sparkle-fill" style="font-size:18px;"></iconify-icon> AI에게 질문</a>
     </div>
   </div>
 
   <nav class="tabbar" role="navigation" aria-label="메인 내비게이션">
     <a href="g-guardian-live.html" class="tab">
-      <span class="tab-icon"><i data-lucide="home" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="currentColor">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+        </svg>
+      </span>
       <span>홈</span>
     </a>
     <a href="g03-chat.html" class="tab">
-      <span class="tab-icon"><i data-lucide="message-circle" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/>
+        </svg>
+      </span>
       <span>채팅</span>
     </a>
     <a href="g02-ai-report.html" class="tab active" aria-current="page">
-      <span class="tab-icon"><i data-lucide="clipboard-list" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="4" y="12" width="4" height="8" rx="2"/>
+          <rect x="10" y="6" width="4" height="14" rx="2"/>
+          <rect x="16" y="9" width="4" height="11" rx="2"/>
+        </svg>
+      </span>
       <span>기록</span>
     </a>
     <a href="g08-billing.html" class="tab">
-      <span class="tab-icon"><i data-lucide="credit-card" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="2" y="5" width="20" height="16" rx="3"/>
+          <rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/>
+          <rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
+        </svg>
+      </span>
       <span>결제</span>
     </a>
     <a href="g05-mypage.html" class="tab">
-      <span class="tab-icon"><i data-lucide="user" style="width:20px;height:20px;"></i></span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="8" r="4.5"/>
+          <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/>
+        </svg>
+      </span>
       <span>마이</span>
     </a>
   </nav>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
   <script>
-    lucide.createIcons();
     setTimeout(() => {
       document.querySelectorAll('.detail-pfill').forEach(el => el.style.width = el.getAttribute('data-width'));
     }, 100);

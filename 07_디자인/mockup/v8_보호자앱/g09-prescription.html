@@ -88,16 +88,16 @@
     }
 
     /* ═══ Liquid Glass 통일 ═══ */
-    html { background: #E6F8FA; }
+    html { background: #EEF5FF; }
     body { background: transparent !important; padding-top: calc(max(env(safe-area-inset-top, 0px), 44px) + 52px) !important; padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 16px) !important; }
     body::after {
       content: ''; position: fixed; inset: 0; z-index: -1;
       background:
-        radial-gradient(ellipse 68% 44% at  -4%   0%, rgba(34,211,238,0.55) 0%, transparent 62%),
+        radial-gradient(ellipse 68% 44% at  -4%   0%, rgba(100,178,255,0.55) 0%, transparent 62%),
         radial-gradient(ellipse 58% 38% at 104%   0%, rgba(56,189,248,0.48)  0%, transparent 60%),
-        radial-gradient(ellipse 62% 44% at 106% 100%, rgba(6,182,212,0.35)  0%, transparent 62%),
-        radial-gradient(ellipse 58% 38% at  -4% 100%, rgba(8,145,178,0.38)  0%, transparent 60%),
-        radial-gradient(ellipse 42% 32% at  50%  50%, rgba(255,255,255,0.58) 0%, transparent 65%), #DFF6FA;
+        radial-gradient(ellipse 62% 44% at 106% 100%, rgba(99,102,241,0.42)  0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at  -4% 100%, rgba(44,122,252,0.38)  0%, transparent 60%),
+        radial-gradient(ellipse 42% 32% at  50%  50%, rgba(255,255,255,0.58) 0%, transparent 65%), #E4EEFC;
       pointer-events: none;
     }
     .header {
@@ -166,7 +166,7 @@
 
       <div class="med-card">
         <div class="med-header">
-          <div class="med-icon"><i data-lucide="pill" style="width:22px;height:22px;color:var(--primary)"></i></div>
+          <div class="med-icon"><iconify-icon icon="tabler:pill-filled" style="font-size:22px;color:var(--primary)"></iconify-icon></div>
           <div>
             <div class="med-name">아모디핀 5mg</div>
             <div class="med-type">혈압약</div>
@@ -194,7 +194,7 @@
 
       <div class="med-card">
         <div class="med-header">
-          <div class="med-icon"><i data-lucide="pill" style="width:22px;height:22px;color:var(--primary)"></i></div>
+          <div class="med-icon"><iconify-icon icon="tabler:pill-filled" style="font-size:22px;color:var(--primary)"></iconify-icon></div>
           <div>
             <div class="med-name">메트포르민 500mg</div>
             <div class="med-type">당뇨약</div>
@@ -222,7 +222,7 @@
 
       <div class="med-card">
         <div class="med-header">
-          <div class="med-icon"><i data-lucide="pill" style="width:22px;height:22px;color:var(--primary)"></i></div>
+          <div class="med-icon"><iconify-icon icon="tabler:pill-filled" style="font-size:22px;color:var(--primary)"></iconify-icon></div>
           <div>
             <div class="med-name">판크레아틴</div>
             <div class="med-type">소화제</div>
@@ -280,24 +280,51 @@
 
   <nav class="tabbar" role="navigation" aria-label="메인 내비게이션">
     <a href="g-guardian-live.html" class="tab">
-      <span class="tab-icon"><i data-lucide="home" style="width:20px;height:20px;"></i></span><span>홈</span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="currentColor">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+        </svg>
+      </span><span>홈</span>
     </a>
     <a href="g03-chat.html" class="tab">
-      <span class="tab-icon"><i data-lucide="message-circle" style="width:20px;height:20px;"></i></span><span>채팅</span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/>
+        </svg>
+      </span><span>채팅</span>
     </a>
     <a href="g02-ai-report.html" class="tab active" aria-current="page">
-      <span class="tab-icon"><i data-lucide="clipboard-list" style="width:20px;height:20px;"></i></span><span>기록</span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="4" y="12" width="4" height="8" rx="2"/>
+          <rect x="10" y="6" width="4" height="14" rx="2"/>
+          <rect x="16" y="9" width="4" height="11" rx="2"/>
+        </svg>
+      </span><span>기록</span>
     </a>
     <a href="g08-billing.html" class="tab">
-      <span class="tab-icon"><i data-lucide="credit-card" style="width:20px;height:20px;"></i></span><span>결제</span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="2" y="5" width="20" height="16" rx="3"/>
+          <rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/>
+          <rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
+        </svg>
+      </span><span>결제</span>
     </a>
     <a href="g05-mypage.html" class="tab">
-      <span class="tab-icon"><i data-lucide="user" style="width:20px;height:20px;"></i></span><span>마이</span>
+      <span class="tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="8" r="4.5"/>
+          <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/>
+        </svg>
+      </span><span>마이</span>
     </a>
   </nav>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script>lucide.createIcons();</script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script>
+</script>
 <div class="ios-home-indicator"></div>
 </body>
 </html>
