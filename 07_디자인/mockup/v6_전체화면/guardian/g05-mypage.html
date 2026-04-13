@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="../common.css">
   <style>
     body {
-      background: var(--bg);
+      background: transparent;
       max-width: 430px; padding-top:72px;
       margin: 0 auto;
       min-height: 100vh;
-      padding-bottom: 108px;
+      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 61px + 16px);
     }
-    .content { padding: 0 var(--space-lg); }
+    .content { padding: 0 var(--space-lg); position: relative; z-index: 1; }
 
     /* --- 프로필 + 케어 대상 통합 카드 --- */
     .profile-card {
@@ -212,6 +212,51 @@
       box-shadow: var(--shadow-sm);
       margin-bottom: var(--space-xl);
     }
+
+    /* ═══ 홈화면 통일 디자인 ═══ */
+    html { background: #EEF5FF; }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(100,178,255,0.55)  0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at 104%   0%,  rgba(56,189,248,0.48)   0%, transparent 60%),
+        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(99,102,241,0.42)   0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(44,122,252,0.38)   0%, transparent 60%),
+        radial-gradient(ellipse 42% 32% at  50%  50%,  rgba(255,255,255,0.58)  0%, transparent 65%),
+        #E4EEFC;
+      pointer-events: none;
+    }
+    /* 플로팅 필 탭바 */
+    .tabbar {
+      bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px) !important;
+      width: calc(100% - 32px) !important; max-width: 398px !important;
+      height: 61px !important; padding: 0 2px !important; padding-bottom: 0 !important;
+      border-top: none !important; border-radius: 999px !important;
+      background: rgba(255,255,255,0.07) !important;
+      backdrop-filter: blur(72px) saturate(190%) brightness(1.10) !important;
+      -webkit-backdrop-filter: blur(72px) saturate(190%) brightness(1.10) !important;
+      border: 0.5px solid rgba(255,255,255,0.55) !important;
+      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 -0.5px 0.5px rgba(255,255,255,0.25) inset, 0 4px 16px rgba(0,0,0,0.08) !important;
+      align-items: stretch !important; right: auto !important; gap: 0 !important; z-index: 40 !important;
+    }
+    .tab {
+      flex-direction: column !important; gap: 2px !important;
+      padding: 8px 4px !important; border-radius: 999px !important;
+      font-size: 0.65rem !important; font-weight: 500 !important;
+      color: rgba(28,28,30,0.45) !important;
+    }
+    .tab.active { background: rgba(255,255,255,0.22) !important; color: #1C1C1E !important; }
+    /* 글라스 카드 */
+    .care-detail, .menu-group, .logout-btn {
+      background: rgba(255,255,255,0.14) !important;
+      backdrop-filter: blur(56px) saturate(180%) brightness(1.06) !important;
+      -webkit-backdrop-filter: blur(56px) saturate(180%) brightness(1.06) !important;
+      border: 0.5px solid rgba(255,255,255,0.55) !important;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.65) inset, 0 4px 20px rgba(0,0,0,0.05) !important;
+    }
+    .menu-item + .menu-item { border-top: 0.5px solid rgba(255,255,255,0.28) !important; }
+    .care-detail-header { border-bottom: 0.5px solid rgba(255,255,255,0.28) !important; }
   </style>
 </head>
 <body>  <div class="content">
