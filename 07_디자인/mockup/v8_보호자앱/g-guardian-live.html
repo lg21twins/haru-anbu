@@ -182,6 +182,56 @@
     }
     .greeting-sub { font-size: 1rem; color: rgba(28,28,30,0.58); line-height: 1.4; }
 
+    /* ─── AI 프롬프트 제안 ─── */
+    .ai-prompts-zone {
+      padding: 24px 20px 16px;
+      flex: 1;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .ai-prompts-label {
+      font-size: 0.82rem; color: rgba(28,28,30,0.40); font-weight: 500;
+      margin-bottom: 12px; letter-spacing: -0.1px;
+    }
+    .ai-prompts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .ai-prompt-card {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      font-family: inherit; text-align: left; cursor: pointer;
+      border: 0.5px solid rgba(255,255,255,0.62);
+      background: rgba(255,255,255,0.48);
+      backdrop-filter: blur(24px) saturate(120%);
+      -webkit-backdrop-filter: blur(24px) saturate(120%);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.70) inset,
+        0 3px 12px rgba(0,0,0,0.05);
+      transition: transform 0.12s, box-shadow 0.12s;
+      position: relative; overflow: hidden;
+    }
+    .ai-prompt-card::before {
+      content: '';
+      position: absolute; inset: 0; border-radius: inherit;
+      background: linear-gradient(148deg, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.06) 30%, transparent 55%);
+      pointer-events: none;
+    }
+    .ai-prompt-card > * { position: relative; z-index: 1; }
+    .ai-prompt-card:active { transform: scale(0.96); box-shadow: 0 1px 0 rgba(255,255,255,0.70) inset, 0 1px 4px rgba(0,0,0,0.05); }
+    .ap-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.55);
+      border: 0.5px solid rgba(255,255,255,0.60);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset;
+    }
+    .ap-text {
+      font-size: 0.82rem; font-weight: 600; color: #1C1C1E;
+      line-height: 1.35; letter-spacing: -0.2px;
+    }
+
     /* ─── 섹션1 하단: AI 입력 ─── */
     .sec-chat-bottom {
       padding: 0 0 calc(max(env(safe-area-inset-bottom, 0px), 20px) + 16px);
@@ -704,8 +754,39 @@
           <p class="greeting-sub" id="greetingSub">저녁 일과도 잘 되고 있어요.</p>
         </div>
 
-        <!-- 스페이서: 나머지 공간 채움 -->
-        <div style="flex: 1;"></div>
+        <!-- AI 대화 프롬프트 제안 -->
+        <div class="ai-prompts-zone">
+          <p class="ai-prompts-label">
+            <img src="../../../logo/haru.svg" style="width:14px;height:14px;opacity:0.42;vertical-align:middle;margin-right:5px;">
+            이런 것들을 물어볼 수 있어요
+          </p>
+          <div class="ai-prompts-grid">
+            <button class="ai-prompt-card" onclick="fillPrompt('오늘 정희님 상태가 어때요?')">
+              <span class="ap-icon"><iconify-icon icon="fluent:heart-pulse-24-filled" style="font-size:18px;color:#2C7AFC;"></iconify-icon></span>
+              <span class="ap-text">오늘 정희님<br>상태가 어때요?</span>
+            </button>
+            <button class="ai-prompt-card" onclick="fillPrompt('이번 주 케어 활동을 요약해줘')">
+              <span class="ap-icon"><iconify-icon icon="fluent:document-bullet-list-24-filled" style="font-size:18px;color:#7C3AED;"></iconify-icon></span>
+              <span class="ap-text">이번 주 케어<br>활동 요약해줘</span>
+            </button>
+            <button class="ai-prompt-card" onclick="fillPrompt('오늘 투약 일정 확인해줘')">
+              <span class="ap-icon"><iconify-icon icon="tabler:pill-filled" style="font-size:18px;color:#0891B2;"></iconify-icon></span>
+              <span class="ap-text">오늘 투약<br>일정 확인해줘</span>
+            </button>
+            <button class="ai-prompt-card" onclick="fillPrompt('간호사에게 전달할 메시지가 있어')">
+              <span class="ap-icon"><iconify-icon icon="fluent:person-chat-24-filled" style="font-size:18px;color:#059669;"></iconify-icon></span>
+              <span class="ap-text">간호사에게<br>메시지 전달하기</span>
+            </button>
+            <button class="ai-prompt-card" onclick="fillPrompt('이번 달 예상 비용이 얼마야?')">
+              <span class="ap-icon"><iconify-icon icon="fluent:receipt-24-filled" style="font-size:18px;color:#D97706;"></iconify-icon></span>
+              <span class="ap-text">이번 달<br>예상 비용이 얼마야?</span>
+            </button>
+            <button class="ai-prompt-card" onclick="fillPrompt('정희님이 오늘 기분이 어떤지 물어봐줘')">
+              <span class="ap-icon"><iconify-icon icon="fluent:emoji-24-filled" style="font-size:18px;color:#EC4899;"></iconify-icon></span>
+              <span class="ap-text">오늘 기분이<br>어떤지 물어봐줘</span>
+            </button>
+          </div>
+        </div>
 
         <!-- 하단 AI 입력 -->
         <div class="sec-chat-bottom">
@@ -1115,6 +1196,14 @@
       const t = document.getElementById('toastEl');
       t.textContent = msg; t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    /* AI 프롬프트 채우기 */
+    function fillPrompt(text) {
+      const ph = document.querySelector('.ai-placeholder');
+      ph.textContent = text;
+      ph.style.color = 'rgba(28,28,30,0.75)';
+      ph.style.fontWeight = '500';
     }
   </script>
 </body>
