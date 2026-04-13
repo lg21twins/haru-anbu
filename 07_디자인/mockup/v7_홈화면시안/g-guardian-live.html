@@ -488,7 +488,7 @@
         0 4px 16px rgba(0,0,0,0.06);
       display: flex; align-items: stretch; justify-content: space-around;
       padding: 0 2px;
-      height: 61px;
+      height: 68px;
       gap: 0;
       z-index: 40;
       opacity: 0; pointer-events: none;
@@ -500,8 +500,8 @@
       transform: translateX(-50%) translateY(0);
     }
     .tab {
-      display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 5px;
-      flex: 1; padding: 13px 6px; border-radius: 999px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      flex: 1; padding: 8px 4px; border-radius: 999px;
       font-size: 0.75rem; font-weight: 500; color: rgba(28,28,30,0.45);
       text-decoration: none; transition: all 0.18s;
       white-space: nowrap;
@@ -695,7 +695,7 @@
               </div>
               <div class="top-nav-right">
                 <a href="#" class="nav-btn lq" aria-label="알림">
-                  <i data-lucide="bell" style="width:16px;height:16px;"></i>
+                  <i data-lucide="bell" style="width:20px;height:20px;"></i>
                   <span class="notif-dot"></span>
                 </a>
                 <div class="avatar-btn lq">예</div>
@@ -904,7 +904,7 @@
 
           <!-- 전체 리포트 CTA -->
           <button class="report-cta" onclick="showSheet()" style="margin-top:10px;">
-            <i data-lucide="file-text" style="width:16px;height:16px;position:relative;z-index:1;"></i>
+            <i data-lucide="file-text" style="width:20px;height:20px;position:relative;z-index:1;"></i>
             <span style="position:relative;z-index:1;">전체 리포트 보기</span>
             <i data-lucide="chevron-right" style="width:14px;height:14px;position:relative;z-index:1;"></i>
           </button>
@@ -918,19 +918,24 @@
   <!-- 탭바 -->
   <nav class="tabbar" id="tabbar">
     <a href="#" class="tab active">
-      <span class="tab-icon"><i data-lucide="home" style="width:16px;height:16px;"></i></span>홈
+      <span class="tab-icon"><i data-lucide="home" style="width:20px;height:20px;"></i></span>
+      <span>홈</span>
     </a>
-    <a href="#" class="tab">
-      <span class="tab-icon"><i data-lucide="message-circle" style="width:16px;height:16px;"></i></span>채팅
+    <a href="../v6_전체화면/guardian/g03-chat.html" class="tab">
+      <span class="tab-icon"><i data-lucide="message-circle" style="width:20px;height:20px;"></i></span>
+      <span>채팅</span>
     </a>
-    <a href="#" class="tab">
-      <span class="tab-icon"><i data-lucide="clipboard-list" style="width:16px;height:16px;"></i></span>기록
+    <a href="../v6_전체화면/guardian/g02-ai-report.html" class="tab">
+      <span class="tab-icon"><i data-lucide="clipboard-list" style="width:20px;height:20px;"></i></span>
+      <span>기록</span>
     </a>
-    <a href="#" class="tab">
-      <span class="tab-icon"><i data-lucide="credit-card" style="width:16px;height:16px;"></i></span>결제
+    <a href="../v6_전체화면/guardian/g08-billing.html" class="tab">
+      <span class="tab-icon"><i data-lucide="credit-card" style="width:20px;height:20px;"></i></span>
+      <span>결제</span>
     </a>
-    <a href="#" class="tab">
-      <span class="tab-icon"><i data-lucide="user" style="width:16px;height:16px;"></i></span>마이
+    <a href="../v6_전체화면/guardian/g05-mypage.html" class="tab">
+      <span class="tab-icon"><i data-lucide="user" style="width:20px;height:20px;"></i></span>
+      <span>마이</span>
     </a>
   </nav>
 
