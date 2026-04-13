@@ -1020,9 +1020,15 @@
       }
     })();
 
-    /* 스크롤 감지 — 탭바 등장 / 스와이프 힌트 숨김 */
+    /* 스크롤 감지 — 탭바 등장 */
     const sc = document.getElementById('scrollContainer');
     const tabbar = document.getElementById('tabbar');
+    sc.addEventListener('scroll', () => {
+      if (sc.scrollTop > 40) {
+        tabbar.classList.add('show');
+      } else {
+        tabbar.classList.remove('show');
+      }
     }, { passive: true });
 
     /* 수평 스와이프 감지 — 오른쪽 스와이프 → 채팅 이동 */
