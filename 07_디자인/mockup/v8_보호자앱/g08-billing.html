@@ -52,7 +52,6 @@
     }
     .total-status {
       display: inline-flex; align-items: center; gap: var(--space-xs);
-      margin-top: var(--space-md);
       padding: 6px var(--space-md);
       background: #FFF3E0;
       color: #E65100;
@@ -180,9 +179,25 @@
       to   { transform: scaleY(1); opacity: 1; }
     }
 
-    .trend-chart-wrap {
-      position: relative; z-index: 1;
+    /* 차트 외부 래퍼 — y축 + 차트 나란히 */
+    .trend-chart-outer {
+      display: flex; gap: 8px; align-items: stretch;
       margin: var(--space-md) 0 var(--space-sm);
+      position: relative; z-index: 1;
+    }
+    /* Y축 레이블 */
+    .trend-yaxis {
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding-bottom: 22px; /* 월 레이블 높이만큼 */
+      flex-shrink: 0;
+    }
+    .ty-label {
+      font-size: 9px; font-weight: 600;
+      color: rgba(28,28,30,0.30); letter-spacing: -0.2px;
+      line-height: 1; text-align: right; white-space: nowrap;
+    }
+    .trend-chart-wrap {
+      position: relative; flex: 1;
     }
     /* 가로 그리드 라인 */
     .trend-grid {
@@ -196,41 +211,54 @@
       background: rgba(44,122,252,0.10);
     }
     .trend-chart {
-      display: flex; align-items: flex-end; gap: 6px;
-      height: 140px;
-      padding-bottom: 0;
+      display: flex; align-items: flex-end; gap: 5px;
+      height: 148px;
       position: relative;
     }
     .trend-col {
       flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0;
+      position: relative;
     }
-    .trend-val {
-      font-size: 9px; font-weight: 700;
-      color: rgba(28,28,30,0.38);
-      margin-bottom: 4px; letter-spacing: -0.2px;
-      height: 13px; line-height: 13px;
-    }
-    .trend-val.current { color: #2C7AFC; }
     .trend-bar-wrap {
-      width: 100%; flex: 1; display: flex; align-items: flex-end;
+      width: 100%; flex: 1; display: flex; align-items: flex-end; position: relative;
     }
     .trend-bar {
       width: 100%; border-radius: 6px 6px 3px 3px;
       background: rgba(44,122,252,0.13);
-      border: 0.5px solid rgba(44,122,252,0.22);
+      border: 0.5px solid rgba(44,122,252,0.20);
       transform-origin: bottom;
       animation: barRise 0.5s cubic-bezier(.4,0,.2,1) both;
     }
-    .trend-bar:nth-child(1) { animation-delay: 0.05s; }
-    .trend-bar:nth-child(2) { animation-delay: 0.10s; }
-    .trend-bar:nth-child(3) { animation-delay: 0.15s; }
-    .trend-bar:nth-child(4) { animation-delay: 0.20s; }
-    .trend-bar:nth-child(5) { animation-delay: 0.25s; }
-    .trend-bar:nth-child(6) { animation-delay: 0.30s; }
+    .trend-col:nth-child(1) .trend-bar { animation-delay: 0.05s; }
+    .trend-col:nth-child(2) .trend-bar { animation-delay: 0.10s; }
+    .trend-col:nth-child(3) .trend-bar { animation-delay: 0.15s; }
+    .trend-col:nth-child(4) .trend-bar { animation-delay: 0.20s; }
+    .trend-col:nth-child(5) .trend-bar { animation-delay: 0.25s; }
+    .trend-col:nth-child(6) .trend-bar { animation-delay: 0.30s; }
     .trend-bar.current {
       background: linear-gradient(180deg, #2C7AFC 0%, #60A5FA 100%);
       border-color: rgba(44,122,252,0.40);
       box-shadow: 0 4px 16px rgba(44,122,252,0.30), 0 1px 4px rgba(44,122,252,0.20);
+    }
+    /* 현재 달 툴팁 말풍선 */
+    .trend-tooltip {
+      position: absolute; bottom: calc(100% + 7px); left: 50%; transform: translateX(-50%);
+      background: #2C7AFC; color: #fff;
+      font-size: 9.5px; font-weight: 700; white-space: nowrap;
+      padding: 4px 8px; border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(44,122,252,0.40);
+      letter-spacing: -0.2px;
+      animation: fadeUp 0.4s 0.6s both;
+    }
+    .trend-tooltip::after {
+      content: '';
+      position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: #2C7AFC;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
     .trend-month {
       font-size: 10px; margin-top: 6px;
@@ -289,6 +317,7 @@
     }
     .ai-insight-body {
       font-size: var(--text-callout);
+      word-break: keep-all;
       color: var(--text-primary);
       line-height: 1.55;
       position: relative; z-index: 1;
@@ -387,6 +416,28 @@
       font-weight: var(--weight-medium);
       cursor: pointer; white-space: nowrap;
     }
+    .history-more-wrap {
+      display: flex; flex-direction: column; gap: var(--space-sm);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .history-more-wrap.open { max-height: 600px; }
+    .btn-load-more {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: 100%; padding: 12px;
+      background: rgba(255,255,255,0.38);
+      backdrop-filter: blur(24px);
+      border: 0.5px solid rgba(255,255,255,0.55);
+      border-radius: var(--radius-md);
+      font-size: var(--text-callout); font-weight: var(--weight-medium);
+      color: var(--guardian); cursor: pointer;
+      transition: background 0.18s;
+      margin-top: 2px;
+    }
+    .btn-load-more:active { background: rgba(255,255,255,0.55); }
+    .btn-load-more iconify-icon { transition: transform 0.3s; }
+    .btn-load-more.open iconify-icon { transform: rotate(180deg); }
 
     /* ══════════════════════════════
        Glassmorphism — 홈화면 통일
@@ -497,12 +548,42 @@
         </div>
         <a href="#" class="btn-pay" role="button" aria-label="이번 달 결제하기">
           <iconify-icon icon="fluent:payment-24-filled" style="font-size:18px;"></iconify-icon>
-          납부하기 · 1,200,000원
+          납부하기
         </a>
       </div>
     </div>
 
-    <!-- ② 장기요양보험 적용 현황 -->
+    <!-- ② AI 비용 인사이트 -->
+    <div class="section">
+      <div class="ai-insight-card">
+        <div class="ai-insight-header">
+          <div class="ai-badge"><iconify-icon icon="ph:sparkle-fill" style="font-size:12px;"></iconify-icon> AI 비용 인사이트</div>
+        </div>
+        <div class="ai-insight-body">
+          이달 전체 비용 중 <strong>요양 서비스(67%)</strong>가 가장 큰 비중을 차지해요.
+        </div>
+        <div class="ai-insight-items">
+          <div class="ai-insight-item">
+            <div class="dot"></div>
+            <span>간병비는 지난 3개월 <strong style="color:#2ca87f">0% 유지</strong> — 건강 상태 안정적이에요.</span>
+          </div>
+          <div class="ai-insight-item">
+            <div class="dot"></div>
+            <span>식비 증가는 영양보충식 추가 처방에 따른 것으로 보여요.</span>
+          </div>
+          <div class="ai-insight-item">
+            <div class="dot"></div>
+            <span>연말정산 의료비 공제 대상 금액: <strong style="color:#1e6ce8">누계 4,680,000원</strong></span>
+          </div>
+        </div>
+        <a href="g03-chat.html" class="btn-ask-ai" aria-label="AI에게 비용 질문하기">
+          <iconify-icon icon="fluent:chat-24-filled" style="font-size:15px;"></iconify-icon>
+          AI에게 비용 더 물어보기
+        </a>
+      </div>
+    </div>
+
+    <!-- ③ 장기요양보험 적용 현황 -->
     <div class="section">
       <div class="section-header"><h2 class="section-title">장기요양보험 적용 현황</h2></div>
       <div class="insurance-card">
@@ -557,43 +638,51 @@
     <div class="section">
       <div class="section-header"><h2 class="section-title">월별 비용 추이</h2></div>
       <div class="trend-card">
-        <div class="trend-chart-wrap">
-          <div class="trend-grid">
-            <div class="tg-line"></div>
-            <div class="tg-line"></div>
-            <div class="tg-line"></div>
-            <div class="tg-line"></div>
+        <div class="trend-chart-outer">
+          <!-- Y축 레이블 -->
+          <div class="trend-yaxis">
+            <span class="ty-label">120만</span>
+            <span class="ty-label">110만</span>
+            <span class="ty-label">100만</span>
+            <span class="ty-label">90만</span>
           </div>
-          <div class="trend-chart" aria-label="최근 6개월 비용 막대 그래프">
-            <div class="trend-col">
-              <span class="trend-val">110만</span>
-              <div class="trend-bar-wrap"><div class="trend-bar" style="height:91%"></div></div>
-              <span class="trend-month">11월</span>
+          <!-- 차트 본체 -->
+          <div class="trend-chart-wrap">
+            <div class="trend-grid">
+              <div class="tg-line"></div>
+              <div class="tg-line"></div>
+              <div class="tg-line"></div>
+              <div class="tg-line"></div>
             </div>
-            <div class="trend-col">
-              <span class="trend-val">118만</span>
-              <div class="trend-bar-wrap"><div class="trend-bar" style="height:98%"></div></div>
-              <span class="trend-month">12월</span>
-            </div>
-            <div class="trend-col">
-              <span class="trend-val">118만</span>
-              <div class="trend-bar-wrap"><div class="trend-bar" style="height:98%"></div></div>
-              <span class="trend-month">1월</span>
-            </div>
-            <div class="trend-col">
-              <span class="trend-val">115만</span>
-              <div class="trend-bar-wrap"><div class="trend-bar" style="height:96%"></div></div>
-              <span class="trend-month">2월</span>
-            </div>
-            <div class="trend-col">
-              <span class="trend-val">115만</span>
-              <div class="trend-bar-wrap"><div class="trend-bar" style="height:96%"></div></div>
-              <span class="trend-month">3월</span>
-            </div>
-            <div class="trend-col">
-              <span class="trend-val current">120만</span>
-              <div class="trend-bar-wrap"><div class="trend-bar current" style="height:100%"></div></div>
-              <span class="trend-month current">4월</span>
+            <div class="trend-chart" aria-label="최근 6개월 비용 막대 그래프">
+              <div class="trend-col">
+                <div class="trend-bar-wrap"><div class="trend-bar" style="height:67%"></div></div>
+                <span class="trend-month">11월</span>
+              </div>
+              <div class="trend-col">
+                <div class="trend-bar-wrap"><div class="trend-bar" style="height:93%"></div></div>
+                <span class="trend-month">12월</span>
+              </div>
+              <div class="trend-col">
+                <div class="trend-bar-wrap"><div class="trend-bar" style="height:93%"></div></div>
+                <span class="trend-month">1월</span>
+              </div>
+              <div class="trend-col">
+                <div class="trend-bar-wrap"><div class="trend-bar" style="height:83%"></div></div>
+                <span class="trend-month">2월</span>
+              </div>
+              <div class="trend-col">
+                <div class="trend-bar-wrap"><div class="trend-bar" style="height:83%"></div></div>
+                <span class="trend-month">3월</span>
+              </div>
+              <div class="trend-col">
+                <div class="trend-bar-wrap">
+                  <div class="trend-bar current" style="height:100%">
+                    <div class="trend-tooltip">1,200,000원</div>
+                  </div>
+                </div>
+                <span class="trend-month current">4월</span>
+              </div>
             </div>
           </div>
         </div>
@@ -601,36 +690,6 @@
           <div class="ai-dot">AI</div>
           <span>지난달 대비 <strong style="color:#1e6ce8">50,000원 증가</strong>했어요. 약품비 항목이 20,000원, 식비가 30,000원 소폭 늘었습니다.</span>
         </div>
-      </div>
-    </div>
-
-    <!-- ⑤ AI 비용 인사이트 -->
-    <div class="section">
-      <div class="ai-insight-card">
-        <div class="ai-insight-header">
-          <div class="ai-badge"><iconify-icon icon="ph:sparkle-fill" style="font-size:12px;"></iconify-icon> AI 비용 인사이트</div>
-        </div>
-        <div class="ai-insight-body">
-          이달 전체 비용 중 <strong>요양 서비스(67%)</strong>가 가장 큰 비중을 차지해요.
-        </div>
-        <div class="ai-insight-items">
-          <div class="ai-insight-item">
-            <div class="dot"></div>
-            <span>간병비는 지난 3개월 <strong style="color:#2ca87f">0% 유지</strong> — 건강 상태 안정적이에요.</span>
-          </div>
-          <div class="ai-insight-item">
-            <div class="dot"></div>
-            <span>식비 증가는 영양보충식 추가 처방에 따른 것으로 보여요.</span>
-          </div>
-          <div class="ai-insight-item">
-            <div class="dot"></div>
-            <span>연말정산 의료비 공제 대상 금액: <strong style="color:#1e6ce8">누계 4,680,000원</strong></span>
-          </div>
-        </div>
-        <a href="g03-chat.html" class="btn-ask-ai" aria-label="AI에게 비용 질문하기">
-          <iconify-icon icon="fluent:chat-24-filled" style="font-size:15px;"></iconify-icon>
-          AI에게 비용 더 물어보기
-        </a>
       </div>
     </div>
 
@@ -698,6 +757,59 @@
           <span class="history-receipt-btn">영수증 보기</span>
         </div>
       </div>
+
+      <!-- 이전 이력 (더 보기) -->
+      <div class="history-more-wrap" id="historyMore">
+        <div class="history-item">
+          <div class="history-icon"><iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:20px;color:var(--success)"></iconify-icon></div>
+          <div class="history-info">
+            <div class="history-label">12월 청구</div>
+            <div class="history-date">2025.12.27 납부 완료</div>
+          </div>
+          <div class="history-right">
+            <span class="history-amount">1,150,000원</span>
+            <span class="history-receipt-btn">영수증 보기</span>
+          </div>
+        </div>
+        <div class="history-item">
+          <div class="history-icon"><iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:20px;color:var(--success)"></iconify-icon></div>
+          <div class="history-info">
+            <div class="history-label">11월 청구</div>
+            <div class="history-date">2025.11.28 납부 완료</div>
+          </div>
+          <div class="history-right">
+            <span class="history-amount">1,150,000원</span>
+            <span class="history-receipt-btn">영수증 보기</span>
+          </div>
+        </div>
+        <div class="history-item">
+          <div class="history-icon"><iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:20px;color:var(--success)"></iconify-icon></div>
+          <div class="history-info">
+            <div class="history-label">10월 청구</div>
+            <div class="history-date">2025.10.29 납부 완료</div>
+          </div>
+          <div class="history-right">
+            <span class="history-amount">1,200,000원</span>
+            <span class="history-receipt-btn">영수증 보기</span>
+          </div>
+        </div>
+        <div class="history-item">
+          <div class="history-icon"><iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size:20px;color:var(--success)"></iconify-icon></div>
+          <div class="history-info">
+            <div class="history-label">9월 청구</div>
+            <div class="history-date">2025.09.26 납부 완료</div>
+          </div>
+          <div class="history-right">
+            <span class="history-amount">1,200,000원</span>
+            <span class="history-receipt-btn">영수증 보기</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-load-more" id="btnLoadMore" onclick="toggleHistory()">
+        <iconify-icon icon="fluent:chevron-down-24-filled" style="font-size:16px;"></iconify-icon>
+        이전 납부 이력 보기
+      </button>
     </div>
 
   </div>
@@ -753,7 +865,21 @@
 
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
   <script>
-</script>
+    function toggleHistory() {
+      var wrap = document.getElementById('historyMore');
+      var btn  = document.getElementById('btnLoadMore');
+      var isOpen = wrap.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.querySelector('span') || (btn.childNodes[2] && (btn.childNodes[2].textContent = isOpen ? ' 접기' : ' 이전 납부 이력 보기'));
+      var texts = btn.childNodes;
+      for (var i = 0; i < texts.length; i++) {
+        if (texts[i].nodeType === 3 && texts[i].textContent.trim()) {
+          texts[i].textContent = isOpen ? '\n        접기\n      ' : '\n        이전 납부 이력 보기\n      ';
+          break;
+        }
+      }
+    }
+  </script>
   <div class="ios-home-indicator"></div>
 </body>
 </html>
