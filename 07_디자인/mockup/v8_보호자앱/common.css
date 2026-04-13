@@ -568,7 +568,7 @@ a.btn-link {
   left: 50%; transform: translateX(-50%);
   width: calc(100% - 80px); max-width: 320px;
   height: 64px;
-  padding: 0 2px;
+  padding: 0 10px;
   display: flex;
   align-items: stretch;
   justify-content: space-around;
