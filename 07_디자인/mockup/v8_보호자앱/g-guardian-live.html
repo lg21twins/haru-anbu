@@ -184,7 +184,7 @@
 
     /* ─── AI 프롬프트 제안 ─── */
     .ai-prompts-zone {
-      padding: 4px 20px 14px;
+      padding: 4px 20px 32px;
     }
     .ai-prompt-item {
       display: block; width: 100%;
@@ -621,37 +621,6 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ─── 스와이프 힌트 (왼쪽 엣지) ─── */
-    .swipe-hint {
-      position: fixed;
-      left: 0; top: 50%;
-      transform: translateY(-50%);
-      z-index: 50;
-      display: flex; flex-direction: column; align-items: center;
-      gap: 4px;
-      padding: 12px 6px 12px 4px;
-      background: rgba(255,255,255,0.18);
-      backdrop-filter: blur(20px) saturate(120%);
-      -webkit-backdrop-filter: blur(20px) saturate(120%);
-      border: 0.5px solid rgba(255,255,255,0.5);
-      border-left: none;
-      border-radius: 0 12px 12px 0;
-      box-shadow: 2px 0 12px rgba(0,0,0,0.06);
-      opacity: 0.7;
-      transition: opacity 0.3s, transform 0.3s;
-      pointer-events: none;
-    }
-    .swipe-hint.hidden { opacity: 0; transform: translateY(-50%) translateX(-100%); }
-    .swipe-hint-icon {
-      display: flex; flex-direction: column; align-items: center; gap: 2px;
-    }
-    .swipe-hint-icon svg { opacity: 0.6; }
-    .swipe-hint-label {
-      writing-mode: vertical-rl; text-orientation: mixed;
-      font-size: 9px; font-weight: 700; color: rgba(28,28,30,0.5);
-      letter-spacing: 0.05em;
-    }
-
     /* ─── 스와이프 전환 오버레이 ─── */
     .chat-swipe-overlay {
       position: fixed; inset: 0; z-index: 500;
@@ -666,18 +635,6 @@
 </head>
 <body>
 
-  <!-- 스와이프 힌트 (섹션1에서만 노출) -->
-  <div class="swipe-hint" id="swipeHint" aria-hidden="true">
-    <div class="swipe-hint-icon">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(8,145,178,0.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 18 15 12 9 6"/>
-      </svg>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(8,145,178,0.4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 18 15 12 9 6"/>
-      </svg>
-    </div>
-    <span class="swipe-hint-label">채팅</span>
-  </div>
 
   <!-- 스와이프 전환 오버레이 -->
   <div class="chat-swipe-overlay" id="chatSwipeOverlay"></div>
@@ -1066,18 +1023,6 @@
     /* 스크롤 감지 — 탭바 등장 / 스와이프 힌트 숨김 */
     const sc = document.getElementById('scrollContainer');
     const tabbar = document.getElementById('tabbar');
-    const swipeHint = document.getElementById('swipeHint');
-    const chatSwipeOverlay = document.getElementById('chatSwipeOverlay');
-
-    sc.addEventListener('scroll', () => {
-      const ratio = sc.scrollTop / sc.clientHeight;
-      if (ratio > 0.15) {
-        tabbar.classList.add('show');
-        swipeHint.classList.add('hidden');
-      } else {
-        tabbar.classList.remove('show');
-        swipeHint.classList.remove('hidden');
-      }
     }, { passive: true });
 
     /* 수평 스와이프 감지 — 오른쪽 스와이프 → 채팅 이동 */
