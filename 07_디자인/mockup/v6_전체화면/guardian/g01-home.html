@@ -6,8 +6,21 @@
   <title>하루안부 — 보호자 홈</title>
   <link rel="stylesheet" href="../common.css">
   <style>
+    html { background: #EEF5FF; }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 68% 44% at  -4%   0%,  rgba(100,178,255,0.55)  0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at 104%   0%,  rgba(56,189,248,0.48)   0%, transparent 60%),
+        radial-gradient(ellipse 62% 44% at 106% 100%,  rgba(99,102,241,0.42)   0%, transparent 62%),
+        radial-gradient(ellipse 58% 38% at  -4% 100%,  rgba(44,122,252,0.38)   0%, transparent 60%),
+        radial-gradient(ellipse 42% 32% at  50%  50%,  rgba(255,255,255,0.58)  0%, transparent 65%),
+        #E4EEFC;
+      pointer-events: none;
+    }
     body {
-      background: var(--bg);
+      background: transparent;
       max-width: 430px; padding-top:72px;
       margin: 0 auto;
       min-height: 100vh;
@@ -647,7 +660,7 @@
       </div>
       <a href="g02-ai-report.html" class="report-card">
         <div class="report-header">
-          <span class="report-ai-badge"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> AI가 정리했어요</span>
+          <span class="report-ai-badge"><img src="../../logo/haru.svg" style="width:14px;height:14px;display:inline-block;vertical-align:middle;flex-shrink:0;"> AI가 정리했어요</span>
           <span class="report-date">오후 5:00</span>
         </div>
 
