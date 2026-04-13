@@ -223,22 +223,6 @@
     }
     .btn-icon:active { transform: scale(0.94); }
     /* 플로팅 필 탭바 */
-    .tabbar {
-      position: fixed !important;
-      bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px) !important;
-      left: 50% !important; transform: translateX(-50%) !important;
-      width: calc(100% - 32px) !important; max-width: 398px !important;
-      height: 68px !important; padding: 0 2px !important; padding-bottom: 0 !important;
-      border-top: none !important; border-radius: 999px !important;
-      background: rgba(255,255,255,0.07) !important;
-      backdrop-filter: blur(72px) saturate(140%) brightness(1.04) !important;
-      -webkit-backdrop-filter: blur(72px) saturate(140%) brightness(1.04) !important;
-      border: 0.5px solid rgba(255,255,255,0.55) !important;
-      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 -0.5px 0.5px rgba(255,255,255,0.25) inset, 0 4px 16px rgba(0,0,0,0.06) !important;
-      align-items: stretch !important; right: auto !important; gap: 0 !important; z-index: 40 !important;
-    }
-    .tab { flex-direction: column !important; gap: 2px !important; padding: 8px 4px !important; border-radius: 999px !important; font-size: 0.75rem !important; font-weight: 500 !important; color: rgba(28,28,30,0.45) !important; }
-    .tab.active { background: rgba(255,255,255,0.22) !important; color: #1C1C1E !important; }
     /* 메시지 영역 하단 여백 */
     .chat-messages {
       padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 12px + 52px + 16px) !important;
