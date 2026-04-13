@@ -485,9 +485,9 @@
       bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px);
       left: 50%; transform: translateX(-50%);
       width: calc(100% - 32px); max-width: 398px;
-      background: rgba(255,255,255,0.07);
-      backdrop-filter: blur(72px) saturate(140%) brightness(1.04);
-      -webkit-backdrop-filter: blur(72px) saturate(140%) brightness(1.04);
+      background: rgba(255,255,255,0.52);
+      backdrop-filter: blur(24px) saturate(140%) brightness(1.04);
+      -webkit-backdrop-filter: blur(24px) saturate(140%) brightness(1.04);
       border: 0.5px solid rgba(255,255,255,0.55);
       border-radius: 999px;
       box-shadow:
@@ -634,10 +634,6 @@
   </style>
 </head>
 <body>
-
-  <!-- 스와이프 힌트 (섹션1에서만 노출) -->
-<span class="swipe-hint-label">채팅</span>
-  </div>
 
   <!-- 스와이프 전환 오버레이 -->
   <div class="chat-swipe-overlay" id="chatSwipeOverlay"></div>
@@ -1023,9 +1019,15 @@
       }
     })();
 
-    /* 스크롤 감지 — 탭바 등장 / 스와이프 힌트 숨김 */
+    /* 스크롤 감지 — 탭바 등장 */
     const sc = document.getElementById('scrollContainer');
     const tabbar = document.getElementById('tabbar');
+    sc.addEventListener('scroll', () => {
+      if (sc.scrollTop > 40) {
+        tabbar.classList.add('show');
+      } else {
+        tabbar.classList.remove('show');
+      }
     }, { passive: true });
 
     /* 수평 스와이프 감지 — 오른쪽 스와이프 → 채팅 이동 */
