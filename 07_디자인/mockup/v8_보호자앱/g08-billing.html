@@ -211,13 +211,13 @@
       background: rgba(44,122,252,0.10);
     }
     .trend-chart {
-      display: flex; align-items: flex-end; gap: 5px;
+      display: flex; align-items: stretch; gap: 5px;
       height: 148px;
       position: relative;
     }
     .trend-col {
       flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0;
-      position: relative;
+      height: 100%; position: relative;
     }
     .trend-bar-wrap {
       width: 100%; flex: 1; display: flex; align-items: flex-end; position: relative;
@@ -656,32 +656,32 @@
             </div>
             <div class="trend-chart" aria-label="최근 6개월 비용 막대 그래프">
               <div class="trend-col">
-                <!-- 11월: 950,000원 → (95-90)/(120-90)=17% base + scale -->
-                <div class="trend-bar-wrap"><div class="trend-bar" style="height:58%"></div></div>
+                <!-- 11월: 950,000원 → (95-90)/(120-90) = 17% -->
+                <div class="trend-bar-wrap"><div class="trend-bar" style="height:17%"></div></div>
                 <span class="trend-month">11월</span>
               </div>
               <div class="trend-col">
-                <!-- 12월: 1,080,000원 -->
-                <div class="trend-bar-wrap"><div class="trend-bar" style="height:80%"></div></div>
+                <!-- 12월: 1,080,000원 → (108-90)/(120-90) = 60% -->
+                <div class="trend-bar-wrap"><div class="trend-bar" style="height:60%"></div></div>
                 <span class="trend-month">12월</span>
               </div>
               <div class="trend-col">
-                <!-- 1월: 1,180,000원 -->
-                <div class="trend-bar-wrap"><div class="trend-bar" style="height:97%"></div></div>
+                <!-- 1월: 1,180,000원 → (118-90)/(120-90) = 93% -->
+                <div class="trend-bar-wrap"><div class="trend-bar" style="height:93%"></div></div>
                 <span class="trend-month">1월</span>
               </div>
               <div class="trend-col">
-                <!-- 2월: 920,000원 -->
-                <div class="trend-bar-wrap"><div class="trend-bar" style="height:48%"></div></div>
+                <!-- 2월: 920,000원 → (92-90)/(120-90) = 7% — 최저값이라 min 주기 -->
+                <div class="trend-bar-wrap"><div class="trend-bar" style="height:14%"></div></div>
                 <span class="trend-month">2월</span>
               </div>
               <div class="trend-col">
-                <!-- 3월: 1,150,000원 -->
-                <div class="trend-bar-wrap"><div class="trend-bar" style="height:91%"></div></div>
+                <!-- 3월: 1,150,000원 → (115-90)/(120-90) = 83% -->
+                <div class="trend-bar-wrap"><div class="trend-bar" style="height:83%"></div></div>
                 <span class="trend-month">3월</span>
               </div>
               <div class="trend-col">
-                <!-- 4월: 1,200,000원 -->
+                <!-- 4월: 1,200,000원 → 100% -->
                 <div class="trend-bar-wrap">
                   <div class="trend-bar current" style="height:100%">
                     <div class="trend-tooltip">1,200,000원</div>
