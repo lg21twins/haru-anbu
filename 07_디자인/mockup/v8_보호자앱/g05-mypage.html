@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-role="guardian">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — 마이</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="common.css">
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -100,12 +101,6 @@
     /* 로그아웃 */
     .logout{display:flex;align-items:center;justify-content:center;width:100%;padding:14px;font-size:14px;font-weight:600;color:var(--t3);background:rgba(255,255,255,.5);border:1px solid var(--glass-b);border-radius:16px;margin-top:16px;cursor:pointer;text-decoration:none}
 
-    /* 탭바 */
-    .tabbar{position:fixed;bottom:12px;left:50%;width:auto;background:rgba(255,255,255,.7);backdrop-filter:blur(32px)saturate(1.6);border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 20px rgba(0,0,0,.06);border-radius:20px;display:flex;gap:0;padding:6px 8px;z-index:100;transform:translateX(-50%)}
-    .tab{display:flex;align-items:center;justify-content:center;text-decoration:none;padding:10px 20px;border-radius:14px;color:rgba(0,0,0,.2)}
-    .tab svg{width:22px;height:22px}
-    .tab.on{color:var(--blue)}
-
     .version{text-align:center;font-size:11px;color:var(--t3);margin-top:16px;padding-bottom:20px}
   </style>
 </head>
@@ -113,16 +108,11 @@
 <div class="bg"><svg class="bg-logo" viewBox="0 0 2526 2526" fill="none"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 .00017C2518.68 494.198 2522.27 1157.92 1658.86 1262.48 2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52-115.881 1211.75 4.677 424.157 4.677 19.335Z" fill="#2C7AFC"/></svg></div>
 
 <div class="app">
-  <div class="header">
-    <div style="width:34px"></div>
-    <span class="header-title">마이</span>
-    <div class="header-btn"><iconify-icon icon="fluent:settings-24-filled" style="font-size:16px;color:var(--t2)"></iconify-icon></div>
-  </div>
-
-  <div class="content">
+  <div class="content" style="padding-top:calc(max(env(safe-area-inset-top,0px),44px) + 16px)">
 
     <!-- 프로필 카드 -->
-    <div class="card">
+    <div class="card" style="position:relative;">
+      <a href="g07-settings.html" class="header-btn" style="position:absolute;top:16px;right:16px;z-index:2;text-decoration:none;"><iconify-icon icon="fluent:settings-24-filled" style="font-size:16px;color:var(--t2)"></iconify-icon></a>
       <div class="profile">
         <div class="profile-av">예
           <div class="profile-av-edit"><iconify-icon icon="fluent:camera-24-filled" style="font-size:11px;color:#fff"></iconify-icon></div>
@@ -259,11 +249,12 @@
   </div>
 
   <!-- 탭바 -->
-  <nav class="tabbar">
-    <a class="tab" href="g-guardian-live.html"><svg viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 .00017C2518.68 494.198 2522.27 1157.92 1658.86 1262.48 2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg></a>
-    <a class="tab" href="g02-ai-report.html"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="12" width="4" height="8" rx="2"/><rect x="10" y="6" width="4" height="14" rx="2"/><rect x="16" y="9" width="4" height="11" rx="2"/></svg></a>
-    <a class="tab" href="g03-chat.html"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/></svg></a>
-    <a class="tab on" href="g05-mypage.html"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.5"/><path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/></svg></a>
+  <nav class="tabbar" id="tabbar">
+    <a href="g-guardian-live.html" class="tab"><svg width="22" height="22" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg></a>
+    <a href="g03-chat.html" class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/></svg></a>
+    <a href="g02-ai-report.html" class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="12" width="4" height="8" rx="2"/><rect x="10" y="6" width="4" height="14" rx="2"/><rect x="16" y="9" width="4" height="11" rx="2"/></svg></a>
+    <a href="g08-billing.html" class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="5" width="20" height="16" rx="3"/><rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/><rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/></svg></a>
+    <a href="g05-mypage.html" class="tab active"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.5"/><path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/></svg></a>
   </nav>
 </div>
 </body>

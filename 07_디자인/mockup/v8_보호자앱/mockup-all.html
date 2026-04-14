@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>하루안부 보호자앱 — iPhone Mockup Gallery</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard Variable', -apple-system, sans-serif;
+      background: #0f0f13;
+      color: #fff;
+      min-height: 100vh;
+      padding: 60px 40px 80px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 56px;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 48px 40px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .mockup-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .mockup-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #aaa;
+      letter-spacing: -0.2px;
+      text-align: center;
+    }
+
+    /* ── iPhone 15 Pro Mockup Shell ── */
+    .iphone {
+      position: relative;
+      width: 290px;
+      height: 592px;
+      background: #1a1a1a;
+      border-radius: 44px;
+      padding: 10px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.08),
+        0 20px 60px rgba(0,0,0,0.6),
+        0 2px 8px rgba(0,0,0,0.3),
+        inset 0 0 0 1.5px #2a2a2e;
+    }
+
+    /* Side buttons */
+    .iphone::before {
+      content: '';
+      position: absolute;
+      left: -2.5px;
+      top: 110px;
+      width: 2.5px;
+      height: 28px;
+      background: #2a2a2e;
+      border-radius: 2px 0 0 2px;
+      box-shadow:
+        0 38px 0 0 #2a2a2e,
+        0 -40px 0 0 #2a2a2e;
+    }
+    .iphone::after {
+      content: '';
+      position: absolute;
+      right: -2.5px;
+      top: 140px;
+      width: 2.5px;
+      height: 56px;
+      background: #2a2a2e;
+      border-radius: 0 2px 2px 0;
+    }
+
+    .iphone-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 36px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* Dynamic Island */
+    .iphone-screen::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 84px;
+      height: 24px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 100;
+    }
+
+    .iphone-screen iframe {
+      width: 393px;
+      height: 852px;
+      border: none;
+      transform-origin: top left;
+      transform: scale(0.6870);
+      /* 270 / 393 ≈ 0.687 */
+    }
+
+    /* ── Hover effect ── */
+    .mockup-item {
+      transition: transform 0.3s ease;
+    }
+    .mockup-item:hover {
+      transform: translateY(-8px);
+    }
+    .mockup-item:hover .iphone {
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.12),
+        0 30px 80px rgba(44,122,252,0.15),
+        0 2px 8px rgba(0,0,0,0.3),
+        inset 0 0 0 1.5px #2a2a2e;
+    }
+  </style>
+</head>
+<body>
+
+<h1>하루안부 보호자앱 — 전체 화면</h1>
+<p class="subtitle">v8 Mockup · 14 Screens · iPhone 15 Pro</p>
+
+<div class="gallery">
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g-guardian-live.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">홈 (보호자 라이브)</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g-ai.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">AI 홈</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g02-ai-report.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">AI 리포트</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g03-chat.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">채팅 목록</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g03-chat-ai.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">채팅 — AI</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g03-chat-family.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">채팅 — 가족</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g03-chat-nurse.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">채팅 — 간호사</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g03-chat-patient.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">채팅 — 환자</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g05-mypage.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">마이페이지</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g06-alert.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">알림</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g07-settings.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">설정</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g08-billing.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">결제</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g09-prescription.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">처방전</div>
+  </div>
+
+  <div class="mockup-item">
+    <div class="iphone"><div class="iphone-screen">
+      <iframe src="g10-timeline.html" loading="lazy"></iframe>
+    </div></div>
+    <div class="mockup-label">타임라인</div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -202,8 +202,8 @@
     <div style="display:flex; align-items:center; gap:var(--space-md);">
       <a href="g03-chat.html" class="btn-icon" aria-label="뒤로 가기">‹</a>
       <div style="display:flex; align-items:center; gap:var(--space-md); flex:1;">
-        <div style="width:40px; height:40px; border-radius:var(--radius-full); background:linear-gradient(135deg,#3B82F6,#0EA5E9); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-          <iconify-icon icon="ph:stethoscope" style="font-size:20px;color:white;"></iconify-icon>
+        <div style="width:40px; height:40px; border-radius:var(--radius-full); background:linear-gradient(135deg,#DBEAFE,#93C5FD); display:flex;align-items:center;justify-content:center; flex-shrink:0;">
+          <iconify-icon icon="fluent:person-24-filled" style="font-size:20px;color:rgba(44,122,252,0.6);"></iconify-icon>
         </div>
         <div style="flex:1;">
           <div style="font-size:var(--text-headline); font-weight:var(--weight-semibold);">김미영 간호사</div>
@@ -322,54 +322,12 @@
       <iconify-icon icon="ph:send-horizontal" style="font-size:18px;"></iconify-icon>
     </button>
   </div>
-
-  <nav class="tabbar" role="navigation" aria-label="메인 내비게이션">
-    <a href="g-guardian-live.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="currentColor">
-          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
-          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
-        </svg>
-      </span>
-      <span>홈</span>
-    </a>
-    <a href="g03-chat.html" class="tab active" aria-current="page">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/>
-        </svg>
-      </span>
-      <span>채팅</span>
-    </a>
-    <a href="g02-ai-report.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="4" y="12" width="4" height="8" rx="2"/>
-          <rect x="10" y="6" width="4" height="14" rx="2"/>
-          <rect x="16" y="9" width="4" height="11" rx="2"/>
-        </svg>
-      </span>
-      <span>기록</span>
-    </a>
-    <a href="g08-billing.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="2" y="5" width="20" height="16" rx="3"/>
-          <rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/>
-          <rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
-        </svg>
-      </span>
-      <span>결제</span>
-    </a>
-    <a href="g05-mypage.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="8" r="4.5"/>
-          <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/>
-        </svg>
-      </span>
-      <span>마이</span>
-    </a>
+  <nav class="tabbar" id="tabbar">
+    <a href="g-guardian-live.html" class="tab"><svg width="22" height="22" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg></a>
+    <a href="g03-chat.html" class="tab active"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/></svg></a>
+    <a href="g02-ai-report.html" class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="12" width="4" height="8" rx="2"/><rect x="10" y="6" width="4" height="14" rx="2"/><rect x="16" y="9" width="4" height="11" rx="2"/></svg></a>
+    <a href="g08-billing.html" class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="5" width="20" height="16" rx="3"/><rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/><rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/></svg></a>
+    <a href="g05-mypage.html" class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.5"/><path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/></svg></a>
   </nav>
 
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>

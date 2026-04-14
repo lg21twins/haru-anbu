@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-role="guardian">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -635,7 +635,7 @@
       --amber:#F59E0B;--red:#EF4444;
       --t1:#111827;--t2:rgba(0,0,0,.5);--t3:rgba(0,0,0,.25);
     }
-    .sec-care{min-height:100%;scroll-snap-align:start;position:relative;z-index:1;padding:24px 16px 100px;overflow-y:auto;}
+    .sec-care{min-height:100%;scroll-snap-align:start;position:relative;z-index:1;padding:24px 16px 160px;overflow-y:auto;}
     .care-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:calc(max(env(safe-area-inset-top,59px),59px) + 8px) 8px 0;}
     .care-title{font-size:17px;font-weight:700;letter-spacing:-.3px;color:#1C1C1E;}
     .care-date{font-size:12px;color:var(--t3);}
@@ -846,11 +846,16 @@
           </div>
         </div>
 
-        <!-- 일정: 원형 휠 -->
+        <!-- 일정: 원형 휠 스타일 -->
         <div class="w grid-full" style="min-height:220px;padding:18px;position:relative;overflow:hidden;touch-action:none" id="scheduleWheel">
-          <div class="w-head" style="position:relative;z-index:2"><div class="w-title"><iconify-icon icon="fluent:calendar-24-filled" style="color:var(--blue)"></iconify-icon>일정</div></div>
+          <div class="w-head" style="position:relative;z-index:2">
+            <div class="w-title"><iconify-icon icon="fluent:calendar-24-filled" style="color:var(--blue)"></iconify-icon>일정</div>
+          </div>
+          <!-- 원호 + 도트 (canvas) -->
           <canvas id="schArc" style="position:absolute;left:-60%;top:50%;transform:translateY(-50%);width:140%;height:500px;pointer-events:none"></canvas>
+          <!-- 번호+일정 컨테이너 -->
           <div id="schItems" style="position:relative;height:170px;z-index:1"></div>
+          <!-- 우측 상세 -->
           <div id="schDetail" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);text-align:left;pointer-events:none;z-index:1;max-width:140px"></div>
         </div>
 
@@ -866,8 +871,8 @@
 
         <!-- 담당 간호사 -->
         <div class="w" style="padding:0;overflow:hidden" onclick="jwOpenSheet('nurse')">
-          <div style="width:100%;height:120px;overflow:hidden;position:relative">
-            <img src="img/간호사.png" style="width:100%;height:100%;object-fit:cover;object-position:center 20%"/>
+          <div style="width:100%;height:120px;overflow:hidden;position:relative;">
+            <img src="../../../간호사 사진.png" alt="김서연 간호사" style="width:100%;height:100%;object-fit:cover;object-position:top;">
           </div>
           <div style="padding:14px 16px;text-align:center">
             <div style="font-size:15px;font-weight:800">김서연 간호사</div>
@@ -887,52 +892,11 @@
 
   <!-- 탭바 -->
   <nav class="tabbar" id="tabbar">
-    <a href="#" class="tab active">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="currentColor">
-          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
-          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
-        </svg>
-      </span>
-      <span>홈</span>
-    </a>
-    <a href="g03-chat.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/>
-        </svg>
-      </span>
-      <span>채팅</span>
-    </a>
-    <a href="g02-ai-report.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="4" y="12" width="4" height="8" rx="2"/>
-          <rect x="10" y="6" width="4" height="14" rx="2"/>
-          <rect x="16" y="9" width="4" height="11" rx="2"/>
-        </svg>
-      </span>
-      <span>기록</span>
-    </a>
-    <a href="g08-billing.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="2" y="5" width="20" height="16" rx="3"/>
-          <rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/>
-          <rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
-        </svg>
-      </span>
-      <span>결제</span>
-    </a>
-    <a href="g05-mypage.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="8" r="4.5"/>
-          <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/>
-        </svg>
-      </span>
-      <span>마이</span>
-    </a>
+    <a href="g-guardian-live.html" class="tab active"><svg width="22" height="22" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg></a>
+    <a href="g03-chat.html" class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/></svg></a>
+    <a href="g02-ai-report.html" class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="12" width="4" height="8" rx="2"/><rect x="10" y="6" width="4" height="14" rx="2"/><rect x="16" y="9" width="4" height="11" rx="2"/></svg></a>
+    <a href="g08-billing.html" class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="5" width="20" height="16" rx="3"/><rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/><rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/></svg></a>
+    <a href="g05-mypage.html" class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.5"/><path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/></svg></a>
   </nav>
 
   <!-- AI 리포트 바텀시트 -->
@@ -1118,7 +1082,7 @@
         <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:drop-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">세면</div><div class="srow-val">아침 07:30 완료</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
         <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:drop-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">구강 케어</div><div class="srow-val">아침 07:40 완료</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
         <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:drop-24-filled" style="color:rgba(44,122,252,.3)"></iconify-icon></div><div class="srow-text"><div class="srow-label">목욕</div><div class="srow-val">오후 예정</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">예정</div></div>`,
-      nurse:`<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></div><div><div class="sheet-ttl">김서연 간호사</div><div class="sheet-sub">실버케어 3층 · 5년차</div></div></div>
+      nurse:`<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue));overflow:hidden;"><img src="../../../간호사 사진.png" alt="김서연 간호사" style="width:100%;height:100%;object-fit:cover;object-position:top;border-radius:inherit;"></div><div><div class="sheet-ttl">김서연 간호사</div><div class="sheet-sub">실버케어 3층 · 5년차</div></div></div>
         <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:clock-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">근무 시간</div><div class="srow-val">07:00 ~ 15:00 (주간)</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">근무중</div></div>
         <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:chat-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">최근 메시지</div><div class="srow-val">어르신 오전 산책 잘 다녀오셨어요</div></div></div>`,
       trend:`<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:data-histogram-24-filled"></iconify-icon></div><div><div class="sheet-ttl">주간 케어 트렌드</div><div class="sheet-sub">이번 주 전반적으로 양호</div></div></div>
@@ -1134,31 +1098,35 @@
     /* 원형 일정 휠 */
     (function(){
       const items=[
-        {t:'07:30',name:'기상 · 세면',dur:'10분',done:true},
-        {t:'08:00',name:'아침 식사',dur:'30분',done:true},
-        {t:'08:20',name:'아침 투약',dur:'5분',done:true},
-        {t:'09:30',name:'오전 산책',dur:'25분',done:true},
-        {t:'10:00',name:'재활 체조',dur:'15분',done:true},
-        {t:'12:00',name:'점심 식사',dur:'30분',done:true},
-        {t:'14:00',name:'물리치료',dur:'20분',done:true},
-        {t:'15:30',name:'인지 훈련',dur:'10분',done:false,now:true},
-        {t:'16:00',name:'레크리에이션',dur:'10분',done:false},
-        {t:'18:00',name:'저녁 식사',dur:'30분',done:false},
-        {t:'18:30',name:'저녁 투약',dur:'5분',done:false},
-        {t:'21:00',name:'취침 준비',dur:'15분',done:false},
+        {t:'07:30',name:'기상 · 세면',dur:'10분',color:'#2C7AFC',done:true},
+        {t:'08:00',name:'아침 식사',dur:'30분',color:'#34D399',done:true},
+        {t:'08:20',name:'아침 투약',dur:'5분',color:'#F59E0B',done:true},
+        {t:'09:30',name:'오전 산책',dur:'25분',color:'#2C7AFC',done:true},
+        {t:'10:00',name:'재활 체조',dur:'15분',color:'#2C7AFC',done:true},
+        {t:'12:00',name:'점심 식사',dur:'30분',color:'#34D399',done:true},
+        {t:'14:00',name:'물리치료',dur:'20분',color:'#2C7AFC',done:true},
+        {t:'15:30',name:'인지 훈련',dur:'10분',color:'#2C7AFC',done:false,now:true},
+        {t:'16:00',name:'레크리에이션',dur:'10분',color:'#2C7AFC',done:false},
+        {t:'18:00',name:'저녁 식사',dur:'30분',color:'#34D399',done:false},
+        {t:'18:30',name:'저녁 투약',dur:'5분',color:'#F59E0B',done:false},
+        {t:'21:00',name:'취침 준비',dur:'15분',color:'#2C7AFC',done:false},
       ];
       const nowIdx=items.findIndex(i=>i.now);
       const container=document.getElementById('schItems');
       const detail=document.getElementById('schDetail');
       const wheel=document.getElementById('scheduleWheel');
       if(!container)return;
-      const R=160,CX=-100,CY=85,GAP=Math.PI*0.12;
-      let angle=0,target=-nowIdx*GAP,dragging=false,lastY=0,autoTimer;
+
+      const R=160,CX=-100,CY=85;
+      const GAP=Math.PI*0.12;
+      let angle=0,target=-nowIdx*GAP,dragging=false,lastY=0,vel=0,autoTimer;
+
       function render(){
         angle+=(target-angle)*0.12;
         let html='';
         let activeI=Math.round(-angle/GAP);
         activeI=Math.max(0,Math.min(items.length-1,activeI));
+
         const arc=document.getElementById('schArc');
         if(arc){
           const dpr=2;arc.width=arc.offsetWidth*dpr;arc.height=arc.offsetHeight*dpr;
@@ -1174,10 +1142,11 @@
             ac.fillStyle=isAct?'#111':'rgba(0,0,0,.15)';ac.fill();
           });
         }
+
         items.forEach((it,i)=>{
           const a=angle+i*GAP-Math.PI/2;
           const arcX=CX+R*Math.cos(a);
-          const x=Math.max(20,arcX+18);
+          const x=Math.max(20, arcX+18);
           const y=CY+R*Math.sin(a);
           const dist=Math.abs(i-(-angle/GAP));
           const op=Math.max(0.25,1-dist*0.2);
@@ -1185,33 +1154,63 @@
           const num=String(i+1).padStart(2,'0');
           const numSz=isActive?34:18;
           const numCol=isActive?'var(--t1)':'rgba(0,0,0,.35)';
-          html+=`<div style="position:absolute;left:${x}px;top:${y}px;transform:translateY(-50%);opacity:${op};white-space:nowrap"><span style="font-size:${numSz}px;font-weight:900;color:${numCol};letter-spacing:-2px;font-style:italic">${num}</span></div>`;
+          html+=`<div style="position:absolute;left:${x}px;top:${y}px;transform:translateY(-50%);opacity:${op};white-space:nowrap">
+            <span style="font-size:${numSz}px;font-weight:900;color:${numCol};letter-spacing:-2px;font-style:italic">${num}</span>
+          </div>`;
         });
         container.innerHTML=html;
+
         const it=items[activeI];
         const badge=it.now?'진행중':it.done?'완료':'예정';
         const badgeBg=it.now?'rgba(44,122,252,.1)':it.done?'rgba(52,211,153,.1)':'rgba(0,0,0,.04)';
         const badgeCol=it.now?'#2C7AFC':it.done?'#059669':'var(--t3)';
-        detail.innerHTML=`<div style="font-size:22px;font-weight:800;color:var(--t1);letter-spacing:-.5px">${it.name}</div><div style="font-size:14px;color:var(--t2);margin-top:4px">${it.t} · ${it.dur}</div><div style="margin-top:8px;display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;background:${badgeBg};color:${badgeCol}">${badge}</div>`;
+        detail.innerHTML=`
+          <div style="font-size:22px;font-weight:800;color:var(--t1);letter-spacing:-.5px">${it.name}</div>
+          <div style="font-size:14px;color:var(--t2);margin-top:4px">${it.t} · ${it.dur}</div>
+          <div style="margin-top:8px;display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;background:${badgeBg};color:${badgeCol}">${badge}</div>`;
+
         requestAnimationFrame(render);
       }
       render();
-      function onDown(e){dragging=true;lastY=(e.touches?e.touches[0]:e).clientY;clearTimeout(autoTimer);}
-      function onMove(e){if(!dragging)return;const y=(e.touches?e.touches[0]:e).clientY;target+=(y-lastY)*0.008;lastY=y;}
-      function onUp(){dragging=false;const snapI=Math.round(-target/GAP);target=-Math.max(0,Math.min(items.length-1,snapI))*GAP;autoTimer=setTimeout(()=>{target=-nowIdx*GAP},3000);}
-      wheel.addEventListener('mousedown',onDown);wheel.addEventListener('mousemove',onMove);wheel.addEventListener('mouseup',onUp);wheel.addEventListener('mouseleave',onUp);
-      wheel.addEventListener('touchstart',onDown,{passive:true});wheel.addEventListener('touchmove',onMove,{passive:true});wheel.addEventListener('touchend',onUp);
+
+      function onDown(e){
+        dragging=true;vel=0;
+        lastY=(e.touches?e.touches[0]:e).clientY;
+        clearTimeout(autoTimer);
+      }
+      function onMove(e){
+        if(!dragging)return;
+        const y=(e.touches?e.touches[0]:e).clientY;
+        const dy=y-lastY;
+        target+=dy*0.008;
+        vel=dy*0.008;
+        lastY=y;
+      }
+      function onUp(){
+        dragging=false;
+        const snapI=Math.round(-target/GAP);
+        target=-Math.max(0,Math.min(items.length-1,snapI))*GAP;
+        autoTimer=setTimeout(()=>{target=-nowIdx*GAP},3000);
+      }
+      wheel.addEventListener('mousedown',onDown);
+      wheel.addEventListener('mousemove',onMove);
+      wheel.addEventListener('mouseup',onUp);
+      wheel.addEventListener('mouseleave',onUp);
+      wheel.addEventListener('touchstart',onDown,{passive:true});
+      wheel.addEventListener('touchmove',onMove,{passive:true});
+      wheel.addEventListener('touchend',onUp);
     })();
 
-    /* 투약 파도 canvas */
+    /* 투약 파도 canvas — 화면에 보일 때만 애니메이션 */
     (function(){
       const c=document.getElementById('pillWave');if(!c)return;
       const ctx=c.getContext('2d');
       function resize(){c.width=c.offsetWidth*2;c.height=c.offsetHeight*2;ctx.scale(2,2);}
       resize();window.addEventListener('resize',resize);
       const w=()=>c.offsetWidth,h=()=>c.offsetHeight;
-      let t=0;
+      let t=0,rafId=null,visible=false;
       function draw(){
+        if(!visible){rafId=null;return;}
         t+=0.02;
         const W=w(),H=h();
         ctx.clearRect(0,0,W,H);
@@ -1219,24 +1218,31 @@
         for(let x=0;x<=W;x++){const y=Math.sin(x*0.03+t*1.8+3)*8+Math.sin(x*0.06+t*0.6)*4+34;ctx.lineTo(x,y);}
         ctx.lineTo(W,H);ctx.closePath();
         ctx.fillStyle='#6EE7B7';ctx.fill();
-        requestAnimationFrame(draw);
+        rafId=requestAnimationFrame(draw);
       }
-      draw();
+      new IntersectionObserver(([e])=>{
+        visible=e.isIntersecting;
+        if(visible&&!rafId)rafId=requestAnimationFrame(draw);
+      }).observe(c);
     })();
 
-    // 프롬프트 아이템 순차 강조 (하나씩 켜졌다 꺼짐, 반복)
-    (function() {
-      const items = document.querySelectorAll('.ai-prompt-item');
-      const original = 'rgba(28,28,30,0.30)';
-      const active   = '#1C1C1E';
-      let idx = 0;
-      function step() {
-        items.forEach(el => el.style.color = original);
-        items[idx].style.color = active;
-        idx = (idx + 1) % items.length;
-        setTimeout(step, 2000);
+    /* 프롬프트 아이템 순차 강조 — 화면에 보일 때만 */
+    (function(){
+      const items=document.querySelectorAll('.ai-prompt-item');
+      if(!items.length)return;
+      const original='rgba(28,28,30,0.30)',active='#1C1C1E';
+      let idx=0,timer=null,visible=false;
+      function step(){
+        if(!visible){timer=null;return;}
+        items.forEach(el=>el.style.color=original);
+        items[idx].style.color=active;
+        idx=(idx+1)%items.length;
+        timer=setTimeout(step,2000);
       }
-      setTimeout(step, 500);
+      new IntersectionObserver(([e])=>{
+        visible=e.isIntersecting;
+        if(visible&&!timer)timer=setTimeout(step,500);
+      }).observe(items[0].parentElement);
     })();
   </script>
 </body>
