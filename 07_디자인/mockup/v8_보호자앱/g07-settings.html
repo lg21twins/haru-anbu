@@ -2,6 +2,12 @@
 <html lang="ko" data-role="guardian">
 <head>
   <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#d4e4ff">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="app-icon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — 알림 설정</title>
   <link rel="stylesheet" href="common.css">
@@ -80,18 +86,17 @@
     .toggle.on::after { transform: translateX(20px); }
 
     /* ═══ Liquid Glass 통일 ═══ */
-    html { background: #EEF5FF; }
-    body { background: transparent !important; padding-top: calc(max(env(safe-area-inset-top, 0px), 44px) + 52px) !important; padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 16px) !important; }
-    body::after {
-      content: ''; position: fixed; inset: 0; z-index: -1;
-      background:
-        radial-gradient(ellipse 68% 44% at  -4%   0%, rgba(100,178,255,0.55) 0%, transparent 62%),
-        radial-gradient(ellipse 58% 38% at 104%   0%, rgba(56,189,248,0.48)  0%, transparent 60%),
-        radial-gradient(ellipse 62% 44% at 106% 100%, rgba(99,102,241,0.42)  0%, transparent 62%),
-        radial-gradient(ellipse 58% 38% at  -4% 100%, rgba(44,122,252,0.38)  0%, transparent 60%),
-        radial-gradient(ellipse 42% 32% at  50%  50%, rgba(255,255,255,0.58) 0%, transparent 65%), #E4EEFC;
-      pointer-events: none;
-    }
+        html { background: #EEF3FB; }
+    /* 배경 애니메이션 블롭 */
+    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none}
+    .bg-logo{position:absolute;width:140%;height:auto;left:50%;top:42%;transform:translate(-50%,-50%);opacity:.06;filter:blur(32px);animation:bgl 8s ease-in-out infinite}
+    @keyframes bgl{0%,100%{transform:translate(-50%,-50%)scale(1);opacity:.05}50%{transform:translate(-50%,-50%)scale(1.06)rotate(1.5deg);opacity:.08}}
+    .bg .g1{position:absolute;width:500px;height:500px;left:50%;top:-5%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(44,122,252,.18)0%,transparent 65%);filter:blur(30px);animation:ga 8s ease-in-out infinite alternate}
+    .bg .g2{position:absolute;width:600px;height:400px;left:50%;top:35%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(200,220,255,.25)0%,transparent 65%);filter:blur(40px);animation:gb 10s ease-in-out infinite alternate}
+    .bg .g3{position:absolute;width:700px;height:500px;left:50%;bottom:-15%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(44,122,252,.08)0%,transparent 70%);filter:blur(35px);animation:gc 12s ease-in-out infinite alternate}
+    @keyframes ga{0%{transform:translateX(-50%)scale(1)}100%{transform:translateX(-48%)scale(1.08)translateY(12px)}}
+    @keyframes gb{0%{transform:translate(-50%,-50%)scale(1)}100%{transform:translate(-52%,-48%)scale(1.05)}}
+    @keyframes gc{0%{transform:translateX(-50%)scale(1)}100%{transform:translateX(-48%)scale(1.06)translateY(-8px)}}
     .header {
       position: fixed !important; top: 0 !important;
       left: 50% !important; transform: translateX(-50%) !important;
@@ -128,9 +133,19 @@
     .setting-item + .setting-item { border-top: 0.5px solid rgba(255,255,255,0.28) !important; }
     .toggle { background: rgba(28,28,30,0.18) !important; }
     .toggle.on { background: var(--success) !important; }
+    /* Tabbar override */
+    .tabbar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%);width:calc(100% - 80px);max-width:320px;height:68px;background:#fff;border:.5px solid rgba(0,0,0,.07);border-radius:999px;box-shadow:0 2px 12px rgba(0,0,0,.10),0 .5px 2px rgba(0,0,0,.06);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;z-index:40}
+    .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;padding:8px 4px;border-radius:999px;color:rgba(28,28,30,.45);text-decoration:none;transition:all .18s}
+    .tab.active{color:#2C7AFC}
+    .tab-icon{display:flex;align-items:center}
+    .tab-icon svg{width:26px;height:26px;fill:currentColor}
   </style>
 </head>
-<body>  <div class="header">
+<body>
+
+  <!-- 배경 애니메이션 블롭 -->
+  <div class="bg"><svg class="bg-logo" viewBox="0 0 2526 2526" fill="none"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 .00017C2518.68 494.198 2522.27 1157.92 1658.86 1262.48 2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52-115.881 1211.75 4.677 424.157 4.677 19.335Z" fill="#2C7AFC"/></svg><div class="g1"></div><div class="g2"></div><div class="g3"></div></div>
+  <div class="header">
     <div class="header-left"><a href="g05-mypage.html" class="btn-icon" aria-label="뒤로 가기">‹</a></div>
     <span class="header-title">알림 설정</span>
     <div class="header-right"></div>
@@ -211,47 +226,21 @@
     </div>
   </div>
 
-  <nav class="tabbar" role="navigation" aria-label="메인 내비게이션">
+  <nav class="tabbar">
     <a href="g-guardian-live.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="currentColor">
-          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
-          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
-        </svg>
-      </span><span>홈</span>
+      <span class="tab-icon"><svg viewBox="0 0 2526 2526"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 .00017C2518.68 494.198 2522.27 1157.92 1658.86 1262.48 2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg></span>
     </a>
     <a href="g03-chat.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/>
-        </svg>
-      </span><span>채팅</span>
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/></svg></span>
     </a>
     <a href="g02-ai-report.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="4" y="12" width="4" height="8" rx="2"/>
-          <rect x="10" y="6" width="4" height="14" rx="2"/>
-          <rect x="16" y="9" width="4" height="11" rx="2"/>
-        </svg>
-      </span><span>기록</span>
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><rect x="4" y="12" width="4" height="8" rx="2"/><rect x="10" y="6" width="4" height="14" rx="2"/><rect x="16" y="9" width="4" height="11" rx="2"/></svg></span>
     </a>
     <a href="g08-billing.html" class="tab">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="2" y="5" width="20" height="16" rx="3"/>
-          <rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/>
-          <rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
-        </svg>
-      </span><span>결제</span>
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="16" rx="3"/><rect x="2" y="10" width="20" height="3" fill="rgba(255,255,255,0.35)"/><rect x="5" y="15" width="4" height="2" rx="1" fill="rgba(255,255,255,0.6)"/></svg></span>
     </a>
-    <a href="g05-mypage.html" class="tab active" aria-current="page">
-      <span class="tab-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="8" r="4.5"/>
-          <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/>
-        </svg>
-      </span><span>마이</span>
+    <a href="g05-mypage.html" class="tab active">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5"/><path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6H4z"/></svg></span>
     </a>
   </nav>
 
