@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="caregiver" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#DCFCE7">
+  <title>하루안부 · 요양보호사 · 마이</title>
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <style>
+    /* ============================================================
+       c04 · 마이
+       v3.0 · 2026-04-19 · v9.5 시각 위계 패턴 적용
+       tokens.css · data-role="caregiver"
+       원칙: 프로필/근무/메뉴 3-블록, 그린은 accent 포인트만
+       ============================================================ */
+    :root {
+      --text-body: 16px;
+      --accent:        var(--color-accent);
+      --accent-soft:   var(--color-accent-soft);
+      --accent-strong: var(--color-accent-strong);
+      --warn:          var(--color-warning);
+      --warn-soft:     var(--color-warning-soft);
+      --danger:        var(--color-danger);
+      --danger-soft:   var(--color-danger-soft);
+      --t1:            var(--color-text-primary);
+      --t2:            var(--color-text-secondary);
+      --t3:            var(--color-text-tertiary);
+
+      --safe-t: max(env(safe-area-inset-top, 0px), 52px);
+      --safe-b: max(env(safe-area-inset-bottom, 0px), 20px);
+      --tab-h:  64px;
+      --tab-bot: 12px;
+      --page-pad: 16px;
+
+      --glass-b: rgba(0,0,0,.05);
+    }
+
+    html { height: 100%; background: var(--brand-green-100); }
+    body { min-height: 100%; color: var(--t1); overflow-x: hidden; font-size: var(--text-body); }
+
+    .bg {
+      position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+      background:
+        radial-gradient(520px 420px at 50% -6%, rgba(34,197,94,.12), transparent 65%),
+        linear-gradient(180deg, #D9F4E1 0%, #E8F6EE 28%, #F0F8F3 62%, #F4FAF6 100%);
+    }
+
+    .app {
+      max-width: 430px; margin: 0 auto; min-height: 100%;
+      position: relative;
+      padding-bottom: calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 28px);
+    }
+
+    /* ============ 헤더 ============ */
+    .header {
+      position: sticky; top: 0; z-index: 10;
+      padding: calc(var(--safe-t) + 4px) var(--page-pad) 10px;
+      background: linear-gradient(180deg, rgba(232,246,238,.96) 0%, rgba(232,246,238,.82) 70%, rgba(232,246,238,0) 100%);
+      backdrop-filter: blur(10px) saturate(140%);
+      -webkit-backdrop-filter: blur(10px) saturate(140%);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .header-ttl { font-size: 17px; font-weight: 800; color: var(--t1); letter-spacing: -.3px; }
+
+    .icon-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: rgba(255,255,255,.8);
+      border: 1px solid var(--glass-b);
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; text-decoration: none;
+      transition: transform .1s; font-family: inherit;
+    }
+    .icon-btn:active { transform: scale(.93); }
+    .icon-btn iconify-icon { font-size: 16px; color: var(--t2); }
+
+    /* ============ 컨텐츠 ============ */
+    .content {
+      position: relative; z-index: 1;
+      padding: 0 var(--page-pad) 0;
+    }
+
+    /* 카드 공통 */
+    .card {
+      background: rgba(255,255,255,.80);
+      border: 1px solid var(--glass-b);
+      border-radius: 20px;
+      margin-bottom: 12px;
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+    }
+
+    /* ============ 프로필 카드 (v9.5 패턴) ============ */
+    .profile {
+      padding: 24px 20px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .profile-av {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, #DCFCE7, #86EFAC);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 800; color: var(--accent-strong);
+      flex-shrink: 0; letter-spacing: -.5px;
+      position: relative;
+    }
+    .profile-av-edit {
+      position: absolute; bottom: -2px; right: -2px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid #fff;
+    }
+    .profile-av-edit iconify-icon { font-size: 11px; color: #fff; }
+    .profile-info { flex: 1; min-width: 0; }
+    .profile-name { font-size: 20px; font-weight: 800; letter-spacing: -.5px; color: var(--t1); }
+    .profile-sub { font-size: 12px; color: var(--t3); margin-top: 2px; font-weight: 600; }
+    .profile-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 10px; font-weight: 700;
+      background: var(--accent-soft); color: var(--accent-strong);
+      margin-top: 6px;
+    }
+    .profile-badge iconify-icon { font-size: 11px; }
+
+    /* ============ 근무 칩 (3개 컴팩트 stat) ============ */
+    .shift-chips {
+      display: flex; gap: 8px; padding: 0 20px 20px;
+    }
+    .shift-chip {
+      flex: 1; text-align: center;
+      padding: 12px 8px;
+      background: rgba(34,197,94,.04);
+      border-radius: 14px;
+      border: 1px solid rgba(34,197,94,.06);
+    }
+    .sc-v { font-size: 16px; font-weight: 800; color: var(--t1); letter-spacing: -.3px; }
+    .sc-l { font-size: 10px; color: var(--t3); margin-top: 2px; font-weight: 700; letter-spacing: .2px; }
+
+    /* ============ 오늘 근무 카드 ============ */
+    .shift-card { padding: 18px 20px; }
+    .shift-top {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 14px;
+    }
+    .shift-ic {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--accent-soft);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .shift-ic iconify-icon { font-size: 22px; color: var(--accent-strong); }
+    .shift-ic-dot {
+      position: absolute; bottom: 1px; right: 1px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #fff;
+    }
+    .shift-info { flex: 1; min-width: 0; }
+    .shift-ttl { font-size: 16px; font-weight: 700; color: var(--t1); letter-spacing: -.2px; }
+    .shift-sub { font-size: 12px; color: var(--t3); margin-top: 1px; font-weight: 600; }
+    .shift-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 10px; font-weight: 700;
+      background: var(--accent-soft); color: var(--accent-strong);
+    }
+    .shift-badge::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* 근무 행 */
+    .shift-rows { display: flex; flex-direction: column; }
+    .shift-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 0; border-top: 1px solid rgba(0,0,0,.04);
+    }
+    .shift-row:first-child { border-top: none; }
+    .sr-ic {
+      width: 32px; height: 32px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      background: rgba(34,197,94,.06);
+    }
+    .sr-ic iconify-icon { font-size: 16px; color: var(--accent-strong); }
+    .sr-body { flex: 1; min-width: 0; }
+    .sr-l { font-size: 11px; color: var(--t3); font-weight: 600; }
+    .sr-v { font-size: 14px; font-weight: 600; color: var(--t1); margin-top: 1px; }
+
+    /* ============ 일정 진입 행 (c04-schedule.html로 push) ============ */
+    .sched-entry {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 18px;
+      text-decoration: none; color: var(--t1);
+      cursor: pointer; transition: background .15s;
+    }
+    .sched-entry:active { background: rgba(0,0,0,.02); }
+    .se-ic {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: var(--accent-soft);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .se-ic iconify-icon { font-size: 18px; color: var(--accent-strong); }
+    .se-body { flex: 1; min-width: 0; }
+    .se-ttl {
+      font-size: 14px; font-weight: 700; color: var(--t1);
+      letter-spacing: -.1px;
+    }
+    .se-sub {
+      font-size: 12px; color: var(--t3); margin-top: 2px; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+    .se-sub .sep { color: rgba(0,0,0,.18); }
+    .se-sub b { font-weight: 800; color: var(--t2); }
+    .se-chev { color: var(--t3); flex-shrink: 0; }
+    .se-chev iconify-icon { font-size: 14px; }
+
+    /* ============ 진척도 카드 ============ */
+    .prog-card { padding: 14px 18px 12px; }
+    .prog-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .prog-title { font-size: 13px; font-weight: 800; color: var(--t1); letter-spacing: -.2px; }
+    .prog-meta { font-size: 11px; font-weight: 700; color: var(--t3); }
+    .prog-row {
+      display: grid; grid-template-columns: 1fr 110px;
+      gap: 12px; align-items: center;
+      padding: 10px 0;
+      border-top: .5px solid rgba(0,0,0,.06);
+      cursor: pointer;
+    }
+    .prog-row:first-of-type { border-top: 0; padding-top: 4px; }
+    .prog-info { min-width: 0; }
+    .prog-label { font-size: 12px; font-weight: 700; color: var(--t2); }
+    .prog-val {
+      font-size: 16px; font-weight: 800; color: var(--t1);
+      letter-spacing: -.3px; margin-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+    .prog-val .u { font-size: 11px; font-weight: 600; color: var(--t3); margin-left: 2px; }
+    .prog-bar-wrap { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+    .prog-bar {
+      width: 100%; height: 6px;
+      background: rgba(0,0,0,.06); border-radius: 999px; overflow: hidden;
+    }
+    .prog-bar > span {
+      display: block; height: 100%;
+      background: var(--t2); border-radius: 999px;
+      transition: width .3s ease;
+    }
+    .prog-bar > span.ok   { background: var(--accent); }
+    .prog-bar > span.warn { background: var(--palette-amber-600); }
+    .prog-pct {
+      font-size: 10px; font-weight: 800; color: var(--t2);
+      letter-spacing: -.2px;
+    }
+    .prog-pct.ok   { color: var(--accent-strong); }
+    .prog-pct.warn { color: var(--palette-amber-700); }
+
+    /* ============ 메뉴 타이틀 ============ */
+    .menu-title {
+      font-size: 12px; font-weight: 700; color: var(--t3);
+      padding: 0 4px; margin: 16px 0 8px;
+      letter-spacing: .2px;
+    }
+
+    /* ============ 메뉴 그룹 (v9.5 패턴) ============ */
+    .menu-group {
+      background: rgba(255,255,255,.80);
+      border: 1px solid var(--glass-b);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+    }
+    .menu-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px;
+      text-decoration: none; color: var(--t1);
+      transition: background .15s;
+      cursor: pointer;
+    }
+    .menu-item:active { background: rgba(0,0,0,.02); }
+    .menu-item + .menu-item { border-top: 1px solid rgba(0,0,0,.04); }
+
+    .mi-icon {
+      width: 32px; height: 32px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      background: rgba(34,197,94,.06);
+      color: var(--accent-strong);
+    }
+    .mi-icon iconify-icon { font-size: 16px; }
+
+    .mi-icon.green { background: rgba(34,197,94,.06); color: var(--accent-strong); }
+    .mi-icon.amber { background: rgba(245,158,11,.08); color: var(--palette-amber-700); }
+    .mi-icon.red   { background: rgba(239,68,68,.07); color: var(--palette-red-700); }
+    .mi-icon.grey  { background: rgba(0,0,0,.04); color: var(--t1); }
+
+    .mi-body { flex: 1; min-width: 0; }
+    .mi-label { font-size: 14px; font-weight: 600; color: var(--t1); letter-spacing: -.1px; }
+    .mi-desc { font-size: 11px; color: var(--t3); margin-top: 1px; font-weight: 500; }
+
+    .mi-right {
+      display: flex; align-items: center; gap: 6px;
+      flex-shrink: 0;
+    }
+    .mi-right .val { font-size: 12px; color: var(--t3); font-weight: 600; }
+    .mi-badge {
+      min-width: 18px; height: 18px; padding: 0 6px;
+      border-radius: 999px;
+      background: var(--palette-red-600); color: #fff;
+      font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mi-badge.accent { background: var(--accent); }
+    .mi-badge.warn   { background: var(--palette-amber-500); }
+    .mi-chevron { color: var(--t3); font-size: 14px; }
+    .mi-chevron iconify-icon { font-size: 14px; }
+
+    /* 토글 */
+    .switch {
+      position: relative; width: 42px; height: 24px;
+      background: rgba(0,0,0,.14); border-radius: 999px;
+      flex-shrink: 0; cursor: pointer;
+      transition: background .2s;
+    }
+    .switch.on { background: var(--accent); }
+    .switch::after {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 20px; height: 20px; background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,.18);
+      transition: transform .2s;
+    }
+    .switch.on::after { transform: translateX(18px); }
+
+    /* ============ 로그아웃 ============ */
+    .logout {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px;
+      width: 100%; padding: 14px;
+      font-size: 14px; font-weight: 600;
+      color: var(--t3);
+      background: rgba(255,255,255,.5);
+      border: 1px solid var(--glass-b);
+      border-radius: 16px;
+      margin-top: 16px;
+      cursor: pointer; text-decoration: none;
+      font-family: inherit;
+    }
+    .logout iconify-icon { font-size: 15px; }
+    .version {
+      text-align: center; font-size: 11px;
+      color: var(--t3); font-weight: 600;
+      margin-top: 16px; padding-bottom: 4px;
+    }
+
+    /* ============ 탭바 + SOS ============ */
+    .bottom-bar {
+      position: fixed; bottom: calc(var(--safe-b) + var(--tab-bot));
+      left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 10px;
+      width: calc(100% - 32px); max-width: 398px; z-index: 40;
+    }
+    .tabbar {
+      flex: 1; min-width: 0; height: var(--tab-h);
+      background: rgba(255,255,255,.8);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 999px;
+      box-shadow: 0 6px 22px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
+      display: flex; align-items: stretch; justify-content: space-around; padding: 0 6px;
+    }
+    .tab {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      color: var(--t3); text-decoration: none;
+      border-radius: 999px; transition: color .15s;
+    }
+    .tab.active { color: var(--accent-strong); }
+    .tab.active iconify-icon { filter: drop-shadow(0 2px 6px rgba(34,197,94,.28)); }
+    .tab iconify-icon { font-size: 22px; }
+    .sos-fab {
+      width: var(--tab-h); height: var(--tab-h); flex-shrink: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #F87171, #DC2626);
+      border: none;
+      box-shadow: 0 8px 22px rgba(220,38,38,.38), inset 0 1px 0 rgba(255,255,255,.32);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative;
+    }
+    .sos-fab:active { transform: scale(.92); }
+    .sos-fab iconify-icon { font-size: 26px; color: #fff; }
+
+    /* ============ 토스트 ============ */
+    .toast {
+      position: fixed; top: 80px; left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      background: rgba(28,28,30,.9); color: #fff;
+      padding: 11px 22px; border-radius: 999px;
+      font-size: 14px; font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,.18);
+      z-index: 300; opacity: 0; pointer-events: none;
+      transition: opacity .22s, transform .22s;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ============ 애니메이션 ============ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .content > * { animation: fadeUp .4s cubic-bezier(0.2, 0, 0, 1) both; }
+    .content > *:nth-child(2) { animation-delay: .05s; }
+    .content > *:nth-child(3) { animation-delay: .1s; }
+    .content > *:nth-child(4) { animation-delay: .15s; }
+    .content > *:nth-child(5) { animation-delay: .2s; }
+    .content > *:nth-child(6) { animation-delay: .25s; }
+    .content > *:nth-child(7) { animation-delay: .3s; }
+    .content > *:nth-child(8) { animation-delay: .35s; }
+    .content > *:nth-child(9) { animation-delay: .4s; }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <div class="app">
+
+    <!-- ============ 헤더 ============ -->
+    <header class="header">
+      <div style="width:34px"></div>
+      <span class="header-ttl">마이</span>
+      <button class="icon-btn" onclick="toast('설정')" aria-label="설정">
+        <iconify-icon icon="fluent:settings-24-filled"></iconify-icon>
+      </button>
+    </header>
+
+    <div class="content">
+
+      <!-- ============ 프로필 카드 ============ -->
+      <div class="card">
+        <div class="profile">
+          <div class="profile-av">이영
+            <div class="profile-av-edit">
+              <iconify-icon icon="fluent:camera-24-filled"></iconify-icon>
+            </div>
+          </div>
+          <div class="profile-info">
+            <div class="profile-name">이영수 선생님</div>
+            <div class="profile-sub">요양보호사 · 서초실버케어 2층</div>
+            <span class="profile-badge">
+              <iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon>
+              1급 · 4년차
+            </span>
+          </div>
+        </div>
+        <div class="shift-chips">
+          <div class="shift-chip"><div class="sc-v">2층</div><div class="sc-l">담당 층</div></div>
+          <div class="shift-chip"><div class="sc-v">주간</div><div class="sc-l">오늘 근무</div></div>
+          <div class="shift-chip"><div class="sc-v">4명</div><div class="sc-l">담당 어르신</div></div>
+        </div>
+      </div>
+
+      <!-- ============ 오늘 근무 카드 ============ -->
+      <div class="card shift-card">
+        <div class="shift-top">
+          <div class="shift-ic">
+            <iconify-icon icon="fluent:clock-24-filled"></iconify-icon>
+            <div class="shift-ic-dot"></div>
+          </div>
+          <div class="shift-info">
+            <div class="shift-ttl">오늘 주간 근무</div>
+            <div class="shift-sub">근무 중 · 3h 12m 남음</div>
+          </div>
+          <span class="shift-badge">LIVE</span>
+        </div>
+        <div class="shift-rows">
+          <div class="shift-row">
+            <div class="sr-ic"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></div>
+            <div class="sr-body">
+              <div class="sr-l">근무 시간</div>
+              <div class="sr-v">07:00 → 15:00 · 8시간</div>
+            </div>
+          </div>
+          <div class="shift-row">
+            <div class="sr-ic"><iconify-icon icon="fluent:calendar-24-filled"></iconify-icon></div>
+            <div class="sr-body">
+              <div class="sr-l">다음 근무</div>
+              <div class="sr-v">4월 20일 월요일 · 야간 22:00</div>
+            </div>
+          </div>
+          <div class="shift-row">
+            <div class="sr-ic"><iconify-icon icon="fluent:people-24-filled"></iconify-icon></div>
+            <div class="sr-body">
+              <div class="sr-l">인수인계</div>
+              <div class="sr-v">김미영 선생님 → 박진수 선생님</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ 일정 진입 (풀스크린 push) ============ -->
+      <a class="card sched-entry" href="c04-schedule.html">
+        <div class="se-ic">
+          <iconify-icon icon="fluent:calendar-week-numbers-24-filled"></iconify-icon>
+        </div>
+        <div class="se-body">
+          <div class="se-ttl">이번 주 일정</div>
+          <div class="se-sub">
+            <span>주간 <b>4</b>일</span>
+            <span class="sep">·</span>
+            <span>야간 <b>1</b>일</span>
+            <span class="sep">·</span>
+            <span>휴무 <b>2</b>일</span>
+          </div>
+        </div>
+        <span class="se-chev"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+      </a>
+
+      <!-- ============ 이달 의무 진척도 ============ -->
+      <div class="card prog-card">
+        <div class="prog-head">
+          <div class="prog-title">이달 의무 진척도</div>
+          <div class="prog-meta">4월 · 20일 경과</div>
+        </div>
+        <div class="prog-row" onclick="toast('이달 급여제공기록지 17/20일 제출')">
+          <div class="prog-info">
+            <div class="prog-label">급여제공기록지</div>
+            <div class="prog-val"><b>17</b><span class="u">/20일 제출</span></div>
+          </div>
+          <div class="prog-bar-wrap">
+            <div class="prog-bar"><span style="width:85%"></span></div>
+            <div class="prog-pct">85%</div>
+          </div>
+        </div>
+        <div class="prog-row" onclick="toast('연간 의무교육 6h/8h 이수')">
+          <div class="prog-info">
+            <div class="prog-label">연간 의무교육 (8h)</div>
+            <div class="prog-val"><b>6</b><span class="u">/8시간 이수</span></div>
+          </div>
+          <div class="prog-bar-wrap">
+            <div class="prog-bar"><span class="warn" style="width:75%"></span></div>
+            <div class="prog-pct warn">75%</div>
+          </div>
+        </div>
+        <div class="prog-row" onclick="toast('출퇴근 GPS 15일 기록 완료')">
+          <div class="prog-info">
+            <div class="prog-label">출퇴근 기록 (GPS)</div>
+            <div class="prog-val"><b>15</b><span class="u">/15일 완료</span></div>
+          </div>
+          <div class="prog-bar-wrap">
+            <div class="prog-bar"><span class="ok" style="width:100%"></span></div>
+            <div class="prog-pct ok">100%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ 서비스 기록 ============ -->
+      <div class="menu-title">서비스 기록</div>
+      <div class="menu-group">
+        <a class="menu-item" onclick="toast('서비스 제공기록지')">
+          <div class="mi-icon green"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">서비스 제공기록지</div>
+            <div class="mi-desc">월별 자동 집계 · 전자서명</div>
+          </div>
+          <div class="mi-right">
+            <span class="mi-badge warn">3</span>
+            <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          </div>
+        </a>
+        <a class="menu-item" onclick="toast('출퇴근 기록')">
+          <div class="mi-icon green"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">출퇴근 기록</div>
+            <div class="mi-desc">GPS · 시간 · 서명 이력</div>
+          </div>
+          <div class="mi-right">
+            <span class="val">15일</span>
+            <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          </div>
+        </a>
+        <a class="menu-item" onclick="toast('인수인계 메모')">
+          <div class="mi-icon green"><iconify-icon icon="fluent:clipboard-text-ltr-24-filled"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">인수인계 메모</div>
+            <div class="mi-desc">음성 · 텍스트 · 사진</div>
+          </div>
+          <div class="mi-right">
+            <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          </div>
+        </a>
+      </div>
+
+      <!-- ============ 알림 설정 ============ -->
+      <div class="menu-title">알림 설정</div>
+      <div class="menu-group">
+        <div class="menu-item">
+          <div class="mi-icon red"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">SOS 수신 알림</div>
+            <div class="mi-desc">다른 직원의 긴급 발송 수신</div>
+          </div>
+          <div class="switch on" onclick="togSw(this)"></div>
+        </div>
+        <div class="menu-item">
+          <div class="mi-icon amber"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">업무 리마인더</div>
+            <div class="mi-desc">투약 · 체위 변경 · 식사</div>
+          </div>
+          <div class="switch on" onclick="togSw(this)"></div>
+        </div>
+        <div class="menu-item">
+          <div class="mi-icon green"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">보호자 메시지</div>
+            <div class="mi-desc">읽지 않은 메시지 푸시</div>
+          </div>
+          <div class="switch on" onclick="togSw(this)"></div>
+        </div>
+        <div class="menu-item">
+          <div class="mi-icon grey"><iconify-icon icon="fluent:weather-moon-24-filled"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">집중 모드</div>
+            <div class="mi-desc">긴급 외 알림 숨기기</div>
+          </div>
+          <div class="switch" onclick="togSw(this)"></div>
+        </div>
+      </div>
+
+      <!-- ============ 자격 · 앱 ============ -->
+      <div class="menu-title">자격 · 앱 설정</div>
+      <div class="menu-group">
+        <a class="menu-item" onclick="toast('자격증 · 교육이수')">
+          <div class="mi-icon green"><iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">자격증 · 교육이수</div>
+            <div class="mi-desc">1급 · 만료 2028.07</div>
+          </div>
+          <div class="mi-right">
+            <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          </div>
+        </a>
+        <a class="menu-item" onclick="toast('AI 업무 가이드')">
+          <div class="mi-icon green"><iconify-icon icon="ph:sparkle-fill"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">AI 업무 가이드</div>
+            <div class="mi-desc">매뉴얼 · 규정 · 상황별 대응</div>
+          </div>
+          <div class="mi-right">
+            <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          </div>
+        </a>
+        <a class="menu-item" onclick="toast('언어 설정')">
+          <div class="mi-icon grey"><iconify-icon icon="fluent:local-language-24-filled"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">언어</div>
+            <div class="mi-desc">한국어 · 중국어 · 베트남어</div>
+          </div>
+          <div class="mi-right">
+            <span class="val">한국어</span>
+            <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          </div>
+        </a>
+        <a class="menu-item" onclick="toast('고객센터')">
+          <div class="mi-icon grey"><iconify-icon icon="fluent:question-circle-24-filled"></iconify-icon></div>
+          <div class="mi-body">
+            <div class="mi-label">고객센터 · 문의</div>
+            <div class="mi-desc">1:1 상담 · FAQ</div>
+          </div>
+          <div class="mi-right">
+            <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          </div>
+        </a>
+      </div>
+
+      <!-- ============ 로그아웃 ============ -->
+      <a class="logout" onclick="toast('로그아웃')">
+        <iconify-icon icon="fluent:sign-out-24-filled"></iconify-icon>
+        로그아웃
+      </a>
+      <div class="version">하루안부 요양보호사 v0.3 · PWA</div>
+
+    </div>
+  </div>
+
+  <!-- ============ 탭바 + SOS ============ -->
+  <div class="bottom-bar">
+    <nav class="tabbar">
+      <a href="c01-today.html" class="tab" aria-label="홈"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></a>
+      <a href="c02-checklist.html" class="tab" aria-label="체크리스트"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></a>
+      <a href="c03-sotong.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></a>
+      <a href="c04-mypage.html" class="tab active" aria-label="마이"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></a>
+    </nav>
+    <button class="sos-fab" onclick="toast('SOS 호출 · 홈에서 유형 선택')" aria-label="긴급 SOS">
+      <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+    </button>
+  </div>
+
+  <div class="toast" id="toastEl"></div>
+
+  <script>
+    function togSw(el) { el.classList.toggle('on'); }
+    function toast(m) {
+      var t = document.getElementById('toastEl');
+      t.textContent = m;
+      t.classList.add('show');
+      clearTimeout(t._x);
+      t._x = setTimeout(function() { t.classList.remove('show'); }, 2200);
+    }
+  </script>
+</body>
+</html>

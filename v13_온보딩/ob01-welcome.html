@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ko" data-role="onboarding" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#EFF6FF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>하루안부 · 시작하기</title>
+
+  <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+  <link rel="apple-touch-icon" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+
+  <style>
+    body {
+      background:
+        radial-gradient(ellipse at 20% 0%, var(--brand-blue-100) 0%, transparent 55%),
+        radial-gradient(ellipse at 100% 100%, var(--brand-orange-100) 0%, transparent 50%),
+        var(--color-bg-canvas);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ------ 상단 영역 (hero) -------------------------------------- */
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-10) var(--space-page-margin) var(--space-8);
+      text-align: center;
+    }
+    .logo-wrap {
+      width: 120px;
+      height: 120px;
+      border-radius: var(--radius-hero);
+      background: var(--color-bg-surface);
+      box-shadow: var(--shadow-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-7);
+      animation: logo-float 3s var(--easing-standard) infinite;
+    }
+    .logo-wrap img { width: 72px; height: 72px; }
+    @keyframes logo-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .wordmark {
+      font: var(--weight-bold) var(--font-40) / 1 var(--font-family-base);
+      color: var(--color-text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-4);
+    }
+    .wordmark em {
+      color: var(--color-accent);
+      font-style: normal;
+    }
+    .tagline {
+      font: var(--weight-medium) var(--text-body-lg) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+      max-width: 280px;
+    }
+
+    /* ------ 역할 카드 3개 ----------------------------------------- */
+    .roles {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-3);
+      padding: 0 var(--space-page-margin);
+      margin-bottom: var(--space-8);
+    }
+    .role-card {
+      background: var(--color-bg-surface);
+      border: 2px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-5) var(--space-3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      cursor: pointer;
+      transition: all var(--motion-micro) var(--easing-standard);
+    }
+    .role-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-2);
+    }
+    .role-card:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+    .role-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--palette-white);
+    }
+    .role-icon.guardian { background: var(--brand-blue-500); }
+    .role-icon.medical  { background: var(--brand-green-600); }
+    .role-icon.patient  { background: var(--brand-orange-400); }
+    .role-label {
+      font: var(--weight-semibold) var(--text-body) / 1 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .role-sub {
+      font: var(--weight-regular) var(--text-caption) / 1.3 var(--font-family-base);
+      color: var(--color-text-secondary);
+      text-align: center;
+    }
+
+    /* ------ 하단 CTA 영역 ----------------------------------------- */
+    .cta-area {
+      padding: 0 var(--space-page-margin) calc(var(--space-9) + env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .btn {
+      width: 100%;
+      height: var(--size-button-large);
+      border-radius: var(--radius-button);
+      font: var(--weight-bold) var(--text-body-lg) / 1 var(--font-family-base);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+      border: 0;
+      cursor: pointer;
+      transition: transform var(--motion-micro) var(--easing-standard);
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--color-accent);
+      color: var(--color-accent-on);
+      box-shadow: var(--shadow-2);
+    }
+    .btn-kakao {
+      background: #FEE500;
+      color: #1A1A1A;
+    }
+    .btn-link {
+      background: transparent;
+      color: var(--color-text-secondary);
+      font: var(--weight-medium) var(--text-body) / 1 var(--font-family-base);
+      text-decoration: underline;
+      height: var(--size-touch-target);
+    }
+
+    .or-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      color: var(--color-text-tertiary);
+      font: var(--weight-medium) var(--text-caption) / 1 var(--font-family-base);
+      margin: var(--space-3) 0;
+    }
+    .or-row::before,
+    .or-row::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-border-subtle);
+    }
+
+    .fineprint {
+      margin-top: var(--space-2);
+      font: var(--weight-regular) var(--text-caption) / 1.5 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      text-align: center;
+    }
+    .fineprint a { color: var(--color-text-secondary); text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- 히어로 -->
+  <div class="hero">
+    <div class="logo-wrap" aria-hidden="true">
+      <img src="../07_디자인/logo/brand-system/01_심볼단독.svg" alt="">
+    </div>
+    <h1 class="wordmark">하루<em>안부</em></h1>
+    <p class="tagline">
+      하루 한 번, 사랑하는 분의 안부를<br>
+      가족·의료진이 함께 챙깁니다.
+    </p>
+  </div>
+
+  <!-- 역할 선택 (미리보기) -->
+  <div class="roles" role="radiogroup" aria-label="시작 전 역할 선택">
+    <button class="role-card" type="button" role="radio" aria-checked="false">
+      <span class="role-icon guardian" aria-hidden="true">
+        <iconify-icon icon="fluent:people-24-filled" width="28"></iconify-icon>
+      </span>
+      <span class="role-label">보호자</span>
+      <span class="role-sub">가족을 돌봐요</span>
+    </button>
+    <button class="role-card" type="button" role="radio" aria-checked="false">
+      <span class="role-icon medical" aria-hidden="true">
+        <iconify-icon icon="fluent:stethoscope-24-filled" width="28"></iconify-icon>
+      </span>
+      <span class="role-label">의료진</span>
+      <span class="role-sub">케어를 담당해요</span>
+    </button>
+    <button class="role-card" type="button" role="radio" aria-checked="false">
+      <span class="role-icon patient" aria-hidden="true">
+        <iconify-icon icon="fluent:person-24-filled" width="28"></iconify-icon>
+      </span>
+      <span class="role-label">환자</span>
+      <span class="role-sub">돌봄을 받아요</span>
+    </button>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-area">
+    <button class="btn btn-primary" type="button">
+      시작하기
+      <iconify-icon icon="fluent:arrow-right-24-filled" width="20" aria-hidden="true"></iconify-icon>
+    </button>
+
+    <div class="or-row">또는</div>
+
+    <button class="btn btn-kakao" type="button" aria-label="카카오로 시작">
+      <iconify-icon icon="simple-icons:kakaotalk" width="22" aria-hidden="true"></iconify-icon>
+      카카오로 시작
+    </button>
+
+    <button class="btn-link" type="button">이미 계정이 있어요 · 로그인</button>
+
+    <p class="fineprint">
+      시작하면 <a href="#">이용약관</a>과 <a href="#">개인정보처리방침</a>에 동의하는 것으로 간주돼요.
+    </p>
+  </div>
+
+</body>
+</html>

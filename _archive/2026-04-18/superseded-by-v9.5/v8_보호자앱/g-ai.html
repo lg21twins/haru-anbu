@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="guardian">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>하루안부 — AI 케어 가이드</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    html { background: #EEF3FB; }
+    body {
+      background: transparent;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ═══ 배경 ═══ */
+    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none}
+    .bg .g1{position:absolute;width:500px;height:500px;left:50%;top:-5%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(44,122,252,.18)0%,transparent 65%);filter:blur(30px);animation:ga 8s ease-in-out infinite alternate}
+    .bg .g2{position:absolute;width:600px;height:400px;left:50%;top:35%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(200,220,255,.25)0%,transparent 65%);filter:blur(40px);animation:gb 10s ease-in-out infinite alternate}
+    @keyframes ga{0%{transform:translateX(-50%)scale(1)}100%{transform:translateX(-48%)scale(1.08)translateY(12px)}}
+    @keyframes gb{0%{transform:translate(-50%,-50%)scale(1)}100%{transform:translate(-52%,-48%)scale(1.05)}}
+
+    /* ═══ 헤더 ═══ */
+    .page-header {
+      flex-shrink: 0;
+      padding-top: max(env(safe-area-inset-top, 0px), 44px);
+      padding-left: var(--space-lg); padding-right: var(--space-lg);
+      padding-bottom: var(--space-sm);
+      position: relative; z-index: 2;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .page-header-title {
+      font-size: var(--text-display);
+      font-weight: var(--weight-bold);
+      letter-spacing: -0.5px;
+    }
+    .header-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 999px;
+      background: rgba(255,255,255,0.42);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      border: 0.5px solid rgba(255,255,255,0.55);
+      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset;
+      color: rgba(28,28,30,0.7);
+      text-decoration: none; cursor: pointer;
+    }
+
+    /* ═══ 스크롤 본문 ═══ */
+    .scroll-body {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 24px);
+      position: relative; z-index: 1;
+    }
+    .scroll-body::-webkit-scrollbar { display: none; }
+
+    /* ═══ 히어로 카드 캐러셀 ═══ */
+    .hero-carousel {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: var(--space-lg) var(--space-lg) var(--space-md);
+      scrollbar-width: none;
+    }
+    .hero-carousel::-webkit-scrollbar { display: none; }
+
+    .hero-card {
+      flex-shrink: 0;
+      width: calc(100% - 48px);
+      height: 220px;
+      border-radius: 20px;
+      scroll-snap-align: center;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .hero-card:active { transform: scale(0.97); }
+
+    .hero-card-bg {
+      position: absolute; inset: 0;
+      border-radius: inherit;
+    }
+    .hero-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 100%);
+      border-radius: inherit;
+    }
+    .hero-card-content {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 18px 20px;
+      color: white;
+    }
+    .hero-card-badge {
+      position: absolute;
+      top: 14px; left: 14px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 999px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .hero-card-title {
+      font-size: 22px;
+      font-weight: var(--weight-bold);
+      letter-spacing: -0.3px;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+    .hero-card-desc {
+      font-size: 13px;
+      font-weight: var(--weight-medium);
+      opacity: 0.85;
+      line-height: 1.4;
+    }
+    .hero-card-icon {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 0.5px solid rgba(255,255,255,0.30);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    /* 카드별 배경 */
+    .hero-encyclopedia .hero-card-bg {
+      background: linear-gradient(135deg, #1E3A5F 0%, #2C7AFC 50%, #60A5FA 100%);
+    }
+    .hero-encyclopedia .hero-card-badge { background: rgba(96,165,250,0.35); color: #E0F2FE; }
+
+    .hero-emotion .hero-card-bg {
+      background: linear-gradient(135deg, #4C1D95 0%, #7C3AED 50%, #A78BFA 100%);
+    }
+    .hero-emotion .hero-card-badge { background: rgba(167,139,250,0.35); color: #EDE9FE; }
+
+    .hero-facility .hero-card-bg {
+      background: linear-gradient(135deg, #064E3B 0%, #059669 50%, #34D399 100%);
+    }
+    .hero-facility .hero-card-badge { background: rgba(52,211,153,0.35); color: #D1FAE5; }
+
+    .hero-cost .hero-card-bg {
+      background: linear-gradient(135deg, #78350F 0%, #D97706 50%, #FBBF24 100%);
+    }
+    .hero-cost .hero-card-badge { background: rgba(251,191,36,0.35); color: #FEF3C7; }
+
+    .hero-free .hero-card-bg {
+      background: linear-gradient(135deg, #1E293B 0%, #475569 50%, #94A3B8 100%);
+    }
+    .hero-free .hero-card-badge { background: rgba(148,163,184,0.35); color: #F1F5F9; }
+
+    /* 캐러셀 인디케이터 */
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding-bottom: var(--space-md);
+    }
+    .carousel-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(28,28,30,0.15);
+      transition: all 0.2s;
+    }
+    .carousel-dot.active {
+      width: 18px;
+      border-radius: 3px;
+      background: var(--primary);
+    }
+
+    /* ═══ AI 채팅 바로가기 배너 ═══ */
+    .ai-chat-banner {
+      margin: 0 var(--space-lg) var(--space-lg);
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.48);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      border: 0.5px solid rgba(255,255,255,0.65);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.75) inset, 0 4px 16px rgba(0,0,0,0.05);
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer;
+      transition: transform 0.15s;
+      text-decoration: none; color: inherit;
+    }
+    .ai-chat-banner:active { transform: scale(0.98); }
+    .ai-chat-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2C7AFC, #7C3AED);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 2px rgba(124,58,237,0.15);
+    }
+    .ai-chat-info { flex: 1; }
+    .ai-chat-name {
+      font-size: var(--text-callout);
+      font-weight: var(--weight-semibold);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ai-live-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #34D399;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+    .ai-chat-sub {
+      font-size: var(--text-mini);
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+    .ai-chat-arrow {
+      color: var(--text-tertiary);
+      font-size: 20px;
+      font-weight: 300;
+    }
+
+    /* ═══ 섹션 ═══ */
+    .content-section {
+      padding: 0 var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: var(--space-md);
+    }
+    .section-label {
+      font-size: var(--text-title);
+      font-weight: var(--weight-bold);
+      letter-spacing: -0.3px;
+    }
+    .section-more {
+      font-size: var(--text-caption);
+      font-weight: var(--weight-medium);
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* ═══ 인기 질문 리스트 ═══ */
+    .popular-list {
+      display: flex;
+      flex-direction: column;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.48);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      border: 0.5px solid rgba(255,255,255,0.65);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.75) inset, 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .popular-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: background 0.12s;
+      text-decoration: none; color: inherit;
+    }
+    .popular-item:active { background: rgba(0,0,0,0.03); }
+    .popular-item + .popular-item {
+      border-top: 0.5px solid rgba(0,0,0,0.06);
+    }
+    .popular-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+    .popular-icon-blue { background: rgba(44,122,252,0.10); color: #2C7AFC; }
+    .popular-icon-purple { background: rgba(124,58,237,0.10); color: #7C3AED; }
+    .popular-icon-green { background: rgba(5,150,105,0.10); color: #059669; }
+    .popular-icon-amber { background: rgba(217,119,6,0.10); color: #D97706; }
+    .popular-info { flex: 1; }
+    .popular-title {
+      font-size: var(--text-callout);
+      font-weight: var(--weight-medium);
+      line-height: 1.3;
+    }
+    .popular-meta {
+      font-size: var(--text-mini);
+      color: var(--text-tertiary);
+      margin-top: 2px;
+    }
+    .popular-chevron {
+      color: var(--text-tertiary);
+      font-size: 18px;
+      font-weight: 300;
+    }
+
+    /* ═══ 가이드 요약 카드 (가로 스크롤) ═══ */
+    .guide-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 0 var(--space-lg) var(--space-xs);
+      scrollbar-width: none;
+    }
+    .guide-scroll::-webkit-scrollbar { display: none; }
+    .guide-card {
+      flex-shrink: 0;
+      width: 150px;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.48);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      border: 0.5px solid rgba(255,255,255,0.65);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.75) inset, 0 4px 12px rgba(0,0,0,0.04);
+      scroll-snap-align: start;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .guide-card:active { transform: scale(0.97); }
+    .guide-card-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .guide-card-title {
+      font-size: var(--text-callout);
+      font-weight: var(--weight-semibold);
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .guide-card-desc {
+      font-size: var(--text-mini);
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 배경 -->
+  <div class="bg"><div class="g1"></div><div class="g2"></div></div>
+
+  <!-- 헤더 — 텍스트 없이 타이틀만 -->
+  <div class="page-header">
+    <span class="page-header-title">케어 가이드</span>
+    <a href="g03-chat-ai.html" class="header-btn" aria-label="AI 채팅">
+      <iconify-icon icon="ph:chat-circle-dots-fill" style="font-size:18px;"></iconify-icon>
+    </a>
+  </div>
+
+  <!-- 스크롤 본문 -->
+  <div class="scroll-body">
+
+    <!-- ═══ 히어로 카드 캐러셀 ═══ -->
+    <div class="hero-carousel" id="heroCarousel">
+
+      <!-- 1. 건강정보 백과 -->
+      <a href="g03-chat-ai.html" class="hero-card hero-encyclopedia">
+        <div class="hero-card-bg"></div>
+        <div class="hero-card-overlay"></div>
+        <div class="hero-card-icon">
+          <iconify-icon icon="fluent:book-information-24-filled" style="color:white;"></iconify-icon>
+        </div>
+        <div class="hero-card-badge">건강정보</div>
+        <div class="hero-card-content">
+          <div class="hero-card-title">의료 백과사전</div>
+          <div class="hero-card-desc">요양/건강 정보를 AI에게 물어보세요</div>
+        </div>
+      </a>
+
+      <!-- 2. 감정지원 -->
+      <a href="g03-chat-ai.html" class="hero-card hero-emotion">
+        <div class="hero-card-bg"></div>
+        <div class="hero-card-overlay"></div>
+        <div class="hero-card-icon">
+          <iconify-icon icon="fluent:heart-pulse-24-filled" style="color:white;"></iconify-icon>
+        </div>
+        <div class="hero-card-badge">감정지원</div>
+        <div class="hero-card-content">
+          <div class="hero-card-title">마음 돌봄</div>
+          <div class="hero-card-desc">보호자의 마음도 소중합니다</div>
+        </div>
+      </a>
+
+      <!-- 3. 시설안내 -->
+      <a href="g03-chat-ai.html" class="hero-card hero-facility">
+        <div class="hero-card-bg"></div>
+        <div class="hero-card-overlay"></div>
+        <div class="hero-card-icon">
+          <iconify-icon icon="fluent:building-24-filled" style="color:white;"></iconify-icon>
+        </div>
+        <div class="hero-card-badge">시설안내</div>
+        <div class="hero-card-content">
+          <div class="hero-card-title">요양원 찾기</div>
+          <div class="hero-card-desc">조건에 맞는 시설을 AI가 안내해요</div>
+        </div>
+      </a>
+
+      <!-- 4. 제도/비용 -->
+      <a href="g03-chat-ai.html" class="hero-card hero-cost">
+        <div class="hero-card-bg"></div>
+        <div class="hero-card-overlay"></div>
+        <div class="hero-card-icon">
+          <iconify-icon icon="fluent:calculator-24-filled" style="color:white;"></iconify-icon>
+        </div>
+        <div class="hero-card-badge">제도/비용</div>
+        <div class="hero-card-content">
+          <div class="hero-card-title">요양비 계산</div>
+          <div class="hero-card-desc">장기요양등급별 비용을 시뮬레이션</div>
+        </div>
+      </a>
+
+      <!-- 5. 자유질문 -->
+      <a href="g03-chat-ai.html" class="hero-card hero-free">
+        <div class="hero-card-bg"></div>
+        <div class="hero-card-overlay"></div>
+        <div class="hero-card-icon">
+          <iconify-icon icon="fluent:chat-sparkle-24-filled" style="color:white;"></iconify-icon>
+        </div>
+        <div class="hero-card-badge">자유질문</div>
+        <div class="hero-card-content">
+          <div class="hero-card-title">무엇이든 물어보세요</div>
+          <div class="hero-card-desc">케어에 관한 모든 궁금증을 해결</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- 캐러셀 인디케이터 -->
+    <div class="carousel-dots" id="carouselDots">
+      <div class="carousel-dot active"></div>
+      <div class="carousel-dot"></div>
+      <div class="carousel-dot"></div>
+      <div class="carousel-dot"></div>
+      <div class="carousel-dot"></div>
+    </div>
+
+    <!-- ═══ AI 채팅 바로가기 ═══ -->
+    <a href="g03-chat-ai.html" class="ai-chat-banner">
+      <div class="ai-chat-avatar">
+        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="white">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+        </svg>
+      </div>
+      <div class="ai-chat-info">
+        <div class="ai-chat-name">
+          AI 케어 가이드
+          <span class="ai-live-dot"></span>
+        </div>
+        <div class="ai-chat-sub">무엇이든 질문해 보세요</div>
+      </div>
+      <span class="ai-chat-arrow">&#8250;</span>
+    </a>
+
+    <!-- ═══ 자주 묻는 질문 ═══ -->
+    <div class="content-section">
+      <div class="section-head">
+        <span class="section-label">자주 묻는 질문</span>
+        <span class="section-more">전체보기</span>
+      </div>
+      <div class="popular-list">
+        <a href="g03-chat-ai.html" class="popular-item">
+          <div class="popular-icon popular-icon-blue">
+            <iconify-icon icon="fluent:document-text-24-filled"></iconify-icon>
+          </div>
+          <div class="popular-info">
+            <div class="popular-title">장기요양등급 신청 방법</div>
+            <div class="popular-meta">건강정보 · 조회 2.4k</div>
+          </div>
+          <span class="popular-chevron">&#8250;</span>
+        </a>
+        <a href="g03-chat-ai.html" class="popular-item">
+          <div class="popular-icon popular-icon-green">
+            <iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon>
+          </div>
+          <div class="popular-info">
+            <div class="popular-title">낙상 예방 체크리스트</div>
+            <div class="popular-meta">건강정보 · 조회 1.8k</div>
+          </div>
+          <span class="popular-chevron">&#8250;</span>
+        </a>
+        <a href="g03-chat-ai.html" class="popular-item">
+          <div class="popular-icon popular-icon-amber">
+            <iconify-icon icon="fluent:calculator-24-filled"></iconify-icon>
+          </div>
+          <div class="popular-info">
+            <div class="popular-title">요양비 본인부담금 계산</div>
+            <div class="popular-meta">제도/비용 · 조회 1.5k</div>
+          </div>
+          <span class="popular-chevron">&#8250;</span>
+        </a>
+        <a href="g03-chat-ai.html" class="popular-item">
+          <div class="popular-icon popular-icon-purple">
+            <iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon>
+          </div>
+          <div class="popular-info">
+            <div class="popular-title">보호자 번아웃 자가진단</div>
+            <div class="popular-meta">감정지원 · 조회 1.2k</div>
+          </div>
+          <span class="popular-chevron">&#8250;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ═══ 케어 가이드 모음 ═══ -->
+    <div class="content-section">
+      <div class="section-head">
+        <span class="section-label">케어 가이드</span>
+      </div>
+    </div>
+    <div class="guide-scroll">
+      <div class="guide-card">
+        <div class="guide-card-icon popular-icon-blue">
+          <iconify-icon icon="fluent:food-24-filled"></iconify-icon>
+        </div>
+        <div class="guide-card-title">식사 관리</div>
+        <div class="guide-card-desc">연하곤란 예방, 영양 관리 팁</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon popular-icon-green">
+          <iconify-icon icon="fluent:pill-24-filled"></iconify-icon>
+        </div>
+        <div class="guide-card-title">투약 관리</div>
+        <div class="guide-card-desc">복약 일정, 부작용 확인</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon popular-icon-purple">
+          <iconify-icon icon="fluent:brain-circuit-24-filled"></iconify-icon>
+        </div>
+        <div class="guide-card-title">치매 케어</div>
+        <div class="guide-card-desc">일상 관리, 인지 훈련 방법</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon popular-icon-amber">
+          <iconify-icon icon="fluent:run-24-filled"></iconify-icon>
+        </div>
+        <div class="guide-card-title">활동/운동</div>
+        <div class="guide-card-desc">맞춤형 재활 운동 안내</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 탭바 -->
+  <nav class="tabbar" id="tabbar" data-active="guide"></nav>
+  <script src="tabbar.js"></script>
+
+  <script>
+    /* 캐러셀 인디케이터 동기화 */
+    var carousel = document.getElementById('heroCarousel');
+    var dots = document.querySelectorAll('.carousel-dot');
+
+    carousel.addEventListener('scroll', function() {
+      var cardWidth = carousel.querySelector('.hero-card').offsetWidth + 14;
+      var index = Math.round(carousel.scrollLeft / cardWidth);
+      dots.forEach(function(d, i) {
+        d.classList.toggle('active', i === index);
+      });
+    });
+  </script>
+  <div class="ios-home-indicator"></div>
+</body>
+</html>

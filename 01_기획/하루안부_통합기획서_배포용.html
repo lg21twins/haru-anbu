@@ -1,0 +1,3545 @@
+<!--
+  하루안부 · 통합 기획서 (배포용 단일 HTML)
+  - 외부 의존: 없음 (tokens.css + 로고 SVG 모두 inline)
+  - 인터넷 필요: 아이콘(iconify CDN) · 한글 웹폰트(Pretendard CDN)만 fetch
+  - 더블클릭하여 브라우저에서 열기. 카톡/메일 첨부 가능.
+-->
+<!doctype html>
+<html lang="ko" data-role="guardian" data-platform="web">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>하루안부 · 통합기획서 v6.2 시각화 (2026-04-19 갱신)</title>
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8IS0tIO2VmOujqOyViOu2gCDsi6zrs7wg64uo64+FIOKAlCDslbEg7JWE7J207L2YLCDtjIzruYTsvZggLS0+CiAgPGcgaWQ9InN5bWJvbCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTAsIDUwKSBzY2FsZSgwLjE2MykiPgogICAgPHBhdGggZD0iTTI1MjEuMzIgMjUwNi42NkMxMjM5LjY1IDI2NTcuNDggMTIzOS42NSAxODk1LjYgMTIzOS42NSAxMjc5LjM0TDI0OTcuNjkgMC4wMDAxNzAwNThDMjUxOC42OCA0OTQuMTk4IDI1MjIuMjcgMTE1Ny45MiAxNjU4Ljg2IDEyNjIuNDhDMjY0MS44OCAxMzE0LjI1IDI1MjEuMzIgMjEwMS44NCAyNTIxLjMyIDI1MDYuNjZaIiBmaWxsPSIjMkM3QUZDIi8+CiAgICA8cGF0aCBkPSJNNC42NzcyIDE5LjMzNTNDMTI4Ni4zNSAtMTMxLjQ4MSAxMjg2LjM1IDYzMC4zOTkgMTI4Ni4zNSAxMjQ2LjY2TDI4LjMxNDUgMjUyNkM3LjMyMTk0IDIwMzEuOCAzLjczMDE0IDEzNjguMDggODY3LjE0MyAxMjYzLjUyQy0xMTUuODgxIDEyMTEuNzUgNC42NzcyIDQyNC4xNTcgNC42NzcyIDE5LjMzNTNaIiBmaWxsPSIjMkM3QUZDIi8+CiAgPC9nPgo8L3N2Zz4K">
+  <style>
+/* === tokens.css inlined === */
+/* ============================================================================
+   하루안부 · Design Tokens
+   ============================================================================
+   v1.0 · 2026.04.18
+   Source of Truth. 화면 코드는 반드시 이 파일만 import 할 것.
+
+   구조 (3계층 + 2축):
+     Layer 1 · PRIMITIVE  — 원시 팔레트. 화면에서 직접 사용 금지.
+     Layer 2 · SEMANTIC   — 의미 기반. 화면은 이 층만 쓴다.
+     Layer 3 · COMPONENT  — 컴포넌트 전용 (탭바 등).
+
+     Theme A · data-role     — 보호자 / 의료진 / 환자 / 요양보호사
+     Theme B · data-platform — mobile / web
+
+   사용 예:
+     <html data-role="guardian" data-platform="mobile">
+
+   ============================================================================ */
+
+
+/* ----------------------------------------------------------------------------
+   CDN · Pretendard Variable
+   ---------------------------------------------------------------------------- */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
+
+/* ============================================================================
+   LAYER 1 · PRIMITIVE
+   원시 팔레트. 이 층의 토큰은 화면에서 직접 쓰지 않는다.
+   (Semantic 토큰이 이 값들을 참조하게 한다.)
+   ============================================================================ */
+:root {
+
+  /* --- Color · Brand Blue (보호자) ------------------------------------- */
+  --brand-blue-50:  #EFF6FF;
+  --brand-blue-100: #DBEAFE;
+  --brand-blue-200: #BFDBFE;
+  --brand-blue-300: #93C5FD;
+  --brand-blue-400: #5B9BFF;
+  --brand-blue-500: #2C7AFC;   /* ★ 하루안부 로고 원색 */
+  --brand-blue-600: #1E5FD6;
+  --brand-blue-700: #1D4ED8;
+  --brand-blue-900: #1E3A8A;
+
+  /* --- Color · Brand Green (의료진 — 의사·간호사·요양보호사 공통) ------
+     v6.2 (2026-04-18) · Tailwind green-* 스케일 채택. 메인은 -500.
+     이전: emerald-* 계열 (#059669 케어 그린) → Lime-shifted #22C55E로 전환.    */
+  --brand-green-50:  #F0FDF4;
+  --brand-green-100: #DCFCE7;
+  --brand-green-200: #BBF7D0;
+  --brand-green-300: #86EFAC;
+  --brand-green-400: #4ADE80;
+  --brand-green-500: #22C55E;   /* ★ 케어 그린 (의료진 메인) */
+  --brand-green-600: #16A34A;
+  --brand-green-700: #15803D;
+  --brand-green-900: #14532D;
+
+  /* --- Color · Brand Orange (환자) ------------------------------------- */
+  --brand-orange-50:  #FFF7ED;
+  --brand-orange-100: #FFEDD5;
+  --brand-orange-200: #FED7AA;
+  --brand-orange-300: #FDBA74;
+  --brand-orange-400: #FB923C;   /* ★ 편안 오렌지 */
+  --brand-orange-500: #F97316;
+  --brand-orange-600: #EA580C;
+  --brand-orange-700: #C2410C;
+  --brand-orange-900: #7C2D12;
+
+  /* --- Color · Accent Yellow (포인트) ---------------------------------- */
+  --brand-yellow-50:  #FEFCE8;
+  --brand-yellow-100: #FEF9C3;
+  --brand-yellow-300: #FDE047;
+  --brand-yellow-400: #F5D310;   /* ★ 선샤인 옐로우 */
+  --brand-yellow-600: #CA8A04;
+  --brand-yellow-900: #713F12;
+
+  /* --- Color · Semantic Red (위험·긴급) -------------------------------- */
+  --palette-red-50:  #FEF2F2;
+  --palette-red-100: #FEE2E2;
+  --palette-red-300: #FCA5A5;
+  --palette-red-500: #EF4444;
+  --palette-red-600: #DC2626;
+  --palette-red-700: #B91C1C;
+
+  /* --- Color · Semantic Amber (주의) ----------------------------------- */
+  --palette-amber-50:  #FFFBEB;
+  --palette-amber-100: #FEF3C7;
+  --palette-amber-300: #FCD34D;
+  --palette-amber-500: #F59E0B;
+  --palette-amber-600: #D97706;
+  --palette-amber-700: #B45309;
+
+  /* --- Color · Gray (중립) --------------------------------------------- */
+  --palette-white:    #FFFFFF;
+  --palette-gray-50:  #FAFAFA;
+  --palette-gray-100: #F4F4F5;
+  --palette-gray-150: #F0F4F8;   /* 하루안부 앱 배경 (블루그레이 계열) */
+  --palette-gray-200: #E5E5EA;
+  --palette-gray-300: #D4D4D8;
+  --palette-gray-400: #9E9E9E;
+  --palette-gray-500: #8E8E93;
+  --palette-gray-700: #3F3F46;
+  --palette-gray-800: #27272A;
+  --palette-gray-900: #1C1C1E;
+
+  /* --- Spacing · 4px grid ---------------------------------------------- */
+  --space-0:  0;
+  --space-1:  2px;
+  --space-2:  4px;
+  --space-3:  8px;
+  --space-4:  12px;
+  --space-5:  16px;
+  --space-6:  20px;
+  --space-7:  24px;
+  --space-8:  32px;
+  --space-9:  40px;
+  --space-10: 48px;
+  --space-11: 64px;
+  --space-12: 96px;
+
+  /* --- Radius ---------------------------------------------------------- */
+  --radius-0:    0;
+  --radius-1:    4px;
+  --radius-2:    8px;
+  --radius-3:    12px;
+  --radius-4:    14px;
+  --radius-5:    18px;
+  --radius-6:    24px;
+  --radius-7:    28px;
+  --radius-full: 9999px;
+
+  /* --- Typography · Font Family ---------------------------------------- */
+  --font-family-base:
+    'Pretendard Variable', 'Pretendard',
+    -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
+  --font-family-mono:
+    ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* --- Typography · Size (px 기반 scale) ------------------------------- */
+  --font-11: 11px;
+  --font-13: 13px;
+  --font-14: 14px;
+  --font-16: 16px;
+  --font-17: 17px;
+  --font-18: 18px;
+  --font-20: 20px;
+  --font-22: 22px;
+  --font-24: 24px;
+  --font-28: 28px;
+  --font-32: 32px;
+  --font-40: 40px;
+
+  /* --- Typography · Weight --------------------------------------------- */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* --- Typography · Line Height ---------------------------------------- */
+  --leading-tight:   1.2;
+  --leading-normal:  1.4;
+  --leading-relaxed: 1.6;
+
+  /* --- Shadow ---------------------------------------------------------- */
+  --shadow-1: 0 1px 4px  rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.04);
+  --shadow-2: 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.04);
+  --shadow-3: 0 8px 28px rgba(0, 0, 0, 0.12), 0 0 1px rgba(0, 0, 0, 0.04);
+  --shadow-glass:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+  /* --- Blur ------------------------------------------------------------ */
+  --blur-card: 20px;
+  --blur-tab:  24px;
+
+  /* --- Motion ---------------------------------------------------------- */
+  --duration-fast:    150ms;
+  --duration-normal:  250ms;
+  --duration-slow:    350ms;
+  --easing-standard:  cubic-bezier(0.2, 0, 0, 1);
+  --easing-emphasize: cubic-bezier(0.2, 0, 0, 1.2);
+
+  /* --- Z-Index --------------------------------------------------------- */
+  --z-base:    0;
+  --z-raised:  1;
+  --z-sticky:  10;
+  --z-overlay: 100;
+  --z-modal:   200;
+  --z-toast:   300;
+
+
+  /* ==========================================================================
+     LAYER 2 · SEMANTIC
+     의미 기반 토큰. 화면 코드는 오직 이 층만 쓴다.
+     (역할/플랫폼이 바뀌어도 이름은 그대로, 값만 오버라이드된다.)
+     ========================================================================== */
+
+  /* --- Color · Text ---------------------------------------------------- */
+  --color-text-primary:     var(--palette-gray-900);
+  --color-text-secondary:   var(--palette-gray-500);
+  --color-text-tertiary:    var(--palette-gray-400);
+  --color-text-disabled:    var(--palette-gray-300);
+  --color-text-on-accent:   var(--palette-white);
+  --color-text-on-dark:     var(--palette-white);
+  --color-text-link:        var(--color-accent);
+
+  /* --- Color · Surface & Background ------------------------------------ */
+  --color-bg-canvas:        var(--palette-gray-150);   /* 앱 전체 배경 */
+  --color-bg-surface:       var(--palette-white);      /* 카드 · 시트 */
+  --color-bg-surface-muted: var(--palette-gray-50);    /* 낮은 강조 카드 */
+  --color-bg-glass:         rgba(255, 255, 255, 0.75); /* 글래스 카드 */
+  --color-bg-overlay:       rgba(0, 0, 0, 0.40);       /* 모달 딤 */
+
+  /* --- Color · Border -------------------------------------------------- */
+  --color-border-subtle:    var(--palette-gray-200);
+  --color-border-strong:    var(--palette-gray-300);
+  --color-border-focus:     var(--color-accent);
+  --color-border-glass:     rgba(255, 255, 255, 0.55);
+
+  /* --- Color · Accent (역할 테마가 오버라이드하는 앵커) ----------------- */
+  /* 기본값은 보호자. data-role="..."이 실제 화면에서 바꿈. */
+  --color-accent:           var(--brand-blue-500);
+  --color-accent-soft:      var(--brand-blue-100);
+  --color-accent-strong:    var(--brand-blue-600);
+  --color-accent-on:        var(--palette-white);
+
+  /* --- Color · Semantic (상태) ----------------------------------------- */
+  --color-success:          var(--brand-green-600);
+  --color-success-soft:     var(--brand-green-100);
+  --color-warning:          var(--palette-amber-500);
+  --color-warning-soft:     var(--palette-amber-100);
+  --color-danger:           var(--palette-red-600);
+  --color-danger-soft:      var(--palette-red-100);
+  --color-info:             var(--color-accent);       /* accent와 alias */
+  --color-info-soft:        var(--color-accent-soft);
+  --color-point:            var(--brand-yellow-400);   /* 포인트 강조 */
+
+  /* --- Spacing · Inset (컴포넌트 내부 패딩) ---------------------------- */
+  --space-inset-compact:    var(--space-3);   /*  8px */
+  --space-inset-default:    var(--space-5);   /* 16px */
+  --space-inset-loose:      var(--space-7);   /* 24px */
+
+  /* --- Spacing · Stack (세로 간격) ------------------------------------- */
+  --space-stack-tight:      var(--space-2);   /*  4px */
+  --space-stack-default:    var(--space-4);   /* 12px */
+  --space-stack-loose:      var(--space-7);   /* 24px */
+  --space-stack-section:    var(--space-8);   /* 32px */
+
+  /* --- Spacing · Inline (가로 간격) ------------------------------------ */
+  --space-inline-tight:     var(--space-2);
+  --space-inline-default:   var(--space-3);
+  --space-inline-loose:     var(--space-5);
+
+  /* --- Spacing · Layout (플랫폼이 오버라이드) -------------------------- */
+  --space-page-margin:      var(--space-5);   /* mobile 기본 16px */
+  --space-section-gap:      var(--space-8);   /* 32px */
+
+  /* --- Radius (컴포넌트 매핑) ------------------------------------------ */
+  --radius-control:         var(--radius-2);  /* 인풋, 소형 버튼 */
+  --radius-button:          var(--radius-4);  /* 기본 버튼 */
+  --radius-card:            var(--radius-4);  /* 카드 기본 */
+  --radius-card-lg:         var(--radius-5);  /* 큰 카드 */
+  --radius-modal:           var(--radius-5);  /* 모달·바텀시트 */
+  --radius-hero:            var(--radius-6);  /* 히어로 카드 */
+  --radius-pill:            var(--radius-full);
+
+  /* --- Size · Touch / Component (플랫폼이 오버라이드) ----------------- */
+  --size-touch-target:      44px;   /* mobile 기본 (iOS HIG) */
+  --size-button-default:    48px;
+  --size-button-compact:    44px;
+  --size-button-large:      56px;
+  --size-input:             48px;
+  --size-row:               56px;
+  --size-row-compact:       44px;
+  --size-header:            44px;
+  --size-tab-bar:           56px;
+  --size-icon-sm:           20px;
+  --size-icon-md:           24px;
+  --size-icon-lg:           28px;
+  --size-icon-xl:           32px;
+  --size-avatar-sm:         32px;
+  --size-avatar-md:         40px;
+  --size-avatar-lg:         56px;
+  --size-avatar-xl:         72px;
+
+  /* --- Typography · Role -> Size 매핑 ---------------------------------- */
+  --text-display:           var(--font-32);
+  --text-title:             var(--font-22);
+  --text-headline:          var(--font-17);
+  --text-body:              var(--font-16);
+  --text-body-lg:           var(--font-18);
+  --text-callout:           var(--font-14);
+  --text-caption:           var(--font-13);
+  --text-mini:              var(--font-11);
+
+  /* --- Motion · Role (semantic duration) ------------------------------- */
+  --motion-micro:           var(--duration-fast);   /* 버튼 누름, 토글 */
+  --motion-transition:      var(--duration-normal); /* 카드 펼침 */
+  --motion-enter:           var(--duration-slow);   /* 모달 등장 */
+
+
+  /* ==========================================================================
+     LAYER 3 · COMPONENT
+     특정 컴포넌트가 쓰는 토큰. 재사용이 많을 때만 여기에 올린다.
+     ========================================================================== */
+
+  /* --- Tab Bar (Floating Pill) ----------------------------------------- */
+  --tabbar-height:          var(--size-tab-bar);       /* 56px mobile */
+  --tabbar-bg:              rgba(255, 255, 255, 0.85);
+  --tabbar-blur:            var(--blur-tab);
+  --tabbar-shadow:          var(--shadow-glass);
+  --tabbar-radius:          var(--radius-pill);
+  --tabbar-bottom:          calc(var(--space-5) + env(safe-area-inset-bottom));
+  --tabbar-side-inset:      var(--space-5);
+  --tabbar-label-size:      var(--font-11);
+  --tabbar-icon-size:       var(--size-icon-md);
+
+  /* --- Card (Glass 스타일) --------------------------------------------- */
+  --card-bg:                var(--color-bg-surface);
+  --card-bg-glass:          var(--color-bg-glass);
+  --card-border:            1px solid var(--color-border-subtle);
+  --card-border-glass:      1px solid var(--color-border-glass);
+  --card-radius:            var(--radius-card);
+  --card-padding:           var(--space-inset-default);
+  --card-shadow:            var(--shadow-1);
+  --card-shadow-glass:      var(--shadow-glass);
+
+  /* --- Header ---------------------------------------------------------- */
+  --header-height:          var(--size-header);
+  --header-padding-x:       var(--space-page-margin);
+
+  /* --- SOS Banner ------------------------------------------------------ */
+  --sos-bg:                 var(--color-danger);
+  --sos-text:               var(--color-text-on-dark);
+  --sos-radius:             var(--radius-card);
+
+  /* --- Focus Ring (접근성) --------------------------------------------- */
+  --focus-ring:             0 0 0 2px var(--color-border-focus);
+}
+
+
+/* ============================================================================
+   THEME A · ROLE (역할별 accent 컬러 오버라이드)
+   ============================================================================ */
+
+[data-role="guardian"] {
+  --color-accent:           var(--brand-blue-500);
+  --color-accent-soft:      var(--brand-blue-100);
+  --color-accent-strong:    var(--brand-blue-600);
+  --color-accent-on:        var(--palette-white);
+  --color-bg-role-gradient:
+    linear-gradient(180deg,
+      var(--brand-blue-100) 0%,
+      var(--color-bg-canvas) 120px);
+}
+
+/* 의료진 통합 테마. 의사·간호사·요양보호사 모두 여기에 해당.
+   v6.2: 메인 accent를 -500(#22C55E)으로 갱신. strong은 -600(#16A34A). */
+[data-role="medical"] {
+  --color-accent:           var(--brand-green-500);
+  --color-accent-soft:      var(--brand-green-100);
+  --color-accent-strong:    var(--brand-green-600);
+  --color-accent-on:        var(--palette-white);
+  --color-bg-role-gradient:
+    linear-gradient(180deg,
+      var(--brand-green-100) 0%,
+      var(--color-bg-canvas) 120px);
+}
+
+/* medical의 직군 별칭 — 동일 테마, 선택자만 다름 */
+[data-role="doctor"],
+[data-role="nurse"],
+[data-role="caregiver"] {
+  --color-accent:           var(--brand-green-500);
+  --color-accent-soft:      var(--brand-green-100);
+  --color-accent-strong:    var(--brand-green-600);
+  --color-accent-on:        var(--palette-white);
+  --color-bg-role-gradient:
+    linear-gradient(180deg,
+      var(--brand-green-100) 0%,
+      var(--color-bg-canvas) 120px);
+}
+
+[data-role="patient"] {
+  --color-accent:           var(--brand-orange-400);
+  --color-accent-soft:      var(--brand-orange-100);
+  --color-accent-strong:    var(--brand-orange-600);
+  --color-accent-on:        var(--palette-white);
+  --color-bg-role-gradient:
+    linear-gradient(180deg,
+      var(--brand-orange-100) 0%,
+      var(--color-bg-canvas) 120px);
+
+  /* 환자는 접근성 스케일 자동 적용 */
+  --text-body:              var(--font-18);
+  --text-headline:          var(--font-20);
+  --text-title:             var(--font-24);
+  --size-touch-target:      56px;
+  --size-button-default:    56px;
+  --size-row:               64px;
+}
+
+
+/* ============================================================================
+   THEME B · PLATFORM (기기 폼팩터별 치수 오버라이드)
+   ============================================================================ */
+
+[data-platform="mobile"] {
+  --space-page-margin:      var(--space-5);   /* 16px */
+  --size-touch-target:      44px;
+  --size-header:            44px;
+  --size-tab-bar:           56px;
+  --tabbar-height:          var(--size-tab-bar);
+  --card-padding:           var(--space-5);
+  --text-body:              var(--font-16);
+}
+
+/* 환자 + 모바일 조합은 환자 룰이 이미 텍스트/터치 상향하므로 여기선 추가 없음 */
+
+[data-platform="web"] {
+  --space-page-margin:      var(--space-7);   /* 24px */
+  --size-touch-target:      36px;              /* 마우스 기준 */
+  --size-header:            64px;              /* 데스크톱 헤더 */
+  --size-tab-bar:           60px;              /* 사이드바 있으므로 탭바는 보조 */
+  --tabbar-height:          var(--size-tab-bar);
+  --card-padding:           var(--space-6);    /* 20px */
+  --text-body:              var(--font-16);
+  --size-sidebar-width:     240px;
+  --size-topbar-height:     64px;
+  --size-content-max:       1280px;            /* 본문 최대 폭 */
+}
+
+
+/* ============================================================================
+   RESET · 최소 리셋만 (미드리셋, opinionated 리셋 아님)
+   ============================================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+  background: var(--color-bg-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg, video { display: block; max-width: 100%; }
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+
+/* ============================================================================
+   UTILITY CLASSES (선택적 — 자주 쓰이는 패턴만 최소 제공)
+   컴포넌트 스타일은 화면 CSS에서 직접 쓰되, 값은 반드시 토큰을 참조할 것.
+   ============================================================================ */
+
+.u-text-body       { font-size: var(--text-body);      }
+.u-text-headline   { font-size: var(--text-headline);  font-weight: var(--weight-semibold); }
+.u-text-title      { font-size: var(--text-title);     font-weight: var(--weight-semibold); }
+.u-text-caption    { font-size: var(--text-caption);   color: var(--color-text-secondary); }
+.u-text-accent     { color: var(--color-accent); }
+.u-text-success    { color: var(--color-success); }
+.u-text-warning    { color: var(--color-warning); }
+.u-text-danger     { color: var(--color-danger); }
+
+.u-bg-surface      { background: var(--color-bg-surface); }
+.u-bg-glass        { background: var(--color-bg-glass); backdrop-filter: blur(var(--blur-card)); -webkit-backdrop-filter: blur(var(--blur-card)); }
+.u-bg-accent       { background: var(--color-accent); color: var(--color-accent-on); }
+
+.u-radius-card     { border-radius: var(--radius-card); }
+.u-radius-pill     { border-radius: var(--radius-pill); }
+
+.u-shadow-card     { box-shadow: var(--card-shadow); }
+.u-shadow-glass    { box-shadow: var(--card-shadow-glass); }
+
+.u-role-gradient   { background: var(--color-bg-role-gradient); }
+
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-control);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ============================================================================
+   끝.
+   화면 CSS는 이 파일 import 후, Layer 2(Semantic) 토큰만 참조할 것.
+   ============================================================================ */
+
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+
+  <style>
+    body {
+      background: linear-gradient(180deg, #F8FAFF 0%, var(--color-bg-canvas) 200px);
+      min-height: 100dvh;
+      color: var(--color-text-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       레이아웃: 좌 스티키 목차 + 우 본문
+       ═══════════════════════════════════════════════════════════ */
+    .shell {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      max-width: 1440px;
+      margin: 0 auto;
+      gap: var(--space-8);
+      padding: 0 var(--space-7);
+    }
+
+    /* ---------- 목차 네비 ---------- */
+    .toc {
+      position: sticky;
+      top: var(--space-7);
+      align-self: start;
+      padding: var(--space-7) 0;
+      border-right: 1px solid var(--color-border-subtle);
+      max-height: calc(100dvh - var(--space-8));
+      overflow-y: auto;
+    }
+    .toc-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding-bottom: var(--space-5);
+      border-bottom: 1px solid var(--color-border-subtle);
+      margin-bottom: var(--space-5);
+    }
+    .toc-brand img { width: 28px; height: 28px; }
+    .toc-brand-title {
+      font: var(--weight-bold) var(--text-headline) / 1 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .toc-brand-sub {
+      display: block;
+      margin-top: 3px;
+      font: var(--weight-medium) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--color-accent);
+    }
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .toc-list a {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-control);
+      font: var(--weight-medium) var(--text-caption) / 1.3 var(--font-family-base);
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      transition: background var(--motion-micro) var(--easing-standard);
+    }
+    .toc-list a:hover {
+      background: var(--color-accent-soft);
+      color: var(--color-accent-strong);
+    }
+    .toc-list a .num {
+      font-family: var(--font-family-mono);
+      color: var(--color-text-tertiary);
+      font-size: 11px;
+      min-width: 18px;
+    }
+
+    /* ---------- 메인 컨텐츠 ---------- */
+    main {
+      padding: var(--space-7) 0 var(--space-11);
+      min-width: 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════════════════════ */
+    .hero {
+      background:
+        radial-gradient(circle at 85% 20%, rgba(44,122,252,0.12) 0%, transparent 60%),
+        radial-gradient(circle at 15% 85%, rgba(251,146,60,0.10) 0%, transparent 55%),
+        linear-gradient(135deg, #FFFFFF 0%, #F0F4F8 100%);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-hero);
+      padding: var(--space-10) var(--space-9);
+      margin-bottom: var(--space-9);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -80px;
+      top: -80px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(44,122,252,0.08), transparent 70%);
+    }
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 6px var(--space-3);
+      background: var(--color-accent-soft);
+      color: var(--color-accent-strong);
+      border-radius: var(--radius-pill);
+      font: var(--weight-semibold) var(--text-caption) / 1 var(--font-family-base);
+      margin-bottom: var(--space-5);
+    }
+    .hero-title {
+      font: var(--weight-bold) var(--font-40) / 1.15 var(--font-family-base);
+      letter-spacing: -0.02em;
+      margin: 0 0 var(--space-3);
+    }
+    .hero-slogan {
+      font: var(--weight-medium) var(--text-body-lg) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+      max-width: 720px;
+      margin: 0 0 var(--space-7);
+    }
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-5);
+      padding-top: var(--space-6);
+      border-top: 1px solid rgba(0,0,0,0.06);
+      position: relative;
+    }
+    .hero-meta dt {
+      font: var(--weight-medium) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      margin-bottom: 6px;
+    }
+    .hero-meta dd {
+      font: var(--weight-semibold) var(--text-body) / 1.3 var(--font-family-base);
+      color: var(--color-text-primary);
+      margin: 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       섹션 공통
+       ═══════════════════════════════════════════════════════════ */
+    section {
+      scroll-margin-top: var(--space-7);
+      margin-bottom: var(--space-11);
+    }
+    .section-num {
+      display: inline-block;
+      font: var(--weight-bold) var(--text-caption) / 1 var(--font-family-mono);
+      color: var(--color-accent);
+      padding: 4px var(--space-3);
+      background: var(--color-accent-soft);
+      border-radius: var(--radius-pill);
+      margin-bottom: var(--space-3);
+    }
+    h2.section-title {
+      font: var(--weight-bold) var(--font-32) / 1.15 var(--font-family-base);
+      letter-spacing: -0.02em;
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-primary);
+    }
+    .section-lead {
+      font: var(--weight-regular) var(--text-body-lg) / 1.6 var(--font-family-base);
+      color: var(--color-text-secondary);
+      max-width: 820px;
+      margin: 0 0 var(--space-7);
+    }
+    h3.sub {
+      font: var(--weight-semibold) var(--text-title) / 1.2 var(--font-family-base);
+      margin: var(--space-8) 0 var(--space-5);
+      color: var(--color-text-primary);
+    }
+    h4.sub-sub {
+      font: var(--weight-semibold) var(--text-headline) / 1.3 var(--font-family-base);
+      margin: var(--space-7) 0 var(--space-4);
+      color: var(--color-text-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       공용 컴포넌트
+       ═══════════════════════════════════════════════════════════ */
+    .card {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-6);
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-4); }
+
+    .table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    .table th, .table td {
+      padding: var(--space-4) var(--space-5);
+      text-align: left;
+      font: var(--weight-regular) var(--text-callout) / 1.5 var(--font-family-base);
+      border-bottom: 1px solid var(--color-border-subtle);
+      vertical-align: top;
+    }
+    .table th {
+      background: var(--color-bg-surface-muted);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-primary);
+      font-size: var(--text-caption);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .table tr:last-child td { border-bottom: 0; }
+    .table td:first-child { font-weight: var(--weight-semibold); color: var(--color-text-primary); }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      font: var(--weight-semibold) var(--text-mini) / 1 var(--font-family-base);
+      letter-spacing: 0.02em;
+    }
+    .chip-blue { background: var(--brand-blue-100); color: var(--brand-blue-700); }
+    .chip-green { background: var(--brand-green-100); color: var(--brand-green-700); }
+    .chip-orange { background: var(--brand-orange-100); color: var(--brand-orange-700); }
+    .chip-red { background: var(--palette-red-100); color: var(--palette-red-700); }
+    .chip-amber { background: var(--palette-amber-100); color: var(--palette-amber-700); }
+    .chip-gray { background: var(--palette-gray-100); color: var(--palette-gray-700); }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 1 · 문제 · 지표 KPI 카드
+       ═══════════════════════════════════════════════════════════ */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-7);
+    }
+    .kpi-card {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      position: relative;
+    }
+    .kpi-label {
+      font: var(--weight-medium) var(--text-caption) / 1.3 var(--font-family-base);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-3);
+      min-height: 34px;
+    }
+    .kpi-value {
+      font: var(--weight-bold) var(--font-28) / 1 var(--font-family-base);
+      color: var(--color-accent);
+      letter-spacing: -0.02em;
+    }
+    .kpi-unit {
+      font-size: var(--text-body);
+      color: var(--color-text-secondary);
+      margin-left: 4px;
+    }
+    .kpi-meta {
+      margin-top: var(--space-3);
+      font: var(--weight-regular) var(--text-mini) / 1 var(--font-family-base);
+      color: var(--color-text-tertiary);
+    }
+
+    /* ---------- 3자 페인포인트 카드 ---------- */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+    .pain-card {
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-card-lg);
+      padding: var(--space-7);
+      border-top: 4px solid var(--role-color);
+      box-shadow: var(--shadow-1);
+    }
+    .pain-card.guardian  { --role-color: var(--brand-blue-500); }
+    .pain-card.medical   { --role-color: var(--brand-green-600); }
+    .pain-card.patient   { --role-color: var(--brand-orange-400); }
+    .pain-head {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+    .pain-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      background: var(--role-color);
+      color: var(--palette-white);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .pain-role {
+      font: var(--weight-bold) var(--text-title) / 1 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .pain-tag {
+      display: block;
+      margin-top: 2px;
+      font: var(--weight-medium) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--role-color);
+    }
+    .pain-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .pain-card li {
+      font: var(--weight-regular) var(--text-callout) / 1.5 var(--font-family-base);
+      color: var(--color-text-primary);
+      padding-left: var(--space-4);
+      position: relative;
+    }
+    .pain-card li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--role-color);
+    }
+    .pain-card blockquote {
+      margin: var(--space-5) 0 0;
+      padding: var(--space-4);
+      background: var(--color-bg-surface-muted);
+      border-radius: var(--radius-card);
+      font: var(--weight-medium) var(--text-callout) / 1.5 var(--font-family-base);
+      color: var(--color-text-primary);
+      font-style: italic;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 2 · 린캔버스 9블록
+       ═══════════════════════════════════════════════════════════ */
+    .lean-canvas {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: auto auto auto;
+      gap: var(--space-3);
+      background: var(--palette-gray-100);
+      padding: var(--space-3);
+      border-radius: var(--radius-card-lg);
+    }
+    .lean-box {
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      font: var(--weight-regular) var(--text-caption) / 1.5 var(--font-family-base);
+      color: var(--color-text-primary);
+      position: relative;
+    }
+    .lean-box h5 {
+      font: var(--weight-bold) var(--text-caption) / 1 var(--font-family-base);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin: 0 0 var(--space-3);
+      color: var(--color-accent);
+    }
+    .lean-problem    { grid-column: 1 / 3; grid-row: 1 / 3; }
+    .lean-solution   { grid-column: 3 / 5; grid-row: 1; }
+    .lean-uvp        { grid-column: 5 / 7; grid-row: 1 / 3;
+                       background: var(--color-accent); color: var(--color-accent-on); }
+    .lean-uvp h5     { color: rgba(255,255,255,0.85); }
+    .lean-advantage  { grid-column: 7 / 9; grid-row: 1; }
+    .lean-segments   { grid-column: 9 / 11; grid-row: 1 / 3; }
+    .lean-metrics    { grid-column: 3 / 5; grid-row: 2; }
+    .lean-channels   { grid-column: 7 / 9; grid-row: 2; }
+    .lean-cost       { grid-column: 1 / 6; grid-row: 3;
+                       background: var(--palette-gray-50); }
+    .lean-revenue    { grid-column: 6 / 11; grid-row: 3;
+                       background: var(--brand-green-50); }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 3 · 퍼소나 카드
+       ═══════════════════════════════════════════════════════════ */
+    .persona-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-4);
+    }
+    .persona {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card-lg);
+      padding: var(--space-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    .persona-head {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .persona-avatar {
+      width: var(--size-avatar-lg);
+      height: var(--size-avatar-lg);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: var(--weight-bold) var(--text-body-lg) / 1 var(--font-family-base);
+      color: var(--palette-white);
+      flex-shrink: 0;
+    }
+    .persona.guardian .persona-avatar  { background: linear-gradient(135deg, var(--brand-blue-400), var(--brand-blue-600)); }
+    .persona.nurse    .persona-avatar  { background: linear-gradient(135deg, var(--brand-green-400), var(--brand-green-700)); }
+    .persona.doctor   .persona-avatar  { background: linear-gradient(135deg, var(--brand-green-500), var(--brand-green-900)); }
+    .persona.carer    .persona-avatar  { background: linear-gradient(135deg, var(--brand-green-300), var(--brand-green-600)); }
+    .persona.patient  .persona-avatar  { background: linear-gradient(135deg, var(--brand-orange-300), var(--brand-orange-600)); }
+    .persona-name {
+      font: var(--weight-bold) var(--text-headline) / 1.2 var(--font-family-base);
+    }
+    .persona-role {
+      display: block;
+      margin-top: 2px;
+      font: var(--weight-medium) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+    .persona-attr {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--color-border-subtle);
+      font: var(--weight-regular) var(--text-caption) / 1.3 var(--font-family-base);
+    }
+    .persona-attr:last-of-type { border-bottom: 0; }
+    .persona-attr dt { color: var(--color-text-tertiary); }
+    .persona-attr dd { margin: 0; color: var(--color-text-primary); font-weight: var(--weight-medium); text-align: right; }
+    .persona-pain {
+      margin-top: var(--space-3);
+      padding: var(--space-3);
+      background: var(--color-bg-surface-muted);
+      border-radius: var(--radius-control);
+      font: var(--weight-regular) var(--text-caption) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+    .persona-pain strong { color: var(--color-text-primary); display: block; margin-bottom: 2px; }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 4 · 감정 곡선
+       ═══════════════════════════════════════════════════════════ */
+    .emotion-chart {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card-lg);
+      padding: var(--space-7);
+    }
+    .emotion-stages {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-5);
+    }
+    .emotion-stage {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .emotion-stage-label {
+      font: var(--weight-semibold) var(--text-body) / 1.3 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .emotion-bar-pair {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin-top: var(--space-3);
+    }
+    .emotion-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .emotion-bar-label {
+      font: var(--weight-semibold) var(--text-mini) / 1 var(--font-family-base);
+      width: 40px;
+      letter-spacing: 0.03em;
+    }
+    .emotion-bar.asis .emotion-bar-label  { color: var(--color-danger); }
+    .emotion-bar.tobe .emotion-bar-label  { color: var(--color-success); }
+    .emotion-bar-track {
+      flex: 1;
+      height: 12px;
+      background: var(--palette-gray-100);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+    .emotion-bar-fill {
+      height: 100%;
+      border-radius: var(--radius-pill);
+    }
+    .emotion-bar.asis .emotion-bar-fill {
+      background: linear-gradient(90deg, var(--palette-red-300), var(--palette-red-500));
+    }
+    .emotion-bar.tobe .emotion-bar-fill {
+      background: linear-gradient(90deg, var(--brand-green-400), var(--brand-green-600));
+    }
+    .emotion-bar-value {
+      font: var(--weight-semibold) var(--text-caption) / 1 var(--font-family-mono);
+      color: var(--color-text-primary);
+      width: 28px;
+      text-align: right;
+    }
+    .emotion-delta {
+      margin-top: var(--space-3);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px var(--space-3);
+      background: var(--brand-green-100);
+      color: var(--brand-green-700);
+      border-radius: var(--radius-pill);
+      font: var(--weight-bold) var(--text-mini) / 1 var(--font-family-base);
+      align-self: flex-start;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 5 · 제품 구조
+       ═══════════════════════════════════════════════════════════ */
+    .platform-matrix {
+      display: grid;
+      grid-template-columns: 120px repeat(3, 1fr);
+      gap: 1px;
+      background: var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    .platform-matrix > div {
+      background: var(--color-bg-surface);
+      padding: var(--space-4) var(--space-5);
+      font: var(--weight-regular) var(--text-callout) / 1.4 var(--font-family-base);
+    }
+    .pm-head {
+      background: var(--color-bg-surface-muted) !important;
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-caption);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--color-text-secondary);
+    }
+    .pm-role {
+      font-weight: var(--weight-semibold) !important;
+      color: var(--color-text-primary);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+    .feature {
+      display: flex;
+      gap: var(--space-4);
+      padding: var(--space-5);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+    }
+    .feature-id {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-control);
+      background: var(--color-accent-soft);
+      color: var(--color-accent-strong);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font: var(--weight-bold) var(--text-caption) / 1 var(--font-family-mono);
+    }
+    .feature-name {
+      font: var(--weight-semibold) var(--text-body) / 1.2 var(--font-family-base);
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+    .feature-desc {
+      font: var(--weight-regular) var(--text-caption) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+
+    /* ---------- 8단계 스텝퍼 ---------- */
+    .stepper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+    .step {
+      padding: var(--space-5);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      position: relative;
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      background: var(--brand-green-600);
+      color: var(--palette-white);
+      font: var(--weight-bold) var(--text-caption) / 1 var(--font-family-mono);
+      margin-bottom: var(--space-3);
+    }
+    .step-name {
+      font: var(--weight-semibold) var(--text-body) / 1 var(--font-family-base);
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+    .step-method {
+      font: var(--weight-regular) var(--text-caption) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 6 · AI 5모드
+       ═══════════════════════════════════════════════════════════ */
+    .ai-mode-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-4);
+    }
+    .ai-mode {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card-lg);
+      padding: var(--space-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .ai-mode-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-card);
+      background: var(--color-accent-soft);
+      color: var(--color-accent-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ai-mode-name {
+      font: var(--weight-bold) var(--text-body) / 1.2 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .ai-mode-desc {
+      font: var(--weight-regular) var(--text-caption) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+    .ai-mode-trigger {
+      margin-top: auto;
+      padding-top: var(--space-3);
+      border-top: 1px dashed var(--color-border-subtle);
+      font: var(--weight-medium) var(--text-mini) / 1.3 var(--font-family-base);
+      color: var(--color-text-tertiary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 8 · 컬러 팔레트
+       ═══════════════════════════════════════════════════════════ */
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+    .swatch {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    .swatch-color {
+      height: 80px;
+    }
+    .swatch-body {
+      padding: var(--space-4);
+    }
+    .swatch-name {
+      font: var(--weight-semibold) var(--text-body) / 1 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .swatch-role {
+      display: block;
+      margin-top: 4px;
+      font: var(--weight-medium) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+    .swatch-hex {
+      display: block;
+      margin-top: var(--space-3);
+      font: var(--weight-medium) var(--text-caption) / 1 var(--font-family-mono);
+      color: var(--color-text-tertiary);
+      letter-spacing: 0.05em;
+    }
+
+    .type-scale {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-7);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    .type-row {
+      display: grid;
+      grid-template-columns: 90px 100px 1fr;
+      gap: var(--space-5);
+      align-items: baseline;
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .type-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .type-label {
+      font: var(--weight-semibold) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .type-spec {
+      font: var(--weight-regular) var(--text-caption) / 1 var(--font-family-mono);
+      color: var(--color-text-tertiary);
+    }
+    .type-sample {
+      font-family: var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 10-11 결정 · 히스토리
+       ═══════════════════════════════════════════════════════════ */
+    .timeline {
+      position: relative;
+      padding-left: var(--space-7);
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: var(--space-3);
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: var(--color-border-subtle);
+    }
+    .timeline-item {
+      position: relative;
+      padding-bottom: var(--space-5);
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: calc(-1 * var(--space-7) + var(--space-3) - 5px);
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      border: 2px solid var(--color-bg-surface);
+      box-shadow: 0 0 0 2px var(--color-accent);
+    }
+    .timeline-time {
+      font: var(--weight-medium) var(--text-caption) / 1 var(--font-family-mono);
+      color: var(--color-text-tertiary);
+      margin-bottom: 4px;
+    }
+    .timeline-text {
+      font: var(--weight-regular) var(--text-body) / 1.5 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .timeline-text strong {
+      font-weight: var(--weight-semibold);
+      color: var(--color-accent);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 5 · 역할별 IA 와이어프레임
+       ═══════════════════════════════════════════════════════════ */
+    .ia-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+      margin-bottom: var(--space-7);
+    }
+    .ia-card {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card-lg);
+      padding: var(--space-6);
+      border-top: 4px solid var(--role-color);
+    }
+    .ia-card.guardian { --role-color: var(--brand-blue-500); }
+    .ia-card.medical  { --role-color: var(--brand-green-600); }
+    .ia-card.caregiver { --role-color: var(--brand-green-500); }
+    .ia-card.patient  { --role-color: var(--brand-orange-400); }
+    .ia-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .ia-card-title {
+      font: var(--weight-bold) var(--text-title) / 1.2 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .ia-card-sub {
+      display: block;
+      margin-top: 3px;
+      font: var(--weight-regular) var(--text-caption) / 1.4 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+    .ia-card-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-2);
+      margin-bottom: var(--space-5);
+    }
+    .ia-meta-item {
+      background: var(--color-bg-surface-muted);
+      border-radius: var(--radius-control);
+      padding: var(--space-3);
+      text-align: center;
+    }
+    .ia-meta-label {
+      display: block;
+      font: var(--weight-medium) var(--text-mini) / 1 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      margin-bottom: 4px;
+    }
+    .ia-meta-value {
+      font: var(--weight-bold) var(--text-callout) / 1 var(--font-family-base);
+      color: var(--role-color);
+    }
+    /* 와이어프레임 스케치 */
+    .wireframe {
+      background: #FAFBFC;
+      border: 1px dashed var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-4);
+      font-family: var(--font-family-mono);
+      font-size: 11px;
+      line-height: 1.4;
+      color: var(--color-text-secondary);
+    }
+    .wf-header {
+      background: var(--role-color);
+      color: var(--palette-white);
+      padding: 6px var(--space-3);
+      border-radius: 6px;
+      font: var(--weight-semibold) 10px / 1 var(--font-family-base);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-3);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .wf-area {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 6px;
+      padding: var(--space-3);
+      margin-bottom: 6px;
+      font: var(--weight-medium) 11px / 1.4 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .wf-area small {
+      display: block;
+      font: var(--weight-regular) 10px / 1.3 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      margin-top: 3px;
+    }
+    .wf-tabs {
+      background: rgba(210, 225, 250, 0.55);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 999px;
+      padding: 6px;
+      display: flex;
+      gap: 2px;
+      margin-top: var(--space-3);
+      justify-content: space-around;
+    }
+    .wf-tab {
+      padding: 4px 6px;
+      font: var(--weight-medium) 10px / 1 var(--font-family-base);
+      color: var(--color-text-secondary);
+      flex: 1;
+      text-align: center;
+      border-radius: 999px;
+    }
+    .wf-tab.active {
+      background: var(--role-color);
+      color: var(--palette-white);
+      font-weight: var(--weight-semibold);
+    }
+    .wf-fab {
+      position: relative;
+      margin-top: var(--space-3);
+      text-align: right;
+    }
+    .wf-fab-dot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--role-color);
+      color: var(--palette-white);
+      font: var(--weight-bold) 10px / 1 var(--font-family-base);
+    }
+    /* 3컬럼 간호사웹 전용 */
+    .wf-3col {
+      display: grid;
+      grid-template-columns: 50px 1fr 80px;
+      gap: 4px;
+      margin-top: var(--space-2);
+    }
+    .wf-3col > div {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 4px;
+      padding: 6px;
+      font: var(--weight-medium) 9px / 1.3 var(--font-family-base);
+      color: var(--color-text-primary);
+      min-height: 90px;
+    }
+    .wf-3col .wf-sidebar { background: var(--color-bg-surface-muted); }
+    .wf-3col .wf-panel { background: var(--brand-green-50); }
+    /* 환자 태블릿 전용 */
+    .wf-tablet {
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+      border-radius: var(--radius-card);
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .wf-tablet-state {
+      position: absolute;
+      top: var(--space-3);
+      left: var(--space-3);
+      background: rgba(255,255,255,0.9);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font: var(--weight-semibold) 10px / 1 var(--font-family-base);
+      color: var(--brand-orange-700);
+    }
+    .wf-tablet-bubble {
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-card);
+      padding: var(--space-3) var(--space-4);
+      font: var(--weight-medium) 12px / 1.4 var(--font-family-base);
+      color: var(--color-text-primary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      max-width: 80%;
+      margin-top: var(--space-7);
+    }
+    .wf-tablet-input {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-3);
+      align-items: center;
+      margin-top: var(--space-3);
+    }
+    .wf-tablet-mic {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--brand-orange-400);
+      color: var(--palette-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .wf-tablet-help {
+      position: absolute;
+      bottom: var(--space-3);
+      right: var(--space-3);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--palette-red-500);
+      color: var(--palette-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: var(--weight-bold) 10px / 1 var(--font-family-base);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 5 · 기능 × 역할 매트릭스
+       ═══════════════════════════════════════════════════════════ */
+    .matrix-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    .matrix-table th,
+    .matrix-table td {
+      padding: var(--space-3) var(--space-4);
+      text-align: center;
+      font: var(--weight-regular) var(--text-caption) / 1.4 var(--font-family-base);
+      border-bottom: 1px solid var(--color-border-subtle);
+      border-right: 1px solid var(--color-border-subtle);
+      vertical-align: middle;
+    }
+    .matrix-table th:last-child,
+    .matrix-table td:last-child { border-right: 0; }
+    .matrix-table tr:last-child td { border-bottom: 0; }
+    .matrix-table th {
+      background: var(--color-bg-surface-muted);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-primary);
+    }
+    .matrix-table th.role-guardian  { background: rgba(44,122,252,0.08); color: var(--brand-blue-700); }
+    .matrix-table th.role-nurse     { background: rgba(5,150,105,0.08); color: var(--brand-green-700); }
+    .matrix-table th.role-caregiver { background: rgba(5,150,105,0.08); color: var(--brand-green-700); }
+    .matrix-table th.role-patient   { background: rgba(251,146,60,0.08); color: var(--brand-orange-700); }
+    .matrix-table td.feature-name {
+      text-align: left;
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-primary);
+    }
+    .matrix-table td small {
+      display: block;
+      font: var(--weight-regular) var(--text-mini) / 1.3 var(--font-family-base);
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+    }
+    .matrix-dot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font: var(--weight-bold) 12px / 1 var(--font-family-base);
+    }
+    .matrix-dot.full    { background: var(--brand-green-500); color: var(--palette-white); }
+    .matrix-dot.read    { background: var(--palette-amber-200); color: var(--palette-amber-800); }
+    .matrix-dot.limited { background: var(--palette-gray-200); color: var(--palette-gray-700); }
+    .matrix-dot.none    { color: var(--color-text-tertiary); background: transparent; font-weight: var(--weight-regular); }
+
+    .matrix-legend {
+      display: flex;
+      gap: var(--space-5);
+      margin-top: var(--space-4);
+      font: var(--weight-medium) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--color-text-secondary);
+      flex-wrap: wrap;
+    }
+    .matrix-legend span { display: inline-flex; align-items: center; gap: var(--space-2); }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 5 · 화면 인벤토리
+       ═══════════════════════════════════════════════════════════ */
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+    .screen-col {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      border-top: 3px solid var(--role-color);
+    }
+    .screen-col.guardian { --role-color: var(--brand-blue-500); }
+    .screen-col.nurse { --role-color: var(--brand-green-600); }
+    .screen-col.caregiver { --role-color: var(--brand-green-500); }
+    .screen-col.patient { --role-color: var(--brand-orange-400); }
+    .screen-col-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: var(--space-4);
+    }
+    .screen-col-title {
+      font: var(--weight-bold) var(--text-headline) / 1.2 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .screen-count {
+      font: var(--weight-bold) var(--text-body) / 1 var(--font-family-mono);
+      color: var(--role-color);
+    }
+    .screen-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .screen-list li {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-3);
+      padding: var(--space-2) 0;
+      font: var(--weight-regular) var(--text-caption) / 1.4 var(--font-family-base);
+      color: var(--color-text-primary);
+      border-bottom: 1px dashed var(--color-border-subtle);
+    }
+    .screen-list li:last-child { border-bottom: 0; }
+    .screen-list code {
+      font: var(--weight-regular) 10px / 1 var(--font-family-mono);
+      color: var(--color-text-tertiary);
+      background: var(--color-bg-surface-muted);
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      min-width: 22px;
+      text-align: center;
+    }
+    .screen-list li.sub {
+      padding-left: var(--space-6);
+      color: var(--color-text-secondary);
+      font-size: 11px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 6 · 프롬프트 박스
+       ═══════════════════════════════════════════════════════════ */
+    .prompt-box {
+      background: #0F172A;
+      border: 1px solid #1E293B;
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      font: var(--weight-regular) 12px / 1.6 var(--font-family-mono);
+      color: #E2E8F0;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    .prompt-box .p-key    { color: #7DD3FC; }
+    .prompt-box .p-str    { color: #FCD34D; }
+    .prompt-box .p-cmt    { color: #64748B; font-style: italic; }
+    .prompt-box .p-var    { color: #A78BFA; }
+    .prompt-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-3);
+      font: var(--weight-semibold) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .prompt-title .chip { margin-left: var(--space-3); }
+
+    /* ═══════════════════════════════════════════════════════════
+       § 7 · DB 스키마 테이블 박스
+       ═══════════════════════════════════════════════════════════ */
+    .schema-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+    .schema-table {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    .schema-table-head {
+      background: var(--color-accent);
+      color: var(--color-accent-on);
+      padding: var(--space-3) var(--space-4);
+      font: var(--weight-semibold) var(--text-callout) / 1 var(--font-family-mono);
+      letter-spacing: 0.02em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .schema-table-head small {
+      font: var(--weight-regular) var(--text-mini) / 1 var(--font-family-base);
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
+    .schema-col {
+      display: grid;
+      grid-template-columns: 18px 1fr auto;
+      gap: var(--space-2);
+      align-items: baseline;
+      padding: var(--space-2) var(--space-4);
+      font: var(--weight-regular) 11px / 1.4 var(--font-family-mono);
+      color: var(--color-text-primary);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .schema-col:last-child { border-bottom: 0; }
+    .schema-col .sc-icon {
+      font: var(--weight-bold) 10px / 1 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      text-align: center;
+    }
+    .schema-col .sc-icon.pk { color: var(--palette-amber-700); }
+    .schema-col .sc-icon.fk { color: var(--brand-blue-500); }
+    .schema-col .sc-type {
+      font: var(--weight-medium) 10px / 1 var(--font-family-mono);
+      color: var(--color-text-tertiary);
+      text-transform: uppercase;
+    }
+    .schema-col.new {
+      background: var(--brand-green-50);
+    }
+    .schema-legend {
+      display: flex;
+      gap: var(--space-4);
+      margin-top: var(--space-3);
+      font: var(--weight-medium) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--color-text-secondary);
+      flex-wrap: wrap;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       반응형 축소
+       ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; padding: 0 var(--space-5); }
+      .toc { position: static; border: 0; padding: var(--space-5) 0; }
+      .toc-list { flex-direction: row; flex-wrap: wrap; gap: var(--space-2); }
+      .toc-list a { padding: 6px var(--space-3); }
+      .hero-meta { grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+      .kpi-grid, .persona-grid, .ai-mode-grid,
+      .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr 1fr; }
+      .stepper { grid-template-columns: 1fr 1fr; }
+      .pain-grid { grid-template-columns: 1fr; }
+      .emotion-stages { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .palette { grid-template-columns: 1fr 1fr; }
+      .lean-canvas { grid-template-columns: 1fr; }
+      .lean-canvas > div { grid-column: 1 !important; grid-row: auto !important; }
+      .platform-matrix { grid-template-columns: 1fr; }
+      .ia-grid { grid-template-columns: 1fr; }
+      .screen-grid { grid-template-columns: 1fr 1fr; }
+      .schema-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ════════════ 목차 네비 ════════════ -->
+  <nav class="toc" aria-label="목차">
+    <div class="toc-brand">
+      <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8IS0tIO2VmOujqOyViOu2gCDsi6zrs7wg64uo64+FIOKAlCDslbEg7JWE7J207L2YLCDtjIzruYTsvZggLS0+CiAgPGcgaWQ9InN5bWJvbCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTAsIDUwKSBzY2FsZSgwLjE2MykiPgogICAgPHBhdGggZD0iTTI1MjEuMzIgMjUwNi42NkMxMjM5LjY1IDI2NTcuNDggMTIzOS42NSAxODk1LjYgMTIzOS42NSAxMjc5LjM0TDI0OTcuNjkgMC4wMDAxNzAwNThDMjUxOC42OCA0OTQuMTk4IDI1MjIuMjcgMTE1Ny45MiAxNjU4Ljg2IDEyNjIuNDhDMjY0MS44OCAxMzE0LjI1IDI1MjEuMzIgMjEwMS44NCAyNTIxLjMyIDI1MDYuNjZaIiBmaWxsPSIjMkM3QUZDIi8+CiAgICA8cGF0aCBkPSJNNC42NzcyIDE5LjMzNTNDMTI4Ni4zNSAtMTMxLjQ4MSAxMjg2LjM1IDYzMC4zOTkgMTI4Ni4zNSAxMjQ2LjY2TDI4LjMxNDUgMjUyNkM3LjMyMTk0IDIwMzEuOCAzLjczMDE0IDEzNjguMDggODY3LjE0MyAxMjYzLjUyQy0xMTUuODgxIDEyMTEuNzUgNC42NzcyIDQyNC4xNTcgNC42NzcyIDE5LjMzNTNaIiBmaWxsPSIjMkM3QUZDIi8+CiAgPC9nPgo8L3N2Zz4K" alt="하루안부">
+      <div>
+        <div class="toc-brand-title">하루안부 통합 기획서</div>
+        <span class="toc-brand-sub">기획 · 기능 · 디자인 · 로드맵</span>
+      </div>
+    </div>
+    <ul class="toc-list">
+      <li><a href="#s0"><span class="num">0</span>프로젝트 한눈에</a></li>
+      <li><a href="#s1"><span class="num">1</span>문제 정의 · JTBD</a></li>
+      <li><a href="#s2"><span class="num">2</span>비즈니스 모델</a></li>
+      <li><a href="#s3"><span class="num">3</span>사용자 · 퍼소나</a></li>
+      <li><a href="#s4"><span class="num">4</span>고객 여정</a></li>
+      <li><a href="#s5"><span class="num">5</span>제품 구조 · 5종 앱</a></li>
+      <li><a href="#s5-ia" style="padding-left: var(--space-7);"><span class="num">5.6</span>IA 와이어프레임</a></li>
+      <li><a href="#s5-matrix" style="padding-left: var(--space-7);"><span class="num">5.7</span>기능 × 역할</a></li>
+      <li><a href="#s5-screens" style="padding-left: var(--space-7);"><span class="num">5.8</span>화면 인벤토리</a></li>
+      <li><a href="#s5-perms" style="padding-left: var(--space-7);"><span class="num">5.9</span>권한 매트릭스</a></li>
+      <li><a href="#s6"><span class="num">6</span>AI 활용 방안</a></li>
+      <li><a href="#s6-prompt" style="padding-left: var(--space-7);"><span class="num">6.5</span>프롬프트 예시</a></li>
+      <li><a href="#s7"><span class="num">7</span>시스템 아키텍처</a></li>
+      <li><a href="#s7-db" style="padding-left: var(--space-7);"><span class="num">7.3</span>DB 스키마</a></li>
+      <li><a href="#s8"><span class="num">8</span>브랜드 · 디자인</a></li>
+      <li><a href="#s10"><span class="num">10</span>로드맵 · 다음 단계</a></li>
+      <li><a href="#s9" style="opacity:0.7;"><span class="num">참고</span>산출물 · 문서 맵</a></li>
+      <li><a href="#s11" style="opacity:0.7;"><span class="num">참고</span>결정 히스토리</a></li>
+    </ul>
+  </nav>
+
+  <!-- ════════════ 메인 ════════════ -->
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <span class="hero-kicker">
+        <iconify-icon icon="fluent:heart-pulse-24-filled" width="14"></iconify-icon>
+        프로젝트 기획 · 기능 · 디자인 · 로드맵
+      </span>
+      <h1 class="hero-title">하루안부 · AI 케어 커뮤니케이션 플랫폼</h1>
+      <p class="hero-slogan">"정보 단절로 인한 불안을, 연결을 통한 안심으로" — 요양원의 가족·의료진·요양보호사·환자를 한 흐름으로 묶는 메신저 + AI 가이드 + 케어 기록 통합 서비스.</p>
+      <dl class="hero-meta">
+        <div><dt>한 줄 정의</dt><dd>요양원판 토스 + ChatGPT</dd></div>
+        <div><dt>사용자</dt><dd>보호자 · 간호사 · 요양보호사 · 환자 (4역할)</dd></div>
+        <div><dt>핵심 차별화</dt><dd>AI 5모드 가이드 · 케어 기록 실시간 동기화</dd></div>
+        <div><dt>현재 단계</dt><dd>기획 · 디자인 시스템 확정 → MVP 개발 진입</dd></div>
+      </dl>
+    </section>
+
+    <!-- ════════════ § 0 프로젝트 한눈에 ════════════ -->
+    <section id="s0">
+      <span class="section-num">§ 0</span>
+      <h2 class="section-title">프로젝트 한눈에</h2>
+      <p class="section-lead">하루안부는 요양원에서 발생하는 가족–의료진–요양보호사–환자 4역할 간 정보 단절을 끊는 AI 케어 커뮤니케이션 플랫폼이다. 기록·메신저·AI 가이드를 한 흐름으로 묶어 "오늘 어머니는 어떠셨을까?"라는 가족의 매일 같은 불안을 30초 안에 해소한다.</p>
+
+      <!-- 핵심 KPI 3개 -->
+      <div class="grid-3" style="margin-top: var(--space-5);">
+        <div class="card" style="background: linear-gradient(135deg, var(--brand-blue-50), #FFF); border-color: var(--brand-blue-100);">
+          <div style="font:var(--weight-bold) 32px/1 var(--font-family-base); color:var(--brand-blue-600);">3<span style="font-size:16px; font-weight:500;">초</span></div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">의료진 입력 → 가족 확인</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">care_records 작성 즉시 보호자 대시보드에 Realtime 반영</p>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #FEF2F2, #FFF); border-color: #FECACA;">
+          <div style="font:var(--weight-bold) 32px/1 var(--font-family-base); color:var(--color-danger);">30<span style="font-size:16px; font-weight:500;">초</span></div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">SOS 발생 → 가족 푸시 도달</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">FCM + 미응답 시 재알림 (3분 후) — 응급상황 누락 0건 목표</p>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, var(--brand-yellow-50, #FEFCE8), #FFF); border-color: var(--brand-yellow-200, #FEF08A);">
+          <div style="font:var(--weight-bold) 32px/1 var(--font-family-base); color:var(--brand-yellow-600, #CA8A04);">5<span style="font-size:16px; font-weight:500;">문장</span></div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">매일 저녁 AI 일일 리포트</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">Claude Haiku가 하루치 케어 기록을 요약 — 해요체, 치료·진단 표현 금지</p>
+        </div>
+      </div>
+
+      <!-- 4역할 + 5앱 한 줄 정리 -->
+      <h3 style="margin:var(--space-7) 0 var(--space-3); font:var(--weight-semibold) var(--text-headline)/1.2 var(--font-family-base);">4역할 · 5앱</h3>
+      <div class="grid-3" style="grid-template-columns: repeat(5, 1fr); gap: var(--space-3);">
+        <div class="card" style="border-top: 3px solid #2C7AFC; padding: var(--space-4);">
+          <div style="font:var(--weight-bold) var(--text-caption)/1 var(--font-family-base); color:#2C7AFC; margin-bottom:6px;">보호자</div>
+          <div style="font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">모바일 PWA</div>
+          <div style="margin-top:6px; font:var(--weight-regular) 11px/1.5 var(--font-family-base); color:var(--color-text-secondary);">5탭 + AI FAB + SOS 배너</div>
+        </div>
+        <div class="card" style="border-top: 3px solid #22C55E; padding: var(--space-4);">
+          <div style="font:var(--weight-bold) var(--text-caption)/1 var(--font-family-base); color:#22C55E; margin-bottom:6px;">간호사 · 의사</div>
+          <div style="font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">데스크톱 웹</div>
+          <div style="margin-top:6px; font:var(--weight-regular) 11px/1.5 var(--font-family-base); color:var(--color-text-secondary);">3컬럼 · 8메뉴 · eMAR · SBAR</div>
+        </div>
+        <div class="card" style="border-top: 3px solid #22C55E; padding: var(--space-4);">
+          <div style="font:var(--weight-bold) var(--text-caption)/1 var(--font-family-base); color:#22C55E; margin-bottom:6px;">요양보호사</div>
+          <div style="font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">모바일 앱</div>
+          <div style="margin-top:6px; font:var(--weight-regular) 11px/1.5 var(--font-family-base); color:var(--color-text-secondary);">4탭 + 8단계 체크리스트 + SOS</div>
+        </div>
+        <div class="card" style="border-top: 3px solid #FB923C; padding: var(--space-4);">
+          <div style="font:var(--weight-bold) var(--text-caption)/1 var(--font-family-base); color:#FB923C; margin-bottom:6px;">환자</div>
+          <div style="font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">태블릿 (10")</div>
+          <div style="margin-top:6px; font:var(--weight-regular) 11px/1.5 var(--font-family-base); color:var(--color-text-secondary);">단일화면 AI 말벗 (음성)</div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--color-text-tertiary); padding: var(--space-4);">
+          <div style="font:var(--weight-bold) var(--text-caption)/1 var(--font-family-base); color:var(--color-text-tertiary); margin-bottom:6px;">공통</div>
+          <div style="font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">온보딩</div>
+          <div style="margin-top:6px; font:var(--weight-regular) 11px/1.5 var(--font-family-base); color:var(--color-text-secondary);">소셜 로그인 → 역할 자동 분기</div>
+        </div>
+      </div>
+
+      <!-- 차별화 3가지 -->
+      <h3 style="margin:var(--space-7) 0 var(--space-3); font:var(--weight-semibold) var(--text-headline)/1.2 var(--font-family-base);">왜 하루안부인가 — 3가지 차별화</h3>
+      <div class="grid-3">
+        <div class="card">
+          <div class="chip chip-amber">차별화 ①</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">AI 5모드 가이드</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">백과 · 감정지원 · 요양원 추천 · 요보사 매칭 · 비용 안내 — Claude Sonnet 4.6 기반, 보호자 화면에서 단일 진입점으로 호출</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-blue">차별화 ②</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">실시간 케어 동기화</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">의료진/요양보호사가 입력한 케어 기록이 보호자 대시보드에 3초 이내 반영. 종일 카톡으로 "오늘 어떠셨어요?" 묻지 않아도 됨</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-green">차별화 ③</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">의료진 워크플로 정합</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">eMAR(투약 기록) · SBAR(인계) · AI 응급판단 4단계가 간호사웹에 내장 — 기존 종이 차트 · 카톡 단톡방을 동시에 대체</p>
+        </div>
+      </div>
+
+      <!-- 변경 히스토리는 접어둠 -->
+      <details style="margin-top: var(--space-7); padding: var(--space-5); background: var(--color-bg-subtle, #F8FAFC); border-radius: var(--radius-control); border: 1px solid var(--color-border-subtle);">
+        <summary style="cursor: pointer; font: var(--weight-semibold) var(--text-body)/1 var(--font-family-base); color: var(--color-text-secondary);">📑 문서 버전 히스토리 (v5 → v6.1) — 클릭하여 펼치기</summary>
+        <p class="section-lead" style="margin-top: var(--space-4);">v6.0에서 9종 분산 문서를 단일 .md로 통합했고, v6.1에서 IA 4종(보호자/간호사웹/요양보호사/환자태블릿)과 컬러·탭 구조 결정이 반영되었다.</p>
+
+      <div style="font:var(--weight-semibold) var(--text-body)/1 var(--font-family-base); color:var(--color-text-secondary); margin:var(--space-5) 0 var(--space-3);">v6.0 (1차 통합)</div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="chip chip-blue">v6.0 · 1</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">브랜드명 단일화</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">"케어플랫폼"(사업명) 폐기 → "하루안부"로 통일</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-green">v6.0 · 2</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">사용자 분류 정비</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">"의료진" 단일 → 의사·간호사 / 요양보호사 2그룹 분화</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-orange">v6.0 · 3</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">역할별 컬러 확정</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">#2C7AFC 블루 / #22C55E 그린 / #FB923C 오렌지</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-gray">v6.0 · 4</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">v9 보호자앱 반영</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">Glassmorphism + floating pill 탭바를 공식 UI로 승격</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-gray">v6.0 · 5</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">요양보호사 앱 수록</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">의료진 카테고리 내 <strong>독립 역할</strong>로 §5.4에 정리 (흡수 아님)</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-gray">v6.0 · 6</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">구 문서 아카이브</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">.docx 분산본 9종 → .md 통합본 1종, 구본은 _archive/ 이동</p>
+        </div>
+      </div>
+
+      <div style="font:var(--weight-semibold) var(--text-body)/1 var(--font-family-base); color:var(--color-text-secondary); margin:var(--space-6) 0 var(--space-3);">v6.1 (IA 4종 정합화)</div>
+      <div class="grid-3">
+        <div class="card" style="border-color: var(--color-success-soft, #D1FAE5);">
+          <div class="chip chip-green">v6.1 · 7</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">의료진 컬러 최종 확정</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">Teal #0D9488 제안 검토 → Green #059669 채택 → <strong>v6.2에서 Tailwind green-500 #22C55E로 전환</strong></p>
+        </div>
+        <div class="card">
+          <div class="chip chip-green">v6.1 · 8</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">간호사웹 IA 반영</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">§5.3을 3컬럼 레이아웃 · 8개 메뉴 · AI 응급판단 4단계 · eMAR · SBAR로 확장</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-orange">v6.1 · 9</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">환자 태블릿 컨셉 전환</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">3탭 구조 폐기 → <strong>단일화면 AI 말벗</strong> (대기모드 ↔ 대화모드 2상태)</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-green">v6.1 · 10</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">요양보호사 4탭 정정</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">3탭 표기 → <strong>4탭(홈/체크리스트/소통/마이)</strong> + 플로팅 SOS</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-blue">v6.1 · 11</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">보호자 5탭 정합</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">홈 / AI 가이드 / 소통 / 기록 / 마이 + 글로벌 SOS 배너 + 플로팅 AI 버튼</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-green">v6.1 · 12</div>
+          <h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">요양보호사 '흡수' 표현 정정</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">보호자 앱에 흡수 아님. 의료진 카테고리 내 <strong>독립 모바일 앱</strong></p>
+        </div>
+      </div>
+      </details>
+    </section>
+
+    <!-- ════════════ § 1 문제 정의 ════════════ -->
+    <section id="s1">
+      <span class="section-num">§ 1</span>
+      <h2 class="section-title">왜 만드는가 — 문제 정의와 JTBD</h2>
+      <p class="section-lead">요양시설에 가족을 맡긴 보호자는 "오늘 엄마가 밥을 드셨는지조차" 실시간으로 알 수 없다. 보호자·의료진·환자 3자를 연결하는 플랫폼이 국내에 없다.</p>
+
+      <h3 class="sub">1.1 시장 지표 (2024)</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">65세 이상 인구</div>
+          <div class="kpi-value">1,024<span class="kpi-unit">만명</span></div>
+          <div class="kpi-meta">전체의 20.0%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">장기요양 이용자</div>
+          <div class="kpi-value">110<span class="kpi-unit">→145만</span></div>
+          <div class="kpi-meta">2023 → 2027 전망</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">요양원 수</div>
+          <div class="kpi-value">4,640<span class="kpi-unit">개소</span></div>
+          <div class="kpi-meta">전국</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">면회 제한 시설</div>
+          <div class="kpi-value">68<span class="kpi-unit">%</span></div>
+          <div class="kpi-meta">규정 운영 시설 비율</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">보호자 스트레스</div>
+          <div class="kpi-value">46.3<span class="kpi-unit">%</span></div>
+          <div class="kpi-meta">2022 36% → 2024 46.3%</div>
+        </div>
+      </div>
+
+      <h3 class="sub">1.2 3자 페인포인트</h3>
+      <div class="pain-grid">
+        <div class="pain-card guardian">
+          <div class="pain-head">
+            <span class="pain-icon"><iconify-icon icon="fluent:people-24-filled" width="24"></iconify-icon></span>
+            <div><span class="pain-role">보호자</span><span class="pain-tag">불안 · 죄책감 · 정보 단절</span></div>
+          </div>
+          <ul>
+            <li>요양원 전화 연결률 60%, 비용 구조 복잡</li>
+            <li>처방전·진료 정보 접근 불가</li>
+            <li>인터넷 검색 정보는 출처 불명·부정확</li>
+          </ul>
+          <blockquote>"오늘 엄마가 밥은 드셨는지조차 알 수 없다"</blockquote>
+        </div>
+        <div class="pain-card medical">
+          <div class="pain-head">
+            <span class="pain-icon"><iconify-icon icon="fluent:stethoscope-24-filled" width="24"></iconify-icon></span>
+            <div><span class="pain-role">의료진 · 요양보호사</span><span class="pain-tag">과부하 · 이중 기록</span></div>
+          </div>
+          <ul>
+            <li>보호자 전화 응대에 하루 2시간+ 소비</li>
+            <li>수기 + 전산 이중 기록, 구두 인수인계</li>
+            <li>외국인 요양보호사 소통 어려움</li>
+          </ul>
+          <blockquote>"하루에 보호자 전화 10통, 비슷한 질문 반복"</blockquote>
+        </div>
+        <div class="pain-card patient">
+          <div class="pain-head">
+            <span class="pain-icon"><iconify-icon icon="fluent:person-24-filled" width="24"></iconify-icon></span>
+            <div><span class="pain-role">환자</span><span class="pain-tag">고립감</span></div>
+          </div>
+          <ul>
+            <li>가족과의 디지털 소통 수단 사실상 없음</li>
+            <li>스마트폰 사용·도움 요청 어려움</li>
+            <li>하루가 무료함</li>
+          </ul>
+          <blockquote>"딸이 전화는 안 하고, 오늘 뭐 하는지만이라도 알고 싶어"</blockquote>
+        </div>
+      </div>
+
+      <h3 class="sub">1.3 Jobs-to-Be-Done</h3>
+      <table class="table">
+        <thead>
+          <tr><th style="width:80px;">#</th><th>주체</th><th>상황 (When)</th><th>Job (Want)</th><th>목적 (So that)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><span class="chip chip-blue">보호자</span></td><td>퇴근 후 전화가 안 될 때</td><td>어머니의 오늘 하루 상태를 한눈에 확인하고 싶다</td><td>안심하고 저녁을 보낼 수 있도록</td></tr>
+          <tr><td>2</td><td><span class="chip chip-blue">보호자</span></td><td>증상이 변할 때</td><td>신뢰할 수 있는 전문 정보를 즉시 얻고 싶다</td><td>올바른 판단을 내리도록</td></tr>
+          <tr><td>3</td><td><span class="chip chip-green">간호사</span></td><td>보호자 전화가 하루 10통 넘을 때</td><td>환자 상태를 자동으로 공유하고 싶다</td><td>환자 돌봄에 집중하도록</td></tr>
+          <tr><td>4</td><td><span class="chip chip-green">요양보호사</span></td><td>방문요양 중 케어 기록 시점</td><td>현장에서 바로 케어 기록을 남기고 싶다</td><td>몰아쓰기 실수를 없애도록</td></tr>
+          <tr><td>5</td><td><span class="chip chip-orange">환자</span></td><td>딸이 전화를 안 할 때</td><td>가족과 쉽게 연결되었다고 느끼고 싶다</td><td>외롭지 않고 안심하도록</td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:var(--space-7); padding:var(--space-7); background:var(--color-accent); color:var(--color-accent-on); border-radius:var(--radius-card-lg);">
+        <div style="font:var(--weight-medium) var(--text-caption)/1 var(--font-family-base); opacity:0.85; margin-bottom:var(--space-3); letter-spacing:0.05em; text-transform:uppercase;">핵심 가치 제안</div>
+        <div style="font:var(--weight-bold) var(--text-title)/1.4 var(--font-family-base);">"정보 단절로 인한 불안을, 연결을 통한 안심으로 전환한다"</div>
+      </div>
+    </section>
+
+    <!-- ════════════ § 2 린캔버스 ════════════ -->
+    <section id="s2">
+      <span class="section-num">§ 2</span>
+      <h2 class="section-title">린캔버스 · 비즈니스 모델</h2>
+      <p class="section-lead">보호자 117만 명 + 요양보호사 57만 명 + 환자 117만 명의 3각 네트워크. 수익은 B2C 구독(월 9,900~19,900원)과 B2B 시설 구독(월 9만~30만원) 이중 구조.</p>
+
+      <div class="lean-canvas">
+        <div class="lean-box lean-problem">
+          <h5>문제</h5>
+          ① 실시간 상태 확인 불가<br>② 의료진 업무 과부하<br>③ 환자 디지털 소외
+        </div>
+        <div class="lean-box lean-solution">
+          <h5>해결책</h5>
+          AI 대시보드 · 일일 리포트 · 5모드 AI 케어가이드 · SOS 알림 · 3자 채팅
+        </div>
+        <div class="lean-box lean-uvp">
+          <h5>고유 가치 제안</h5>
+          <div style="font:var(--weight-bold) var(--text-body-lg)/1.3 var(--font-family-base); margin-bottom:var(--space-3);">매일의 안심을 전하는 AI 케어 소통 플랫폼</div>
+          <div style="font:var(--weight-medium) var(--text-caption)/1.4 var(--font-family-base); opacity:0.85;">"요양원판 토스 + ChatGPT"</div>
+        </div>
+        <div class="lean-box lean-advantage">
+          <h5>경쟁 우위</h5>
+          3자 네트워크 효과 / 케어 데이터 축적 / 시설 전환 비용 / AI 콘텐츠 자산
+        </div>
+        <div class="lean-box lean-segments">
+          <h5>고객 세그먼트</h5>
+          보호자 <strong>117만</strong><br>요양보호사 <strong>57만</strong><br>환자 <strong>117만</strong>
+        </div>
+        <div class="lean-box lean-metrics">
+          <h5>핵심 지표</h5>
+          보호자 DAU · 리포트 열람률 · 체크리스트 완료율 · 전화 감소율 · NPS · 전환율
+        </div>
+        <div class="lean-box lean-channels">
+          <h5>채널</h5>
+          요양원 B2B 영업 / 보호자 커뮤니티 / 앱스토어 / 지자체·건보공단
+        </div>
+        <div class="lean-box lean-cost">
+          <h5>비용 구조</h5>
+          개발 인건비 / 클라우드 / Claude API / 영업·마케팅 / 고객 지원
+        </div>
+        <div class="lean-box lean-revenue">
+          <h5>수익원</h5>
+          B2C 프리미엄 구독 (9,900~19,900원) · B2B 시설 구독 (9만~30만원) · AI 가이드 부분 유료 (모드당 3,900원)
+        </div>
+      </div>
+
+      <h3 class="sub">2.4 MVP 6개월 핵심 지표</h3>
+      <div class="grid-4">
+        <div class="kpi-card" style="text-align:center;">
+          <div class="kpi-label">보호자 DAU</div>
+          <div class="kpi-value">1,000<span class="kpi-unit">명</span></div>
+        </div>
+        <div class="kpi-card" style="text-align:center;">
+          <div class="kpi-label">AI 리포트 열람률</div>
+          <div class="kpi-value">80<span class="kpi-unit">% +</span></div>
+        </div>
+        <div class="kpi-card" style="text-align:center;">
+          <div class="kpi-label">체크리스트 완료율</div>
+          <div class="kpi-value">90<span class="kpi-unit">% +</span></div>
+        </div>
+        <div class="kpi-card" style="text-align:center;">
+          <div class="kpi-label">요양원 전화 감소</div>
+          <div class="kpi-value">50<span class="kpi-unit">%↓</span></div>
+        </div>
+        <div class="kpi-card" style="text-align:center;">
+          <div class="kpi-label">보호자 NPS</div>
+          <div class="kpi-value">50<span class="kpi-unit">+</span></div>
+        </div>
+        <div class="kpi-card" style="text-align:center;">
+          <div class="kpi-label">유료 전환율</div>
+          <div class="kpi-value">10<span class="kpi-unit">%</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ § 3 사용자 퍼소나 ════════════ -->
+    <section id="s3">
+      <span class="section-num">§ 3</span>
+      <h2 class="section-title">사용자 · 퍼소나 5종</h2>
+      <p class="section-lead">3층 구조 — 보호자(1차 타깃) · 의료진(2차, 의사·간호사·요양보호사) · 환자(3차 Served).</p>
+
+      <div class="persona-grid">
+        <div class="persona guardian">
+          <div class="persona-head">
+            <div class="persona-avatar">김</div>
+            <div><div class="persona-name">김미영 (52)</div><span class="persona-role">보호자 · 1차 타깃</span></div>
+          </div>
+          <dl style="margin:0;">
+            <div class="persona-attr"><dt>직업</dt><dd>중견기업 과장</dd></div>
+            <div class="persona-attr"><dt>돌봄 대상</dt><dd>어머니 78세, 치매초기</dd></div>
+            <div class="persona-attr"><dt>디지털</dt><dd>높음</dd></div>
+          </dl>
+          <div class="persona-pain"><strong>핵심 니즈</strong>오늘 엄마 상태 확인 · 긴급 알림 · 죄책감 완화</div>
+        </div>
+        <div class="persona nurse">
+          <div class="persona-head">
+            <div class="persona-avatar">박</div>
+            <div><div class="persona-name">박지현 (34)</div><span class="persona-role">간호사 · 요양원 7년차</span></div>
+          </div>
+          <dl style="margin:0;">
+            <div class="persona-attr"><dt>담당</dt><dd>환자 15명</dd></div>
+            <div class="persona-attr"><dt>관리</dt><dd>요양보호사 5명</dd></div>
+            <div class="persona-attr"><dt>근무</dt><dd>3교대</dd></div>
+          </dl>
+          <div class="persona-pain"><strong>핵심 니즈</strong>수기 기록 부담 감소 · 보호자 전화 감소 · 긴급 대응 속도</div>
+        </div>
+        <div class="persona doctor">
+          <div class="persona-head">
+            <div class="persona-avatar">이</div>
+            <div><div class="persona-name">이상훈 (45)</div><span class="persona-role">의사 · 촉탁의</span></div>
+          </div>
+          <dl style="margin:0;">
+            <div class="persona-attr"><dt>전문</dt><dd>내과 전문의</dd></div>
+            <div class="persona-attr"><dt>담당</dt><dd>환자 50명</dd></div>
+            <div class="persona-attr"><dt>방문</dt><dd>주 2회 / PC 선호</dd></div>
+          </dl>
+          <div class="persona-pain"><strong>핵심 니즈</strong>방문 전 상태 파악 · 처방 관리 · 보호자 질문 효율 응대</div>
+        </div>
+        <div class="persona carer">
+          <div class="persona-head">
+            <div class="persona-avatar">박</div>
+            <div><div class="persona-name">박미선 (48)</div><span class="persona-role">요양보호사 · 1급, 4년차</span></div>
+          </div>
+          <dl style="margin:0;">
+            <div class="persona-attr"><dt>담당</dt><dd>하루 수급자 3명</dd></div>
+            <div class="persona-attr"><dt>근무</dt><dd>방문 2~4h/인</dd></div>
+            <div class="persona-attr"><dt>도구</dt><dd>종이 일지 + 카톡</dd></div>
+          </dl>
+          <div class="persona-pain"><strong>핵심 니즈</strong>현장 즉시 케어 기록 · 원터치 SOS · 급여 청구 자동화</div>
+        </div>
+        <div class="persona patient">
+          <div class="persona-head">
+            <div class="persona-avatar">김</div>
+            <div><div class="persona-name">김순자 (78)</div><span class="persona-role">환자 · 장기요양 3등급</span></div>
+          </div>
+          <dl style="margin:0;">
+            <div class="persona-attr"><dt>상태</dt><dd>치매초기 · 고혈압</dd></div>
+            <div class="persona-attr"><dt>입소</dt><dd>6개월 전</dd></div>
+            <div class="persona-attr"><dt>신체</dt><dd>시력↓ 손떨림 보조기</dd></div>
+          </dl>
+          <div class="persona-pain"><strong>핵심 니즈</strong>가족과 연결 · 오늘 일과 확인 · 원터치 도움 요청</div>
+        </div>
+      </div>
+
+      <h3 class="sub">3.7 현장 인터뷰 인사이트</h3>
+      <div class="grid-3">
+        <div class="card">
+          <div class="chip chip-amber">이중 기록</div>
+          <p style="margin:var(--space-4) 0 0; font:var(--weight-regular) var(--text-callout)/1.6 var(--font-family-base); color:var(--color-text-primary);">전산 시스템이 있어도 종이·메모장으로 보조 기록. <strong>중복 업무가 번아웃 주 원인</strong>.</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-red">정보 부족</div>
+          <p style="margin:var(--space-4) 0 0; font:var(--weight-regular) var(--text-callout)/1.6 var(--font-family-base); color:var(--color-text-primary);">정보 창구 부재가 원인. 보호자가 <strong>폐렴 환자 흡인 치료를 거부</strong>하는 사례까지 발생.</p>
+        </div>
+        <div class="card">
+          <div class="chip chip-blue">니즈</div>
+          <p style="margin:var(--space-4) 0 0; font:var(--weight-regular) var(--text-callout)/1.6 var(--font-family-base); color:var(--color-text-primary);">보호자 측 <strong>간병인 리뷰 시스템</strong> 명확한 니즈 확인.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ § 4 고객 여정 ════════════ -->
+    <section id="s4">
+      <span class="section-num">§ 4</span>
+      <h2 class="section-title">고객 여정 — As-Is vs To-Be</h2>
+      <p class="section-lead">보호자 기준 5스테이지 감정 곡선. 가장 빈번한 "일상" 단계에서 <strong>+1.5점</strong>, 가장 극한 "긴급" 단계에서 <strong>+2점</strong> 개선. 대시보드 + AI 리포트가 핵심 엔진.</p>
+
+      <div class="emotion-chart">
+        <div class="emotion-stages">
+          <div class="emotion-stage">
+            <span class="emotion-stage-label">입소 결정</span>
+            <div class="emotion-bar-pair">
+              <div class="emotion-bar asis">
+                <span class="emotion-bar-label">AS-IS</span>
+                <div class="emotion-bar-track"><div class="emotion-bar-fill" style="width:40%;"></div></div>
+                <span class="emotion-bar-value">2.0</span>
+              </div>
+              <div class="emotion-bar tobe">
+                <span class="emotion-bar-label">TO-BE</span>
+                <div class="emotion-bar-track"><div class="emotion-bar-fill" style="width:70%;"></div></div>
+                <span class="emotion-bar-value">3.5</span>
+              </div>
+            </div>
+            <span class="emotion-delta">▲ +1.5</span>
+          </div>
+          <div class="emotion-stage">
+            <span class="emotion-stage-label">일상 · 출퇴근 <span style="color:var(--color-accent); font-weight:var(--weight-bold);">★</span></span>
+            <div class="emotion-bar-pair">
+              <div class="emotion-bar asis">
+                <span class="emotion-bar-label">AS-IS</span>
+                <div class="emotion-bar-track"><div class="emotion-bar-fill" style="width:50%;"></div></div>
+                <span class="emotion-bar-value">2.5</span>
+              </div>
+              <div class="emotion-bar tobe">
+                <span class="emotion-bar-label">TO-BE</span>
+                <div class="emotion-bar-track"><div class="emotion-bar-fill" style="width:80%;"></div></div>
+                <span class="emotion-bar-value">4.0</span>
+              </div>
+            </div>
+            <span class="emotion-delta">▲ +1.5 (빈번)</span>
+          </div>
+          <div class="emotion-stage">
+            <span class="emotion-stage-label">궁금할 때</span>
+            <div class="emotion-bar-pair">
+              <div class="emotion-bar asis">
+                <span class="emotion-bar-label">AS-IS</span>
+                <div class="emotion-bar-track"><div class="emotion-bar-fill" style="width:40%;"></div></div>
+                <span class="emotion-bar-value">2.0</span>
+              </div>
+              <div class="emotion-bar tobe">
+                <span class="emotion-bar-label">TO-BE</span>
+                <div class="emotion-bar-track"><div class="emotion-bar-fill" style="width:70%;"></div></div>
+                <span class="emotion-bar-value">3.5</span>
+              </div>
+            </div>
+            <span class="emotion-delta">▲ +1.5</span>
+          </div>
+          <div class="emotion-stage">
+            <span class="emotion-stage-label">긴급 상황 <span style="color:var(--color-danger); font-weight:var(--weight-bold);">!</span></span>
+            <div class="emotion-bar-pair">
+              <div class="emotion-bar asis">
+                <span class="emotion-bar-label">AS-IS</span>
+                <div class="emotion-bar-track"><div class="emotion-bar-fill" style="width:20%;"></div></div>
+                <span class="emotion-bar-value">1.0</span>
+              </div>
+              <div class="emotion-bar tobe">
+                <span class="emotion-bar-label">TO-BE</span>
+                <div class="emotion-bar-track"><div class="emotion-bar-fill" style="width:60%;"></div></div>
+                <span class="emotion-bar-value">3.0</span>
+              </div>
+            </div>
+            <span class="emotion-delta">▲ +2.0 (최대)</span>
+          </div>
+          <div class="emotion-stage">
+            <span class="emotion-stage-label">비용 · 행정</span>
+            <div class="emotion-bar-pair">
+              <div class="emotion-bar asis">
+                <span class="emotion-bar-label">AS-IS</span>
+                <div class="emotion-bar-track"><div class="emotion-bar-fill" style="width:40%;"></div></div>
+                <span class="emotion-bar-value">2.0</span>
+              </div>
+              <div class="emotion-bar tobe">
+                <span class="emotion-bar-label">TO-BE</span>
+                <div class="emotion-bar-track"><div class="emotion-bar-fill" style="width:70%;"></div></div>
+                <span class="emotion-bar-value">3.5</span>
+              </div>
+            </div>
+            <span class="emotion-delta">▲ +1.5</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:var(--space-7); padding:var(--space-6); background:var(--color-accent-soft); border-radius:var(--radius-card); font:var(--weight-medium) var(--text-body)/1.6 var(--font-family-base); color:var(--color-text-primary);">
+        <strong>3가지 핵심 인사이트</strong> · ① 일상 스테이지가 가장 빈번 + 가장 큰 효과 → 대시보드 + AI 리포트가 서비스 심장. ② 긴급에서 +2점 → SOS가 브랜드 약속의 반석. ③ 정보 불안 해소는 "단일 신뢰 창구" → AI 5모드가 존재 이유.
+      </div>
+    </section>
+
+    <!-- ════════════ § 5 제품 구조 ════════════ -->
+    <section id="s5">
+      <span class="section-num">§ 5</span>
+      <h2 class="section-title">제품 구조 · 5종 앱</h2>
+      <p class="section-lead">역할별 전용 앱 + 시설 관리자 앱. 5.1~5.5는 앱별 기능 설명, <strong>5.6 IA 와이어프레임</strong>은 탭·화면 구조 시각화, <strong>5.7 기능×역할 매트릭스</strong>는 F-01~F-14 × 4역할 구현 수준, <strong>5.8 화면 인벤토리</strong>는 실제 화면 파일 리스트, <strong>5.9 권한 매트릭스</strong>는 Supabase RLS 설계 기준.</p>
+
+      <h3 class="sub">5.1 앱 플랫폼 매트릭스</h3>
+      <div class="platform-matrix">
+        <div class="pm-head">역할</div>
+        <div class="pm-head">1단계</div>
+        <div class="pm-head">2단계</div>
+        <div class="pm-head">3단계 (장기)</div>
+
+        <div class="pm-role"><span class="chip chip-green">의사·간호사</span></div>
+        <div>PC 웹</div><div>PC 웹</div><div>PC 웹</div>
+
+        <div class="pm-role"><span class="chip chip-green">요양보호사</span></div>
+        <div>모바일 반응형</div><div>PWA 설치</div><div>React Native</div>
+
+        <div class="pm-role"><span class="chip chip-blue">보호자</span></div>
+        <div>모바일 반응형</div><div>PWA 설치</div><div>React Native</div>
+
+        <div class="pm-role"><span class="chip chip-orange">환자</span></div>
+        <div>태블릿 · 큰 글자</div><div>PWA 설치</div><div>React Native</div>
+      </div>
+
+      <h3 class="sub">5.2 보호자 앱 핵심 기능 9개 (Level 1)</h3>
+      <div class="feature-grid">
+        <div class="feature"><span class="feature-id">F-01</span><div><div class="feature-name">케어 체크리스트</div><div class="feature-desc">의료진 입력 → 타임스탬프 자동 저장</div></div></div>
+        <div class="feature"><span class="feature-id">F-02</span><div><div class="feature-name">보호자 대시보드</div><div class="feature-desc">오늘 케어 현황 카드형 Realtime</div></div></div>
+        <div class="feature"><span class="feature-id">F-03</span><div><div class="feature-name">SOS 긴급 알림</div><div class="feature-desc">30초 이내 푸시, 미응답 재알림</div></div></div>
+        <div class="feature"><span class="feature-id">F-04</span><div><div class="feature-name">채팅 · DM + 환자별 그룹</div><div class="feature-desc">보호자 ↔ 간호사 / 요양보호사 / 환자(태블릿) · 텍스트+사진</div></div></div>
+        <div class="feature"><span class="feature-id">F-05</span><div><div class="feature-name">AI 일일 리포트</div><div class="feature-desc">Claude Haiku 기반 매일 저녁 요약</div></div></div>
+        <div class="feature"><span class="feature-id" style="background:var(--brand-yellow-100); color:var(--brand-yellow-600);">F-06</span><div><div class="feature-name">AI 케어 가이드 <span class="chip chip-amber" style="margin-left:4px;">핵심 차별화</span></div><div class="feature-desc">5개 모드 — 백과·감정·요양원·요보사·비용</div></div></div>
+        <div class="feature"><span class="feature-id">F-07</span><div><div class="feature-name">역할 분기 + 인증</div><div class="feature-desc">소셜 로그인 → role별 자동 분기</div></div></div>
+        <div class="feature"><span class="feature-id">F-08</span><div><div class="feature-name">시간표</div><div class="feature-desc">환자 일과표 + 의료진 근무 스케줄</div></div></div>
+        <div class="feature"><span class="feature-id">F-09</span><div><div class="feature-name">처방전·진료기록</div><div class="feature-desc">권한별 열람, 의료 타임라인 통합</div></div></div>
+      </div>
+
+      <h3 class="sub">5.3 간호사웹 · 3컬럼 레이아웃 <span class="chip chip-green" style="margin-left:6px;">v6.1 신규</span></h3>
+      <p style="font:var(--weight-regular) var(--text-body)/1.5 var(--font-family-base); color:var(--color-text-secondary); margin:0 0 var(--space-4);">PC 웹 기반. 좌측 240px 사이드바(8개 메뉴) / 가운데 fluid 콘텐츠 / 우측 320px 상시 소통 패널. AI 응급판단 보조 4단계, eMAR 컬러 매트릭스, SBAR 인수인계를 제공.</p>
+      <div class="grid-3" style="margin-bottom:var(--space-6);">
+        <div class="card"><div class="chip chip-green">사이드바</div><h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">8개 메뉴</h4><p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">대시보드 · 환자 목록 · 케어 기록 · 투약(eMAR) · 인수인계(SBAR) · 응급 · 보호자 소통 · 관리</p></div>
+        <div class="card"><div class="chip chip-amber">AI 응급</div><h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">4단계 판단</h4><p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">관찰(정상) · 주의(경미 이상) · 경계(지속/반복) · 긴급(즉시 조치) — 색상·아이콘 코드화</p></div>
+        <div class="card"><div class="chip chip-blue">인수인계</div><h4 style="margin:var(--space-3) 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">SBAR 포맷</h4><p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">Situation / Background / Assessment / Recommendation — 템플릿 자동 생성</p></div>
+      </div>
+
+      <h3 class="sub">5.4 요양보호사 앱 · 4탭 + 8단계 케어 기록 스텝퍼</h3>
+      <p style="font:var(--weight-regular) var(--text-body)/1.5 var(--font-family-base); color:var(--color-text-secondary); margin:0 0 var(--space-4);">의료진 카테고리 내 <strong>독립 모바일 앱</strong>. 4탭(홈 / 체크리스트 / 소통 / 마이) + 플로팅 SOS. 케어 기록은 체크리스트 탭에서 한 화면에 한 항목, 한 손 조작 가능하도록 슬라이더·체크박스·스텝퍼 중심.</p>
+      <div class="stepper">
+        <div class="step"><span class="step-num">1</span><div class="step-name">바이탈</div><div class="step-method">혈압·체온·맥박·혈당 숫자 패드</div></div>
+        <div class="step"><span class="step-num">2</span><div class="step-name">식사</div><div class="step-method">슬라이더 — 식사량·형태·수분·기호</div></div>
+        <div class="step"><span class="step-num">3</span><div class="step-name">투약</div><div class="step-method">약 목록 체크 + 거부 메모</div></div>
+        <div class="step"><span class="step-num">4</span><div class="step-name">위생</div><div class="step-method">체크박스 — 구강/세수/세발/목욕</div></div>
+        <div class="step"><span class="step-num">5</span><div class="step-name">활동</div><div class="step-method">보행보조 · 체위 · 프로그램</div></div>
+        <div class="step"><span class="step-num">6</span><div class="step-name">배변</div><div class="step-method">횟수·형태·실금·기저귀 교체</div></div>
+        <div class="step"><span class="step-num">7</span><div class="step-name">인지 · 정서</div><div class="step-method">상태 선택 + 음성 메모</div></div>
+        <div class="step"><span class="step-num">8</span><div class="step-name">특이사항</div><div class="step-method">사진 첨부 + 인수인계</div></div>
+      </div>
+
+      <h3 class="sub">5.5 환자 태블릿 · 단일화면 AI 말벗 <span class="chip chip-orange" style="margin-left:6px;">v6.1 컨셉 전환</span></h3>
+      <p style="font:var(--weight-regular) var(--text-body)/1.5 var(--font-family-base); color:var(--color-text-secondary); margin:0 0 var(--space-4);">3탭 구조를 폐기하고 <strong>단일화면 AI 말벗</strong>으로 전환. 길 잃을 여지를 없애고, 말만 하면 되는 하나의 상호작용 축으로 단순화. 대기모드(디지털 액자)와 대화모드(AI 말벗) 2상태 전환. 인라인 카드로 화면 이동 없이 콘텐츠 전달.</p>
+      <div class="grid-2">
+        <div class="card" style="border-top:3px solid var(--palette-amber-500);">
+          <h4 style="margin:0 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">대기 모드 · 디지털 액자</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.6 var(--font-family-base); color:var(--color-text-secondary);">가족 사진·날씨·오늘의 안부. 화면 터치 없이도 시선만 머물면 됨. 시간대별 배경 전환.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--color-accent);">
+          <h4 style="margin:0 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">대화 모드 · AI 말벗</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.6 var(--font-family-base); color:var(--color-text-secondary);">음성 중심. AI가 시간대별 맥락으로 먼저 말 걸기(아침 안부 · 점심 식사 · 오후 활동 · 저녁 피드백 · 밤 인사).</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">인라인 카드</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.6 var(--font-family-base); color:var(--color-text-secondary);">가족 메시지 · 사진 · 일정 · 약 복용 알림이 대화 흐름 안에 카드로 삽입. 화면 이동 없음.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">안전장치</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.6 var(--font-family-base); color:var(--color-text-secondary);">감정 신호 감지 시 가족/간호사 실시간 소통 유도. 인지 모드 3단계(일반/간소화/보조).</p>
+        </div>
+      </div>
+
+      <!-- ════════════ 5.6 IA 와이어프레임 ════════════ -->
+      <h3 class="sub" id="s5-ia">5.6 역할별 IA 와이어프레임 <span class="chip chip-green" style="margin-left:6px;">IA v1.0 · v8.1</span></h3>
+      <p style="font:var(--weight-regular) var(--text-body)/1.5 var(--font-family-base); color:var(--color-text-secondary); margin:0 0 var(--space-5);">4개 역할 앱의 정보구조도 요약. 각 앱의 탭/메뉴 구조, 주요 화면 영역, 글로벌 요소(SOS·AI FAB)의 위치를 한눈에.</p>
+
+      <div class="ia-grid">
+        <!-- 보호자 앱 -->
+        <div class="ia-card guardian">
+          <div class="ia-card-head">
+            <div>
+              <div class="ia-card-title">보호자 앱</div>
+              <span class="ia-card-sub">모바일 PWA · IA v8.1 · 2026-04-16</span>
+            </div>
+            <span class="chip chip-blue">#2C7AFC</span>
+          </div>
+          <div class="ia-card-meta">
+            <div class="ia-meta-item"><span class="ia-meta-label">탭</span><span class="ia-meta-value">5</span></div>
+            <div class="ia-meta-item"><span class="ia-meta-label">화면</span><span class="ia-meta-value">14</span></div>
+            <div class="ia-meta-item"><span class="ia-meta-label">FAB</span><span class="ia-meta-value">AI</span></div>
+          </div>
+          <div class="wireframe">
+            <div class="wf-header"><span>SOS 긴급 배너 (조건부)</span><span>🔔</span></div>
+            <div class="wf-area"><strong>홈 · 대시보드</strong><small>오늘 케어 현황 카드 + AI 일일 리포트 + 의료 타임라인</small></div>
+            <div class="wf-area" style="opacity:0.6;"><strong>AI 케어 가이드</strong><small>5모드 — 백과·감정·요양원·요보사·비용</small></div>
+            <div class="wf-fab"><span class="wf-fab-dot">AI</span></div>
+            <div class="wf-tabs">
+              <span class="wf-tab active">🏠 홈</span>
+              <span class="wf-tab">🛡 가이드</span>
+              <span class="wf-tab">💬 소통</span>
+              <span class="wf-tab">📄 기록</span>
+              <span class="wf-tab">👤 마이</span>
+            </div>
+          </div>
+          <ul style="margin:var(--space-4) 0 0; padding-left:var(--space-5); font:var(--weight-regular) var(--text-caption)/1.6 var(--font-family-base); color:var(--color-text-secondary);">
+            <li><strong>글로벌</strong>: SOS 긴급 배너(조건부 상단 노출) + 플로팅 AI 버튼</li>
+            <li><strong>탭 제외</strong>: 채팅 상세 (g03-chat-*)는 의도적 전체화면</li>
+            <li><strong>스타일</strong>: glassmorphism + floating pill 탭바 (backdrop-filter blur)</li>
+          </ul>
+        </div>
+
+        <!-- 의료진 웹 -->
+        <div class="ia-card medical">
+          <div class="ia-card-head">
+            <div>
+              <div class="ia-card-title">의료진 웹 (의사·간호사)</div>
+              <span class="ia-card-sub">PC 웹 · IA v1.0 · 단일파일 v9.5 · 2026-04-19 갱신</span>
+            </div>
+            <span class="chip chip-green">#22C55E</span>
+          </div>
+          <div class="ia-card-meta">
+            <div class="ia-meta-item"><span class="ia-meta-label">사이드바</span><span class="ia-meta-value">8</span></div>
+            <div class="ia-meta-item"><span class="ia-meta-label">탭 메타포</span><span class="ia-meta-value">5</span></div>
+            <div class="ia-meta-item"><span class="ia-meta-label">AI 응급</span><span class="ia-meta-value">4단계</span></div>
+          </div>
+          <div class="wireframe">
+            <div class="wf-header"><span>로고 · 요양원 · 검색 · 알림 · 프로필</span><span></span></div>
+            <div class="wf-3col">
+              <div class="wf-sidebar">
+                <div>📊 대시보드</div>
+                <div style="margin-top:4px;">👥 환자</div>
+                <div style="margin-top:4px;">💊 eMAR</div>
+                <div style="margin-top:4px;">📝 체크</div>
+                <div style="margin-top:4px;">🔄 인수인계</div>
+                <div style="margin-top:4px;">📅 스케줄</div>
+                <div style="margin-top:4px;">📄 기록</div>
+                <div style="margin-top:4px;">⚙️ 마이</div>
+              </div>
+              <div>
+                <strong style="font-size:10px;">대시보드</strong>
+                <div style="margin-top:4px;">· 5개 요약 카드</div>
+                <div>· 업무 타임라인</div>
+                <div>· 주의 환자 알림</div>
+                <div>· AI 응급 판단</div>
+                <div style="margin-top:6px; background:var(--palette-red-100); padding:3px; border-radius:3px;">⚠️ 위험 — 수축기 180+</div>
+              </div>
+              <div class="wf-panel">
+                <strong style="font-size:10px;">소통</strong>
+                <div style="margin-top:4px;">· 보호자 채팅</div>
+                <div>· 요보사 보고</div>
+                <div>· 촉탁의 채널</div>
+                <div style="margin-top:4px;">📢 AI 요약 피드</div>
+              </div>
+            </div>
+          </div>
+          <ul style="margin:var(--space-4) 0 0; padding-left:var(--space-5); font:var(--weight-regular) var(--text-caption)/1.6 var(--font-family-base); color:var(--color-text-secondary);">
+            <li><strong>레이아웃</strong>: 240px 사이드바 + topbar — 단일 파일 SPA(8개 메뉴 페이지 토글)</li>
+            <li><strong>핵심 기능</strong>: AI 응급판단 4단계 (정상/경과/주의/위험) · eMAR · SBAR 자동 생성</li>
+            <li><strong>탭별 시각 메타포 5종 (2026-04-19)</strong>: 투약=시간대 타임라인 / 기록=도넛 게이지+AI 큐 / 인수인계=우선순위 트리맵 / 환자=히트맵(환자×카테고리) / 체크리스트=카테고리 도넛+근무 타임라인</li>
+            <li><strong>디자인 톤</strong>: 흰 카드 + 4px 악센트 + 빨강 단일. 그린 남발·원색 블록·그라디언트 금지</li>
+          </ul>
+        </div>
+
+        <!-- 요양보호사 앱 -->
+        <div class="ia-card caregiver">
+          <div class="ia-card-head">
+            <div>
+              <div class="ia-card-title">요양보호사 앱 (시설형)</div>
+              <span class="ia-card-sub">모바일 전용 PWA · IA v1.0 · c01~c04 · 2026-04-19 시설 리서치 6축 반영</span>
+            </div>
+            <span class="chip chip-green">#22C55E</span>
+          </div>
+          <div class="ia-card-meta">
+            <div class="ia-meta-item"><span class="ia-meta-label">탭</span><span class="ia-meta-value">4</span></div>
+            <div class="ia-meta-item"><span class="ia-meta-label">스텝퍼</span><span class="ia-meta-value">8</span></div>
+            <div class="ia-meta-item"><span class="ia-meta-label">법정 분류</span><span class="ia-meta-value">6</span></div>
+          </div>
+          <div class="wireframe">
+            <div class="wf-header"><span>SOS 수신 배너 (조건부)</span><span>🔔</span></div>
+            <div class="wf-area"><strong>홈 · 업무 현황</strong><small>오늘 진행률 · 지금 해야 할 일 · 담당 환자 카드</small></div>
+            <div class="wf-area" style="opacity:0.6;"><strong>체크리스트</strong><small>8단계 스텝퍼 — 바이탈→식사→투약→위생→활동→배변→인지→특이사항</small></div>
+            <div class="wf-fab"><span class="wf-fab-dot" style="background:var(--palette-red-500);">SOS</span></div>
+            <div class="wf-tabs">
+              <span class="wf-tab active">🏠 홈</span>
+              <span class="wf-tab">✏️ 체크</span>
+              <span class="wf-tab">💬 소통</span>
+              <span class="wf-tab">👤 마이</span>
+            </div>
+          </div>
+          <ul style="margin:var(--space-4) 0 0; padding-left:var(--space-5); font:var(--weight-regular) var(--text-caption)/1.6 var(--font-family-base); color:var(--color-text-secondary);">
+            <li><strong>시설 리서치 6축 (2026-04-19 c01~c04 반영)</strong>: ① 법정 6분류(식사·배설·복약·체위변경·바이탈·활동/특이) ② 피크 08–10/18–20 시간대 ③ 응급 1·2·3 스테퍼(바이탈→간호사→기록) ④ 인수인계 5필수 체크(낙상·복약·통증·배회·가족통보) ⑤ 보호자 4체크(식사·배설·이상·기분수면) ⑥ 오프라인 동기화</li>
+            <li><strong>SOS 2초 홀드</strong>: 오터치 방지, 간호사+보호자 동시 FCM 푸시</li>
+            <li><strong>GPS 출퇴근</strong>: 자동 감지 + 수급자/가족 전자서명</li>
+            <li><strong>실시간 연동</strong>: 체크리스트 입력 → 3초 이내 보호자 일일 리포트 반영</li>
+            <li><strong>담당 환자 4명 통일</strong>: 박영자·최명자·김순자·이정숙 (c02/c03/c04 전역 동기화)</li>
+          </ul>
+        </div>
+
+        <!-- 환자 태블릿 -->
+        <div class="ia-card patient">
+          <div class="ia-card-head">
+            <div>
+              <div class="ia-card-title">환자 태블릿 (v12)</div>
+              <span class="ia-card-sub">태블릿 10~11" 거치형 · IA v2.0 · 2026-04-19 전면 리뉴얼 (단일화면 → 멀티 페이지)</span>
+            </div>
+            <span class="chip chip-orange">#FB923C</span>
+          </div>
+          <div class="ia-card-meta">
+            <div class="ia-meta-item"><span class="ia-meta-label">화면</span><span class="ia-meta-value">10</span></div>
+            <div class="ia-meta-item"><span class="ia-meta-label">가족</span><span class="ia-meta-value">3</span></div>
+            <div class="ia-meta-item"><span class="ia-meta-label">본문</span><span class="ia-meta-value">18pt+</span></div>
+          </div>
+          <div class="wireframe">
+            <div class="wf-header"><span>상단 정보 바 · 시계·날씨</span><span>☀️</span></div>
+            <div class="wf-tablet">
+              <div class="wf-tablet-state">💬 대화 모드</div>
+              <div class="wf-tablet-bubble">정희님, 따님이 사진 보내셨어요, 볼까요?</div>
+              <div class="wf-tablet-input">
+                <span class="wf-tablet-mic">🎤</span>
+                <span style="font:var(--weight-medium) 11px/1 var(--font-family-base); color:var(--color-text-secondary);">말씀하세요</span>
+              </div>
+              <div class="wf-tablet-help">도움</div>
+            </div>
+          </div>
+          <ul style="margin:var(--space-4) 0 0; padding-left:var(--space-5); font:var(--weight-regular) var(--text-caption)/1.6 var(--font-family-base); color:var(--color-text-secondary);">
+            <li><strong>화면 라인업 (P-01~P-10)</strong>: P-01 홈(시계+오늘일정+가족 빠른전화) · P-02 오늘 해야할 일(체크리스트, 약알림 통합) · P-03 가족 3명(상태별 primary+ghost CTA) · P-05 AI 말벗 음성 · P-06 사진 크게 보기 · P-07 가족 1:1 문자 · P-08 도움이 필요해요(5초 카운트다운) · P-09 SOS 긴급(빨강 예외) · P-10 약 복용 완료</li>
+            <li><strong>가족 페르소나 3명</strong>: 민지(딸·오렌지·온라인) / 서연(손녀·초록·온라인) / 태우(아들·파랑·자리비움) — 모든 페이지 공통 더미</li>
+            <li><strong>data-role="patient" 자동 변형</strong>: 본문 18px / 헤드라인 20px / 터치 56px / 액션 행 64px</li>
+            <li><strong>역할 분리</strong>: SOS = 긴급(p09 빨강 테마) / Help = 가족 호출(p08 5초 취소 가능) — 절대 합치지 않음</li>
+            <li><strong>2026-04-18 결정 (코드로 복원 불가)</strong>: P-04 기분체크 페이지 제거 / P-02 약 알림 → 오늘할일 타임라인 전환 / P-01 홈에서 헤더 로고·워드마크·날씨 모두 제거 (시계+날짜만)</li>
+            <li><strong>"카드 한 개 = 한 화면" 원칙</strong>: 한 번에 1가지 정보만 강조, 스크롤 금지</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ════════════ 5.7 기능 × 역할 매트릭스 ════════════ -->
+      <h3 class="sub" id="s5-matrix">5.7 기능 × 역할 매트릭스</h3>
+      <p style="font:var(--weight-regular) var(--text-body)/1.5 var(--font-family-base); color:var(--color-text-secondary); margin:0 0 var(--space-5);">F-01 ~ F-09 보호자앱 핵심 기능이 의료진(의사/간호사), 요양보호사, 환자 각 역할에서 어떤 수준으로 구현되는지.</p>
+
+      <div style="overflow-x:auto;">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th style="width:80px;">ID</th>
+              <th style="text-align:left; min-width:200px;">기능</th>
+              <th class="role-guardian">보호자</th>
+              <th class="role-nurse">간호사웹</th>
+              <th class="role-caregiver">요양보호사</th>
+              <th class="role-patient">환자</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>F-01</strong></td>
+              <td class="feature-name">케어 체크리스트<small>ADL 식사·투약·위생·활동 기록</small></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr>
+              <td><strong>F-02</strong></td>
+              <td class="feature-name">보호자 대시보드<small>오늘 케어 현황 카드 Realtime</small></td>
+              <td><span class="matrix-dot full">R</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr>
+              <td><strong>F-03</strong></td>
+              <td class="feature-name">SOS 긴급 알림<small>30초 이내 푸시 + 미응답 재알림</small></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot full">C</span></td>
+              <td><span class="matrix-dot limited">도움</span></td>
+            </tr>
+            <tr>
+              <td><strong>F-04</strong></td>
+              <td class="feature-name">채팅 · DM + 환자별 그룹<small>보호자 ↔ 간호사 · 요양보호사 · 환자(태블릿)</small></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot limited">태블릿</span></td>
+            </tr>
+            <tr>
+              <td><strong>F-05</strong></td>
+              <td class="feature-name">AI 일일 케어 리포트<small>Claude Haiku 자동 요약</small></td>
+              <td><span class="matrix-dot full">R</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr>
+              <td><strong>F-06</strong></td>
+              <td class="feature-name">AI 케어 가이드<small>5모드 · 보호자 핵심 차별화</small></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+              <td><span class="matrix-dot limited">요보사 버전</span></td>
+              <td><span class="matrix-dot limited">말벗 통합</span></td>
+            </tr>
+            <tr>
+              <td><strong>F-07</strong></td>
+              <td class="feature-name">역할 분기 + 인증<small>소셜 로그인 → role별 자동 분기</small></td>
+              <td><span class="matrix-dot full">R</span></td>
+              <td><span class="matrix-dot full">R</span></td>
+              <td><span class="matrix-dot full">R</span></td>
+              <td><span class="matrix-dot limited">태블릿 공용</span></td>
+            </tr>
+            <tr>
+              <td><strong>F-08</strong></td>
+              <td class="feature-name">시간표<small>일과표 + 의료진 스케줄</small></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot limited">인라인</span></td>
+            </tr>
+            <tr>
+              <td><strong>F-09</strong></td>
+              <td class="feature-name">처방전·진료기록<small>의료 타임라인 통합</small></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CRUD</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr style="background:var(--brand-green-50);">
+              <td><strong>F-10</strong></td>
+              <td class="feature-name">출퇴근 기록 (GPS)<small style="color:var(--brand-green-700);">v6.1 신규 · 요양보호사 핵심</small></td>
+              <td><span class="matrix-dot none">—</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr style="background:var(--brand-green-50);">
+              <td><strong>F-11</strong></td>
+              <td class="feature-name">바이탈 기록<small style="color:var(--brand-green-700);">v6.1 신규 · 혈압·체온·맥박·혈당</small></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr style="background:var(--brand-green-50);">
+              <td><strong>F-12</strong></td>
+              <td class="feature-name">AI 응급판단 (4단계)<small style="color:var(--brand-green-700);">v6.1 신규 · 정상/경과/주의/위험</small></td>
+              <td><span class="matrix-dot limited">알림만</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr style="background:var(--brand-green-50);">
+              <td><strong>F-13</strong></td>
+              <td class="feature-name">SBAR 인수인계<small style="color:var(--brand-green-700);">v6.1 신규 · AI 자동 생성</small></td>
+              <td><span class="matrix-dot none">—</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr style="background:var(--brand-orange-50);">
+              <td><strong>F-14</strong></td>
+              <td class="feature-name">AI 말벗 대화<small style="color:var(--brand-orange-700);">v6.1 신규 · 환자 태블릿 핵심</small></td>
+              <td><span class="matrix-dot limited">요약</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="matrix-legend">
+        <span><span class="matrix-dot full" style="width:18px; height:18px; font-size:9px;">●</span> Full (CRUD)</span>
+        <span><span class="matrix-dot read" style="width:18px; height:18px; font-size:9px;">●</span> Read 전용</span>
+        <span><span class="matrix-dot limited" style="width:18px; height:18px; font-size:9px;">●</span> 제한적 / 간접</span>
+        <span><span class="matrix-dot none" style="width:18px; height:18px;">—</span> 해당 없음</span>
+      </div>
+
+      <!-- ════════════ 5.8 화면 인벤토리 ════════════ -->
+      <h3 class="sub" id="s5-screens">5.8 화면 인벤토리 — 역할별 구현 현황 <span class="chip chip-green" style="margin-left:6px;">2026-04-19 갱신</span></h3>
+      <p style="font:var(--weight-regular) var(--text-body)/1.5 var(--font-family-base); color:var(--color-text-secondary); margin:0 0 var(--space-5);">실제 구현된 화면 파일 라인업. 보호자 앱 v9.5는 14개, 의료진 웹 v9.5는 단일 파일 SPA(8개 메뉴 페이지 토글), 요양보호사는 c01~c04 4탭, 환자 태블릿은 v12 P-01~P-10 10개. 폴더 — <code>v9.5_보호자앱/</code> · <code>v10_의료진웹/</code> · <code>v11_요양보호사앱/</code> · <code>v12_환자앱/</code>.</p>
+
+      <div class="screen-grid">
+        <!-- 보호자 -->
+        <div class="screen-col guardian">
+          <div class="screen-col-head">
+            <span class="screen-col-title">보호자 앱 v9.5</span>
+            <span class="screen-count">14</span>
+          </div>
+          <ul class="screen-list">
+            <li><code>g-live</code>홈 · 대시보드 (g-guardian-live) <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>g02</code>AI 케어 가이드 (g02-ai-guide) <small style="color:var(--brand-green-600);">✓</small></li>
+            <li class="sub"><code>g-ai</code>일일 리포트 시트 (수면·맥박·식사 9위젯)</li>
+            <li><code>g03</code>소통 (g03-sotong) — 대화/알림 세그먼트 <small style="color:var(--brand-green-600);">✓</small></li>
+            <li class="sub"><code>g03-*</code>채팅: AI / 가족 / 간호사 / 환자 (4분기)</li>
+            <li><code>g05</code>기록 (g05-records) — 처방·타임라인·결제 벤토 <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>g05</code>마이페이지 (g05-mypage) <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>g06</code>알림 · <code>g07</code>설정 · <code>g08</code>결제(레거시)</li>
+            <li><code>ob</code>온보딩 ob01 ~ ob08</li>
+            <li><code>SOS</code>긴급 배너 (글로벌 상단)</li>
+            <li><code>FAB</code>AI 플로팅 버튼 → 5모드 오버레이</li>
+          </ul>
+        </div>
+
+        <!-- 의료진 웹 -->
+        <div class="screen-col nurse">
+          <div class="screen-col-head">
+            <span class="screen-col-title">의료진 웹 v9.5</span>
+            <span class="screen-count">1 SPA / 8 메뉴</span>
+          </div>
+          <ul class="screen-list">
+            <li><code>m</code>의료진_대시보드_v9.5.html — 단일 파일 SPA <small style="color:var(--brand-green-600);">✓</small></li>
+            <li class="sub"><code>1</code>대시보드 (KPI + 우선순위 히어로)</li>
+            <li class="sub"><code>2</code>환자 관리 (히트맵 메타포)</li>
+            <li class="sub"><code>3</code>투약 관리 eMAR (시간 타임라인)</li>
+            <li class="sub"><code>4</code>케어 체크리스트 (도넛 + 근무 타임라인)</li>
+            <li class="sub"><code>5</code>인수인계 (우선순위 트리맵)</li>
+            <li class="sub"><code>6</code>스케줄</li>
+            <li class="sub"><code>7</code>기록·보고서 (도넛 게이지 + AI 큐)</li>
+            <li class="sub"><code>8</code>마이페이지</li>
+            <li><code>탭별 메타포 5종</code>2026-04-19 신규</li>
+          </ul>
+        </div>
+
+        <!-- 요양보호사 -->
+        <div class="screen-col caregiver">
+          <div class="screen-col-head">
+            <span class="screen-col-title">요양보호사 v11</span>
+            <span class="screen-count">5</span>
+          </div>
+          <ul class="screen-list">
+            <li><code>c01</code>홈 · 오늘 (c01-today) — 시설 리서치 6축 반영 <small style="color:var(--brand-green-600);">✓</small></li>
+            <li class="sub">근무 스트립·피크 08-10 뱃지·응급 1·2·3 스테퍼</li>
+            <li><code>c02</code>체크리스트 (c02-checklist) <small style="color:var(--brand-green-600);">✓</small></li>
+            <li class="sub">법정 6분류 (식사·배설·복약·체위·바이탈·활동/특이)</li>
+            <li class="sub">8단계 스텝퍼 (풀스크린)</li>
+            <li><code>c03</code>소통 (c03-sotong) — 인수인계 5필수 + 보호자 4체크 <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>c04</code>마이 (c04-mypage) + 이달 의무 진척도 카드 <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>c04</code>스케줄 (c04-schedule)</li>
+            <li><code>SOS</code>플로팅 FAB (전역)</li>
+          </ul>
+        </div>
+
+        <!-- 환자 -->
+        <div class="screen-col patient">
+          <div class="screen-col-head">
+            <span class="screen-col-title">환자 태블릿 v12</span>
+            <span class="screen-count">10</span>
+          </div>
+          <ul class="screen-list">
+            <li><code>idx</code>index (쇼케이스) <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>P-01</code>오늘 홈 (시계+오늘일정+가족 빠른전화) <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>P-02</code>오늘 해야할 일 (체크리스트, 약알림 통합) <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>P-03</code>가족 3명 — 민지·서연·태우 상태별 CTA <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>P-05</code>AI 말벗 음성 (waveform + 라이브 캡션)</li>
+            <li><code>P-06</code>사진 크게 보기</li>
+            <li><code>P-07</code>가족 1:1 문자 대화</li>
+            <li><code>P-08</code>도움이 필요해요 (5초 카운트다운 링) <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>P-09</code>SOS 긴급 (빨강 예외 테마, 119) <small style="color:var(--brand-green-600);">✓</small></li>
+            <li><code>P-10</code>약 복용 완료 (체크 애니메이션)</li>
+            <li class="sub"><strong>제거됨</strong>: P-04 기분체크 (2026-04-18)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ════════════ 5.9 권한 매트릭스 ════════════ -->
+      <h3 class="sub" id="s5-perms">5.9 권한 매트릭스 — Supabase RLS 설계 기준</h3>
+      <p style="font:var(--weight-regular) var(--text-body)/1.5 var(--font-family-base); color:var(--color-text-secondary); margin:0 0 var(--space-5);">주요 데이터 엔티티별 CRUD 권한. Supabase Row-Level Security 정책 설계의 근거가 된다.</p>
+
+      <div style="overflow-x:auto;">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th style="text-align:left; min-width:200px;">엔티티</th>
+              <th class="role-guardian">보호자</th>
+              <th class="role-nurse">간호사</th>
+              <th class="role-nurse">의사(촉탁)</th>
+              <th class="role-caregiver">요양보호사</th>
+              <th class="role-patient">환자</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="feature-name">patients (환자 프로필)<small>이름·생년·등급·보호자 연결</small></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot read">R (담당)</span></td>
+              <td><span class="matrix-dot read">R (본인)</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">care_records (케어 기록)<small>식사·투약·위생·활동</small></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">vitals (바이탈)<small>혈압·체온·맥박·혈당</small></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">prescriptions (처방전)<small>약명·용량·기간</small></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CRUD</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">medical_records (진료 기록)<small>진단·소견·처치</small></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CRUD</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">attendance (출퇴근)<small>GPS·서명</small></td>
+              <td><span class="matrix-dot read">R (본인 가족)</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+              <td><span class="matrix-dot full">CR (본인)</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">handover_notes (인수인계)<small>SBAR + 음성</small></td>
+              <td><span class="matrix-dot none">—</span></td>
+              <td><span class="matrix-dot full">CRU</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">sos_events (SOS)<small>발송·수신·응답 로그</small></td>
+              <td><span class="matrix-dot read">R (본인 가족)</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot full">C</span></td>
+              <td><span class="matrix-dot limited">도움 버튼</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">messages (채팅)<small>텍스트·사진·음성</small></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot full">CR</span></td>
+              <td><span class="matrix-dot limited">AI 경유</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">ai_reports (일일 리포트)<small>Claude Haiku 자동</small></td>
+              <td><span class="matrix-dot read">R (본인 가족)</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot read">R</span></td>
+              <td><span class="matrix-dot none">—</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-tertiary); margin:var(--space-4) 0 0;">
+        * 행동 단위로 요약한 고수준 권한. 실제 RLS 정책은 <code>auth.uid()</code>와 <code>patient_staff_assignments</code> 테이블 기반으로 세부 분기.
+      </p>
+    </section>
+
+    <!-- ════════════ § 6 AI ════════════ -->
+    <section id="s6">
+      <span class="section-num">§ 6</span>
+      <h2 class="section-title">AI 활용 방안 · 5모드 가이드</h2>
+      <p class="section-lead">일일 리포트는 Claude Haiku(토큰 비용 90% 절감), 5모드 케어가이드는 Claude Sonnet 4.6 (캐싱으로 50% 절감). 법적 프레이밍 엄격 — "치료"·"진단" 용어 금지.</p>
+
+      <div class="ai-mode-grid">
+        <div class="ai-mode">
+          <span class="ai-mode-icon"><iconify-icon icon="fluent:book-open-24-filled" width="22"></iconify-icon></span>
+          <div class="ai-mode-name">백과사전</div>
+          <div class="ai-mode-desc">요양·건강 정보 안내 (예: "장기요양등급 신청 절차")</div>
+          <div class="ai-mode-trigger">Trigger · 기본 모드</div>
+        </div>
+        <div class="ai-mode">
+          <span class="ai-mode-icon"><iconify-icon icon="fluent:heart-24-filled" width="22"></iconify-icon></span>
+          <div class="ai-mode-name">감정 지원</div>
+          <div class="ai-mode-desc">감정 신호 감지 → 공감·위로 → 전문 상담 연결</div>
+          <div class="ai-mode-trigger">Trigger · 자동 전환</div>
+        </div>
+        <div class="ai-mode">
+          <span class="ai-mode-icon"><iconify-icon icon="fluent:search-24-filled" width="22"></iconify-icon></span>
+          <div class="ai-mode-name">요양원 찾기</div>
+          <div class="ai-mode-desc">지역·등급·유형·예산 기반 맞춤 검색 (공공 데이터)</div>
+          <div class="ai-mode-trigger">Trigger · "요양원 알아보고 있어요"</div>
+        </div>
+        <div class="ai-mode">
+          <span class="ai-mode-icon"><iconify-icon icon="fluent:people-24-filled" width="22"></iconify-icon></span>
+          <div class="ai-mode-name">요양보호사 안내</div>
+          <div class="ai-mode-desc">구하는 법 + 케어닥·케어네이션 딥링크</div>
+          <div class="ai-mode-trigger">Trigger · "요양보호사 어떻게 구해요"</div>
+        </div>
+        <div class="ai-mode">
+          <span class="ai-mode-icon"><iconify-icon icon="fluent:calculator-24-filled" width="22"></iconify-icon></span>
+          <div class="ai-mode-name">요양비 계산</div>
+          <div class="ai-mode-desc">등급·감경·비급여 복합 조건 시뮬레이션</div>
+          <div class="ai-mode-trigger">Trigger · "비용이 얼마나 나와요"</div>
+        </div>
+      </div>
+
+      <h3 class="sub">6.4 법적 · 윤리적 프레이밍</h3>
+      <div class="grid-2">
+        <div class="card" style="border-left:4px solid var(--color-danger);">
+          <div class="chip chip-red">금지 표현</div>
+          <ul style="margin:var(--space-4) 0 0; padding-left:var(--space-5); color:var(--color-text-primary); font:var(--weight-regular) var(--text-callout)/1.7 var(--font-family-base);">
+            <li>"심리 치료" <span style="color:var(--color-danger);">❌</span></li>
+            <li>"의료 진단" <span style="color:var(--color-danger);">❌</span></li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:4px solid var(--color-success);">
+          <div class="chip chip-green">권장 표현</div>
+          <ul style="margin:var(--space-4) 0 0; padding-left:var(--space-5); color:var(--color-text-primary); font:var(--weight-regular) var(--text-callout)/1.7 var(--font-family-base);">
+            <li>"감정 체크인 및 전문 기관 연결" <span style="color:var(--color-success);">✅</span></li>
+            <li>"요양·건강 정보 안내" <span style="color:var(--color-success);">✅</span></li>
+          </ul>
+        </div>
+      </div>
+      <p style="margin-top:var(--space-5); padding:var(--space-5); background:var(--palette-amber-50); border-radius:var(--radius-card); font:var(--weight-medium) var(--text-callout)/1.5 var(--font-family-base); color:var(--palette-amber-700);">
+        <strong>면책 문구:</strong> 모든 의료 관련 답변 말미에 "최종 판단은 의료진이 합니다" 삽입. 감정 위기 신호 감지 시 자살예방상담전화(1393) / 정신건강상담전화(1577-0199) 자동 안내.
+      </p>
+
+      <h3 class="sub" id="s6-prompt">6.5 프롬프트 예시 — 핵심 3개</h3>
+      <p style="font:var(--weight-regular) var(--text-body)/1.5 var(--font-family-base); color:var(--color-text-secondary); margin:0 0 var(--space-5);">Sonnet 4.6은 system prompt 캐싱 대상. 사용자 컨텍스트는 cache-break 가능한 user prompt로 분리.</p>
+
+      <div class="grid-2" style="margin-bottom:var(--space-5);">
+        <div>
+          <div class="prompt-title">
+            <span>① AI 일일 리포트 (F-05)</span>
+            <span class="chip chip-green">Claude Haiku</span>
+          </div>
+<div class="prompt-box"><span class="p-cmt"># System</span>
+당신은 요양시설 <span class="p-str">"하루안부"</span>의 일일 케어 리포트 작성자입니다.
+오늘 기록된 케어 데이터를 보호자가 쉽게 이해할 수 있도록 따뜻한 어투로 요약하세요.
+
+<span class="p-key">규칙:</span>
+- 5문장 이내, 해요체 사용
+- <span class="p-str">"치료·진단"</span> 용어 금지
+- 수치는 의료 해석 없이 사실만 전달
+- 특이사항 있으면 끝에 <span class="p-str">"⚠️ 확인 필요"</span> 표시
+
+<span class="p-cmt"># User (cache-break)</span>
+환자: <span class="p-var">{{patient_name}}</span> ({{age}}세, {{care_grade}})
+날짜: <span class="p-var">{{date}}</span>
+케어 기록:
+- 식사: <span class="p-var">{{meal_data}}</span>
+- 투약: <span class="p-var">{{medication_data}}</span>
+- 바이탈: <span class="p-var">{{vitals}}</span>
+- 특이사항: <span class="p-var">{{notes}}</span>
+</div>
+        </div>
+
+        <div>
+          <div class="prompt-title">
+            <span>② AI 케어 가이드 — 감정지원 모드 (F-06)</span>
+            <span class="chip chip-amber">Sonnet 4.6</span>
+          </div>
+<div class="prompt-box"><span class="p-cmt"># System (cached)</span>
+당신은 요양 보호자의 감정적 부담을 덜어주는 AI 가이드입니다.
+<span class="p-key">모드:</span> 감정 지원 (5모드 중 자동 전환)
+
+<span class="p-key">행동 원칙:</span>
+1. 먼저 공감. <span class="p-str">"힘드셨겠어요"</span>로 시작
+2. 판단하지 않기. 해결책 강요 금지
+3. 위기 신호(<span class="p-var">자해·자살 암시</span>) 감지 시
+   → <span class="p-str">"자살예방상담전화 1393"</span> 안내
+4. 답변 말미:
+   <span class="p-str">"최종 판단은 의료진이 합니다"</span>
+
+<span class="p-key">금지:</span> <span class="p-str">"심리 치료"</span>, <span class="p-str">"진단"</span>, 의학적 권고
+
+<span class="p-cmt"># User</span>
+<span class="p-var">{{guardian_message}}</span>
+</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="prompt-title">
+          <span>③ AI 응급 판단 보조 — 간호사웹 (F-12)</span>
+          <span class="chip chip-amber">Sonnet 4.6 · 의료진 전용</span>
+        </div>
+<div class="prompt-box"><span class="p-cmt"># System</span>
+당신은 요양시설 간호사를 지원하는 응급 판단 보조 AI입니다. 환자 바이탈 추이를 분석하여 <span class="p-key">4단계</span>로 평가합니다.
+
+<span class="p-key">4단계 기준:</span>
+- <span class="p-str">"정상"</span> (초록): 모든 수치 정상 범위
+- <span class="p-str">"경과관찰"</span> (노랑): 일부 수치 경미 이상, 재측정 권장
+- <span class="p-str">"주의"</span> (주황): 촉탁의 상담 권장 — 근거 명시 필수
+- <span class="p-str">"위험"</span> (빨강): 즉시 이송 권장 — 구체적 근거 + 과거 유사 패턴
+
+<span class="p-key">출력 형식 (JSON):</span>
+{
+  <span class="p-key">"level"</span>: <span class="p-str">"주의"</span>,
+  <span class="p-key">"reasoning"</span>: <span class="p-str">"혈압 상승 추세 3일"</span>,
+  <span class="p-key">"action"</span>: <span class="p-str">"촉탁의 상담 권장"</span>,
+  <span class="p-key">"past_pattern"</span>: <span class="p-str">"2024-12 유사 추이 후 입원 이력"</span>
+}
+
+<span class="p-key">규칙:</span> 의사 결정은 **보조**만. 최종 판단은 반드시 의료진이.
+
+<span class="p-cmt"># User</span>
+환자: <span class="p-var">{{patient_id}}</span>
+최근 7일 바이탈: <span class="p-var">{{vitals_history}}</span>
+현재 측정: <span class="p-var">{{current_vitals}}</span>
+과거 병력: <span class="p-var">{{medical_history}}</span>
+</div>
+      </div>
+    </section>
+
+    <!-- ════════════ § 7 시스템 아키텍처 ════════════ -->
+    <section id="s7">
+      <span class="section-num">§ 7</span>
+      <h2 class="section-title">시스템 아키텍처 · 기술 스택</h2>
+      <p class="section-lead">React + Supabase + Claude API + Vercel + FCM. BaaS 경량 구조로 MVP 속도 확보.</p>
+
+      <div class="grid-5">
+        <div class="card" style="text-align:center;">
+          <iconify-icon icon="simple-icons:react" width="40" style="color:#61DAFB;"></iconify-icon>
+          <div style="margin-top:var(--space-3); font:var(--weight-bold) var(--text-body)/1 var(--font-family-base);">React + TS</div>
+          <div style="margin-top:4px; font:var(--weight-regular) var(--text-caption)/1.3 var(--font-family-base); color:var(--color-text-secondary);">프론트엔드</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <iconify-icon icon="simple-icons:supabase" width="40" style="color:#3ECF8E;"></iconify-icon>
+          <div style="margin-top:var(--space-3); font:var(--weight-bold) var(--text-body)/1 var(--font-family-base);">Supabase</div>
+          <div style="margin-top:4px; font:var(--weight-regular) var(--text-caption)/1.3 var(--font-family-base); color:var(--color-text-secondary);">DB · Auth · Realtime</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <iconify-icon icon="simple-icons:vercel" width="40" style="color:#000;"></iconify-icon>
+          <div style="margin-top:var(--space-3); font:var(--weight-bold) var(--text-body)/1 var(--font-family-base);">Vercel</div>
+          <div style="margin-top:4px; font:var(--weight-regular) var(--text-caption)/1.3 var(--font-family-base); color:var(--color-text-secondary);">배포 · CI</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <iconify-icon icon="simple-icons:anthropic" width="40" style="color:#D97706;"></iconify-icon>
+          <div style="margin-top:var(--space-3); font:var(--weight-bold) var(--text-body)/1 var(--font-family-base);">Claude API</div>
+          <div style="margin-top:4px; font:var(--weight-regular) var(--text-caption)/1.3 var(--font-family-base); color:var(--color-text-secondary);">Haiku + Sonnet 4.6</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <iconify-icon icon="simple-icons:firebase" width="40" style="color:#FFA000;"></iconify-icon>
+          <div style="margin-top:var(--space-3); font:var(--weight-bold) var(--text-body)/1 var(--font-family-base);">FCM</div>
+          <div style="margin-top:4px; font:var(--weight-regular) var(--text-caption)/1.3 var(--font-family-base); color:var(--color-text-secondary);">푸시 알림</div>
+        </div>
+      </div>
+
+      <h3 class="sub">7.2 성능 목표</h3>
+      <table class="table">
+        <thead><tr><th>항목</th><th style="width:220px;">목표</th></tr></thead>
+        <tbody>
+          <tr><td>체크리스트 → 대시보드 반영</td><td><strong style="color:var(--color-success);">3초 이내</strong></td></tr>
+          <tr><td>SOS 알림 발송</td><td><strong style="color:var(--color-success);">30초 이내</strong></td></tr>
+          <tr><td>AI 케어가이드 응답 성공률</td><td><strong style="color:var(--color-success);">95% 이상</strong></td></tr>
+          <tr><td>AI 리포트 생성 성공률</td><td><strong style="color:var(--color-success);">95% 이상</strong></td></tr>
+          <tr><td>의료진 PC 웹 응답 속도</td><td><strong style="color:var(--color-success);">2초 이내</strong></td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub" id="s7-db">7.3 DB 스키마 핵심 테이블 <span class="chip chip-green" style="margin-left:6px;">Supabase Postgres</span></h3>
+      <p style="font:var(--weight-regular) var(--text-body)/1.5 var(--font-family-base); color:var(--color-text-secondary); margin:0 0 var(--space-5);">주요 9개 테이블. 요양보호사 앱용 <strong>vitals · attendance · handover_notes</strong>가 v6.1에서 신규 추가.</p>
+
+      <div class="schema-grid">
+        <!-- users -->
+        <div class="schema-table">
+          <div class="schema-table-head">users <small>인증</small></div>
+          <div class="schema-col"><span class="sc-icon pk">PK</span><span>id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>email</span><span class="sc-type">text</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>role</span><span class="sc-type">enum</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>name</span><span class="sc-type">text</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>phone</span><span class="sc-type">text</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>facility_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>created_at</span><span class="sc-type">timestamptz</span></div>
+        </div>
+
+        <!-- patients -->
+        <div class="schema-table">
+          <div class="schema-table-head">patients <small>환자</small></div>
+          <div class="schema-col"><span class="sc-icon pk">PK</span><span>id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>name</span><span class="sc-type">text</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>birth_date</span><span class="sc-type">date</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>care_grade</span><span class="sc-type">smallint</span></div>
+          <div class="schema-col"><span class="sc-icon fk">FK</span><span>guardian_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon fk">FK</span><span>facility_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>room_number</span><span class="sc-type">text</span></div>
+        </div>
+
+        <!-- care_records -->
+        <div class="schema-table">
+          <div class="schema-table-head">care_records <small>케어 기록</small></div>
+          <div class="schema-col"><span class="sc-icon pk">PK</span><span>id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon fk">FK</span><span>patient_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon fk">FK</span><span>staff_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>category</span><span class="sc-type">enum</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>content</span><span class="sc-type">jsonb</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>photo_url</span><span class="sc-type">text</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>recorded_at</span><span class="sc-type">timestamptz</span></div>
+        </div>
+
+        <!-- vitals -->
+        <div class="schema-table">
+          <div class="schema-table-head">vitals <small>v6.1 신규</small></div>
+          <div class="schema-col new"><span class="sc-icon pk">PK</span><span>id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col new"><span class="sc-icon fk">FK</span><span>patient_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col new"><span class="sc-icon fk">FK</span><span>staff_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>blood_pressure</span><span class="sc-type">int[2]</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>temperature</span><span class="sc-type">decimal</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>pulse</span><span class="sc-type">int</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>blood_sugar</span><span class="sc-type">int</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>measured_at</span><span class="sc-type">timestamptz</span></div>
+        </div>
+
+        <!-- attendance -->
+        <div class="schema-table">
+          <div class="schema-table-head">attendance <small>v6.1 신규 · 출퇴근</small></div>
+          <div class="schema-col new"><span class="sc-icon pk">PK</span><span>id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col new"><span class="sc-icon fk">FK</span><span>staff_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col new"><span class="sc-icon fk">FK</span><span>patient_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>check_in</span><span class="sc-type">timestamptz</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>check_out</span><span class="sc-type">timestamptz</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>check_in_gps</span><span class="sc-type">point</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>signature_url</span><span class="sc-type">text</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>service_minutes</span><span class="sc-type">int</span></div>
+        </div>
+
+        <!-- handover_notes -->
+        <div class="schema-table">
+          <div class="schema-table-head">handover_notes <small>v6.1 신규 · 인수인계</small></div>
+          <div class="schema-col new"><span class="sc-icon pk">PK</span><span>id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col new"><span class="sc-icon fk">FK</span><span>patient_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col new"><span class="sc-icon fk">FK</span><span>from_staff_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>sbar_json</span><span class="sc-type">jsonb</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>voice_url</span><span class="sc-type">text</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>care_date</span><span class="sc-type">date</span></div>
+          <div class="schema-col new"><span class="sc-icon"></span><span>ai_generated</span><span class="sc-type">bool</span></div>
+        </div>
+
+        <!-- messages -->
+        <div class="schema-table">
+          <div class="schema-table-head">messages <small>채팅</small></div>
+          <div class="schema-col"><span class="sc-icon pk">PK</span><span>id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon fk">FK</span><span>thread_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon fk">FK</span><span>sender_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>type</span><span class="sc-type">enum</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>body</span><span class="sc-type">text</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>attachments</span><span class="sc-type">jsonb</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>created_at</span><span class="sc-type">timestamptz</span></div>
+        </div>
+
+        <!-- sos_events -->
+        <div class="schema-table">
+          <div class="schema-table-head">sos_events <small>응급 발송·응답</small></div>
+          <div class="schema-col"><span class="sc-icon pk">PK</span><span>id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon fk">FK</span><span>patient_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon fk">FK</span><span>reporter_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>severity</span><span class="sc-type">enum</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>situation</span><span class="sc-type">enum</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>photo_url</span><span class="sc-type">text</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>acknowledged_at</span><span class="sc-type">timestamptz</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>resolved_at</span><span class="sc-type">timestamptz</span></div>
+        </div>
+
+        <!-- ai_reports -->
+        <div class="schema-table">
+          <div class="schema-table-head">ai_reports <small>일일 리포트</small></div>
+          <div class="schema-col"><span class="sc-icon pk">PK</span><span>id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon fk">FK</span><span>patient_id</span><span class="sc-type">uuid</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>report_date</span><span class="sc-type">date</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>summary</span><span class="sc-type">text</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>highlights</span><span class="sc-type">jsonb</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>needs_attention</span><span class="sc-type">bool</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>model</span><span class="sc-type">text</span></div>
+          <div class="schema-col"><span class="sc-icon"></span><span>generated_at</span><span class="sc-type">timestamptz</span></div>
+        </div>
+      </div>
+
+      <div class="schema-legend">
+        <span><span class="sc-icon pk" style="color:var(--palette-amber-700); font-weight:700;">PK</span> Primary Key</span>
+        <span><span class="sc-icon fk" style="color:var(--brand-blue-500); font-weight:700;">FK</span> Foreign Key</span>
+        <span><span style="display:inline-block; width:12px; height:12px; background:var(--brand-green-50); border:1px solid var(--brand-green-200); border-radius:3px;"></span> v6.1 신규 테이블</span>
+      </div>
+
+      <p style="font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-tertiary); margin:var(--space-4) 0 0;">
+        * 일부 보조 테이블(<code>facilities · prescriptions · medical_records · notifications · patient_staff_assignments</code> 등)은 생략. 전체 DDL은 <code>03_설계/db-schema.sql</code>에 별도 관리.
+      </p>
+    </section>
+
+    <!-- ════════════ § 8 브랜드·디자인 ════════════ -->
+    <section id="s8">
+      <span class="section-num">§ 8</span>
+      <h2 class="section-title">브랜드 · 디자인 시스템</h2>
+      <p class="section-lead">"따뜻하지만 전문적인" 톤. 역할별 컬러 3종 + 긴급 레드. Pretendard 서체 단일. Glassmorphism + floating pill 탭바가 v9 공식 UI.</p>
+
+      <h3 class="sub">8.2 역할별 컬러 (v6.0 확정)</h3>
+      <div class="palette">
+        <div class="swatch">
+          <div class="swatch-color" style="background:var(--brand-blue-500);"></div>
+          <div class="swatch-body">
+            <div class="swatch-name">딥블루</div>
+            <span class="swatch-role">보호자 · --guardian</span>
+            <span class="swatch-hex">#2C7AFC</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:var(--brand-green-600);"></div>
+          <div class="swatch-body">
+            <div class="swatch-name">케어 그린</div>
+            <span class="swatch-role">의료진 공통 · --medical</span>
+            <span class="swatch-hex">#22C55E</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:var(--brand-orange-400);"></div>
+          <div class="swatch-body">
+            <div class="swatch-name">웜 오렌지</div>
+            <span class="swatch-role">환자 · --patient</span>
+            <span class="swatch-hex">#FB923C</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:var(--palette-red-500);"></div>
+          <div class="swatch-body">
+            <div class="swatch-name">경고 레드</div>
+            <span class="swatch-role">긴급 / SOS · --sos</span>
+            <span class="swatch-hex">#EF4444</span>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub">8.5 타이포그래피 스케일</h3>
+      <div class="type-scale">
+        <div class="type-row">
+          <span class="type-label">H1</span>
+          <span class="type-spec">28px · 700</span>
+          <span class="type-sample" style="font-size:28px; font-weight:700;">하루안부 · 제목</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H2</span>
+          <span class="type-spec">22px · 600</span>
+          <span class="type-sample" style="font-size:22px; font-weight:600;">하루안부 · 소제목</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">Body</span>
+          <span class="type-spec">16px · 400</span>
+          <span class="type-sample" style="font-size:16px; font-weight:400;">본문 · 하루의 안부를 전합니다</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">Body (환자)</span>
+          <span class="type-spec">18px+ · 400</span>
+          <span class="type-sample" style="font-size:18px; font-weight:400;">환자용 본문 · 글자가 큽니다</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">Caption</span>
+          <span class="type-spec">13px · 400</span>
+          <span class="type-sample" style="font-size:13px; font-weight:400; color:var(--color-text-secondary);">캡션 · 보조 정보</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">Button</span>
+          <span class="type-spec">16px · 600</span>
+          <span class="type-sample" style="font-size:16px; font-weight:600; color:var(--color-accent);">오늘도 안녕하셨어요</span>
+        </div>
+      </div>
+
+      <h3 class="sub">8.7 벤치마킹 근거</h3>
+      <table class="table">
+        <thead><tr><th style="width:180px;">서비스</th><th style="width:240px;">참조 포인트</th><th>적용</th></tr></thead>
+        <tbody>
+          <tr><td>토스</td><td>카드 UI + 시멘틱 컬러</td><td>대시보드 카드 구조</td></tr>
+          <tr><td>당근</td><td>해요체 + 접근성</td><td>UX 카피 톤</td></tr>
+          <tr><td>밀리의서재</td><td>여백 + 차분한 감성</td><td>AI 리포트 카드</td></tr>
+          <tr><td>카카오헬스케어</td><td>건강 데이터 시각화</td><td>케어 완료율 차트</td></tr>
+          <tr><td>눔 (Noom)</td><td>그라디언트 + AI 코칭</td><td>AI 가이드 톤</td></tr>
+          <tr><td>CaringBridge</td><td>안전한 소통 공간</td><td>3자 채팅 신뢰감</td></tr>
+          <tr><td>Channel.talk ALF</td><td>AI 에스컬레이션 패턴</td><td>가이드→의료진 연결</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ════════════ § 9 산출물 ════════════ -->
+    <section id="s9">
+      <span class="section-num">§ 9</span>
+      <h2 class="section-title">산출물 · 문서 맵</h2>
+      <p class="section-lead">통합본은 이 문서 하나. 구버전 9종은 <code>_archive/</code>로 이동. 디자인·설계 문서는 별도 동기화 필요.</p>
+
+      <div class="grid-2">
+        <div class="card" style="border-top:3px solid var(--color-success);">
+          <h4 class="sub-sub" style="margin-top:0;">✓ 통합됨 (단일 본)</h4>
+          <ul style="margin:0; padding-left:var(--space-5); font:var(--weight-regular) var(--text-callout)/1.8 var(--font-family-base); color:var(--color-text-primary);">
+            <li>하루안부_통합기획서_v6.0.md <span class="chip chip-green" style="margin-left:4px;">v6.1 현재</span></li>
+            <li>PRD v5.0 · 통합기획서 v5.0 (→ 대체됨)</li>
+            <li>AI활용방안서 v3.0 (→ §6 흡수)</li>
+            <li>린캔버스 v1.0 (→ §2 흡수)</li>
+            <li>퍼소나 v2.1 (→ §3 흡수)</li>
+            <li>JTBD v1.1 (→ §1.3 흡수)</li>
+            <li>고객여정지도 v1.0 (→ §4 흡수)</li>
+            <li>요양보호사 IA v1.0 (→ §5.4 출처)</li>
+            <li>보호자앱 IA v8.1 / 간호사웹 IA v1.0 / 환자태블릿 IA v1.0 (→ §5 출처) <span class="chip chip-green" style="margin-left:4px;">v6.1</span></li>
+          </ul>
+        </div>
+        <div class="card" style="border-top:3px solid var(--palette-amber-500);">
+          <h4 class="sub-sub" style="margin-top:0;">⏳ 연결 문서 — 동기화 필요</h4>
+          <ul style="margin:0; padding-left:var(--space-5); font:var(--weight-regular) var(--text-callout)/1.8 var(--font-family-base); color:var(--color-text-primary);">
+            <li>03_설계/하루안부_톤앤무드_확정.md</li>
+            <li>07_디자인/하루안부_브랜드아이덴티티 <span class="chip chip-amber">갱신</span></li>
+            <li>07_디자인/하루안부_디자인시스템_v2.0.md</li>
+            <li>07_디자인/tokens/tokens.css <span class="chip chip-green">v2 발행</span></li>
+            <li>v9_보호자앱/ (구현 프로토타입)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ § 10 열린 결정 ════════════ -->
+    <section id="s10">
+      <span class="section-num">§ 10</span>
+      <h2 class="section-title">로드맵 · 다음 단계</h2>
+      <p class="section-lead">기획·디자인 시스템은 확정 단계, 5종 앱 데모 화면은 제작 완료. 이제 MVP 개발과 베타 파일럿으로 넘어간다.</p>
+
+      <!-- Phase 진행 시각화 -->
+      <div class="grid-3" style="grid-template-columns: repeat(4, 1fr); gap: var(--space-4); margin-top: var(--space-5);">
+        <div class="card" style="border-left: 4px solid var(--color-success); background: var(--brand-green-50);">
+          <div style="display:flex; align-items:center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <iconify-icon icon="fluent:checkmark-circle-24-filled" width="18" style="color: var(--color-success);"></iconify-icon>
+            <span style="font:var(--weight-bold) 11px/1 var(--font-family-base); color: var(--color-success); letter-spacing:0.5px;">PHASE 0 · 완료</span>
+          </div>
+          <h4 style="margin:0 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">기획 · 디자인 시스템</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">통합 기획서 · IA 4종 · tokens.css · 5종 앱 데모 화면 · 브랜드 시스템</p>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--color-accent); background: var(--brand-blue-50);">
+          <div style="display:flex; align-items:center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <iconify-icon icon="fluent:play-circle-24-filled" width="18" style="color: var(--color-accent);"></iconify-icon>
+            <span style="font:var(--weight-bold) 11px/1 var(--font-family-base); color: var(--color-accent); letter-spacing:0.5px;">PHASE 1 · 진행 중</span>
+          </div>
+          <h4 style="margin:0 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">MVP 개발 (보호자 + 간호사웹)</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">Supabase RLS 스키마 · 보호자 PWA 5탭 · 간호사웹 핵심 4메뉴 · F-01/02/03/04 우선 구현</p>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--brand-yellow-600, #CA8A04);">
+          <div style="display:flex; align-items:center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <iconify-icon icon="fluent:clock-24-regular" width="18" style="color: var(--brand-yellow-600, #CA8A04);"></iconify-icon>
+            <span style="font:var(--weight-bold) 11px/1 var(--font-family-base); color: var(--brand-yellow-600, #CA8A04); letter-spacing:0.5px;">PHASE 2 · 예정</span>
+          </div>
+          <h4 style="margin:0 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">요양보호사 앱 + AI 가이드</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">요양보호사 모바일 앱 4탭 · F-06 AI 5모드 · F-05 일일 리포트 · 1개 요양원 베타 파일럿</p>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--color-text-tertiary);">
+          <div style="display:flex; align-items:center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <iconify-icon icon="fluent:beaker-24-regular" width="18" style="color: var(--color-text-tertiary);"></iconify-icon>
+            <span style="font:var(--weight-bold) 11px/1 var(--font-family-base); color: var(--color-text-tertiary); letter-spacing:0.5px;">PHASE 3 · 검토</span>
+          </div>
+          <h4 style="margin:0 0 var(--space-2); font:var(--weight-semibold) var(--text-body)/1.3 var(--font-family-base);">환자 태블릿 + 정식 출시</h4>
+          <p style="margin:0; font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary);">환자 태블릿 AI 말벗 · F-12 AI 응급판단 · 다요양원 확장 · B2B 과금 모델 검증</p>
+        </div>
+      </div>
+
+      <!-- 결정 필요 항목 -->
+      <h3 style="margin: var(--space-7) 0 var(--space-3); font:var(--weight-semibold) var(--text-headline)/1.2 var(--font-family-base);">아직 결정이 필요한 항목</h3>
+      <p style="font:var(--weight-regular) var(--text-caption)/1.5 var(--font-family-base); color:var(--color-text-secondary); margin-bottom: var(--space-4);">기본 방향은 잡혀있지만 MVP 구현 들어가기 전에 확정해야 하는 결정들.</p>
+      <table class="table">
+        <thead>
+          <tr><th style="width:50px;">#</th><th>항목</th><th>현재 방향</th><th>결정 필요 시점</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>F-04 채팅 채널 구조</td><td>1:1 DM + 환자별 그룹 (보호자+담당 간호사+요양보호사)</td><td>Phase 1 (스키마 설계 전)</td></tr>
+          <tr><td>2</td><td>의사(촉탁) 채팅 참여</td><td>제외 — 간호사 경유 간접 소통</td><td>Phase 1</td></tr>
+          <tr><td>3</td><td>F-11 바이탈 입력 주체</td><td>간호사 우선 / 요양보호사 보조 입력 검토</td><td>Phase 2 (요양보호사 앱 개발 전)</td></tr>
+          <tr><td>4</td><td>F-10 GPS 출퇴근 반경</td><td>요양원 50m 기본값</td><td>Phase 2</td></tr>
+          <tr><td>5</td><td>F-12 AI 응급판단 노출 범위</td><td>의료진만 (보호자에는 결과만 알림)</td><td>Phase 3</td></tr>
+          <tr><td>6</td><td>환자 태블릿 음성 엔진</td><td>OS TTS 기본 → AI 음성 검토</td><td>Phase 3</td></tr>
+          <tr><td>7</td><td>다크 모드</td><td>1차 출시 후 검토</td><td>Phase 3 이후</td></tr>
+          <tr><td>8</td><td>접근성 정식 감사 시점</td><td>WCAG 2.1 AA 지향</td><td>Phase 2 베타 직전</td></tr>
+          <tr><td>9</td><td>PWA 오프라인 지원 범위</td><td>manifest는 준비됨</td><td>Phase 1 후반</td></tr>
+          <tr><td>10</td><td>B2B 과금 모델</td><td>요양원 월 구독 + 가족 프리미엄 검토</td><td>Phase 3 (베타 결과 후)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ════════════ § 11 의사결정 히스토리 (참고) ════════════ -->
+    <section id="s11" style="opacity: 0.92;">
+      <span class="section-num" style="background: var(--color-bg-subtle, #F1F5F9); color: var(--color-text-tertiary);">참고</span>
+      <h2 class="section-title" style="color: var(--color-text-secondary);">결정 히스토리</h2>
+      <p class="section-lead">브랜드·IA·컬러 같은 되돌리면 파급 큰 결정의 확정 시점. 본 기획서를 새로 읽는 사람이 "왜 이렇게 정해졌나"가 궁금할 때 참고용.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-time">2026.03.21 · 팀 회의</div>
+          <div class="timeline-text">서비스명 <strong>"하루안부"</strong> 확정</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.03.21 · 팀 회의</div>
+          <div class="timeline-text">슬로건 <strong>"오늘 하루도, 안녕하셨습니다"</strong> 확정</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.03.21 · 팀 회의</div>
+          <div class="timeline-text">톤앤매너 <strong>"따뜻하지만 전문적인"</strong> 확정</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">기획 단계</div>
+          <div class="timeline-text">AI 가이드 <strong>5개 모드</strong> 채택 — 백과·감정·요양원·요보사·비용</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">기획 단계</div>
+          <div class="timeline-text">요양보호사 <strong>직접 매칭 X</strong> → 외부 딥링크(케어닥·케어네이션)로 결정</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.04.18 · v6.0</div>
+          <div class="timeline-text">의료진 <strong>의사·간호사 / 요양보호사 2그룹 분화</strong></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.04.18 · v6.0</div>
+          <div class="timeline-text">브랜드명 단일화: "케어플랫폼" 폐기 → <strong>"하루안부"로 통일</strong></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.04.18 · v6.0</div>
+          <div class="timeline-text">역할별 컬러 확정: 보호자 <strong>#2C7AFC</strong> / 의료진 <strong>#22C55E</strong> / 환자 <strong>#FB923C</strong></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.04.18 · v6.1 (IA v1.0)</div>
+          <div class="timeline-text">요양보호사 앱 구조 <strong>4탭(홈/체크리스트/소통/마이) + 플로팅 SOS</strong></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.04.18 · v6.1 → v6.2</div>
+          <div class="timeline-text">의료진 컬러: Teal #0D9488 제안 검토 → Green #059669 채택 → <strong>Tailwind green-500 #22C55E로 최종 전환</strong> (라임 쉬프트로 케어 톤 강화)</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.04.18 · v6.1 (IA v1.0)</div>
+          <div class="timeline-text">환자 태블릿 <strong>단일화면 AI 말벗</strong> 컨셉 — 대기모드 ↔ 대화모드 2상태</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.04.18 · v6.1</div>
+          <div class="timeline-text">요양보호사 역할 정의: 보호자 앱에 흡수 아님 — <strong>의료진 카테고리 내 독립 모바일 앱</strong></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.04.18 · v6.1 (IA v1.0)</div>
+          <div class="timeline-text">간호사웹 <strong>3컬럼 레이아웃 (240px / fluid / 320px) + 8개 메뉴</strong></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">2026.04.18 · v6.1 (IA v8.1)</div>
+          <div class="timeline-text">보호자 앱 <strong>5탭(홈/AI 가이드/소통/기록/마이) + 글로벌 SOS 배너 + 플로팅 AI 버튼</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ 푸터 ════════════ -->
+    <footer style="margin-top:var(--space-11); padding:var(--space-7) 0; border-top:1px solid var(--color-border-subtle); display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:var(--space-3);">
+        <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8IS0tIO2VmOujqOyViOu2gCDsi6zrs7wg64uo64+FIOKAlCDslbEg7JWE7J207L2YLCDtjIzruYTsvZggLS0+CiAgPGcgaWQ9InN5bWJvbCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTAsIDUwKSBzY2FsZSgwLjE2MykiPgogICAgPHBhdGggZD0iTTI1MjEuMzIgMjUwNi42NkMxMjM5LjY1IDI2NTcuNDggMTIzOS42NSAxODk1LjYgMTIzOS42NSAxMjc5LjM0TDI0OTcuNjkgMC4wMDAxNzAwNThDMjUxOC42OCA0OTQuMTk4IDI1MjIuMjcgMTE1Ny45MiAxNjU4Ljg2IDEyNjIuNDhDMjY0MS44OCAxMzE0LjI1IDI1MjEuMzIgMjEwMS44NCAyNTIxLjMyIDI1MDYuNjZaIiBmaWxsPSIjMkM3QUZDIi8+CiAgICA8cGF0aCBkPSJNNC42NzcyIDE5LjMzNTNDMTI4Ni4zNSAtMTMxLjQ4MSAxMjg2LjM1IDYzMC4zOTkgMTI4Ni4zNSAxMjQ2LjY2TDI4LjMxNDUgMjUyNkM3LjMyMTk0IDIwMzEuOCAzLjczMDE0IDEzNjguMDggODY3LjE0MyAxMjYzLjUyQy0xMTUuODgxIDEyMTEuNzUgNC42NzcyIDQyNC4xNTcgNC42NzcyIDE5LjMzNTNaIiBmaWxsPSIjMkM3QUZDIi8+CiAgPC9nPgo8L3N2Zz4K" alt="" style="width:24px; height:24px; opacity:0.6;">
+        <span style="font:var(--weight-medium) var(--text-caption)/1 var(--font-family-base); color:var(--color-text-tertiary);">
+          하루안부 · 통합 기획서 — 프로젝트 Single Source of Truth
+        </span>
+      </div>
+      <a href="하루안부_통합기획서_v6.0.md" style="font:var(--weight-medium) var(--text-caption)/1 var(--font-family-base); color:var(--color-accent); text-decoration:underline;">원본 .md 열기 →</a>
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>
