@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440">
+  <title>하루안부 · 보호자앱</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: clip;
+    }
+
+    body {
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 50%, rgba(44, 122, 252, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 80% at 50% 0%, #0e1535 0%, #07091a 50%, #010208 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* Ambient glow */
+    .glow {
+      position: fixed;
+      width: 360px;
+      height: 700px;
+      background: radial-gradient(ellipse at center, rgba(44, 122, 252, 0.10) 0%, transparent 65%);
+      pointer-events: none;
+      animation: breathe 5s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.08); }
+    }
+
+    /* Outer zoom wrapper */
+    #phone-container {
+      position: relative;
+      transform-origin: center center;
+      z-index: 1;
+    }
+
+    /*
+      PNG: 4036 × 4570px
+      Scale: 393 / 1851 (screen width → 393px)
+      Container: 857 × 970px
+      Screen area in PNG: left=1092 top=275 right=2943 bottom=4296
+      Screen at display scale: left=232px top=58px width=393px height=852px
+    */
+    .phone-wrapper {
+      position: relative;
+      width: 857px;
+      height: 970px;
+    }
+
+    /* App iframe — aligned to transparent screen area in PNG */
+    .app-iframe {
+      position: absolute;
+      left: 232px;
+      top: 58px;
+      width: 393px;
+      height: 852px;
+      border: none;
+      display: block;
+      z-index: 1;
+    }
+
+    /* PNG mockup — overlaid on top, pointer-events:none so iframe stays clickable */
+    .mockup-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow"></div>
+
+  <div id="phone-container">
+    <div class="phone-wrapper">
+      <iframe
+        class="app-iframe"
+        src="v11_보호자앱/g-guardian-live.html"
+        title="하루안부 보호자앱"
+      ></iframe>
+      <img class="mockup-img" src="iPhone 14 pro.png" alt="">
+    </div>
+  </div>
+
+  <script>
+    function adjustScale() {
+      const el = document.getElementById('phone-container');
+      const pad = 160; // 80px top + bottom breathing room
+      const scale = Math.min(
+        1,
+        (window.innerHeight - pad) / 970,
+        (window.innerWidth  - pad) / 857
+      );
+      el.style.zoom = scale;
+    }
+    adjustScale();
+    window.addEventListener('resize', adjustScale);
+
+    // Re-inject on every navigation within the iframe
+    function skipIntroIfNeeded(doc) {
+      if (doc.body.classList.contains('ready')) return;
+      const intro = doc.getElementById('intro');
+      const orbBg = doc.getElementById('aiOrbBg');
+      if (intro && intro.classList.contains('gone')) return;
+      if (intro) intro.classList.add('gone');
+      if (orbBg) orbBg.classList.add('finale', 'dimmed');
+      doc.querySelectorAll('.intro-enter').forEach(function(el) {
+        el.style.transition = 'none';
+        el.classList.remove('intro-enter');
+        void el.offsetWidth;
+      });
+      doc.body.classList.add('ready');
+      const chatInput = doc.getElementById('chatInputArea');
+      if (chatInput) chatInput.classList.remove('hide');
+    }
+
+    function injectStyles(iframe) {
+      try {
+        const doc = iframe.contentDocument;
+
+        const s = doc.createElement('style');
+        s.id = 'showcase-inject';
+        s.textContent = `
+          ::-webkit-scrollbar { display: none; }
+          * { scrollbar-width: none; -ms-overflow-style: none; }
+          .chat-fixed { padding-top: 67px !important; }
+          .header     { padding-top: 67px !important; }
+          body::after {
+            content: '';
+            position: fixed;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 134px;
+            height: 5px;
+            background: rgba(0, 0, 0, 0.18);
+            border-radius: 3px;
+            z-index: 9999;
+            pointer-events: none;
+          }
+        `;
+        doc.head.appendChild(s);
+
+        /* Force wheel → viewport scroll inside iframe.
+           Desktop browsers don't always route trackpad wheel events
+           through an iframe that sits inside a zoomed container.
+           preventDefault() cancels any native scroll then scrollBy drives it. */
+        const sc = doc.createElement('script');
+        sc.id = 'showcase-inject-sc';
+        sc.textContent = `(function(){
+          if (window.__showcaseScrollInjected) return;
+          window.__showcaseScrollInjected = true;
+          window.addEventListener('wheel', function(e) {
+            /* Let inner overflow-scroll elements (ch-list, quick-scroll) do their own scroll */
+            var el = e.target;
+            while (el && el !== document.body && el !== document.documentElement) {
+              var oy = getComputedStyle(el).overflowY;
+              if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight) return;
+              el = el.parentElement;
+            }
+            e.preventDefault();
+            window.scrollBy(0, e.deltaY);
+          }, { passive: false });
+        })();`;
+        doc.head.appendChild(sc);
+
+        skipIntroIfNeeded(doc);
+      } catch (e) {}
+    }
+
+    const iframe = document.querySelector('.app-iframe');
+    iframe.addEventListener('load', function () { injectStyles(this); });
+
+    window.addEventListener('wheel', function(e) {
+      const rect = iframe.getBoundingClientRect();
+      if (e.clientX >= rect.left && e.clientX <= rect.right &&
+          e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        try { iframe.contentWindow.scrollBy(0, e.deltaY); } catch(_) {}
+      }
+    }, { passive: true });
+  </script>
+
+</body>
+</html>

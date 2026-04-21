@@ -1,0 +1,4110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>하루안부 — 의료진 대시보드 v4</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <style>
+    *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      /* 무채색 팔레트 */
+      --ink:    #111111;
+      --ink-2:  #2A2A2A;
+      --ink-3:  #555555;
+      --ink-4:  #888888;
+      --ink-5:  #AAAAAA;
+      --ink-6:  #D8D7D4;
+      --surface:#F5F4F2;
+      --bg:     #EEEDEA;
+      --white:  #FFFFFF;
+
+      /* 포인트 — 최소 사용 */
+      --accent:    #22C55E;
+      --accent-bg: rgba(34,197,94,.08);
+      --accent-b:  rgba(34,197,94,.22);
+
+      /* 위험 — 긴급 상황만 */
+      --danger:    #EF4444;
+      --danger-bg: rgba(239,68,68,.07);
+      --danger-b:  rgba(239,68,68,.22);
+
+      /* 주의 */
+      --warn:    #F59E0B;
+      --warn-bg: rgba(245,158,11,.07);
+      --warn-b:  rgba(245,158,11,.24);
+
+      /* 카드 */
+      --card-bg:  #FFFFFF;
+      --card-br:  1px solid #E8E7E3;
+      --card-sh:  0 1px 3px rgba(0,0,0,.04), 0 4px 14px rgba(0,0,0,.05);
+      --card-rad: 12px;
+
+      --font: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', sans-serif;
+    }
+
+    html { height:100%; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: fixed; left:0; top:0; bottom:0; width:232px;
+      background: #131313;
+      display: flex; flex-direction: column;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      padding: 20px 16px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .logo-mark { display:flex; align-items:center; gap:10px; }
+
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+
+    .logo-name { font-size:15px; font-weight:800; color:#fff; letter-spacing:-.4px; }
+    .logo-sub  { font-size:10px; color:#3D3D3D; margin-top:1px; }
+
+    .sidebar-facility {
+      margin: 10px 12px 4px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.05);
+      border-radius: 9px;
+      display: flex; align-items:center; gap:8px;
+    }
+
+    .facility-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #4ADE80; flex-shrink:0;
+    }
+
+    .facility-name { font-size:12px; color:#777; font-weight:500; }
+
+    .nav-section-label {
+      padding: 14px 16px 4px;
+      font-size: 10px; color: #3A3A3A;
+      text-transform: uppercase; letter-spacing: .8px; font-weight: 700;
+    }
+
+    .nav-list { list-style:none; padding: 0 8px; flex:1; overflow-y:auto; }
+    .nav-list::-webkit-scrollbar { width:0; }
+
+    .nav-item { margin-bottom: 2px; }
+
+    .nav-link {
+      display: flex; align-items:center; gap:10px;
+      padding: 9px 12px; border-radius: 9px;
+      color: #5A5A5A; text-decoration: none;
+      font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: background .12s, color .12s;
+      user-select: none;
+    }
+
+    .nav-link:hover:not(.active) { background: rgba(255,255,255,.04); color: #999; }
+
+    .nav-link.active {
+      background: var(--accent);
+      color: #fff; font-weight: 700;
+    }
+
+    .nav-icon { width:16px; height:16px; flex-shrink:0; opacity:.55; }
+    .nav-link.active .nav-icon { opacity:1; }
+
+    .nav-badge {
+      margin-left: auto;
+      background: var(--danger); color: #fff;
+      font-size: 10px; font-weight: 700;
+      padding: 1px 7px; border-radius: 999px;
+    }
+    .nav-badge.muted { background: rgba(255,255,255,.08); color: #5A5A5A; }
+
+    .sidebar-user {
+      padding: 12px 16px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      display: flex; align-items:center; gap:10px;
+    }
+
+    .user-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #14532D;
+      display: flex; align-items:center; justify-content:center;
+      font-size: 12px; font-weight: 700; color: rgba(134,239,172,.9);
+      flex-shrink: 0;
+    }
+
+    .user-name { font-size:13px; font-weight:700; color:#E8E8E8; }
+    .user-role { font-size:11px; color:#4A4A4A; margin-top:1px; }
+
+    /* ── MAIN WRAPPER ── */
+    .main-wrapper {
+      margin-left: 232px; margin-right: 300px;
+      min-height: 100vh;
+      display: flex; flex-direction:column;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: sticky; top:0; z-index:50;
+      background: #FFFFFF;
+      border-bottom: 1px solid #E8E7E3;
+      height: 56px;
+      padding: 0 24px;
+      display: flex; align-items:center; gap:12px;
+    }
+
+    .topbar-left { display:flex; align-items:center; gap:10px; flex:1; }
+
+    .page-title { font-size:14px; font-weight:700; color:var(--ink); letter-spacing:-.2px; }
+
+    .page-date {
+      font-size: 12px; color: var(--ink-4);
+      padding: 3px 10px; border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--ink-6);
+    }
+
+    .search-wrap { position:relative; max-width:240px; flex:1; }
+
+    .search-icon {
+      position: absolute; left:10px; top:50%; transform:translateY(-50%);
+      width: 13px; color: var(--ink-5); pointer-events:none;
+    }
+
+    .search-input {
+      width: 100%; padding: 7px 12px 7px 29px;
+      background: var(--surface);
+      border: 1px solid var(--ink-6);
+      border-radius: 999px;
+      font-size: 13px; color: var(--ink-2);
+      font-family: var(--font); outline:none;
+    }
+
+    .search-input:focus {
+      border-color: rgba(34,197,94,.35);
+      box-shadow: 0 0 0 3px rgba(34,197,94,.08);
+    }
+
+    .topbar-actions { display:flex; align-items:center; gap:6px; }
+
+    .icon-btn {
+      width: 34px; height: 34px; border-radius: 999px;
+      display: flex; align-items:center; justify-content:center;
+      background: var(--surface);
+      border: 1px solid var(--ink-6);
+      cursor: pointer; color: var(--ink-3); position:relative;
+    }
+
+    .icon-btn svg { width:16px; height:16px; }
+
+    .notif-dot {
+      position: absolute; top:7px; right:7px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--danger); border: 1.5px solid #fff;
+    }
+
+    .sos-btn {
+      display: flex; align-items:center; gap:6px;
+      padding: 7px 16px;
+      background: var(--danger); color: #fff;
+      border: none; border-radius: 999px;
+      font-size: 12px; font-weight: 700;
+      cursor: pointer; font-family: var(--font);
+      letter-spacing: -.1px;
+    }
+
+    /* ── CONTENT ── */
+    .content { padding: 24px 24px 36px; flex:1; }
+
+    /* Greeting */
+    .greeting { margin-bottom: 22px; }
+    .greeting h1 {
+      font-size: 18px; font-weight: 700; color: var(--ink);
+      letter-spacing: -.4px; line-height:1.3;
+    }
+    .greeting p { font-size: 13px; color: var(--ink-3); margin-top:6px; line-height:1.65; }
+    .greeting strong { color: var(--ink-2); font-weight: 700; }
+
+    /* ── KPI CARDS ── */
+    .kpi-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 10px; margin-bottom: 16px;
+    }
+
+    .kpi {
+      background: var(--card-bg);
+      border: var(--card-br);
+      border-radius: var(--card-rad);
+      box-shadow: var(--card-sh);
+      padding: 20px 20px 18px;
+    }
+
+    .kpi-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--ink-4); margin-bottom: 14px;
+      letter-spacing: .3px; text-transform: uppercase;
+    }
+
+    .kpi-value {
+      font-size: 32px; font-weight: 800;
+      color: var(--ink); letter-spacing: -1.4px; line-height: 1;
+      display: flex; align-items: baseline; gap: 4px;
+    }
+    .kpi-denom {
+      font-size: 15px; color: var(--ink-5);
+      font-weight: 500; letter-spacing: 0;
+    }
+    .kpi-value.alert { color: var(--danger); }
+    .kpi-value.alert .kpi-denom { color: rgba(192,57,43,.5); }
+
+    .kpi-sub {
+      display: flex; align-items:center; gap:6px;
+      font-size: 11.5px; color: var(--ink-4); margin-top: 10px;
+      font-weight: 500;
+    }
+
+    .kpi-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+    .kpi-dot.accent { background: var(--accent); }
+    .kpi-dot.danger { background: var(--danger); }
+    .kpi-dot.neutral { background: var(--ink-5); }
+
+    .kpi-bar {
+      height: 2px; background: #ECEAE6;
+      border-radius: 2px; margin-top: 14px; overflow:hidden;
+    }
+    .kpi-fill { height:100%; border-radius:2px; background: var(--accent); }
+    .kpi-fill.low { background: var(--danger); }
+    .kpi-fill.mid { background: var(--warn); }
+
+    /* ── BODY GRID ── */
+    .body-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; margin-bottom: 10px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card-bg);
+      border: var(--card-br);
+      border-radius: var(--card-rad);
+      box-shadow: var(--card-sh);
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid #F1F0EC;
+      display: flex; align-items:center; justify-content:space-between;
+    }
+
+    .card-title {
+      font-size: 13px; font-weight: 700;
+      color: var(--ink); letter-spacing: -.2px;
+    }
+
+    .card-action {
+      font-size: 11px; font-weight: 600;
+      color: var(--ink-4); cursor: pointer;
+      padding: 4px 11px; border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--ink-6);
+    }
+
+    /* ── TIMELINE ── */
+    .tl-wrap { padding: 16px 20px 10px; }
+
+    .tl-now-strip {
+      display: flex; align-items:center; gap:8px;
+      padding: 9px 14px; margin-bottom: 20px;
+      background: var(--surface);
+      border: 1px solid var(--ink-6);
+      border-radius: 9px;
+      font-size: 12px; font-weight: 700; color: var(--ink-2);
+    }
+
+    .tl-live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.6s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .25; }
+    }
+
+    .tl-item {
+      display: flex; gap: 0; position:relative; align-items:stretch;
+    }
+
+    .tl-time-col {
+      width: 44px; font-size: 10.5px; color: var(--ink-5);
+      padding-top: 4px; text-align: right;
+      flex-shrink: 0; font-weight: 500; letter-spacing: -.2px;
+    }
+
+    .tl-node-col {
+      width: 28px; display:flex; flex-direction:column;
+      align-items:center; flex-shrink:0; padding-top: 3px;
+    }
+
+    .tl-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink:0; z-index:1; }
+    .tl-dot.done    { background: #C8C7C4; }
+    .tl-dot.current { background: var(--accent); box-shadow: 0 0 0 3px rgba(14,138,116,.20); width:11px; height:11px; margin-top:-1px; }
+    .tl-dot.next    { background: var(--bg); border: 2px solid var(--ink-6); }
+    .tl-dot.alert   { background: var(--danger); }
+
+    .tl-line {
+      width: 1px; flex: 1; min-height: 10px;
+      background: #E8E7E3; margin-top: 5px;
+    }
+    .tl-item:last-child .tl-line { opacity:0; }
+
+    .tl-body-col {
+      flex: 1; min-width:0;
+      padding: 1px 0 16px 8px;
+    }
+
+    .tl-item.is-current .tl-body-col {
+      background: var(--surface);
+      border: 1px solid var(--ink-6);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+    }
+
+    .tl-row {
+      display: flex; align-items:center; gap:8px; margin-bottom: 2px;
+    }
+
+    .tl-name { font-size: 12.5px; font-weight: 600; color: var(--ink-2); flex:1; min-width:0; }
+    .tl-name.done { color: var(--ink-5); font-weight: 500; text-decoration: line-through; }
+    .tl-name.current { color: var(--ink); font-weight: 700; }
+    .tl-name.dim { color: var(--ink-4); }
+
+    .tl-tag {
+      padding: 2px 8px; border-radius: 999px;
+      font-size: 10px; font-weight: 700; flex-shrink:0;
+    }
+    .tl-tag.done  { background: var(--surface); color: var(--ink-5); border: 1px solid var(--ink-6); }
+    .tl-tag.now   { background: var(--accent); color: #fff; }
+    .tl-tag.next  { background: var(--surface); color: var(--ink-4); border: 1px solid var(--ink-6); }
+    .tl-tag.warn  { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-b); }
+
+    .tl-desc { font-size: 11px; color: var(--ink-4); line-height: 1.4; }
+
+    /* ── ALERT FEED ── */
+    .alert-list { padding: 12px 16px 16px; display:flex; flex-direction:column; gap:8px; }
+
+    .al-item {
+      display: flex; align-items:flex-start; gap:12px;
+      padding: 13px 14px;
+      border-radius: 10px;
+      background: var(--white);
+      border: 1px solid #EAE9E5;
+      cursor: pointer;
+      transition: background .1s;
+    }
+    .al-item:hover { background: #FAFAF8; }
+
+    .al-item.critical { background: var(--danger-bg); border-color: var(--danger-b); }
+    .al-item.caution  { background: var(--warn-bg); border-color: var(--warn-b); }
+
+    .al-body { flex:1; min-width:0; }
+
+    .al-patient {
+      font-size: 12px; font-weight: 700; color: var(--ink-2);
+      margin-bottom: 3px;
+    }
+
+    .al-msg { font-size: 12px; color: var(--ink-3); line-height: 1.45; }
+    .al-time { font-size: 10px; color: var(--ink-5); margin-top: 4px; }
+
+    .al-btn {
+      align-self: center; flex-shrink: 0;
+      padding: 5px 12px; border-radius: 999px;
+      font-size: 11px; font-weight: 600;
+      border: 1px solid var(--ink-6); background: var(--white); color: var(--ink-3);
+      cursor: pointer; font-family: var(--font); white-space: nowrap;
+    }
+    .al-btn:hover { background: var(--surface); }
+    .al-btn.crit { background: var(--danger); color: #fff; border-color: var(--danger); }
+    .al-btn.norm { background: var(--white); color: var(--ink-3); }
+
+    /* ── AI PANEL ── */
+    .ai-panel {
+      background: var(--card-bg);
+      border: var(--card-br);
+      border-radius: var(--card-rad);
+      box-shadow: var(--card-sh);
+      overflow: hidden;
+    }
+
+    .ai-panel-head {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid #F1F0EC;
+      display: flex; align-items:center; justify-content:space-between;
+    }
+
+    .ai-head-left { display:flex; align-items:center; gap:12px; }
+
+    .ai-head-mark {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: var(--accent);
+      display: flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+
+    .ai-head-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .ai-head-sub   { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
+
+    .ai-items {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .ai-item {
+      padding: 16px 20px;
+      border-right: 1px solid #F1F0EC;
+    }
+    .ai-item:last-child { border-right: none; }
+
+    .ai-badge {
+      display: inline-flex; align-items: center;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 9px; border-radius: 999px;
+      margin-bottom: 10px;
+      letter-spacing: .1px;
+    }
+    .ai-badge.urgent  { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-b); }
+    .ai-badge.caution { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-b); }
+    .ai-badge.info    { background: var(--surface); color: var(--ink-3); border: 1px solid var(--ink-6); }
+
+    .ai-pt   { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+    .ai-text { font-size: 12px; color: var(--ink-3); line-height: 1.6; }
+
+    /* ── COMM PANEL ── */
+    .comm-panel {
+      position: fixed; right:0; top:0; bottom:0; width:300px;
+      background: #FFFFFF;
+      border-left: 1px solid #E8E7E3;
+      display: flex; flex-direction:column;
+      z-index: 100;
+      overflow: hidden;
+    }
+
+    .cp-header {
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid #EAE9E5;
+    }
+
+    .cp-header-row {
+      display: flex; align-items:center; justify-content:space-between;
+      margin-bottom: 10px;
+    }
+
+    .cp-title { font-size: 13px; font-weight: 700; color: var(--ink-2); }
+
+    .focus-btn {
+      font-size: 11px; padding: 4px 12px;
+      border-radius: 999px; border: 1px solid var(--ink-6);
+      background: var(--surface); color: var(--ink-3);
+      cursor: pointer; font-family: var(--font); font-weight: 600;
+    }
+
+    .focus-btn.on { background: var(--danger-bg); border-color: var(--danger-b); color: var(--danger); }
+
+    .cp-tabs {
+      display: flex; gap: 3px;
+      background: var(--surface); border-radius: 999px; padding: 3px;
+      border: 1px solid var(--ink-6);
+    }
+
+    .cp-tab {
+      flex: 1; padding: 5px; border-radius: 999px;
+      font-size: 11px; font-weight: 500; color: var(--ink-4);
+      text-align: center; cursor: pointer;
+    }
+
+    .cp-tab.active {
+      background: #fff; color: var(--ink); font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0,0,0,.10);
+    }
+
+    .cp-body { flex:1; overflow-y:auto; }
+    .cp-body::-webkit-scrollbar { width:3px; }
+    .cp-body::-webkit-scrollbar-thumb { background: var(--ink-6); border-radius:2px; }
+
+    .ch-label {
+      padding: 8px 16px 6px;
+      font-size: 10px; color: var(--ink-5);
+      font-weight: 700; text-transform: uppercase; letter-spacing: .7px;
+      background: var(--surface);
+      border-top: 1px solid #EAE9E5; border-bottom: 1px solid #EAE9E5;
+      position: sticky; top:0; z-index:1;
+    }
+    .cp-body > .ch-label:first-child { border-top:none; }
+
+    .chat-row {
+      padding: 10px 16px; display:flex; gap:10px;
+      cursor: pointer; border-bottom: 1px solid #F2F1EE;
+    }
+    .chat-row:hover { background: #FAFAF8; }
+
+    .chat-av {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items:center; justify-content:center;
+      font-size: 12px; font-weight: 800; flex-shrink:0;
+      background: #E8E7E3; color: var(--ink-2);
+      position: relative;
+    }
+
+    .st-dot {
+      position: absolute; bottom:1px; right:1px;
+      width: 8px; height: 8px; border-radius: 50%;
+      border: 1.5px solid #fff;
+    }
+    .st-dot.online { background: #22C55E; }
+    .st-dot.away   { background: #F59E0B; }
+
+    .chat-info { flex:1; min-width:0; }
+
+    .name-row {
+      display: flex; justify-content:space-between; align-items:baseline;
+      margin-bottom: 1px;
+    }
+
+    .chat-name { font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
+    .chat-time { font-size: 10px; color: var(--ink-5); flex-shrink:0; }
+    .chat-pt   { font-size: 10px; color: var(--ink-4); font-weight: 600; margin-bottom: 2px; }
+
+    .chat-prev-row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+
+    .chat-prev {
+      font-size: 12px; color: var(--ink-4);
+      white-space: nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; min-width:0;
+    }
+    .chat-prev.unread { color: var(--ink-2); font-weight: 600; }
+
+    .unread-pill {
+      display: inline-flex; align-items:center; justify-content:center;
+      background: var(--accent); color: #fff;
+      font-size: 10px; font-weight: 700;
+      padding: 1px 6px; border-radius: 999px; flex-shrink:0;
+    }
+
+    .ai-feed { padding: 12px 16px; border-top: 1px solid #EAE9E5; }
+
+    .ai-feed-label {
+      font-size: 10px; color: var(--ink-5); font-weight: 700;
+      text-transform: uppercase; letter-spacing: .7px; margin-bottom: 8px;
+    }
+
+    .af-item {
+      padding: 9px 12px; border-radius: 9px; margin-bottom: 5px;
+      background: var(--surface); border: 1px solid var(--ink-6);
+      font-size: 12px; color: var(--ink-2); line-height: 1.45;
+    }
+    .af-item.urgent { background: var(--danger-bg); border-color: var(--danger-b); }
+    .af-item strong { font-weight: 700; }
+
+    /* ── 소통 패널 뷰 전환 ── */
+    .cp-view { display: block; }
+
+    .cp-ctx-bar {
+      padding: 8px 16px; background: var(--surface);
+      border-bottom: 1px solid #EAE9E5;
+      font-size: 11px; font-weight: 600; color: var(--ink-4);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .cp-ctx-label::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-right: 5px; }
+
+    /* ── AI 요약 뷰 ── */
+    .cp-ai-intro {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 16px 12px; border-bottom: 1px solid #EAE9E5;
+    }
+    .cp-ai-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: #111; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .cp-ai-title { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+    .cp-ai-sub   { font-size: 10px; color: var(--ink-5); margin-top: 1px; }
+
+    .cp-ai-items { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+    .cp-ai-item {
+      padding: 12px 13px; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--ink-6);
+    }
+    .cp-ai-item.urgent { background: var(--danger-bg); border-color: var(--danger-b); }
+    .cp-ai-item.warn   { background: var(--warn-bg);   border-color: var(--warn-b); }
+    .cp-ai-item-head { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
+    .cp-ai-item-pt   { font-size: 12px; font-weight: 700; color: var(--ink-2); }
+    .cp-ai-item-body { font-size: 11.5px; color: var(--ink-3); line-height: 1.6; margin-bottom: 8px; }
+    .cp-ai-item-actions { display: flex; gap: 5px; }
+    .cp-ai-act {
+      padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600;
+      border: 1px solid var(--ink-6); background: var(--white); color: var(--ink-3);
+      cursor: pointer; font-family: var(--font); transition: all .12s;
+    }
+    .cp-ai-act:hover { border-color: var(--ink-4); color: var(--ink-2); }
+    .cp-ai-act.em { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .cp-ai-act.em:hover { opacity: .85; }
+    .cp-ai-act.done { background: var(--surface); color: var(--ink-5); border-color: var(--ink-6); pointer-events: none; }
+
+    .cp-ai-ask-wrap {
+      padding: 10px 12px 12px; border-top: 1px solid #EAE9E5; margin-top: 2px;
+    }
+    .cp-ai-ask-label { font-size: 10px; font-weight: 700; color: var(--ink-5); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 7px; }
+    .cp-ai-ask-row { display: flex; gap: 6px; align-items: center; background: var(--surface); border-radius: 999px; padding: 6px 6px 6px 13px; border: 1px solid var(--ink-6); }
+    .cp-ai-ask-input { flex: 1; border: none; background: transparent; font-size: 12px; font-family: var(--font); color: var(--ink); outline: none; }
+    .cp-ai-answer {
+      margin-top: 10px; padding: 11px 13px; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--ink-6);
+      font-size: 12px; color: var(--ink-3); line-height: 1.65;
+    }
+
+    /* ── AI 자동생성 버튼 (대시보드) ── */
+    .ai-auto-btn {
+      margin-top: 8px;
+      padding: 5px 14px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      background: var(--accent-bg); border: 1px solid var(--accent-b); color: #16A34A;
+      cursor: pointer; font-family: var(--font); transition: all .15s;
+    }
+    .ai-auto-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .ai-auto-btn:disabled { opacity: .5; pointer-events: none; }
+
+    /* ── 로딩 스피너 ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin .8s linear infinite; display: inline-block; }
+
+    /* ── 페이드인 ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .35s ease both; }
+
+    /* ── SBAR 항목 등장 ── */
+    @keyframes itemIn {
+      from { opacity: 0; transform: translateX(-6px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .cp-input-wrap { padding: 10px 16px; border-top: 1px solid #EAE9E5; }
+
+    .cp-input-row {
+      display: flex; gap:8px;
+      background: var(--surface); border-radius: 999px;
+      padding: 7px 7px 7px 14px; align-items:center;
+      border: 1px solid var(--ink-6);
+    }
+
+    .cp-input {
+      flex:1; border:none; background:transparent; outline:none;
+      font-size: 13px; font-family: var(--font); color: var(--ink-2);
+    }
+    .cp-input::placeholder { color: var(--ink-5); }
+
+    .send-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--ink); border: none; cursor: pointer;
+      display: flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .send-btn svg { width: 12px; height: 12px; color: #fff; }
+
+    /* ── 대화 상세 뷰 ── */
+    .cp-convo {
+      position: absolute; inset: 0;
+      background: #fff; display: flex; flex-direction: column;
+      transform: translateX(100%); transition: transform .22s ease;
+      z-index: 10;
+    }
+    .cp-convo.open { transform: translateX(0); }
+
+    .cp-convo-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 14px; border-bottom: 1px solid #EAE9E5;
+      flex-shrink: 0;
+    }
+    .cp-back-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--surface); border: 1px solid var(--ink-6);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0; color: var(--ink-3);
+    }
+    .cp-back-btn svg { width: 14px; height: 14px; }
+    .cp-convo-av {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: #E8E7E3; color: var(--ink-2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; flex-shrink: 0; position: relative;
+    }
+    .cp-convo-info { flex: 1; min-width: 0; }
+    .cp-convo-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .cp-convo-pt   { font-size: 11px; color: var(--ink-4); margin-top: 1px; }
+
+    .cp-msg-list {
+      flex: 1; overflow-y: auto; padding: 14px 12px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .cp-msg-list::-webkit-scrollbar { width: 3px; }
+    .cp-msg-list::-webkit-scrollbar-thumb { background: var(--ink-6); border-radius: 2px; }
+
+    .cp-msg { display: flex; gap: 8px; align-items: flex-end; }
+    .cp-msg.me { flex-direction: row-reverse; }
+
+    .cp-msg-av {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      background: #E8E7E3; color: var(--ink-3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800;
+    }
+    .cp-msg.me .cp-msg-av { background: var(--accent); color: #fff; }
+
+    .cp-msg-bubble {
+      max-width: 200px; padding: 9px 12px; border-radius: 14px;
+      font-size: 12.5px; line-height: 1.55; color: var(--ink);
+      background: var(--surface); border: 1px solid #ECEAE6;
+    }
+    .cp-msg.me .cp-msg-bubble {
+      background: var(--ink); color: #fff; border-color: var(--ink);
+    }
+    .cp-msg-time { font-size: 9.5px; color: var(--ink-5); flex-shrink: 0; padding-bottom: 2px; }
+
+    .cp-msg-date-sep {
+      text-align: center; font-size: 10px; color: var(--ink-5);
+      font-weight: 600; margin: 4px 0;
+    }
+
+    .cp-convo-input-wrap { padding: 10px 12px; border-top: 1px solid #EAE9E5; flex-shrink: 0; }
+    .cp-convo-input-row {
+      display: flex; gap: 7px; align-items: center;
+      background: var(--surface); border-radius: 999px;
+      padding: 7px 7px 7px 14px; border: 1px solid var(--ink-6);
+    }
+    .cp-convo-input {
+      flex: 1; border: none; background: transparent; outline: none;
+      font-size: 12.5px; font-family: var(--font); color: var(--ink);
+    }
+    .cp-convo-input::placeholder { color: var(--ink-5); }
+
+    /* ── PAGE SYSTEM ── */
+    .pg { display: none; }
+    .pg.active { display: block; }
+
+    /* ── MED MANAGEMENT (eMAR) ── */
+    .med-cols, .med-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 120px 84px 90px 110px 96px;
+      gap: 12px; align-items: center; padding: 0 20px;
+    }
+    .med-cols {
+      padding-top: 11px; padding-bottom: 11px;
+      border-bottom: 1px solid #F0EFEB;
+      background: #FAFAF8;
+    }
+    .med-row {
+      padding-top: 13px; padding-bottom: 13px;
+      border-bottom: 1px solid #F5F4F2;
+      cursor: pointer; transition: background .1s;
+    }
+    .med-row:hover { background: #FAFAF8; }
+    .med-row:last-child { border-bottom: none; }
+    .med-row.skip { opacity: .5; }
+
+    .med-drug { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .med-pill-icon {
+      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+    .med-pill-icon.oral  { background: rgba(34,197,94,.10); }
+    .med-pill-icon.iv    { background: rgba(99,102,241,.10); }
+    .med-pill-icon.ext   { background: rgba(245,158,11,.10); }
+    .med-name { font-size: 13px; font-weight: 700; color: var(--ink); line-height: 1.25; }
+    .med-generic { font-size: 11px; color: var(--ink-4); margin-top: 1px; }
+
+    .med-dose { font-size: 12px; color: var(--ink-3); }
+    .med-route {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 999px; margin-top: 3px;
+      background: var(--surface); color: var(--ink-4);
+      border: 1px solid var(--ink-6);
+    }
+    .med-time { font-size: 12px; color: var(--ink-3); }
+    .med-time.overdue { color: var(--danger); font-weight: 700; }
+    .med-done-time { font-size: 12px; color: var(--ink-4); }
+    .med-done-time.none { color: var(--ink-6); }
+
+    .med-actions { display: flex; gap: 5px; justify-content: flex-end; }
+
+    /* ── CHECKLIST ── */
+    .cl-group-head {
+      padding: 8px 20px 7px;
+      background: #FAFAF8;
+      border-bottom: 1px solid #F0EFEB;
+      border-top: 1px solid #F0EFEB;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .cl-group-head:first-child { border-top: none; }
+    .cl-group-label {
+      font-size: 10.5px; font-weight: 700; color: var(--ink-4);
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    .cl-group-prog {
+      font-size: 10.5px; color: var(--ink-5); font-weight: 600; margin-left: auto;
+    }
+
+    .cl-cols, .cl-row {
+      display: grid;
+      grid-template-columns: 40px 180px 1fr 110px 80px 110px;
+      gap: 12px; align-items: center; padding: 0 20px;
+    }
+    .cl-cols {
+      padding-top: 11px; padding-bottom: 11px;
+      border-bottom: 1px solid #F0EFEB;
+      background: #FAFAF8;
+    }
+    .cl-row {
+      padding-top: 12px; padding-bottom: 12px;
+      border-bottom: 1px solid #F5F4F2;
+      cursor: pointer; transition: background .1s;
+    }
+    .cl-row:hover { background: #FAFAF8; }
+    .cl-row:last-child { border-bottom: none; }
+    .cl-row.done { opacity: .65; }
+
+    .cl-check {
+      width: 20px; height: 20px; border-radius: 6px;
+      border: 2px solid var(--ink-6); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; cursor: pointer; transition: all .15s;
+    }
+    .cl-check.checked {
+      background: var(--accent); border-color: var(--accent);
+    }
+    .cl-check.checked::after {
+      content: '';
+      width: 5px; height: 9px;
+      border-right: 2px solid #fff; border-bottom: 2px solid #fff;
+      transform: rotate(45deg) translateY(-1px);
+    }
+
+
+    .cl-task { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .cl-row.done .cl-task { text-decoration: line-through; color: var(--ink-5); }
+    .cl-task-sub { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
+    .cl-assignee { font-size: 12px; color: var(--ink-3); }
+    .cl-sched { font-size: 12px; color: var(--ink-4); }
+    .cl-sched.overdue { color: var(--danger); font-weight: 600; }
+
+    /* ── PATIENT MANAGEMENT ── */
+    .pt-page-head {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .pt-page-head-text h1 {
+      font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: -.4px;
+    }
+    .pt-page-head-text p { font-size: 13px; color: var(--ink-3); margin-top: 5px; }
+
+    .pt-add-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border-radius: 999px;
+      background: var(--accent); color: #fff;
+      border: none; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: var(--font); flex-shrink: 0;
+    }
+
+    .pt-filter-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .pt-tabs {
+      display: flex; gap: 2px;
+      background: var(--white); border: 1px solid var(--ink-6);
+      border-radius: 999px; padding: 3px;
+    }
+    .pt-tab {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 999px;
+      font-size: 12px; font-weight: 500; color: var(--ink-4);
+      cursor: pointer; white-space: nowrap;
+    }
+    .pt-tab.active { background: var(--ink); color: #fff; font-weight: 700; }
+    .pt-tab-count {
+      font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 999px;
+    }
+    .pt-tab.active .pt-tab-count { background: rgba(255,255,255,.18); }
+    .pt-tab:not(.active) .pt-tab-count { background: var(--surface); color: var(--ink-4); border: 1px solid var(--ink-6); }
+
+    .pt-sort-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 999px;
+      border: 1px solid var(--ink-6); background: var(--white);
+      font-size: 12px; font-weight: 600; color: var(--ink-3);
+      cursor: pointer; font-family: var(--font);
+    }
+
+    /* Patient list card */
+    .pt-card {
+      background: var(--card-bg);
+      border: var(--card-br);
+      border-radius: var(--card-rad);
+      box-shadow: var(--card-sh);
+      overflow: hidden;
+    }
+
+    .pt-cols, .pt-row {
+      display: grid;
+      grid-template-columns: 210px 108px 155px 84px 1fr 108px;
+      gap: 14px;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .pt-cols {
+      padding-top: 11px; padding-bottom: 11px;
+      border-bottom: 1px solid #F0EFEB;
+      background: #FAFAF8;
+    }
+    .pt-col-label {
+      font-size: 10.5px; font-weight: 700; color: var(--ink-5);
+      text-transform: uppercase; letter-spacing: .4px;
+    }
+    .pt-col-label.right { text-align: right; }
+
+    .pt-row {
+      padding-top: 13px; padding-bottom: 13px;
+      border-bottom: 1px solid #F5F4F2;
+      cursor: pointer; transition: background .1s;
+    }
+    .pt-row:hover { background: #FAFAF8; }
+    .pt-row:last-child { border-bottom: none; }
+
+    .pt-info { display: flex; align-items: center; gap: 11px; min-width: 0; }
+
+    .pt-av {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; flex-shrink: 0;
+    }
+    .pt-av.dg, .pt-av.wn, .pt-av.sf, .pt-av.nt { background: #E8E7E3; color: var(--ink-2); }
+
+    .pt-room { font-size: 10px; font-weight: 700; color: var(--ink-5); letter-spacing: .2px; }
+    .pt-name-text { font-size: 13px; font-weight: 700; color: var(--ink); line-height: 1.25; }
+    .pt-meta { font-size: 11px; color: var(--ink-4); margin-top: 1px; }
+
+    .pt-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 700;
+      padding: 5px 11px; border-radius: 999px;
+    }
+    .pt-badge.dg { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-b); }
+    .pt-badge.wn { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-b); }
+    .pt-badge.sf { background: var(--accent-bg); color: #16A34A; border: 1px solid var(--accent-b); }
+    .pt-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+    .pt-progress { display: flex; align-items: center; gap: 9px; }
+    .pt-pct { font-size: 12px; font-weight: 700; color: var(--ink-2); min-width: 30px; }
+    .pt-pct.low { color: var(--danger); }
+    .pt-pbar { flex: 1; height: 4px; background: #ECEAE6; border-radius: 4px; overflow: hidden; }
+    .pt-pfill { height: 100%; border-radius: 4px; background: var(--accent); }
+    .pt-pfill.low { background: var(--danger); }
+    .pt-pfill.mid { background: var(--warn); }
+
+    .pt-vital { font-size: 12px; color: var(--ink-4); }
+
+    .pt-note { font-size: 12px; color: var(--ink-3); line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pt-note.dg { color: var(--danger); font-weight: 600; }
+    .pt-note.wn { color: var(--warn); font-weight: 600; }
+
+    .pt-actions { display: flex; gap: 5px; justify-content: flex-end; }
+    .pt-act {
+      padding: 5px 12px; border-radius: 999px;
+      font-size: 11px; font-weight: 600;
+      border: 1px solid var(--ink-6); background: var(--white);
+      color: var(--ink-3); cursor: pointer; font-family: var(--font); white-space: nowrap;
+    }
+    .pt-act:hover { background: var(--surface); }
+    .pt-act.em { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+    .pt-more {
+      padding: 14px 20px; text-align: center;
+      font-size: 12px; color: var(--ink-4); font-weight: 600;
+      cursor: pointer;
+    }
+    .pt-more:hover { background: #FAFAF8; color: var(--ink-3); }
+
+    /* ── SCHEDULE ── */
+    .week-strip {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 6px; margin-bottom: 18px;
+    }
+    .week-day {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 10px 4px; border-radius: 10px;
+      border: 1px solid var(--ink-6); background: var(--white); cursor: pointer;
+      transition: background .1s;
+    }
+    .week-day:hover { background: var(--surface); }
+    .week-day.today { background: var(--ink); border-color: var(--ink); }
+    .week-day-name { font-size: 10px; font-weight: 700; color: var(--ink-5); text-transform: uppercase; letter-spacing: .3px; }
+    .week-day.today .week-day-name { color: rgba(255,255,255,.55); }
+    .week-day-num  { font-size: 18px; font-weight: 800; color: var(--ink); margin-top: 3px; }
+    .week-day.today .week-day-num  { color: #fff; }
+    .week-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-top: 5px; }
+    .week-dot.none { background: transparent; }
+    .week-day.today .week-dot { background: rgba(255,255,255,.5); }
+    .sch-card { background: var(--card-bg); border: var(--card-br); border-radius: var(--card-rad); box-shadow: var(--card-sh); overflow: hidden; }
+
+    /* Schedule view switching */
+    .sch-view { display: none; }
+    .sch-view.active { display: block; }
+
+    /* Nurse filter chips */
+    .sch-nf-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+    .sch-nf-btn {
+      padding: 5px 14px; border-radius: 20px;
+      border: 1px solid var(--ink-6); background: transparent;
+      font-size: 11px; font-weight: 600; color: var(--ink-4);
+      cursor: pointer; font-family: var(--font); transition: all .15s;
+    }
+    .sch-nf-btn:hover { border-color: var(--ink-4); color: var(--ink-3); }
+    .sch-nf-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .sch-nf-btn.me.active { background: var(--accent); border-color: var(--accent); }
+
+    /* Calendar wrap */
+    .sch-cal-wrap {
+      background: var(--card-bg); border: var(--card-br);
+      box-shadow: var(--card-sh); border-radius: var(--card-rad); overflow: hidden;
+    }
+    .sch-cal-legend {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 20px; border-bottom: 1px solid #F0EFEB;
+    }
+    .sch-cal-legend-title { font-size: 12px; font-weight: 700; color: var(--ink); flex: 1; }
+    .sch-cal-dow-row {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      border-bottom: 1px solid #EDECE8; background: #FAFAF8;
+    }
+    .sch-cal-dow {
+      padding: 9px 0; text-align: center;
+      font-size: 10px; font-weight: 700; color: var(--ink-5); letter-spacing: .3px;
+    }
+    .sch-cal-dow.wknd { color: var(--ink-6); }
+    .sch-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+    .sch-cal-cell {
+      min-height: 104px; padding: 8px 6px;
+      border-right: 1px solid #F5F4F2; border-bottom: 1px solid #F5F4F2;
+    }
+    .sch-cal-cell:nth-child(7n) { border-right: none; }
+    .sch-cal-cell.empty { background: #FAFAF9; }
+    .sch-cal-cell.today-cell { background: rgba(34,197,94,.03); }
+    .sch-cal-cell.wknd-bg { background: #FAFAF9; }
+    .sch-cal-day-num {
+      font-size: 11px; font-weight: 700; color: var(--ink-4);
+      margin-bottom: 5px; display: inline-block;
+    }
+    .sch-cal-cell.today-cell .sch-cal-day-num {
+      width: 20px; height: 20px; border-radius: 50%; text-align: center; line-height: 20px;
+      background: var(--accent); color: #fff; font-size: 10px;
+    }
+    .sch-cal-cell.wknd-bg .sch-cal-day-num { color: var(--ink-6); }
+    /* Summary (전체 mode) */
+    .sch-cal-summary { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
+    .sch-cal-sum-row { display: flex; align-items: center; gap: 5px; }
+    .sch-cal-sum-n { font-size: 11px; font-weight: 700; color: var(--ink-3); }
+    .sch-cal-sum-off { font-size: 10px; color: var(--ink-6); margin-top: 1px; }
+    /* Entries (solo mode) */
+    .sch-cal-entries { display: none; flex-direction: column; gap: 3px; }
+    .sch-cal-entry { display: flex; align-items: center; gap: 3px; }
+    .sch-cal-entry[hidden] { display: none !important; }
+    .sch-cal-shift-time { font-size: 9px; color: var(--ink-5); display: block; margin-top: 1px; }
+    /* Solo (single-nurse) mode */
+    .sch-cal-cell.solo { display: flex; flex-direction: column; }
+    .sch-cal-cell.solo .sch-cal-summary { display: none; }
+    .sch-cal-cell.solo .sch-cal-entries { display: flex; flex: 1; align-items: center; justify-content: center; }
+    .sch-cal-cell.solo .sch-cal-entry { flex-direction: column; gap: 2px; align-items: center; }
+    .sch-cal-cell.solo .sb { font-size: 12px; padding: 4px 12px; }
+
+    /* Shift badges */
+    .sb { display: inline-block; font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 4px; line-height: 1.5; letter-spacing: .3px; }
+    .sb-d  { background: var(--accent-bg); color: #16A34A; }
+    .sb-e  { background: var(--warn-bg);   color: #B45309; }
+    .sb-n  { background: var(--surface);   color: var(--ink-3); }
+    .sb-off{ color: var(--ink-6); font-size: 13px; line-height: 1; }
+
+    /* ── HANDOVER ── */
+    .ho-cols, .ho-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 96px 110px 96px;
+      gap: 12px; align-items: start; padding: 0 20px;
+    }
+    .ho-cols { padding-top: 11px; padding-bottom: 11px; border-bottom: 1px solid #F0EFEB; background: #FAFAF8; align-items: center; }
+    .ho-row  { padding-top: 16px; padding-bottom: 16px; border-bottom: 1px solid #F5F4F2; cursor: pointer; transition: background .1s; }
+    .ho-row:hover { background: #FAFAF8; }
+    .ho-row:last-child { border-bottom: none; }
+    .ho-sbar { display: flex; flex-direction: column; gap: 6px; }
+    .ho-line { display: flex; gap: 8px; align-items: flex-start; }
+    .ho-lbl {
+      font-size: 9px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase;
+      padding: 2px 6px; border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+    }
+    .ho-lbl.s, .ho-lbl.a, .ho-lbl.r { background: var(--surface); color: var(--ink-4); }
+    .ho-text { font-size: 12px; color: var(--ink-3); line-height: 1.55; }
+    .ho-pri {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 700; padding: 5px 11px; border-radius: 999px;
+    }
+    .ho-pri.high { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-b); }
+    .ho-pri.mid  { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-b); }
+    .ho-pri.low  { background: var(--surface); color: var(--ink-4); border: 1px solid var(--ink-6); }
+
+    /* AI 인수인계 패널 */
+    .ho-ai-panel {
+      background: var(--card-bg); border: var(--card-br); border-radius: var(--card-rad);
+      box-shadow: var(--card-sh); margin-top: 10px; overflow: hidden;
+    }
+    .ho-ai-body { padding: 16px 20px 18px; display: flex; flex-direction: column; gap: 12px; }
+    .ho-ai-item {
+      padding: 14px 16px; background: var(--surface); border: 1px solid var(--ink-6);
+      border-radius: 10px; font-size: 12px; color: var(--ink-3); line-height: 1.65;
+    }
+    .ho-ai-item strong { color: var(--ink-2); font-weight: 700; }
+    .ho-gen-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 20px; background: var(--accent); color: #fff;
+      border: none; border-radius: 999px; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: var(--font); width: fit-content;
+    }
+
+    /* ── RECORDS ── */
+    .rec-cols, .rec-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 110px 110px 90px 144px;
+      gap: 12px; align-items: center; padding: 0 20px;
+    }
+    .rec-cols { padding-top: 11px; padding-bottom: 11px; border-bottom: 1px solid #F0EFEB; background: #FAFAF8; }
+    .rec-row  { padding-top: 13px; padding-bottom: 13px; border-bottom: 1px solid #F5F4F2; cursor: pointer; transition: background .1s; }
+    .rec-row:hover  { background: #FAFAF8; }
+    .rec-row:last-child { border-bottom: none; }
+    .rec-type {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+    }
+    .rec-type.nurse  { background: rgba(99,102,241,.08); color: #4F46E5; border: 1px solid rgba(99,102,241,.2); }
+    .rec-type.pay    { background: var(--accent-bg); color: #16A34A; border: 1px solid var(--accent-b); }
+    .rec-type.vital  { background: rgba(59,130,246,.08); color: #2563EB; border: 1px solid rgba(59,130,246,.2); }
+    .rec-type.inc    { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-b); }
+    .rec-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .rec-sub   { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
+    .rec-ai-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 600; color: #16A34A;
+      padding: 4px 9px; border-radius: 999px;
+      background: var(--accent-bg); border: 1px solid var(--accent-b);
+    }
+
+    /* ── MYPAGE ── */
+    .my-profile-card {
+      background: var(--card-bg); border: var(--card-br); border-radius: var(--card-rad);
+      box-shadow: var(--card-sh); padding: 28px 28px 24px;
+      display: flex; align-items: center; gap: 24px; margin-bottom: 16px;
+    }
+    .my-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--ink); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; flex-shrink: 0;
+    }
+    .my-name      { font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; }
+    .my-role-line { font-size: 13px; color: var(--ink-3); margin-top: 5px; }
+    .my-chips     { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+    .my-chip {
+      font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 999px;
+      background: var(--surface); color: var(--ink-3); border: 1px solid var(--ink-6);
+    }
+    .my-chip.on { background: var(--accent-bg); color: #16A34A; border-color: var(--accent-b); }
+    .my-edit-btn {
+      margin-left: auto; padding: 9px 18px; border-radius: 999px;
+      border: 1px solid var(--ink-6); background: var(--white);
+      font-size: 13px; font-weight: 700; color: var(--ink-3);
+      cursor: pointer; font-family: var(--font); flex-shrink: 0;
+    }
+    .my-section {
+      background: var(--card-bg); border: var(--card-br); border-radius: var(--card-rad);
+      box-shadow: var(--card-sh); overflow: hidden; margin-bottom: 10px;
+    }
+    .my-section-head {
+      padding: 14px 20px; border-bottom: 1px solid #F1F0EC;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .my-section-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .my-row {
+      display: flex; align-items: center; padding: 13px 20px;
+      border-bottom: 1px solid #F5F4F2; gap: 14px;
+    }
+    .my-row:last-child { border-bottom: none; }
+    .my-row-icon {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: var(--surface); border: 1px solid var(--ink-6);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .my-row-label { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .my-row-sub   { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
+    .my-row-value { margin-left: auto; font-size: 12px; color: var(--ink-4); font-weight: 600; flex-shrink: 0; }
+    .my-toggle {
+      width: 38px; height: 22px; border-radius: 11px; background: var(--accent);
+      position: relative; cursor: pointer; flex-shrink: 0; margin-left: auto;
+    }
+    .my-toggle::after {
+      content: ''; position: absolute; top: 3px; right: 3px;
+      width: 16px; height: 16px; border-radius: 50%; background: #fff;
+    }
+    .my-toggle.off { background: var(--ink-6); }
+    .my-toggle.off::after { right: auto; left: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="white">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-name">하루안부</div>
+        <div class="logo-sub">오늘 하루도, 안녕하셨습니다</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-facility">
+    <div class="facility-dot"></div>
+    <span class="facility-name">햇살요양원 · 2병동</span>
+  </div>
+
+  <div class="nav-section-label">메인 메뉴</div>
+
+  <ul class="nav-list">
+    <li class="nav-item">
+      <a class="nav-link active" data-page="dashboard" onclick="showPage('dashboard')">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+        </svg>
+        대시보드
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-page="patients" onclick="showPage('patients')">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+        </svg>
+        환자 관리
+        <span class="nav-badge muted">25</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-page="meds" onclick="showPage('meds')">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+        </svg>
+        투약 관리 (eMAR)
+        <span class="nav-badge">2</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-page="checklist" onclick="showPage('checklist')">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+          <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+        </svg>
+        케어 체크리스트
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-page="handover" onclick="showPage('handover')">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 5a1 1 0 100 2h5.586l-1.293 1.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L13.586 5H8zM12 15a1 1 0 100-2H6.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L6.414 15H12z" clip-rule="evenodd"/>
+        </svg>
+        인수인계
+        <span class="nav-badge">3</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-page="schedule" onclick="showPage('schedule')">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+        </svg>
+        스케줄
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-page="records" onclick="showPage('records')">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
+        </svg>
+        기록·보고서
+        <span class="nav-badge muted">3</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-page="mypage" onclick="showPage('mypage')">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
+        </svg>
+        마이페이지
+      </a>
+    </li>
+  </ul>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">김</div>
+    <div>
+      <div class="user-name">김코디</div>
+      <div class="user-role">간호사 · 오전 2교대</div>
+    </div>
+  </div>
+</aside>
+
+
+<!-- ══════════ MAIN WRAPPER ══════════ -->
+<div class="main-wrapper">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="page-title">대시보드</span>
+      <span class="page-date">2026년 4월 18일 토요일</span>
+    </div>
+
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+      </svg>
+      <input class="search-input" type="text" placeholder="환자명, 약품명, 기록 검색..." oninput="searchPts(this.value)">
+    </div>
+
+    <div class="topbar-actions">
+      <button class="icon-btn" title="알림">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+        </svg>
+        <span class="notif-dot"></span>
+      </button>
+
+      <button class="sos-btn">
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+        </svg>
+        SOS 발신
+      </button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="content">
+
+  <!-- ══════════ DASHBOARD PAGE ══════════ -->
+  <div id="pg-dashboard" class="pg active">
+
+    <!-- Greeting -->
+    <div class="greeting">
+      <h1>안녕하세요, 김코디 간호사님</h1>
+      <p>오늘 담당 환자 <strong>25명</strong> 중 <strong>3명</strong>의 상태를 주의 깊게 확인해 주세요. 다음 인수인계까지 <strong>4시간 20분</strong> 남았습니다.</p>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-row">
+
+      <div class="kpi">
+        <div class="kpi-label">케어 완료율</div>
+        <div class="kpi-value"><span>68</span><span class="kpi-denom">%</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>17 / 25 완료</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:68%"></div></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-label">투약 현황</div>
+        <div class="kpi-value"><span>12</span><span class="kpi-denom">/ 22</span></div>
+        <div class="kpi-sub"><span class="kpi-dot danger"></span>미투여 2건 · 예정 8건</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:55%"></div></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-label">주의 환자</div>
+        <div class="kpi-value alert"><span>3</span><span class="kpi-denom">명</span></div>
+        <div class="kpi-sub"><span class="kpi-dot danger"></span>이상 징후 감지</div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-label">소통 현황</div>
+        <div class="kpi-value"><span>7</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot neutral"></span>미읽은 메시지</div>
+      </div>
+
+    </div>
+
+    <!-- Body Grid: Timeline + Alerts -->
+    <div class="body-grid">
+
+      <!-- Timeline -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">업무 타임라인</span>
+          <span class="card-action">전체 보기</span>
+        </div>
+        <div class="tl-wrap">
+
+          <div class="tl-now-strip">
+            <div class="tl-live-dot"></div>
+            현재 10:24 — 상처 관리 진행 중
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-time-col">06:00</div>
+            <div class="tl-node-col"><div class="tl-dot done"></div><div class="tl-line"></div></div>
+            <div class="tl-body-col">
+              <div class="tl-row">
+                <span class="tl-name done">아침 투약</span>
+                <span class="tl-tag done">완료</span>
+              </div>
+              <div class="tl-desc">전체 25명 · 23명 완료</div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-time-col">07:00</div>
+            <div class="tl-node-col"><div class="tl-dot done"></div><div class="tl-line"></div></div>
+            <div class="tl-body-col">
+              <div class="tl-row">
+                <span class="tl-name done">아침 식사 체크</span>
+                <span class="tl-tag done">완료</span>
+              </div>
+              <div class="tl-desc">섭취율 확인 완료</div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-time-col">08:30</div>
+            <div class="tl-node-col"><div class="tl-dot alert"></div><div class="tl-line"></div></div>
+            <div class="tl-body-col">
+              <div class="tl-row">
+                <span class="tl-name done">바이탈 측정</span>
+                <span class="tl-tag warn">이상 2건</span>
+              </div>
+              <div class="tl-desc">혈압·체온·맥박</div>
+            </div>
+          </div>
+
+          <div class="tl-item is-current">
+            <div class="tl-time-col">10:00</div>
+            <div class="tl-node-col"><div class="tl-dot current"></div><div class="tl-line"></div></div>
+            <div class="tl-body-col">
+              <div class="tl-row">
+                <span class="tl-name current">상처 관리</span>
+                <span class="tl-tag now">진행중</span>
+              </div>
+              <div class="tl-desc">301호 박영수님 · 드레싱 교체</div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-time-col">11:00</div>
+            <div class="tl-node-col"><div class="tl-dot next"></div><div class="tl-line"></div></div>
+            <div class="tl-body-col">
+              <div class="tl-row">
+                <span class="tl-name dim">중간 투약 (PRN)</span>
+                <span class="tl-tag next">예정</span>
+              </div>
+              <div class="tl-desc">303호 이철수님 · 진통제</div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-time-col">12:00</div>
+            <div class="tl-node-col"><div class="tl-dot next"></div><div class="tl-line"></div></div>
+            <div class="tl-body-col">
+              <div class="tl-row">
+                <span class="tl-name dim">점심 식사 체크</span>
+                <span class="tl-tag next">예정</span>
+              </div>
+              <div class="tl-desc">전체 환자 섭취율 기록</div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-time-col">14:00</div>
+            <div class="tl-node-col"><div class="tl-dot next"></div><div class="tl-line"></div></div>
+            <div class="tl-body-col">
+              <div class="tl-row">
+                <span class="tl-name dim">재활 치료 동행</span>
+                <span class="tl-tag next">예정</span>
+              </div>
+              <div class="tl-desc">305호 최미경님 · 물리치료실</div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-time-col">22:00</div>
+            <div class="tl-node-col"><div class="tl-dot next"></div><div class="tl-line"></div></div>
+            <div class="tl-body-col">
+              <div class="tl-row">
+                <span class="tl-name dim">인수인계</span>
+                <span class="tl-tag next">예정</span>
+              </div>
+              <div class="tl-desc">AI SBAR 리포트 자동 생성</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Alert Feed -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">주의 환자 알림</span>
+          <span class="card-action">모두 보기</span>
+        </div>
+        <div class="alert-list">
+
+          <div class="al-item critical">
+            <div class="al-body">
+              <div class="al-patient">301호 박영수 (남 · 82세)</div>
+              <div class="al-msg">혈압 180/110 측정 · 2시간 내 재측정 후 이송 검토 권장</div>
+              <div class="al-time">10분 전 · AI 감지</div>
+            </div>
+            <button class="al-btn crit">대응</button>
+          </div>
+
+          <div class="al-item caution">
+            <div class="al-body">
+              <div class="al-patient">302호 김순자 (여 · 78세)</div>
+              <div class="al-msg">식사량 3일 연속 30% 미만 · 영양 상담 및 보호자 알림 고려</div>
+              <div class="al-time">어제부터 추이 감지</div>
+            </div>
+            <button class="al-btn norm">확인</button>
+          </div>
+
+          <div class="al-item">
+            <div class="al-body">
+              <div class="al-patient">303호 이철수 (남 · 75세)</div>
+              <div class="al-msg">09:00 투약 미완료 · 본인 거부 의사 표시</div>
+              <div class="al-time">1시간 전 요양보호사 보고</div>
+            </div>
+          </div>
+
+          <div class="al-item">
+            <div class="al-body">
+              <div class="al-patient">305호 최미경 보호자</div>
+              <div class="al-msg">"오늘 어머니 재활 치료 결과 어떻게 됐나요?" 미확인 메시지</div>
+              <div class="al-time">30분 전</div>
+            </div>
+            <button class="al-btn norm">답장</button>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /body-grid -->
+
+    <!-- AI Panel -->
+    <div class="ai-panel">
+      <div class="ai-panel-head">
+        <div class="ai-head-left">
+          <div class="ai-head-mark">
+            <svg width="16" height="16" viewBox="0 0 2526 2526" fill="white">
+              <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+              <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="ai-head-label">하루 AI 어시스턴트</div>
+            <div class="ai-head-sub">오늘 주요 감지 사항 · 2026.04.18 10:24 기준</div>
+          </div>
+        </div>
+        <span class="card-action">전체 리포트</span>
+      </div>
+
+      <div class="ai-items">
+        <div class="ai-item">
+          <span class="ai-badge urgent">긴급</span>
+          <div class="ai-pt">박영수님 (301호)</div>
+          <div class="ai-text">혈압 180/110, 2시간 내 재측정 후 이송 검토 권장. 지난주 비슷한 패턴 후 응급실 방문 이력 있음.</div>
+        </div>
+        <div class="ai-item">
+          <span class="ai-badge caution">주의</span>
+          <div class="ai-pt">김순자님 (302호)</div>
+          <div class="ai-text">식사량 3일 연속 30% 미만 감지. 영양 상담 및 보호자 알림 고려 권장.</div>
+        </div>
+        <div class="ai-item" id="ai-rec-item">
+          <span class="ai-badge info">정보</span>
+          <div class="ai-pt">기록 관리</div>
+          <div class="ai-text">이번 달 급여제공기록지 미작성 3건. 실사 전 작성 완료 필요.</div>
+          <button class="ai-auto-btn" id="ai-auto-btn" onclick="autoGenRecords(this)">자동생성</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pg-dashboard -->
+
+  <!-- ══════════ PATIENT MANAGEMENT PAGE ══════════ -->
+  <div id="pg-patients" class="pg">
+
+    <div class="pt-page-head">
+      <div class="pt-page-head-text">
+        <h1>환자 관리</h1>
+        <p>2병동 · 담당 환자 25명 · 마지막 업데이트 10:24</p>
+      </div>
+      <button class="pt-add-btn">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        신규 환자
+      </button>
+    </div>
+
+    <div class="kpi-row" style="margin-bottom:18px;">
+      <div class="kpi">
+        <div class="kpi-label">케어 완료율</div>
+        <div class="kpi-value"><span>68</span><span class="kpi-denom">%</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>17 / 25 완료</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:68%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">주의</div>
+        <div class="kpi-value alert"><span>3</span><span class="kpi-denom">명</span></div>
+        <div class="kpi-sub"><span class="kpi-dot danger"></span>이상 징후 감지</div>
+        <div class="kpi-bar"><div class="kpi-fill low" style="width:12%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">모니터링</div>
+        <div class="kpi-value"><span>2</span><span class="kpi-denom">명</span></div>
+        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>추이 관찰 중</div>
+        <div class="kpi-bar"><div class="kpi-fill mid" style="width:8%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">안정</div>
+        <div class="kpi-value"><span>20</span><span class="kpi-denom">명</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>정상 범위</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:80%"></div></div>
+      </div>
+    </div>
+
+    <div class="pt-filter-bar">
+      <div class="pt-tabs">
+        <div class="pt-tab active" onclick="ptTab(this)">전체 <span class="pt-tab-count">25</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">주의 <span class="pt-tab-count">3</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">모니터링 <span class="pt-tab-count">2</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">안정 <span class="pt-tab-count">20</span></div>
+      </div>
+      <button class="pt-sort-btn">
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"/></svg>
+        정렬: 호실순
+      </button>
+    </div>
+
+    <div class="pt-card">
+
+      <div class="pt-cols">
+        <div class="pt-col-label">환자</div>
+        <div class="pt-col-label">상태</div>
+        <div class="pt-col-label">케어 완료</div>
+        <div class="pt-col-label">바이탈 확인</div>
+        <div class="pt-col-label">최근 메모</div>
+        <div class="pt-col-label right">액션</div>
+      </div>
+
+      <!-- 301 박영수 · 주의 -->
+      <div class="pt-row">
+        <div class="pt-info">
+          <div class="pt-av dg">박</div>
+          <div>
+            <div class="pt-room">301호</div>
+            <div class="pt-name-text">박영수</div>
+            <div class="pt-meta">남 · 82세</div>
+          </div>
+        </div>
+        <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>주의</span></div>
+        <div class="pt-progress">
+          <span class="pt-pct low">45%</span>
+          <div class="pt-pbar"><div class="pt-pfill low" style="width:45%"></div></div>
+        </div>
+        <div class="pt-vital">10분 전</div>
+        <div class="pt-note dg">혈압 180/110 이상 감지</div>
+        <div class="pt-actions">
+          <button class="pt-act em">대응</button>
+          <button class="pt-act">채팅</button>
+        </div>
+      </div>
+
+      <!-- 302 김순자 · 주의 -->
+      <div class="pt-row">
+        <div class="pt-info">
+          <div class="pt-av dg">김</div>
+          <div>
+            <div class="pt-room">302호</div>
+            <div class="pt-name-text">김순자</div>
+            <div class="pt-meta">여 · 78세</div>
+          </div>
+        </div>
+        <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>주의</span></div>
+        <div class="pt-progress">
+          <span class="pt-pct low">52%</span>
+          <div class="pt-pbar"><div class="pt-pfill low" style="width:52%"></div></div>
+        </div>
+        <div class="pt-vital">1시간 전</div>
+        <div class="pt-note wn">식사량 3일 연속 30% 미만</div>
+        <div class="pt-actions">
+          <button class="pt-act">기록</button>
+          <button class="pt-act">채팅</button>
+        </div>
+      </div>
+
+      <!-- 303 이철수 · 주의 -->
+      <div class="pt-row">
+        <div class="pt-info">
+          <div class="pt-av dg">이</div>
+          <div>
+            <div class="pt-room">303호</div>
+            <div class="pt-name-text">이철수</div>
+            <div class="pt-meta">남 · 75세</div>
+          </div>
+        </div>
+        <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>주의</span></div>
+        <div class="pt-progress">
+          <span class="pt-pct low">38%</span>
+          <div class="pt-pbar"><div class="pt-pfill low" style="width:38%"></div></div>
+        </div>
+        <div class="pt-vital">2시간 전</div>
+        <div class="pt-note dg">오전 투약 거부 — 재시도 필요</div>
+        <div class="pt-actions">
+          <button class="pt-act">기록</button>
+          <button class="pt-act">채팅</button>
+        </div>
+      </div>
+
+      <!-- 307 한영희 · 모니터링 -->
+      <div class="pt-row">
+        <div class="pt-info">
+          <div class="pt-av wn">한</div>
+          <div>
+            <div class="pt-room">307호</div>
+            <div class="pt-name-text">한영희</div>
+            <div class="pt-meta">여 · 83세</div>
+          </div>
+        </div>
+        <div><span class="pt-badge wn"><span class="pt-badge-dot"></span>모니터링</span></div>
+        <div class="pt-progress">
+          <span class="pt-pct">68%</span>
+          <div class="pt-pbar"><div class="pt-pfill mid" style="width:68%"></div></div>
+        </div>
+        <div class="pt-vital">2시간 전</div>
+        <div class="pt-note">수면 패턴 변화 관찰 중</div>
+        <div class="pt-actions">
+          <button class="pt-act">기록</button>
+          <button class="pt-act">채팅</button>
+        </div>
+      </div>
+
+      <!-- 309 조순례 · 모니터링 -->
+      <div class="pt-row">
+        <div class="pt-info">
+          <div class="pt-av wn">조</div>
+          <div>
+            <div class="pt-room">309호</div>
+            <div class="pt-name-text">조순례</div>
+            <div class="pt-meta">여 · 85세</div>
+          </div>
+        </div>
+        <div><span class="pt-badge wn"><span class="pt-badge-dot"></span>모니터링</span></div>
+        <div class="pt-progress">
+          <span class="pt-pct">62%</span>
+          <div class="pt-pbar"><div class="pt-pfill mid" style="width:62%"></div></div>
+        </div>
+        <div class="pt-vital">3시간 전</div>
+        <div class="pt-note">식욕 감소 추이 모니터링</div>
+        <div class="pt-actions">
+          <button class="pt-act">기록</button>
+          <button class="pt-act">채팅</button>
+        </div>
+      </div>
+
+      <!-- 304 오병석 · 안정 -->
+      <div class="pt-row">
+        <div class="pt-info">
+          <div class="pt-av sf">오</div>
+          <div>
+            <div class="pt-room">304호</div>
+            <div class="pt-name-text">오병석</div>
+            <div class="pt-meta">남 · 80세</div>
+          </div>
+        </div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>안정</span></div>
+        <div class="pt-progress">
+          <span class="pt-pct">88%</span>
+          <div class="pt-pbar"><div class="pt-pfill" style="width:88%"></div></div>
+        </div>
+        <div class="pt-vital">30분 전</div>
+        <div class="pt-note">아침 식사 80% 섭취</div>
+        <div class="pt-actions">
+          <button class="pt-act">기록</button>
+          <button class="pt-act">채팅</button>
+        </div>
+      </div>
+
+      <!-- 305 최미경 · 안정 -->
+      <div class="pt-row">
+        <div class="pt-info">
+          <div class="pt-av sf">최</div>
+          <div>
+            <div class="pt-room">305호</div>
+            <div class="pt-name-text">최미경</div>
+            <div class="pt-meta">여 · 72세</div>
+          </div>
+        </div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>안정</span></div>
+        <div class="pt-progress">
+          <span class="pt-pct">75%</span>
+          <div class="pt-pbar"><div class="pt-pfill" style="width:75%"></div></div>
+        </div>
+        <div class="pt-vital">1시간 전</div>
+        <div class="pt-note">14:00 재활 치료 예정</div>
+        <div class="pt-actions">
+          <button class="pt-act">기록</button>
+          <button class="pt-act">채팅</button>
+        </div>
+      </div>
+
+      <!-- 306 정해수 · 안정 -->
+      <div class="pt-row">
+        <div class="pt-info">
+          <div class="pt-av sf">정</div>
+          <div>
+            <div class="pt-room">306호</div>
+            <div class="pt-name-text">정해수</div>
+            <div class="pt-meta">남 · 77세</div>
+          </div>
+        </div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>안정</span></div>
+        <div class="pt-progress">
+          <span class="pt-pct">92%</span>
+          <div class="pt-pbar"><div class="pt-pfill" style="width:92%"></div></div>
+        </div>
+        <div class="pt-vital">45분 전</div>
+        <div class="pt-note">전반적 상태 양호</div>
+        <div class="pt-actions">
+          <button class="pt-act">기록</button>
+          <button class="pt-act">채팅</button>
+        </div>
+      </div>
+
+      <!-- 308 신창호 · 안정 -->
+      <div class="pt-row">
+        <div class="pt-info">
+          <div class="pt-av sf">신</div>
+          <div>
+            <div class="pt-room">308호</div>
+            <div class="pt-name-text">신창호</div>
+            <div class="pt-meta">남 · 79세</div>
+          </div>
+        </div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>안정</span></div>
+        <div class="pt-progress">
+          <span class="pt-pct">80%</span>
+          <div class="pt-pbar"><div class="pt-pfill" style="width:80%"></div></div>
+        </div>
+        <div class="pt-vital">1시간 전</div>
+        <div class="pt-note">전반적 상태 양호</div>
+        <div class="pt-actions">
+          <button class="pt-act">기록</button>
+          <button class="pt-act">채팅</button>
+        </div>
+      </div>
+
+      <!-- 310 윤태수 · 안정 -->
+      <div class="pt-row">
+        <div class="pt-info">
+          <div class="pt-av nt">윤</div>
+          <div>
+            <div class="pt-room">310호</div>
+            <div class="pt-name-text">윤태수</div>
+            <div class="pt-meta">남 · 74세</div>
+          </div>
+        </div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>안정</span></div>
+        <div class="pt-progress">
+          <span class="pt-pct">95%</span>
+          <div class="pt-pbar"><div class="pt-pfill" style="width:95%"></div></div>
+        </div>
+        <div class="pt-vital">20분 전</div>
+        <div class="pt-note">이번 주 케어 완료율 최고</div>
+        <div class="pt-actions">
+          <button class="pt-act">기록</button>
+          <button class="pt-act">채팅</button>
+        </div>
+      </div>
+
+      <div class="pt-more">+ 15명 더 보기</div>
+
+    </div><!-- /pt-card -->
+
+  </div><!-- /pg-patients -->
+
+
+  <!-- ══════════ 투약 관리 (eMAR) ══════════ -->
+  <div id="pg-meds" class="pg">
+
+    <div class="pt-page-head">
+      <div class="pt-page-head-text">
+        <h1>투약 관리 (eMAR)</h1>
+        <p>2병동 · 오늘 총 22건 · 마지막 업데이트 10:24</p>
+      </div>
+      <button class="pt-add-btn">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        투약 기록
+      </button>
+    </div>
+
+    <div class="kpi-row" style="margin-bottom:18px;">
+      <div class="kpi">
+        <div class="kpi-label">투약 완료</div>
+        <div class="kpi-value"><span>12</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>오늘 전체 22건 중</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:55%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">미투여</div>
+        <div class="kpi-value alert"><span>2</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot danger"></span>즉시 확인 필요</div>
+        <div class="kpi-bar"><div class="kpi-fill low" style="width:9%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">거부</div>
+        <div class="kpi-value"><span>2</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>재시도 또는 보고 필요</div>
+        <div class="kpi-bar"><div class="kpi-fill mid" style="width:9%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">예정</div>
+        <div class="kpi-value"><span>8</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot neutral"></span>오늘 남은 투약</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:36%; opacity:.35"></div></div>
+      </div>
+    </div>
+
+    <div class="pt-filter-bar">
+      <div class="pt-tabs">
+        <div class="pt-tab active" onclick="ptTab(this)">전체 <span class="pt-tab-count">22</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">미투여 <span class="pt-tab-count">2</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">거부 <span class="pt-tab-count">2</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">완료 <span class="pt-tab-count">12</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">예정 <span class="pt-tab-count">8</span></div>
+      </div>
+      <button class="pt-sort-btn">
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"/></svg>
+        정렬: 시간순
+      </button>
+    </div>
+
+    <div class="pt-card">
+
+      <div class="med-cols">
+        <div class="pt-col-label">환자</div>
+        <div class="pt-col-label">약품</div>
+        <div class="pt-col-label">용량 · 경로</div>
+        <div class="pt-col-label">예정 시간</div>
+        <div class="pt-col-label">투약 시간</div>
+        <div class="pt-col-label">상태</div>
+        <div class="pt-col-label right">액션</div>
+      </div>
+
+      <!-- 박영수 · 미투여(긴급) -->
+      <div class="med-row">
+        <div class="pt-info">
+          <div class="pt-av dg">박</div>
+          <div>
+            <div class="pt-room">301호</div>
+            <div class="pt-name-text">박영수</div>
+            <div class="pt-meta">남 · 82세</div>
+          </div>
+        </div>
+        <div class="med-drug">
+          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div>
+            <div class="med-name">암로디핀</div>
+            <div class="med-generic">Amlodipine</div>
+          </div>
+        </div>
+        <div>
+          <div class="med-dose">5 mg</div>
+          <span class="med-route">경구</span>
+        </div>
+        <div class="med-time overdue">09:00</div>
+        <div class="med-done-time none">—</div>
+        <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미투여</span></div>
+        <div class="med-actions">
+          <button class="pt-act em">투약</button>
+          <button class="pt-act">거부</button>
+        </div>
+      </div>
+
+      <!-- 박영수 · 미투여 -->
+      <div class="med-row">
+        <div class="pt-info">
+          <div class="pt-av dg">박</div>
+          <div>
+            <div class="pt-room">301호</div>
+            <div class="pt-name-text">박영수</div>
+            <div class="pt-meta">남 · 82세</div>
+          </div>
+        </div>
+        <div class="med-drug">
+          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div>
+            <div class="med-name">푸로세미드</div>
+            <div class="med-generic">Furosemide</div>
+          </div>
+        </div>
+        <div>
+          <div class="med-dose">20 mg</div>
+          <span class="med-route">경구</span>
+        </div>
+        <div class="med-time overdue">09:00</div>
+        <div class="med-done-time none">—</div>
+        <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미투여</span></div>
+        <div class="med-actions">
+          <button class="pt-act em">투약</button>
+          <button class="pt-act">거부</button>
+        </div>
+      </div>
+
+      <!-- 이철수 · 거부 -->
+      <div class="med-row">
+        <div class="pt-info">
+          <div class="pt-av dg">이</div>
+          <div>
+            <div class="pt-room">303호</div>
+            <div class="pt-name-text">이철수</div>
+            <div class="pt-meta">남 · 75세</div>
+          </div>
+        </div>
+        <div class="med-drug">
+          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div>
+            <div class="med-name">트라마돌</div>
+            <div class="med-generic">Tramadol 37.5mg</div>
+          </div>
+        </div>
+        <div>
+          <div class="med-dose">37.5 mg</div>
+          <span class="med-route">경구</span>
+        </div>
+        <div class="med-time overdue">09:00</div>
+        <div class="med-done-time none">—</div>
+        <div><span class="pt-badge wn"><span class="pt-badge-dot"></span>거부</span></div>
+        <div class="med-actions">
+          <button class="pt-act">재시도</button>
+          <button class="pt-act">보고</button>
+        </div>
+      </div>
+
+      <!-- 이철수 · 거부 -->
+      <div class="med-row">
+        <div class="pt-info">
+          <div class="pt-av dg">이</div>
+          <div>
+            <div class="pt-room">303호</div>
+            <div class="pt-name-text">이철수</div>
+            <div class="pt-meta">남 · 75세</div>
+          </div>
+        </div>
+        <div class="med-drug">
+          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div>
+            <div class="med-name">리시노프릴</div>
+            <div class="med-generic">Lisinopril</div>
+          </div>
+        </div>
+        <div>
+          <div class="med-dose">10 mg</div>
+          <span class="med-route">경구</span>
+        </div>
+        <div class="med-time overdue">09:00</div>
+        <div class="med-done-time none">—</div>
+        <div><span class="pt-badge wn"><span class="pt-badge-dot"></span>거부</span></div>
+        <div class="med-actions">
+          <button class="pt-act">재시도</button>
+          <button class="pt-act">보고</button>
+        </div>
+      </div>
+
+      <!-- 최미경 · 예정 -->
+      <div class="med-row">
+        <div class="pt-info">
+          <div class="pt-av sf">최</div>
+          <div>
+            <div class="pt-room">305호</div>
+            <div class="pt-name-text">최미경</div>
+            <div class="pt-meta">여 · 72세</div>
+          </div>
+        </div>
+        <div class="med-drug">
+          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div>
+            <div class="med-name">아세트아미노펜</div>
+            <div class="med-generic">Acetaminophen</div>
+          </div>
+        </div>
+        <div>
+          <div class="med-dose">500 mg</div>
+          <span class="med-route">경구</span>
+        </div>
+        <div class="med-time">11:00</div>
+        <div class="med-done-time none">—</div>
+        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div class="med-actions">
+          <button class="pt-act">투약</button>
+          <button class="pt-act">거부</button>
+        </div>
+      </div>
+
+      <!-- 김순자 · 완료 -->
+      <div class="med-row skip">
+        <div class="pt-info">
+          <div class="pt-av sf">김</div>
+          <div>
+            <div class="pt-room">302호</div>
+            <div class="pt-name-text">김순자</div>
+            <div class="pt-meta">여 · 78세</div>
+          </div>
+        </div>
+        <div class="med-drug">
+          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div>
+            <div class="med-name">메트포르민</div>
+            <div class="med-generic">Metformin</div>
+          </div>
+        </div>
+        <div>
+          <div class="med-dose">500 mg</div>
+          <span class="med-route">경구</span>
+        </div>
+        <div class="med-time">08:00</div>
+        <div class="med-done-time">08:12</div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
+        <div class="med-actions">
+          <button class="pt-act">수정</button>
+        </div>
+      </div>
+
+      <!-- 오병석 · 완료 -->
+      <div class="med-row skip">
+        <div class="pt-info">
+          <div class="pt-av sf">오</div>
+          <div>
+            <div class="pt-room">304호</div>
+            <div class="pt-name-text">오병석</div>
+            <div class="pt-meta">남 · 80세</div>
+          </div>
+        </div>
+        <div class="med-drug">
+          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div>
+            <div class="med-name">아토르바스타틴</div>
+            <div class="med-generic">Atorvastatin</div>
+          </div>
+        </div>
+        <div>
+          <div class="med-dose">10 mg</div>
+          <span class="med-route">경구</span>
+        </div>
+        <div class="med-time">08:00</div>
+        <div class="med-done-time">08:05</div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
+        <div class="med-actions">
+          <button class="pt-act">수정</button>
+        </div>
+      </div>
+
+      <div class="pt-more">+ 15건 더 보기</div>
+
+    </div><!-- /pt-card -->
+
+  </div><!-- /pg-meds -->
+
+
+  <!-- ══════════ 케어 체크리스트 ══════════ -->
+  <div id="pg-checklist" class="pg">
+
+    <div class="pt-page-head">
+      <div class="pt-page-head-text">
+        <h1>케어 체크리스트</h1>
+        <p>2병동 · 2026년 4월 18일 · 오전 근무 기준</p>
+      </div>
+      <button class="pt-add-btn">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        항목 추가
+      </button>
+    </div>
+
+    <div class="kpi-row" style="margin-bottom:18px;">
+      <div class="kpi">
+        <div class="kpi-label">완료</div>
+        <div class="kpi-value"><span>14</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>오늘 전체 24건 중</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:58%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">미완료</div>
+        <div class="kpi-value alert"><span>3</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot danger"></span>즉시 처리 필요</div>
+        <div class="kpi-bar"><div class="kpi-fill low" style="width:12%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">지연</div>
+        <div class="kpi-value"><span>2</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>예정 시간 초과</div>
+        <div class="kpi-bar"><div class="kpi-fill mid" style="width:8%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">예정</div>
+        <div class="kpi-value"><span>5</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot neutral"></span>오늘 남은 항목</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:21%; opacity:.35"></div></div>
+      </div>
+    </div>
+
+    <div class="pt-filter-bar">
+      <div class="pt-tabs">
+        <div class="pt-tab active" onclick="ptTab(this)">전체 <span class="pt-tab-count">24</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">미완료 <span class="pt-tab-count">3</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">지연 <span class="pt-tab-count">2</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">완료 <span class="pt-tab-count">14</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">예정 <span class="pt-tab-count">5</span></div>
+      </div>
+      <button class="pt-sort-btn">
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"/></svg>
+        정렬: 시간순
+      </button>
+    </div>
+
+    <div class="pt-card">
+
+      <div class="cl-cols">
+        <div class="pt-col-label"></div>
+        <div class="pt-col-label">환자</div>
+        <div class="pt-col-label">케어 항목</div>
+        <div class="pt-col-label">담당자</div>
+        <div class="pt-col-label">예정</div>
+        <div class="pt-col-label">상태</div>
+      </div>
+
+      <!-- 그룹: 바이탈 -->
+      <div class="cl-group-head">
+        <span class="cl-group-label">🩺 바이탈 측정</span>
+        <span class="cl-group-prog">2 / 3 완료</span>
+      </div>
+
+      <!-- 전체 아침 바이탈 · 완료 -->
+      <div class="cl-row done">
+        <div class="cl-check checked" onclick="clToggle(this)"></div>
+        <div class="pt-info">
+          <div class="pt-av sf">전</div>
+          <div>
+            <div class="pt-name-text">전체 25명</div>
+            <div class="pt-meta">2병동</div>
+          </div>
+        </div>
+        <div>
+          <div class="cl-task">아침 바이탈 측정</div>
+          <div class="cl-task-sub">혈압·체온·맥박·산소포화도</div>
+        </div>
+        <div class="cl-assignee">김코디 간호사</div>
+        <div class="cl-sched">08:30</div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
+      </div>
+
+      <!-- 박영수 혈압 재측정 · 미완료(긴급) -->
+      <div class="cl-row">
+        <div class="cl-check" onclick="clToggle(this)"></div>
+        <div class="pt-info">
+          <div class="pt-av dg">박</div>
+          <div>
+            <div class="pt-room">301호</div>
+            <div class="pt-name-text">박영수</div>
+            <div class="pt-meta">남 · 82세</div>
+          </div>
+        </div>
+        <div>
+          <div class="cl-task">혈압 재측정</div>
+          <div class="cl-task-sub">180/110 이상 감지 — 2시간 내 필수</div>
+        </div>
+        <div class="cl-assignee">김코디 간호사</div>
+        <div class="cl-sched overdue">12:00</div>
+        <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미완료</span></div>
+      </div>
+
+      <!-- 한영희 오후 바이탈 · 예정 -->
+      <div class="cl-row">
+        <div class="cl-check" onclick="clToggle(this)"></div>
+        <div class="pt-info">
+          <div class="pt-av wn">한</div>
+          <div>
+            <div class="pt-room">307호</div>
+            <div class="pt-name-text">한영희</div>
+            <div class="pt-meta">여 · 83세</div>
+          </div>
+        </div>
+        <div>
+          <div class="cl-task">오후 바이탈 추가 측정</div>
+          <div class="cl-task-sub">수면 패턴 변화 — 오후 모니터링</div>
+        </div>
+        <div class="cl-assignee">박보호 요양보호사</div>
+        <div class="cl-sched">14:00</div>
+        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+      </div>
+
+      <!-- 그룹: 투약 -->
+      <div class="cl-group-head">
+        <span class="cl-group-label">💊 투약</span>
+        <span class="cl-group-prog">1 / 3 완료</span>
+      </div>
+
+      <!-- 아침 투약 전체 · 완료 -->
+      <div class="cl-row done">
+        <div class="cl-check checked" onclick="clToggle(this)"></div>
+        <div class="pt-info">
+          <div class="pt-av sf">전</div>
+          <div>
+            <div class="pt-name-text">전체 25명</div>
+            <div class="pt-meta">2병동</div>
+          </div>
+        </div>
+        <div>
+          <div class="cl-task">아침 투약 (06:00)</div>
+          <div class="cl-task-sub">23명 완료 · 2명 미투여</div>
+        </div>
+        <div class="cl-assignee">김코디 간호사</div>
+        <div class="cl-sched">06:00</div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
+      </div>
+
+      <!-- 이철수 투약 재시도 · 미완료 -->
+      <div class="cl-row">
+        <div class="cl-check" onclick="clToggle(this)"></div>
+        <div class="pt-info">
+          <div class="pt-av dg">이</div>
+          <div>
+            <div class="pt-room">303호</div>
+            <div class="pt-name-text">이철수</div>
+            <div class="pt-meta">남 · 75세</div>
+          </div>
+        </div>
+        <div>
+          <div class="cl-task">투약 재시도</div>
+          <div class="cl-task-sub">09:00 투약 거부 — 재시도 또는 보고 필요</div>
+        </div>
+        <div class="cl-assignee">김코디 간호사</div>
+        <div class="cl-sched overdue">11:00</div>
+        <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미완료</span></div>
+      </div>
+
+      <!-- 중간 투약 이철수 · 예정 -->
+      <div class="cl-row">
+        <div class="cl-check" onclick="clToggle(this)"></div>
+        <div class="pt-info">
+          <div class="pt-av sf">최</div>
+          <div>
+            <div class="pt-room">305호</div>
+            <div class="pt-name-text">최미경</div>
+            <div class="pt-meta">여 · 72세</div>
+          </div>
+        </div>
+        <div>
+          <div class="cl-task">중간 투약 (PRN)</div>
+          <div class="cl-task-sub">아세트아미노펜 500mg — 통증 호소 시</div>
+        </div>
+        <div class="cl-assignee">김코디 간호사</div>
+        <div class="cl-sched">11:00</div>
+        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+      </div>
+
+      <!-- 그룹: 식사 -->
+      <div class="cl-group-head">
+        <span class="cl-group-label">🍽️ 식사 체크</span>
+        <span class="cl-group-prog">1 / 2 완료</span>
+      </div>
+
+      <!-- 아침 식사 전체 · 완료 -->
+      <div class="cl-row done">
+        <div class="cl-check checked" onclick="clToggle(this)"></div>
+        <div class="pt-info">
+          <div class="pt-av sf">전</div>
+          <div>
+            <div class="pt-name-text">전체 25명</div>
+            <div class="pt-meta">2병동</div>
+          </div>
+        </div>
+        <div>
+          <div class="cl-task">아침 식사 섭취율 기록</div>
+          <div class="cl-task-sub">302호 김순자님 30% 미만 — 3일 연속</div>
+        </div>
+        <div class="cl-assignee">박보호 요양보호사</div>
+        <div class="cl-sched">07:30</div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
+      </div>
+
+      <!-- 점심 식사 · 예정 -->
+      <div class="cl-row">
+        <div class="cl-check" onclick="clToggle(this)"></div>
+        <div class="pt-info">
+          <div class="pt-av sf">전</div>
+          <div>
+            <div class="pt-name-text">전체 25명</div>
+            <div class="pt-meta">2병동</div>
+          </div>
+        </div>
+        <div>
+          <div class="cl-task">점심 식사 섭취율 기록</div>
+          <div class="cl-task-sub">전체 환자 섭취량 기록</div>
+        </div>
+        <div class="cl-assignee">박보호 요양보호사</div>
+        <div class="cl-sched">12:30</div>
+        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+      </div>
+
+      <!-- 그룹: 처치·재활 -->
+      <div class="cl-group-head">
+        <span class="cl-group-label">🩹 처치 · 재활</span>
+        <span class="cl-group-prog">1 / 2 완료</span>
+      </div>
+
+      <!-- 박영수 상처 관리 · 진행중 -->
+      <div class="cl-row">
+        <div class="cl-check" onclick="clToggle(this)"></div>
+        <div class="pt-info">
+          <div class="pt-av dg">박</div>
+          <div>
+            <div class="pt-room">301호</div>
+            <div class="pt-name-text">박영수</div>
+            <div class="pt-meta">남 · 82세</div>
+          </div>
+        </div>
+        <div>
+          <div class="cl-task">상처 관리 (드레싱 교체)</div>
+          <div class="cl-task-sub">우측 발뒤꿈치 욕창 2기 — 교체 주기 2일</div>
+        </div>
+        <div class="cl-assignee">김코디 간호사</div>
+        <div class="cl-sched">10:00</div>
+        <div><span class="pt-badge wn"><span class="pt-badge-dot"></span>진행중</span></div>
+      </div>
+
+      <!-- 최미경 재활 치료 · 예정 -->
+      <div class="cl-row">
+        <div class="cl-check" onclick="clToggle(this)"></div>
+        <div class="pt-info">
+          <div class="pt-av sf">최</div>
+          <div>
+            <div class="pt-room">305호</div>
+            <div class="pt-name-text">최미경</div>
+            <div class="pt-meta">여 · 72세</div>
+          </div>
+        </div>
+        <div>
+          <div class="cl-task">재활 치료 동행</div>
+          <div class="cl-task-sub">물리치료실 · 보행 훈련 30분</div>
+        </div>
+        <div class="cl-assignee">박보호 요양보호사</div>
+        <div class="cl-sched">14:00</div>
+        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+      </div>
+
+    </div><!-- /pt-card -->
+
+  </div><!-- /pg-checklist -->
+
+
+  <!-- ══════════ 인수인계 ══════════ -->
+  <div id="pg-handover" class="pg">
+
+    <div class="pt-page-head">
+      <div class="pt-page-head-text">
+        <h1>인수인계</h1>
+        <p>2병동 · 오전 근무 종료 22:00 예정 · 마지막 업데이트 10:24</p>
+      </div>
+      <button class="pt-add-btn" id="sbar-top-btn" onclick="genSBAR(this)">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+        AI SBAR 생성
+      </button>
+    </div>
+
+    <div class="kpi-row" style="margin-bottom:18px;">
+      <div class="kpi">
+        <div class="kpi-label">전달 완료</div>
+        <div class="kpi-value"><span>2</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>5건 중</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:40%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">미전달</div>
+        <div class="kpi-value alert"><span>3</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot danger"></span>야간 근무자에게 전달 필요</div>
+        <div class="kpi-bar"><div class="kpi-fill low" style="width:60%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">특이사항</div>
+        <div class="kpi-value"><span>2</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>긴급 모니터링 필요</div>
+        <div class="kpi-bar"><div class="kpi-fill mid" style="width:40%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">AI 준비</div>
+        <div class="kpi-value"><span>5</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>SBAR 자동생성 가능</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <div class="pt-filter-bar">
+      <div class="pt-tabs">
+        <div class="pt-tab active" onclick="ptTab(this)">전체 <span class="pt-tab-count">5</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">미전달 <span class="pt-tab-count">3</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">완료 <span class="pt-tab-count">2</span></div>
+      </div>
+      <button class="pt-sort-btn">
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"/></svg>
+        정렬: 우선순위
+      </button>
+    </div>
+
+    <div class="pt-card">
+
+      <div class="ho-cols">
+        <div class="pt-col-label">환자</div>
+        <div class="pt-col-label">S · A · R 요약</div>
+        <div class="pt-col-label">우선순위</div>
+        <div class="pt-col-label">전달 상태</div>
+        <div class="pt-col-label right">액션</div>
+      </div>
+
+      <!-- 박영수 · 긴급 -->
+      <div class="ho-row">
+        <div class="pt-info">
+          <div class="pt-av dg">박</div>
+          <div>
+            <div class="pt-room">301호</div>
+            <div class="pt-name-text">박영수</div>
+            <div class="pt-meta">남 · 82세</div>
+          </div>
+        </div>
+        <div class="ho-sbar">
+          <div class="ho-line">
+            <span class="ho-lbl s">S</span>
+            <span class="ho-text">혈압 180/110 측정 — 지난주 유사 패턴 후 응급실 방문 이력</span>
+          </div>
+          <div class="ho-line">
+            <span class="ho-lbl a">A</span>
+            <span class="ho-text">고혈압 위기 가능성 — 2시간 내 재측정 및 의사 보고 권장</span>
+          </div>
+          <div class="ho-line">
+            <span class="ho-lbl r">R</span>
+            <span class="ho-text">야간 근무 중 12:00, 02:00 재측정 · 이상 시 즉시 촉탁의 호출</span>
+          </div>
+        </div>
+        <div><span class="ho-pri high"><span class="pt-badge-dot"></span>긴급</span></div>
+        <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미전달</span></div>
+        <div class="med-actions">
+          <button class="pt-act em">전달</button>
+          <button class="pt-act">편집</button>
+        </div>
+      </div>
+
+      <!-- 이철수 · 높음 -->
+      <div class="ho-row">
+        <div class="pt-info">
+          <div class="pt-av dg">이</div>
+          <div>
+            <div class="pt-room">303호</div>
+            <div class="pt-name-text">이철수</div>
+            <div class="pt-meta">남 · 75세</div>
+          </div>
+        </div>
+        <div class="ho-sbar">
+          <div class="ho-line">
+            <span class="ho-lbl s">S</span>
+            <span class="ho-text">오전 투약 2건 거부 — 트라마돌, 리시노프릴</span>
+          </div>
+          <div class="ho-line">
+            <span class="ho-lbl a">A</span>
+            <span class="ho-text">통증 조절 불량으로 인한 거부 의사 표시 — 촉탁의 보고 필요</span>
+          </div>
+          <div class="ho-line">
+            <span class="ho-lbl r">R</span>
+            <span class="ho-text">야간 저녁 투약 재시도 · 거부 지속 시 촉탁의 지시 대기</span>
+          </div>
+        </div>
+        <div><span class="ho-pri high"><span class="pt-badge-dot"></span>높음</span></div>
+        <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미전달</span></div>
+        <div class="med-actions">
+          <button class="pt-act em">전달</button>
+          <button class="pt-act">편집</button>
+        </div>
+      </div>
+
+      <!-- 김순자 · 보통 -->
+      <div class="ho-row">
+        <div class="pt-info">
+          <div class="pt-av wn">김</div>
+          <div>
+            <div class="pt-room">302호</div>
+            <div class="pt-name-text">김순자</div>
+            <div class="pt-meta">여 · 78세</div>
+          </div>
+        </div>
+        <div class="ho-sbar">
+          <div class="ho-line">
+            <span class="ho-lbl s">S</span>
+            <span class="ho-text">식사량 3일 연속 30% 미만 — 저녁 식사 추이 확인 필요</span>
+          </div>
+          <div class="ho-line">
+            <span class="ho-lbl a">A</span>
+            <span class="ho-text">영양 상태 악화 추이 — 영양사 상담 요청 진행 중</span>
+          </div>
+          <div class="ho-line">
+            <span class="ho-lbl r">R</span>
+            <span class="ho-text">저녁 식사 섭취율 기록 필수 · 보호자 알림 검토</span>
+          </div>
+        </div>
+        <div><span class="ho-pri mid"><span class="pt-badge-dot"></span>보통</span></div>
+        <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미전달</span></div>
+        <div class="med-actions">
+          <button class="pt-act">전달</button>
+          <button class="pt-act">편집</button>
+        </div>
+      </div>
+
+      <!-- 최미경 · 낮음 · 완료 -->
+      <div class="ho-row" style="opacity:.65">
+        <div class="pt-info">
+          <div class="pt-av sf">최</div>
+          <div>
+            <div class="pt-room">305호</div>
+            <div class="pt-name-text">최미경</div>
+            <div class="pt-meta">여 · 72세</div>
+          </div>
+        </div>
+        <div class="ho-sbar">
+          <div class="ho-line">
+            <span class="ho-lbl s">S</span>
+            <span class="ho-text">오후 재활 치료 완료 — 보행 훈련 30분 무사히 마침</span>
+          </div>
+          <div class="ho-line">
+            <span class="ho-lbl r">R</span>
+            <span class="ho-text">내일 오전 추가 훈련 일정 확인 · 통증 여부 모니터링</span>
+          </div>
+        </div>
+        <div><span class="ho-pri low"><span class="pt-badge-dot"></span>낮음</span></div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
+        <div class="med-actions">
+          <button class="pt-act">수정</button>
+        </div>
+      </div>
+
+      <!-- 오병석 · 낮음 · 완료 -->
+      <div class="ho-row" style="opacity:.65">
+        <div class="pt-info">
+          <div class="pt-av sf">오</div>
+          <div>
+            <div class="pt-room">304호</div>
+            <div class="pt-name-text">오병석</div>
+            <div class="pt-meta">남 · 80세</div>
+          </div>
+        </div>
+        <div class="ho-sbar">
+          <div class="ho-line">
+            <span class="ho-lbl s">S</span>
+            <span class="ho-text">오늘 케어 92% 완료 — 투약·식사·바이탈 모두 정상</span>
+          </div>
+          <div class="ho-line">
+            <span class="ho-lbl r">R</span>
+            <span class="ho-text">정기 모니터링 유지 · 특이사항 없음</span>
+          </div>
+        </div>
+        <div><span class="ho-pri low"><span class="pt-badge-dot"></span>낮음</span></div>
+        <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
+        <div class="med-actions">
+          <button class="pt-act">수정</button>
+        </div>
+      </div>
+
+    </div><!-- /pt-card -->
+
+    <!-- AI SBAR 패널 -->
+    <div class="ho-ai-panel" id="ho-ai-panel" style="display:none">
+      <div class="ai-panel-head">
+        <div class="ai-head-left">
+          <div class="ai-head-mark">
+            <svg width="16" height="16" viewBox="0 0 2526 2526" fill="white">
+              <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+              <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="ai-head-label">AI SBAR 자동 생성</div>
+            <div class="ai-head-sub">오늘 케어 기록 기반 인수인계 초안 생성 완료</div>
+          </div>
+        </div>
+        <button class="ho-gen-btn" id="sbar-regen-btn" onclick="regenSBAR(this)">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+          전체 SBAR 생성
+        </button>
+      </div>
+      <div class="ho-ai-body">
+        <div class="ho-ai-item">
+          <strong>박영수님 (301호)</strong> — S: 혈압 180/110, B: 지난주 응급실 방문 이력 있음, A: 고혈압 위기 가능성, R: 야간 12:00·02:00 재측정, 이상 시 촉탁의 즉시 호출.
+        </div>
+        <div class="ho-ai-item">
+          <strong>이철수님 (303호)</strong> — S: 트라마돌·리시노프릴 거부, B: 통증 조절 불량 지속, A: 저녁 재시도 필요, R: 거부 지속 시 촉탁의 지시 후 PRN 대체약 검토.
+        </div>
+        <div class="ho-ai-item">
+          <strong>김순자님 (302호)</strong> — S: 식사량 30% 미만 3일 연속, A: 영양 상태 악화 추이, R: 저녁 섭취율 기록 필수, 영양사 상담 내일 오전 예약 확인.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pg-handover -->
+
+
+  <!-- ══════════ 스케줄 ══════════ -->
+  <div id="pg-schedule" class="pg">
+
+    <div class="pt-page-head">
+      <div class="pt-page-head-text">
+        <h1>스케줄</h1>
+        <p>2병동 · 2026년 4월 18일 토요일 · 오전 2교대</p>
+      </div>
+      <button class="pt-add-btn">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        일정 추가
+      </button>
+    </div>
+
+    <div class="pt-filter-bar" style="margin-bottom:18px;">
+      <div class="pt-tabs">
+        <div class="pt-tab active" onclick="schView(this,'monthly')">월간</div>
+        <div class="pt-tab" onclick="schView(this,'daily')">일간</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="pt-sort-btn">← 3월</button>
+        <span style="font-size:12px;font-weight:700;color:var(--ink-2)">2026년 4월</span>
+        <button class="pt-sort-btn">5월 →</button>
+      </div>
+    </div>
+
+    <!-- ── 월간 뷰 (캘린더) ── -->
+    <div id="sch-monthly" class="sch-view active">
+      <div class="sch-nf-bar" id="sch-nf-bar"></div>
+      <div class="sch-cal-wrap">
+        <div class="sch-cal-legend">
+          <span class="sch-cal-legend-title">2병동 간호사 근무표 · 2026년 4월</span>
+          <span style="font-size:11px;color:var(--ink-4)"><span class="sb sb-d">주</span> 07–15</span>
+          <span style="font-size:11px;color:var(--ink-4)"><span class="sb sb-e">오</span> 15–23</span>
+          <span style="font-size:11px;color:var(--ink-4)"><span class="sb sb-n">야</span> 23–07</span>
+          <span style="font-size:11px;color:var(--ink-5)"><span class="sb-off">—</span> 휴무</span>
+        </div>
+        <div class="sch-cal-dow-row">
+          <div class="sch-cal-dow wknd">일</div>
+          <div class="sch-cal-dow">월</div>
+          <div class="sch-cal-dow">화</div>
+          <div class="sch-cal-dow">수</div>
+          <div class="sch-cal-dow">목</div>
+          <div class="sch-cal-dow">금</div>
+          <div class="sch-cal-dow wknd">토</div>
+        </div>
+        <div class="sch-cal-grid" id="sch-cal-grid"></div>
+      </div>
+    </div>
+
+    <!-- ── 일간 뷰 ── -->
+    <div id="sch-daily" class="sch-view">
+
+    <!-- 주간 스트립 -->
+    <div class="week-strip">
+      <div class="week-day">
+        <span class="week-day-name">월</span>
+        <span class="week-day-num">13</span>
+        <span class="week-dot none"></span>
+      </div>
+      <div class="week-day">
+        <span class="week-day-name">화</span>
+        <span class="week-day-num">14</span>
+        <span class="week-dot"></span>
+      </div>
+      <div class="week-day">
+        <span class="week-day-name">수</span>
+        <span class="week-day-num">15</span>
+        <span class="week-dot"></span>
+      </div>
+      <div class="week-day">
+        <span class="week-day-name">목</span>
+        <span class="week-day-num">16</span>
+        <span class="week-dot"></span>
+      </div>
+      <div class="week-day">
+        <span class="week-day-name">금</span>
+        <span class="week-day-num">17</span>
+        <span class="week-dot"></span>
+      </div>
+      <div class="week-day today">
+        <span class="week-day-name">토</span>
+        <span class="week-day-num">18</span>
+        <span class="week-dot"></span>
+      </div>
+      <div class="week-day">
+        <span class="week-day-name">일</span>
+        <span class="week-day-num">19</span>
+        <span class="week-dot none"></span>
+      </div>
+    </div>
+
+    <div class="kpi-row" style="margin-bottom:18px;">
+      <div class="kpi">
+        <div class="kpi-label">완료</div>
+        <div class="kpi-value"><span>4</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>오늘 전체 11건 중</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:36%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">지연</div>
+        <div class="kpi-value alert"><span>1</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot danger"></span>투약 미투여 확인</div>
+        <div class="kpi-bar"><div class="kpi-fill low" style="width:9%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">진행중</div>
+        <div class="kpi-value"><span>1</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>상처 관리</div>
+        <div class="kpi-bar"><div class="kpi-fill mid" style="width:9%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">예정</div>
+        <div class="kpi-value"><span>5</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot neutral"></span>오늘 남은 일정</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:45%; opacity:.35"></div></div>
+      </div>
+    </div>
+
+    <div class="sch-card">
+      <div class="card-head">
+        <span class="card-title">오늘 업무 타임라인 · 2026.04.18</span>
+        <span class="card-action">주간 보기</span>
+      </div>
+      <div class="tl-wrap">
+
+        <div class="tl-now-strip">
+          <div class="tl-live-dot"></div>
+          현재 10:24 — 상처 관리 진행 중
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time-col">06:00</div>
+          <div class="tl-node-col"><div class="tl-dot done"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name done">아침 투약</span><span class="tl-tag done">완료</span></div>
+            <div class="tl-desc">전체 25명 · 23명 완료, 2명 미투여</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time-col">07:00</div>
+          <div class="tl-node-col"><div class="tl-dot done"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name done">아침 식사 체크</span><span class="tl-tag done">완료</span></div>
+            <div class="tl-desc">전체 섭취율 확인 완료 · 302호 김순자 30% 미만</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time-col">08:30</div>
+          <div class="tl-node-col"><div class="tl-dot done"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name done">바이탈 측정</span><span class="tl-tag warn">이상 2건</span></div>
+            <div class="tl-desc">혈압·체온·맥박 · 301호 박영수 혈압 이상</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time-col">09:00</div>
+          <div class="tl-node-col"><div class="tl-dot alert"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name done">미투여 확인</span><span class="tl-tag" style="background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-b)">지연</span></div>
+            <div class="tl-desc">303호 이철수 투약 거부 — 재시도 미완료</div>
+          </div>
+        </div>
+
+        <div class="tl-item is-current">
+          <div class="tl-time-col">10:00</div>
+          <div class="tl-node-col"><div class="tl-dot current"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name current">상처 관리</span><span class="tl-tag now">진행중</span></div>
+            <div class="tl-desc">301호 박영수님 · 드레싱 교체</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time-col">11:00</div>
+          <div class="tl-node-col"><div class="tl-dot next"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name dim">중간 투약 (PRN)</span><span class="tl-tag next">예정</span></div>
+            <div class="tl-desc">303호 이철수 · 진통제 재시도</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time-col">12:00</div>
+          <div class="tl-node-col"><div class="tl-dot next"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name dim">점심 식사 체크</span><span class="tl-tag next">예정</span></div>
+            <div class="tl-desc">전체 환자 섭취율 기록</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time-col">13:30</div>
+          <div class="tl-node-col"><div class="tl-dot next"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name dim">영양사 상담 요청</span><span class="tl-tag next">예정</span></div>
+            <div class="tl-desc">302호 김순자 · 식사량 감소 보고</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time-col">14:00</div>
+          <div class="tl-node-col"><div class="tl-dot next"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name dim">재활 치료 동행</span><span class="tl-tag next">예정</span></div>
+            <div class="tl-desc">305호 최미경 · 물리치료실</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time-col">15:00</div>
+          <div class="tl-node-col"><div class="tl-dot next"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name dim">오후 바이탈 측정</span><span class="tl-tag next">예정</span></div>
+            <div class="tl-desc">전체 25명 · 301호 박영수 재측정 포함</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time-col">22:00</div>
+          <div class="tl-node-col"><div class="tl-dot next"></div><div class="tl-line"></div></div>
+          <div class="tl-body-col">
+            <div class="tl-row"><span class="tl-name dim">인수인계</span><span class="tl-tag next">예정</span></div>
+            <div class="tl-desc">AI SBAR 리포트 자동 생성 · 야간 근무자 전달</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    </div><!-- /sch-daily -->
+
+  </div><!-- /pg-schedule -->
+
+
+  <!-- ══════════ 기록·보고서 ══════════ -->
+  <div id="pg-records" class="pg">
+
+    <div class="pt-page-head">
+      <div class="pt-page-head-text">
+        <h1>기록·보고서</h1>
+        <p>2병동 · 2026년 4월 18일 · 실사 D-7</p>
+      </div>
+      <button class="pt-add-btn">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        새 기록
+      </button>
+    </div>
+
+    <div class="kpi-row" style="margin-bottom:18px;">
+      <div class="kpi">
+        <div class="kpi-label">오늘 작성</div>
+        <div class="kpi-value"><span>8</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>오늘 전체 11건 중</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:73%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">미작성</div>
+        <div class="kpi-value alert"><span>3</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot danger"></span>실사 전 작성 필수</div>
+        <div class="kpi-bar"><div class="kpi-fill low" style="width:27%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">AI 생성 가능</div>
+        <div class="kpi-value"><span>5</span><span class="kpi-denom">건</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>자동 작성 준비됨</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:45%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">실사 준비</div>
+        <div class="kpi-value"><span>D-7</span></div>
+        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>4월 25일 예정</div>
+        <div class="kpi-bar"><div class="kpi-fill mid" style="width:70%"></div></div>
+      </div>
+    </div>
+
+    <div class="pt-filter-bar">
+      <div class="pt-tabs">
+        <div class="pt-tab active" onclick="ptTab(this)">전체 <span class="pt-tab-count">11</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">간호기록 <span class="pt-tab-count">4</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">급여제공기록지 <span class="pt-tab-count">5</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">바이탈 <span class="pt-tab-count">1</span></div>
+        <div class="pt-tab" onclick="ptTab(this)">사고보고 <span class="pt-tab-count">1</span></div>
+      </div>
+      <button class="pt-sort-btn">
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"/></svg>
+        정렬: 최신순
+      </button>
+    </div>
+
+    <div class="pt-card">
+
+      <div class="rec-cols">
+        <div class="pt-col-label">환자</div>
+        <div class="pt-col-label">기록 내용</div>
+        <div class="pt-col-label">유형</div>
+        <div class="pt-col-label">AI 생성</div>
+        <div class="pt-col-label">작성 시간</div>
+        <div class="pt-col-label right">상태 · 액션</div>
+      </div>
+
+      <!-- 박영수 · 간호기록 · 완료 -->
+      <div class="rec-row">
+        <div class="pt-info">
+          <div class="pt-av dg">박</div>
+          <div>
+            <div class="pt-room">301호</div>
+            <div class="pt-name-text">박영수</div>
+            <div class="pt-meta">남 · 82세</div>
+          </div>
+        </div>
+        <div>
+          <div class="rec-title">혈압 이상 관찰 기록</div>
+          <div class="rec-sub">180/110 측정 — 재측정 및 의사 보고 경과 기록</div>
+        </div>
+        <div><span class="rec-type nurse">간호기록</span></div>
+        <div><span class="rec-ai-tag">AI 생성</span></div>
+        <div class="pt-vital">10:30</div>
+        <div class="med-actions">
+          <span class="pt-badge sf" style="margin-right:4px"><span class="pt-badge-dot"></span>완료</span>
+          <button class="pt-act">보기</button>
+        </div>
+      </div>
+
+      <!-- 박영수 · 사고보고 · 미작성 -->
+      <div class="rec-row">
+        <div class="pt-info">
+          <div class="pt-av dg">박</div>
+          <div>
+            <div class="pt-room">301호</div>
+            <div class="pt-name-text">박영수</div>
+            <div class="pt-meta">남 · 82세</div>
+          </div>
+        </div>
+        <div>
+          <div class="rec-title">혈압 위기 사고보고서</div>
+          <div class="rec-sub">실사 대비 사고 보고 필요 — 자동생성 가능</div>
+        </div>
+        <div><span class="rec-type inc">사고보고</span></div>
+        <div><span class="rec-ai-tag">AI 생성</span></div>
+        <div class="pt-vital" style="color:var(--danger);font-weight:600">미작성</div>
+        <div class="med-actions">
+          <span class="pt-badge dg" style="margin-right:4px"><span class="pt-badge-dot"></span>미작성</span>
+          <button class="pt-act em">작성</button>
+        </div>
+      </div>
+
+      <!-- 이철수 · 간호기록 · 미작성 -->
+      <div class="rec-row">
+        <div class="pt-info">
+          <div class="pt-av dg">이</div>
+          <div>
+            <div class="pt-room">303호</div>
+            <div class="pt-name-text">이철수</div>
+            <div class="pt-meta">남 · 75세</div>
+          </div>
+        </div>
+        <div>
+          <div class="rec-title">투약 거부 간호기록</div>
+          <div class="rec-sub">트라마돌·리시노프릴 거부 경위 기록</div>
+        </div>
+        <div><span class="rec-type nurse">간호기록</span></div>
+        <div><span class="rec-ai-tag">AI 생성</span></div>
+        <div class="pt-vital" style="color:var(--danger);font-weight:600">미작성</div>
+        <div class="med-actions">
+          <span class="pt-badge dg" style="margin-right:4px"><span class="pt-badge-dot"></span>미작성</span>
+          <button class="pt-act em">작성</button>
+        </div>
+      </div>
+
+      <!-- 전체 · 바이탈기록 · 완료 -->
+      <div class="rec-row">
+        <div class="pt-info">
+          <div class="pt-av sf">전</div>
+          <div>
+            <div class="pt-name-text">전체 25명</div>
+            <div class="pt-meta">2병동</div>
+          </div>
+        </div>
+        <div>
+          <div class="rec-title">오전 바이탈 측정 결과</div>
+          <div class="rec-sub">혈압·체온·맥박 전체 기록 · 이상 2건 포함</div>
+        </div>
+        <div><span class="rec-type vital">바이탈기록</span></div>
+        <div><span style="font-size:11px;color:var(--ink-5)">자동 기록</span></div>
+        <div class="pt-vital">08:45</div>
+        <div class="med-actions">
+          <span class="pt-badge sf" style="margin-right:4px"><span class="pt-badge-dot"></span>완료</span>
+          <button class="pt-act">보기</button>
+        </div>
+      </div>
+
+      <!-- 김순자 · 급여제공 · 미작성 -->
+      <div class="rec-row">
+        <div class="pt-info">
+          <div class="pt-av wn">김</div>
+          <div>
+            <div class="pt-room">302호</div>
+            <div class="pt-name-text">김순자</div>
+            <div class="pt-meta">여 · 78세</div>
+          </div>
+        </div>
+        <div>
+          <div class="rec-title">4월 급여제공기록지</div>
+          <div class="rec-sub">실사 대비 미작성 — AI 자동생성 가능</div>
+        </div>
+        <div><span class="rec-type pay">급여기록</span></div>
+        <div><span class="rec-ai-tag">AI 생성</span></div>
+        <div class="pt-vital" style="color:var(--danger);font-weight:600">미작성</div>
+        <div class="med-actions">
+          <span class="pt-badge dg" style="margin-right:4px"><span class="pt-badge-dot"></span>미작성</span>
+          <button class="pt-act em">작성</button>
+        </div>
+      </div>
+
+      <!-- 최미경 · 간호기록 · 완료 -->
+      <div class="rec-row">
+        <div class="pt-info">
+          <div class="pt-av sf">최</div>
+          <div>
+            <div class="pt-room">305호</div>
+            <div class="pt-name-text">최미경</div>
+            <div class="pt-meta">여 · 72세</div>
+          </div>
+        </div>
+        <div>
+          <div class="rec-title">재활 치료 경과 기록</div>
+          <div class="rec-sub">보행 훈련 30분 완료 — 기능 개선 관찰</div>
+        </div>
+        <div><span class="rec-type nurse">간호기록</span></div>
+        <div><span class="rec-ai-tag">AI 생성</span></div>
+        <div class="pt-vital">14:35</div>
+        <div class="med-actions">
+          <span class="pt-badge sf" style="margin-right:4px"><span class="pt-badge-dot"></span>완료</span>
+          <button class="pt-act">보기</button>
+        </div>
+      </div>
+
+      <div class="pt-more">+ 5건 더 보기</div>
+
+    </div><!-- /pt-card -->
+
+  </div><!-- /pg-records -->
+
+
+  <!-- ══════════ 마이페이지 ══════════ -->
+  <div id="pg-mypage" class="pg">
+
+    <!-- 프로필 카드 -->
+    <div class="my-profile-card">
+      <div class="my-avatar">김</div>
+      <div style="flex:1;min-width:0">
+        <div class="my-name">김코디</div>
+        <div class="my-role-line">간호사 · 햇살요양원 2병동 · 사번 NRS-2024-047</div>
+        <div class="my-chips">
+          <span class="my-chip on">오전 2교대 근무 중</span>
+          <span class="my-chip">면허번호 간호사-XXXXX</span>
+          <span class="my-chip">경력 4년 2개월</span>
+        </div>
+      </div>
+      <button class="my-edit-btn">프로필 편집</button>
+    </div>
+
+    <!-- 이번 달 통계 (KPI 재사용) -->
+    <div class="kpi-row" style="margin-bottom:16px;">
+      <div class="kpi">
+        <div class="kpi-label">이번 달 근무</div>
+        <div class="kpi-value"><span>16</span><span class="kpi-denom">일</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>총 22 근무일 중</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:73%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">케어 완료율</div>
+        <div class="kpi-value"><span>91</span><span class="kpi-denom">%</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>이번 달 평균</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:91%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">투약 완료율</div>
+        <div class="kpi-value"><span>96</span><span class="kpi-denom">%</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>이번 달 평균</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:96%"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">인수인계 완료율</div>
+        <div class="kpi-value"><span>100</span><span class="kpi-denom">%</span></div>
+        <div class="kpi-sub"><span class="kpi-dot accent"></span>이번 달 전체</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <!-- 알림 설정 -->
+    <div class="my-section">
+      <div class="my-section-head">
+        <span class="my-section-title">알림 설정</span>
+      </div>
+      <div class="my-row">
+        <div class="my-row-icon">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/></svg>
+        </div>
+        <div>
+          <div class="my-row-label">주의 환자 긴급 알림</div>
+          <div class="my-row-sub">이상 징후 감지 시 즉시 알림</div>
+        </div>
+        <div class="my-toggle" onclick="this.classList.toggle('off')"></div>
+      </div>
+      <div class="my-row">
+        <div class="my-row-icon">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/></svg>
+        </div>
+        <div>
+          <div class="my-row-label">투약 시간 알림</div>
+          <div class="my-row-sub">투약 예정 15분 전 알림</div>
+        </div>
+        <div class="my-toggle" onclick="this.classList.toggle('off')"></div>
+      </div>
+      <div class="my-row">
+        <div class="my-row-icon">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/><path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"/></svg>
+        </div>
+        <div>
+          <div class="my-row-label">보호자 메시지 알림</div>
+          <div class="my-row-sub">미읽은 메시지 수신 시 알림</div>
+        </div>
+        <div class="my-toggle" onclick="this.classList.toggle('off')"></div>
+      </div>
+      <div class="my-row">
+        <div class="my-row-icon">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+        </div>
+        <div>
+          <div class="my-row-label">인수인계 리마인더</div>
+          <div class="my-row-sub">근무 종료 1시간 전 알림</div>
+        </div>
+        <div class="my-toggle" onclick="this.classList.toggle('off')"></div>
+      </div>
+    </div>
+
+    <!-- 앱 설정 -->
+    <div class="my-section">
+      <div class="my-section-head">
+        <span class="my-section-title">앱 설정</span>
+      </div>
+      <div class="my-row">
+        <div class="my-row-icon">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+        </div>
+        <div>
+          <div class="my-row-label">언어</div>
+          <div class="my-row-sub">앱 표시 언어 설정</div>
+        </div>
+        <div class="my-row-value">한국어</div>
+      </div>
+      <div class="my-row">
+        <div class="my-row-icon">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+        </div>
+        <div>
+          <div class="my-row-label">다크 모드</div>
+          <div class="my-row-sub">화면 테마 설정</div>
+        </div>
+        <div class="my-toggle off" onclick="this.classList.toggle('off')"></div>
+      </div>
+      <div class="my-row">
+        <div class="my-row-icon">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </div>
+        <div>
+          <div class="my-row-label">데이터 백업</div>
+          <div class="my-row-sub">마지막 백업</div>
+        </div>
+        <div class="my-row-value">오늘 06:00</div>
+      </div>
+    </div>
+
+    <!-- 계정 -->
+    <div class="my-section">
+      <div class="my-section-head">
+        <span class="my-section-title">계정</span>
+      </div>
+      <div class="my-row">
+        <div class="my-row-icon">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z" clip-rule="evenodd"/></svg>
+        </div>
+        <div>
+          <div class="my-row-label">비밀번호 변경</div>
+          <div class="my-row-sub">마지막 변경 90일 전</div>
+        </div>
+        <div class="my-row-value" style="color:var(--warn)">변경 권장</div>
+      </div>
+      <div class="my-row" style="cursor:pointer" onclick="">
+        <div class="my-row-icon">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--danger)"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+        </div>
+        <div>
+          <div class="my-row-label" style="color:var(--danger)">로그아웃</div>
+          <div class="my-row-sub">현재 기기에서 로그아웃</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pg-mypage -->
+
+
+  </main>
+</div>
+
+
+<!-- ══════════ COMM PANEL ══════════ -->
+<aside class="comm-panel">
+  <div class="cp-header">
+    <div class="cp-header-row">
+      <span class="cp-title">소통 패널</span>
+      <button class="focus-btn" onclick="this.classList.toggle('on'); this.textContent = this.classList.contains('on') ? '집중 모드 ON' : '집중 모드'">집중 모드</button>
+    </div>
+    <div class="cp-tabs">
+      <div class="cp-tab active" onclick="cpTab(this)">전체</div>
+      <div class="cp-tab" onclick="cpTab(this)">현재 환자</div>
+      <div class="cp-tab" onclick="cpTab(this)">AI 요약</div>
+    </div>
+  </div>
+
+  <div class="cp-body">
+
+    <!-- ── 전체 뷰 ── -->
+    <div class="cp-view" id="cpv-all">
+
+      <div class="ch-label">보호자 채팅</div>
+
+      <div class="chat-row" onclick="openConvo('kjh')">
+        <div class="chat-av">김<div class="st-dot online"></div></div>
+        <div class="chat-info">
+          <div class="name-row">
+            <span class="chat-name">김민준 보호자</span>
+            <span class="chat-time">10분 전</span>
+          </div>
+          <div class="chat-pt">302호 김순자님</div>
+          <div class="chat-prev-row">
+            <div class="chat-prev unread">어머니 오늘 식사는 잘 하셨나요?</div>
+            <span class="unread-pill" id="unread-kjh">2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-row" onclick="openConvo('cys')">
+        <div class="chat-av">최<div class="st-dot online"></div></div>
+        <div class="chat-info">
+          <div class="name-row">
+            <span class="chat-name">최영수 보호자</span>
+            <span class="chat-time">30분 전</span>
+          </div>
+          <div class="chat-pt">305호 최미경님</div>
+          <div class="chat-prev-row">
+            <div class="chat-prev unread">재활 치료 결과 어떻게 됐나요?</div>
+            <span class="unread-pill" id="unread-cys">1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-row" onclick="openConvo('pjy')">
+        <div class="chat-av">박<div class="st-dot away"></div></div>
+        <div class="chat-info">
+          <div class="name-row">
+            <span class="chat-name">박지영 보호자</span>
+            <span class="chat-time">2시간 전</span>
+          </div>
+          <div class="chat-pt">301호 박영수님</div>
+          <div class="chat-prev">감사합니다, 확인했어요</div>
+        </div>
+      </div>
+
+      <div class="ch-label">요양보호사 보고</div>
+
+      <div class="chat-row" onclick="openConvo('lsj')">
+        <div class="chat-av">이<div class="st-dot online"></div></div>
+        <div class="chat-info">
+          <div class="name-row">
+            <span class="chat-name">이수진 요양보호사</span>
+            <span class="chat-time">1시간 전</span>
+          </div>
+          <div class="chat-pt">303호 이철수님</div>
+          <div class="chat-prev-row">
+            <div class="chat-prev unread">환자분이 약 복용을 거부하십니다</div>
+            <span class="unread-pill" id="unread-lsj">1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-row" onclick="openConvo('jhn')">
+        <div class="chat-av">정<div class="st-dot online"></div></div>
+        <div class="chat-info">
+          <div class="name-row">
+            <span class="chat-name">정하늘 요양보호사</span>
+            <span class="chat-time">3시간 전</span>
+          </div>
+          <div class="chat-pt">304호 오병석님</div>
+          <div class="chat-prev">아침 식사 80% 섭취 완료했습니다</div>
+        </div>
+      </div>
+
+      <div class="ch-label">촉탁의 채널</div>
+
+      <div class="chat-row" onclick="openConvo('kth')">
+        <div class="chat-av">김<div class="st-dot away"></div></div>
+        <div class="chat-info">
+          <div class="name-row">
+            <span class="chat-name">김태호 촉탁의</span>
+            <span class="chat-time">어제</span>
+          </div>
+          <div class="chat-pt">301호 박영수님</div>
+          <div class="chat-prev-row">
+            <div class="chat-prev unread">혈압약 용량 조정 지시사항 확인</div>
+            <span class="unread-pill" id="unread-kth">1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-feed">
+        <div class="ai-feed-label">AI 요약 피드</div>
+        <div class="af-item urgent">
+          <strong>박영수님</strong> 혈압 이상 감지 — 즉시 재측정 권장
+        </div>
+        <div class="af-item">
+          <strong>김순자님</strong> 식사량 추이 악화 3일차 — 영양사 상담 필요
+        </div>
+        <div class="af-item">
+          급여제공기록지 <strong>3건</strong> 미작성 — 자동생성 가능
+        </div>
+      </div>
+
+    </div><!-- /cpv-all -->
+
+    <!-- ── 현재 환자 뷰 ── -->
+    <div class="cp-view" id="cpv-patient" style="display:none">
+      <div class="cp-ctx-bar" id="cp-ctx-bar">
+        <span class="cp-ctx-label" id="cp-ctx-label">현재 페이지 기준</span>
+      </div>
+      <div id="cpv-patient-inner"></div>
+    </div>
+
+    <!-- ── AI 요약 뷰 ── -->
+    <div class="cp-view" id="cpv-ai" style="display:none">
+      <div class="cp-ai-intro">
+        <div class="cp-ai-icon">
+          <svg width="18" height="18" viewBox="0 0 2526 2526" fill="white">
+            <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+            <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="cp-ai-title">하루 AI 어시스턴트</div>
+          <div class="cp-ai-sub">2026.04.18 10:24 기준 · 2병동</div>
+        </div>
+      </div>
+      <div class="cp-ai-items">
+        <div class="cp-ai-item urgent">
+          <div class="cp-ai-item-head"><span class="ai-badge urgent">긴급</span><span class="cp-ai-item-pt">박영수님 (301호)</span></div>
+          <div class="cp-ai-item-body">혈압 180/110 측정. 2시간 내 재측정 후 이송 검토 권장. 지난주 동일 패턴 후 응급실 방문 이력 확인됨.</div>
+          <div class="cp-ai-item-actions">
+            <button class="cp-ai-act em" onclick="cpAiAct(this,'check')">확인</button>
+            <button class="cp-ai-act" onclick="cpAiAct(this,'memo')">메모 추가</button>
+          </div>
+        </div>
+        <div class="cp-ai-item warn">
+          <div class="cp-ai-item-head"><span class="ai-badge caution">주의</span><span class="cp-ai-item-pt">김순자님 (302호)</span></div>
+          <div class="cp-ai-item-body">식사량 3일 연속 30% 미만. 영양사 상담 및 보호자 알림 필요. 체중 감소 추이 지속 시 의사 보고 권장.</div>
+          <div class="cp-ai-item-actions">
+            <button class="cp-ai-act em" onclick="cpAiAct(this,'check')">확인</button>
+            <button class="cp-ai-act" onclick="cpAiAct(this,'notify')">보호자 알림</button>
+          </div>
+        </div>
+        <div class="cp-ai-item">
+          <div class="cp-ai-item-head"><span class="ai-badge info">정보</span><span class="cp-ai-item-pt">기록 관리</span></div>
+          <div class="cp-ai-item-body">급여제공기록지 미작성 3건. 실사일 기준 D-7. AI 자동생성으로 초안 작성 가능.</div>
+          <div class="cp-ai-item-actions">
+            <button class="cp-ai-act em" onclick="cpAiAutoGen(this)">자동생성</button>
+            <button class="cp-ai-act" onclick="cpAiAct(this,'later')">나중에</button>
+          </div>
+        </div>
+      </div>
+      <div class="cp-ai-ask-wrap">
+        <div class="cp-ai-ask-label">AI에게 질문</div>
+        <div class="cp-ai-ask-row">
+          <input class="cp-ai-ask-input" type="text" placeholder="예: 박영수님 최근 바이탈 추이는?" onkeydown="if(event.key==='Enter')cpAiAsk(this)">
+          <button class="send-btn" onclick="cpAiAsk(this.previousElementSibling)">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
+          </button>
+        </div>
+        <div class="cp-ai-answer" id="cp-ai-answer" style="display:none"></div>
+      </div>
+    </div><!-- /cpv-ai -->
+
+  </div>
+
+  <div class="cp-input-wrap" id="cp-main-input-wrap">
+    <div class="cp-input-row">
+      <input class="cp-input" type="text" placeholder="대화를 선택하면 답장할 수 있습니다" readonly style="cursor:default;color:var(--ink-5)">
+      <button class="send-btn" style="opacity:.4;pointer-events:none">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── 대화 상세 뷰 (오버레이) ── -->
+  <div class="cp-convo" id="cp-convo">
+    <div class="cp-convo-header">
+      <button class="cp-back-btn" onclick="closeConvo()">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+      </button>
+      <div class="cp-convo-av" id="convo-av"></div>
+      <div class="cp-convo-info">
+        <div class="cp-convo-name" id="convo-name"></div>
+        <div class="cp-convo-pt" id="convo-pt"></div>
+      </div>
+      <div class="st-dot" id="convo-status" style="position:static;width:8px;height:8px;margin-left:auto;flex-shrink:0"></div>
+    </div>
+    <div class="cp-msg-list" id="cp-msg-list"></div>
+    <div class="cp-convo-input-wrap">
+      <div class="cp-convo-input-row">
+        <input class="cp-convo-input" id="cp-convo-input" type="text" placeholder="">
+        <button class="send-btn" onclick="sendConvoMsg()">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</aside>
+
+<script>
+  const PAGE_TITLES = {
+    dashboard: '대시보드',
+    patients:  '환자 관리',
+    meds:      '투약 관리 (eMAR)',
+    checklist: '케어 체크리스트',
+    handover:  '인수인계',
+    schedule:  '스케줄',
+    records:   '기록·보고서',
+    mypage:    '마이페이지'
+  };
+
+  function showPage(id) {
+    document.querySelectorAll('.pg').forEach(p => p.classList.remove('active'));
+    document.getElementById('pg-' + id).classList.add('active');
+
+    document.querySelectorAll('.nav-link[data-page]').forEach(l => l.classList.remove('active'));
+    const link = document.querySelector('.nav-link[data-page="' + id + '"]');
+    if (link) link.classList.add('active');
+
+    document.querySelector('.page-title').textContent = PAGE_TITLES[id] || id;
+  }
+
+  // 소통 패널 탭 전환
+  const CP_VIEWS = { '전체': 'cpv-all', '현재 환자': 'cpv-patient', 'AI 요약': 'cpv-ai' };
+
+  function cpTab(el) {
+    el.closest('.cp-tabs').querySelectorAll('.cp-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    const label = el.textContent.trim();
+    Object.values(CP_VIEWS).forEach(id => {
+      const v = document.getElementById(id);
+      if (v) v.style.display = 'none';
+    });
+    const viewId = CP_VIEWS[label];
+    if (viewId) {
+      const view = document.getElementById(viewId);
+      if (view) { view.style.display = 'block'; }
+    }
+    if (label === '현재 환자') buildPatientCtxView();
+  }
+
+  // 현재 환자 컨텍스트 뷰 빌드
+  const PT_CTX_DATA = {
+    dashboard:  { label: '대시보드', pts: [] },
+    patients:   { label: '환자 관리', pts: [
+      { av: '박', nm: '박영수', room: '301호', last: '보호자 "혈압 약 복용 중 괜찮나요?"', time: '40분 전', unread: true },
+      { av: '김', nm: '김순자', room: '302호', last: '보호자 "식사량이 계속 줄어요, 걱정되네요"', time: '10분 전', unread: true },
+      { av: '이', nm: '이철수', room: '303호', last: '요양보호사 "약 거부 지속 중입니다"', time: '1시간 전', unread: true },
+    ]},
+    meds:       { label: '투약 관리', pts: [
+      { av: '이', nm: '이철수', room: '303호', last: '요양보호사 "환자분이 약 복용을 거부하십니다"', time: '1시간 전', unread: true },
+      { av: '박', nm: '박영수', room: '301호', last: '촉탁의 "혈압약 용량 조정 지시사항 확인"', time: '어제', unread: true },
+    ]},
+    checklist:  { label: '케어 체크리스트', pts: [
+      { av: '최', nm: '최미경', room: '305호', last: '보호자 "재활 치료 결과 어떻게 됐나요?"', time: '30분 전', unread: true },
+      { av: '정', nm: '정하늘', room: '요양보호사', last: '"아침 식사 80% 섭취 완료했습니다"', time: '3시간 전', unread: false },
+    ]},
+    handover:   { label: '인수인계', pts: [
+      { av: '박', nm: '박영수', room: '301호', last: '보호자 "밤새 혈압 괜찮았나요?"', time: '20분 전', unread: true },
+      { av: '이', nm: '이철수', room: '303호', last: '요양보호사 "저녁 투약도 거부하셨어요"', time: '2시간 전', unread: true },
+    ]},
+    schedule:   { label: '스케줄', pts: [] },
+    records:    { label: '기록·보고서', pts: [] },
+    mypage:     { label: '마이페이지', pts: [] },
+  };
+
+  function buildPatientCtxView() {
+    const activePg = document.querySelector('.pg.active');
+    const pgId = activePg ? activePg.id.replace('pg-', '') : 'dashboard';
+    const ctx = PT_CTX_DATA[pgId] || PT_CTX_DATA.dashboard;
+    const lbl = document.getElementById('cp-ctx-label');
+    if (lbl) lbl.textContent = ctx.label + ' 관련 메시지';
+    const inner = document.getElementById('cpv-patient-inner');
+    if (!inner) return;
+    if (!ctx.pts.length) {
+      inner.innerHTML = '<div style="padding:40px 16px;text-align:center;color:var(--ink-5);font-size:12px;">이 페이지와 관련된 메시지가 없습니다.</div>';
+      return;
+    }
+    inner.innerHTML = ctx.pts.map(p => `
+      <div class="chat-row">
+        <div class="chat-av">${p.av}</div>
+        <div class="chat-info">
+          <div class="name-row">
+            <span class="chat-name">${p.nm}</span>
+            <span class="chat-time">${p.time}</span>
+          </div>
+          <div class="chat-pt">${p.room}</div>
+          <div class="chat-prev-row">
+            <div class="chat-prev${p.unread ? ' unread' : ''}">${p.last}</div>
+            ${p.unread ? '<span class="unread-pill">1</span>' : ''}
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  function ptTab(el) {
+    el.closest('.pt-tabs').querySelectorAll('.pt-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // 검색 — 현재 활성 페이지의 행(row)을 환자명으로 필터
+  function searchPts(q) {
+    const pg = document.querySelector('.pg.active');
+    if (!pg) return;
+    const term = q.trim().toLowerCase();
+    const rows = pg.querySelectorAll('.pt-row, .ho-row, .med-row, .cl-row, .rec-row');
+    rows.forEach(r => {
+      const nameEl = r.querySelector('.pt-name-text, .rec-title');
+      if (!nameEl) { r.style.display = ''; return; }
+      r.style.display = (!term || nameEl.textContent.toLowerCase().includes(term)) ? '' : 'none';
+    });
+  }
+
+  // 인수인계 AI SBAR 생성
+  function genSBAR(btn) {
+    const panel = document.getElementById('ho-ai-panel');
+    if (panel && panel.style.display !== 'none') {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+    const orig = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin" style="width:13px;height:13px;display:inline-block;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;margin-right:6px;"></span>생성 중...';
+    setTimeout(() => {
+      btn.innerHTML = orig;
+      btn.disabled = false;
+      if (!panel) return;
+      panel.style.display = 'block';
+      panel.classList.add('fade-up');
+      panel.querySelectorAll('.ho-ai-item').forEach((item, i) => {
+        item.style.opacity = '0';
+        item.style.animation = 'none';
+        setTimeout(() => {
+          item.style.opacity = '1';
+          item.style.animation = `itemIn .3s ease ${i * 180}ms both`;
+        }, 60 + i * 180);
+      });
+    }, 1800);
+  }
+
+  // AI 패널 내 전체 SBAR 재생성
+  function regenSBAR(btn) {
+    const items = document.querySelectorAll('#ho-ai-panel .ho-ai-item');
+    const orig = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin" style="width:13px;height:13px;display:inline-block;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;margin-right:6px;"></span>재생성 중...';
+    items.forEach(it => { it.style.opacity = '.3'; it.style.transition = 'opacity .2s'; });
+    setTimeout(() => {
+      btn.innerHTML = orig;
+      btn.disabled = false;
+      items.forEach((it, i) => {
+        setTimeout(() => {
+          it.style.opacity = '1';
+          it.style.animation = `itemIn .3s ease both`;
+        }, i * 160);
+      });
+    }, 1600);
+  }
+
+  // 대시보드 AI 자동생성
+  function autoGenRecords(btn) {
+    btn.disabled = true;
+    btn.textContent = '생성 중...';
+    setTimeout(() => {
+      btn.textContent = '생성 완료';
+      btn.style.background = 'var(--accent)';
+      btn.style.color = '#fff';
+      btn.style.borderColor = 'var(--accent)';
+      const textEl = btn.previousElementSibling;
+      if (textEl) textEl.textContent = '급여제공기록지 3건 초안이 기록·보고서에 저장되었습니다.';
+      const badge = btn.closest('.ai-item')?.querySelector('.ai-badge');
+      if (badge) { badge.textContent = '완료'; badge.className = 'ai-badge info'; badge.style.background = 'var(--accent-bg)'; badge.style.color = '#16A34A'; badge.style.borderColor = 'var(--accent-b)'; }
+    }, 1500);
+  }
+
+  // 소통 패널 AI 뷰 — 아이템 액션
+  function cpAiAct(btn, type) {
+    const item = btn.closest('.cp-ai-item');
+    const acts = item.querySelector('.cp-ai-item-actions');
+    if (type === 'check') {
+      acts.innerHTML = '<span style="font-size:11px;color:var(--ink-5);font-weight:600;">확인 완료</span>';
+      item.style.opacity = '.55';
+    } else if (type === 'notify') {
+      acts.innerHTML = '<span style="font-size:11px;color:#16A34A;font-weight:600;">보호자 알림 발송됨</span>';
+    } else if (type === 'later') {
+      item.style.display = 'none';
+    } else if (type === 'memo') {
+      acts.innerHTML = '<input style="border:1px solid var(--ink-6);border-radius:8px;padding:4px 9px;font-size:11px;font-family:var(--font);outline:none;width:100%;" placeholder="메모 입력 후 Enter..." onkeydown="if(event.key===\'Enter\'&&this.value){this.closest(\'.cp-ai-item-actions\').innerHTML=\'<span style=&quot;font-size:11px;color:var(--ink-5)&quot;>메모 저장됨</span>\';}">';
+      acts.querySelector('input').focus();
+    }
+  }
+
+  // 소통 패널 AI 뷰 — 자동생성
+  function cpAiAutoGen(btn) {
+    btn.disabled = true;
+    btn.textContent = '생성 중...';
+    setTimeout(() => {
+      const acts = btn.closest('.cp-ai-item-actions');
+      if (acts) acts.innerHTML = '<span style="font-size:11px;color:#16A34A;font-weight:600;">3건 초안 생성 완료 — 기록·보고서에서 확인하세요</span>';
+    }, 1500);
+  }
+
+  // 소통 패널 AI 뷰 — 질문 입력
+  const AI_ANSWERS = {
+    '바이탈': '박영수님의 최근 7일 혈압 추이: 160/95 → 165/100 → 172/105 → 180/110 (오늘). 지속 상승 패턴으로 즉각 개입 권장.',
+    '식사': '김순자님의 최근 3일 식사 섭취율: 28% → 25% → 22% (오늘 아침 기준). 영양사 상담 예약 확인 필요.',
+    '투약': '이철수님 미투약 현황: 트라마돌 50mg (통증), 리시노프릴 10mg (혈압) — 오전 2건 거부. PRN 대체약 검토 권장.',
+    '기록': '미작성 급여제공기록지: 박영수님 4/16, 이철수님 4/15, 김순자님 4/17. AI 자동생성으로 초안 작성 가능.',
+    '인수인계': '오늘 인수인계 현황: 미전달 3건 (박영수, 이철수, 김순자), 완료 2건. SBAR 초안 생성 가능.',
+  };
+
+  function cpAiAsk(input) {
+    const q = (input.value || '').trim();
+    if (!q) return;
+    const answerEl = document.getElementById('cp-ai-answer');
+    if (!answerEl) return;
+    const key = Object.keys(AI_ANSWERS).find(k => q.includes(k));
+    const ans = key ? AI_ANSWERS[key] : '현재 해당 데이터를 분석 중입니다. 잠시 후 다시 시도해 주세요.';
+    answerEl.style.display = 'none';
+    answerEl.textContent = '';
+    input.value = '';
+    setTimeout(() => {
+      answerEl.style.display = 'block';
+      answerEl.classList.remove('fade-up');
+      void answerEl.offsetWidth;
+      answerEl.classList.add('fade-up');
+      let i = 0;
+      const timer = setInterval(() => {
+        answerEl.textContent = ans.slice(0, ++i);
+        if (i >= ans.length) clearInterval(timer);
+      }, 20);
+    }, 400);
+  }
+
+  // ── 대화 상세 뷰 ──
+  const CONVOS = {
+    kjh: {
+      av: '김', name: '김민준 보호자', pt: '302호 김순자님', status: 'online',
+      msgs: [
+        { me: false, text: '안녕하세요, 간호사 선생님. 어머니 상태가 어떤가요?', time: '어제 14:30' },
+        { me: true,  text: '안녕하세요. 김순자님 어제 활력징후는 안정적이었습니다. 식사는 약간 줄었지만 전반적으로 괜찮으세요.', time: '어제 14:45' },
+        { me: false, text: '아, 다행이에요. 식사량이 걱정되긴 하는데...', time: '어제 15:02' },
+        { me: true,  text: '식사량은 저희도 모니터링 중입니다. 영양사와 상담도 검토하고 있어요.', time: '어제 15:10' },
+        { me: false, text: '어머니 오늘 식사는 잘 하셨나요?', time: '10분 전' },
+        { me: false, text: '오전에 죽 드셨다고 들었는데 많이 드셨나요?', time: '9분 전' },
+      ]
+    },
+    cys: {
+      av: '최', name: '최영수 보호자', pt: '305호 최미경님', status: 'online',
+      msgs: [
+        { me: false, text: '선생님, 어머니 재활 치료 어제 처음 시작하셨다고요?', time: '어제 10:15' },
+        { me: true,  text: '네, 어제 첫 보행 훈련 30분 진행했고 잘 마치셨어요.', time: '어제 10:22' },
+        { me: false, text: '힘들어하진 않으셨나요?', time: '어제 10:25' },
+        { me: true,  text: '처음이라 약간 피로감은 있으셨지만 통증 호소는 없었어요. 내일도 이어서 진행할 예정입니다.', time: '어제 10:31' },
+        { me: false, text: '재활 치료 결과 어떻게 됐나요?', time: '30분 전' },
+      ]
+    },
+    pjy: {
+      av: '박', name: '박지영 보호자', pt: '301호 박영수님', status: 'away',
+      msgs: [
+        { me: false, text: '아버지 혈압이 높다고 연락 받았어요. 많이 위험한가요?', time: '어제 11:00' },
+        { me: true,  text: '현재 180/110으로 측정됐습니다. 재측정 중이고 촉탁의 선생님께 보고했습니다.', time: '어제 11:08' },
+        { me: false, text: '바로 병원 가야 하나요?', time: '어제 11:10' },
+        { me: true,  text: '지금은 모니터링 중입니다. 수치 변화 있으면 즉시 연락드릴게요.', time: '어제 11:15' },
+        { me: false, text: '감사합니다, 확인했어요', time: '2시간 전' },
+      ]
+    },
+    lsj: {
+      av: '이', name: '이수진 요양보호사', pt: '303호 이철수님 담당', status: 'online',
+      msgs: [
+        { me: false, text: '선생님, 이철수님 아침 식사 잘 드셨습니다. 죽 한 그릇 다 드셨어요.', time: '오전 8:20' },
+        { me: true,  text: '감사합니다, 기록해 드릴게요.', time: '오전 8:25' },
+        { me: false, text: '혈압약이랑 진통제 드셔야 하는데 거부하고 계세요.', time: '오전 9:40' },
+        { me: true,  text: '이유를 여쭤봐 주실 수 있을까요? 통증이 있으신지도 확인 부탁드립니다.', time: '오전 9:45' },
+        { me: false, text: '배가 아프다고 하시는데 약을 먹기 싫다고 하세요.', time: '오전 9:52' },
+        { me: false, text: '환자분이 약 복용을 거부하십니다', time: '1시간 전' },
+      ]
+    },
+    jhn: {
+      av: '정', name: '정하늘 요양보호사', pt: '304호 오병석님 담당', status: 'online',
+      msgs: [
+        { me: false, text: '오전 케어 시작했습니다. 오병석님 컨디션 좋아보이세요.', time: '오전 7:10' },
+        { me: true,  text: '네, 잘 부탁드려요. 바이탈도 측정 부탁드립니다.', time: '오전 7:15' },
+        { me: false, text: '혈압 125/82, 체온 36.5, 맥박 72입니다.', time: '오전 7:30' },
+        { me: true,  text: '정상 범위입니다. 기록해 두겠습니다.', time: '오전 7:32' },
+        { me: false, text: '아침 식사 80% 섭취 완료했습니다', time: '3시간 전' },
+      ]
+    },
+    kth: {
+      av: '김', name: '김태호 촉탁의', pt: '301호 박영수님 관련', status: 'away',
+      msgs: [
+        { me: false, text: '박영수 환자 혈압 수치 보고 받았습니다. 이전 처방대로 리시노프릴 용량 조정 필요합니다.', time: '어제 16:00' },
+        { me: true,  text: '네, 선생님. 10mg에서 20mg으로 변경하면 될까요?', time: '어제 16:08' },
+        { me: false, text: '맞습니다. 저녁부터 시작하고 익일 오전 재측정 후 보고해 주세요.', time: '어제 16:12' },
+        { me: false, text: '혈압약 용량 조정 지시사항 확인', time: '어제' },
+      ]
+    },
+  };
+
+  let currentConvoId = null;
+
+  function openConvo(id) {
+    const data = CONVOS[id];
+    if (!data) return;
+    currentConvoId = id;
+
+    document.getElementById('convo-av').textContent = data.av;
+    document.getElementById('convo-name').textContent = data.name;
+    document.getElementById('convo-pt').textContent = data.pt;
+    const dot = document.getElementById('convo-status');
+    dot.className = 'st-dot ' + data.status;
+
+    const input = document.getElementById('cp-convo-input');
+    input.placeholder = data.name + '에게 답장...';
+
+    const list = document.getElementById('cp-msg-list');
+    list.innerHTML = data.msgs.map((m, i) => {
+      const prev = data.msgs[i - 1];
+      const dateDiv = (!prev || prev.time.split(' ')[0] !== m.time.split(' ')[0])
+        ? `<div class="cp-msg-date-sep">${m.time.split(' ')[0]}</div>` : '';
+      const timeOnly = m.time.includes(' ') ? m.time.split(' ').slice(1).join(' ') : m.time;
+      return `${dateDiv}<div class="cp-msg${m.me ? ' me' : ''}">
+        <div class="cp-msg-av">${m.me ? '나' : data.av}</div>
+        <div class="cp-msg-bubble">${m.text}</div>
+        <div class="cp-msg-time">${timeOnly}</div>
+      </div>`;
+    }).join('');
+    list.scrollTop = list.scrollHeight;
+
+    // 읽음 처리
+    const pill = document.getElementById('unread-' + id);
+    if (pill) pill.remove();
+
+    document.getElementById('cp-convo').classList.add('open');
+    setTimeout(() => input.focus(), 250);
+  }
+
+  function closeConvo() {
+    document.getElementById('cp-convo').classList.remove('open');
+    currentConvoId = null;
+  }
+
+  function sendConvoMsg() {
+    const input = document.getElementById('cp-convo-input');
+    const val = input.value.trim();
+    if (!val || !currentConvoId) return;
+    input.value = '';
+
+    const data = CONVOS[currentConvoId];
+    const now = new Date();
+    const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+    data.msgs.push({ me: true, text: val, time: timeStr });
+
+    const list = document.getElementById('cp-msg-list');
+    const div = document.createElement('div');
+    div.className = 'cp-msg me fade-up';
+    div.innerHTML = `
+      <div class="cp-msg-av">나</div>
+      <div class="cp-msg-bubble">${val.replace(/</g, '&lt;')}</div>
+      <div class="cp-msg-time">${timeStr}</div>`;
+    list.appendChild(div);
+    list.scrollTop = list.scrollHeight;
+  }
+
+  document.getElementById('cp-convo-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendConvoMsg();
+  });
+
+  function clToggle(el) {
+    el.classList.toggle('checked');
+    const row = el.closest('.cl-row');
+    row.classList.toggle('done', el.classList.contains('checked'));
+  }
+
+  function schView(el, view) {
+    el.closest('.pt-tabs').querySelectorAll('.pt-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.sch-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('sch-' + view).classList.add('active');
+  }
+
+  function nurseFilter(btn, name) {
+    document.querySelectorAll('.sch-nf-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const isSolo = name !== '전체';
+    document.querySelectorAll('.sch-cal-cell:not(.empty)').forEach(cell => {
+      cell.classList.toggle('solo', isSolo);
+      if (isSolo) {
+        cell.querySelectorAll('.sch-cal-entry').forEach(e => {
+          e.hidden = e.dataset.nurse !== name;
+        });
+      }
+    });
+  }
+
+  (function buildCalendar() {
+    const nurses = [
+      { name: '김지현', role: 'RN', me: true,  shifts: 'DDEENNODDDEENNODDDEENNODDDEENN' },
+      { name: '이수민', role: 'RN', me: false, shifts: 'NNODDDEENNODDDEENNODDDEENNODDE' },
+      { name: '박지영', role: 'RN', me: false, shifts: 'EENNODDDEENNODDDEENNODDDEENNOD' },
+      { name: '정미래', role: 'RN', me: false, shifts: 'ODDEENNODDDEENNODDDEENNODDDEEN' },
+      { name: '최서연', role: 'RN', me: false, shifts: 'DEENNODDDEENNODDDEENNODDDEENNO' },
+      { name: '한도연', role: 'NA', me: false, shifts: 'NODDDEENNODDDEENNODDDEENNODDDE' },
+    ];
+    const WKND = new Set([0, 6]);
+    const TODAY = 18;
+    function getDow(d) { return (3 + d - 1) % 7; } // Apr 1 2026 = Wed(3)
+    const shiftCfg = {
+      D: { cls: 'sb sb-d', label: '주', time: '07–15' },
+      E: { cls: 'sb sb-e', label: '오', time: '15–23' },
+      N: { cls: 'sb sb-n', label: '야', time: '23–07' },
+      O: null, L: { cls: 'sb sb-d', label: '연', time: '' }
+    };
+
+    // Build nurse filter buttons
+    const nfBar = document.getElementById('sch-nf-bar');
+    if (nfBar) {
+      let btns = `<button class="sch-nf-btn active" onclick="nurseFilter(this,'전체')">전체</button>`;
+      for (const n of nurses) {
+        btns += `<button class="sch-nf-btn${n.me ? ' me' : ''}" onclick="nurseFilter(this,'${n.name}')">${n.name}</button>`;
+      }
+      nfBar.innerHTML = btns;
+    }
+
+    // Build calendar grid
+    const grid = document.getElementById('sch-cal-grid');
+    if (!grid) return;
+
+    let html = '';
+    const startDow = getDow(1); // 3 = Wed → 3 empty cells at start (Sun Mon Tue)
+    for (let i = 0; i < startDow; i++) {
+      html += '<div class="sch-cal-cell empty"></div>';
+    }
+
+    for (let d = 1; d <= 30; d++) {
+      const dw = getDow(d);
+      const isToday = d === TODAY;
+      const isWknd  = WKND.has(dw);
+      let cellCls = 'sch-cal-cell';
+      if (isToday)     cellCls += ' today-cell';
+      else if (isWknd) cellCls += ' wknd-bg';
+
+      // Count shifts for summary
+      const counts = { D: 0, E: 0, N: 0, O: 0 };
+      for (const n of nurses) counts[(n.shifts[d - 1] || 'O').toUpperCase()]++;
+
+      let summary = '';
+      if (counts.D) summary += `<div class="sch-cal-sum-row"><span class="sb sb-d">주</span><span class="sch-cal-sum-n">${counts.D}명</span></div>`;
+      if (counts.E) summary += `<div class="sch-cal-sum-row"><span class="sb sb-e">오</span><span class="sch-cal-sum-n">${counts.E}명</span></div>`;
+      if (counts.N) summary += `<div class="sch-cal-sum-row"><span class="sb sb-n">야</span><span class="sch-cal-sum-n">${counts.N}명</span></div>`;
+      if (counts.O) summary += `<div class="sch-cal-sum-off">휴무 ${counts.O}명</div>`;
+
+      // Individual entries for solo mode
+      let entries = '';
+      for (const n of nurses) {
+        const s = (n.shifts[d - 1] || 'O').toUpperCase();
+        const cfg = shiftCfg[s];
+        const badge = cfg
+          ? `<span class="${cfg.cls}">${cfg.label}</span><span class="sch-cal-shift-time">${cfg.time}</span>`
+          : `<span class="sb-off" style="font-size:16px;color:var(--ink-6)">—</span>`;
+        entries += `<div class="sch-cal-entry${n.me ? ' me' : ''}" data-nurse="${n.name}">${badge}</div>`;
+      }
+
+      html += `<div class="${cellCls}"><span class="sch-cal-day-num">${d}</span><div class="sch-cal-summary">${summary}</div><div class="sch-cal-entries">${entries}</div></div>`;
+    }
+
+    // Trailing empty cells to complete the last row
+    const total = startDow + 30;
+    const rem   = total % 7;
+    if (rem !== 0) for (let i = 0; i < 7 - rem; i++) html += '<div class="sch-cal-cell empty"></div>';
+
+    grid.innerHTML = html;
+  })();
+</script>
+
+</body>
+</html>

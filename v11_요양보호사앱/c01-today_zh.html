@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-role="caregiver" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#DCFCE7">
+  <title>每日问候 · 护理员 · 今日</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <style>
+    /* ============================================================
+       c01 · 今日 (护理员主页) — 简体中文
+       ============================================================ */
+    :root {
+      --text-body: 18px;
+      --size-touch-target: 48px;
+      --accent:        var(--color-accent);
+      --accent-soft:   var(--color-accent-soft);
+      --accent-strong: var(--color-accent-strong);
+      --danger:        var(--color-danger);
+      --danger-soft:   var(--color-danger-soft);
+      --warn:          var(--color-warning);
+      --warn-soft:     var(--color-warning-soft);
+      --t1:            var(--color-text-primary);
+      --t2:            var(--color-text-secondary);
+      --t3:            var(--color-text-tertiary);
+      --safe-t: 0px;
+      --safe-b: 0px;
+      --tab-h:  64px;
+      --tab-bot: 24px;
+      --page-pad: 16px;
+    }
+
+    html { height: 100%; background: var(--brand-green-100); font-size: 16px; }
+    body {
+      height: 100%; color: var(--t1); overflow-x: hidden; font-size: var(--text-body);
+      font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .bg {
+      position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+      background:
+        radial-gradient(520px 420px at 50% -6%, rgba(34,197,94,.14), transparent 65%),
+        radial-gradient(620px 500px at 50% 32%, rgba(74,222,128,.10), transparent 65%),
+        linear-gradient(180deg, #D9F4E1 0%, #E8F6EE 28%, #F0F8F3 62%, #F4FAF6 100%);
+    }
+    .app {
+      max-width: 430px; margin: 0 auto; min-height: 100%;
+      position: relative; padding-bottom: calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 32px);
+    }
+
+    .header {
+      position: sticky; top: 0; z-index: 10;
+      padding: calc(var(--safe-t) + 4px) var(--page-pad) 10px;
+      background: linear-gradient(180deg, rgba(232,246,238,.96) 0%, rgba(232,246,238,.82) 70%, rgba(232,246,238,0) 100%);
+      backdrop-filter: blur(10px) saturate(140%);
+      -webkit-backdrop-filter: blur(10px) saturate(140%);
+    }
+    .header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; }
+    .logo svg { width: 24px; height: 24px; }
+    .header-actions { display: flex; align-items: center; gap: 6px; }
+    .icon-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      border: .5px solid rgba(255,255,255,.78);
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; text-decoration: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 10px rgba(0,0,0,.05);
+      position: relative; transition: transform .1s;
+    }
+    .icon-btn:active { transform: scale(.93); }
+    .icon-btn iconify-icon { font-size: 19px; color: var(--accent-strong); }
+    .notif-dot {
+      position: absolute; top: 8px; right: 8px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--danger); border: 1.5px solid #fff;
+    }
+
+    .shift {
+      margin: 12px var(--page-pad) 0;
+      padding: 12px 14px;
+      display: flex; align-items: center; gap: 12px;
+      background: var(--card-bg-soft);
+      backdrop-filter: blur(var(--blur-card)) saturate(140%);
+      -webkit-backdrop-filter: blur(var(--blur-card)) saturate(140%);
+      border: var(--card-border-soft);
+      border-radius: 16px;
+      box-shadow: var(--card-shadow-soft);
+      position: relative; z-index: 1;
+    }
+    .shift-ring { width: 44px; height: 44px; position: relative; flex-shrink: 0; }
+    .shift-ring svg { transform: rotate(-90deg); }
+    .shift-ring-val {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: var(--accent-strong); letter-spacing: -.2px;
+    }
+    .shift-meta { flex: 1; min-width: 0; line-height: 1.35; }
+    .shift-main { font-size: 14px; font-weight: 700; color: var(--t1); letter-spacing: -.2px; }
+    .shift-sub { font-size: 12px; font-weight: 500; color: var(--t2); margin-top: 2px; }
+    .shift-sub b { color: var(--accent-strong); font-weight: 700; }
+
+    .hero-wrap { padding: 0 var(--page-pad); margin-top: 14px; position: relative; z-index: 1; }
+    .hero {
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(28px) saturate(150%) brightness(1.02);
+      -webkit-backdrop-filter: blur(28px) saturate(150%) brightness(1.02);
+      border: 0.5px solid rgba(255,255,255,0.92);
+      border-radius: var(--radius-hero);
+      padding: 20px;
+      box-shadow: var(--card-shadow-hero);
+      position: relative;
+    }
+    .hero-top { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .hero-time { font-size: 13px; font-weight: 700; color: var(--t2); letter-spacing: -.2px; }
+    .hero-next { margin-left: auto; font-size: 12px; font-weight: 500; color: var(--t3); }
+    .hero-next b { color: var(--t2); font-weight: 700; }
+    .hero-more {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(0,0,0,.04); border: 0; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--t2); flex-shrink: 0; transition: transform .1s;
+    }
+    .hero-more:active { transform: scale(.92); }
+    .hero-more iconify-icon { font-size: 15px; }
+    .hero-title {
+      margin: 0;
+      font-size: 22px; font-weight: 900; letter-spacing: -.3px;
+      color: var(--t1); line-height: 1.2;
+    }
+    .hero-title b { color: var(--accent-strong); }
+    .hero-sub { margin: 2px 0 0; font-size: 14px; font-weight: 500; color: var(--t2); line-height: 1.35; }
+    .hero-ok-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 8px;
+      font-size: 13px; font-weight: 500; color: var(--t3);
+    }
+    .hero-ok-pill iconify-icon { font-size: 15px; color: var(--accent-strong); flex-shrink: 0; }
+    .hero-ok-pill b { font-weight: 700; color: var(--t1); }
+    .hero-actions { margin-top: 16px; }
+    .btn {
+      height: 52px; border-radius: 14px; border: 0; font-family: inherit;
+      font-size: 15px; font-weight: 700; letter-spacing: -.2px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      transition: transform .1s; cursor: pointer;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn iconify-icon { font-size: 18px; }
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, var(--brand-green-400), var(--accent));
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(34,197,94,.22);
+    }
+
+    .handover-wrap { margin: 20px var(--page-pad) 0; position: relative; z-index: 1; }
+    .handover {
+      padding: 14px;
+      background: var(--card-bg-soft);
+      backdrop-filter: blur(var(--blur-card)) saturate(140%);
+      -webkit-backdrop-filter: blur(var(--blur-card)) saturate(140%);
+      border: var(--card-border-soft);
+      border-radius: 16px;
+      box-shadow: var(--card-shadow-soft);
+      cursor: pointer;
+      position: relative; overflow: hidden;
+    }
+    .handover::before {
+      content: ''; position: absolute; inset: 0 0 auto 0; height: 90px;
+      background: radial-gradient(380px 110px at 8% -30%, rgba(34,197,94,.08), transparent 70%);
+      pointer-events: none;
+    }
+    .handover-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; position: relative; }
+    .handover-label {
+      font-size: 11px; font-weight: 700; color: var(--t2);
+      letter-spacing: .5px;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .handover-label iconify-icon { font-size: 13px; color: var(--accent-strong); }
+    .handover-time { font-size: 11px; font-weight: 700; color: var(--t3); }
+    .handover-stat { display: flex; align-items: center; gap: 12px; position: relative; margin-bottom: 6px; }
+    .handover-dots { display: inline-flex; gap: 4px; flex-shrink: 0; }
+    .hd-dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 0 1.5px rgba(255,255,255,.7); }
+    .hd-dot.ok    { background: var(--accent); }
+    .hd-dot.watch { background: var(--palette-amber-500); }
+    .hd-dot.alert { background: #ef4444; }
+    .handover-counts {
+      display: inline-flex; gap: 10px; flex: 1; min-width: 0;
+      font-size: 12px; font-weight: 700; color: var(--t2); letter-spacing: -.2px;
+    }
+    .handover-counts .c-alert { color: #dc2626; }
+    .handover-counts .c-watch { color: var(--palette-amber-700); }
+    .handover-counts .c-ok    { color: var(--accent-strong); }
+    .handover-counts b { font-weight: 900; }
+    .handover-toggle {
+      flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+      background: var(--accent-soft);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--accent-strong); transition: transform .2s;
+    }
+    .handover.open .handover-toggle { transform: rotate(180deg); }
+    .handover-toggle iconify-icon { font-size: 15px; }
+    .handover-focus {
+      font-size: 13px; color: var(--t2); line-height: 1.5; font-weight: 400;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .handover-focus b { color: var(--t1); font-weight: 700; }
+    .handover-focus .warn { color: #dc2626; font-weight: 700; }
+    .handover.open .handover-focus { -webkit-line-clamp: unset; overflow: visible; }
+    .handover-full { display: none; margin-top: 12px; padding-top: 12px; border-top: .5px dashed rgba(0,0,0,.08); }
+    .handover.open .handover-full { display: block; }
+    .handover-items { display: flex; flex-direction: column; gap: 8px; }
+    .ho-item {
+      display: grid; grid-template-columns: 3px 30px 1fr auto; gap: 10px;
+      padding: 10px 12px; border-radius: 12px;
+      background: rgba(255,255,255,.55);
+      border: .5px solid rgba(0,0,0,.04);
+      align-items: start;
+    }
+    .ho-bar { width: 3px; border-radius: 2px; align-self: stretch; background: var(--accent); }
+    .ho-item.ok    .ho-bar { background: var(--accent); }
+    .ho-item.watch .ho-bar { background: var(--palette-amber-500); }
+    .ho-item.alert .ho-bar { background: #ef4444; }
+    .ho-av {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      background: var(--accent-soft); color: var(--accent-strong);
+    }
+    .ho-item.watch .ho-av { background: rgba(245,158,11,.14); color: var(--palette-amber-700); }
+    .ho-item.alert .ho-av { background: rgba(239,68,68,.12); color: #dc2626; }
+    .ho-body { min-width: 0; }
+    .ho-head-line { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; }
+    .ho-name { font-size: 14px; font-weight: 700; color: var(--t1); letter-spacing: -.2px; }
+    .ho-room {
+      font-size: 10.5px; font-weight: 500; color: var(--t3);
+      background: rgba(0,0,0,.04); padding: 2px 6px; border-radius: 6px;
+    }
+    .ho-txt { font-size: 13px; color: var(--t1); line-height: 1.5; }
+    .ho-txt b { font-weight: 700; }
+    .ho-action {
+      font-size: 12px; color: var(--t2); line-height: 1.45; margin-top: 5px;
+      display: flex; gap: 4px; align-items: flex-start;
+    }
+    .ho-action iconify-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; color: var(--accent-strong); }
+    .ho-item.watch .ho-action iconify-icon { color: var(--palette-amber-700); }
+    .ho-item.alert .ho-action iconify-icon { color: #dc2626; }
+    .ho-pill { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; letter-spacing: .2px; height: fit-content; white-space: nowrap; }
+    .ho-item.ok    .ho-pill { background: var(--accent-soft); color: var(--accent-strong); }
+    .ho-item.watch .ho-pill { background: rgba(245,158,11,.14); color: var(--palette-amber-700); }
+    .ho-item.alert .ho-pill { background: rgba(239,68,68,.12); color: #dc2626; }
+
+    .roster-wrap { margin: 18px var(--page-pad) 0; position: relative; z-index: 1; }
+    .roster-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; padding: 0 2px; }
+    .roster-t { font-size: 13px; font-weight: 700; color: var(--t3); letter-spacing: .3px; }
+    .roster-sub { font-size: 11px; font-weight: 700; color: var(--t3); }
+    .roster-list {
+      background: var(--card-bg-soft);
+      backdrop-filter: blur(var(--blur-card)) saturate(140%);
+      -webkit-backdrop-filter: blur(var(--blur-card)) saturate(140%);
+      border: var(--card-border-soft);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow-soft);
+      overflow: hidden;
+    }
+    .roster-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      border-bottom: .5px solid rgba(0,0,0,.05);
+      text-decoration: none; color: inherit;
+      cursor: pointer; transition: background .12s;
+    }
+    .roster-row:last-child { border-bottom: 0; }
+    .roster-row:active { background: rgba(0,0,0,.02); }
+    .rs-av {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(0,0,0,.05); color: var(--t2);
+      font-size: 12px; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+      letter-spacing: -.2px;
+    }
+    .rs-av.warn { background: rgba(245,158,11,.14); color: var(--palette-amber-700); }
+    .roster-body { flex: 1; min-width: 0; }
+    .roster-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; line-height: 1.25; }
+    .rs-nm { font-size: 13px; font-weight: 700; color: var(--t1); letter-spacing: -.2px; }
+    .rs-nm .rm { font-size: 11px; font-weight: 500; color: var(--t3); margin-left: 4px; }
+    .rs-dots { display: flex; gap: 4px; flex-shrink: 0; align-items: center; }
+    .rd { width: 7px; height: 7px; border-radius: 50%; background: rgba(0,0,0,.14); }
+    .rd.done { background: var(--accent-strong); }
+    .rd.now { background: var(--accent); box-shadow: 0 0 0 3px rgba(34,197,94,.22); }
+    .rd.warn { background: var(--palette-amber-500); }
+    .rs-next {
+      margin-top: 3px;
+      font-size: 11px; font-weight: 500; color: var(--t3);
+      letter-spacing: -.1px; line-height: 1.35;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .rs-next iconify-icon { font-size: 11px; color: var(--t3); }
+    .rs-next b { color: var(--t2); font-weight: 700; }
+    .roster-row.warn .rs-next { color: var(--palette-amber-700); }
+    .roster-row.warn .rs-next iconify-icon { color: var(--palette-amber-700); }
+    .roster-row.warn .rs-next b { color: var(--palette-amber-700); font-weight: 700; }
+    .roster-row.now .rs-next b { color: var(--accent-strong); font-weight: 700; }
+    .rs-chev { flex-shrink: 0; font-size: 15px; color: var(--t3); }
+
+    .tab-wrap {
+      position: fixed; bottom: calc(var(--safe-b) + var(--tab-bot));
+      left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 10px;
+      width: calc(100% - 32px); max-width: 398px; z-index: 40;
+    }
+    .tabbar {
+      flex: 1; min-width: 0; height: var(--tab-h);
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 999px;
+      box-shadow: 0 6px 22px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
+      display: flex; align-items: stretch; justify-content: space-around; padding: 0 6px;
+    }
+    .tab {
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; text-decoration: none; color: var(--t3); border-radius: 999px; padding: 0 4px;
+      transition: color .15s;
+    }
+    .tab iconify-icon { font-size: 24px; }
+    .tab.active { color: var(--accent-strong); }
+    .tab.active iconify-icon { filter: drop-shadow(0 2px 6px rgba(34,197,94,.28)); }
+    .sos {
+      position: relative;
+      width: var(--tab-h); height: var(--tab-h); flex-shrink: 0; border-radius: 50%;
+      background: linear-gradient(135deg, #F87171, var(--palette-red-600));
+      border: 0;
+      box-shadow: 0 8px 22px rgba(220,38,38,.38), inset 0 1px 0 rgba(255,255,255,.32);
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform .1s;
+    }
+    .sos:active { transform: scale(.92); }
+    .sos iconify-icon { font-size: 26px; color: #fff; }
+    .sos-ring { position: absolute; inset: 2px; pointer-events: none; }
+    .sos-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+    .sos-ring circle {
+      fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round;
+      stroke-dasharray: 172; stroke-dashoffset: 172;
+      transition: stroke-dashoffset .1s linear;
+    }
+    .sos.holding .sos-ring circle { transition: stroke-dashoffset 0s linear; }
+
+    .overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.36);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      display: none; align-items: flex-end; justify-content: center; z-index: 200;
+    }
+    .overlay.show { display: flex; }
+    .sheet {
+      background: rgba(250,253,251,.94);
+      backdrop-filter: blur(60px) saturate(140%);
+      -webkit-backdrop-filter: blur(60px) saturate(140%);
+      border-top: .5px solid rgba(255,255,255,.8);
+      border-radius: 26px 26px 0 0;
+      padding: 18px 22px 28px;
+      width: 100%; max-width: 430px; max-height: 90vh; overflow-y: auto;
+    }
+    .sheet-handle { width: 36px; height: 4px; background: rgba(0,0,0,.12); border-radius: 2px; margin: 0 auto 16px; }
+    .sheet-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .sheet-ico {
+      width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center; color: #fff;
+    }
+    .sheet-ico iconify-icon { font-size: 22px; }
+    .sheet-ttl { font-size: 20px; font-weight: 700; letter-spacing: -.2px; color: var(--t1); }
+    .sheet-sub { font-size: 13px; font-weight: 400; color: var(--t2); margin-top: 2px; }
+    .sheet-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px; border-radius: 12px;
+      background: rgba(0,0,0,.028);
+      margin-bottom: 7px;
+    }
+    .sheet-row-ico {
+      width: 34px; height: 34px; border-radius: 10px; background: #fff;
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .sheet-row-ico iconify-icon { font-size: 17px; }
+    .sheet-row-text { flex: 1; min-width: 0; }
+    .sheet-row-label { font-size: 12px; font-weight: 500; color: var(--t3); }
+    .sheet-row-val { font-size: 14px; font-weight: 700; color: var(--t1); margin-top: 1px; }
+    .sos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+    .sos-card {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+      padding: 18px 10px; background: rgba(239,68,68,.06);
+      border: 1px solid rgba(239,68,68,.22);
+      border-radius: 16px; cursor: pointer; transition: transform .1s;
+      font-family: inherit;
+    }
+    .sos-card:active { transform: scale(.96); }
+    .sos-card iconify-icon { font-size: 30px; color: var(--palette-red-700); }
+    .sos-card-t { font-size: 15px; font-weight: 700; color: var(--palette-red-700); letter-spacing: -.2px; }
+    .sos-hint {
+      font-size: 13px; font-weight: 500; color: var(--palette-red-700);
+      background: rgba(239,68,68,.08);
+      padding: 10px 14px; border-radius: 12px; text-align: center;
+      margin-top: 12px; line-height: 1.45;
+    }
+    .sos-hint b { font-weight: 700; }
+
+    .toast {
+      position: fixed; top: 72px; left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      background: rgba(28,28,30,.9); color: #fff;
+      padding: 12px 20px; border-radius: 999px;
+      font-size: 14px; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,.22);
+      z-index: 300; opacity: 0; pointer-events: none;
+      transition: opacity .22s, transform .22s;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .shift, .hero-wrap, .handover-wrap, .roster-wrap { animation: fadeUp .4s ease both; }
+    .roster-wrap  { animation-delay: .16s; }
+    .hero-wrap     { animation-delay: .08s; }
+    .handover-wrap { animation-delay: .12s; }
+  </style>
+</head>
+<body>
+
+  <div class="bg"></div>
+
+  <div class="app">
+
+    <header class="header">
+      <div class="header-row">
+        <a class="logo" href="#" aria-label="每日问候">
+          <svg viewBox="0 0 512 512" fill="none">
+            <g transform="translate(50,50) scale(0.163)">
+              <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="currentColor" style="color:var(--accent-strong)"/>
+              <path d="M4.68 19.34C1286.35-131.48 1286.35 630.4 1286.35 1246.66L28.31 2526C7.32 2031.8 3.73 1368.08 867.14 1263.52C-115.88 1211.75 4.68 424.16 4.68 19.34Z" fill="currentColor" style="color:var(--accent-strong)"/>
+            </g>
+          </svg>
+        </a>
+        <div class="header-actions">
+          <a href="#" class="icon-btn" aria-label="通知" onclick="toast('3条新通知');return false">
+            <iconify-icon icon="fluent:alert-24-filled"></iconify-icon>
+            <span class="notif-dot"></span>
+          </a>
+          <a href="c04-mypage.html" class="icon-btn" aria-label="我的页面">
+            <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <section class="shift">
+      <div class="shift-ring" aria-label="上午护理 9项中完成5项">
+        <svg width="44" height="44">
+          <circle cx="22" cy="22" r="17" stroke="rgba(34,197,94,.14)" stroke-width="5" fill="none"/>
+          <circle cx="22" cy="22" r="17" stroke="var(--accent)" stroke-width="5" fill="none"
+            stroke-linecap="round" stroke-dasharray="107" stroke-dashoffset="47"/>
+        </svg>
+        <div class="shift-ring-val" style="font-size:10px">5/9</div>
+      </div>
+      <div class="shift-meta">
+        <div class="shift-main">上午班 · 07:00 → 15:00</div>
+        <div class="shift-sub">完成 <b>5</b> · 剩余 <b>4</b> · 负责 <b>9</b> 位 · 高峰 08-10</div>
+      </div>
+    </section>
+
+    <div class="hero-wrap">
+      <article class="hero">
+        <div class="hero-top">
+          <span class="hero-time">10:15</span>
+          <span class="hero-next">距下次 <b>46 分钟</b></span>
+          <button class="hero-more" onclick="openHeroMenu()" aria-label="更多">
+            <iconify-icon icon="fluent:more-horizontal-24-filled"></iconify-icon>
+          </button>
+        </div>
+        <h2 class="hero-title"><b>朴英子</b> 奶奶 · 测血压</h2>
+        <p class="hero-sub">2 楼 A-3 号</p>
+        <span class="hero-ok-pill">
+          <iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>
+          <b>可测量</b> · 08:00 服用降压药后已过 2 小时
+        </span>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="location.href='c02-checklist.html'">
+            <iconify-icon icon="fluent:pen-24-filled"></iconify-icon>立即开始记录
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <div class="handover-wrap">
+      <section class="handover" id="handover" onclick="toggleHandover()">
+        <div class="handover-head">
+          <span class="handover-label">
+            <iconify-icon icon="ph:sparkle-fill"></iconify-icon>AI 交接 · 夜班 → 白班
+          </span>
+          <span class="handover-time">06:45</span>
+        </div>
+        <div class="handover-stat">
+          <span class="handover-dots" aria-hidden="true">
+            <span class="hd-dot alert"></span>
+            <span class="hd-dot watch"></span>
+            <span class="hd-dot ok"></span>
+            <span class="hd-dot ok"></span>
+          </span>
+          <span class="handover-counts">
+            <span class="c-alert"><b>紧急 1</b></span>
+            <span class="c-watch"><b>关注 1</b></span>
+            <span class="c-ok"><b>稳定 2</b></span>
+          </span>
+          <span class="handover-toggle" aria-label="展开"><iconify-icon icon="fluent:chevron-down-24-filled"></iconify-icon></span>
+        </div>
+        <div class="handover-focus">
+          上午重点 — <span class="warn">李正淑 复测体温</span> · <b>崔明子</b> 每 2 小时翻身
+        </div>
+        <div class="handover-full">
+          <div class="handover-items">
+            <div class="ho-item alert">
+              <div class="ho-bar"></div>
+              <span class="ho-av">李</span>
+              <div class="ho-body">
+                <div class="ho-head-line">
+                  <span class="ho-name">李正淑</span>
+                  <span class="ho-room">B-2 号</span>
+                </div>
+                <div class="ho-txt"><b>干咳 3 次</b> · 体温 <b>36.9℃</b> 低热</div>
+                <div class="ho-action">
+                  <iconify-icon icon="fluent:arrow-right-24-filled"></iconify-icon>
+                  上午若状况变化请呼叫护士
+                </div>
+              </div>
+              <span class="ho-pill">紧急</span>
+            </div>
+            <div class="ho-item watch">
+              <div class="ho-bar"></div>
+              <span class="ho-av">崔</span>
+              <div class="ho-body">
+                <div class="ho-head-line">
+                  <span class="ho-name">崔明子</span>
+                  <span class="ho-room">B-1 号</span>
+                </div>
+                <div class="ho-txt">右侧臀部发红持续 · <b>每 2 小时翻身</b></div>
+                <div class="ho-action">
+                  <iconify-icon icon="fluent:camera-24-filled"></iconify-icon>
+                  拍 1 张皮肤照片
+                </div>
+              </div>
+              <span class="ho-pill">关注</span>
+            </div>
+            <div class="ho-item ok">
+              <div class="ho-bar"></div>
+              <span class="ho-av">朴</span>
+              <div class="ho-body">
+                <div class="ho-head-line">
+                  <span class="ho-name">朴英子</span>
+                  <span class="ho-room">A-3 号</span>
+                </div>
+                <div class="ho-txt">凌晨 2 点睡眠不安 1 次 → 已稳定 · 血压脉搏正常</div>
+                <div class="ho-action">
+                  <iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>
+                  已确认早晨服用降压药
+                </div>
+              </div>
+              <span class="ho-pill">稳定</span>
+            </div>
+            <div class="ho-item ok">
+              <div class="ho-bar"></div>
+              <span class="ho-av">金</span>
+              <div class="ho-body">
+                <div class="ho-head-line">
+                  <span class="ho-name">金顺子</span>
+                  <span class="ho-room">B-2 号</span>
+                </div>
+                <div class="ho-txt">无异常 · 睡眠良好 · 上午散步状况佳</div>
+              </div>
+              <span class="ho-pill">稳定</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="roster-wrap">
+      <div class="roster-head">
+        <span class="roster-t">负责 4 位 · 今日</span>
+        <span class="roster-sub">完成 5 · 剩余 4</span>
+      </div>
+      <div class="roster-list">
+        <a class="roster-row now" href="c02-checklist.html?pt=park">
+          <span class="rs-av">朴</span>
+          <div class="roster-body">
+            <div class="roster-top">
+              <span class="rs-nm">朴英子<span class="rm">A-3</span></span>
+              <span class="rs-dots">
+                <span class="rd done"></span>
+                <span class="rd done"></span>
+                <span class="rd now"></span>
+                <span class="rd"></span>
+              </span>
+            </div>
+            <div class="rs-next">
+              <iconify-icon icon="fluent:clock-24-regular"></iconify-icon>
+              现在 · <b>测血压</b> · 10:15
+            </div>
+          </div>
+          <iconify-icon icon="fluent:chevron-right-24-filled" class="rs-chev"></iconify-icon>
+        </a>
+        <a class="roster-row" href="c02-checklist.html?pt=choi">
+          <span class="rs-av">崔</span>
+          <div class="roster-body">
+            <div class="roster-top">
+              <span class="rs-nm">崔明子<span class="rm">B-1</span></span>
+              <span class="rs-dots">
+                <span class="rd done"></span>
+                <span class="rd done"></span>
+                <span class="rd"></span>
+                <span class="rd"></span>
+              </span>
+            </div>
+            <div class="rs-next">
+              <iconify-icon icon="fluent:clock-24-regular"></iconify-icon>
+              下次 · <b>翻身</b> · 11:00
+            </div>
+          </div>
+          <iconify-icon icon="fluent:chevron-right-24-filled" class="rs-chev"></iconify-icon>
+        </a>
+        <a class="roster-row" href="c02-checklist.html?pt=kim">
+          <span class="rs-av">金</span>
+          <div class="roster-body">
+            <div class="roster-top">
+              <span class="rs-nm">金顺子<span class="rm">B-2</span></span>
+              <span class="rs-dots">
+                <span class="rd done"></span>
+                <span class="rd"></span>
+                <span class="rd"></span>
+                <span class="rd"></span>
+              </span>
+            </div>
+            <div class="rs-next">
+              <iconify-icon icon="fluent:clock-24-regular"></iconify-icon>
+              下次 · <b>服药</b> · 11:00
+            </div>
+          </div>
+          <iconify-icon icon="fluent:chevron-right-24-filled" class="rs-chev"></iconify-icon>
+        </a>
+        <a class="roster-row warn" href="c02-checklist.html?pt=lee">
+          <span class="rs-av warn">李</span>
+          <div class="roster-body">
+            <div class="roster-top">
+              <span class="rs-nm">李正淑<span class="rm">B-2</span></span>
+              <span class="rs-dots">
+                <span class="rd warn"></span>
+                <span class="rd"></span>
+                <span class="rd"></span>
+                <span class="rd"></span>
+              </span>
+            </div>
+            <div class="rs-next">
+              <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+              等待复测体温 · <b>低热关注</b>
+            </div>
+          </div>
+          <iconify-icon icon="fluent:chevron-right-24-filled" class="rs-chev"></iconify-icon>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tab-wrap">
+    <nav class="tabbar" role="tablist">
+      <a href="c01-today.html" class="tab active" aria-label="首页"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></a>
+      <a href="c02-checklist.html" class="tab" aria-label="记录"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></a>
+      <a href="c03-sotong.html" class="tab" aria-label="沟通"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></a>
+      <a href="c04-mypage.html" class="tab" aria-label="我的"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></a>
+    </nav>
+    <button class="sos" id="sosBtn" aria-label="紧急SOS（长按3秒立即发送）">
+      <span class="sos-ring" aria-hidden="true">
+        <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
+      </span>
+      <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+    </button>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="if(event.target===this)closeSheet()">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div id="sheetContent"></div>
+    </div>
+  </div>
+  <div class="toast" id="toastEl"></div>
+
+  <script>
+    function toggleHandover() { document.getElementById('handover').classList.toggle('open'); }
+
+    function openHeroMenu() {
+      document.getElementById('sheetContent').innerHTML = `
+        <div class="sheet-head">
+          <div class="sheet-ico" style="background:linear-gradient(135deg,var(--brand-green-400),var(--accent))">
+            <iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon>
+          </div>
+          <div>
+            <div class="sheet-ttl">朴英子 · 测血压</div>
+            <div class="sheet-sub">10:15 · 2楼 A-3号</div>
+          </div>
+        </div>
+        <button class="sheet-row" style="width:100%;border:0;text-align:left;font-family:inherit" onclick="toast('朴英子 · 血压测量已标记完成');closeSheet()">
+          <span class="sheet-row-ico" style="color:var(--accent-strong)"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span>
+          <span class="sheet-row-text">
+            <span class="sheet-row-label" style="display:block">标记完成</span>
+            <span class="sheet-row-val" style="display:block">不测量直接标记完成</span>
+          </span>
+        </button>
+        <button class="sheet-row" style="width:100%;border:0;text-align:left;font-family:inherit" onclick="toast('已延迟至 10:30');closeSheet()">
+          <span class="sheet-row-ico" style="color:var(--t2)"><iconify-icon icon="fluent:clock-24-filled"></iconify-icon></span>
+          <span class="sheet-row-text">
+            <span class="sheet-row-label" style="display:block">延迟至 10:30</span>
+            <span class="sheet-row-val" style="display:block">延后到下一时段</span>
+          </span>
+        </button>
+        <button class="sheet-row" style="width:100%;border:0;text-align:left;font-family:inherit" onclick="toast('朴英子详情');closeSheet()">
+          <span class="sheet-row-ico" style="color:var(--t2)"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></span>
+          <span class="sheet-row-text">
+            <span class="sheet-row-label" style="display:block">长者详情</span>
+            <span class="sheet-row-val" style="display:block">查看服药·饮食·记录</span>
+          </span>
+        </button>`;
+      document.getElementById('overlay').classList.add('show');
+    }
+
+    (function(){
+      const btn = document.getElementById('sosBtn');
+      const ring = btn.querySelector('.sos-ring circle');
+      const CIRC = 172;
+      const HOLD_MS = 3000;
+      let holdStart = 0, holdRAF = 0, holdFired = false;
+
+      function resetRing() { ring.style.strokeDashoffset = CIRC; btn.classList.remove('holding'); }
+      function animRing(ts) {
+        const elapsed = ts - holdStart;
+        const p = Math.min(elapsed / HOLD_MS, 1);
+        ring.style.strokeDashoffset = CIRC - CIRC * p;
+        if (p < 1 && !holdFired) { holdRAF = requestAnimationFrame(animRing); }
+        else if (p >= 1 && !holdFired) {
+          holdFired = true;
+          navigator.vibrate && navigator.vibrate([30, 60, 120]);
+          toast('SOS 已发送 · 开始录音');
+          setTimeout(resetRing, 500);
+        }
+      }
+      function start(e) {
+        if (e.type === 'mousedown' && e.button !== 0) return;
+        e.preventDefault();
+        holdFired = false; btn.classList.add('holding');
+        holdStart = performance.now();
+        holdRAF = requestAnimationFrame(animRing);
+      }
+      function end() {
+        cancelAnimationFrame(holdRAF);
+        const held = performance.now() - holdStart;
+        if (holdFired) { resetRing(); return; }
+        resetRing();
+        if (held < 400) { openSosSheet(); }
+      }
+      btn.addEventListener('mousedown', start);
+      btn.addEventListener('touchstart', start, { passive: false });
+      btn.addEventListener('mouseup', end);
+      btn.addEventListener('mouseleave', end);
+      btn.addEventListener('touchend', end);
+      btn.addEventListener('touchcancel', end);
+    })();
+
+    function openSosSheet() {
+      document.getElementById('sheetContent').innerHTML = `
+        <div class="sheet-head">
+          <div class="sheet-ico" style="background:linear-gradient(135deg,#F87171,var(--palette-red-700))">
+            <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+          </div>
+          <div>
+            <div class="sheet-ttl" style="color:var(--palette-red-700)">报告紧急情况</div>
+            <div class="sheet-sub">选择类型后立即通知护士和家属</div>
+          </div>
+        </div>
+        <div class="sos-grid">
+          <button class="sos-card" onclick="sosSend('跌倒')">
+            <iconify-icon icon="fluent:person-arrow-back-24-filled"></iconify-icon>
+            <span class="sos-card-t">跌倒</span>
+          </button>
+          <button class="sos-card" onclick="sosSend('意识下降')">
+            <iconify-icon icon="fluent:brain-circuit-24-filled"></iconify-icon>
+            <span class="sos-card-t">意识下降</span>
+          </button>
+          <button class="sos-card" onclick="sosSend('呼吸困难')">
+            <iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon>
+            <span class="sos-card-t">呼吸困难</span>
+          </button>
+          <button class="sos-card" onclick="sosSend('其他 · 语音')">
+            <iconify-icon icon="fluent:mic-24-filled"></iconify-icon>
+            <span class="sos-card-t">其他 · 语音</span>
+          </button>
+        </div>
+        <div class="sos-hint">
+          <b>长按 3 秒</b>立即发送语音 SOS（防误发）
+        </div>`;
+      document.getElementById('overlay').classList.add('show');
+    }
+
+    function sosSend(type) { closeSheet(); toast('SOS [' + type + '] 已发送 · 护士与家属已收到'); }
+    function closeSheet()  { document.getElementById('overlay').classList.remove('show'); }
+    function toast(m) {
+      const t = document.getElementById('toastEl');
+      t.textContent = m; t.classList.add('show');
+      clearTimeout(t._x); t._x = setTimeout(() => t.classList.remove('show'), 2600);
+    }
+  </script>
+</body>
+</html>
