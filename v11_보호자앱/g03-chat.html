@@ -7,36 +7,40 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#EEF3FB">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="app-icon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — 채팅</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="pretendard.css">
+  <script src="iconify.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    a,button,[role=button]{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
+    
     :root{
       --blue:#2C7AFC;--blue-l:#5B9BFF;--blue-d:#1D6AF2;
       --green:#34D399;--green-d:#059669;
       --amber:#F59E0B;--red:#EF4444;
-      --t1:#111827;--t2:rgba(0,0,0,.5);--t3:rgba(0,0,0,.25);
+      --t1:#111827;--t2:rgba(0,0,0,.5);--t3:rgba(0,0,0,.35);
       --glass:rgba(255,255,255,.75);--glass-b:rgba(0,0,0,.05);
       --font:'Pretendard Variable','Pretendard',-apple-system,system-ui,sans-serif;
     }
     html{height:100%}
     body{height:100%;font-family:var(--font);color:var(--t1);-webkit-font-smoothing:antialiased;background:#EEF3FB;overflow-x:hidden}
-    .app{max-width:430px;margin:0 auto;min-height:100%;position:relative;padding-bottom:90px}
+    .app{max-width:430px;margin:0 auto;min-height:100%;position:relative;padding-bottom:102px}
 
     /* ═══ 배경 ═══ */
     .bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none}
     .bg-logo{position:absolute;width:140%;height:auto;left:50%;top:42%;transform:translate(-50%,-50%);opacity:.06;filter:blur(32px);animation:bgl 8s ease-in-out infinite}
     @keyframes bgl{0%,100%{transform:translate(-50%,-50%)scale(1);opacity:.05}50%{transform:translate(-50%,-50%)scale(1.06)rotate(1.5deg);opacity:.08}}
 
-    /* ═══ 헤더 ═══ */
-    .header{position:relative;z-index:10;padding:54px 20px 12px;background:transparent}
+    /* ═══ 헤더 — 표준 ═══ */
+    .header{position:sticky;top:0;z-index:30;padding:calc(env(safe-area-inset-top,0px) + 8px) 20px 10px;background:rgba(212,228,255,.85);transition:background .3s}
+    .header.scrolled{background:rgba(255,255,255,.86)}
     .header-inner{display:flex;align-items:center;justify-content:space-between}
     .header-title{font-size:22px;font-weight:800;letter-spacing:-.5px}
-    .header-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid var(--glass-b);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;cursor:pointer}
-    .header-btn iconify-icon{font-size:18px;color:var(--blue)}
+    .nav-btn,.header-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;transition:transform .1s}
+    .nav-btn:active,.header-btn:active{transform:scale(.93)}
+    .nav-btn iconify-icon,.header-btn iconify-icon{font-size:18px;color:var(--blue)}
 
     /* ═══ 콘텐츠 ═══ */
     .content{position:relative;z-index:1;padding:0 16px}
@@ -61,7 +65,7 @@
     .chat-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-b);border-radius:18px;text-decoration:none;color:inherit;transition:transform .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
     .chat-item:active{transform:scale(.97)}
 
-    .chat-av{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800}
+    .chat-av{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;overflow:hidden;position:relative;}
     .av-ai{background:linear-gradient(135deg,#2C7AFC,#1D6AF2);color:#fff}
     .av-nurse{background:linear-gradient(135deg,#2C7AFC,#5B9BFF);color:#fff;font-size:18px}
     .av-patient{background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#fff}
@@ -78,7 +82,7 @@
     .badge-hide{visibility:hidden}
 
     /* ═══ 탭바 ═══ */
-    .tabbar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%);width:calc(100% - 80px);max-width:320px;height:68px;background:rgba(180,210,250,.15);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.35);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.3);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;z-index:40}
+    .tabbar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);left:50%;transform:translateX(-50%);width:calc(100% - 80px);max-width:320px;height:68px;background:rgba(180,210,250,.15);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.35);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.3);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;z-index:40}
     .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;padding:8px 4px;border-radius:999px;color:rgba(28,28,30,.45);text-decoration:none;transition:all .18s}
     .tab.active{color:var(--blue)}
     .tab-icon{display:flex;align-items:center}
@@ -86,6 +90,12 @@
 
     .home-ind{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:rgba(0,0,0,.15);z-index:99}
   </style>
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g02-ai-guide.html">
+  <link rel="prefetch" href="g03-sotong.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
 </head>
 <body>
 
@@ -114,9 +124,11 @@
 
       <!-- 현재 근무중 간호사 -->
       <div class="duty-card">
-        <div class="duty-av">김</div>
+        <div class="duty-av" style="padding:0;">
+          <img src="img/간호사.png" alt="김서연" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center top;">
+        </div>
         <div class="duty-body">
-          <div class="duty-name">김미영 간호사 · 3층 담당</div>
+          <div class="duty-name">김서연 간호사 · 3층 담당</div>
           <div class="duty-sub">마지막 메시지 오후 2:14</div>
         </div>
         <div class="duty-meta">
@@ -147,11 +159,11 @@
       <div class="section-label">간호사</div>
       <div class="chat-list" style="margin-bottom:4px">
 
-        <!-- 김미영 간호사 -->
+        <!-- 김서연 간호사 -->
         <a href="g03-chat-nurse.html" class="chat-item">
-          <div class="chat-av av-nurse">김</div>
+          <div class="chat-av av-nurse" style="padding:0;display:block;"><img src="img/간호사.png" alt="김서연" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center top;"></div>
           <div class="chat-body">
-            <div class="chat-name">김미영 간호사</div>
+            <div class="chat-name">김서연 간호사</div>
             <div class="chat-preview">저녁 투약도 완료했습니다. 오늘 하루 컨디션...</div>
           </div>
           <div class="chat-meta">
@@ -194,11 +206,11 @@
 
         <!-- 환자 -->
         <a href="g03-chat-patient.html" class="chat-item">
-          <div class="chat-av av-patient">
-            <iconify-icon icon="fluent:heart-24-filled" style="font-size:22px"></iconify-icon>
+          <div class="chat-av av-patient" style="padding:0;display:block;">
+            <img src="img/환자.png" alt="박영자" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center top;">
           </div>
           <div class="chat-body">
-            <div class="chat-name">손정희 어머니</div>
+            <div class="chat-name">박영자 어머니</div>
             <div class="chat-preview">잘 있어요~ 걱정 마세요</div>
           </div>
           <div class="chat-meta">
@@ -245,6 +257,12 @@
     </nav>
 
   </div>
-  <div class="home-ind"></div>
+<style>
+@keyframes overlayOut{from{opacity:1}to{opacity:0}}
+#t-overlay{position:fixed;inset:0;z-index:35;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none;animation:overlayOut .18s ease both}
+</style>
+<script>
+(function(){var ov=document.createElement('div');ov.id='t-overlay';document.body.appendChild(ov);})();
+</script>
 </body>
 </html>

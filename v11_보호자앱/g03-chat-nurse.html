@@ -7,18 +7,20 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#EEF3FB">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="app-icon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — 간호사 채팅</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="pretendard.css">
+  <script src="iconify.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    a,button,[role=button]{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
+    
     :root{
       --blue:#2C7AFC;--blue-l:#5B9BFF;--blue-d:#1D6AF2;
       --green:#34D399;--green-d:#059669;
       --red:#EF4444;
-      --t1:#111827;--t2:rgba(0,0,0,.5);--t3:rgba(0,0,0,.25);
+      --t1:#111827;--t2:rgba(0,0,0,.5);--t3:rgba(0,0,0,.35);
       --glass:rgba(255,255,255,.75);--glass-b:rgba(0,0,0,.05);
       --font:'Pretendard Variable','Pretendard',-apple-system,system-ui,sans-serif;
     }
@@ -31,17 +33,20 @@
     .bg-logo{position:absolute;width:140%;height:auto;left:50%;top:42%;transform:translate(-50%,-50%);opacity:.06;filter:blur(32px);animation:bgl 8s ease-in-out infinite}
     @keyframes bgl{0%,100%{transform:translate(-50%,-50%)scale(1);opacity:.05}50%{transform:translate(-50%,-50%)scale(1.06)rotate(1.5deg);opacity:.08}}
 
-    /* ═══ 헤더 ═══ */
-    .header{position:relative;z-index:10;display:flex;align-items:center;gap:12px;padding:54px 16px 12px;background:rgba(255,255,255,.4);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--glass-b);flex-shrink:0}
-    .btn-back{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid var(--glass-b);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;color:var(--t1)}
+    /* ═══ 헤더 — 표준(대화 특화) ═══ */
+    .header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 10px;background:rgba(212,228,255,.85);transition:background .3s;flex-shrink:0}
+    .header.scrolled{background:rgba(255,255,255,.86)}
+    .btn-back{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;color:var(--t1);transition:transform .1s}
+    .btn-back:active{transform:scale(.93)}
     .nurse-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#2C7AFC,#5B9BFF);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;font-size:16px;font-weight:800;color:#fff}
     .nurse-av::after{content:'';position:absolute;bottom:0;right:0;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid #fff}
     .h-info{flex:1}
     .h-name{font-size:16px;font-weight:700}
     .h-sub{font-size:11px;color:var(--t3);margin-top:1px}
     .h-actions{display:flex;gap:6px}
-    .h-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid var(--glass-b);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;cursor:pointer}
-    .h-btn iconify-icon{font-size:18px;color:var(--t2)}
+    .h-btn,.nav-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;transition:transform .1s}
+    .h-btn:active,.nav-btn:active{transform:scale(.93)}
+    .h-btn iconify-icon,.nav-btn iconify-icon{font-size:18px;color:var(--blue)}
 
     /* ═══ 메시지 ═══ */
     .messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch;position:relative;z-index:1;padding-bottom:160px}
@@ -65,21 +70,24 @@
     .unread-line::before,.unread-line::after{content:'';flex:1;height:1px;background:rgba(44,122,252,.2)}
     .unread-line span{font-size:11px;color:var(--blue);font-weight:600;white-space:nowrap}
 
-    /* ═══ 입력바 ═══ */
-    .input-bar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;z-index:41;display:flex;align-items:center;gap:8px;padding:6px;border-radius:999px;background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--glass-b);box-shadow:0 4px 16px rgba(0,0,0,.06)}
+    /* ═══ 입력바 — 홈 채팅바 톤 ═══ */
+    .input-bar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);left:50%;transform:translateX(-50%);width:calc(100% - 48px);max-width:370px;z-index:41;display:flex;align-items:center;gap:4px;padding:8px 10px 8px 10px;border-radius:999px;background:#fff;border:0;box-shadow:0 4px 20px rgba(0,0,0,.1)}
     .input-icon{width:36px;height:36px;border:none;border-radius:50%;background:transparent;color:var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center}
     .input-icon iconify-icon{font-size:20px}
-    .input-wrap{flex:1;display:flex;align-items:center;height:36px;border-radius:999px;background:rgba(255,255,255,.5);border:1px solid rgba(0,0,0,.04);padding:0 12px}
-    .input-field{flex:1;height:100%;border:none;font-family:var(--font);font-size:14px;outline:none;background:transparent}
-    .input-field::placeholder{color:var(--t3)}
+    .input-wrap{flex:1;display:flex;align-items:center;height:36px;border-radius:999px;background:transparent;border:0;padding:0 6px}
+    .input-field{flex:1;height:100%;border:none;font-family:var(--font);font-size:15px;outline:none;background:transparent;color:var(--t1)}
+    .input-field::placeholder{color:rgba(28,28,30,.4)}
     .input-emoji{border:none;background:none;cursor:pointer;display:flex;align-items:center;padding:0}
     .input-emoji iconify-icon{font-size:20px;color:var(--t3)}
-    .input-send{width:36px;height:36px;border:none;border-radius:50%;background:var(--blue);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(44,122,252,.3);transition:transform .1s}
-    .input-send:active{transform:scale(.92)}
-    .input-send iconify-icon{font-size:18px}
 
     .home-ind{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:rgba(0,0,0,.15);z-index:99}
   </style>
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g02-ai-guide.html">
+  <link rel="prefetch" href="g03-sotong.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
 </head>
 <body>
 
@@ -98,9 +106,9 @@
       <a href="g03-sotong.html" class="btn-back">
         <iconify-icon icon="fluent:chevron-left-24-filled" style="font-size:18px"></iconify-icon>
       </a>
-      <div class="nurse-av">김</div>
+      <div class="nurse-av" style="padding:0;width:40px;height:40px;border-radius:50%;display:block;flex-shrink:0;"><img src="img/간호사.png" alt="김서연" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center top;"></div>
       <div class="h-info">
-        <div class="h-name">김미영 간호사</div>
+        <div class="h-name">김서연 간호사</div>
         <div class="h-sub">정간호사 · 3층 담당 · 오후 근무 중</div>
       </div>
       <div class="h-actions">
@@ -113,8 +121,8 @@
       <div class="date-divider">어제</div>
 
       <div class="msg in">
-        <span class="msg-sender">김미영 간호사</span>
-        <div class="bubble">안녕하세요 예찬님! 오늘 어머님 혈압이 138/88로 조금 높게 측정됐어요. 담당 원장님께 보고했고 내일 아침 다시 체크할 예정입니다.</div>
+        <span class="msg-sender">김서연 간호사</span>
+        <div class="bubble">안녕하세요 민지님! 오늘 어머님 혈압이 138/88로 조금 높게 측정됐어요. 담당 원장님께 보고했고 내일 아침 다시 체크할 예정입니다.</div>
         <span class="msg-time">오후 3:10</span>
       </div>
 
@@ -125,7 +133,7 @@
       </div>
 
       <div class="msg in">
-        <span class="msg-sender">김미영 간호사</span>
+        <span class="msg-sender">김서연 간호사</span>
         <div class="bubble">경계 수준이긴 한데 크게 걱정하실 정도는 아니에요. 오후에 수분 섭취 늘리고 안정 취하시니 오후 5시 재측정에서 128/82로 내려왔어요.</div>
         <span class="msg-time">오후 5:40</span>
       </div>
@@ -139,7 +147,7 @@
       <div class="date-divider">오늘</div>
 
       <div class="msg in">
-        <span class="msg-sender">김미영 간호사</span>
+        <span class="msg-sender">김서연 간호사</span>
         <div class="bubble">좋은 아침이에요! 어머님 오전 투약 완료했습니다. 혈압 126/82, 체온 36.8°C — 오늘은 정상이에요.</div>
         <span class="msg-time">오전 8:15</span>
       </div>
@@ -151,7 +159,7 @@
       </div>
 
       <div class="msg in">
-        <span class="msg-sender">김미영 간호사</span>
+        <span class="msg-sender">김서연 간호사</span>
         <div class="bubble">네, 죽이랑 반찬 두 가지 드셨어요. 평소보다 잘 드신 편이에요.</div>
         <span class="msg-time">오전 8:22</span>
       </div>
@@ -163,7 +171,7 @@
       </div>
 
       <div class="msg in">
-        <span class="msg-sender">김미영 간호사</span>
+        <span class="msg-sender">김서연 간호사</span>
         <div class="bubble">점심 식사 완료됐어요! 밥이랑 국, 반찬 3가지 드셨는데 80% 정도 드셨습니다. 오후 2시 산책 프로그램 참여하실 예정이에요.</div>
         <span class="msg-time">오후 12:15</span>
       </div>
@@ -177,25 +185,25 @@
       <div class="unread-line"><span>읽지 않은 메시지 4건</span></div>
 
       <div class="msg in">
-        <span class="msg-sender">김미영 간호사</span>
+        <span class="msg-sender">김서연 간호사</span>
         <div class="bubble">네, 산책 마치고 사진 바로 보내드릴게요!</div>
         <span class="msg-time">오후 12:22</span>
       </div>
 
       <div class="msg in">
-        <span class="msg-sender">김미영 간호사</span>
+        <span class="msg-sender">김서연 간호사</span>
         <div class="bubble">어머님 산책 잘 다녀오셨어요 기분도 좋아 보이시고 15분 걸으셨어요.</div>
         <span class="msg-time">오후 2:35</span>
       </div>
 
       <div class="msg in">
-        <span class="msg-sender">김미영 간호사</span>
+        <span class="msg-sender">김서연 간호사</span>
         <div class="bubble">사진 보내드려요!</div>
         <span class="msg-time">오후 2:36</span>
       </div>
 
       <div class="msg in">
-        <span class="msg-sender">김미영 간호사</span>
+        <span class="msg-sender">김서연 간호사</span>
         <div class="bubble">저녁 투약도 완료했습니다. 오늘 하루 컨디션 전반적으로 좋으셨어요. 내일도 잘 챙겨드릴게요.</div>
         <span class="msg-time">오후 6:05</span>
       </div>
@@ -206,18 +214,23 @@
       <button class="input-icon"><iconify-icon icon="fluent:add-circle-24-filled"></iconify-icon></button>
       <div class="input-wrap">
         <input class="input-field" type="text" placeholder="메시지 입력">
-        <button class="input-emoji"><iconify-icon icon="ph:smiley-fill"></iconify-icon></button>
+        <button class="input-emoji"><iconify-icon icon="fluent:emoji-24-filled"></iconify-icon></button>
       </div>
-      <button class="input-send"><iconify-icon icon="fluent:send-24-filled"></iconify-icon></button>
     </div>
 
 
   </div>
-  <div class="home-ind"></div>
 
   <script>
     var m=document.getElementById('messages');
     if(m) m.scrollTop=m.scrollHeight;
   </script>
+<style>
+@keyframes overlayOut{from{opacity:1}to{opacity:0}}
+#t-overlay{position:fixed;inset:0;z-index:35;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none;animation:overlayOut .18s ease both}
+</style>
+<script>
+(function(){var ov=document.createElement('div');ov.id='t-overlay';document.body.appendChild(ov);})();
+</script>
 </body>
 </html>

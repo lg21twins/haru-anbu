@@ -265,9 +265,8 @@ a.btn-link {
   -webkit-overflow-scrolling: touch;
 }
 
-.scroll::-webkit-scrollbar {
-  display: none;
-}
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; -ms-overflow-style: none; }
 
 /* Home Indicator */
 .home-ind {

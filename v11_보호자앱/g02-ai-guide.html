@@ -7,13 +7,15 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#d4e4ff">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="app-icon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — AI 케어 가이드</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="pretendard.css">
+  <script src="iconify.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    a,button,[role=button]{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
+    
     :root{
       --blue:#2C7AFC;--blue-l:#5B9BFF;--blue-d:#1D6AF2;
       --green:#34D399;--green-d:#059669;
@@ -25,13 +27,13 @@
     body{height:100%;font-family:var(--font);color:var(--t1);-webkit-font-smoothing:antialiased;background:transparent;overflow-x:hidden}
     .bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none}
     .bg .g1{position:absolute;width:500px;height:500px;left:50%;top:-5%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(44,122,252,.14)0%,transparent 65%);filter:blur(30px)}
-    .app{max-width:430px;margin:0 auto;min-height:100%;position:relative;padding-bottom:calc(max(env(safe-area-inset-bottom,0px),20px) + 100px)}
+    .app{max-width:430px;margin:0 auto;min-height:100%;position:relative;padding-bottom:calc(max(env(safe-area-inset-bottom,0px),20px) + 112px)}
 
     /* 헤더 */
     .header{position:sticky;top:0;z-index:30;padding:calc(env(safe-area-inset-top,0px) + 8px) 20px 10px;background:rgba(212,228,255,.85);transition:background .3s}
     .header.scrolled{background:rgba(255,255,255,.86)}
     .header-inner{display:flex;align-items:center;justify-content:space-between}
-    .header-title{font-size:17px;font-weight:800;letter-spacing:-.3px}
+    .header-title{font-size:22px;font-weight:800;letter-spacing:-.5px}
     .nav-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;transition:transform .1s}
     .nav-btn:active{transform:scale(.93)}
 
@@ -89,9 +91,9 @@
     .article-thumb{width:72px;height:72px;border-radius:12px;background:rgba(0,0,0,.03);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
     /* 탭바 */
-    .tabbar{flex:1;min-width:0;height:60px;background:rgba(210,225,250,.55);backdrop-filter:url(#glass-warp) blur(12px);-webkit-backdrop-filter:url(#glass-warp) blur(12px);border:1px solid rgba(255,255,255,.45);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px}
-    .bottom-bar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;width:calc(100% - 48px);max-width:370px}
-    .ai-fab{width:60px;height:60px;border-radius:50%;background:rgba(210,225,250,.55);backdrop-filter:url(#glass-warp) blur(12px);-webkit-backdrop-filter:url(#glass-warp) blur(12px);border:1px solid rgba(255,255,255,.45);box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;flex-shrink:0;text-decoration:none}
+    .tabbar{flex:1;min-width:0;height:60px;background:rgba(210,225,250,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.45);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px}
+    .bottom-bar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;width:calc(100% - 48px);max-width:370px}
+    .ai-fab{width:60px;height:60px;border-radius:50%;background:rgba(210,225,250,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.45);box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;flex-shrink:0;text-decoration:none}
     .ai-fab:active{transform:scale(.92)}
     .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;padding:8px 4px;border-radius:999px;color:rgba(28,28,30,.45);text-decoration:none;transition:all .18s}
     .tab.active{color:var(--blue)}
@@ -117,6 +119,12 @@
       }
     }
   </style>
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g02-ai-guide.html">
+  <link rel="prefetch" href="g03-sotong.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
 </head>
 <body>
 <svg style="position:absolute;width:0;height:0;pointer-events:none" aria-hidden="true">
@@ -147,12 +155,12 @@
     <div class="content">
 
       <!-- ── 개인화 추천 카드 ── -->
-      <div class="rec-card" onclick="location.href='g03-chat-ai.html'">
+      <div class="rec-card" onclick="location.href='g-guardian-live.html?chat=1'">
         <div class="rec-card-top">
           <div class="rec-card-icon">
             <svg width="16" height="16" viewBox="0 0 2526 2526" fill="var(--blue)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
           </div>
-          <span class="rec-card-label">정희님 맞춤 정보</span>
+          <span class="rec-card-label">영자님 맞춤 정보</span>
         </div>
         <div class="rec-card-title">어머니가 복용 중인 아모디핀,<br>자몽과 함께 드시면 안 돼요</div>
         <div class="rec-card-desc">아모디핀은 자몽 주스와 함께 복용하면 약물 농도가 높아질 수 있습니다. 식사 시 주의사항을 확인해보세요.</div>
@@ -188,7 +196,7 @@
                 <span class="q-a-badge">A</span>
                 <p class="q-answer-text">복용 중인 약의 설명서에 기재된 부작용을 먼저 확인해 보세요. 두통, 어지럼증, 소화불량은 흔한 초기 반응이지만, 심한 알레르기 반응·호흡 곤란·의식 저하가 나타나면 즉시 병원에 가야 합니다. 처방 약사나 담당 의사에게 현재 복용 중인 모든 약을 알려 상호 작용도 확인하는 것이 중요해요.</p>
                 </div>
-                <a href="g03-chat-ai.html" class="q-chat-btn" onclick="event.stopPropagation()">
+                <a href="g-guardian-live.html?chat=1" class="q-chat-btn" onclick="event.stopPropagation()">
                   <svg width="14" height="14" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
                   AI로 더 물어보기
                 </a>
@@ -207,7 +215,7 @@
                 <span class="q-a-badge">A</span>
                 <p class="q-answer-text">정상 혈압은 120/80mmHg 미만이며, 130 이상이면 고혈압 전단계로 주의가 필요합니다. 공복 혈당은 100mg/dL 미만이 정상이고, 126 이상이면 당뇨병으로 진단됩니다. 가정에서 측정 시 아침 기상 후 안정된 상태에서 재는 것이 가장 정확해요.</p>
                 </div>
-                <a href="g03-chat-ai.html" class="q-chat-btn" onclick="event.stopPropagation()">
+                <a href="g-guardian-live.html?chat=1" class="q-chat-btn" onclick="event.stopPropagation()">
                   <svg width="14" height="14" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
                   AI로 더 물어보기
                 </a>
@@ -226,7 +234,7 @@
                 <span class="q-a-badge">A</span>
                 <p class="q-answer-text">하루 나트륨 섭취를 2,000mg(소금 5g) 이하로 줄이는 게 핵심입니다. 국·찌개 국물은 적게, 가공식품은 피하고, 칼륨이 풍부한 바나나·감자·토마토를 자주 드시면 혈압 조절에 도움이 됩니다. 포화지방 섭취도 줄이고 등 푸른 생선을 주 2회 이상 드시는 것을 권장해요.</p>
                 </div>
-                <a href="g03-chat-ai.html" class="q-chat-btn" onclick="event.stopPropagation()">
+                <a href="g-guardian-live.html?chat=1" class="q-chat-btn" onclick="event.stopPropagation()">
                   <svg width="14" height="14" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
                   AI로 더 물어보기
                 </a>
@@ -245,7 +253,7 @@
                 <span class="q-a-badge">A</span>
                 <p class="q-answer-text">의자를 잡고 하는 한 발 서기, 발뒤꿈치 들기, 앉았다 일어서기가 효과적입니다. 하루 10~15분씩 꾸준히 하면 하체 근력과 균형감각이 향상돼 낙상 위험을 크게 줄일 수 있어요. 집 안 미끄러운 매트나 문지방 등 환경 정비도 함께 하시면 더욱 좋습니다.</p>
                 </div>
-                <a href="g03-chat-ai.html" class="q-chat-btn" onclick="event.stopPropagation()">
+                <a href="g-guardian-live.html?chat=1" class="q-chat-btn" onclick="event.stopPropagation()">
                   <svg width="14" height="14" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
                   AI로 더 물어보기
                 </a>
@@ -264,7 +272,7 @@
                 <span class="q-a-badge">A</span>
                 <p class="q-answer-text">국민건강보험공단 지사 방문, 전화(1577-1000), 또는 공단 홈페이지에서 신청할 수 있습니다. 신청 후 공단 직원이 방문해 심신 기능 상태를 조사하고, 등급판정위원회에서 1~5등급 또는 인지지원등급을 결정합니다. 신청부터 판정까지 보통 30일 정도 소요돼요.</p>
                 </div>
-                <a href="g03-chat-ai.html" class="q-chat-btn" onclick="event.stopPropagation()">
+                <a href="g-guardian-live.html?chat=1" class="q-chat-btn" onclick="event.stopPropagation()">
                   <svg width="14" height="14" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
                   AI로 더 물어보기
                 </a>
@@ -283,7 +291,7 @@
                 <span class="q-a-badge">A</span>
                 <p class="q-answer-text">장기요양보험 등급을 받으면 재가급여(방문요양·목욕 등)나 시설급여를 지원받을 수 있습니다. 또한 가족요양비, 특례요양비, 요양병원 간병지원 등 다양한 제도가 있어요. 소득 수준에 따라 본인 부담률(15~20%)도 감면받을 수 있으니 공단에 문의해 보세요.</p>
                 </div>
-                <a href="g03-chat-ai.html" class="q-chat-btn" onclick="event.stopPropagation()">
+                <a href="g-guardian-live.html?chat=1" class="q-chat-btn" onclick="event.stopPropagation()">
                   <svg width="14" height="14" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
                   AI로 더 물어보기
                 </a>
@@ -302,7 +310,7 @@
                 <span class="q-a-badge">A</span>
                 <p class="q-answer-text">보호자 번아웃은 매우 흔하고 자연스러운 반응입니다. 하루 30분이라도 나만의 시간을 확보하고, 가능하다면 단기 보호 서비스(단기입소·주간보호)를 활용해 잠깐 쉬는 것이 중요해요. 혼자 모든 걸 감당하려 하지 말고, 가족이나 사회복지사에게 도움을 요청하는 것도 좋은 방법입니다.</p>
                 </div>
-                <a href="g03-chat-ai.html" class="q-chat-btn" onclick="event.stopPropagation()">
+                <a href="g-guardian-live.html?chat=1" class="q-chat-btn" onclick="event.stopPropagation()">
                   <svg width="14" height="14" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
                   AI로 더 물어보기
                 </a>
@@ -321,7 +329,7 @@
                 <span class="q-a-badge">A</span>
                 <p class="q-answer-text">짧고 단순한 문장으로 천천히, 눈을 맞추며 대화하는 것이 기본입니다. 틀린 말을 바로잡으려 하기보다 감정에 공감해 주세요. "오늘 어떠세요?"처럼 열린 질문보다 "밥 드셨어요?"처럼 예·아니오로 답할 수 있는 질문이 편안함을 줍니다. 익숙한 음악이나 사진을 활용하면 소통이 더 쉬워질 수 있어요.</p>
                 </div>
-                <a href="g03-chat-ai.html" class="q-chat-btn" onclick="event.stopPropagation()">
+                <a href="g-guardian-live.html?chat=1" class="q-chat-btn" onclick="event.stopPropagation()">
                   <svg width="14" height="14" viewBox="0 0 2526 2526" fill="currentColor"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
                   AI로 더 물어보기
                 </a>
@@ -338,7 +346,7 @@
       </div>
       <div class="article-list">
 
-        <div class="article-card" onclick="location.href='g03-chat-ai.html'">
+        <div class="article-card" onclick="location.href='g-guardian-live.html?chat=1'">
           <div class="article-body">
             <span class="article-tag" style="color:var(--blue);background:rgba(44,122,252,.1)">식단</span>
             <div class="article-title">고혈압 환자를 위한 저염식 가이드</div>
@@ -349,7 +357,7 @@
           </div>
         </div>
 
-        <div class="article-card" onclick="location.href='g03-chat-ai.html'">
+        <div class="article-card" onclick="location.href='g-guardian-live.html?chat=1'">
           <div class="article-body">
             <span class="article-tag" style="color:var(--blue);background:rgba(44,122,252,.08)">운동</span>
             <div class="article-title">집에서 할 수 있는 낙상 예방 체조 5가지</div>
@@ -360,7 +368,7 @@
           </div>
         </div>
 
-        <div class="article-card" onclick="location.href='g03-chat-ai.html'">
+        <div class="article-card" onclick="location.href='g-guardian-live.html?chat=1'">
           <div class="article-body">
             <span class="article-tag" style="color:#92400E;background:rgba(44,122,252,.08)">복약</span>
             <div class="article-title">약 먹는 시간, 왜 중요한가요?</div>
@@ -371,7 +379,7 @@
           </div>
         </div>
 
-        <div class="article-card" onclick="location.href='g03-chat-ai.html'">
+        <div class="article-card" onclick="location.href='g-guardian-live.html?chat=1'">
           <div class="article-body">
             <span class="article-tag" style="color:#B91C1C;background:rgba(239,68,68,.06)">마음 건강</span>
             <div class="article-title">보호자 번아웃, 이런 신호가 보이면 쉬세요</div>
@@ -391,12 +399,12 @@
   <div class="bottom-bar">
     <nav class="tabbar">
       <a href="g-guardian-live.html" class="tab"><span class="tab-icon"><iconify-icon icon="fluent:home-24-filled" style="font-size:26px"></iconify-icon></span></a>
-      <a href="g02-ai-guide.html" class="tab active"><span class="tab-icon"><iconify-icon icon="ph:book-open-text-fill" style="font-size:26px"></iconify-icon></span></a>
+      <a href="g02-ai-guide.html" class="tab active"><span class="tab-icon"><iconify-icon icon="fluent:book-24-filled" style="font-size:26px"></iconify-icon></span></a>
       <a href="g03-sotong.html" class="tab"><span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/></svg></span></a>
       <a href="g05-records.html" class="tab"><span class="tab-icon"><iconify-icon icon="fluent:folder-24-filled" style="font-size:26px"></iconify-icon></span></a>
       <a href="g05-mypage.html" class="tab"><span class="tab-icon"><iconify-icon icon="fluent:person-24-filled" style="font-size:26px"></iconify-icon></span></a>
     </nav>
-    <a href="g03-chat-ai.html" class="ai-fab" aria-label="AI 대화">
+    <a href="g-guardian-live.html?chat=1" class="ai-fab" aria-label="AI 대화">
       <svg width="18" height="18" viewBox="0 0 2526 2526" fill="#2C7AFC"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
     </a>
   </div>
@@ -461,5 +469,12 @@
       }
     }
   </script>
+<style>
+@keyframes overlayOut{from{opacity:1}to{opacity:0}}
+#t-overlay{position:fixed;inset:0;z-index:35;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none;animation:overlayOut .18s ease both}
+</style>
+<script>
+(function(){var ov=document.createElement('div');ov.id='t-overlay';document.body.appendChild(ov);})();
+</script>
 </body>
 </html>

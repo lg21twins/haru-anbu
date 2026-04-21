@@ -7,25 +7,26 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#d4e4ff">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="app-icon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — 기록</title>
   <link rel="stylesheet" href="common.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="iconify.min.js"></script>
   <style>
+    a,button,[role=button]{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
     :root {
       --blue:#2C7AFC;--blue-l:#5B9BFF;--blue-d:#1D6AF2;
       --green:#34D399;--green-d:#059669;
       --amber:#F59E0B;--red:#EF4444;
-      --t1:#111827;--t2:rgba(0,0,0,.5);--t3:rgba(0,0,0,.25);
+      --t1:#111827;--t2:rgba(0,0,0,.5);--t3:rgba(0,0,0,.35);
     }
-    html { background:#d4e4ff; }
+    html { background:#d4e4ff; overscroll-behavior:none; }
     body {
       background:transparent; max-width:430px; margin:0 auto; min-height:100vh;
-      padding-top:calc(max(env(safe-area-inset-top,0px),44px) + 52px);
-      padding-bottom:calc(max(env(safe-area-inset-bottom,0px),20px) + 12px + 68px + 16px);
+      padding-bottom:calc(max(env(safe-area-inset-bottom,0px),20px) + 24px + 68px + 16px);
       font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
       -webkit-font-smoothing:antialiased; color:var(--t1);
+      overscroll-behavior:none;
     }
     .content { padding:0 16px; position:relative; z-index:1; }
 
@@ -40,18 +41,15 @@
     @keyframes gb{0%{transform:translate(-50%,-50%)scale(1)}100%{transform:translate(-52%,-48%)scale(1.05)}}
     @keyframes gc{0%{transform:translateX(-50%)scale(1)}100%{transform:translateX(-48%)scale(1.06)translateY(-8px)}}
 
-    /* ═══ 글라스 헤더 ═══ */
-    .header {
-      position:fixed !important;top:0 !important;
-      left:50% !important;transform:translateX(-50%) !important;
-      width:100% !important;max-width:430px !important;z-index:10 !important;height:auto !important;
-      padding-top:max(env(safe-area-inset-top,0px),44px) !important;padding-bottom:12px !important;
-      padding-left:16px !important;padding-right:16px !important;
-      display:flex !important;align-items:center !important;justify-content:space-between !important;
-      background:rgba(255,255,255,0.04) !important;
-      backdrop-filter:blur(40px) saturate(160%) !important;-webkit-backdrop-filter:blur(40px) saturate(160%) !important;
-      border-bottom:0.5px solid rgba(255,255,255,0.18) !important;box-shadow:none !important;
-    }
+    /* ═══ 헤더 — 표준 ═══ */
+    .header{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 8px) 20px 10px;background:rgba(212,228,255,.85);transition:background .3s}
+    .header.scrolled{background:rgba(255,255,255,.86)}
+    .header-title{font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--t1)}
+    .header-left,.header-right{width:36px;display:flex;align-items:center}
+    .header-right{justify-content:flex-end}
+    .nav-btn,.btn-icon{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;transition:transform .1s;color:var(--t1)}
+    .nav-btn:active,.btn-icon:active{transform:scale(.93)}
+    .nav-btn iconify-icon,.btn-icon iconify-icon{font-size:18px;color:var(--blue)}
 
     /* ═══ 섹션 간격 ═══ */
     .zone { margin-bottom:20px; }
@@ -240,22 +238,28 @@
     .srow-badge{padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700}
 
     /* ═══ 탭바 ═══ */
-    .tabbar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%);width:calc(100% - 80px);max-width:320px;height:68px;background:rgba(180,210,250,.15);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.35);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.3);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;z-index:40}
+    .tabbar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);left:50%;transform:translateX(-50%);width:calc(100% - 80px);max-width:320px;height:68px;background:rgba(180,210,250,.15);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.35);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.3);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;z-index:40}
     .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;padding:8px 4px;border-radius:999px;color:rgba(28,28,30,.45);text-decoration:none;transition:all .18s}
     .tab.active{color:#2C7AFC}
     .tab-icon{display:flex;align-items:center}
     .tab-icon svg{width:26px;height:26px;fill:currentColor}
   </style>
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g02-ai-guide.html">
+  <link rel="prefetch" href="g03-sotong.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
 </head>
 <body>
 
   <!-- 배경 애니메이션 블롭 -->
   <div class="bg"><svg class="bg-logo" viewBox="0 0 2526 2526" fill="none"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 .00017C2518.68 494.198 2522.27 1157.92 1658.86 1262.48 2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52-115.881 1211.75 4.677 424.157 4.677 19.335Z" fill="#2C7AFC"/></svg><div class="g1"></div><div class="g2"></div><div class="g3"></div></div>
 
-  <!-- 글라스 헤더 -->
-  <div class="header">
-    <div class="header-left" style="width:36px;"></div>
-    <span class="header-title"></span>
+  <!-- 헤더 — 표준 -->
+  <div class="header" id="header">
+    <div class="header-left"><a href="g-guardian-live.html" class="btn-icon" aria-label="뒤로 가기"><iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon></a></div>
+    <span class="header-title">일일 리포트</span>
     <div class="header-right"></div>
   </div>
 
@@ -319,7 +323,7 @@
         <!-- 기분 + 활동 결합 -->
         <div class="w grid-full" onclick="openSheet('mood')">
           <div class="w-head">
-            <div class="w-title"><iconify-icon icon="ph:smiley-fill" style="color:var(--blue)"></iconify-icon>기분 · 활동</div>
+            <div class="w-title"><iconify-icon icon="fluent:emoji-24-filled" style="color:var(--blue)"></iconify-icon>기분 · 활동</div>
           </div>
           <div class="combined-inner">
             <div class="combined-half">
@@ -376,7 +380,7 @@
     <div class="zone">
       <div class="cta-row">
         <a href="g03-chat.html" class="cta-btn cta-secondary"><iconify-icon icon="fluent:chat-24-filled" style="font-size:18px"></iconify-icon>담당자에게 문의</a>
-        <a href="g03-chat-ai.html" class="cta-btn cta-primary"><iconify-icon icon="ph:sparkle-fill" style="font-size:18px"></iconify-icon>AI에게 질문</a>
+        <a href="g-guardian-live.html?chat=1" class="cta-btn cta-primary"><iconify-icon icon="fluent:sparkle-24-filled" style="font-size:18px"></iconify-icon>AI에게 질문</a>
       </div>
     </div>
 
@@ -413,7 +417,7 @@ const SHEETS = {
     <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#FBBF24,#F59E0B)"><iconify-icon icon="tabler:pill-filled"></iconify-icon></div><div><div class="sheet-ttl">투약 상세</div><div class="sheet-sub">오늘 3회 모두 완료</div></div></div>
     <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:syringe-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">아침 투약</div><div class="srow-val">혈압약 · 당뇨약 — 08:00</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
     <div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:medical-services-rounded" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">점심 투약</div><div class="srow-val">소화제 — 12:30</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="ph:heartbeat-fill" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오후 투약</div><div class="srow-val">관절 영양제 — 14:00</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>`,
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:heart-pulse-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오후 투약</div><div class="srow-val">관절 영양제 — 14:00</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>`,
 
   food: `<div class="sheet-handle"></div>
     <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#34D399,#059669)"><iconify-icon icon="fluent:food-24-filled"></iconify-icon></div><div><div class="sheet-ttl">식사 상세</div><div class="sheet-sub">3끼 완료 · 점심 섭취 감소</div></div></div>
@@ -422,9 +426,9 @@ const SHEETS = {
     <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">저녁 18:30</div><div class="srow-val">밥 + 된장찌개 — 잔반 없음</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">양호</div></div>`,
 
   mood: `<div class="sheet-handle"></div>
-    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="ph:smiley-fill"></iconify-icon></div><div><div class="sheet-ttl">기분 · 활동 상세</div><div class="sheet-sub">전반적으로 밝은 상태</div></div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="ph:smiley-fill" style="color:var(--green)"></iconify-icon></div><div class="srow-text"><div class="srow-label">기분 — 오전</div><div class="srow-val">밝고 활기찬 상태</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">좋음</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="ph:smiley-meh-fill" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">기분 — 오후</div><div class="srow-val">점심 후 안정적</div></div><div class="srow-badge" style="color:var(--blue-d);background:rgba(44,122,252,.1)">보통</div></div>
+    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:emoji-24-filled"></iconify-icon></div><div><div class="sheet-ttl">기분 · 활동 상세</div><div class="sheet-sub">전반적으로 밝은 상태</div></div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:emoji-24-filled" style="color:var(--green)"></iconify-icon></div><div class="srow-text"><div class="srow-label">기분 — 오전</div><div class="srow-val">밝고 활기찬 상태</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">좋음</div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:emoji-meh-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">기분 — 오후</div><div class="srow-val">점심 후 안정적</div></div><div class="srow-badge" style="color:var(--blue-d);background:rgba(44,122,252,.1)">보통</div></div>
     <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:walk-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오전 스트레칭</div><div class="srow-val">10분 · 상체 중심 스트레칭</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
     <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:walk-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오후 산책</div><div class="srow-val">15분 · 1층 정원 산책</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>`,
 
@@ -453,6 +457,13 @@ function openSheet(type){
 function closeSheet(){
   document.getElementById('overlay').classList.remove('show');
 }
+</script>
+<style>
+@keyframes overlayOut{from{opacity:1}to{opacity:0}}
+#t-overlay{position:fixed;inset:0;z-index:35;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none;animation:overlayOut .18s ease both}
+</style>
+<script>
+(function(){var ov=document.createElement('div');ov.id='t-overlay';document.body.appendChild(ov);})();
 </script>
 </body>
 </html>

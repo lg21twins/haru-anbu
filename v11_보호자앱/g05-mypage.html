@@ -7,13 +7,15 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#EEF3FB">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="app-icon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — 마이</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="pretendard.css">
+  <script src="iconify.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    a,button,[role=button]{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
+    
     :root{
       --blue:#2C7AFC;--blue-l:#5B9BFF;--blue-d:#1D6AF2;
       --green:#34D399;--green-d:#059669;
@@ -31,10 +33,13 @@
     .bg-logo{position:absolute;width:140%;height:auto;left:50%;top:42%;transform:translate(-50%,-50%);opacity:.06;filter:blur(32px);animation:bgl 8s ease-in-out infinite}
     @keyframes bgl{0%,100%{transform:translate(-50%,-50%)scale(1);opacity:.05}50%{transform:translate(-50%,-50%)scale(1.06)rotate(1.5deg);opacity:.08}}
 
-    /* 헤더 */
-    .header{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 8px) 20px 8px}
-    .header-title{font-size:17px;font-weight:700;letter-spacing:-.3px}
-    .header-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.80);border:1px solid var(--glass-b);display:flex;align-items:center;justify-content:center;cursor:pointer}
+    /* 헤더 — 기록 페이지와 통일 */
+    .header{position:sticky;top:0;z-index:30;padding:calc(env(safe-area-inset-top,0px) + 8px) 20px 10px;background:rgba(212,228,255,.85);transition:background .3s}
+    .header.scrolled{background:rgba(255,255,255,.86)}
+    .header-inner{display:flex;align-items:center;justify-content:space-between}
+    .header-title{font-size:22px;font-weight:800;letter-spacing:-.5px}
+    .nav-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;transition:transform .1s}
+    .nav-btn:active{transform:scale(.93)}
 
     /* 콘텐츠 */
     .content{position:relative;z-index:1;padding:0 16px 120px}
@@ -107,22 +112,15 @@
     .logout{display:flex;align-items:center;justify-content:center;width:100%;padding:14px;font-size:14px;font-weight:600;color:var(--t3);background:rgba(255,255,255,.5);border:1px solid var(--glass-b);border-radius:16px;margin-top:16px;cursor:pointer;text-decoration:none}
 
     /* 탭바 */
-    .tabbar{flex:1;min-width:0;height:60px;background:rgba(210,225,250,.55);backdrop-filter:url(#glass-warp) blur(12px);-webkit-backdrop-filter:url(#glass-warp) blur(12px);border:1px solid rgba(255,255,255,.45);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px}
-    .bottom-bar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;width:calc(100% - 48px);max-width:370px}
-    .ai-fab{width:60px;height:60px;border-radius:50%;background:rgba(210,225,250,.55);backdrop-filter:url(#glass-warp) blur(12px);-webkit-backdrop-filter:url(#glass-warp) blur(12px);border:1px solid rgba(255,255,255,.45);box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;flex-shrink:0;text-decoration:none}
+    .tabbar{flex:1;min-width:0;height:60px;background:rgba(210,225,250,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.45);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px}
+    .bottom-bar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;width:calc(100% - 48px);max-width:370px}
+    .ai-fab{width:60px;height:60px;border-radius:50%;background:rgba(210,225,250,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.45);box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;flex-shrink:0;text-decoration:none}
     .ai-fab:active{transform:scale(.92)}
     .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;padding:8px 4px;border-radius:999px;color:rgba(28,28,30,.45);text-decoration:none;transition:all .18s}
     .tab.active{color:var(--blue)}
     .tab-icon{display:flex;align-items:center}
     .tab-icon svg{width:26px;height:26px;fill:currentColor}
 
-    /* SOS 배너 */
-    .sos-global{display:flex;align-items:center;gap:10px;padding:12px 16px;margin:0 16px 12px;border-radius:14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.18);cursor:pointer;transition:transform .12s}
-    .sos-global:active{transform:scale(.98)}
-    .sos-pulse{width:10px;height:10px;border-radius:50%;background:var(--red);flex-shrink:0;animation:sosp 1.5s ease-in-out infinite}
-    @keyframes sosp{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 6px rgba(239,68,68,0)}}
-    .sos-text{font-size:14px;font-weight:700;color:#B91C1C;flex:1}
-    .sos-time{font-size:11px;color:rgba(185,28,28,.5)}
 
     .version{text-align:center;font-size:11px;color:var(--t3);margin-top:16px;padding-bottom:20px}
       
@@ -144,6 +142,12 @@
       }
     }
   </style>
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g02-ai-guide.html">
+  <link rel="prefetch" href="g03-sotong.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
 </head>
 <body>
 <svg style="position:absolute;width:0;height:0;pointer-events:none" aria-hidden="true">
@@ -161,30 +165,28 @@
 <div class="bg"><svg class="bg-logo" viewBox="0 0 2526 2526" fill="none"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 .00017C2518.68 494.198 2522.27 1157.92 1658.86 1262.48 2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52-115.881 1211.75 4.677 424.157 4.677 19.335Z" fill="#2C7AFC"/></svg></div>
 
 <div class="app">
-  <div class="header">
-    <div style="width:34px"></div>
-    <span class="header-title">마이</span>
-    <div class="header-btn"><iconify-icon icon="fluent:settings-24-filled" style="font-size:16px;color:var(--t2)"></iconify-icon></div>
+  <div class="header" id="header">
+    <div class="header-inner">
+      <span class="header-title">마이</span>
+      <button class="nav-btn" aria-label="설정">
+        <iconify-icon icon="fluent:settings-24-filled" style="font-size:18px;color:var(--blue)"></iconify-icon>
+      </button>
+    </div>
   </div>
 
-  <!-- SOS 배너 -->
-  <div class="sos-global" onclick="toast('긴급 연락 화면으로 이동합니다')">
-    <div class="sos-pulse"></div>
-    <div class="sos-text">낙상 감지 · 302호</div>
-    <div class="sos-time">2분 전</div>
-  </div>
 
   <div class="content">
 
     <!-- 프로필 카드 -->
     <div class="card">
       <div class="profile">
-        <div class="profile-av">손
+        <div class="profile-av" style="padding:0;display:block;">
+          <img src="img/보호자.png" alt="박민지" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center top;">
           <div class="profile-av-edit"><iconify-icon icon="fluent:camera-24-filled" style="font-size:11px;color:#fff"></iconify-icon></div>
         </div>
         <div class="profile-info">
-          <div class="profile-name">손예찬</div>
-          <div class="profile-sub">보호자 · 어머님(손정희) 담당</div>
+          <div class="profile-name">박민지</div>
+          <div class="profile-sub">보호자 · 어머님(박영자) 담당</div>
           <div class="profile-badge">
             <svg width="10" height="10" viewBox="0 0 2526 2526" fill="#2C7AFC"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 .00017C2518.68 494.198 2522.27 1157.92 1658.86 1262.48 2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
             프리미엄
@@ -217,9 +219,12 @@
     <!-- 케어 대상 카드 -->
     <div class="card care-target">
       <div class="care-top">
-        <div class="care-av">정<div class="care-av-dot"></div></div>
+        <div class="care-av" style="padding:0;display:block;">
+          <img src="img/환자.png" alt="박영자" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center top;">
+          <div class="care-av-dot"></div>
+        </div>
         <div style="flex:1">
-          <div class="care-name">손정희</div>
+          <div class="care-name">박영자</div>
           <div class="care-sub">케어 대상 · 78세</div>
         </div>
         <div class="care-badge">케어 중</div>
@@ -317,18 +322,26 @@
   <div class="bottom-bar">
     <nav class="tabbar">
       <a href="g-guardian-live.html" class="tab"><span class="tab-icon"><iconify-icon icon="fluent:home-24-filled" style="font-size:26px"></iconify-icon></span></a>
-      <a href="g02-ai-guide.html" class="tab"><span class="tab-icon"><iconify-icon icon="ph:book-open-text-fill" style="font-size:26px"></iconify-icon></span></a>
+      <a href="g02-ai-guide.html" class="tab"><span class="tab-icon"><iconify-icon icon="fluent:book-24-filled" style="font-size:26px"></iconify-icon></span></a>
       <a href="g03-sotong.html" class="tab"><span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/></svg></span></a>
       <a href="g05-records.html" class="tab"><span class="tab-icon"><iconify-icon icon="fluent:folder-24-filled" style="font-size:26px"></iconify-icon></span></a>
       <a href="g05-mypage.html" class="tab active"><span class="tab-icon"><iconify-icon icon="fluent:person-24-filled" style="font-size:26px"></iconify-icon></span></a>
     </nav>
-    <a href="g03-chat-ai.html" class="ai-fab" aria-label="AI 대화">
+    <a href="g-guardian-live.html?chat=1" class="ai-fab" aria-label="AI 대화">
       <svg width="18" height="18" viewBox="0 0 2526 2526" fill="#2C7AFC"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
     </a>
   </div>
 </div>
 <script>
   function toast(msg){/* placeholder */}
+  window.addEventListener('scroll',function(){document.getElementById('header').classList.toggle('scrolled',window.scrollY>30);},{passive:true});
+</script>
+<style>
+@keyframes overlayOut{from{opacity:1}to{opacity:0}}
+#t-overlay{position:fixed;inset:0;z-index:35;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none;animation:overlayOut .18s ease both}
+</style>
+<script>
+(function(){var ov=document.createElement('div');ov.id='t-overlay';document.body.appendChild(ov);})();
 </script>
 </body>
 </html>

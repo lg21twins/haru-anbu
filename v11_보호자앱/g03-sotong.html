@@ -7,13 +7,15 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#d4e4ff">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="app-icon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — 소통</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="pretendard.css">
+  <script src="iconify.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    a,button,[role=button]{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
+    
     :root{
       --blue:#2C7AFC;--blue-l:#5B9BFF;--blue-d:#1D6AF2;
       --green:#34D399;--green-d:#059669;
@@ -27,7 +29,7 @@
     body{height:100%;font-family:var(--font);color:var(--t1);-webkit-font-smoothing:antialiased;background:transparent;overflow-x:hidden}
     .bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none}
     .bg .g1{position:absolute;width:500px;height:500px;left:50%;top:-5%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(44,122,252,.14)0%,transparent 65%);filter:blur(30px)}
-    .app{max-width:430px;margin:0 auto;min-height:100%;position:relative;padding-bottom:calc(max(env(safe-area-inset-bottom,0px),20px) + 100px)}
+    .app{max-width:430px;margin:0 auto;min-height:100%;position:relative;padding-bottom:calc(max(env(safe-area-inset-bottom,0px),20px) + 112px)}
     .header{position:sticky;top:0;z-index:30;padding:calc(env(safe-area-inset-top,0px) + 8px) 20px 12px;background:rgba(212,228,255,.85);transition:background .3s}
     .header.scrolled{background:rgba(255,255,255,.86)}
     .header-row{display:flex;align-items:center;justify-content:space-between}
@@ -62,7 +64,7 @@
     .msg-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,.80);border:1px solid rgba(255,255,255,.55);border-radius:16px;text-decoration:none;color:inherit;transition:transform .12s}
     .msg-item:active{transform:scale(.97)}
     .msg-item.unread{background:rgba(255,255,255,.95);border-color:rgba(44,122,252,.12)}
-    .av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;font-size:17px;color:#fff;position:relative}
+    .av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;font-size:17px;color:#fff;position:relative;overflow:hidden;}
     .av-nurse{background:linear-gradient(135deg,#2C7AFC,#5B9BFF)}
     .av-doctor{background:linear-gradient(135deg,var(--teal),var(--teal-l))}
     .av-family{background:linear-gradient(135deg,var(--coral),var(--coral-l))}
@@ -82,9 +84,9 @@
     .msg-time{font-size:10.5px;color:var(--t3);font-weight:500}
     .msg-item.unread .msg-time{color:var(--t3);font-weight:500}
     .msg-badge{background:var(--blue);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:1px 7px;min-width:20px;text-align:center;line-height:18px}
-    .tabbar{flex:1;min-width:0;height:60px;background:rgba(210,225,250,.55);backdrop-filter:url(#glass-warp) blur(12px);-webkit-backdrop-filter:url(#glass-warp) blur(12px);border:1px solid rgba(255,255,255,.45);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px}
-    .bottom-bar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;width:calc(100% - 48px);max-width:370px}
-    .ai-fab{width:60px;height:60px;border-radius:50%;background:rgba(210,225,250,.55);backdrop-filter:url(#glass-warp) blur(12px);-webkit-backdrop-filter:url(#glass-warp) blur(12px);border:1px solid rgba(255,255,255,.45);box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;flex-shrink:0;text-decoration:none}
+    .tabbar{flex:1;min-width:0;height:60px;background:rgba(210,225,250,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.45);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px}
+    .bottom-bar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;width:calc(100% - 48px);max-width:370px}
+    .ai-fab{width:60px;height:60px;border-radius:50%;background:rgba(210,225,250,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.45);box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;flex-shrink:0;text-decoration:none}
     .ai-fab:active{transform:scale(.92)}
     .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;padding:8px 4px;border-radius:999px;color:rgba(28,28,30,.45);text-decoration:none;transition:all .18s}
     .tab.active{color:var(--blue)}
@@ -110,6 +112,12 @@
       }
     }
   </style>
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g02-ai-guide.html">
+  <link rel="prefetch" href="g03-sotong.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
 </head>
 <body>
 <svg style="position:absolute;width:0;height:0;pointer-events:none" aria-hidden="true">
@@ -155,10 +163,10 @@
       </div>
       <div class="msg-list" style="margin-bottom:4px">
         <a href="g03-chat-nurse.html" class="msg-item unread" data-type="chat">
-          <div class="av av-nurse av-online">김</div>
+          <div class="av av-nurse av-online" style="padding:0;display:block;"><img src="img/간호사.png" alt="김서연" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center top;"></div>
           <div class="msg-body">
             <div class="msg-name-row">
-              <span class="msg-name">김미영 간호사</span>
+              <span class="msg-name">김서연 간호사</span>
               <span class="msg-tag tag-duty">근무 중</span>
             </div>
             <div class="msg-preview">저녁 투약도 완료했습니다. 오늘 하루 컨디션...</div>
@@ -194,9 +202,9 @@
           <div class="msg-meta"><span class="msg-time">1시간 전</span></div>
         </div>
         <a href="g03-chat-patient.html" class="msg-item unread" data-type="chat">
-          <div class="av av-family"><iconify-icon icon="fluent:heart-24-filled" style="font-size:20px"></iconify-icon></div>
+          <div class="av av-family" style="padding:0;display:block;"><img src="img/환자.png" alt="박영자" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center top;"></div>
           <div class="msg-body">
-            <div class="msg-name-row"><span class="msg-name">정희님 (어머니)</span></div>
+            <div class="msg-name-row"><span class="msg-name">영자님 (어머니)</span></div>
             <div class="msg-preview">오늘 날씨 좋다~</div>
           </div>
           <div class="msg-meta">
@@ -262,7 +270,7 @@
           <div class="msg-meta"><span class="msg-time">어제</span></div>
         </div>
         <a href="#" class="msg-item" data-type="chat">
-          <div class="av av-doctor">정</div>
+          <div class="av av-doctor" style="padding:0;display:block;"><img src="img/의사.png" alt="정현우" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center top;"></div>
           <div class="msg-body">
             <div class="msg-name-row"><span class="msg-name">정현우 전문의</span></div>
             <div class="msg-preview">다음 주 검진 결과 나오면 말씀드릴게요</div>
@@ -303,12 +311,12 @@
   <div class="bottom-bar">
     <nav class="tabbar">
       <a href="g-guardian-live.html" class="tab"><span class="tab-icon"><iconify-icon icon="fluent:home-24-filled" style="font-size:26px"></iconify-icon></span></a>
-      <a href="g02-ai-guide.html" class="tab"><span class="tab-icon"><iconify-icon icon="ph:book-open-text-fill" style="font-size:26px"></iconify-icon></span></a>
+      <a href="g02-ai-guide.html" class="tab"><span class="tab-icon"><iconify-icon icon="fluent:book-24-filled" style="font-size:26px"></iconify-icon></span></a>
       <a href="g03-sotong.html" class="tab active"><span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/></svg></span></a>
       <a href="g05-records.html" class="tab"><span class="tab-icon"><iconify-icon icon="fluent:folder-24-filled" style="font-size:26px"></iconify-icon></span></a>
       <a href="g05-mypage.html" class="tab"><span class="tab-icon"><iconify-icon icon="fluent:person-24-filled" style="font-size:26px"></iconify-icon></span></a>
     </nav>
-    <a href="g03-chat-ai.html" class="ai-fab" aria-label="AI 대화">
+    <a href="g-guardian-live.html?chat=1" class="ai-fab" aria-label="AI 대화">
       <svg width="18" height="18" viewBox="0 0 2526 2526" fill="var(--blue)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
     </a>
   </div>
@@ -347,5 +355,12 @@
       });
     }
   </script>
+<style>
+@keyframes overlayOut{from{opacity:1}to{opacity:0}}
+#t-overlay{position:fixed;inset:0;z-index:35;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none;animation:overlayOut .18s ease both}
+</style>
+<script>
+(function(){var ov=document.createElement('div');ov.id='t-overlay';document.body.appendChild(ov);})();
+</script>
 </body>
 </html>

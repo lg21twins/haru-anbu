@@ -225,26 +225,31 @@
     /* 플로팅 필 탭바 */
     /* 메시지 영역 하단 여백 */
     .chat-messages {
-      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 12px + 52px + 16px) !important;
+      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 24px + 68px + 12px + 52px + 16px) !important;
     }
     /* Tabbar override */
-    .tabbar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%);width:calc(100% - 80px);max-width:320px;height:68px;background:rgba(180,210,250,.15);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.35);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.3);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;z-index:40}
+    .tabbar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);left:50%;transform:translateX(-50%);width:calc(100% - 80px);max-width:320px;height:68px;background:rgba(180,210,250,.15);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.35);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.3);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;z-index:40}
     .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;padding:8px 4px;border-radius:999px;color:rgba(28,28,30,.45);text-decoration:none;transition:all .18s}
     .tab.active{color:#2C7AFC}
     .tab-icon{display:flex;align-items:center}
     .tab-icon svg{width:26px;height:26px;fill:currentColor}
   </style>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g02-ai-guide.html">
+  <link rel="prefetch" href="g03-sotong.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
 </head>
 <body>
 
   <!-- Header -->
   <div class="header">
     <div class="header-left">
-      <a href="g02-ai-report.html" class="btn-icon" aria-label="뒤로 가기">‹</a>
+      <a href="g02-ai-report.html" class="btn-icon" aria-label="뒤로 가기"><iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon></a>
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
       <div style="width:24px;height:24px;border-radius:8px;background:linear-gradient(135deg,#22D3EE,#0891B2);display:flex;align-items:center;justify-content:center;">
-        <iconify-icon icon="ph:sparkle-fill" style="font-size:13px;color:white;"></iconify-icon>
+        <iconify-icon icon="fluent:sparkle-24-filled" style="font-size:13px;color:white;"></iconify-icon>
       </div>
       <span class="header-title">AI 케어 어시스턴트</span>
     </div>
@@ -257,10 +262,10 @@
     <!-- AI 인트로 -->
     <div class="ai-intro">
       <div class="ai-avatar">
-        <iconify-icon icon="ph:sparkle-fill" style="font-size:26px;color:white;"></iconify-icon>
+        <iconify-icon icon="fluent:sparkle-24-filled" style="font-size:26px;color:white;"></iconify-icon>
       </div>
       <div class="ai-intro-title">AI 케어 어시스턴트</div>
-      <div class="ai-intro-desc">손정희님의 케어 데이터를 바탕으로<br>무엇이든 물어보세요.</div>
+      <div class="ai-intro-desc">박영자님의 케어 데이터를 바탕으로<br>무엇이든 물어보세요.</div>
     </div>
 
     <!-- 빠른 질문 칩 -->
@@ -315,7 +320,7 @@
       <input class="chat-input" type="text" placeholder="케어에 대해 무엇이든 물어보세요" aria-label="질문 입력">
     </div>
     <button class="chat-send" aria-label="전송">
-      <iconify-icon icon="ph:send-horizontal" style="font-size:16px;"></iconify-icon>
+      <iconify-icon icon="fluent:send-24-filled" style="font-size:16px;"></iconify-icon>
     </button>
   </div>
 
@@ -338,7 +343,7 @@
     </a>
   </nav>
 
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="iconify.min.js"></script>
   <script>
 
     function sendChip(el) {
@@ -352,6 +357,5 @@
       msgs.scrollTop = msgs.scrollHeight;
     }
   </script>
-  <div class="ios-home-indicator"></div>
 </body>
 </html>

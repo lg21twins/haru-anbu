@@ -6,6 +6,7 @@
   <title>하루안부 — 가족 그룹 채팅</title>
   <link rel="stylesheet" href="common.css">
   <style>
+    a,button,[role=button]{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
     body {
       background: transparent;
       max-width: 430px;
@@ -143,62 +144,50 @@
       white-space: nowrap;
     }
 
-    /* 입력바 */
+    /* 입력바 — 홈 채팅바 톤 */
     .chat-input-bar {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 4px;
       border-radius: 999px;
-      padding: 8px 8px 8px 12px;
+      padding: 8px 10px 8px 10px;
       position: fixed;
       bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 12px);
       left: 50%;
       transform: translateX(-50%);
-      width: calc(100% - 32px);
-      max-width: 398px;
+      width: calc(100% - 48px);
+      max-width: 370px;
       z-index: 41;
-      background: rgba(255,255,255,0.38);
-      backdrop-filter: blur(24px) saturate(140%) brightness(1.04);
-      -webkit-backdrop-filter: blur(24px) saturate(140%) brightness(1.04);
-      border: 0.5px solid rgba(255,255,255,0.55);
-      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 4px 16px rgba(0,0,0,0.06);
+      background: #fff;
+      border: 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
     .chat-input-wrap {
       flex: 1; display: flex; align-items: center;
       height: 36px; border-radius: 999px;
-      background: rgba(255,255,255,0.18);
-      border: 0.5px solid rgba(255,255,255,0.5);
-      padding: 0 10px;
+      background: transparent;
+      border: 0;
+      padding: 0 6px;
     }
     .chat-input {
       flex: 1; height: 100%;
       padding: 0 var(--space-xs); border: none;
-      font-family: var(--font-family); font-size: var(--text-callout);
+      font-family: var(--font-family); font-size: 15px;
       outline: none; background: transparent;
+      color: var(--text-primary);
     }
-    .chat-input::placeholder { color: var(--text-tertiary); }
+    .chat-input::placeholder { color: rgba(28,28,30,0.4); }
     .chat-emoji-btn {
-      width: 44px; height: 44px; border: none; border-radius: var(--radius-full);
+      width: 36px; height: 36px; border: none; border-radius: var(--radius-full);
       background: transparent; color: var(--text-tertiary); cursor: pointer;
       display: flex; align-items: center; justify-content: center; padding: 0;
     }
     .chat-attach-btn {
-      width: 44px; height: 44px; border: none; border-radius: var(--radius-full);
-      background: rgba(255,255,255,0.38);
-      backdrop-filter: blur(24px) saturate(140%) brightness(1.04);
-      -webkit-backdrop-filter: blur(24px) saturate(140%) brightness(1.04);
-      border: 0.5px solid rgba(255,255,255,0.55);
-      box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset;
+      width: 36px; height: 36px; border: none; border-radius: var(--radius-full);
+      background: transparent;
       color: rgba(28,28,30,0.55); cursor: pointer;
       display: flex; align-items: center; justify-content: center; padding: 0;
     }
-    .chat-send {
-      width: 36px; height: 36px; border: none; border-radius: var(--radius-full);
-      background: var(--primary); color: white; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; padding: 0;
-      transition: transform .1s;
-    }
-    .chat-send:active { transform: scale(.92); }
 
     .btn-icon {
       display: flex; align-items: center; justify-content: center;
@@ -226,30 +215,36 @@
       pointer-events: none;
     }
     .chat-messages {
-      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px + 68px + 12px + 52px + 16px) !important;
+      padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 24px + 68px + 12px + 52px + 16px) !important;
       position: relative; z-index: 1;
     }
     /* Tabbar override */
-    .tabbar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%);width:calc(100% - 80px);max-width:320px;height:68px;background:rgba(180,210,250,.15);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.35);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.3);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;z-index:40}
+    .tabbar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);left:50%;transform:translateX(-50%);width:calc(100% - 80px);max-width:320px;height:68px;background:rgba(180,210,250,.15);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.35);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.3);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;z-index:40}
     .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;padding:8px 4px;border-radius:999px;color:rgba(28,28,30,.45);text-decoration:none;transition:all .18s}
     .tab.active{color:#2C7AFC}
     .tab-icon{display:flex;align-items:center}
     .tab-icon svg{width:26px;height:26px;fill:currentColor}
   </style>
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g02-ai-guide.html">
+  <link rel="prefetch" href="g03-sotong.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
 </head>
 <body>
 
   <!-- Header -->
   <div style="flex-shrink:0; background:rgba(255,255,255,0.04); backdrop-filter:blur(40px) saturate(160%); -webkit-backdrop-filter:blur(40px) saturate(160%); border-bottom:0.5px solid rgba(255,255,255,0.18); padding-top:max(env(safe-area-inset-top,0px),44px); padding-left:var(--space-lg); padding-right:var(--space-lg); padding-bottom:var(--space-md); position:relative; z-index:2;">
     <div style="display:flex; align-items:center; gap:var(--space-md);">
-      <a href="g03-sotong.html" class="btn-icon" aria-label="뒤로 가기">‹</a>
+      <a href="g03-sotong.html" class="btn-icon" aria-label="뒤로 가기"><iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon></a>
       <div style="display:flex; align-items:center; gap:var(--space-md); flex:1;">
         <div style="width:40px; height:40px; border-radius:var(--radius-full); background:linear-gradient(135deg,#10B981,#34D399); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-          <iconify-icon icon="ph:users" style="font-size:20px;color:white;"></iconify-icon>
+          <iconify-icon icon="fluent:people-24-filled" style="font-size:20px;color:white;"></iconify-icon>
         </div>
         <div style="flex:1;">
           <div style="font-size:var(--text-headline); font-weight:var(--weight-semibold);">가족 그룹 채팅</div>
-          <div style="font-size:var(--text-mini); color:var(--text-secondary);">손예찬 · 손예린 · 손민호 · 3명</div>
+          <div style="font-size:var(--text-mini); color:var(--text-secondary);">박민지 · 손예린 · 손민호 · 3명</div>
         </div>
         <iconify-icon icon="fluent:info-24-filled" style="font-size:20px;color:var(--text-tertiary);"></iconify-icon>
       </div>
@@ -269,19 +264,19 @@
     </div>
 
     <div class="msg in">
-      <div class="msg-avatar" style="background:linear-gradient(135deg,#8B5CF6,#A78BFA);">예린</div>
+      <div class="msg-avatar" style="overflow:hidden;padding:0;"><img src="img/보호자2.png" alt="손예린" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;"></div>
       <span class="msg-sender">손예린</span>
       <div class="msg-bubble-wrap">
-        <div class="msg-bubble">네 저도 봤어요. 걱정되네요 😟 간호사 선생님께 여쭤봤어요?</div>
+        <div class="msg-bubble">네 저도 봤어요. 걱정되네요. 간호사 선생님께 여쭤봤어요?</div>
         <span class="msg-time">오후 2:15</span>
       </div>
     </div>
 
     <div class="msg in">
-      <div class="msg-avatar" style="background:linear-gradient(135deg,#64748B,#94A3B8);">아버지</div>
+      <div class="msg-avatar" style="overflow:hidden;padding:0;"><img src="img/보호자3.png" alt="손민호" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;"></div>
       <span class="msg-sender">손민호</span>
       <div class="msg-bubble-wrap">
-        <div class="msg-bubble">김미영 간호사한테 물어봐라. 내가 오늘 전화해볼게</div>
+        <div class="msg-bubble">김서연 간호사한테 물어봐라. 내가 오늘 전화해볼게</div>
         <span class="msg-time">오후 2:18</span>
       </div>
     </div>
@@ -295,7 +290,7 @@
     </div>
 
     <div class="msg in">
-      <div class="msg-avatar" style="background:linear-gradient(135deg,#8B5CF6,#A78BFA);">예린</div>
+      <div class="msg-avatar" style="overflow:hidden;padding:0;"><img src="img/보호자2.png" alt="손예린" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;"></div>
       <span class="msg-sender">손예린</span>
       <div class="msg-bubble-wrap">
         <div class="msg-bubble">오빠 잘했다 👍 나도 같이 갈게!</div>
@@ -306,7 +301,7 @@
     <div class="chat-date-divider">오늘</div>
 
     <div class="msg in">
-      <div class="msg-avatar" style="background:linear-gradient(135deg,#8B5CF6,#A78BFA);">예린</div>
+      <div class="msg-avatar" style="overflow:hidden;padding:0;"><img src="img/보호자2.png" alt="손예린" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;"></div>
       <span class="msg-sender">손예린</span>
       <div class="msg-bubble-wrap">
         <div class="msg-bubble">오빠 오늘 어머니 상태 어때요? 오후에 산책 하셨대요?</div>
@@ -318,7 +313,7 @@
     <div class="unread-divider"><span>읽지 않은 메시지 1개</span></div>
 
     <div class="msg in">
-      <div class="msg-avatar" style="background:linear-gradient(135deg,#8B5CF6,#A78BFA);">예린</div>
+      <div class="msg-avatar" style="overflow:hidden;padding:0;"><img src="img/보호자2.png" alt="손예린" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;"></div>
       <span class="msg-sender">손예린</span>
       <div class="msg-bubble-wrap">
         <div class="msg-bubble">오빠 이번 주말에 같이 면회 갈 수 있어?</div>
@@ -330,17 +325,14 @@
   <!-- Input -->
   <div class="chat-input-bar">
     <button class="chat-attach-btn" aria-label="사진/파일 첨부">
-      <iconify-icon icon="ph:plus" style="font-size:18px;"></iconify-icon>
+      <iconify-icon icon="fluent:add-24-filled" style="font-size:18px;"></iconify-icon>
     </button>
     <div class="chat-input-wrap">
       <input class="chat-input" type="text" placeholder="메시지 입력" aria-label="메시지 입력">
       <button class="chat-emoji-btn" aria-label="이모지 선택">
-        <iconify-icon icon="ph:smiley-fill" style="font-size:20px;"></iconify-icon>
+        <iconify-icon icon="fluent:emoji-24-filled" style="font-size:20px;"></iconify-icon>
       </button>
     </div>
-    <button class="chat-send" aria-label="메시지 보내기">
-      <iconify-icon icon="ph:send-horizontal" style="font-size:18px;"></iconify-icon>
-    </button>
   </div>
 
   <nav class="tabbar">
@@ -361,11 +353,17 @@
     </a>
   </nav>
 
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="iconify.min.js"></script>
   <script>
     var chatMessages = document.querySelector('.chat-messages');
     if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
   </script>
-  <div class="ios-home-indicator"></div>
+<style>
+@keyframes overlayOut{from{opacity:1}to{opacity:0}}
+#t-overlay{position:fixed;inset:0;z-index:35;background:linear-gradient(180deg,#d4e4ff 0%,#e8f0fe 40%,#f2f6ff 70%,#EEF3FB 100%);pointer-events:none;animation:overlayOut .18s ease both}
+</style>
+<script>
+(function(){var ov=document.createElement('div');ov.id='t-overlay';document.body.appendChild(ov);})();
+</script>
 </body>
 </html>
