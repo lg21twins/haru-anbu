@@ -2,6 +2,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 디자인 규칙 (필수)
+
+- **이모지 절대 금지**: 모든 UI(HTML/CSS/JS, 문서 포함)에서 이모지(😊, 🙂, 💊 등) 사용 금지. 아이콘이 필요하면 `iconify-icon`(fluent:* 등)로 통일.
+- 적용 범위: v9.5_보호자앱, v10_의료진웹, v11_요양보호사앱, v12_환자앱, v13_온보딩, v14_쇼케이스 전체
+- 기존 파일에 이모지가 있으면 수정 시 iconify 아이콘으로 교체할 것
+
 ## Project Overview
 
 Antigravity Kit is an AI-powered design intelligence toolkit providing searchable databases of UI styles, color palettes, font pairings, chart types, and UX guidelines. It works as a skill/workflow for AI coding assistants (Claude Code, Windsurf, Cursor, etc.).

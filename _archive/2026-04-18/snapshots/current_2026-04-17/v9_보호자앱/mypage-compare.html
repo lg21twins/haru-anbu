@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>마이 페이지 개선 비교 — Before / After</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Pretendard Variable','Pretendard',-apple-system,system-ui,sans-serif;background:#0F172A;color:#E2E8F0;min-height:100vh;padding:32px 24px;letter-spacing:-.2px}
+    .wrap{max-width:1200px;margin:0 auto}
+    h1{font-size:28px;font-weight:800;margin-bottom:6px;letter-spacing:-.8px}
+    .sub{font-size:14px;color:#94A3B8;margin-bottom:28px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:36px}
+    @media (max-width: 900px) { .grid{grid-template-columns:1fr} }
+    .col{display:flex;flex-direction:column;gap:12px}
+    .col-head{display:flex;align-items:center;gap:10px}
+    .tag{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700}
+    .tag-before{background:rgba(239,68,68,.15);color:#FCA5A5}
+    .tag-after{background:rgba(52,211,153,.15);color:#6EE7B7}
+    .col-title{font-size:16px;font-weight:700}
+    .col-desc{font-size:13px;color:#94A3B8;line-height:1.6}
+    .frame{width:100%;aspect-ratio:390/844;border:1px solid rgba(255,255,255,.1);border-radius:24px;overflow:hidden;background:#d4e4ff;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+    iframe{width:100%;height:100%;border:0;display:block}
+
+    .changes{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:28px}
+    .changes h2{font-size:20px;font-weight:800;margin-bottom:16px;letter-spacing:-.5px}
+    .change-list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width: 700px) { .change-list{grid-template-columns:1fr} }
+    .change{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:16px}
+    .change-num{font-size:11px;font-weight:800;color:#6EE7B7;letter-spacing:.5px;margin-bottom:6px}
+    .change-title{font-size:15px;font-weight:700;margin-bottom:8px;color:#E2E8F0}
+    .change-text{font-size:13px;color:#94A3B8;line-height:1.6}
+    .change-text b{color:#CBD5E1;font-weight:600}
+
+    .principles{margin-top:20px;background:rgba(44,122,252,.08);border:1px solid rgba(44,122,252,.2);border-radius:14px;padding:16px 20px}
+    .principles-title{font-size:13px;font-weight:700;color:#93C5FD;margin-bottom:8px}
+    .principles-text{font-size:13px;color:#BFDBFE;line-height:1.7}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>마이 페이지 — Before / After</h1>
+    <div class="sub">v9 보호자앱 · 마이 페이지 사용성 개선</div>
+
+    <div class="grid">
+      <div class="col">
+        <div class="col-head">
+          <span class="tag tag-before">BEFORE</span>
+          <span class="col-title">현재 (g05-mypage.html)</span>
+        </div>
+        <div class="col-desc">프로필 카드 · 퀵 액션 · 케어 대상 카드가 분리되어 있고, 호실/간호사/경과일 정보가 두 번 반복됩니다.</div>
+        <div class="frame"><iframe src="g05-mypage.html" title="Before"></iframe></div>
+      </div>
+
+      <div class="col">
+        <div class="col-head">
+          <span class="tag tag-after">AFTER</span>
+          <span class="col-title">개선안 (g05-mypage-v2.html)</span>
+        </div>
+        <div class="col-desc">케어 대상자를 주인공으로, 보호자는 1줄 스트립으로. 퀵 액션은 케어 카드에 붙이고, 알림엔 바로 실행할 CTA를 배치했습니다.</div>
+        <div class="frame"><iframe src="g05-mypage-v2.html" title="After"></iframe></div>
+      </div>
+    </div>
+
+    <div class="changes">
+      <h2>핵심 변경 — 구조 개선 (기본)</h2>
+      <div class="change-list">
+        <div class="change">
+          <div class="change-num">01 · HIERARCHY</div>
+          <div class="change-title">주인공 바꾸기</div>
+          <div class="change-text">보호자(손예찬) 프로필이 가장 컸던 기존 → <b>어머님(손정희) 카드를 최상단·최대</b>로. 보호자는 1줄 스트립으로 축소.</div>
+        </div>
+        <div class="change">
+          <div class="change-num">02 · DEDUP</div>
+          <div class="change-title">중복 정보 제거</div>
+          <div class="change-text">호실/간호사/경과일이 <b>프로필 카드 + 케어 카드 두 번</b> 등장했던 문제 → 케어 카드 안에서 1번만. 정보 밀도 -40%.</div>
+        </div>
+        <div class="change">
+          <div class="change-num">03 · GROUPING</div>
+          <div class="change-title">퀵 액션 소속 명확히</div>
+          <div class="change-text">공중에 떠 있던 소통/기록/AI가이드 3버튼 → <b>케어 대상자 카드 하단에 통합</b>. "어머님에 대해 뭘 할지"의 맥락이 붙음.</div>
+        </div>
+        <div class="change">
+          <div class="change-num">04 · CONSISTENCY</div>
+          <div class="change-title">카드 스타일 통일</div>
+          <div class="change-text">3종 섞여있던 카드 스타일(연한 파란 배경 / 흰 그림자 / 리스트형) → <b>흰 배경 + subtle shadow + 20px radius</b> 한 종류로.</div>
+        </div>
+        <div class="change">
+          <div class="change-num">05 · STAT STRIP</div>
+          <div class="change-title">버튼처럼 보이던 타일 → 플랫 스탯</div>
+          <div class="change-text">파란 배경 타일이 "클릭 가능한 버튼"으로 오인됐던 문제 → <b>배경 제거 + 위아래 구분선</b>만으로 영역 표시. 값 위·라벨 아래 배치해 스캔 속도 향상.</div>
+        </div>
+        <div class="change">
+          <div class="change-num">06 · TYPOGRAPHY</div>
+          <div class="change-title">위계 3단계로 단순화</div>
+          <div class="change-text">들쭉날쭉하던 폰트 크기 → <b>22px 이름 / 15px 본문 / 12px 캡션</b>. 터치 타깃도 최소 56px로 통일해 누르기 편하게.</div>
+        </div>
+      </div>
+
+      <h2 style="margin-top:32px">시니어 디자이너 레이어 — 감정 온도 올리기</h2>
+      <div class="change-list">
+        <div class="change">
+          <div class="change-num">07 · WELCOME</div>
+          <div class="change-title">"마이" → 인사 기반 헤더</div>
+          <div class="change-text">기능적 제목 "마이"를 버리고 <b>"오늘도 반가워요, 손예찬님"</b>으로 교체. 페이지를 여는 순간 정서적 온도를 올림. 내비게이션 라벨은 하단 탭바가 대체.</div>
+        </div>
+        <div class="change">
+          <div class="change-num">08 · LIVE TIMELINE</div>
+          <div class="change-title">정적 진단 → 오늘의 하루 타임라인</div>
+          <div class="change-text">"고혈압·당뇨, 1일 3회 복약" 같은 <b>늘 그런 정보</b> 대신 <b>"09:15 혈압 정상 120/78, 09:00 약 복용, 08:30 식사 80%"</b> 실시간 활동으로 교체. 보호자가 진짜 궁금한 건 "지금 어떠신가"임. 진단은 서브타이틀로 이관.</div>
+        </div>
+        <div class="change">
+          <div class="change-num">09 · NURSE STATUS</div>
+          <div class="change-title">알림에 '대응 상태' 추가</div>
+          <div class="change-text">"낙상 감지 · 2분 전"만 띄우면 보호자는 패닉. → 알림 안에 <b>"김서연 간호사가 현재 확인하러 가고 있어요"</b> 라이브 인디케이터 배치. 즉각적 안심감이 CTA만큼 중요.</div>
+        </div>
+        <div class="change">
+          <div class="change-num">10 · COLOR WARMTH</div>
+          <div class="change-title">블루 모노톤 탈피</div>
+          <div class="change-text">전체가 파란색으로 차갑던 임상적 톤 → 타임라인 도트에 <b>녹색(정상)·앰버(복약)·블루(식사)·회색(예정)</b>을 의도적으로 섞어 웰니스 상태를 색으로 즉시 전달.</div>
+        </div>
+      </div>
+
+      <div class="principles">
+        <div class="principles-title">디자인 원칙</div>
+        <div class="principles-text">
+          이 앱의 핵심 임무는 "어머님이 지금 괜찮으신지"를 빠르게 확인하고 필요하면 즉시 반응하는 것. 구조 개선(01–06)으로 정보를 정돈했다면, 감정 레이어(07–10)는 <b>"이 앱이 내 편이다"</b>라는 느낌까지 전달합니다. 시니어 케어 앱에서 가장 쉬운 실수는 정보 정확성에만 집중해 차갑고 사무적으로 만드는 것 — 사용자는 기능이 아니라 <b>안심</b>을 얻으러 오기 때문입니다.
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

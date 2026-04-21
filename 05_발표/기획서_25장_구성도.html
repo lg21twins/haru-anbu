@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>하루안부 기획서 25장 구성도</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Pretendard", "Apple SD Gothic Neo", sans-serif;
+    background: #F7F8FA;
+    color: #1E2A3A;
+    padding: 40px 48px;
+    line-height: 1.5;
+  }
+  header {
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #E5E8EC;
+  }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #6B7684; }
+  .meta { font-size: 12px; color: #8B95A1; margin-top: 8px; }
+
+  .section {
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .section-label {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+  }
+  .section-label .step {
+    display: block;
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-top: 2px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #E5E8EC;
+    border-radius: 10px;
+    padding: 12px 12px 10px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .card-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: #8B95A1;
+  }
+  .card-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1E2A3A;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .card-desc {
+    font-size: 11px;
+    color: #6B7684;
+    line-height: 1.4;
+    flex: 1;
+  }
+  .card-new {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    color: #E53935;
+    border: 1px solid #E53935;
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  /* Section colors */
+  .c-intro     { background: #8B95A1; }  .d-intro     { background: #8B95A1; }
+  .c-discover  { background: #4A7FBF; }  .d-discover  { background: #4A7FBF; }
+  .c-market    { background: #5A9BD4; }  .d-market    { background: #5A9BD4; }
+  .c-define    { background: #5BAE8C; }  .d-define    { background: #5BAE8C; }
+  .c-structure { background: #D4A574; }  .d-structure { background: #D4A574; }
+  .c-design    { background: #9C7CBF; }  .d-design    { background: #9C7CBF; }
+  .c-feature   { background: #E57373; }  .d-feature   { background: #E57373; }
+  .c-close     { background: #5A6472; }  .d-close     { background: #5A6472; }
+
+  .card[data-section="intro"]     { border-left: 3px solid #8B95A1; }
+  .card[data-section="discover"]  { border-left: 3px solid #4A7FBF; }
+  .card[data-section="market"]    { border-left: 3px solid #5A9BD4; }
+  .card[data-section="define"]    { border-left: 3px solid #5BAE8C; }
+  .card[data-section="structure"] { border-left: 3px solid #D4A574; }
+  .card[data-section="design"]    { border-left: 3px solid #9C7CBF; }
+  .card[data-section="feature"]   { border-left: 3px solid #E57373; }
+  .card[data-section="close"]     { border-left: 3px solid #5A6472; }
+
+  .legend {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #E5E8EC;
+    font-size: 11px;
+    color: #6B7684;
+  }
+  .legend-item {
+    display: inline-block;
+    margin-right: 16px;
+  }
+  .legend-item .dot {
+    display: inline-block;
+    width: 8px; height: 8px; border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .summary {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #6B7684;
+  }
+  .summary b { color: #1E2A3A; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>하루안부 기획서 · 25장 구성도</h1>
+  <div class="subtitle">책 8단계 UX 프로세스(발견→정의→구조→디자인→프로토) × 전략 프레임워크 6종 통합</div>
+  <div class="meta">신규 추가(빨간 NEW 태그): 프로젝트 브리프 · 3C · SWOT · SWOT 전략 · 스윗스팟 · 플로우차트</div>
+</header>
+
+<!-- 인트로 -->
+<div class="section">
+  <div class="section-label c-intro">인트로<span class="step">3장</span></div>
+  <div class="cards">
+    <div class="card" data-section="intro">
+      <div class="card-top"><span class="card-num">01</span><span class="card-dot d-intro"></span></div>
+      <div class="card-title">표지</div>
+      <div class="card-desc">서비스명, 슬로건, 팀원, 목업 콜라주</div>
+    </div>
+    <div class="card" data-section="intro">
+      <div class="card-top"><span class="card-num">02</span><span class="card-dot d-intro"></span></div>
+      <div class="card-title">목차</div>
+      <div class="card-desc">6개 섹션, 책 단계 배지 표기</div>
+    </div>
+    <div class="card" data-section="intro">
+      <div class="card-top"><span class="card-num">03</span><span class="card-dot d-intro"></span></div>
+      <div class="card-title">프로젝트 브리프 <span class="card-new">NEW</span></div>
+      <div class="card-desc">목적·타겟·제약·핵심질문·산출물·성공지표</div>
+    </div>
+  </div>
+</div>
+
+<!-- 발견-분석 -->
+<div class="section">
+  <div class="section-label c-discover">발견 · 분석<span class="step">5장</span></div>
+  <div class="cards">
+    <div class="card" data-section="discover">
+      <div class="card-top"><span class="card-num">04</span><span class="card-dot d-discover"></span></div>
+      <div class="card-title">문제 인식</div>
+      <div class="card-desc">초고령사회 통계, "어머니는 뭘 드셨을까?"</div>
+    </div>
+    <div class="card" data-section="discover">
+      <div class="card-top"><span class="card-num">05</span><span class="card-dot d-discover"></span></div>
+      <div class="card-title">3C 분석 <span class="card-new">NEW</span></div>
+      <div class="card-desc">Customer · Competitor · Company 3열</div>
+    </div>
+    <div class="card" data-section="discover">
+      <div class="card-top"><span class="card-num">06</span><span class="card-dot d-discover"></span></div>
+      <div class="card-title">현장 인사이트</div>
+      <div class="card-desc">간호사 인터뷰 4개 Pain Point</div>
+    </div>
+    <div class="card" data-section="discover">
+      <div class="card-top"><span class="card-num">07</span><span class="card-dot d-discover"></span></div>
+      <div class="card-title">SWOT 분석 <span class="card-new">NEW</span></div>
+      <div class="card-desc">2×2 매트릭스 S·W·O·T</div>
+    </div>
+    <div class="card" data-section="discover">
+      <div class="card-top"><span class="card-num">08</span><span class="card-dot d-discover"></span></div>
+      <div class="card-title">SWOT 전략 도출 <span class="card-new">NEW</span></div>
+      <div class="card-desc">SO(주)·WO·ST·WT 전략, 실행 연결</div>
+    </div>
+  </div>
+</div>
+
+<!-- 시장 포지션 -->
+<div class="section">
+  <div class="section-label c-market">시장 포지션<span class="step">2장</span></div>
+  <div class="cards">
+    <div class="card" data-section="market">
+      <div class="card-top"><span class="card-num">09</span><span class="card-dot d-market"></span></div>
+      <div class="card-title">포지셔닝 맵</div>
+      <div class="card-desc">기관↔보호자 × 기록↔AI 블루오션</div>
+    </div>
+    <div class="card" data-section="market">
+      <div class="card-top"><span class="card-num">10</span><span class="card-dot d-market"></span></div>
+      <div class="card-title">스윗스팟 <span class="card-new">NEW</span></div>
+      <div class="card-desc">Need ∩ Gap ∩ Capability 벤다이어그램</div>
+    </div>
+  </div>
+</div>
+
+<!-- 정의 -->
+<div class="section">
+  <div class="section-label c-define">정의<span class="step">2장</span></div>
+  <div class="cards">
+    <div class="card" data-section="define">
+      <div class="card-top"><span class="card-num">11</span><span class="card-dot d-define"></span></div>
+      <div class="card-title">퍼소나 4인</div>
+      <div class="card-desc">김미영·박지현·이상훈·김순자</div>
+    </div>
+    <div class="card" data-section="define">
+      <div class="card-top"><span class="card-num">12</span><span class="card-dot d-define"></span></div>
+      <div class="card-title">JTBD & 문제 정의</div>
+      <div class="card-desc">HMW 3개 + 해결 방향</div>
+    </div>
+  </div>
+</div>
+
+<!-- 구조 -->
+<div class="section">
+  <div class="section-label c-structure">구조<span class="step">4장</span></div>
+  <div class="cards">
+    <div class="card" data-section="structure">
+      <div class="card-top"><span class="card-num">13</span><span class="card-dot d-structure"></span></div>
+      <div class="card-title">서비스 구조도</div>
+      <div class="card-desc">1앱 3역할 다이어그램 + 온보딩 스트립</div>
+    </div>
+    <div class="card" data-section="structure">
+      <div class="card-top"><span class="card-num">14</span><span class="card-dot d-structure"></span></div>
+      <div class="card-title">정보구조도 (IA)</div>
+      <div class="card-desc">보호자 5탭 / 케어팀 8사이드바 / 환자 3탭</div>
+    </div>
+    <div class="card" data-section="structure">
+      <div class="card-top"><span class="card-num">15</span><span class="card-dot d-structure"></span></div>
+      <div class="card-title">플로우차트 <span class="card-new">NEW</span></div>
+      <div class="card-desc">대표 유저플로 3개 순서도</div>
+    </div>
+    <div class="card" data-section="structure">
+      <div class="card-top"><span class="card-num">16</span><span class="card-dot d-structure"></span></div>
+      <div class="card-title">레퍼런스 벤치마킹</div>
+      <div class="card-desc">Birdie·MyChart·채널톡·키즈노트 6개</div>
+    </div>
+  </div>
+</div>
+
+<!-- 디자인 -->
+<div class="section">
+  <div class="section-label c-design">디자인<span class="step">3장</span></div>
+  <div class="cards">
+    <div class="card" data-section="design">
+      <div class="card-top"><span class="card-num">17</span><span class="card-dot d-design"></span></div>
+      <div class="card-title">톤앤무드</div>
+      <div class="card-desc">"안심 편지 같은 앱", DO/DON'T</div>
+    </div>
+    <div class="card" data-section="design">
+      <div class="card-top"><span class="card-num">18</span><span class="card-dot d-design"></span></div>
+      <div class="card-title">디자인 시스템</div>
+      <div class="card-desc">컬러 7색 · 타이포 · 간격</div>
+    </div>
+    <div class="card" data-section="design">
+      <div class="card-top"><span class="card-num">19</span><span class="card-dot d-design"></span></div>
+      <div class="card-title">공통 UI 컴포넌트</div>
+      <div class="card-desc">카드·배너·탭바·SOS·알림 8종</div>
+    </div>
+  </div>
+</div>
+
+<!-- 기능·목업 -->
+<div class="section">
+  <div class="section-label c-feature">기능 · 목업<span class="step">5장</span></div>
+  <div class="cards">
+    <div class="card" data-section="feature">
+      <div class="card-top"><span class="card-num">20</span><span class="card-dot d-feature"></span></div>
+      <div class="card-title">핵심 기능 14개</div>
+      <div class="card-desc">Level 1 (9) + P0 차용 (5) 의존성 트리</div>
+    </div>
+    <div class="card" data-section="feature">
+      <div class="card-top"><span class="card-num">21</span><span class="card-dot d-feature"></span></div>
+      <div class="card-title">보호자앱 목업</div>
+      <div class="card-desc">g01·g02·g03·g04·g06·g10 (6화면)</div>
+    </div>
+    <div class="card" data-section="feature">
+      <div class="card-top"><span class="card-num">22</span><span class="card-dot d-feature"></span></div>
+      <div class="card-title">케어팀 PC 목업</div>
+      <div class="card-desc">n01·n03·n05·n06·n09 (5화면)</div>
+    </div>
+    <div class="card" data-section="feature">
+      <div class="card-top"><span class="card-num">23</span><span class="card-dot d-feature"></span></div>
+      <div class="card-title">환자 태블릿 목업</div>
+      <div class="card-desc">p01·p02·p03 (3화면, 버튼3·빨강단일)</div>
+    </div>
+    <div class="card" data-section="feature">
+      <div class="card-top"><span class="card-num">24</span><span class="card-dot d-feature"></span></div>
+      <div class="card-title">통합 시나리오</div>
+      <div class="card-desc">"화요일 3시" 3역할 교차 4화면 타임라인</div>
+    </div>
+  </div>
+</div>
+
+<!-- 마무리 -->
+<div class="section">
+  <div class="section-label c-close">마무리<span class="step">1장</span></div>
+  <div class="cards">
+    <div class="card" data-section="close">
+      <div class="card-top"><span class="card-num">25</span><span class="card-dot d-close"></span></div>
+      <div class="card-title">로드맵 + 팀</div>
+      <div class="card-desc">15주 일정, 책 8단계 매핑, 팀 역할</div>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <span class="legend-item"><span class="dot d-intro"></span>인트로</span>
+  <span class="legend-item"><span class="dot d-discover"></span>발견·분석</span>
+  <span class="legend-item"><span class="dot d-market"></span>시장 포지션</span>
+  <span class="legend-item"><span class="dot d-define"></span>정의</span>
+  <span class="legend-item"><span class="dot d-structure"></span>구조</span>
+  <span class="legend-item"><span class="dot d-design"></span>디자인</span>
+  <span class="legend-item"><span class="dot d-feature"></span>기능·목업</span>
+  <span class="legend-item"><span class="dot d-close"></span>마무리</span>
+</div>
+
+<div class="summary">
+  <b>섹션 비중</b> — 분석·전략(3~10장, 8장, 32%) · 디자인·기능·목업(17~24장, 8장, 32%) · 나머지(36%)<br>
+  <b>v3 대비 개선</b> — 전략 프레임워크 2장 → 8장으로 4배 강화 · 목업 차지 비중 2장 → 5장으로 확대
+</div>
+
+</body>
+</html>
