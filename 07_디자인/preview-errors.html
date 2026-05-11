@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ko" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
+  <title>Error States · 하루안부 디자인 시스템 v3.2.4</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="_preview-shared.css">
+  <script src="_iconify-icon.min.js"></script>
+  <script src="_preview-controls.js" defer></script>
+  <style>
+    .error-state {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card-lg);
+      padding: var(--space-10) var(--space-7);
+      text-align: center;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+    .error-state svg {
+      width: 120px; height: 120px;
+      margin: 0 auto var(--space-6);
+      display: block;
+      color: var(--color-text-tertiary);
+    }
+    .error-state__title {
+      font: var(--w-strong) var(--text-title)/1.2 var(--font-family-base);
+      color: var(--color-text-primary);
+      margin: 0 0 var(--space-3);
+    }
+    .error-state__hint {
+      font: var(--text-callout)/1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+      margin: 0 0 var(--space-6);
+    }
+    .error-state__actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .btn-primary, .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      height: var(--size-button-default);
+      padding: 0 var(--space-6);
+      border-radius: var(--radius-button);
+      font: var(--w-strong) var(--text-headline)/1 var(--font-family-base);
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--color-accent); color: var(--color-accent-on); }
+    .btn-secondary {
+      background: var(--color-bg-surface);
+      color: var(--color-text-primary);
+      border: 1px solid var(--color-border-subtle);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="pv-nav">
+  <div class="pv-nav__inner">
+    <a href="preview.html" class="pv-nav__brand">
+      <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
+      하루안부 DS
+    </a>
+    <div class="pv-nav__links">
+      <a href="preview.html" class="pv-nav__link">개요</a>
+      <a href="preview-foundations.html" class="pv-nav__link">Foundations</a>
+      <a href="preview-components.html" class="pv-nav__link">Components</a>
+      <a href="preview-patterns.html" class="pv-nav__link">Patterns</a>
+      <a href="preview-roles.html" class="pv-nav__link">Roles</a>
+      <a href="preview-errors.html" class="pv-nav__link pv-nav__link--active">Errors</a>
+    </div>
+    <div class="pv-controls">
+      <select class="pv-role-select" data-pv-role aria-label="역할 테마 선택">
+        <option value="guardian">보호자</option>
+        <option value="medical">의료진</option>
+        <option value="patient">환자</option>
+      </select>
+    </div>
+    <div class="pv-nav__version">v3.2.4</div>
+  </div>
+</nav>
+
+<header class="pv-header">
+  <div class="pv-header__eyebrow">P7 · ERROR STATES</div>
+  <h1 class="pv-header__title">에러 화면 4종</h1>
+  <p class="pv-header__desc">시스템 문제로 인한 화면. 동일 시각 구조(라인 일러스트 + 한 줄 카피 + 액션)지만 라이팅은 친근 ~요체. <strong>시스템 메시지("Error 500", "Network failure")는 절대 금지</strong> — 사람이 사람에게 말하는 톤.</p>
+</header>
+
+<main class="pv-container">
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">1. 네트워크 오류 (offline / fetch fail)</h2>
+    <p class="pv-section__desc">와이파이·셀룰러 끊김. <code class="pv-code">role="alert"</code> + <code class="pv-code">aria-live="assertive"</code>로 스크린리더 즉시 안내.</p>
+    <div class="error-state" role="alert" aria-live="assertive">
+      <svg viewBox="0 0 120 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M40 80 a20 20 0 0 1 40 0"></path>
+        <path d="M30 70 a30 30 0 0 1 60 0"></path>
+        <path d="M20 60 a40 40 0 0 1 80 0"></path>
+        <circle cx="60" cy="85" r="3" fill="currentColor"></circle>
+        <line x1="20" y1="20" x2="100" y2="100" stroke-width="3"></line>
+      </svg>
+      <h2 class="error-state__title">잠시 연결이 불안정해요</h2>
+      <p class="error-state__hint">와이파이나 모바일 데이터를 확인해 주세요</p>
+      <div class="error-state__actions">
+        <button class="btn-primary">
+          <iconify-icon icon="fluent:arrow-clockwise-24-filled"></iconify-icon>
+          다시 시도
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">2. 서버 오류 (5xx)</h2>
+    <p class="pv-section__desc">시스템 일시 장애. 자동 재시도(지수 백오프 1s→2s→4s 최대 3회) + 사용자가 직접 재시도 둘 다 제공. 고객센터 진입점 함께.</p>
+    <div class="error-state" role="alert" aria-live="assertive">
+      <svg viewBox="0 0 120 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M30 70 a15 15 0 0 1 0 -30 a25 25 0 0 1 48 -8 a18 18 0 0 1 12 38 z"></path>
+        <line x1="50" y1="80" x2="50" y2="92"></line>
+        <line x1="60" y1="80" x2="60" y2="98"></line>
+        <line x1="70" y1="80" x2="70" y2="92"></line>
+      </svg>
+      <h2 class="error-state__title">지금은 잠깐 어려워요</h2>
+      <p class="error-state__hint">잠시 후 다시 시도해 주세요. 문제가 계속되면 고객센터로 연락 주세요.</p>
+      <div class="error-state__actions">
+        <button class="btn-primary">
+          <iconify-icon icon="fluent:arrow-clockwise-24-filled"></iconify-icon>
+          다시 시도
+        </button>
+        <button class="btn-secondary">
+          <iconify-icon icon="fluent:headset-24-filled"></iconify-icon>
+          고객센터
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">3. 권한 만료 / 미인증 (401 · 403)</h2>
+    <p class="pv-section__desc">세션 만료. 보안 이유를 친근하게 설명 + 재로그인 단일 액션. 자동 재시도 안 함.</p>
+    <div class="error-state" role="alert" aria-live="polite">
+      <svg viewBox="0 0 120 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="35" y="55" width="50" height="40" rx="4"></rect>
+        <path d="M45 55 v-10 a15 15 0 0 1 30 0 v10"></path>
+        <circle cx="60" cy="75" r="3" fill="currentColor"></circle>
+      </svg>
+      <h2 class="error-state__title">다시 로그인이 필요해요</h2>
+      <p class="error-state__hint">보안을 위해 일정 시간 후 자동 로그아웃됐어요</p>
+      <div class="error-state__actions">
+        <a href="#login" class="btn-primary">
+          <iconify-icon icon="fluent:person-key-24-filled"></iconify-icon>
+          다시 로그인
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">4. 타임아웃 (timeout)</h2>
+    <p class="pv-section__desc">응답 지연. <code class="pv-code">aria-live="polite"</code>로 다른 안내 흐름 방해 안 함. "잠깐 멈췄어요" 톤.</p>
+    <div class="error-state" role="alert" aria-live="polite">
+      <svg viewBox="0 0 120 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="60" cy="60" r="35"></circle>
+        <path d="M60 40 v22 l14 8"></path>
+        <line x1="60" y1="22" x2="60" y2="30"></line>
+        <line x1="60" y1="90" x2="60" y2="98"></line>
+        <line x1="22" y1="60" x2="30" y2="60"></line>
+        <line x1="90" y1="60" x2="98" y2="60"></line>
+      </svg>
+      <h2 class="error-state__title">응답이 늦어지고 있어요</h2>
+      <p class="error-state__hint">잠깐 멈췄어요. 다시 시도하시거나 새로고침해 주세요.</p>
+      <div class="error-state__actions">
+        <button class="btn-primary">
+          <iconify-icon icon="fluent:arrow-clockwise-24-filled"></iconify-icon>
+          다시 시도
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">절대 규칙</h2>
+    <div class="pv-demo">
+      <ul style="margin:0;padding-left:20px;font:var(--text-callout)/1.7 var(--font-family-base);color:var(--color-text-secondary);">
+        <li>라이팅: <strong>시스템 메시지 금지</strong> — "Error 500" · "Network failure" · "Timeout exceeded" 같은 영문/코드 노출 X. 시간·주체·해법을 한국어로 명시.</li>
+        <li>ARIA: <strong>네트워크·서버는 <code class="pv-code">aria-live="assertive"</code></strong>, 권한·타임아웃은 <code class="pv-code">polite</code>.</li>
+        <li>자동 재시도: <strong>지수 백오프</strong> 1s → 2s → 4s, 최대 3회. 동시에 "다시 시도" 버튼도 항상 노출.</li>
+        <li>환자앱: 본문 18px·터치 56px·카드 padding 24px 자동 상향 (토큰이 처리).</li>
+        <li>요양보호사앱: 중국어 폴백 카피 동시 표시 ("연결을 확인해 주세요 / 请检查网络连接").</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pv-footer">
+  하루안부 디자인 시스템 v3.2.4 · 2026.05.11<br>
+  <a href="preview.html">← 메인</a> · <a href="03_PATTERNS.md">03_PATTERNS.md (P7)</a> · <a href="tokens/tokens.css">tokens.css</a>
+</footer>
+
+</body>
+</html>

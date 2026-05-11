@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
-  <title>Patterns · 하루안부 디자인 시스템 v3.1</title>
+  <title>Patterns · 하루안부 디자인 시스템 v3.2</title>
   <link rel="stylesheet" href="tokens/tokens.css">
   <link rel="stylesheet" href="_preview-shared.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="_iconify-icon.min.js"></script>
+  <script src="_preview-controls.js" defer></script>
   <style>
     /* 기기 프레임 */
     .device {
@@ -370,7 +371,7 @@
 <nav class="pv-nav">
   <div class="pv-nav__inner">
     <a href="preview.html" class="pv-nav__brand">
-      <img src="logo/brand-system/01_심볼단독.svg" alt="">
+      <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
       하루안부 DS
     </a>
     <div class="pv-nav__links">
@@ -378,15 +379,24 @@
       <a href="preview-components.html" class="pv-nav__link">Components</a>
       <a href="preview-patterns.html" class="pv-nav__link pv-nav__link--active">Patterns</a>
       <a href="preview-roles.html" class="pv-nav__link">Roles</a>
+      <a href="preview-errors.html" class="pv-nav__link">Errors</a>
     </div>
-    <div class="pv-nav__version">v3.1</div>
+    <div class="pv-controls">
+      <select class="pv-role-select" data-pv-role aria-label="역할 테마 선택">
+        <option value="guardian">보호자</option>
+        <option value="medical">의료진</option>
+        <option value="patient">환자</option>
+      </select>
+      
+    </div>
+    <div class="pv-nav__version">v3.2.3</div>
   </div>
 </nav>
 
 <header class="pv-header">
   <div class="pv-header__eyebrow">03 · PATTERNS</div>
   <h1 class="pv-header__title">패턴</h1>
-  <p class="pv-header__desc">컴포넌트를 어떻게 조합해서 화면을 만드는지 — 홈 화면·AI 리포트·경보 위계·빈 상태·폼 검증·채팅·로딩 등 14개 패턴.</p>
+  <p class="pv-header__desc">컴포넌트를 어떻게 조합해서 화면을 만드는지 — 홈 화면·<strong>AI 패턴 5종(v3.2 확장)</strong>·<strong>알림 4채널 매트릭스</strong>·빈 상태·폼 검증·채팅·로딩 등 14개 패턴.</p>
 </header>
 
 <main class="pv-container">
@@ -457,7 +467,7 @@
 
           <div class="ai-report">
             <div class="ai-report__head">
-              <img src="logo/brand-system/01_심볼단독.svg" alt="">
+              <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
               AI 안부 리포트
             </div>
             <div class="ai-report__title">"오늘은 식사·투약 모두 잘 하셨고, 오후에 짧은 산책에 참여하셨습니다."</div>
@@ -475,7 +485,7 @@
 
         </div>
         <button class="fab-floating" data-role="guardian" aria-label="AI 어시스턴트">
-          <img src="logo/brand-system/01_심볼단독.svg" alt="">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
         </button>
         <nav class="tabbar" data-role="guardian">
           <button class="tab is-active" data-role="guardian"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span>홈</span></button>
@@ -497,7 +507,7 @@
 
     <div class="ai-report" style="padding: 24px;">
       <div class="ai-report__head" style="margin-bottom: 12px;">
-        <img src="logo/brand-system/01_심볼단독.svg" alt="">
+        <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
         AI 안부 리포트 · 2026.05.09 저녁
       </div>
       <div class="ai-report__title" style="margin-bottom: 16px;">"오늘은 식사와 투약 모두 정상적으로 진행되었고, 오후에는 짧은 산책 활동에 참여하셨습니다."</div>
@@ -743,7 +753,7 @@
         <div class="msg msg--them">안녕하세요, 어머님 컨디션이 어떠셨나요?</div>
         <div class="msg msg--me">오늘은 평소보다 식사를 잘 하셨어요!</div>
         <div class="msg msg--ai">
-          <img src="logo/brand-system/01_심볼단독.svg" alt="">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
           <div>오늘 어머님은 점심 식사를 평소보다 많이 드셨고(2/3), 산책에 참여하셨어요. 컨디션이 좋아 보이세요.</div>
         </div>
         <div class="msg msg--me">감사합니다. 내일 면회 가능할까요?</div>
@@ -834,10 +844,150 @@
     </div>
   </section>
 
+
+  <!-- ============================================================
+       v3.2 신설 · P3 AI 패턴 5종 + P6 알림 4채널 매트릭스
+       ============================================================ -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · AI 패턴 5종 (P3 확장)</h2>
+    <p class="pv-section__desc">기존 P3는 'AI 리포트' 한 종류였으나, v3.2부터 하루안부의 모든 AI 상호작용을 5종 패턴으로 표준화. KT Seamless Flow의 AI 5종을 돌봄·환자·의료진 도메인에 맞춰 재정의.</p>
+
+    <div class="pv-demo">
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle); color: var(--color-text-secondary); font-size: 13px; text-align: left;">
+            <th style="padding: 12px 8px;">#</th>
+            <th>패턴</th>
+            <th>사용처</th>
+            <th>핵심 컴포넌트</th>
+            <th>음성 우선</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;"><strong>P3A</strong></td><td><strong>대화형 질의응답</strong></td><td>보호자 챗, 가족 채팅</td><td>H1 · H2 · H4</td><td>—</td></tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;"><strong>P3B</strong></td><td><strong>음성 입력</strong></td><td>환자 도우미, 요양 핸즈프리</td><td>H1(mic) · H2</td><td>환자 · 요양보호사</td></tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;"><strong>P3C</strong></td><td><strong>사진·파일 분석</strong></td><td>요양 메모 사진, 의료진 차트</td><td>H1(첨부) · H2(인용)</td><td>—</td></tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;"><strong>P3D</strong></td><td><strong>AI 리포트 (장문 요약)</strong></td><td>보호자 일간/주간 리포트</td><td>H2 hero · timeline</td><td>—</td></tr>
+          <tr><td style="padding: 12px 8px;"><strong>P3E</strong></td><td><strong>인라인 제안</strong></td><td>요양 메모, 보호자 답장</td><td>H3 Inline Suggestion</td><td>(환자 제외)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="pv-subsection__title">P3A. 대화형 질의응답 (보호자 챗 미니 시뮬레이션)</h3>
+    <div class="pv-demo" style="background: var(--color-bg-canvas);">
+      <div style="max-width: 380px; display: flex; flex-direction: column; gap: var(--space-4);">
+        <!-- AI 응답 -->
+        <article style="background:var(--ai-surface);border:var(--ai-border);border-radius:var(--ai-radius);padding:var(--ai-padding);box-shadow:var(--shadow-1);">
+          <header style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-3);">
+            <div style="display:flex;align-items:center;gap:var(--space-3);font:var(--w-strong) var(--text-caption)/1 var(--font-family-base);color:var(--color-text-secondary);">
+              <img src="logo/brand-system/01_심볼단독.svg" alt="" style="width:20px;height:20px;">
+              <span>하루안부 AI</span>
+            </div>
+            <span style="font:var(--w-strong) var(--text-mini)/1 var(--font-family-base);padding:var(--space-1) var(--space-3);border-radius:var(--radius-pill);background:var(--color-bg-surface-muted);color:var(--color-text-secondary);">AI 생성</span>
+          </header>
+          <div style="font:var(--text-callout)/1.5 var(--font-family-base);color:var(--color-text-primary);">오늘 어머님 식사 잘 드셨고, 오후 산책도 20분 하셨어요. 평소 패턴 그대로예요.</div>
+        </article>
+        <!-- 사용자 메시지 -->
+        <div style="align-self:flex-end;background:var(--color-accent);color:var(--color-accent-on);padding:var(--space-3) var(--space-5);border-radius:18px 18px 4px 18px;font:var(--text-callout)/1.4 var(--font-family-base);max-width:80%;">처방 변경 좀 해주세요</div>
+        <!-- 거절 카드 -->
+        <aside role="status" style="display:flex;align-items:flex-start;gap:var(--space-3);background:var(--ai-refuse-bg);border:var(--ai-refuse-border);border-radius:var(--ai-radius);padding:var(--ai-padding);color:var(--color-text-secondary);">
+          <iconify-icon icon="fluent:info-24-filled" style="flex-shrink:0;font-size:20px;color:var(--color-text-tertiary);margin-top:2px;"></iconify-icon>
+          <div>
+            <div style="font:var(--w-strong) var(--text-callout)/1.3 var(--font-family-base);color:var(--color-text-primary);margin-bottom:var(--space-1);">이 질문은 의료진께 문의해 주세요</div>
+            <p style="margin:0;font:var(--text-caption)/1.5 var(--font-family-base);">처방 변경은 답변하지 않아요.</p>
+            <a href="#" style="display:inline-block;margin-top:var(--space-3);color:var(--color-accent);font:var(--w-strong) var(--text-caption)/1 var(--font-family-base);text-decoration:none;">담당 간호사에게 메시지 →</a>
+          </div>
+        </aside>
+        <!-- 입력 -->
+        <form style="display:flex;align-items:center;gap:var(--space-2);min-height:44px;padding:var(--space-2) var(--space-4);background:var(--ai-surface);border:var(--ai-border);border-radius:var(--radius-pill);box-shadow:var(--shadow-1);margin-top:var(--space-3);">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="" style="width:18px;height:18px;flex-shrink:0;">
+          <input style="flex:1;border:0;background:transparent;font:var(--text-caption) var(--font-family-base);outline:none;color:var(--color-text-primary);" placeholder="궁금한 점을 적어보세요">
+          <button type="button" aria-label="음성" style="width:30px;height:30px;border-radius:var(--radius-pill);background:transparent;border:0;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;"><iconify-icon icon="fluent:mic-24-filled" style="font-size:18px;"></iconify-icon></button>
+          <button type="submit" aria-label="전송" style="width:30px;height:30px;border-radius:var(--radius-pill);background:var(--color-accent);color:var(--color-accent-on);border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;"><iconify-icon icon="fluent:send-24-filled" style="font-size:18px;"></iconify-icon></button>
+        </form>
+      </div>
+    </div>
+
+    <div class="pv-callout">
+      <strong>P3 전체 5종 공통 규칙</strong> — 진입점·응답 마크는 <strong>하루안부 심볼 1종</strong> / AI 표면은 역할 무관 중립 / 의료 응답 마지막은 "최종 판단은 의료진이 합니다" 면책 / 응답 본문 line-height 1.6 / 진단·처방 변경 제안 금지 / 친근 ~요체.
+    </div>
+  </section>
+
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · 알림 4단계 × 4채널 매트릭스 (P6 통합)</h2>
+    <p class="pv-section__desc">KRDS + Fluent 2 + 서비스개선안 §6.1 통합. 위험도가 높을수록 더 침입적인 채널이 발동. 단계 3 응답 시 모든 채널 즉시 중단.</p>
+
+    <div class="pv-demo">
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle); color: var(--color-text-secondary); font-size: 12px; text-align: left;">
+            <th style="padding: 10px 8px;">단계</th>
+            <th>트리거</th>
+            <th>인앱 카드</th>
+            <th>토스트</th>
+            <th>푸시</th>
+            <th>SMS/이메일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);">
+            <td style="padding: 10px 8px;"><span class="pv-badge pv-badge--success">0 정상</span></td>
+            <td>일반 케어 완료</td><td>success 뱃지</td><td>—</td><td>—</td><td>—</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);">
+            <td style="padding: 10px 8px;"><span class="pv-badge pv-badge--info">1 정보</span></td>
+            <td>AI 리포트, 메시지</td><td>info card (선택)</td><td>1회 2.5초</td><td>1회 (사용자 설정)</td><td>—</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);">
+            <td style="padding: 10px 8px;"><span class="pv-badge pv-badge--warning">2 주의</span></td>
+            <td>미완료 케어, 늦은 투약</td><td>warning card (홈 상단)</td><td>1회</td><td>1회 (필수)</td><td>—</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 8px;"><span class="pv-badge pv-badge--danger">3 긴급</span></td>
+            <td>SOS, 의식 저하</td><td><strong>sos-banner</strong> (최상단·닫기없음)</td><td>—</td><td><strong>5분 간격 반복</strong></td><td><strong>30초 미응답 시</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="pv-subsection__title">알림 설정 UI (사용자 통제)</h3>
+    <div class="pv-demo" style="background: var(--color-bg-canvas);">
+      <div style="max-width: 400px; background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-card); overflow: hidden;">
+        <div style="padding: var(--space-5); border-bottom: 1px solid var(--color-border-subtle); font: var(--w-strong) var(--text-headline)/1 var(--font-family-base);">알림 설정</div>
+        <div style="padding: var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font: var(--w-strong) var(--text-callout)/1.2 var(--font-family-base);">정보 알림</div>
+            <div style="font: var(--text-caption)/1.4 var(--font-family-base); color: var(--color-text-secondary); margin-top: 2px;">AI 리포트, 메시지 — 끄기 가능</div>
+          </div>
+          <div style="width: 44px; height: 26px; background: var(--color-accent); border-radius: var(--radius-pill); position: relative;"><div style="position:absolute;top:2px;right:2px;width:22px;height:22px;background:white;border-radius:50%;"></div></div>
+        </div>
+        <div style="padding: var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font: var(--w-strong) var(--text-callout)/1.2 var(--font-family-base);">주의 알림</div>
+            <div style="font: var(--text-caption)/1.4 var(--font-family-base); color: var(--color-text-secondary); margin-top: 2px;">미완료 케어 — 끄기 가능 (권장 ON)</div>
+          </div>
+          <div style="width: 44px; height: 26px; background: var(--color-accent); border-radius: var(--radius-pill); position: relative;"><div style="position:absolute;top:2px;right:2px;width:22px;height:22px;background:white;border-radius:50%;"></div></div>
+        </div>
+        <div style="padding: var(--space-5); display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font: var(--w-strong) var(--text-callout)/1.2 var(--font-family-base);">긴급 알림</div>
+            <div style="font: var(--text-caption)/1.4 var(--font-family-base); color: var(--color-text-secondary); margin-top: 2px;">SOS — 환자 안전 직결, 잠금</div>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:var(--space-2);height:26px;padding:0 var(--space-3);background:var(--color-danger-soft);color:var(--color-danger);border-radius:var(--radius-pill);font:var(--w-strong) var(--text-mini)/1 var(--font-family-base);"><iconify-icon icon="fluent:lock-closed-24-filled" style="font-size:14px;"></iconify-icon>ON · 잠금</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-callout pv-callout--orange">
+      <strong>5중 표현</strong> — 단계 3 알림은 빨강 + 사이렌 아이콘 + "긴급" 텍스트 + 푸시 사운드 + 진동 패턴 5중. 시각만 의존 금지. iOS Critical Alerts / Android Full-Screen Intent는 단계 3 한정으로 신청.
+    </div>
+  </section>
+
 </main>
 
 <footer class="pv-footer">
-  하루안부 디자인 시스템 v3.1 · 2026.05.09<br>
+  하루안부 디자인 시스템 v3.2 · 2026.05.11<br>
   <a href="preview.html">← 메인</a> · <a href="03_PATTERNS.md">03_PATTERNS.md</a> · <a href="tokens/tokens.css">tokens.css</a>
 </footer>
 

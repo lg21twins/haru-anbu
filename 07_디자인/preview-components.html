@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
-  <title>Components · 하루안부 디자인 시스템 v3.1</title>
+  <title>Components · 하루안부 디자인 시스템 v3.2</title>
   <link rel="stylesheet" href="tokens/tokens.css">
   <link rel="stylesheet" href="_preview-shared.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="_iconify-icon.min.js"></script>
+  <script src="_preview-controls.js" defer></script>
   <style>
     /* ===== Components 데모 스타일 ===== */
 
@@ -545,7 +546,7 @@
 <nav class="pv-nav">
   <div class="pv-nav__inner">
     <a href="preview.html" class="pv-nav__brand">
-      <img src="logo/brand-system/01_심볼단독.svg" alt="">
+      <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
       하루안부 DS
     </a>
     <div class="pv-nav__links">
@@ -553,15 +554,24 @@
       <a href="preview-components.html" class="pv-nav__link pv-nav__link--active">Components</a>
       <a href="preview-patterns.html" class="pv-nav__link">Patterns</a>
       <a href="preview-roles.html" class="pv-nav__link">Roles</a>
+      <a href="preview-errors.html" class="pv-nav__link">Errors</a>
     </div>
-    <div class="pv-nav__version">v3.1</div>
+    <div class="pv-controls">
+      <select class="pv-role-select" data-pv-role aria-label="역할 테마 선택">
+        <option value="guardian">보호자</option>
+        <option value="medical">의료진</option>
+        <option value="patient">환자</option>
+      </select>
+      
+    </div>
+    <div class="pv-nav__version">v3.2.3</div>
   </div>
 </nav>
 
 <header class="pv-header">
   <div class="pv-header__eyebrow">02 · COMPONENTS</div>
   <h1 class="pv-header__title">컴포넌트</h1>
-  <p class="pv-header__desc">화면을 만들 때 가져다 쓰는 모든 UI 컴포넌트의 라이브 데모. 6 카테고리: Action · Containment · Navigation · Communication · Input · Display</p>
+  <p class="pv-header__desc">화면을 만들 때 가져다 쓰는 모든 UI 컴포넌트의 라이브 데모. 7 카테고리: Action · Containment · Navigation · Communication · Input · Display · <strong>AI (v3.2 신설)</strong>. 우측 상단에서 다크모드와 역할 테마를 즉시 전환하세요.</p>
 </header>
 
 <main class="pv-container">
@@ -594,7 +604,7 @@
     <div class="pv-demo">
       <div class="row" style="gap: 24px;">
         <button class="fab" aria-label="AI 어시스턴트 열기">
-          <img src="logo/brand-system/01_심볼단독.svg" alt="">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
         </button>
         <div style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.6;">
           탭바 우측에 분리 배치된 56×56 원형 버튼.<br>
@@ -752,7 +762,7 @@
     <div class="pv-demo" style="padding: 0; overflow: hidden;" data-role="medical">
       <div class="header-web">
         <div class="header-web__brand">
-          <img src="logo/brand-system/01_심볼단독.svg" alt="">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
           하루안부 의료진
         </div>
         <div class="header-web__search">
@@ -767,7 +777,7 @@
       <div style="display: flex;">
         <nav class="sidebar">
           <div class="sidebar__brand">
-            <img src="logo/brand-system/01_심볼단독.svg" alt="">
+            <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
             메뉴
           </div>
           <div class="sidebar__item is-active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon>대시보드</div>
@@ -992,12 +1002,180 @@
         <div class="empty__hint">간호사가 첫 기록을 남기면 여기에 표시됩니다</div>
       </div>
     </div>
+
+    <h3 class="pv-subsection__title">F5–F10. v3.2 신설 컴포넌트</h3>
+
+    <!-- F5. Section Tab -->
+    <div class="pv-demo" style="margin-bottom: var(--space-5);">
+      <div class="pv-demo__label">F5. SECTION TAB (페이지 내부 콘텐츠 토글)</div>
+      <div role="tablist" style="display:flex;gap:var(--space-2);border-bottom:1px solid var(--color-border-subtle);">
+        <button role="tab" aria-selected="true" style="height:44px;padding:0 var(--space-5);background:transparent;border:0;border-bottom:2px solid var(--color-accent);color:var(--color-accent);font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);margin-bottom:-1px;cursor:pointer;">전체</button>
+        <button role="tab" aria-selected="false" style="height:44px;padding:0 var(--space-5);background:transparent;border:0;border-bottom:2px solid transparent;color:var(--color-text-secondary);font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);margin-bottom:-1px;cursor:pointer;">식사</button>
+        <button role="tab" aria-selected="false" style="height:44px;padding:0 var(--space-5);background:transparent;border:0;border-bottom:2px solid transparent;color:var(--color-text-secondary);font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);margin-bottom:-1px;cursor:pointer;">투약</button>
+        <button role="tab" aria-selected="false" style="height:44px;padding:0 var(--space-5);background:transparent;border:0;border-bottom:2px solid transparent;color:var(--color-text-secondary);font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);margin-bottom:-1px;cursor:pointer;">활동</button>
+      </div>
+    </div>
+
+    <!-- F6. Stepper -->
+    <div class="pv-demo" style="margin-bottom: var(--space-5);">
+      <div class="pv-demo__label">F6. STEPPER (다단계 폼)</div>
+      <div style="display:flex;align-items:center;gap:var(--space-3);">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);flex:1;">
+          <div style="width:28px;height:28px;border-radius:var(--radius-pill);background:var(--color-accent);color:var(--color-accent-on);display:flex;align-items:center;justify-content:center;font:var(--w-strong) var(--text-caption)/1 var(--font-family-base);"><iconify-icon icon="fluent:checkmark-16-filled" style="font-size:14px;"></iconify-icon></div>
+          <div style="font:var(--text-caption)/1 var(--font-family-base);color:var(--color-text-secondary);">계정</div>
+        </div>
+        <div style="flex:1;height:2px;background:var(--color-accent);"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);flex:1;">
+          <div style="width:28px;height:28px;border-radius:var(--radius-pill);background:var(--color-bg-surface);border:2px solid var(--color-accent);color:var(--color-accent);display:flex;align-items:center;justify-content:center;font:var(--w-strong) var(--text-caption)/1 var(--font-family-base);">2</div>
+          <div style="font:var(--text-caption)/1 var(--font-family-base);color:var(--color-text-secondary);">환자 연결</div>
+        </div>
+        <div style="flex:1;height:2px;background:var(--color-border-subtle);"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);flex:1;">
+          <div style="width:28px;height:28px;border-radius:var(--radius-pill);background:var(--color-bg-surface-muted);border:1px solid var(--color-border-subtle);color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;font:var(--w-strong) var(--text-caption)/1 var(--font-family-base);">3</div>
+          <div style="font:var(--text-caption)/1 var(--font-family-base);color:var(--color-text-secondary);">알림 설정</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- F7. Progress Bar -->
+    <div class="pv-demo" style="margin-bottom: var(--space-5);">
+      <div class="pv-demo__label">F7. PROGRESS BAR (비율 + Indeterminate)</div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-5);">
+        <div>
+          <div style="font:var(--text-caption)/1 var(--font-family-base);color:var(--color-text-secondary);margin-bottom:var(--space-2);">오늘의 케어 진행 — 70%</div>
+          <div style="width:100%;height:6px;background:var(--color-bg-surface-muted);border-radius:var(--radius-pill);overflow:hidden;">
+            <div style="height:100%;background:var(--color-accent);border-radius:var(--radius-pill);width:70%;"></div>
+          </div>
+        </div>
+        <div>
+          <div style="font:var(--text-caption)/1 var(--font-family-base);color:var(--color-text-secondary);margin-bottom:var(--space-2);">AI 응답 생성 중 (Indeterminate)</div>
+          <div style="width:100%;height:6px;background:var(--color-bg-surface-muted);border-radius:var(--radius-pill);overflow:hidden;position:relative;">
+            <div style="height:100%;background:var(--color-accent);border-radius:var(--radius-pill);width:30%;animation:progress-slide 1.5s ease-in-out infinite;"></div>
+          </div>
+        </div>
+      </div>
+      <style>@keyframes progress-slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }</style>
+    </div>
+
+    <!-- F8. Accordion -->
+    <div class="pv-demo" style="margin-bottom: var(--space-5);">
+      <div class="pv-demo__label">F8. ACCORDION (FAQ · 케어 가이드)</div>
+      <details open style="border-bottom:1px solid var(--color-border-subtle);padding:var(--space-4) 0;">
+        <summary style="cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);"><span style="font:var(--w-strong) var(--text-headline)/1.3 var(--font-family-base);color:var(--color-text-primary);">하루안부는 어떻게 시작하나요?</span><iconify-icon icon="fluent:chevron-down-20-filled" style="color:var(--color-text-secondary);"></iconify-icon></summary>
+        <div style="padding-top:var(--space-4);font:var(--text-body)/1.6 var(--font-family-base);color:var(--color-text-secondary);">시설에서 보호자님께 초대 링크를 보내드려요. 링크를 누르면 가입과 환자 연결이 한 번에 완료됩니다.</div>
+      </details>
+      <details style="border-bottom:1px solid var(--color-border-subtle);padding:var(--space-4) 0;">
+        <summary style="cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);"><span style="font:var(--w-strong) var(--text-headline)/1.3 var(--font-family-base);color:var(--color-text-primary);">AI 리포트는 누가 작성하나요?</span><iconify-icon icon="fluent:chevron-down-20-filled" style="color:var(--color-text-secondary);"></iconify-icon></summary>
+        <div style="padding-top:var(--space-4);font:var(--text-body)/1.6 var(--font-family-base);color:var(--color-text-secondary);">시설의 케어 기록을 바탕으로 AI가 자동으로 작성합니다. 최종 판단은 의료진이 합니다.</div>
+      </details>
+    </div>
+
+    <!-- F9. Tooltip + F10. Pagination -->
+    <div class="pv-demo" style="margin-bottom: var(--space-5);">
+      <div class="pv-demo__label">F9·F10. TOOLTIP + PAGINATION (웹 한정)</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-5);">
+        <div style="position:relative;">
+          <button style="height:36px;padding:0 var(--space-4);border-radius:var(--radius-control);background:var(--color-bg-surface);border:1px solid var(--color-border-subtle);color:var(--color-text-primary);font:var(--text-callout) var(--font-family-base);cursor:help;">상태 정보 (hover)</button>
+          <span style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--palette-gray-900);color:var(--color-text-on-dark);padding:var(--space-3) var(--space-4);border-radius:var(--radius-2);font:var(--w-strong) var(--text-caption)/1.3 var(--font-family-base);white-space:nowrap;box-shadow:var(--shadow-2);">정상 / 주의 / 위험 3단계</span>
+        </div>
+        <nav aria-label="페이지 이동" style="display:flex;align-items:center;gap:var(--space-2);">
+          <button style="min-width:36px;height:36px;padding:0 var(--space-3);border-radius:var(--radius-control);background:transparent;border:1px solid var(--color-border-subtle);color:var(--color-text-primary);font:var(--text-callout) var(--font-family-base);cursor:pointer;"><iconify-icon icon="fluent:chevron-left-20-filled"></iconify-icon></button>
+          <button style="min-width:36px;height:36px;padding:0 var(--space-3);border-radius:var(--radius-control);background:transparent;border:1px solid var(--color-border-subtle);color:var(--color-text-primary);font:var(--text-callout) var(--font-family-base);cursor:pointer;">1</button>
+          <button aria-current="page" style="min-width:36px;height:36px;padding:0 var(--space-3);border-radius:var(--radius-control);background:var(--color-accent);color:var(--color-accent-on);border:1px solid var(--color-accent);font:var(--text-callout) var(--font-family-base);cursor:pointer;">2</button>
+          <button style="min-width:36px;height:36px;padding:0 var(--space-3);border-radius:var(--radius-control);background:transparent;border:1px solid var(--color-border-subtle);color:var(--color-text-primary);font:var(--text-callout) var(--font-family-base);cursor:pointer;">3</button>
+          <span style="color:var(--color-text-tertiary);padding:0 var(--space-2);">…</span>
+          <button style="min-width:36px;height:36px;padding:0 var(--space-3);border-radius:var(--radius-control);background:transparent;border:1px solid var(--color-border-subtle);color:var(--color-text-primary);font:var(--text-callout) var(--font-family-base);cursor:pointer;">12</button>
+          <button style="min-width:36px;height:36px;padding:0 var(--space-3);border-radius:var(--radius-control);background:transparent;border:1px solid var(--color-border-subtle);color:var(--color-text-primary);font:var(--text-callout) var(--font-family-base);cursor:pointer;"><iconify-icon icon="fluent:chevron-right-20-filled"></iconify-icon></button>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       H. AI (v3.2 신설) — 하루안부 AI 컴포넌트 라이브 데모
+       ============================================================ -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">H. AI · 하루안부 심볼 기반 (v3.2)</h2>
+    <p class="pv-section__desc">하루안부의 모든 AI 인터랙션은 같은 시각 언어를 쓴다. 진입점 마크는 항상 <strong>하루안부 심볼</strong> — Fluent sparkle 사용 안 함. AI 표면은 역할 accent와 무관한 <strong>중립 톤</strong>이라 "이건 AI" 인식이 즉시 된다.</p>
+
+    <h3 class="pv-subsection__title">H1. Prompt Input (좌측 심볼 + 우측 마이크·첨부·전송)</h3>
+    <div class="pv-demo" style="background: var(--color-bg-canvas);">
+      <form style="display:flex;align-items:center;gap:var(--space-3);min-height:48px;padding:var(--space-3) var(--space-5);background:var(--ai-surface);border:var(--ai-border);border-radius:var(--radius-pill);box-shadow:var(--shadow-1);">
+        <img src="logo/brand-system/01_심볼단독.svg" alt="" style="width:20px;height:20px;flex-shrink:0;">
+        <input style="flex:1;border:0;background:transparent;font:var(--text-callout) var(--font-family-base);outline:none;color:var(--color-text-primary);" placeholder="궁금한 점을 적어보세요" value="어머님 오늘 식사는 어떻게 하셨어요?">
+        <div style="display:flex;align-items:center;gap:var(--space-2);">
+          <button type="button" aria-label="사진 첨부" style="width:36px;height:36px;border-radius:var(--radius-pill);background:transparent;border:0;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;"><iconify-icon icon="fluent:image-24-filled"></iconify-icon></button>
+          <button type="button" aria-label="음성 입력" style="width:36px;height:36px;border-radius:var(--radius-pill);background:transparent;border:0;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;"><iconify-icon icon="fluent:mic-24-filled"></iconify-icon></button>
+          <button type="submit" aria-label="전송" style="width:36px;height:36px;border-radius:var(--radius-pill);background:var(--color-accent);color:var(--color-accent-on);border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;"><iconify-icon icon="fluent:send-24-filled"></iconify-icon></button>
+        </div>
+      </form>
+    </div>
+
+    <h3 class="pv-subsection__title">H2. Prompt Output (마크 + 우상단 라벨 + 인용 footer)</h3>
+    <div class="pv-demo" style="background: var(--color-bg-canvas);">
+      <article style="background:var(--ai-surface);border:var(--ai-border);border-radius:var(--ai-radius);padding:var(--ai-padding);box-shadow:var(--shadow-1);max-width:520px;">
+        <header style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-4);">
+          <div style="display:flex;align-items:center;gap:var(--space-3);font:var(--w-strong) var(--text-caption)/1 var(--font-family-base);color:var(--color-text-secondary);">
+            <img src="logo/brand-system/01_심볼단독.svg" alt="" style="width:24px;height:24px;">
+            <span>하루안부 AI</span>
+          </div>
+          <span style="font:var(--w-strong) var(--text-mini)/1 var(--font-family-base);padding:var(--space-1) var(--space-3);border-radius:var(--radius-pill);background:var(--color-bg-surface-muted);color:var(--color-text-secondary);">AI 생성</span>
+        </header>
+        <div style="font:var(--text-body)/1.6 var(--font-family-base);color:var(--color-text-primary);">
+          오늘 어머님은 식사를 2/3 드셨고, 오후 산책을 20분 하셨습니다. 평소 패턴에서 큰 변화는 없어 보여요.
+        </div>
+        <footer style="margin-top:var(--space-5);padding-top:var(--space-4);border-top: 1px dashed var(--ai-accent-hairline);font:var(--text-caption)/1.5 var(--font-family-base);color:var(--ai-citation-color);">
+          근거 · 09:14 식사 기록, 14:32 활동 기록 · 최종 판단은 의료진이 합니다
+        </footer>
+      </article>
+    </div>
+
+    <h3 class="pv-subsection__title">H3. Inline Suggestion (요양보호사 메모 자동완성 · 환자앱은 사용 금지)</h3>
+    <div class="pv-demo" style="background: var(--color-bg-canvas);">
+      <div style="position:relative;max-width:520px;">
+        <textarea style="width:100%;min-height:120px;padding:var(--space-4) var(--space-5);padding-right:120px;background:var(--color-bg-surface);border:1px solid var(--color-border-subtle);border-radius:var(--radius-control);font:var(--text-body)/var(--leading-relaxed) var(--font-family-base);color:var(--color-text-primary);resize:vertical;outline:none;">오전 식사를 잘 드</textarea>
+        <button type="button" aria-label="AI 제안 채택" style="position:absolute;bottom:var(--space-3);right:var(--space-3);display:flex;align-items:center;gap:var(--space-2);height:28px;padding:0 var(--space-3);background:var(--ai-surface-soft);border:1px solid var(--color-accent-soft);border-radius:var(--radius-pill);font:var(--w-strong) var(--text-mini)/1 var(--font-family-base);color:var(--color-accent);cursor:pointer;">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="" style="width:14px;height:14px;">
+          제안 채택 · Tab
+        </button>
+        <div style="margin-top:var(--space-3);font:var(--text-caption)/1.5 var(--font-family-base);color:var(--color-text-tertiary);">
+          제안 미리보기: <em style="color:var(--color-text-tertiary);">"…셨어요. 평소보다 활기차 보이세요."</em>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">H4. Refusal Card (거절 · 불확실성 — danger 사용 안 함)</h3>
+    <div class="pv-demo" style="background: var(--color-bg-canvas);">
+      <div style="display:flex;flex-direction:column;gap:var(--space-4);max-width:520px;">
+        <aside role="status" aria-label="AI 응답 불가" style="display:flex;align-items:flex-start;gap:var(--space-4);background:var(--ai-refuse-bg);border:var(--ai-refuse-border);border-radius:var(--ai-radius);padding:var(--ai-padding);color:var(--color-text-secondary);">
+          <iconify-icon icon="fluent:info-24-filled" style="flex-shrink:0;font-size:24px;color:var(--color-text-tertiary);"></iconify-icon>
+          <div>
+            <div style="font:var(--w-strong) var(--text-headline)/1.3 var(--font-family-base);color:var(--color-text-primary);margin-bottom:var(--space-2);">이 질문은 의료진께 문의해 주세요</div>
+            <p style="margin:0;font:var(--text-callout)/1.5 var(--font-family-base);">처방 변경·진단에 관한 답변은 드릴 수 없어요. 담당 의료진에게 바로 연결해 드릴게요.</p>
+            <a href="#contact" style="display:inline-block;margin-top:var(--space-4);color:var(--color-accent);font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);text-decoration:none;">담당 간호사에게 메시지 →</a>
+          </div>
+        </aside>
+        <aside role="status" style="display:flex;align-items:flex-start;gap:var(--space-4);background:var(--ai-refuse-bg);border:var(--ai-refuse-border);border-radius:var(--ai-radius);padding:var(--ai-padding);color:var(--color-text-secondary);">
+          <iconify-icon icon="fluent:question-circle-24-filled" style="flex-shrink:0;font-size:24px;color:var(--ai-uncertainty-color);"></iconify-icon>
+          <div>
+            <div style="font:var(--w-strong) var(--text-headline)/1.3 var(--font-family-base);color:var(--color-text-primary);margin-bottom:var(--space-2);">오늘은 답변할 데이터가 부족해요</div>
+            <p style="margin:0;font:var(--text-callout)/1.5 var(--font-family-base);">기록이 더 쌓이면 다시 시도해 주세요.</p>
+            <a href="#records" style="display:inline-block;margin-top:var(--space-4);color:var(--color-accent);font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);text-decoration:none;">기록 확인 →</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="pv-callout">
+      <strong>일관 규칙</strong> — 진입점 마크는 하루안부 심볼 1종 / AI 표면은 역할 무관 중립 / 의료 응답 마지막은 "최종 판단은 의료진이 합니다" 면책 / 모든 AI 카드는 "AI 생성" 라벨 / 인용·근거는 dashed top-border로 분리.
+    </div>
   </section>
 
 </main>
 
 <footer class="pv-footer">
-  하루안부 디자인 시스템 v3.1 · 2026.05.09<br>
+  하루안부 디자인 시스템 v3.2 · 2026.05.11<br>
   <a href="preview.html">← 메인</a> · <a href="02_COMPONENTS.md">02_COMPONENTS.md</a> · <a href="tokens/tokens.css">tokens.css</a>
 </footer>
 

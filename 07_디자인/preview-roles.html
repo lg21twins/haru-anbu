@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
-  <title>Roles Side-by-Side · 하루안부 디자인 시스템 v3.1</title>
+  <title>Roles Side-by-Side · 하루안부 디자인 시스템 v3.2</title>
   <link rel="stylesheet" href="tokens/tokens.css">
   <link rel="stylesheet" href="_preview-shared.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="_iconify-icon.min.js"></script>
+  <script src="_preview-controls.js" defer></script>
   <style>
     /* 3열 비교 그리드 */
     .compare {
@@ -258,7 +259,7 @@
 <nav class="pv-nav">
   <div class="pv-nav__inner">
     <a href="preview.html" class="pv-nav__brand">
-      <img src="logo/brand-system/01_심볼단독.svg" alt="">
+      <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
       하루안부 DS
     </a>
     <div class="pv-nav__links">
@@ -266,8 +267,17 @@
       <a href="preview-components.html" class="pv-nav__link">Components</a>
       <a href="preview-patterns.html" class="pv-nav__link">Patterns</a>
       <a href="preview-roles.html" class="pv-nav__link pv-nav__link--active">Roles</a>
+      <a href="preview-errors.html" class="pv-nav__link">Errors</a>
     </div>
-    <div class="pv-nav__version">v3.1</div>
+    <div class="pv-controls">
+      <select class="pv-role-select" data-pv-role aria-label="역할 테마 선택">
+        <option value="guardian">보호자</option>
+        <option value="medical">의료진</option>
+        <option value="patient">환자</option>
+      </select>
+      
+    </div>
+    <div class="pv-nav__version">v3.2.3</div>
   </div>
 </nav>
 
@@ -673,7 +683,7 @@
 </main>
 
 <footer class="pv-footer">
-  하루안부 디자인 시스템 v3.1 · 2026.05.09<br>
+  하루안부 디자인 시스템 v3.2 · 2026.05.11<br>
   <a href="preview.html">← 메인</a> · <a href="01_FOUNDATIONS.md">01_FOUNDATIONS</a> · <a href="02_COMPONENTS.md">02_COMPONENTS</a> · <a href="03_PATTERNS.md">03_PATTERNS</a>
 </footer>
 

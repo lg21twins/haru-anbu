@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
-  <title>하루안부 디자인 시스템 v3.1</title>
+  <title>하루안부 디자인 시스템 v3.2</title>
   <link rel="stylesheet" href="tokens/tokens.css">
   <link rel="stylesheet" href="_preview-shared.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="_iconify-icon.min.js"></script>
+  <script src="_preview-controls.js" defer></script>
   <style>
     body {
       background: var(--color-bg-canvas);
@@ -113,7 +114,7 @@
     }
     .preview-card:hover {
       box-shadow: var(--shadow-2);
-      border-color: var(--brand-blue-300);
+      border-color: var(--color-accent);
     }
     .preview-card__badge {
       display: inline-flex;
@@ -139,7 +140,7 @@
     }
     .preview-card__title iconify-icon {
       font-size: var(--size-icon-md);
-      color: var(--brand-blue-500);
+      color: var(--color-accent);
     }
     .preview-card__desc {
       font-size: var(--text-callout);
@@ -162,8 +163,8 @@
       width: 36px;
       height: 36px;
       border-radius: var(--radius-pill);
-      background: var(--brand-blue-500);
-      color: var(--color-text-on-accent);
+      background: var(--color-accent);
+      color: var(--color-accent-on);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -210,7 +211,7 @@
       flex-shrink: 0;
       min-width: 240px;
     }
-    .doc-list a:hover { color: var(--brand-blue-500); }
+    .doc-list a:hover { color: var(--color-accent); }
     .doc-list__hint {
       font-size: var(--text-caption);
       color: var(--color-text-secondary);
@@ -248,8 +249,8 @@
       width: 28px;
       height: 28px;
       border-radius: var(--radius-pill);
-      background: var(--brand-blue-100);
-      color: var(--brand-blue-600);
+      background: var(--color-accent-soft);
+      color: var(--color-accent);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -394,7 +395,7 @@
   <nav class="pv-nav">
     <div class="pv-nav__inner">
       <a href="preview.html" class="pv-nav__brand">
-        <img src="logo/brand-system/01_심볼단독.svg" alt="">
+        <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
         하루안부 DS
       </a>
       <div class="pv-nav__links">
@@ -403,8 +404,16 @@
         <a href="preview-components.html" class="pv-nav__link">Components</a>
         <a href="preview-patterns.html" class="pv-nav__link">Patterns</a>
         <a href="preview-roles.html" class="pv-nav__link">Roles</a>
+      <a href="preview-errors.html" class="pv-nav__link">Errors</a>
       </div>
-      <div class="pv-nav__version">v3.1</div>
+      <div class="pv-controls">
+        <select class="pv-role-select" data-pv-role aria-label="역할 테마 선택">
+          <option value="guardian">보호자</option>
+          <option value="medical">의료진</option>
+          <option value="patient">환자</option>
+        </select>
+      </div>
+      <div class="pv-nav__version">v3.2.3</div>
     </div>
   </nav>
 
@@ -417,7 +426,7 @@
     </div>
     <h1 class="hero__title">하루안부 디자인 시스템</h1>
     <p class="hero__subtitle">하나의 토큰 시스템 위에 <strong>3 컬러 테마</strong>(보호자 블루 · 의료진/요양 그린 · 환자 오렌지)와 <strong>5 제품 표면</strong>(보호자앱 · 의료진웹 · 요양보호사앱 · 환자앱 · 온보딩) — 모든 화면이 시각적으로 단일한 제품처럼 보이게 만드는 규칙</p>
-    <div class="hero__version">v3.1 · 2026.05.10 · M3 + KRDS + KT Seamless Flow IA</div>
+    <div class="hero__version">v3.2 · 2026.05.11 · KRDS + Fluent 2 + KT Seamless 갭 15건 반영</div>
   </header>
 
   <main class="container">
@@ -583,6 +592,101 @@
 
     </div>
 
+    <h2 class="section-title">v3.2 새 기능 (외부 레퍼런스 갭 15건 반영)</h2>
+    <p style="font-size: var(--font-14); color: var(--color-text-secondary); margin: calc(var(--space-7) * -1) 0 var(--space-7); line-height: var(--leading-relaxed);">KRDS · Fluent 2 · KT Seamless Flow 3사이트 분석을 통해 도출한 P0/P1/P2 갭 15건 반영. 우측 상단에서 <strong>역할 테마</strong>를 전환해 차이를 확인하세요. (다크 모드는 v3.2.3에서 봉인됨 — 라이트 단일 운영.)</p>
+
+    <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="preview-card" style="min-height: 200px;">
+        <div class="preview-card__badge" style="background: var(--brand-blue-100); color: var(--brand-blue-700);">P0 · 큰 갭 4건</div>
+        <h3 class="preview-card__title" style="font-size: var(--font-18);">
+          <iconify-icon icon="fluent:bot-24-filled"></iconify-icon>
+          AI 컴포넌트·패턴
+        </h3>
+        <p class="preview-card__desc">하루안부 심볼 = AI 진입점 시그니처. Prompt Input·Output·Inline Suggestion·Refusal 4종 정식화. 대화/음성/사진/리포트/인라인 5종 패턴.</p>
+        <ul class="preview-card__list">
+          <li>H1~H4 AI 컴포넌트 카탈로그</li>
+          <li>P3A~P3E AI 패턴 매트릭스</li>
+          <li>"AI 생성"·"확신 없음"·"거절" 라벨</li>
+          <li>인용·근거 footer 표준화</li>
+        </ul>
+      </div>
+
+      <div class="preview-card" style="min-height: 200px;">
+        <div class="preview-card__badge" style="background: var(--color-warning-soft); color: var(--palette-amber-700);">P0 · 큰 갭 4건</div>
+        <h3 class="preview-card__title" style="font-size: var(--font-18);">
+          <iconify-icon icon="fluent:accessibility-checkmark-24-filled"></iconify-icon>
+          매직넘버 사다리 (KRDS)
+        </h3>
+        <p class="preview-card__desc">KRDS의 명도 매직넘버 40/50/70/90을 하루안부 그레이 스케일에 매핑. 본문=90, 보조=70, 보더=50, 배경=40 사다리 외 명도 금지.</p>
+        <ul class="preview-card__list">
+          <li>--neutral-10 / 40 / 50 / 70 / 90</li>
+          <li>--neutral-strong (환자 고대비 7:1)</li>
+          <li>WCAG AA + 환자 고대비 모드 동시 만족</li>
+          <li>임의 명도 신설 금지</li>
+        </ul>
+      </div>
+
+      <div class="preview-card" style="min-height: 200px;">
+        <div class="preview-card__badge" style="background: var(--color-success-soft); color: var(--brand-green-700);">P0 · 큰 갭 4건</div>
+        <h3 class="preview-card__title" style="font-size: var(--font-18);">
+          <iconify-icon icon="fluent:data-trending-24-filled"></iconify-icon>
+          차트 팔레트
+        </h3>
+        <p class="preview-card__desc">Okabe-Ito 색맹 안전 8단계 + 의료/돌봄 의미 별칭(positive/attention/critical/baseline/prediction).</p>
+        <ul class="preview-card__list">
+          <li>--chart-1 ~ --chart-8</li>
+          <li>--chart-positive / attention / critical</li>
+          <li>다크 모드 자동 채도 조정</li>
+          <li>패턴/모양 보조 필수</li>
+        </ul>
+      </div>
+
+      <div class="preview-card" style="min-height: 200px;">
+        <div class="preview-card__badge" style="background: var(--color-info-soft); color: var(--color-info);">P1 · 구조 5건</div>
+        <h3 class="preview-card__title" style="font-size: var(--font-18);">
+          <iconify-icon icon="fluent:panel-right-24-filled"></iconify-icon>
+          Side Panel + 알림 매트릭스
+        </h3>
+        <p class="preview-card__desc">의료진 웹 Non-modal 패널 + 인앱·토스트·푸시·SMS 4채널 통합 우산. Fluent 2 + KT Context Panel 차용.</p>
+        <ul class="preview-card__list">
+          <li>B4 Side Panel (본문 조작 가능)</li>
+          <li>P6 4단계 × 4채널 매트릭스</li>
+          <li>호버 토큰 --state-* (웹 전용)</li>
+          <li>다중 에러 + 비동기 검증</li>
+        </ul>
+      </div>
+
+      <div class="preview-card" style="min-height: 200px;">
+        <div class="preview-card__badge" style="background: var(--color-warning-soft); color: var(--palette-amber-700);">P1 · 구조 5건</div>
+        <h3 class="preview-card__title" style="font-size: var(--font-18);">
+          <iconify-icon icon="fluent:textbox-align-center-24-filled"></iconify-icon>
+          라이팅 동사 매트릭스
+        </h3>
+        <p class="preview-card__desc">Fluent 2 라이팅 컨벤션 한국어화. 닫기/취소/확인/저장/완료/확정/전송/제출/삭제/시작/계속 등 컨텍스트별 동사 고정.</p>
+        <ul class="preview-card__list">
+          <li>닫기 계열 4종 (Close/Cancel/OK/Back)</li>
+          <li>저장·완료 계열 5종</li>
+          <li>부정·위험 계열 3종</li>
+          <li>동사+명사 패턴 (모호어 지양)</li>
+        </ul>
+      </div>
+
+      <div class="preview-card" style="min-height: 200px;">
+        <div class="preview-card__badge" style="background: var(--brand-orange-100); color: var(--brand-orange-600);">P2 · 디테일 6건</div>
+        <h3 class="preview-card__title" style="font-size: var(--font-18);">
+          <iconify-icon icon="fluent:accessibility-24-filled"></iconify-icon>
+          접근성 모드
+        </h3>
+        <p class="preview-card__desc">환자앱 사용자 토글 2종 — 글자 크게(+1단계) / 고대비(7:1, 글래스 OFF). 보이스 우선 정책 명문화.</p>
+        <ul class="preview-card__list">
+          <li>[data-a11y-text="large"]</li>
+          <li>[data-a11y-contrast="high"]</li>
+          <li>저전력 폴백 (@prefers-reduced-transparency)</li>
+          <li>일러스트 시스템 / 매직넘버 / 스켈레톤</li>
+        </ul>
+      </div>
+    </div>
+
     <h2 class="section-title">문서</h2>
     <div class="doc-list">
       <ul>
@@ -596,11 +700,11 @@
         </li>
         <li>
           <a href="02_COMPONENTS.md">02_COMPONENTS.md</a>
-          <span class="doc-list__hint">Action·Containment·Navigation·Communication·Input·Display 6 카테고리</span>
+          <span class="doc-list__hint">Action·Containment·Navigation·Communication·Input·Display·<strong>AI</strong> 7 카테고리 (v3.2)</span>
         </li>
         <li>
           <a href="03_PATTERNS.md">03_PATTERNS.md</a>
-          <span class="doc-list__hint">14개 화면·플로우 패턴 (홈·AI리포트·경보위계·빈상태·폼검증)</span>
+          <span class="doc-list__hint">14개 화면·플로우 패턴 (홈·<strong>AI패턴 5종</strong>·<strong>알림 4채널 매트릭스</strong>·다중에러·스켈레톤)</span>
         </li>
         <li>
           <a href="tokens/tokens.css">tokens/tokens.css</a>
@@ -644,9 +748,9 @@
     </div>
 
     <p class="footer">
-      하루안부 디자인 시스템 v3.1 · 2026.05.09<br>
+      하루안부 디자인 시스템 v3.2 · 2026.05.11<br>
       진실의 원천: <code>07_디자인/tokens/tokens.css</code><br>
-      문서 IA: M3 (Material Design 3) + KRDS (Korea) + KT Seamless Flow 패턴 차용
+      문서 IA: M3 (Material Design 3) + KRDS (Korea) + Fluent 2 (Microsoft) + KT Seamless Flow 패턴 차용
     </p>
   </main>
 </body>

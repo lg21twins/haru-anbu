@@ -4,13 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
-  <title>Foundations · 하루안부 디자인 시스템 v3.1</title>
+  <title>Foundations · 하루안부 디자인 시스템 v3.2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="tokens/tokens.css">
   <link rel="stylesheet" href="_preview-shared.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="_iconify-icon.min.js"></script>
+  <script src="_preview-controls.js" defer></script>
   <style>
     /* 로고 — 모든 카드 동일 높이, display 영역도 통일 */
     .logo-card {
@@ -336,15 +337,24 @@
       <a href="preview-components.html" class="pv-nav__link">Components</a>
       <a href="preview-patterns.html" class="pv-nav__link">Patterns</a>
       <a href="preview-roles.html" class="pv-nav__link">Roles</a>
+      <a href="preview-errors.html" class="pv-nav__link">Errors</a>
     </div>
-    <div class="pv-nav__version">v3.1</div>
+    <div class="pv-controls">
+      <select class="pv-role-select" data-pv-role aria-label="역할 테마 선택">
+        <option value="guardian">보호자</option>
+        <option value="medical">의료진</option>
+        <option value="patient">환자</option>
+      </select>
+      
+    </div>
+    <div class="pv-nav__version">v3.2.3</div>
   </div>
 </nav>
 
 <header class="pv-header">
   <div class="pv-header__eyebrow">01 · FOUNDATIONS</div>
   <h1 class="pv-header__title">파운데이션</h1>
-  <p class="pv-header__desc">모든 UI 결정의 기반 — 브랜드·로고·컬러·타이포·간격·형태·고도·모션·아이콘·접근성·다국어</p>
+  <p class="pv-header__desc">모든 UI 결정의 기반 — 브랜드·로고·컬러·타이포·간격·형태·고도·모션·아이콘·접근성·다국어 + <strong>v3.2 다크모드 · 차트 팔레트 · 매직넘버 · 일러스트</strong></p>
 </header>
 
 <main class="pv-container">
@@ -785,10 +795,219 @@
     </div>
   </section>
 
+
+  <!-- ============================================================
+       v3.2 신설 — 차트 / 매직넘버 / 일러스트 / 액션 동사
+       (v3.2.3에서 다크 모드는 봉인 — 라이트 단일 운영)
+       ============================================================ -->
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · 데이터 시각화 팔레트 (§14)</h2>
+    <p class="pv-section__desc">차트 색은 의료/돌봄 데이터를 다루므로 <strong>역할 accent와 독립적</strong>이다. Okabe-Ito 색맹 안전 8단계 + 의미 별칭(positive/attention/critical/baseline/prediction).</p>
+
+    <h3 class="pv-subsection__title">8단계 카테고리 (--chart-1 ~ --chart-8)</h3>
+    <div class="pv-demo">
+      <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-1);"></div><code class="pv-code" style="font-size:10px;">chart-1</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-2);"></div><code class="pv-code" style="font-size:10px;">chart-2</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-3);"></div><code class="pv-code" style="font-size:10px;">chart-3</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-4);"></div><code class="pv-code" style="font-size:10px;">chart-4</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-5);"></div><code class="pv-code" style="font-size:10px;">chart-5</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-6);"></div><code class="pv-code" style="font-size:10px;">chart-6</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-7);"></div><code class="pv-code" style="font-size:10px;">chart-7</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-8);"></div><code class="pv-code" style="font-size:10px;">chart-8</code></div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">의미 별칭 (의료/돌봄 도메인)</h3>
+    <div class="pv-demo">
+      <div style="display:flex;gap:var(--space-5);flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:var(--space-3);"><div style="width:24px;height:24px;border-radius:var(--radius-2);background:var(--chart-positive);"></div><div><div style="font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);">정상</div><code class="pv-code" style="font-size:11px;">--chart-positive</code></div></div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);"><div style="width:24px;height:24px;border-radius:var(--radius-2);background:var(--chart-attention);"></div><div><div style="font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);">주의</div><code class="pv-code" style="font-size:11px;">--chart-attention</code></div></div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);"><div style="width:24px;height:24px;border-radius:var(--radius-2);background:var(--chart-critical);"></div><div><div style="font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);">위험</div><code class="pv-code" style="font-size:11px;">--chart-critical</code></div></div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);"><div style="width:24px;height:24px;border-radius:var(--radius-2);background:var(--chart-baseline);"></div><div><div style="font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);">기준선 (dashed)</div><code class="pv-code" style="font-size:11px;">--chart-baseline</code></div></div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);"><div style="width:24px;height:24px;border-radius:var(--radius-2);background:var(--chart-prediction);"></div><div><div style="font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);">예측 (dashed)</div><code class="pv-code" style="font-size:11px;">--chart-prediction</code></div></div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">막대 차트 미니 예시 (주간 케어 완료율)</h3>
+    <div class="pv-demo">
+      <svg viewBox="0 0 520 200" style="width:100%;max-width:520px;height:auto;font:var(--text-caption) var(--font-family-base);">
+        <!-- grid -->
+        <line x1="40" y1="40" x2="510" y2="40" stroke="var(--chart-grid)" stroke-width="1"></line>
+        <line x1="40" y1="80" x2="510" y2="80" stroke="var(--chart-grid)" stroke-width="1"></line>
+        <line x1="40" y1="120" x2="510" y2="120" stroke="var(--chart-grid)" stroke-width="1"></line>
+        <line x1="40" y1="160" x2="510" y2="160" stroke="var(--chart-grid)" stroke-width="1"></line>
+        <!-- axis -->
+        <text x="30" y="44" text-anchor="end" fill="var(--chart-axis)">100</text>
+        <text x="30" y="124" text-anchor="end" fill="var(--chart-axis)">50</text>
+        <text x="30" y="164" text-anchor="end" fill="var(--chart-axis)">0</text>
+        <!-- bars -->
+        <rect x="60" y="60" width="50" height="100" rx="4" fill="var(--chart-positive)"></rect>
+        <rect x="130" y="50" width="50" height="110" rx="4" fill="var(--chart-positive)"></rect>
+        <rect x="200" y="80" width="50" height="80" rx="4" fill="var(--chart-attention)"></rect>
+        <rect x="270" y="55" width="50" height="105" rx="4" fill="var(--chart-positive)"></rect>
+        <rect x="340" y="45" width="50" height="115" rx="4" fill="var(--chart-positive)"></rect>
+        <rect x="410" y="100" width="50" height="60" rx="4" fill="var(--chart-critical)"></rect>
+        <rect x="480" y="70" width="20" height="90" rx="4" fill="var(--chart-positive)" opacity="0.4"></rect>
+        <!-- baseline -->
+        <line x1="40" y1="60" x2="510" y2="60" stroke="var(--chart-baseline)" stroke-width="2" stroke-dasharray="6 4"></line>
+        <text x="510" y="56" text-anchor="end" fill="var(--chart-baseline)" font-size="10">목표 90%</text>
+        <!-- x labels -->
+        <text x="85" y="180" text-anchor="middle" fill="var(--chart-axis)">월</text>
+        <text x="155" y="180" text-anchor="middle" fill="var(--chart-axis)">화</text>
+        <text x="225" y="180" text-anchor="middle" fill="var(--chart-axis)">수</text>
+        <text x="295" y="180" text-anchor="middle" fill="var(--chart-axis)">목</text>
+        <text x="365" y="180" text-anchor="middle" fill="var(--chart-axis)">금</text>
+        <text x="435" y="180" text-anchor="middle" fill="var(--chart-axis)">토</text>
+        <text x="490" y="180" text-anchor="middle" fill="var(--chart-axis)">일(예측)</text>
+      </svg>
+      <p style="margin:var(--space-3) 0 0;font:var(--text-caption)/1.5 var(--font-family-base);color:var(--color-text-tertiary);">막대 4px 라운드 · 기준선 dashed · 예측 막대는 opacity 0.4 — 다크 모드에서 자동 채도 조정.</p>
+    </div>
+  </section>
+
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · 매직넘버 명도 사다리 (§3.9, KRDS 차용)</h2>
+    <p class="pv-section__desc">KRDS의 명도 매직넘버(40/50/70/90)를 하루안부 그레이 스케일에 매핑. "본문 = 90 / 보조 = 70 / 보더 = 50 / 배경 = 40" 사다리 외 명도 사용 금지. 다크 모드에서도 동일 의미가 자동 반전.</p>
+
+    <div class="pv-demo">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-5);">
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-10);border:1px solid var(--color-border-subtle);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-10</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">카드, 시트 표면</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-40);border:1px solid var(--color-border-subtle);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-40</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">페이지 배경</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-50);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-50</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">디바이더, 보더</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-70);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-70</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">보조 텍스트</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-90);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-90</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">본문 텍스트 (4.5:1)</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-strong);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-strong</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">환자 고대비 (7:1)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · 일러스트 시스템 (§15)</h2>
+    <p class="pv-section__desc">마스코트는 "사람과의 만남" 순간에만, 빈 상태·오류·중립 정보는 라인 일러스트. 라인 일러스트는 <strong>2px 단색 스트로크, round cap/join, currentColor 상속</strong>으로 다크 모드 자동 대응.</p>
+
+    <div class="pv-grid pv-grid--3">
+      <div class="pv-demo" style="text-align:center;">
+        <div class="pv-demo__label">EMPTY STATE</div>
+        <svg width="120" height="120" viewBox="0 0 120 120" style="color:var(--color-text-tertiary);margin:0 auto;display:block;">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="30" y="35" width="60" height="50" rx="4"></rect>
+            <path d="M40 50 h40 M40 60 h40 M40 70 h20"></path>
+          </g>
+        </svg>
+        <p style="margin:var(--space-3) 0 0;font:var(--text-callout)/1.5 var(--font-family-base);color:var(--color-text-secondary);">"아직 기록이 없어요"</p>
+      </div>
+      <div class="pv-demo" style="text-align:center;">
+        <div class="pv-demo__label">NETWORK ERROR</div>
+        <svg width="120" height="120" viewBox="0 0 120 120" style="color:var(--color-text-tertiary);margin:0 auto;display:block;">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M40 80 a20 20 0 0 1 40 0"></path>
+            <path d="M30 70 a30 30 0 0 1 60 0"></path>
+            <path d="M20 60 a40 40 0 0 1 80 0"></path>
+            <circle cx="60" cy="85" r="3" fill="currentColor"></circle>
+            <line x1="20" y1="20" x2="100" y2="100" stroke-width="3"></line>
+          </g>
+        </svg>
+        <p style="margin:var(--space-3) 0 0;font:var(--text-callout)/1.5 var(--font-family-base);color:var(--color-text-secondary);">"잠시 연결이 불안정해요"</p>
+      </div>
+      <div class="pv-demo" style="text-align:center;">
+        <div class="pv-demo__label">PERMISSION DENIED</div>
+        <svg width="120" height="120" viewBox="0 0 120 120" style="color:var(--color-text-tertiary);margin:0 auto;display:block;">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="35" y="55" width="50" height="40" rx="4"></rect>
+            <path d="M45 55 v-10 a15 15 0 0 1 30 0 v10"></path>
+            <circle cx="60" cy="75" r="3" fill="currentColor"></circle>
+          </g>
+        </svg>
+        <p style="margin:var(--space-3) 0 0;font:var(--text-callout)/1.5 var(--font-family-base);color:var(--color-text-secondary);">"의료진만 볼 수 있어요"</p>
+      </div>
+    </div>
+
+    <div class="pv-callout">
+      <strong>마스코트 vs 라인 분리</strong> — 마스코트는 환영·완료·축하 순간에만. 빈 상태에 마스코트가 나오면 친근함이 흐트러진다. 두 종류를 한 화면에 동시 사용 금지.
+    </div>
+  </section>
+
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · 액션 동사 매트릭스 (§1.5)</h2>
+    <p class="pv-section__desc">Fluent 2의 Done/Finish/Close/Dismiss 컨벤션을 한국어 톤에 맞춰 표준화. 컨텍스트별로 동사가 고정되어야 사용자가 학습 부담 없이 다음 화면을 예측할 수 있다.</p>
+
+    <div class="pv-demo">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-5);">
+        <div>
+          <div class="pv-demo__label">닫기 계열 (4종)</div>
+          <ul style="margin:0;padding-left:18px;font:var(--text-callout)/1.6 var(--font-family-base);color:var(--color-text-secondary);">
+            <li><strong>닫기</strong> — 정보 보고 닫음 (작업 결과 없음)</li>
+            <li><strong>취소</strong> — 진행 중 입력 버리기</li>
+            <li><strong>확인</strong> — 정보를 봤다고 알림</li>
+            <li><strong>돌아가기</strong> — 한 단계 위 화면</li>
+          </ul>
+        </div>
+        <div>
+          <div class="pv-demo__label">저장·완료 (5종)</div>
+          <ul style="margin:0;padding-left:18px;font:var(--text-callout)/1.6 var(--font-family-base);color:var(--color-text-secondary);">
+            <li><strong>저장</strong> — 다시 편집 가능</li>
+            <li><strong>완료</strong> — 편집 모드 종료</li>
+            <li><strong>확정</strong> — 되돌릴 수 없음</li>
+            <li><strong>전송</strong> — 외부로 보냄</li>
+            <li><strong>제출</strong> — 검증·승인 흐름</li>
+          </ul>
+        </div>
+        <div>
+          <div class="pv-demo__label">부정·위험 (3종)</div>
+          <ul style="margin:0;padding-left:18px;font:var(--text-callout)/1.6 var(--font-family-base);color:var(--color-text-secondary);">
+            <li><strong>삭제</strong> — 영구 삭제 (복구 명시)</li>
+            <li><strong>취소하기</strong> — 예약·약속 취소</li>
+            <li><strong>나가기</strong> — 채팅방 본인만 나감</li>
+          </ul>
+        </div>
+        <div>
+          <div class="pv-demo__label">시작·진행 (3종)</div>
+          <ul style="margin:0;padding-left:18px;font:var(--text-callout)/1.6 var(--font-family-base);color:var(--color-text-secondary);">
+            <li><strong>시작</strong> — 처음 진입</li>
+            <li><strong>계속</strong> — 중단된 흐름 이어서</li>
+            <li><strong>다시 시도</strong> — 실패한 동작 재시도</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-callout pv-callout--green">
+      <strong>동사 + 명사 패턴</strong> — 라벨은 의미 명확하게: "확인" → "메시지 보내기" / "등록" → "환자 등록" / "변경" → "비밀번호 변경" / "신청" → "본인 인증 제출".
+    </div>
+  </section>
+
 </main>
 
 <footer class="pv-footer">
-  하루안부 디자인 시스템 v3.1 · 2026.05.09<br>
+  하루안부 디자인 시스템 v3.2 · 2026.05.11<br>
   <a href="preview.html">← 메인</a> · <a href="01_FOUNDATIONS.md">01_FOUNDATIONS.md</a> · <a href="tokens/tokens.css">tokens.css</a>
 </footer>
 
