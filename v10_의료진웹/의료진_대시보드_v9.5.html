@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>하루안부 — 의료진 대시보드 v9.5</title>
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
-  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  <script src="../07_디자인/_app-theme.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 
@@ -78,11 +79,11 @@
     .logo-mark { display:flex; align-items:center; gap:10px; }
 
     .logo-icon {
-      width: 34px; height: 34px;
-      background: var(--accent);
-      border-radius: 10px;
+      width: 36px; height: 36px;
       display: flex; align-items:center; justify-content:center; flex-shrink:0;
+      color: #fff;
     }
+    .logo-icon svg { width: 100%; height: 100%; display: block; }
 
     .logo-name { font-size:15px; font-weight:700; color:#fff; letter-spacing:-.4px; }
     .logo-sub  { font-size:10px; color:#3D3D3D; margin-top:1px; }
@@ -423,6 +424,7 @@
 
     .kpi-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
     .kpi-dot.accent { background: var(--accent); }
+    .kpi-dot.warn { background: var(--warn); }
     .kpi-dot.danger { background: var(--danger); }
     .kpi-dot.neutral { background: var(--ink-5); }
 
@@ -866,9 +868,11 @@
       padding: 14px 16px 12px; border-bottom: 1px solid #EAE9E5;
     }
     .cp-ai-icon {
-      width: 34px; height: 34px; border-radius: 10px;
-      background: #111; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      color: var(--accent);
     }
+    .cp-ai-icon svg { width: 100%; height: 100%; display: block; }
     .cp-ai-title { font-size: 12.5px; font-weight: 700; color: var(--ink); }
     .cp-ai-sub   { font-size: 10px; color: var(--ink-5); margin-top: 1px; }
 
@@ -1553,7 +1557,13 @@
     }
     .pt-av.dg, .pt-av.wn, .pt-av.sf, .pt-av.nt { background: #E8E7E3; color: var(--ink-2); }
 
-    .pt-room { font-size: 10px; font-weight: 700; color: var(--ink-5); letter-spacing: .2px; }
+    /* 환자 행 안의 호실 라벨 — 상단 .pt-room(개요 박스)과 클래스명 충돌이라 명시적으로 리셋 */
+    .pt-row .pt-room {
+      background: transparent; border: none; padding: 0; border-radius: 0;
+      cursor: default; transform: none;
+      font-size: 10.5px; font-weight: 600; color: var(--ink-4);
+      letter-spacing: .2px; line-height: 1.2;
+    }
     .pt-name-text { font-size: 13px; font-weight: 700; color: var(--ink); line-height: 1.25; }
     .pt-meta { font-size: 11px; color: var(--ink-4); margin-top: 1px; }
 
@@ -1576,8 +1586,10 @@
     .pt-badge.dg { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-b); }
     .pt-badge.wn { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-b); }
     .pt-badge.sf { background: var(--white); color: var(--ink-2); border: 1px solid var(--ink-6); }
+    .pt-badge.upcoming { background: var(--surface); color: var(--ink-4); border: 1px solid var(--ink-6); }
     .pt-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
     .pt-badge.sf .pt-badge-dot { background: var(--accent); }
+    .pt-badge.upcoming .pt-badge-dot { background: var(--ink-5); }
 
     .pt-progress { display: flex; align-items: center; gap: 9px; }
     .pt-pct { font-size: 12px; font-weight: 700; color: var(--ink-2); min-width: 30px; }
@@ -2668,6 +2680,199 @@
     .chart-legend-dot.warn   { background: var(--warn); }
     .chart-legend-dot.danger { background: var(--danger); }
     .chart-legend-dot.muted  { background: var(--ink-5); }
+
+    /* ── 환자 빠른 메모 (Side Panel) ──
+       기획서 §5.3.1 우측 패널 슬롯에 세컨더리 레이어로 슬라이드 인.
+       기획서 §6 "이중 기록 부담" 해소용 — 정식 간호기록지/인수인계와 별도 라이트 메모. */
+    .pt-act.memo { display: inline-flex; align-items: center; gap: 4px; }
+    .pt-act.memo iconify-icon { font-size: 13px; }
+
+    .memo-panel {
+      position: fixed; top: 0; right: 0;
+      width: 360px; height: 100vh;
+      background: #ffffff;
+      border-left: 1px solid var(--ink-6);
+      box-shadow: -8px 0 24px rgba(0,0,0,0.06);
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform .25s ease;
+      z-index: 90;
+    }
+    .memo-panel.is-open { transform: translateX(0); }
+
+    .memo-panel__header {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--surface);
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 10px;
+    }
+    .memo-panel__title { display: flex; flex-direction: column; gap: 2px; }
+    .memo-panel__title-main { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .memo-panel__title-sub  { font-size: 11px; font-weight: 500; color: var(--ink-4); }
+    .memo-panel__close {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; border: none; cursor: pointer;
+      color: var(--ink-4); flex-shrink: 0;
+    }
+    .memo-panel__close:hover { background: var(--surface); color: var(--ink); }
+
+    .memo-panel__body {
+      flex: 1; overflow-y: auto;
+      padding: 16px 18px 20px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    .memo-input-area textarea {
+      width: 100%; min-height: 92px;
+      padding: 10px 12px;
+      border: 1px solid var(--ink-6);
+      border-radius: 8px;
+      font: inherit; font-size: 12.5px; line-height: 1.5;
+      color: var(--ink); resize: vertical;
+      background: #ffffff;
+      box-sizing: border-box;
+    }
+    .memo-input-area textarea:focus {
+      outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+    .memo-flags {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      margin-top: 8px;
+    }
+    .memo-flag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11.5px; color: var(--ink-3); cursor: pointer;
+    }
+    .memo-flag input { accent-color: var(--accent); margin: 0; }
+    .memo-input-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 10px; gap: 8px;
+    }
+    .memo-input-hint {
+      font-size: 10.5px; color: var(--ink-5);
+    }
+    .memo-save {
+      padding: 7px 16px; border-radius: 999px;
+      font-size: 11.5px; font-weight: 700;
+      background: var(--accent); color: #fff; border: 1px solid var(--accent);
+      cursor: pointer; font-family: var(--font);
+    }
+    .memo-save:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
+    .memo-save:disabled { background: var(--ink-6); border-color: var(--ink-6); cursor: not-allowed; }
+
+    .memo-section-title {
+      font-size: 10.5px; font-weight: 700; color: var(--ink-5);
+      text-transform: uppercase; letter-spacing: .4px;
+    }
+    .memo-list { display: flex; flex-direction: column; gap: 8px; margin-top: -8px; }
+    .memo-empty {
+      font-size: 12px; color: var(--ink-5);
+      padding: 18px 12px; text-align: center;
+      border: 1px dashed var(--ink-6); border-radius: 8px;
+    }
+    .memo-card {
+      padding: 10px 12px;
+      background: #FAFAF8; border: 1px solid var(--surface);
+      border-radius: 8px;
+    }
+    .memo-card.is-handover { border-color: var(--warn-b); background: var(--warn-bg); }
+    .memo-card__meta {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 10.5px; color: var(--ink-4); margin-bottom: 5px;
+      gap: 6px;
+    }
+    .memo-card__tags { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+    .memo-card__tag {
+      font-size: 9.5px; font-weight: 700;
+      padding: 2px 6px; border-radius: 4px;
+      color: #fff; letter-spacing: .2px;
+      display: inline-flex; align-items: center; gap: 3px;
+    }
+    .memo-card__tag.handover { background: var(--warn); }
+    .memo-card__tag.family   { background: var(--accent); }
+    .memo-card__tag iconify-icon { font-size: 10px; }
+    .memo-card__text {
+      font-size: 12.5px; color: var(--ink-2); line-height: 1.5;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .memo-card__delete {
+      background: transparent; border: none; cursor: pointer;
+      color: var(--ink-5); font-size: 10.5px; padding: 4px 0 0;
+      font-family: var(--font);
+    }
+    .memo-card__delete:hover { color: var(--danger); }
+
+    /* ── 메모 카운트 배지 (행 버튼) ── */
+    .pt-act.memo .memo-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 16px; height: 14px; padding: 0 4px;
+      border-radius: 999px;
+      font-size: 9.5px; font-weight: 700; line-height: 1;
+      background: var(--accent); color: #fff;
+      margin-left: 2px;
+    }
+    .pt-act.memo .memo-count.has-handover {
+      background: var(--warn);
+    }
+
+    /* ── 인수인계 — 수기 메모 인계 풀 ── */
+    .ho-manual-wrap {
+      margin-top: 20px;
+      background: #fff;
+      border: 1px solid var(--ink-6);
+      border-radius: 12px;
+      padding: 18px 20px 20px;
+    }
+    .ho-manual-head {
+      display: flex; flex-direction: column; gap: 4px;
+      margin-bottom: 14px;
+    }
+    .ho-manual-title {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13.5px; font-weight: 700; color: var(--ink);
+    }
+    .ho-manual-title iconify-icon { color: var(--ink-3); font-size: 16px; }
+    .ho-manual-title .sub {
+      font-size: 11px; font-weight: 600; color: var(--ink-4);
+      padding: 2px 8px; border-radius: 999px;
+      background: var(--surface); margin-left: 4px;
+    }
+    .ho-manual-sub { font-size: 11.5px; color: var(--ink-4); }
+    .ho-manual-list { display: flex; flex-direction: column; gap: 8px; }
+    .ho-manual-empty {
+      font-size: 12px; color: var(--ink-5);
+      padding: 24px 12px; text-align: center;
+      border: 1px dashed var(--ink-6); border-radius: 8px;
+    }
+    .ho-manual-item {
+      display: grid; grid-template-columns: 130px 1fr auto;
+      align-items: start; gap: 14px;
+      padding: 12px 14px;
+      background: #FAFAF8;
+      border: 1px solid var(--surface);
+      border-left: 3px solid var(--warn);
+      border-radius: 8px;
+    }
+    .ho-manual-patient { display: flex; flex-direction: column; gap: 2px; }
+    .ho-manual-patient .name { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+    .ho-manual-patient .room { font-size: 10.5px; color: var(--ink-4); }
+    .ho-manual-text {
+      font-size: 12.5px; color: var(--ink-2); line-height: 1.5;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .ho-manual-text .ts {
+      display: block; font-size: 10.5px; color: var(--ink-5);
+      margin-top: 4px;
+    }
+    .ho-manual-actions { display: flex; gap: 4px; }
+    .ho-manual-open {
+      padding: 5px 10px; border-radius: 999px;
+      font-size: 10.5px; font-weight: 600;
+      border: 1px solid var(--ink-6); background: #fff; color: var(--ink-3);
+      cursor: pointer; font-family: var(--font); white-space: nowrap;
+    }
+    .ho-manual-open:hover { background: var(--surface); color: var(--ink); }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script>if(typeof Chart!=='undefined'){Chart.defaults.animation=false;}</script>
@@ -2678,10 +2883,12 @@
 <aside class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-mark">
-      <div class="logo-icon">
-        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="white">
-          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
-          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+      <div class="logo-icon" aria-label="하루안부">
+        <svg viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <g transform="translate(50, 50) scale(0.163)">
+            <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+            <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z"/>
+          </g>
         </svg>
       </div>
       <div>
@@ -2794,7 +3001,7 @@
       <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
       </svg>
-      <input class="search-input" type="text" placeholder="환자명, 약품명, 기록 검색..." oninput="searchPts(this.value)">
+      <input class="search-input" type="text"  placeholder="환자명, 약품명, 기록 검색..." aria-label="환자명, 약품명, 기록 검색..." oninput="searchPts(this.value)">
     </div>
 
     <div class="topbar-actions">
@@ -3681,7 +3888,7 @@
       <div class="kpi">
         <div class="kpi-label">거부</div>
         <div class="kpi-value"><span>2</span><span class="kpi-denom">건</span></div>
-        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>재시도 또는 보고 필요</div>
+        <div class="kpi-sub"><span class="kpi-dot warn"></span>재시도 또는 보고 필요</div>
         <div class="kpi-bar"><div class="kpi-fill mid" style="width:9%"></div></div>
       </div>
       <div class="kpi">
@@ -4021,7 +4228,7 @@
         </div>
         <div class="med-time">11:00</div>
         <div class="med-done-time none">—</div>
-        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
         <div class="med-actions">
           <button class="pt-act">투약</button>
           <button class="pt-act">거부</button>
@@ -4122,7 +4329,7 @@
       <div class="kpi">
         <div class="kpi-label">지연</div>
         <div class="kpi-value"><span>2</span><span class="kpi-denom">건</span></div>
-        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>예정 시간 초과</div>
+        <div class="kpi-sub"><span class="kpi-dot warn"></span>예정 시간 초과</div>
         <div class="kpi-bar"><div class="kpi-fill mid" style="width:8%"></div></div>
       </div>
       <div class="kpi">
@@ -4328,7 +4535,7 @@
         </div>
         <div class="cl-assignee">박보호 요양보호사</div>
         <div class="cl-sched">14:00</div>
-        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
       </div>
 
       <!-- 그룹: 투약 -->
@@ -4393,7 +4600,7 @@
         </div>
         <div class="cl-assignee">김코디 간호사</div>
         <div class="cl-sched">11:00</div>
-        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
       </div>
 
       <!-- 그룹: 식사 -->
@@ -4437,7 +4644,7 @@
         </div>
         <div class="cl-assignee">박보호 요양보호사</div>
         <div class="cl-sched">12:30</div>
-        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
       </div>
 
       <!-- 그룹: 처치·재활 -->
@@ -4483,7 +4690,7 @@
         </div>
         <div class="cl-assignee">박보호 요양보호사</div>
         <div class="cl-sched">14:00</div>
-        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
       </div>
 
     </div><!-- /pt-card -->
@@ -4869,6 +5076,19 @@
 
     </div><!-- /pt-card -->
 
+    <!-- ══ 수기 메모 인계 (환자 빠른 메모 中 '인수인계' 플래그된 항목 집계) ══ -->
+    <div class="ho-manual-wrap" id="ho-manual-wrap">
+      <div class="ho-manual-head">
+        <div class="ho-manual-title">
+          <iconify-icon icon="fluent:note-multiple-24-regular"></iconify-icon>
+          수기 메모 인계
+          <span class="sub" id="ho-manual-count">0건</span>
+        </div>
+        <div class="ho-manual-sub">의료진이 환자 행에서 작성한 빠른 메모 중 "인수인계" 표시된 항목</div>
+      </div>
+      <div class="ho-manual-list" id="ho-manual-list"></div>
+    </div>
+
     <!-- AI SBAR 패널 -->
     <div class="ho-ai-panel" id="ho-ai-panel" style="display:none">
       <div class="ai-panel-head">
@@ -5012,7 +5232,7 @@
       <div class="kpi">
         <div class="kpi-label">진행중</div>
         <div class="kpi-value"><span>1</span><span class="kpi-denom">건</span></div>
-        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>상처 관리</div>
+        <div class="kpi-sub"><span class="kpi-dot warn"></span>상처 관리</div>
         <div class="kpi-bar"><div class="kpi-fill mid" style="width:9%"></div></div>
       </div>
       <div class="kpi">
@@ -5768,16 +5988,16 @@
       <span class="cp-title">소통 패널</span>
     </div>
     <div class="cp-tabs">
-      <div class="cp-tab active" onclick="cpTab(this)">전체</div>
+      <div class="cp-tab" onclick="cpTab(this)">전체</div>
       <div class="cp-tab" onclick="cpTab(this)">현재 환자</div>
-      <div class="cp-tab" onclick="cpTab(this)">AI 요약</div>
+      <div class="cp-tab active" onclick="cpTab(this)">AI 요약</div>
     </div>
   </div>
 
   <div class="cp-body">
 
     <!-- ── 전체 뷰 ── -->
-    <div class="cp-view" id="cpv-all">
+    <div class="cp-view" id="cpv-all" style="display:none">
 
       <div class="ch-label">보호자 채팅</div>
 
@@ -5880,12 +6100,14 @@
     </div>
 
     <!-- ── AI 요약 뷰 ── -->
-    <div class="cp-view" id="cpv-ai" style="display:none">
+    <div class="cp-view" id="cpv-ai">
       <div class="cp-ai-intro">
-        <div class="cp-ai-icon">
-          <svg width="18" height="18" viewBox="0 0 2526 2526" fill="white">
-            <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
-            <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+        <div class="cp-ai-icon" aria-hidden="true">
+          <svg viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(50, 50) scale(0.163)">
+              <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+              <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z"/>
+            </g>
           </svg>
         </div>
         <div>
@@ -5922,7 +6144,7 @@
       <div class="cp-ai-ask-wrap">
         <div class="cp-ai-ask-label">AI에게 질문</div>
         <div class="cp-ai-ask-row">
-          <input class="cp-ai-ask-input" type="text" placeholder="예: 박영수님 최근 바이탈 추이는?" onkeydown="if(event.key==='Enter')cpAiAsk(this)">
+          <input class="cp-ai-ask-input" type="text"  placeholder="예: 박영수님 최근 바이탈 추이는?" aria-label="예: 박영수님 최근 바이탈 추이는?" onkeydown="if(event.key==='Enter')cpAiAsk(this)">
           <button class="send-btn" onclick="cpAiAsk(this.previousElementSibling)">
             <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
           </button>
@@ -5935,7 +6157,7 @@
 
   <div class="cp-input-wrap" id="cp-main-input-wrap">
     <div class="cp-input-row">
-      <input class="cp-input" type="text" placeholder="대화를 선택하면 답장할 수 있습니다" readonly style="cursor:default;color:var(--ink-5)">
+      <input class="cp-input" type="text"  placeholder="대화를 선택하면 답장할 수 있습니다" aria-label="대화를 선택하면 답장할 수 있습니다" readonly style="cursor:default;color:var(--ink-5)">
       <button class="send-btn" style="opacity:.4;pointer-events:none">
         <svg viewBox="0 0 20 20" fill="currentColor">
           <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
@@ -5960,7 +6182,7 @@
     <div class="cp-msg-list" id="cp-msg-list"></div>
     <div class="cp-convo-input-wrap">
       <div class="cp-convo-input-row">
-        <input class="cp-convo-input" id="cp-convo-input" type="text" placeholder="">
+        <input class="cp-convo-input" id="cp-convo-input" type="text" placeholder="메시지 입력" aria-label="대화 메시지 입력">
         <button class="send-btn" onclick="sendConvoMsg()">
           <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
         </button>
@@ -6143,7 +6365,7 @@
     } else if (type === 'later') {
       item.style.display = 'none';
     } else if (type === 'memo') {
-      acts.innerHTML = '<input style="border:1px solid var(--ink-6);border-radius:8px;padding:4px 9px;font-size:11px;font-family:var(--font);outline:none;width:100%;" placeholder="메모 입력 후 Enter..." onkeydown="if(event.key===\'Enter\'&&this.value){this.closest(\'.cp-ai-item-actions\').innerHTML=\'<span style=&quot;font-size:11px;color:var(--ink-5)&quot;>메모 저장됨</span>\';}">';
+      acts.innerHTML = '<input style="border:1px solid var(--ink-6);border-radius:8px;padding:4px 9px;font-size:11px;font-family:var(--font);outline:none;width:100%;"  placeholder="메모 입력 후 Enter..." aria-label="메모 입력 후 Enter..." onkeydown="if(event.key===\'Enter\'&&this.value){this.closest(\'.cp-ai-item-actions\').innerHTML=\'<span style=&quot;font-size:11px;color:var(--ink-5)&quot;>메모 저장됨</span>\';}">';
       acts.querySelector('input').focus();
     }
   }
@@ -6297,6 +6519,16 @@
     document.getElementById('cp-convo').classList.remove('open');
     currentConvoId = null;
   }
+
+  // v3.2.4 — 전역 ESC 핸들러: 열려 있는 패널 자동 닫기 (가장 위 레이어부터)
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    // 우선순위: 메모 패널 > 대화 패널 (모달 가장 위 레이어부터 닫음)
+    var memo = document.querySelector('.memo-panel.open, .memo-panel.is-open');
+    if (memo && typeof closeMemoPanel === 'function') { closeMemoPanel(); return; }
+    var convo = document.getElementById('cp-convo');
+    if (convo && convo.classList.contains('open')) { closeConvo(); return; }
+  });
 
   function sendConvoMsg() {
     const input = document.getElementById('cp-convo-input');
@@ -6573,6 +6805,285 @@
   }
 
   document.addEventListener('DOMContentLoaded', buildCharts);
+})();
+</script>
+
+<!-- ══════════ 환자 빠른 메모 사이드 패널 ══════════ -->
+<aside class="memo-panel" id="memo-panel" role="region" aria-label="환자 빠른 메모" aria-hidden="true">
+  <header class="memo-panel__header">
+    <div class="memo-panel__title">
+      <span class="memo-panel__title-main" id="memo-panel-name">환자 메모</span>
+      <span class="memo-panel__title-sub" id="memo-panel-room"></span>
+    </div>
+    <button class="memo-panel__close" type="button" onclick="closeMemoPanel()" aria-label="패널 닫기">
+      <iconify-icon icon="fluent:dismiss-24-filled"></iconify-icon>
+    </button>
+  </header>
+  <div class="memo-panel__body">
+    <div class="memo-input-area">
+      <textarea id="memo-input" rows="4"  placeholder="환자에 대한 빠른 메모를 입력하세요. (예: 14시 측정 시 안색 다소 창백, 식사량 평소보다 적음)" aria-label="환자에 대한 빠른 메모를 입력하세요. (예: 14시 측정 시 안색 다소 창백, 식사량 평소보다 적음)"></textarea>
+      <div class="memo-flags">
+        <label class="memo-flag" title="인수인계 SBAR로 승격 표시 — 기획서 §5.3.2 메뉴 5 연계">
+          <input type="checkbox" id="memo-handover">
+          <span>인수인계 메모</span>
+        </label>
+        <label class="memo-flag" title="보호자 앱 일일 리포트에 노출 — 보호자에게도 보임">
+          <input type="checkbox" id="memo-share-family">
+          <span>보호자 공유</span>
+        </label>
+      </div>
+      <div class="memo-input-row">
+        <span class="memo-input-hint" id="memo-input-hint"></span>
+        <button class="memo-save" type="button" onclick="saveMemo()">저장</button>
+      </div>
+    </div>
+    <div class="memo-section-title">이전 메모</div>
+    <div class="memo-list" id="memo-list"></div>
+  </div>
+</aside>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'haru-patient-memos-v1';
+  let currentPatientId = null;
+
+  function loadAll() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch(e) { return {}; }
+  }
+  function saveAll(all) { localStorage.setItem(STORAGE_KEY, JSON.stringify(all)); }
+  function loadFor(id) { return loadAll()[id] || []; }
+  function setFor(id, list) { const all = loadAll(); all[id] = list; saveAll(all); }
+
+  function fmt(ts) {
+    const d = new Date(ts);
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    const hh = String(d.getHours()).padStart(2,'0');
+    const mm = String(d.getMinutes()).padStart(2,'0');
+    return `${d.getFullYear()}.${m}.${day} ${hh}:${mm}`;
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderList() {
+    const list = loadFor(currentPatientId).slice().sort((a,b) => b.ts - a.ts);
+    const root = document.getElementById('memo-list');
+    if (!list.length) {
+      root.innerHTML = '<div class="memo-empty">아직 작성된 메모가 없습니다.</div>';
+      return;
+    }
+    root.innerHTML = list.map(m => {
+      const tags = [];
+      if (m.handover) tags.push('<span class="memo-card__tag handover"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>인수인계</span>');
+      if (m.shareWithFamily) tags.push('<span class="memo-card__tag family"><iconify-icon icon="fluent:people-24-filled"></iconify-icon>보호자 공유</span>');
+      return `
+      <div class="memo-card ${m.handover ? 'is-handover' : ''}">
+        <div class="memo-card__meta">
+          <span>${fmt(m.ts)}</span>
+          <span class="memo-card__tags">${tags.join('')}</span>
+        </div>
+        <div class="memo-card__text">${esc(m.text)}</div>
+        <button class="memo-card__delete" type="button" data-ts="${m.ts}">삭제</button>
+      </div>`;
+    }).join('');
+    root.querySelectorAll('.memo-card__delete').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ts = Number(btn.dataset.ts);
+        setFor(currentPatientId, loadFor(currentPatientId).filter(x => x.ts !== ts));
+        renderList();
+        if (window.refreshMemoBadges) window.refreshMemoBadges();
+        if (window.renderHandoverPool) window.renderHandoverPool();
+      });
+    });
+  }
+
+  window.openMemoPanel = function(name, room) {
+    currentPatientId = `${room}-${name}`;
+    document.getElementById('memo-panel-name').textContent = `${name} 메모`;
+    document.getElementById('memo-panel-room').textContent = room || '';
+    document.getElementById('memo-input').value = '';
+    document.getElementById('memo-handover').checked = false;
+    document.getElementById('memo-share-family').checked = false;
+    renderList();
+    const panel = document.getElementById('memo-panel');
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    setTimeout(() => document.getElementById('memo-input').focus(), 220);
+  };
+
+  window.closeMemoPanel = function() {
+    const panel = document.getElementById('memo-panel');
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+  };
+
+  window.saveMemo = function() {
+    const ta = document.getElementById('memo-input');
+    const text = ta.value.trim();
+    if (!text || !currentPatientId) return;
+    const handover = document.getElementById('memo-handover').checked;
+    const shareWithFamily = document.getElementById('memo-share-family').checked;
+    const [room, ...nameParts] = currentPatientId.split('-');
+    const list = loadFor(currentPatientId);
+    list.push({
+      ts: Date.now(),
+      text,
+      handover,
+      shareWithFamily,
+      patientName: nameParts.join('-'),
+      patientRoom: room
+    });
+    setFor(currentPatientId, list);
+    ta.value = '';
+    document.getElementById('memo-handover').checked = false;
+    document.getElementById('memo-share-family').checked = false;
+    renderList();
+    refreshMemoBadges();
+    renderHandoverPool();
+  };
+
+  function makeMemoButton(name, room) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'pt-act memo';
+    btn.dataset.memoName = name;
+    btn.dataset.memoRoom = room;
+    btn.innerHTML = '<iconify-icon icon="fluent:note-24-regular"></iconify-icon>메모<span class="memo-count" hidden>0</span>';
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.openMemoPanel(name, room);
+    });
+    return btn;
+  }
+
+  // 알림 카드 첫 줄 예: "301호 박영수 (남 · 82세)" → { room: "301호", name: "박영수" }
+  function parseAlertPatient(text) {
+    const m = String(text || '').match(/^\s*(\d+\s*호)\s+([^\s(]+)/);
+    if (!m) return null;
+    return { room: m[1].replace(/\s+/g, ''), name: m[2].trim() };
+  }
+
+  function injectMemoButtons() {
+    // 1) 환자 관리 페이지 — 환자 행
+    document.querySelectorAll('.pt-row').forEach(row => {
+      const actions = row.querySelector('.pt-actions');
+      if (!actions || actions.querySelector('.pt-act.memo')) return;
+      const name = row.querySelector('.pt-name-text')?.textContent?.trim() || '';
+      const room = row.querySelector('.pt-room')?.textContent?.trim() || '';
+      if (!name) return;
+      actions.appendChild(makeMemoButton(name, room));
+    });
+
+    // 2) 대시보드 — 주의 환자 알림 카드 (.al-item)
+    document.querySelectorAll('.al-item').forEach(item => {
+      if (item.querySelector('.pt-act.memo')) return;
+      const patientText = item.querySelector('.al-patient')?.textContent || '';
+      const parsed = parseAlertPatient(patientText);
+      if (!parsed) return;
+      // 기존 액션 버튼(.al-btn)이 있으면 그 옆에, 없으면 al-body 끝에 컴팩트한 컨테이너로 부착
+      let host = item.querySelector('.al-actions');
+      if (!host) {
+        host = document.createElement('div');
+        host.className = 'al-actions';
+        host.style.cssText = 'display:flex;gap:6px;align-items:center;margin-left:auto;';
+        item.appendChild(host);
+      }
+      host.appendChild(makeMemoButton(parsed.name, parsed.room));
+    });
+  }
+
+  function refreshMemoBadges() {
+    const all = loadAll();
+    document.querySelectorAll('.pt-act.memo').forEach(btn => {
+      const id = `${btn.dataset.memoRoom}-${btn.dataset.memoName}`;
+      const list = all[id] || [];
+      const badge = btn.querySelector('.memo-count');
+      if (!badge) return;
+      if (!list.length) {
+        badge.hidden = true;
+        badge.textContent = '0';
+        badge.classList.remove('has-handover');
+        return;
+      }
+      badge.hidden = false;
+      badge.textContent = String(list.length);
+      const hasHandover = list.some(m => m.handover);
+      badge.classList.toggle('has-handover', hasHandover);
+    });
+  }
+
+  function collectHandoverMemos() {
+    const all = loadAll();
+    const out = [];
+    Object.entries(all).forEach(([id, list]) => {
+      list.forEach(m => {
+        if (m.handover) {
+          const [room, ...nameParts] = id.split('-');
+          out.push({
+            ts: m.ts,
+            text: m.text,
+            shareWithFamily: m.shareWithFamily,
+            patientName: m.patientName || nameParts.join('-'),
+            patientRoom: m.patientRoom || room
+          });
+        }
+      });
+    });
+    return out.sort((a, b) => b.ts - a.ts);
+  }
+
+  function renderHandoverPool() {
+    const list = collectHandoverMemos();
+    const root = document.getElementById('ho-manual-list');
+    const count = document.getElementById('ho-manual-count');
+    if (!root) return;
+    if (count) count.textContent = `${list.length}건`;
+    if (!list.length) {
+      root.innerHTML = '<div class="ho-manual-empty">아직 인수인계로 표시된 수기 메모가 없습니다.</div>';
+      return;
+    }
+    root.innerHTML = list.map(m => `
+      <div class="ho-manual-item">
+        <div class="ho-manual-patient">
+          <span class="name">${esc(m.patientName)}</span>
+          <span class="room">${esc(m.patientRoom || '')}</span>
+        </div>
+        <div class="ho-manual-text">${esc(m.text)}<span class="ts">${fmt(m.ts)}${m.shareWithFamily ? ' · 보호자 공유' : ''}</span></div>
+        <div class="ho-manual-actions">
+          <button class="ho-manual-open" type="button" data-name="${esc(m.patientName)}" data-room="${esc(m.patientRoom || '')}">메모 열기</button>
+        </div>
+      </div>
+    `).join('');
+    root.querySelectorAll('.ho-manual-open').forEach(btn => {
+      btn.addEventListener('click', () => window.openMemoPanel(btn.dataset.name, btn.dataset.room));
+    });
+  }
+
+  // saveMemo가 외부에서 호출하는 헬퍼들을 전역으로 노출
+  window.refreshMemoBadges = refreshMemoBadges;
+  window.renderHandoverPool = renderHandoverPool;
+
+  // showPage('handover')로 진입 시 풀 갱신 (기존 showPage 함수를 래핑)
+  const originalShowPage = window.showPage;
+  if (typeof originalShowPage === 'function') {
+    window.showPage = function(id) {
+      originalShowPage(id);
+      if (id === 'handover') renderHandoverPool();
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    injectMemoButtons();
+    refreshMemoBadges();
+    renderHandoverPool();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const panel = document.getElementById('memo-panel');
+    if (panel && panel.classList.contains('is-open')) window.closeMemoPanel();
+  });
 })();
 </script>
 
