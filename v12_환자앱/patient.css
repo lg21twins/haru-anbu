@@ -12,14 +12,14 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { background: #FFF5E8; }
+html { background: var(--color-bg-role-gradient); }
 html, body { height: 100%; }
 
 body {
   font-family: var(--font-family-base);
   -webkit-font-smoothing: antialiased;
   color: var(--color-text-primary);
-  background: #FFF5E8;               /* 단색 warm white, 그라데이션 · orb 제거 */
+  background: var(--color-bg-role-gradient);               /* 단색 warm white, 그라데이션 · orb 제거 */
   overflow: hidden;                  /* 한 화면=한 뷰포트 */
 }
 
@@ -291,9 +291,9 @@ body {
   flex-shrink: 0;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
-.avatar--orange { background: linear-gradient(135deg, #FDBA74, #EA580C); }
+.avatar--orange { background: linear-gradient(135deg, var(--brand-orange-300), var(--brand-orange-600)); }
 .avatar--blue   { background: linear-gradient(135deg, #93C5FD, #2C7AFC); }
-.avatar--green  { background: linear-gradient(135deg, #86EFAC, #16A34A); }
+.avatar--green  { background: linear-gradient(135deg, var(--brand-green-300), var(--brand-green-600)); }
 
 .avatar--sm { width: 48px; height: 48px; font-size: 17px; }
 .avatar--md { width: 80px; height: 80px; font-size: 28px; }
@@ -312,7 +312,7 @@ body {
 }
 .avatar--lg .avatar-dot,
 .avatar--xl .avatar-dot { width: 26px; height: 26px; border-width: 4px; }
-.avatar-dot--online { background: #22C55E; }
+.avatar-dot--online { background: var(--brand-green-500); }
 
 /* ============================================================================
    반응형 fallback (스마트폰)

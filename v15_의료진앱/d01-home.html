@@ -8,8 +8,10 @@
   <meta name="theme-color" content="#F4FAF6">
   <title>하루안부 · 의료진 · 지금</title>
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="./_shared.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     /* :root 별칭은 _shared.css 에서 정의 */
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -126,6 +128,15 @@
       display:flex;align-items:center;gap:6px;
     }
     .alert-sub iconify-icon{font-size:14px;color:var(--t3);}
+    /* 명시적 primary CTA — 카드 전체가 링크지만 시각적으로 버튼처럼 읽히게 함 */
+    .alert-cta{
+      display:flex;align-items:center;justify-content:center;gap:6px;
+      margin-top:16px;height:48px;border-radius:14px;
+      background:linear-gradient(135deg,#EF4444,#DC2626);color:#fff;
+      font-size:15px;font-weight:700;letter-spacing:-.2px;
+      box-shadow:0 6px 16px rgba(239,68,68,.28);
+    }
+    .alert-cta iconify-icon{font-size:18px;}
 
     /* ===== SECTION ===== */
     .sec{margin:32px var(--pad) 0;position:relative;z-index:1;}
@@ -312,6 +323,10 @@
         <span style="color:var(--t3)">·</span>
         <iconify-icon icon="fluent:clock-24-filled"></iconify-icon>14:02 측정
       </div>
+      <span class="alert-cta" role="presentation">
+        지금 확인
+        <iconify-icon icon="fluent:arrow-right-24-filled"></iconify-icon>
+      </span>
     </a>
 
     <!-- ============ NEXT 3 ============ -->

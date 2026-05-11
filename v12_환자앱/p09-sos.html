@@ -5,18 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#DC2626">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- v3.2.4 P6 5중 표현 — iOS Critical Alert + Android Full-Screen Intent 메타 -->
+  <meta name="ios-critical-alert" content="enabled">
+  <meta name="android-fullscreen-intent" content="enabled">
+  <meta name="haru-alert-tier" content="3">
   <title>하루안부 · 긴급</title>
 
   <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="patient.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
 
   <style>
     body {
-      background: #FEE2E2;              /* 긴급 경고 톤, 이 화면만 빨강 배경 */
+      background: var(--color-danger-soft);              /* 긴급 경고 톤, 이 화면만 빨강 배경 */
     }
-    html { background: #FEE2E2; }
+    html { background: var(--color-danger-soft); }
 
     .p-header { padding-right: 20px; }
     .p-back { color: var(--color-danger); }
@@ -65,7 +71,7 @@
 
     /* ── 카운트다운 + 안내 카드 ─────────────────── */
     .count-card {
-      background: #fff;
+      background: var(--color-bg-surface);
       border-radius: 28px;
       padding: var(--space-6) var(--space-7);
       display: grid;
@@ -133,7 +139,7 @@
       height: 112px;
       border: 0; cursor: pointer;
       border-radius: 24px;
-      background: #fff;
+      background: var(--color-bg-surface);
       color: var(--color-text-primary);
       display: flex; align-items: center; justify-content: center; gap: 14px;
       font: var(--weight-bold) 28px / 1 var(--font-family-base);
@@ -165,7 +171,7 @@
       box-shadow: 0 8px 22px rgba(220, 38, 38, 0.4);
     }
     .quick-btn--fam {
-      background: #fff;
+      background: var(--color-bg-surface);
       color: var(--color-danger);
       border: 1.5px solid rgba(220, 38, 38, 0.3);
     }
@@ -257,6 +263,14 @@
   </div>
 
   <script>
+    // v3.2.4 P6 5중 표현 — 진입 즉시 진동 패턴 (긴-짧-짧 반복, 청각 손실 사용자 대비)
+    if (navigator.vibrate) {
+      // [진동, 멈춤, 진동, 멈춤, ...] — 긴-짧-짧 패턴 3회 반복
+      navigator.vibrate([400, 100, 150, 100, 150, 400, 100, 150, 100, 150, 400, 100, 150, 100, 150]);
+    }
+    // FCM 표준 사운드는 PWA 자체에서 재생 불가 (서비스 워커 푸시 시 OS가 처리).
+    // 화면 내 시각 강조는 빨강 + 사이렌 아이콘 + "긴급" 텍스트로 이미 3중 + 진동 + (푸시 사운드)
+
     (function () {
       var CIRCUMFERENCE = 377;
       var total = 5;

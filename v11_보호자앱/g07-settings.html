@@ -11,9 +11,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — 알림 설정</title>
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="../07_디자인/system/app.css">
   <link rel="stylesheet" href="../07_디자인/system/components.css">
-  <script src="iconify.min.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     .app-shell { max-width: 430px; margin: 0 auto; }
     .group-title {
@@ -48,6 +49,26 @@
     <div class="stack-loose" style="padding-top: var(--space-5);">
 
       <section class="fade-in fade-in--d1">
+        <div class="group-title">화면 설정</div>
+        <div class="card group-card" style="margin-bottom: var(--space-7);">
+          <div class="setting-item">
+            <div class="setting-info">
+              <div class="setting-label">글자 크게</div>
+              <div class="setting-desc">본문이 한 단계 더 커져요</div>
+            </div>
+            <button type="button" id="toggle-text" class="toggle" role="switch" aria-checked="false"></button>
+          </div>
+          <div class="setting-item">
+            <div class="setting-info">
+              <div class="setting-label">고대비 모드</div>
+              <div class="setting-desc">글자와 배경 대비를 강하게 해요 (7:1)</div>
+            </div>
+            <button type="button" id="toggle-contrast" class="toggle" role="switch" aria-checked="false"></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="fade-in fade-in--d2">
         <div class="group-title">케어 알림</div>
         <div class="card group-card">
           <div class="setting-item">
@@ -123,6 +144,35 @@
     var on = btn.classList.toggle('is-on');
     btn.setAttribute('aria-checked', on ? 'true' : 'false');
   }
+
+  // ---- v3.2.3 화면 설정 토글 바인딩 (다크는 봉인, 글자크게·고대비만) ----
+  (function () {
+    const T = window.HaruTheme;
+    if (!T) return;
+
+    function syncToggle(btn, on) {
+      btn.classList.toggle('is-on', on);
+      btn.setAttribute('aria-checked', on ? 'true' : 'false');
+    }
+
+    const text     = document.getElementById('toggle-text');
+    const contrast = document.getElementById('toggle-contrast');
+
+    syncToggle(text, T.getTextSize() === 'large');
+    syncToggle(contrast, T.getContrast() === 'high');
+
+    text.addEventListener('click', () => {
+      const next = !text.classList.contains('is-on');
+      T.setTextSize(next ? 'large' : 'normal');
+      syncToggle(text, next);
+    });
+
+    contrast.addEventListener('click', () => {
+      const next = !contrast.classList.contains('is-on');
+      T.setContrast(next ? 'high' : 'normal');
+      syncToggle(contrast, next);
+    });
+  })();
 </script>
 </body>
 </html>

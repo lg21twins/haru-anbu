@@ -13,9 +13,10 @@
 
   <!-- v3.1 디자인 시스템 -->
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
-  <link rel="stylesheet" href="../07_디자인/system/app.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>  <link rel="stylesheet" href="../07_디자인/system/app.css">
   <link rel="stylesheet" href="../07_디자인/system/components.css">
-  <script src="iconify.min.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
 
   <style>
     .app-shell { max-width: 430px; margin: 0 auto; }
@@ -141,12 +142,12 @@
       <!-- 검색 -->
       <label class="search fade-in fade-in--d1">
         <iconify-icon icon="fluent:search-24-filled"></iconify-icon>
-        <input type="search" placeholder="진료기록, 처방전, 검사결과 검색">
+        <input type="search"  placeholder="진료기록, 처방전, 검사결과 검색" aria-label="진료기록, 처방전, 검사결과 검색">
       </label>
 
       <!-- 1차: AI 리포트 -->
       <a href="g02-ai-report.html" class="card-action pri-card fade-in fade-in--d2" aria-label="AI 리포트 열기">
-        <div class="pri-card__icon"><img src="../07_디자인/logo/brand-system/01_심볼단독.svg" alt=""></div>
+        <div class="pri-card__icon"><img src="../07_디자인/logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true"></div>
         <div class="pri-card__body">
           <div class="pri-card__title">AI 리포트</div>
           <div class="pri-card__sub">일일·주간·월간 케어 요약</div>

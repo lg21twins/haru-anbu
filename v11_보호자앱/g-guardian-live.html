@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-role="guardian" data-platform="mobile">
 <head>
   <meta charset="UTF-8">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,7 +11,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — 보호자 홈</title>
   <link rel="stylesheet" href="pretendard.css">
-  <script src="iconify.min.js"></script>
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <script src="../07_디자인/_app-theme.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     a,button,[role=button]{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
@@ -186,9 +188,9 @@
     .ch-item-preview{font-size:12px;color:rgba(28,28,30,.52);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.35}
     .ch-item-time{font-size:10.5px;color:rgba(28,28,30,.4);flex-shrink:0;align-self:flex-start;margin-top:3px;font-weight:600;letter-spacing:.1px}
     .top-nav-right{display:flex;align-items:center;gap:8px}
-    .nav-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.55);border:.5px solid rgba(255,255,255,.55);box-shadow:0 1px 1px rgba(255,255,255,.6) inset,0 4px 16px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;color:var(--blue);position:relative;text-decoration:none;cursor:pointer;transition:transform .1s}
+    .nav-btn{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.55);border:.5px solid rgba(255,255,255,.55);box-shadow:0 1px 1px rgba(255,255,255,.6) inset,0 4px 16px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;color:var(--blue);position:relative;text-decoration:none;cursor:pointer;transition:transform .1s}
     .nav-btn:active{transform:scale(.93)}
-    .notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:#FF3B30;border:1.5px solid rgba(255,255,255,.7);z-index:2}
+    .notif-dot{position:absolute;top:10px;right:10px;width:7px;height:7px;border-radius:50%;background:#FF3B30;border:1.5px solid rgba(255,255,255,.7);z-index:2}
 
     .greeting-zone{padding:46px 4px 0}
     .greeting-main{font-size:28px;font-weight:700;line-height:1.18;letter-spacing:-.85px;color:#2a1810;margin-bottom:8px;text-shadow:0 1px 0 rgba(255,255,255,.2)}
@@ -205,7 +207,7 @@
 
     /* AI 입력창 — 흰 바탕, 로고 제거, 마이크+전송 버튼 */
     /* 홈 모드: 탭바 위(104px), 채팅 모드: 맨 아래(24px)로 슬라이드 다운 */
-    .chat-input-area{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 104px);left:50%;transform:translateX(-50%);width:calc(100% - 48px);max-width:370px;z-index:45;padding:0;--kb:0px;transition:bottom .22s cubic-bezier(.22,1,.36,1)}
+    .chat-input-area{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 92px);left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;z-index:45;padding:0;--kb:0px;transition:bottom .22s cubic-bezier(.22,1,.36,1)}
     body.chat-mode .chat-input-area{bottom:calc(env(safe-area-inset-bottom,0px) + 24px + var(--kb))}
     /* 키보드 올라와 있을 땐 safe-area 무시 — 키보드 바로 위에 딱 붙음 */
     body.chat-mode .chat-input-area.kb-up{bottom:calc(var(--kb) + 12px)}
@@ -418,14 +420,14 @@
     .quick-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .quick-label{font-size:13px;font-weight:600;white-space:nowrap}
 
-    /* 탭바 + AI FAB — v9.5 구조, v9 glass-warp 필터, v9 위치(하단) */
-    .bottom-bar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;width:calc(100% - 48px);max-width:370px}
-    .tabbar{flex:1;min-width:0;height:60px;background:rgba(210,225,250,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.45);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px}
+    /* 탭바 + AI FAB — 세 앱 공통 규격: 64px 높이, inset 12/32, max 398 */
+    .bottom-bar{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;width:calc(100% - 32px);max-width:398px}
+    .tabbar{flex:1;min-width:0;height:64px;background:rgba(210,225,250,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.45);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:stretch;justify-content:space-around;padding:0 10px}
     .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;padding:8px 4px;border-radius:999px;color:rgba(28,28,30,.45);text-decoration:none;transition:all .18s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     .tab.active{color:var(--blue)}
     .tab-icon{display:flex;align-items:center}
     .tab-icon svg{width:26px;height:26px;fill:currentColor}
-    .ai-fab{width:60px;height:60px;border-radius:50%;background:rgba(210,225,250,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.45);box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;flex-shrink:0;padding:0;font:inherit;color:inherit}
+    .ai-fab{width:64px;height:64px;border-radius:50%;background:rgba(210,225,250,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.45);box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;flex-shrink:0;padding:0;font:inherit;color:inherit}
     .ai-fab:active{transform:scale(.92)}
 
     /* 바텀시트 */
@@ -514,7 +516,7 @@
       </button>
       <div class="top-nav-right">
         <a href="g06-alert.html" class="nav-btn" aria-label="알림"><iconify-icon icon="fluent:alert-24-filled" style="font-size:20px;color:#2C7AFC"></iconify-icon><span class="notif-dot"></span></a>
-        <a href="g05-mypage.html" class="nav-btn" aria-label="프로필" style="overflow:hidden;padding:0;width:36px;height:36px;border-radius:50%;"><img src="img/보호자.png" alt="프로필" style="width:100%;height:100%;object-fit:cover;object-position:center top;"></a>
+        <a href="g05-mypage.html" class="nav-btn" aria-label="프로필" style="overflow:hidden;padding:0;border-radius:50%;"><img src="img/보호자.png" alt="프로필" style="width:100%;height:100%;object-fit:cover;object-position:center top;"></a>
       </div>
     </nav>
 
@@ -573,7 +575,7 @@
           <div class="w" onclick="jwOpenSheet('pill')" style="position:relative;overflow:hidden;padding:0;min-height:180px">
             <canvas id="pillWave" style="position:absolute;bottom:0;left:-4px;width:calc(100% + 8px);height:55%"></canvas>
             <div style="position:relative;z-index:1;padding:18px">
-              <div class="w-head"><div class="w-title"><iconify-icon icon="tabler:pill-filled" style="color:#6EE7B7"></iconify-icon>투약</div></div>
+              <div class="w-head"><div class="w-title"><iconify-icon icon="fluent:pill-24-filled" style="color:#6EE7B7"></iconify-icon>투약</div></div>
               <div style="font-size:38px;font-weight:800;letter-spacing:-1.5px;line-height:1;margin-bottom:2px">33<span style="font-size:18px;font-weight:600;opacity:.4">%</span></div>
               <div style="font-size:12px;color:var(--t3)">1/3 복용 완료</div>
               <div style="font-size:11px;color:var(--t3);margin-top:2px">다음 복용 18:00</div>
@@ -590,7 +592,7 @@
 
           <!-- Tier 2: 오늘 컨디션 (기분 + 식사) -->
           <div class="w" onclick="jwOpenSheet('mood')">
-            <div class="w-head"><div class="w-title"><iconify-icon icon="fluent:emoji-24-filled" style="color:var(--blue)"></iconify-icon>기분</div></div>
+            <div class="w-head"><div class="w-title"><iconify-icon icon="fluent:heart-24-filled" style="color:var(--blue)"></iconify-icon>기분</div></div>
             <div style="font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:4px">87<span style="font-size:14px;font-weight:500;color:var(--t3)">점</span></div>
             <div style="font-size:11px;color:var(--t3);margin-bottom:8px">최근 28일</div>
             <div class="dot-grid" id="moodDots"></div>
@@ -967,7 +969,12 @@
           skipAllInstant();
           return;
         }
-        // 새 세션(탭 새로 열기/새 브라우저 실행): 항상 인트로 재생
+        // 새 세션이지만 이전에 인트로를 본 적 있는 사용자: 인트로 없이 바로 홈으로 진입
+        // (DEV_MODE에서는 매번 재생되도록 유지)
+        if (hasSeen() && !DEV_MODE) {
+          await goStraightToHome();
+          return;
+        }
         // 최초 실행: 인트로 재생 (3 스테이지: 브랜드 로고 → 호명+증거 → 클로징)
         // Stage 0: 흰 화면 + 로고만 크게
         intro.classList.add('brand-only');
@@ -1581,12 +1588,12 @@
 
     /* 바텀시트 */
     var JW_SHEETS={
-      pill:'<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#FBBF24,#F59E0B)"><iconify-icon icon="tabler:pill-filled"></iconify-icon></div><div><div class="sheet-ttl">투약 상세</div><div class="sheet-sub">3회 중 1회 완료</div></div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:syringe-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">아침 투약</div><div class="srow-val">혈압약 · 당뇨약 — 08:20</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:medical-services-rounded" style="color:var(--t3)"></iconify-icon></div><div class="srow-text"><div class="srow-label">점심 투약</div><div class="srow-val">소화제 — 12:30</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">예정</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:heart-pulse-24-filled" style="color:var(--amber)"></iconify-icon></div><div class="srow-text"><div class="srow-label">저녁 투약</div><div class="srow-val">관절약 · 영양제 — 18:00</div></div><div class="srow-badge" style="color:#92400E;background:rgba(245,158,11,.12)">확인 필요</div></div>',
+      pill:'<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#FBBF24,#F59E0B)"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon></div><div><div class="sheet-ttl">투약 상세</div><div class="sheet-sub">3회 중 1회 완료</div></div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:syringe-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">아침 투약</div><div class="srow-val">혈압약 · 당뇨약 — 08:20</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:medical-services-rounded" style="color:var(--t3)"></iconify-icon></div><div class="srow-text"><div class="srow-label">점심 투약</div><div class="srow-val">소화제 — 12:30</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">예정</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:heart-pulse-24-filled" style="color:var(--amber)"></iconify-icon></div><div class="srow-text"><div class="srow-label">저녁 투약</div><div class="srow-val">관절약 · 영양제 — 18:00</div></div><div class="srow-badge" style="color:#92400E;background:rgba(245,158,11,.12)">확인 필요</div></div>',
       food:'<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#34D399,#059669)"><iconify-icon icon="fluent:food-24-filled"></iconify-icon></div><div><div class="sheet-ttl">식사 상세</div><div class="sheet-sub">3끼 모두 완료</div></div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">아침 08:10</div><div class="srow-val">죽 + 반찬 2종</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">양호</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">점심 12:05</div><div class="srow-val">밥 + 국 + 반찬 3종 — 80%</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">양호</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">저녁 18:30</div><div class="srow-val">밥 + 된장찌개</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">양호</div></div>',
-      mood:'<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:emoji-24-filled"></iconify-icon></div><div><div class="sheet-ttl">기분 상세</div><div class="sheet-sub">전반적으로 밝은 상태</div></div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:emoji-24-filled" style="color:var(--green)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오전</div><div class="srow-val">밝고 활기찬 상태</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">좋음</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:emoji-meh-24-filled" style="color:var(--blue-l)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오후</div><div class="srow-val">점심 후 안정적</div></div><div class="srow-badge" style="color:var(--blue-d);background:rgba(44,122,252,.1)">보통</div></div>',
+      mood:'<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:heart-24-filled"></iconify-icon></div><div><div class="sheet-ttl">기분 상세</div><div class="sheet-sub">전반적으로 밝은 상태</div></div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:heart-24-filled" style="color:var(--green)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오전</div><div class="srow-val">밝고 활기찬 상태</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">좋음</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:emoji-meh-24-filled" style="color:var(--blue-l)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오후</div><div class="srow-val">점심 후 안정적</div></div><div class="srow-badge" style="color:var(--blue-d);background:rgba(44,122,252,.1)">보통</div></div>',
       hygiene:'<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:drop-24-filled"></iconify-icon></div><div><div class="sheet-ttl">위생 상세</div><div class="sheet-sub">3건 중 2건 완료</div></div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:drop-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">세면</div><div class="srow-val">07:30 완료</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:drop-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">구강</div><div class="srow-val">07:40 완료</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:drop-24-filled" style="color:rgba(44,122,252,.3)"></iconify-icon></div><div class="srow-text"><div class="srow-label">목욕</div><div class="srow-val">오후 예정</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">예정</div></div>',
       activity:'<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--amber),#D97706)"><iconify-icon icon="fluent:walk-24-filled"></iconify-icon></div><div><div class="sheet-ttl">활동 상세</div><div class="sheet-sub">오전 활동 완료</div></div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:walk-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오전 산책</div><div class="srow-val">정원 2바퀴 · 15분</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:dumbbell-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">재활 체조</div><div class="srow-val">스트레칭 + 근력 · 10분</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>',
-      schedule:'<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:calendar-24-filled"></iconify-icon></div><div><div class="sheet-ttl">오늘 일정</div><div class="sheet-sub">4건 · 2건 완료</div></div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">08:00</div><div class="srow-val">아침 식사</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:brain-circuit-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">15:30</div><div class="srow-val">인지 훈련</div></div><div class="srow-badge" style="color:var(--blue);background:rgba(44,122,252,.1)">진행중</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--t3)"></iconify-icon></div><div class="srow-text"><div class="srow-label">18:00</div><div class="srow-val">저녁 식사</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">예정</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="tabler:pill-filled" style="color:var(--t3)"></iconify-icon></div><div class="srow-text"><div class="srow-label">18:30</div><div class="srow-val">저녁 투약</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">예정</div></div>',
+      schedule:'<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:calendar-24-filled"></iconify-icon></div><div><div class="sheet-ttl">오늘 일정</div><div class="sheet-sub">4건 · 2건 완료</div></div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">08:00</div><div class="srow-val">아침 식사</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:brain-circuit-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">15:30</div><div class="srow-val">인지 훈련</div></div><div class="srow-badge" style="color:var(--blue);background:rgba(44,122,252,.1)">진행중</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--t3)"></iconify-icon></div><div class="srow-text"><div class="srow-label">18:00</div><div class="srow-val">저녁 식사</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">예정</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:pill-24-filled" style="color:var(--t3)"></iconify-icon></div><div class="srow-text"><div class="srow-label">18:30</div><div class="srow-val">저녁 투약</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">예정</div></div>',
       sos:'<div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#EF4444,#B91C1C)"><iconify-icon icon="fluent:alert-24-filled"></iconify-icon></div><div><div class="sheet-ttl">긴급 알림</div><div class="sheet-sub">302호 · 2분 전</div></div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:alert-24-filled" style="color:var(--red)"></iconify-icon></div><div class="srow-text"><div class="srow-label">상황</div><div class="srow-val">화장실 이동 중 낙상 감지</div></div><div class="srow-badge" style="color:#B91C1C;background:rgba(239,68,68,.1)">긴급</div></div><div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:person-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">대응</div><div class="srow-val">김서연 간호사 현장 확인 중</div></div><div class="srow-badge" style="color:var(--amber);background:rgba(245,158,11,.1)">확인중</div></div><div style="display:flex;gap:8px;margin-top:16px"><a href="tel:010-1234-5678" style="flex:1;padding:14px;border-radius:14px;background:var(--blue);color:#fff;text-align:center;font-size:14px;font-weight:700;text-decoration:none">담당 간호사 전화</a><a href="tel:119" style="flex:1;padding:14px;border-radius:14px;background:var(--red);color:#fff;text-align:center;font-size:14px;font-weight:700;text-decoration:none">119 연결</a></div>'
     };
     function jwOpenSheet(t){document.getElementById('jwSheetContent').innerHTML=JW_SHEETS[t];document.getElementById('jwOverlay').classList.add('show');}

@@ -9,8 +9,10 @@
 
   <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="patient.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
 
   <style>
     .app { padding-top: var(--space-7); }
@@ -125,7 +127,7 @@
       width: 44px; height: 44px;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      background: #fff;
+      background: var(--color-bg-surface);
       border: 2px solid rgba(0, 0, 0, 0.08);
       color: var(--color-text-secondary);
       flex-shrink: 0;
@@ -199,7 +201,7 @@
     }
 
     .todo-item.upcoming .todo-icon {
-      background: #fff;
+      background: var(--color-bg-surface);
       border-color: rgba(0, 0, 0, 0.1);
       color: var(--color-text-secondary);
     }

@@ -10,8 +10,10 @@
 
   <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="patient.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,7 +22,7 @@
       font-family: var(--font-family-base);
       -webkit-font-smoothing: antialiased;
       color: var(--color-text-primary);
-      background: #FFF5E8;
+      background: var(--color-bg-role-gradient);
     }
 
     .app {
@@ -30,6 +32,20 @@
       display: flex; flex-direction: column;
       padding: 24px 28px 20px; gap: 16px;
     }
+
+    /* 환자앱 우상단 설정 진입 — 탭바 외부, 작은 아이콘 (가족이 도와줄 때 진입) */
+    .p-settings-quick {
+      width: 56px; height: 56px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-text-secondary);
+      flex-shrink: 0;
+      transition: transform .12s, background .15s;
+    }
+    .p-settings-quick:active { transform: scale(0.96); background: rgba(255,255,255,0.85); }
+    .p-settings-quick iconify-icon { font-size: 22px; }
 
     /* 헤더는 patient.css의 .p-header--nav 공통 스타일 사용 */
 
@@ -417,7 +433,9 @@
           도움
         </a>
       </nav>
-      <div aria-hidden="true"></div>
+      <a href="p11-settings.html" class="p-settings-quick" aria-label="내 화면 설정 (글자 크기·고대비)">
+        <iconify-icon icon="fluent:settings-24-filled" width="20" aria-hidden="true"></iconify-icon>
+      </a>
     </header>
 
     <div class="main">

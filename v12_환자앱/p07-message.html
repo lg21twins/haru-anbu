@@ -9,8 +9,10 @@
 
   <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="patient.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
 
   <style>
     .main {
@@ -116,7 +118,7 @@
       letter-spacing: -0.2px;
     }
     .msg--in .msg-bubble {
-      background: #fff;
+      background: var(--color-bg-surface);
       color: var(--color-text-primary);
       border: 1px solid rgba(0, 0, 0, 0.06);
       border-top-left-radius: 6px;
@@ -136,7 +138,7 @@
     .msg-photos a {
       display: block; aspect-ratio: 1; border-radius: 14px;
       overflow: hidden;
-      background: #FFEBD1;
+      background: var(--brand-orange-100);
       text-decoration: none;
     }
     .msg-photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -186,7 +188,7 @@
       box-shadow: 0 10px 28px rgba(251, 146, 60, 0.38);
     }
     .a-btn--photo {
-      background: #fff;
+      background: var(--color-bg-surface);
       color: var(--color-text-primary);
       border: 1.5px solid rgba(0, 0, 0, 0.08);
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);

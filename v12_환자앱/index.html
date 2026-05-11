@@ -6,16 +6,17 @@
   <title>하루안부 · 환자 태블릿 앱 (v12) — 쇼케이스</title>
   <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+
+  <script src="../07_디자인/_app-theme.js"></script>  <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { background: #FFF5E8; }
+    html { background: var(--color-bg-role-gradient); }
     body {
       min-height: 100dvh;
       font-family: var(--font-family-base);
       color: var(--color-text-primary);
-      background: #FFF5E8;
+      background: var(--color-bg-role-gradient);
       padding: var(--space-10) var(--space-8) var(--space-11);
       -webkit-font-smoothing: antialiased;
     }
@@ -130,7 +131,7 @@
     .preview {
       position: relative;
       aspect-ratio: 1180 / 820;
-      background: #FFF5E8;
+      background: var(--color-bg-role-gradient);
       overflow: hidden;
     }
     .preview iframe {
@@ -157,7 +158,7 @@
   <div class="wrap">
 
     <header class="showcase-head">
-      <img src="../07_디자인/logo/brand-system/01_심볼단독.svg" alt="">
+      <img src="../07_디자인/logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
       <div>
         <h1 class="title">하루안부 · 환자 태블릿 앱 (v12)</h1>
         <div class="sub">2026-04-18 전면 리디자인 — iPad 10" · Galaxy Tab A 거치형</div>

@@ -13,10 +13,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="../07_디자인/system/app.css">
   <link rel="stylesheet" href="../07_디자인/system/components.css">
   <link rel="stylesheet" href="caregiver.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
   <script defer src="caregiver.js"></script>
   <style>
     /* ============================================================
@@ -387,12 +389,10 @@
     }
     .tabbar {
       flex: 1; min-width: 0; height: var(--tab-h);
-      background: rgba(255,255,255,.8);
-      backdrop-filter: blur(22px) saturate(140%);
-      -webkit-backdrop-filter: blur(22px) saturate(140%);
-      border: 1px solid rgba(255,255,255,.7);
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.08);
       border-radius: 999px;
-      box-shadow: 0 6px 22px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
+      box-shadow: 0 2px 6px rgba(0,0,0,.05);
       display: flex; align-items: stretch; justify-content: space-around; padding: 0 6px;
     }
     .tab {
