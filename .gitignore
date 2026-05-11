@@ -15,3 +15,10 @@
 node_modules/
 package.json
 package-lock.json
+
+# Playwright MCP 로그 (자동 생성)
+.playwright-mcp/
+
+# 임시 백업 디렉토리 (날짜별)
+**/_backup_homes_*/
+**/_backup_*/
