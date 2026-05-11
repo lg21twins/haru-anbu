@@ -1,53 +1,73 @@
 /* ============================================================
-   하루안부 — Design Tokens & Component Library
-   Based on: Apple Health (main) + Apple Fitness (sub) reference
-   Version: 1.0 | 2026.04.02
+   하루안부 — v11 보호자앱 호환 레이어 (compatibility shim)
+   Version: 2.0 | 2026.05.09
+   ------------------------------------------------------------
+   토큰의 진실의 원천(SoT)은 ../07_디자인/tokens/tokens.css 입니다.
+   이 파일은 tokens.css를 import한 뒤,
+   기존 HTML이 사용하는 구 토큰명(--blue, --t1, --guardian 등)을
+   tokens.css 신 토큰에 alias로 매핑합니다.
+   새 화면을 만들 때는 이 파일을 import하지 말고
+   tokens.css만 import할 것.
    ============================================================ */
 
-/* ------------------------------------------------------------
-   0. CDN Imports
-   ------------------------------------------------------------ */
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
-@font-face { font-family: 'Pretendard Variable'; font-display: swap; src: local('Pretendard Variable'); }
+/* SoT — tokens.css를 먼저 import */
+@import url('../07_디자인/tokens/tokens.css');
 
 /* ------------------------------------------------------------
-   1. DESIGN TOKENS
+   1. LEGACY ALIAS — 구 토큰 → 신 토큰
    ------------------------------------------------------------ */
 :root {
-  /* --- Colors (컬러 시스템 v2.0 — v4 톤 반영) --- */
-  --guardian: #2C7AFC;
-  --guardian-light: #D9F0F7;
-  --nurse: #059669;
-  --nurse-light: #D1FAE5;
-  --patient: #FB923C;
-  --patient-light: #FFEDD5;
-  --patient-dark: #EA580C;
+  /* --- Colors (legacy alias) --- */
+  --guardian:        var(--brand-blue-500);
+  --guardian-light:  var(--brand-blue-100);
+  --guardian-dark:   var(--brand-blue-600);
+  --nurse:           var(--brand-green-500);
+  --nurse-light:     var(--brand-green-100);
+  --nurse-dark:      var(--brand-green-700);
+  --medical:         var(--brand-green-500);
+  --medical-light:   var(--brand-green-100);
+  --medical-dark:    var(--brand-green-700);
+  --patient:         var(--brand-orange-400);
+  --patient-light:   var(--brand-orange-100);
+  --patient-dark:    var(--brand-orange-600);
+
+  --blue:    var(--brand-blue-500);
+  --blue-l:  var(--brand-blue-400);
+  --blue-d:  var(--brand-blue-600);
+  --green:   var(--brand-green-400);
+  --green-d: var(--color-success);
+  --amber:   var(--color-warning);
+  --red:     var(--color-danger);
 
   /* Point & Accent */
-  --accent: #F5D310;
-  --accent-light: #FDF8DC;
+  --accent:        var(--color-point);
+  --accent-light:  #FDF8DC;
 
   /* Semantic */
-  --success: #059669;
-  --warning: #F59E0B;
-  --critical: #DC2626;
-  --info: #0891B2;
+  --success:   var(--color-success);
+  --warning:   var(--color-warning);
+  --critical:  var(--color-danger);
+  --info:      var(--color-info);
 
   /* Status backgrounds */
-  --bg-success: #D1FAE5;
-  --bg-warning: #FEF3C7;
-  --bg-critical: #FEE2E2;
-  --bg-info: #D9F0F7;
+  --bg-success:   var(--color-success-soft);
+  --bg-warning:   var(--color-warning-soft);
+  --bg-critical:  var(--color-danger-soft);
+  --bg-info:      var(--color-info-soft);
 
   /* Background & Surface */
-  --bg: #F0F4F8;
-  --surface: #FFFFFF;
-  --divider: #E5E5EA;
+  --bg:        var(--color-bg-canvas);
+  --surface:   var(--color-bg-surface);
+  --glass:     var(--color-bg-glass);
+  --divider:   var(--color-border-subtle);
 
   /* Text */
-  --text-primary: #1C1C1E;
-  --text-secondary: #8E8E93;
-  --text-tertiary: #9E9E9E;
+  --text-primary:    var(--color-text-primary);
+  --text-secondary:  var(--color-text-secondary);
+  --text-tertiary:   var(--color-text-tertiary);
+  --t1:              var(--color-text-primary);
+  --t2:              var(--color-text-secondary);
+  --t3:              var(--color-text-tertiary);
 
   /* --- Typography (Apple Health scale + Pretendard) --- */
   --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, 'Helvetica Neue', sans-serif;

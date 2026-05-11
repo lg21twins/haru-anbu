@@ -1,0 +1,137 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "하루안부 DS" [ref=e4] [cursor=pointer]:
+        - /url: preview.html
+      - generic [ref=e5]:
+        - link "개요" [ref=e6] [cursor=pointer]:
+          - /url: preview.html
+        - link "Foundations" [ref=e7] [cursor=pointer]:
+          - /url: preview-foundations.html
+        - link "Components" [ref=e8] [cursor=pointer]:
+          - /url: preview-components.html
+        - link "Patterns" [ref=e9] [cursor=pointer]:
+          - /url: preview-patterns.html
+        - link "Roles" [ref=e10] [cursor=pointer]:
+          - /url: preview-roles.html
+      - generic [ref=e11]: v3.1
+  - banner [ref=e12]:
+    - img "하루안부" [ref=e13]
+    - generic [ref=e14]:
+      - generic [ref=e15]: 보호자
+      - generic [ref=e17]: 의료진 + 요양보호사
+      - generic [ref=e19]: 환자
+    - heading "하루안부 디자인 시스템" [level=1] [ref=e21]
+    - paragraph [ref=e22]: 하나의 차체, 세 개의 테마, 다섯 개의 제품 표면 — 보호자·의료진·요양보호사·환자·온보딩 5개 앱이 시각적으로 단일한 제품처럼 보이게 만드는 규칙
+    - generic [ref=e23]: v3.1 · 2026.05.10 · M3 + KRDS + KT Seamless Flow IA
+  - main [ref=e24]:
+    - heading "시각화 페이지" [level=2] [ref=e25]
+    - generic [ref=e26]:
+      - link "파운데이션 Foundations 컬러·타이포·간격·형태·고도·모션·아이콘·로고·접근성·다국어 — 모든 UI 결정의 기반 3 역할 테마 (보호자 / 의료진 / 환자) 로고 시스템 5종 변형 + 사용 규칙 4px 간격 그리드, 8단계 라운드 사다리 Pretendard + Noto Sans SC (다국어) →" [ref=e27] [cursor=pointer]:
+        - /url: preview-foundations.html
+        - generic [ref=e28]: 파운데이션
+        - heading "Foundations" [level=3] [ref=e29]: Foundations
+        - paragraph [ref=e30]: 컬러·타이포·간격·형태·고도·모션·아이콘·로고·접근성·다국어 — 모든 UI 결정의 기반
+        - list [ref=e31]:
+          - listitem [ref=e32]: 3 역할 테마 (보호자 / 의료진 / 환자)
+          - listitem [ref=e33]: 로고 시스템 5종 변형 + 사용 규칙
+          - listitem [ref=e34]: 4px 간격 그리드, 8단계 라운드 사다리
+          - listitem [ref=e35]: Pretendard + Noto Sans SC (다국어)
+        - generic [ref=e36]: →
+      - 'link "컴포넌트 Components 버튼·카드·탭바·인풋·모달·뱃지 등 모든 UI 컴포넌트의 라이브 데모 Action: 버튼 4종 + FAB + 칩 Containment: 카드 4종 + 바텀시트 + 모달 Navigation: 헤더·탭바·사이드바 Input: 텍스트필드·검색·토글·체크박스 →" [ref=e37] [cursor=pointer]':
+        - /url: preview-components.html
+        - generic [ref=e38]: 컴포넌트
+        - heading "Components" [level=3] [ref=e39]: Components
+        - paragraph [ref=e40]: 버튼·카드·탭바·인풋·모달·뱃지 등 모든 UI 컴포넌트의 라이브 데모
+        - list [ref=e41]:
+          - listitem [ref=e42]: "Action: 버튼 4종 + FAB + 칩"
+          - listitem [ref=e43]: "Containment: 카드 4종 + 바텀시트 + 모달"
+          - listitem [ref=e44]: "Navigation: 헤더·탭바·사이드바"
+          - listitem [ref=e45]: "Input: 텍스트필드·검색·토글·체크박스"
+        - generic [ref=e46]: →
+      - link "패턴 Patterns 홈 화면·AI 리포트·경보 위계 등 화면 단위 목업과 플로우 보호자 홈 — \"오늘 안심 확인\" AI 리포트 카드 (6 섹션 고정) 경보 위계 4단계 비교 빈 상태·폼 검증·로딩 스켈레톤 →" [ref=e47] [cursor=pointer]:
+        - /url: preview-patterns.html
+        - generic [ref=e48]: 패턴
+        - heading "Patterns" [level=3] [ref=e49]: Patterns
+        - paragraph [ref=e50]: 홈 화면·AI 리포트·경보 위계 등 화면 단위 목업과 플로우
+        - list [ref=e51]:
+          - listitem [ref=e52]: 보호자 홈 — "오늘 안심 확인"
+          - listitem [ref=e53]: AI 리포트 카드 (6 섹션 고정)
+          - listitem [ref=e54]: 경보 위계 4단계 비교
+          - listitem [ref=e55]: 빈 상태·폼 검증·로딩 스켈레톤
+        - generic [ref=e56]: →
+      - link "역할 비교 Roles Side-by-Side 같은 컴포넌트가 보호자·의료진·환자 테마에서 어떻게 다른지 나란히 비교 3 테마 미니 홈 화면 비교 같은 버튼·카드·탭바의 색 변화 환자 자동 상향 (18px·56px) 역할 그라디언트 배경 비교 →" [ref=e57] [cursor=pointer]:
+        - /url: preview-roles.html
+        - generic [ref=e58]: 역할 비교
+        - heading "Roles Side-by-Side" [level=3] [ref=e59]: Roles Side-by-Side
+        - paragraph [ref=e60]: 같은 컴포넌트가 보호자·의료진·환자 테마에서 어떻게 다른지 나란히 비교
+        - list [ref=e61]:
+          - listitem [ref=e62]: 3 테마 미니 홈 화면 비교
+          - listitem [ref=e63]: 같은 버튼·카드·탭바의 색 변화
+          - listitem [ref=e64]: 환자 자동 상향 (18px·56px)
+          - listitem [ref=e65]: 역할 그라디언트 배경 비교
+        - generic [ref=e66]: →
+    - heading "문서" [level=2] [ref=e67]
+    - list [ref=e69]:
+      - listitem [ref=e70]:
+        - link "README.md" [ref=e71] [cursor=pointer]:
+          - /url: README.md
+        - generic [ref=e72]: 진입점 + 5분 시작 가이드 + 변경 이력
+      - listitem [ref=e73]:
+        - link "01_FOUNDATIONS.md" [ref=e74] [cursor=pointer]:
+          - /url: 01_FOUNDATIONS.md
+        - generic [ref=e75]: 브랜드·로고·컬러·타이포·간격·형태·고도·모션·아이콘·접근성·i18n
+      - listitem [ref=e76]:
+        - link "02_COMPONENTS.md" [ref=e77] [cursor=pointer]:
+          - /url: 02_COMPONENTS.md
+        - generic [ref=e78]: Action·Containment·Navigation·Communication·Input·Display 6 카테고리
+      - listitem [ref=e79]:
+        - link "03_PATTERNS.md" [ref=e80] [cursor=pointer]:
+          - /url: 03_PATTERNS.md
+        - generic [ref=e81]: 14개 화면·플로우 패턴 (홈·AI리포트·경보위계·빈상태·폼검증)
+      - listitem [ref=e82]:
+        - link "tokens/tokens.css" [ref=e83] [cursor=pointer]:
+          - /url: tokens/tokens.css
+        - generic [ref=e84]: 진실의 원천 — 3계층(Primitive/Semantic/Component) + 2축(role/platform)
+      - listitem [ref=e85]:
+        - link "tokens/README.md" [ref=e86] [cursor=pointer]:
+          - /url: tokens/README.md
+        - generic [ref=e87]: 토큰 사용법 — data-role / data-platform 선언 방식
+      - listitem [ref=e88]:
+        - link "tokens/MIGRATION.md" [ref=e89] [cursor=pointer]:
+          - /url: tokens/MIGRATION.md
+        - generic [ref=e90]: 구 토큰 → 신 토큰 매핑 (v11 보호자앱 마이그레이션)
+    - heading "핵심 원칙 5가지" [level=2] [ref=e91]
+    - list [ref=e93]:
+      - listitem [ref=e94]:
+        - generic [ref=e95]: "1"
+        - generic [ref=e96]:
+          - strong [ref=e97]: 하나의 차체, 세 개의 테마
+          - text: — 모든 컴포넌트는 구조적으로 동일하고,
+          - code [ref=e98]: data-role
+          - text: 이 보호자 블루(#2C7AFC) / 의료진 그린(#22C55E) / 환자 오렌지(#FB923C)로 색만 바꾼다.
+      - listitem [ref=e99]:
+        - generic [ref=e100]: "2"
+        - generic [ref=e101]:
+          - strong [ref=e102]: 글래스모피즘이 기본
+          - text: — 카드는 반투명 흰색 + blur(16px) + 프로스티드 하이라이트. 단단한 흰 카드는 예외다.
+      - listitem [ref=e103]:
+        - generic [ref=e104]: "3"
+        - generic [ref=e105]:
+          - strong [ref=e106]: 플로팅 필 탭바
+          - text: — 좌우 16px 인셋, 56px 높이, radius pill. 절대 풀-블리드 금지. AI FAB은 별도 원형으로 분리.
+      - listitem [ref=e107]:
+        - generic [ref=e108]: "4"
+        - generic [ref=e109]:
+          - strong [ref=e110]: Pretendard + Fluent Filled 단일
+          - text: — 모든 글자는 Pretendard, 모든 아이콘은 fluent filled. 라인 혼용·이모지 절대 금지.
+      - listitem [ref=e111]:
+        - generic [ref=e112]: "5"
+        - generic [ref=e113]:
+          - strong [ref=e114]: AI 진입점 = 하루안부 심볼
+          - text: — sparkle 대신 브랜드 심볼이 AI를 대표. FAB·챗 진입점·AI 리포트 마크 모두 같은 심볼.
+    - paragraph [ref=e115]:
+      - text: 하루안부 디자인 시스템 v3.1 · 2026.05.09
+      - text: "진실의 원천:"
+      - code [ref=e116]: 07_디자인/tokens/tokens.css
+      - text: "문서 IA: M3 (Material Design 3) + KRDS (Korea) + KT Seamless Flow 패턴 차용"

@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="ko" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
+  <title>Components · 하루안부 디자인 시스템 v3.1</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="_preview-shared.css">
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <style>
+    /* ===== Components 데모 스타일 ===== */
+
+    /* Button (시스템 컴포넌트 — 실제 앱 코드도 동일 토큰 사용) */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      height: var(--size-button-default);
+      padding: 0 var(--space-6);
+      border-radius: var(--radius-button);
+      font: var(--weight-semibold) var(--text-headline)/1 var(--font-family-base);
+      border: 0;
+      cursor: pointer;
+      transition: var(--motion-micro) var(--easing-standard);
+      white-space: nowrap;
+    }
+    .btn:active { transform: scale(0.98); opacity: 0.8; }
+    .btn--primary { background: var(--color-accent); color: var(--color-accent-on); }
+    .btn--secondary { background: var(--color-bg-surface); color: var(--color-text-primary); border: 1px solid var(--color-border-subtle); }
+    .btn--destructive { background: var(--color-danger); color: var(--color-text-on-dark); }
+    .btn--ghost { background: transparent; color: var(--color-accent); padding: 0 var(--space-4); }
+    .btn--sm { height: 36px; padding: 0 var(--space-5); font-size: var(--text-callout); }
+    .btn--lg { height: var(--size-button-large); padding: 0 var(--space-8); font-size: var(--text-body-lg); }
+    .btn--full { width: 100%; justify-content: center; }
+    .btn:disabled { opacity: 0.4; pointer-events: none; }
+
+    /* FAB (AI 진입점 — 하루안부 심볼 + 역할 그라디언트) */
+    .fab {
+      width: var(--size-button-large); height: var(--size-button-large);
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-strong) 100%);
+      box-shadow: 0 8px 28px rgba(var(--color-accent-rgb), 0.25);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      cursor: pointer;
+    }
+    .fab img { width: var(--size-icon-lg); height: var(--size-icon-lg); filter: brightness(0) invert(1); }
+
+    /* Chip */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      height: var(--space-8);
+      padding: 0 var(--space-5);
+      border-radius: var(--radius-pill);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      font: var(--weight-regular) var(--text-callout) var(--font-family-base);
+      color: var(--color-text-primary);
+      cursor: pointer;
+    }
+    .chip.is-active {
+      background: var(--color-accent);
+      color: var(--color-accent-on);
+      border-color: transparent;
+    }
+
+    /* Card 4종 (v3.1 — flat first, glass selective) */
+    .demo-card {
+      padding: var(--space-6);
+      min-height: 100px;
+    }
+    .demo-card--default {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-1);
+    }
+    .demo-card--action {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-1);
+      cursor: pointer;
+      transition: var(--motion-micro) var(--easing-standard);
+    }
+    .demo-card--action:hover {
+      box-shadow: var(--shadow-2);
+      border-color: var(--color-border-strong);
+    }
+    .demo-card--action:active {
+      transform: scale(0.99);
+    }
+    .demo-card--alert {
+      border: 1px solid transparent;
+      border-radius: var(--radius-card);
+    }
+    .demo-card--alert-success { background: var(--color-success-soft); color: var(--color-success); }
+    .demo-card--alert-warning { background: var(--color-warning-soft); color: var(--palette-amber-700); }
+    .demo-card--alert-danger  { background: var(--color-danger-soft);  color: var(--color-danger);  }
+    .demo-card--alert-info    { background: var(--color-info-soft);    color: var(--color-info);    }
+    .demo-card--hero {
+      background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-strong) 100%);
+      color: var(--color-accent-on);
+      border-radius: var(--radius-hero);
+      box-shadow: 0 8px 28px rgba(var(--color-accent-rgb), 0.25);
+      padding: var(--space-7);
+    }
+    /* OPTIONAL · Glass — 탭바·모달·AI 리포트·환자 가족 사진 4곳 한정 */
+    .demo-card--glass {
+      background: var(--color-bg-glass);
+      backdrop-filter: blur(var(--blur-card));
+      -webkit-backdrop-filter: blur(var(--blur-card));
+      border: 1px solid var(--color-border-glass);
+      border-radius: var(--radius-card-lg);
+      box-shadow: var(--shadow-glass);
+    }
+    .demo-card h4 { margin: 0 0 var(--space-3); font-size: var(--text-headline); font-weight: var(--weight-semibold); }
+    .demo-card p { margin: 0; font-size: var(--text-callout); color: var(--color-text-secondary); line-height: 1.5; }
+    .demo-card--hero p { color: rgba(255,255,255,0.85); }
+    .demo-card--alert p { color: inherit; opacity: 0.9; }
+
+    /* Bottom sheet 데모 */
+    .sheet-frame {
+      position: relative;
+      width: 100%;
+      height: 360px;
+      background: var(--color-bg-overlay);
+      border-radius: var(--radius-card-lg);
+      overflow: hidden;
+    }
+    .sheet {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(40px);
+      border-radius: var(--radius-7) var(--radius-7) 0 0;
+      padding: var(--space-7);
+      box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.10);
+    }
+    .sheet__handle {
+      width: var(--space-9);
+      height: 4px;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: var(--radius-1);
+      margin: 0 auto var(--space-5);
+    }
+
+    /* Modal */
+    .modal-frame {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      background: var(--color-bg-overlay);
+      border-radius: var(--radius-card-lg);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal {
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-card-lg);
+      box-shadow: var(--shadow-3);
+      padding: var(--space-7);
+      max-width: 320px;
+      width: 90%;
+    }
+
+    /* Header / Tabbar */
+    .device-frame {
+      max-width: 360px;
+      margin: 0 auto;
+      background: var(--color-bg-surface);
+      border: 8px solid var(--palette-gray-900);
+      border-radius: 36px;
+      overflow: hidden;
+      position: relative;
+    }
+    .device-frame::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 22px;
+      background: var(--palette-gray-900);
+      border-bottom-left-radius: var(--radius-3);
+      border-bottom-right-radius: var(--radius-3);
+      z-index: var(--z-overlay);
+    }
+    .device-screen {
+      height: 580px;
+      background: radial-gradient(circle at 50% 0%, rgba(44, 122, 252, 0.14) 0%, transparent 65%), linear-gradient(180deg, #d4e4ff 0%, #e8f0fe 40%, #f2f6ff 70%, #EEF3FB 100%);
+      position: relative;
+      padding-top: 22px;
+    }
+    .header-mobile {
+      height: var(--size-header);
+      padding: 0 var(--space-5);
+      backdrop-filter: blur(12px);
+      display: grid;
+      grid-template-columns: var(--size-icon-md) 1fr var(--size-icon-md);
+      align-items: center;
+      gap: var(--space-4);
+      font: var(--weight-semibold) var(--text-headline) var(--font-family-base);
+    }
+    .header-mobile__title { text-align: center; }
+    .header-mobile iconify-icon { color: var(--color-text-primary); font-size: var(--size-icon-md); }
+
+    .tabbar {
+      position: absolute;
+      left: var(--space-5); right: var(--space-5); bottom: var(--space-5);
+      height: var(--size-tab-bar);
+      background: rgba(210, 225, 250, 0.55);
+      backdrop-filter: blur(var(--blur-tab));
+      -webkit-backdrop-filter: blur(var(--blur-tab));
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-glass);
+      display: flex;
+      padding: 0 var(--space-4);
+    }
+    .tabbar__item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-1);
+      color: rgba(28, 28, 30, 0.45);
+      font: var(--weight-bold) var(--font-11) var(--font-family-base);
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+    }
+    .tabbar__item iconify-icon { font-size: var(--size-icon-md); }
+    .tabbar__item.is-active { color: var(--color-accent); }
+
+    /* Header web */
+    .header-web {
+      height: var(--size-topbar-height, 64px);
+      padding: 0 var(--space-7);
+      background: var(--color-bg-surface);
+      border-bottom: 1px solid var(--color-border-subtle);
+      display: flex;
+      align-items: center;
+      gap: var(--space-7);
+    }
+    .header-web__brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-weight: var(--weight-semibold);
+    }
+    .header-web__brand img { width: var(--size-icon-lg); height: var(--size-icon-lg); }
+    .header-web__search {
+      flex: 1;
+      max-width: 320px;
+      height: var(--space-9);
+      padding: 0 var(--space-5);
+      background: var(--color-bg-canvas);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      color: var(--color-text-tertiary);
+      font-size: var(--text-callout);
+    }
+    .header-web__icons {
+      display: flex;
+      gap: var(--space-5);
+      margin-left: auto;
+    }
+    .header-web__avatar {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, var(--brand-blue-500), var(--brand-blue-600));
+      color: var(--color-text-on-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--size-sidebar-width, 240px);
+      background: var(--color-bg-surface);
+      border-right: 1px solid var(--color-border-subtle);
+      padding: var(--space-7) var(--space-5);
+      min-height: 360px;
+      border-radius: var(--radius-card) 0 0 var(--radius-card);
+    }
+    .sidebar__brand {
+      padding: var(--space-3) var(--space-4) var(--space-7);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-weight: var(--weight-semibold);
+    }
+    .sidebar__brand img { width: var(--size-icon-lg); height: var(--size-icon-lg); }
+    .sidebar__item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      height: var(--size-touch-target);
+      padding: 0 var(--space-5);
+      border-radius: var(--radius-card);
+      color: var(--color-text-secondary);
+      font: var(--weight-semibold) var(--text-callout) var(--font-family-base);
+      cursor: pointer;
+      margin-bottom: var(--space-2);
+    }
+    .sidebar__item iconify-icon { font-size: var(--size-icon-sm); }
+    .sidebar__item.is-active {
+      background: var(--brand-green-100);
+      color: var(--brand-green-600);
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      height: 22px;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-pill);
+      font: var(--weight-semibold) var(--font-11) var(--font-family-base);
+    }
+    .badge--success { background: var(--color-success-soft); color: var(--brand-green-700); }
+    .badge--warning { background: var(--color-warning-soft); color: var(--palette-amber-700); }
+    .badge--danger { background: var(--color-danger-soft); color: var(--color-danger); }
+    .badge--info { background: var(--color-info-soft); color: var(--color-info); }
+
+    /* Toast */
+    .toast {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-4);
+      background: var(--color-text-primary);
+      color: var(--color-text-on-dark);
+      font: var(--weight-regular) var(--text-callout) var(--font-family-base);
+      padding: var(--space-4) var(--space-6);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-3);
+    }
+
+    /* SOS banner */
+    .sos {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      background: var(--color-danger);
+      color: var(--color-text-on-dark);
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+    }
+    .sos iconify-icon { font-size: var(--size-icon-lg); }
+    .sos__title { font-weight: var(--weight-semibold); font-size: var(--text-headline); }
+    .sos__desc { font-size: var(--text-caption); opacity: 0.9; }
+
+    /* Inline alert */
+    .alert {
+      display: flex;
+      gap: var(--space-4);
+      padding: var(--space-5);
+      border-radius: var(--radius-card);
+      font: var(--weight-regular) var(--text-callout) var(--font-family-base);
+      line-height: 1.5;
+    }
+    .alert iconify-icon { font-size: var(--size-icon-sm); flex-shrink: 0; margin-top: 2px; }
+    .alert--info { background: var(--color-info-soft); color: var(--brand-blue-900); }
+    .alert--success { background: var(--color-success-soft); color: var(--brand-green-700); }
+    .alert--warning { background: var(--color-warning-soft); color: var(--palette-amber-700); }
+    .alert--danger { background: var(--color-danger-soft); color: var(--color-danger); }
+    .alert__title { font-weight: var(--weight-semibold); margin-bottom: var(--space-2); }
+
+    /* Input */
+    .input {
+      width: 100%;
+      height: var(--size-input);
+      padding: 0 var(--space-5);
+      background: var(--color-bg-canvas);
+      color: var(--color-text-primary);
+      font: var(--weight-regular) var(--text-callout) var(--font-family-base);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-control);
+      transition: var(--motion-micro);
+      outline: none;
+    }
+    .input:focus { border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-accent-soft); }
+    .input.is-error { border-color: var(--color-danger); }
+
+    .label { display: block; font-weight: var(--weight-semibold); font-size: var(--text-callout); margin-bottom: var(--space-2); }
+    .help { font-size: var(--text-caption); color: var(--color-text-secondary); margin-top: var(--space-2); }
+    .help--danger { color: var(--color-danger); }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      height: var(--size-input);
+      padding: 0 var(--space-5);
+      background: var(--color-bg-canvas);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-pill);
+    }
+    .search iconify-icon { color: var(--color-text-tertiary); font-size: var(--size-icon-sm); }
+    .search input { flex: 1; border: 0; background: transparent; font: var(--text-callout) var(--font-family-base); outline: none; }
+
+    .textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-bg-canvas);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-control);
+      font: var(--text-callout) var(--font-family-base);
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+    }
+    .textarea:focus { border-color: var(--color-accent); }
+
+    .toggle {
+      width: 52px;
+      height: var(--space-8);
+      background: var(--color-border-strong);
+      border-radius: var(--radius-pill);
+      position: relative;
+      transition: var(--motion-transition) var(--easing-standard);
+      cursor: pointer;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .toggle::after {
+      content: "";
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 28px; height: 28px;
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-pill);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      transition: var(--motion-transition) var(--easing-standard);
+    }
+    .toggle.is-on { background: var(--color-accent); }
+    .toggle.is-on::after { transform: translateX(20px); }
+
+    .check {
+      width: var(--size-icon-md); height: var(--size-icon-md);
+      border: 2px solid var(--color-border-strong);
+      border-radius: var(--radius-1);
+      background: var(--color-bg-surface);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      vertical-align: middle;
+      transition: var(--motion-micro);
+    }
+    .check.is-on {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: var(--color-accent-on);
+    }
+
+    /* Avatar */
+    .avatar {
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, var(--brand-blue-400), var(--brand-blue-600));
+      color: var(--color-text-on-accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--weight-semibold);
+      font-family: var(--font-family-base);
+    }
+    .avatar--sm { width: var(--size-avatar-sm); height: var(--size-avatar-sm); font-size: var(--font-13); }
+    .avatar--md { width: var(--size-avatar-md); height: var(--size-avatar-md); font-size: var(--text-callout); }
+    .avatar--lg { width: var(--size-avatar-lg); height: var(--size-avatar-lg); font-size: var(--text-body-lg); }
+    .avatar--xl { width: var(--size-avatar-xl); height: var(--size-avatar-xl); font-size: var(--font-22); }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 5px; top: 8px; bottom: 8px;
+      width: 2px;
+      background: var(--color-border-subtle);
+    }
+    .timeline__row {
+      position: relative;
+      padding: 16px 16px 16px 0;
+    }
+    .timeline__row::before {
+      content: "";
+      position: absolute;
+      left: -24px; top: 22px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--color-accent);
+    }
+    .timeline__row__time { font-family: var(--font-family-mono); font-size: 12px; color: var(--color-text-secondary); }
+    .timeline__row__title { font-weight: 600; font-size: 15px; margin-top: 4px; }
+    .timeline__row__desc { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+
+    /* Stat */
+    .stat {
+      background: white;
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .stat__label { font-size: 13px; color: var(--color-text-secondary); }
+    .stat__value { font-size: 32px; font-weight: 600; color: var(--color-accent); margin: 4px 0; }
+    .stat__delta { font-size: 12px; color: var(--color-success); }
+
+    /* Empty state */
+    .empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--color-text-secondary);
+    }
+    .empty iconify-icon { font-size: 48px; color: var(--color-text-tertiary); margin-bottom: 12px; }
+    .empty__title { font-weight: 600; font-size: 17px; color: var(--color-text-primary); }
+    .empty__hint { font-size: 14px; margin-top: 4px; }
+
+    .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .stack { display: flex; flex-direction: column; gap: 12px; }
+  </style>
+</head>
+<body>
+
+<nav class="pv-nav">
+  <div class="pv-nav__inner">
+    <a href="preview.html" class="pv-nav__brand">
+      <img src="logo/brand-system/01_심볼단독.svg" alt="">
+      하루안부 DS
+    </a>
+    <div class="pv-nav__links">
+      <a href="preview-foundations.html" class="pv-nav__link">Foundations</a>
+      <a href="preview-components.html" class="pv-nav__link pv-nav__link--active">Components</a>
+      <a href="preview-patterns.html" class="pv-nav__link">Patterns</a>
+      <a href="preview-roles.html" class="pv-nav__link">Roles</a>
+    </div>
+    <div class="pv-nav__version">v3.1</div>
+  </div>
+</nav>
+
+<header class="pv-header">
+  <div class="pv-header__eyebrow">02 · COMPONENTS</div>
+  <h1 class="pv-header__title">컴포넌트</h1>
+  <p class="pv-header__desc">화면을 만들 때 가져다 쓰는 모든 UI 컴포넌트의 라이브 데모. 6 카테고리: Action · Containment · Navigation · Communication · Input · Display</p>
+</header>
+
+<main class="pv-container">
+
+  <!-- A. Action -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">A. Action — 사용자가 누르는 것</h2>
+
+    <h3 class="pv-subsection__title">A1. Button</h3>
+    <div class="pv-demo">
+      <div class="row">
+        <button class="btn btn--primary">기록 저장</button>
+        <button class="btn btn--secondary">나중에</button>
+        <button class="btn btn--destructive"><iconify-icon icon="fluent:delete-24-filled"></iconify-icon>기록 삭제</button>
+        <button class="btn btn--ghost">AI 요약 보기</button>
+        <button class="btn btn--primary"><iconify-icon icon="fluent:send-24-filled"></iconify-icon>보호자에게 공유</button>
+        <button class="btn btn--primary" disabled>전송 중...</button>
+      </div>
+      <div style="margin-top: 16px;" class="row">
+        <button class="btn btn--primary btn--sm">필터 (compact 36px)</button>
+        <button class="btn btn--primary">기록 저장 (기본 48px)</button>
+        <button class="btn btn--primary btn--lg">간호사 호출 (환자용 56px)</button>
+      </div>
+      <div style="margin-top: 16px;">
+        <button class="btn btn--primary btn--full">복용 완료 처리</button>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">A2. FAB — AI 진입점 (하루안부 심볼)</h3>
+    <div class="pv-demo">
+      <div class="row" style="gap: 24px;">
+        <button class="fab" aria-label="AI 어시스턴트 열기">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="">
+        </button>
+        <div style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.6;">
+          탭바 우측에 분리 배치된 56×56 원형 버튼.<br>
+          <strong>Sparkle 아이콘이 아니라 하루안부 심볼</strong>이 들어간다.<br>
+          탭하면 AI 어시스턴트 바텀시트가 열림.
+        </div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">A3. Chip / Mode</h3>
+    <div class="pv-demo">
+      <div class="row">
+        <button class="chip is-active">전체</button>
+        <button class="chip">식사</button>
+        <button class="chip">투약</button>
+        <button class="chip">활동</button>
+        <button class="chip">배변</button>
+        <button class="chip">특이사항</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- B. Containment -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">B. Containment — 콘텐츠를 담는 그릇</h2>
+
+    <h3 class="pv-subsection__title">B1. Card 4종 (v3.1 — 화면당 hero 1개, 일반은 default)</h3>
+
+    <p class="pv-section__desc">새 화면을 만들 때 이 4개 중 하나만 고르면 된다. Glass는 일반 정보 카드의 기본이 아니라 탭바·모달·AI 리포트·환자 가족 사진 4곳 한정의 OPTIONAL.</p>
+
+    <div class="pv-demo">
+      <div class="pv-grid pv-grid--2">
+        <div class="demo-card demo-card--default">
+          <h4>★ card-default (대부분의 카드)</h4>
+          <p>흰 surface + 1px 보더 + 약한 shadow. 정보 표시는 모두 이것. 블러·반투명 없음.</p>
+        </div>
+        <div class="demo-card demo-card--action" role="button" tabindex="0">
+          <h4>card-action (클릭 가능)</h4>
+          <p>탭하면 이동·실행. default + hover/active 피드백. 마우스 올려보세요.</p>
+        </div>
+        <div class="demo-card demo-card--alert demo-card--alert-danger">
+          <h4>card-alert · danger</h4>
+          <p>SOS·위험 강조. 상태 soft 배경으로 즉시 식별.</p>
+        </div>
+        <div class="demo-card demo-card--hero">
+          <h4>card-hero (화면당 1개 한정)</h4>
+          <p>오늘의 한 줄·AI 리포트 표지. 더 강조할 게 있으면 우선순위를 다시 검토.</p>
+        </div>
+      </div>
+
+      <h4 style="font-size: var(--font-13); color: var(--color-text-secondary); margin: var(--space-7) 0 var(--space-4); text-transform: uppercase; letter-spacing: 0.06em;">card-alert 4 intent</h4>
+      <div class="pv-grid pv-grid--4">
+        <div class="demo-card demo-card--alert demo-card--alert-success" style="padding: var(--space-5);">
+          <h4 style="font-size: var(--font-14);">success</h4>
+          <p>정상·완료</p>
+        </div>
+        <div class="demo-card demo-card--alert demo-card--alert-warning" style="padding: var(--space-5);">
+          <h4 style="font-size: var(--font-14);">warning</h4>
+          <p>주의·확인</p>
+        </div>
+        <div class="demo-card demo-card--alert demo-card--alert-danger" style="padding: var(--space-5);">
+          <h4 style="font-size: var(--font-14);">danger</h4>
+          <p>SOS·위험</p>
+        </div>
+        <div class="demo-card demo-card--alert demo-card--alert-info" style="padding: var(--space-5);">
+          <h4 style="font-size: var(--font-14);">info</h4>
+          <p>정보·안내</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">B1.5 Glass card — OPTIONAL (예외 4곳만)</h3>
+    <p class="pv-section__desc">아래는 <strong>일반 정보 카드 기본이 아니다</strong>. Glass(반투명 + blur)는 다음 4곳에만 한정 사용:<br>① 플로팅 필 탭바 ② 모달 sheet ③ AI 리포트 카드(선택적) ④ 환자앱 가족 사진 카드.</p>
+
+    <div class="pv-demo--bg pv-demo">
+      <div class="demo-card demo-card--glass" style="max-width: 360px;">
+        <h4>card-glass (예외 사용)</h4>
+        <p>반투명 흰색 + blur(16px) + 프로스티드 하이라이트. 일반 정보 카드에 사용 금지 — 위 4곳만.</p>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">B2. Bottom Sheet (모바일 모달)</h3>
+    <div class="sheet-frame">
+      <div class="sheet">
+        <div class="sheet__handle"></div>
+        <h4 style="margin: 0 0 8px;">AI 어시스턴트</h4>
+        <p style="margin: 0 0 16px; font-size: 14px; color: var(--color-text-secondary);">무엇을 도와드릴까요?</p>
+        <div class="row">
+          <button class="btn btn--primary">시작하기</button>
+          <button class="btn btn--secondary">나중에</button>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">B3. Modal Overlay (웹·강제 동의)</h3>
+    <div class="modal-frame">
+      <div class="modal">
+        <h4 style="margin: 0 0 8px;">정말 삭제하시겠어요?</h4>
+        <p style="margin: 0 0 20px; font-size: 14px; color: var(--color-text-secondary);">이 기록은 복구할 수 없습니다.</p>
+        <div class="row" style="justify-content: flex-end;">
+          <button class="btn btn--ghost">취소</button>
+          <button class="btn btn--destructive">삭제</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- C. Navigation -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">C. Navigation</h2>
+
+    <h3 class="pv-subsection__title">C1. Mobile Header + Floating Pill Tabbar (시그니처)</h3>
+    <div class="device-frame">
+      <div class="device-screen">
+        <div class="header-mobile">
+          <iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon>
+          <div class="header-mobile__title">오늘</div>
+          <iconify-icon icon="fluent:alert-24-filled"></iconify-icon>
+        </div>
+        <div style="padding: 16px;">
+          <div class="demo-card demo-card--glass">
+            <h4>오늘 어머님은 안정적이세요</h4>
+            <p>식사 정상, 투약 완료, 활동 보통</p>
+          </div>
+        </div>
+        <nav class="tabbar" role="tablist">
+          <button class="tabbar__item is-active" role="tab" aria-selected="true">
+            <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+            <span>홈</span>
+          </button>
+          <button class="tabbar__item" role="tab">
+            <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+            <span>가이드</span>
+          </button>
+          <button class="tabbar__item" role="tab">
+            <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+            <span>소통</span>
+          </button>
+          <button class="tabbar__item" role="tab">
+            <iconify-icon icon="fluent:document-text-24-filled"></iconify-icon>
+            <span>기록</span>
+          </button>
+          <button class="tabbar__item" role="tab">
+            <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+            <span>마이</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+    <div class="pv-callout">
+      <strong>탭바 절대 규칙:</strong> 좌우 16px 인셋, 56px 높이, radius pill. 풀-블리드 절대 금지. 5탭 이내. AI FAB은 별도 원형으로 분리.
+    </div>
+
+    <h3 class="pv-subsection__title">C2. Web Header + Sidebar (의료진)</h3>
+    <div class="pv-demo" style="padding: 0; overflow: hidden;" data-role="medical">
+      <div class="header-web">
+        <div class="header-web__brand">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="">
+          하루안부 의료진
+        </div>
+        <div class="header-web__search">
+          <iconify-icon icon="fluent:search-24-filled"></iconify-icon>
+          <span>환자 이름·방번호 검색</span>
+        </div>
+        <div class="header-web__icons">
+          <iconify-icon icon="fluent:alert-24-filled" style="font-size: 24px; color: var(--color-text-secondary);"></iconify-icon>
+          <div class="header-web__avatar">박</div>
+        </div>
+      </div>
+      <div style="display: flex;">
+        <nav class="sidebar">
+          <div class="sidebar__brand">
+            <img src="logo/brand-system/01_심볼단독.svg" alt="">
+            메뉴
+          </div>
+          <div class="sidebar__item is-active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon>대시보드</div>
+          <div class="sidebar__item"><iconify-icon icon="fluent:people-24-filled"></iconify-icon>환자 목록</div>
+          <div class="sidebar__item"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon>기록</div>
+          <div class="sidebar__item"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon>처방</div>
+          <div class="sidebar__item"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon>소통</div>
+          <div class="sidebar__item"><iconify-icon icon="fluent:settings-24-filled"></iconify-icon>설정</div>
+        </nav>
+        <div style="flex: 1; padding: 24px;">
+          <div style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 8px;">콘텐츠 영역</div>
+          <h4 style="margin: 0 0 16px;">오늘의 환자 현황</h4>
+          <div class="pv-grid pv-grid--3">
+            <div class="stat"><div class="stat__label">오늘 케어</div><div class="stat__value">42</div><div class="stat__delta">+3 vs 어제</div></div>
+            <div class="stat"><div class="stat__label">미완료</div><div class="stat__value" style="color: var(--color-warning);">7</div></div>
+            <div class="stat"><div class="stat__label">SOS</div><div class="stat__value" style="color: var(--color-danger);">1</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- D. Communication -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">D. Communication — 시스템이 말하는 것</h2>
+
+    <h3 class="pv-subsection__title">D1. Badge</h3>
+    <div class="pv-demo">
+      <div class="row">
+        <span class="badge badge--success"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon>정상</span>
+        <span class="badge badge--warning">확인 필요</span>
+        <span class="badge badge--danger">긴급</span>
+        <span class="badge badge--info">정보</span>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">D2. Toast (탭바 위 100px, 자동 2.5초)</h3>
+    <div class="pv-demo" style="background: var(--color-bg-canvas); display: flex; justify-content: center;">
+      <div class="toast">
+        <iconify-icon icon="fluent:checkmark-circle-24-filled" style="font-size: 20px;"></iconify-icon>
+        <span>기록이 저장되었어요</span>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">D3. SOS Banner (최상단, 닫기 없음)</h3>
+    <div class="pv-demo">
+      <div class="sos" role="alert" aria-live="assertive">
+        <iconify-icon icon="fluent:siren-24-filled"></iconify-icon>
+        <div>
+          <div class="sos__title">긴급 알림 — 어머님 낙상</div>
+          <div class="sos__desc">2분 전 · 즉시 확인이 필요합니다</div>
+        </div>
+        <button class="btn btn--secondary" style="margin-left: auto; background: white; color: var(--color-danger);">전화</button>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">D4. Inline Alert (4 intent)</h3>
+    <div class="pv-demo">
+      <div class="stack">
+        <div class="alert alert--info">
+          <iconify-icon icon="fluent:info-24-filled"></iconify-icon>
+          <div><div class="alert__title">새로운 AI 리포트</div>오늘 저녁 7시에 발송됩니다</div>
+        </div>
+        <div class="alert alert--success">
+          <iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>
+          <div><div class="alert__title">설정 저장 완료</div>알림 기본값이 적용되었습니다</div>
+        </div>
+        <div class="alert alert--warning">
+          <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+          <div><div class="alert__title">연결 불안정</div>네트워크 상태를 확인해주세요</div>
+        </div>
+        <div class="alert alert--danger">
+          <iconify-icon icon="fluent:error-circle-24-filled"></iconify-icon>
+          <div><div class="alert__title">기록 저장 실패</div>잠시 후 다시 시도해주세요</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- E. Input -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">E. Input</h2>
+
+    <h3 class="pv-subsection__title">E1. Text Field — 기본 / 포커스 / 에러 / 비활성</h3>
+    <div class="pv-demo">
+      <div class="pv-grid pv-grid--2">
+        <div>
+          <label class="label">이름</label>
+          <input class="input" placeholder="홍길동" value="박서영">
+          <div class="help">담당 의료진 이름을 입력하세요</div>
+        </div>
+        <div>
+          <label class="label">전화번호 (포커스 시뮬레이션)</label>
+          <input class="input" placeholder="010-0000-0000" autofocus>
+          <div class="help">긴급 알림이 이 번호로 전송됩니다</div>
+        </div>
+        <div>
+          <label class="label">이메일</label>
+          <input class="input is-error" value="abc@" placeholder="email@example.com">
+          <div class="help help--danger">올바른 이메일 형식이 아니에요</div>
+        </div>
+        <div>
+          <label class="label">소속 (비활성)</label>
+          <input class="input" value="시스템 관리" disabled>
+          <div class="help">관리자에게 문의하세요</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">E2. Search</h3>
+    <div class="pv-demo">
+      <div class="search">
+        <iconify-icon icon="fluent:search-24-filled"></iconify-icon>
+        <input placeholder="환자 이름이나 방번호로 검색">
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">E3. Textarea (다중 행)</h3>
+    <div class="pv-demo">
+      <label class="label">특이사항 메모</label>
+      <textarea class="textarea" placeholder="식사 후 가벼운 어지러움 호소. 30분 안정 후 회복...">오늘 오후 식사 후 가벼운 어지러움 호소하셨고, 30분 안정 후 회복하셨습니다. 보호자에게 공유 예정.</textarea>
+    </div>
+
+    <h3 class="pv-subsection__title">E4. Toggle / Switch</h3>
+    <div class="pv-demo">
+      <div class="row" style="align-items: center; gap: 24px;">
+        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px;">
+          <span class="toggle is-on" role="switch" aria-checked="true"></span>
+          긴급 알림 받기
+        </label>
+        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px;">
+          <span class="toggle" role="switch" aria-checked="false"></span>
+          저녁 리포트
+        </label>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">E5. Checkbox</h3>
+    <div class="pv-demo">
+      <div class="stack">
+        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; cursor: pointer;">
+          <span class="check is-on"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+          식사 1/3 이상 완료
+        </label>
+        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; cursor: pointer;">
+          <span class="check is-on"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+          오전 투약 완료
+        </label>
+        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; cursor: pointer;">
+          <span class="check"></span>
+          오후 산책 완료
+        </label>
+        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; cursor: pointer;">
+          <span class="check"></span>
+          저녁 체위 변경
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- F. Display -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">F. Display</h2>
+
+    <h3 class="pv-subsection__title">F1. Avatar (4 사이즈)</h3>
+    <div class="pv-demo">
+      <div class="row" style="align-items: flex-end; gap: 16px;">
+        <div style="text-align: center;"><div class="avatar avatar--sm">박</div><div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">32px</div></div>
+        <div style="text-align: center;"><div class="avatar avatar--md">박</div><div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">40px</div></div>
+        <div style="text-align: center;"><div class="avatar avatar--lg">박</div><div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">56px</div></div>
+        <div style="text-align: center;"><div class="avatar avatar--xl">박</div><div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">72px</div></div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">F2. Timeline</h3>
+    <div class="pv-demo">
+      <div class="timeline">
+        <div class="timeline__row">
+          <div class="timeline__row__time">09:30</div>
+          <div class="timeline__row__title">아침 약 복용</div>
+          <div class="timeline__row__desc">고혈압약 1정 · 박간호사</div>
+        </div>
+        <div class="timeline__row">
+          <div class="timeline__row__time">12:15</div>
+          <div class="timeline__row__title">점심 식사 완료</div>
+          <div class="timeline__row__desc">2/3 정도 드심 · 평소와 비슷</div>
+        </div>
+        <div class="timeline__row">
+          <div class="timeline__row__time">14:40</div>
+          <div class="timeline__row__title">오후 산책 30분</div>
+          <div class="timeline__row__desc">정원에서 가족 산책 · 컨디션 좋음</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">F3. Stat Card (큰 숫자)</h3>
+    <div class="pv-demo">
+      <div class="pv-grid pv-grid--3">
+        <div class="stat">
+          <div class="stat__label">이번 주 케어 완료율</div>
+          <div class="stat__value">94%</div>
+          <div class="stat__delta">+5% vs 지난주</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">평균 응답 시간</div>
+          <div class="stat__value">1.2시간</div>
+          <div class="stat__delta">목표 2시간 이내</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">전화 문의 감소</div>
+          <div class="stat__value">-32%</div>
+          <div class="stat__delta">3개월 전 대비</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">F4. Empty State</h3>
+    <div class="pv-demo">
+      <div class="empty">
+        <iconify-icon icon="fluent:document-text-24-filled"></iconify-icon>
+        <div class="empty__title">아직 오늘의 기록이 없어요</div>
+        <div class="empty__hint">간호사가 첫 기록을 남기면 여기에 표시됩니다</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pv-footer">
+  하루안부 디자인 시스템 v3.1 · 2026.05.09<br>
+  <a href="preview.html">← 메인</a> · <a href="02_COMPONENTS.md">02_COMPONENTS.md</a> · <a href="tokens/tokens.css">tokens.css</a>
+</footer>
+
+</body>
+</html>

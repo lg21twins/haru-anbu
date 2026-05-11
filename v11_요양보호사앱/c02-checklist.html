@@ -8,8 +8,16 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#DCFCE7">
   <title>하루안부 · 요양보호사 · 케어 기록</title>
+  <!-- Noto Sans SC: 중국어 폴백 (요양보호사 다국어 지원) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <link rel="stylesheet" href="../07_디자인/system/app.css">
+  <link rel="stylesheet" href="../07_디자인/system/components.css">
+  <link rel="stylesheet" href="caregiver.css">
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script defer src="caregiver.js"></script>
   <style>
     /* ============================================================
        c02 · 케어 기록
@@ -97,7 +105,7 @@
       -webkit-backdrop-filter: blur(14px) saturate(140%);
     }
     .header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-    .header-ttl { font-size: 18px; font-weight: 800; color: var(--t1); letter-spacing: -.4px; line-height: 1.2; }
+    .header-ttl { font-size: 18px; font-weight: 700; color: var(--t1); letter-spacing: -.4px; line-height: 1.2; }
     .header-sub {
       font-size: 11px; font-weight: 600; color: var(--t2); margin-top: 2px;
       display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;
@@ -107,16 +115,16 @@
       padding: 2px 8px; border-radius: 999px;
       background: rgba(245, 158, 11, .14);
       color: var(--palette-amber-700);
-      font-size: 10px; font-weight: 800; letter-spacing: .2px;
+      font-size: 10px; font-weight: 700; letter-spacing: .2px;
       cursor: pointer;
     }
-    .sync-pill b { font-weight: 800; }
+    .sync-pill b { font-weight: 700; }
     .peak-pill {
       display: inline-flex; align-items: center; gap: 3px;
       padding: 2px 8px; border-radius: 999px;
       background: rgba(0,0,0,.05);
       color: var(--t2);
-      font-size: 10px; font-weight: 800; letter-spacing: .2px;
+      font-size: 10px; font-weight: 700; letter-spacing: .2px;
     }
     .peak-pill iconify-icon { font-size: 11px; color: var(--t2); }
     .sync-dot {
@@ -158,7 +166,7 @@
     .sec-l2 {
       margin: 20px var(--page-pad) 8px;
       display: flex; align-items: baseline; justify-content: space-between;
-      font-size: 12px; font-weight: 800; color: var(--t2);
+      font-size: 12px; font-weight: 700; color: var(--t2);
       letter-spacing: .5px; text-transform: uppercase;
       position: relative; z-index: 1;
     }
@@ -169,7 +177,7 @@
       display: inline-flex; align-items: center; justify-content: center;
       border-radius: 50%; flex-shrink: 0;
       background: rgba(0,0,0,.05); color: var(--t2);
-      font-weight: 800; letter-spacing: -.2px;
+      font-weight: 700; letter-spacing: -.2px;
     }
     .av.md { width: 36px; height: 36px; font-size: 14px; }
     .av.lg { width: 44px; height: 44px; font-size: 17px; }
@@ -197,7 +205,7 @@
     }
     .now-k {
       display: inline-flex; align-items: center; gap: 4px;
-      font-size: 11px; font-weight: 800; color: var(--palette-amber-700);
+      font-size: 11px; font-weight: 700; color: var(--palette-amber-700);
       letter-spacing: .4px; text-transform: uppercase;
     }
     .now-k iconify-icon { font-size: 13px; }
@@ -221,13 +229,13 @@
       font-size: 13px; font-weight: 700; color: var(--t1);
       letter-spacing: -.2px;
     }
-    .now-row-t b { font-weight: 800; }
+    .now-row-t b { font-weight: 700; }
     .now-row-s {
       font-size: 11px; font-weight: 600; color: var(--t3);
       margin-top: 2px;
     }
     .now-row-s .warn-text {
-      color: var(--palette-amber-700); font-weight: 800;
+      color: var(--palette-amber-700); font-weight: 700;
     }
     .now-row > iconify-icon { font-size: 15px; color: var(--t3); flex-shrink: 0; }
 
@@ -243,7 +251,7 @@
       border: 0; border-radius: 13px;
       background: linear-gradient(135deg, var(--brand-green-400), var(--accent));
       color: #fff; font-family: inherit;
-      font-size: 14px; font-weight: 800; letter-spacing: -.2px;
+      font-size: 14px; font-weight: 700; letter-spacing: -.2px;
       box-shadow: 0 4px 14px rgba(34,197,94,.26);
       cursor: pointer; transition: transform .1s;
       position: relative;
@@ -303,12 +311,12 @@
     .pt-row-info { flex: 1; min-width: 0; }
     .pt-row-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
     .pt-row-n {
-      font-size: 14px; font-weight: 800; color: var(--t1);
+      font-size: 14px; font-weight: 700; color: var(--t1);
       letter-spacing: -.2px; line-height: 1.25;
     }
     .pt-row-n .room { font-weight: 600; color: var(--t3); font-size: 12px; }
     .pt-row-pct {
-      font-size: 12px; font-weight: 800; color: var(--t2);
+      font-size: 12px; font-weight: 700; color: var(--t2);
       letter-spacing: -.2px; flex-shrink: 0;
       display: inline-flex; align-items: center; gap: 4px;
     }
@@ -354,7 +362,7 @@
       position: relative; z-index: 1;
     }
     .quick-head > span:first-child {
-      font-size: 13px; font-weight: 800; color: var(--t1); letter-spacing: -.2px;
+      font-size: 13px; font-weight: 700; color: var(--t1); letter-spacing: -.2px;
     }
     .quick-head-sub {
       font-size: 11px; font-weight: 700; color: var(--t3);
@@ -382,7 +390,7 @@
     /* 뱃지: 3축으로 통일 (기본=숫자/시각 · warn=대기/주의 · ok=완료) */
     .q-c {
       position: absolute; top: 8px; right: 8px;
-      font-size: 9px; font-weight: 800; color: var(--t3);
+      font-size: 9px; font-weight: 700; color: var(--t3);
       background: rgba(0,0,0,.05); padding: 1px 5px; border-radius: 999px;
       letter-spacing: -.1px;
     }
@@ -398,13 +406,13 @@
     }
     .head-nm { flex: 1; min-width: 0; }
     .head-nm .n {
-      font-size: 17px; font-weight: 800; color: var(--t1);
+      font-size: 17px; font-weight: 700; color: var(--t1);
       letter-spacing: -.3px; line-height: 1.2;
       display: inline-flex; align-items: baseline; gap: 6px; flex-wrap: wrap;
     }
     .head-nm .m { font-size: 11px; font-weight: 600; color: var(--t2); margin-top: 2px; }
     .head-pct {
-      font-size: 11px; font-weight: 800; color: var(--t2);
+      font-size: 11px; font-weight: 700; color: var(--t2);
       background: rgba(0,0,0,.05); padding: 1px 7px; border-radius: 999px;
       letter-spacing: -.1px;
     }
@@ -469,7 +477,7 @@
       background: linear-gradient(90deg, var(--brand-green-400), var(--accent));
       border-radius: 999px;
     }
-    .pd-ratio { font-size: 12px; font-weight: 800; color: var(--t1); letter-spacing: -.2px; }
+    .pd-ratio { font-size: 12px; font-weight: 700; color: var(--t1); letter-spacing: -.2px; }
     .pd-ratio .u { color: var(--t3); font-weight: 700; }
 
     /* 2×4 그리드 */
@@ -502,7 +510,7 @@
     }
     .g-ic iconify-icon { font-size: 16px; color: var(--t2); }
     .g-state {
-      font-size: 10px; font-weight: 800; color: var(--t3);
+      font-size: 10px; font-weight: 700; color: var(--t3);
       letter-spacing: .3px; text-transform: uppercase;
     }
     .g-card.done .g-ic { background: rgba(34,197,94,.14); }
@@ -514,7 +522,7 @@
     .g-card.now { box-shadow: 0 1px 3px rgba(245,158,11,.12); border-color: rgba(245,158,11,.2); }
     .g-card.skip { opacity: .6; }
     .g-t {
-      font-size: 14px; font-weight: 800; color: var(--t1);
+      font-size: 14px; font-weight: 700; color: var(--t1);
       letter-spacing: -.2px; line-height: 1.25;
     }
     .g-v {
@@ -535,7 +543,7 @@
        ============================================================ */
     .stepper {
       position: fixed; inset: 0; z-index: 200;
-      background: var(--brand-green-100);
+      background: #F4FAF6;
       display: none; flex-direction: column;
     }
     .stepper.show { display: flex; }
@@ -543,7 +551,7 @@
       position: absolute; inset: 0; z-index: 0; pointer-events: none;
       background:
         radial-gradient(520px 420px at 50% -6%, rgba(34,197,94,.12), transparent 65%),
-        linear-gradient(180deg, #D9F4E1 0%, #E8F6EE 28%, #F0F8F3 62%, #F4FAF6 100%);
+        linear-gradient(180deg,#EAF6EE 0%,#F0F8F3 35%,#F4FAF6 100%);
     }
     .st-header {
       position: relative; z-index: 2;
@@ -555,7 +563,7 @@
     .st-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
     .st-ctx { flex: 1; min-width: 0; text-align: center; }
     .st-ctx-top { font-size: 13px; font-weight: 700; color: var(--t2); letter-spacing: -.2px; }
-    .st-ctx-top b { color: var(--t1); font-weight: 800; }
+    .st-ctx-top b { color: var(--t1); font-weight: 700; }
     .st-ctx-sub { font-size: 12px; font-weight: 600; color: var(--t3); margin-top: 1px; }
     .dots { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; }
     .dot { width: 22px; height: 3px; border-radius: 999px; background: rgba(0,0,0,.08); transition: background .25s; }
@@ -572,9 +580,9 @@
     .step.active { display: block; }
     @keyframes stepIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
     .step-head { margin-bottom: 20px; }
-    .step-kicker { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 800; color: var(--accent-strong); letter-spacing: .4px; text-transform: uppercase; }
+    .step-kicker { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: var(--accent-strong); letter-spacing: .4px; text-transform: uppercase; }
     .step-kicker iconify-icon { font-size: 13px; }
-    .step-title { margin: 6px 0 0; font-size: 22px; font-weight: 800; color: var(--t1); letter-spacing: -.5px; line-height: 1.2; }
+    .step-title { margin: 6px 0 0; font-size: 22px; font-weight: 700; color: var(--t1); letter-spacing: -.5px; line-height: 1.2; }
     .step-hint { margin: 4px 0 0; font-size: 13px; font-weight: 500; color: var(--t2); line-height: 1.45; }
     .sec { margin-top: 18px; }
     .sec-l { font-size: 12px; font-weight: 700; color: var(--t2); letter-spacing: .3px; margin-bottom: 8px; }
@@ -583,7 +591,7 @@
     .v-field:active { transform: scale(.99); }
     .v-field.full { grid-column: 1 / -1; }
     .v-field-l { font-size: 11px; font-weight: 700; color: var(--t3); letter-spacing: .3px; text-transform: uppercase; }
-    .v-field-v { margin-top: 6px; font-size: 22px; font-weight: 800; color: var(--t1); letter-spacing: -.5px; line-height: 1; }
+    .v-field-v { margin-top: 6px; font-size: 22px; font-weight: 700; color: var(--t1); letter-spacing: -.5px; line-height: 1; }
     .v-field-v .u { font-size: 12px; font-weight: 600; color: var(--t3); margin-left: 3px; }
     .v-field.warn .v-field-v { color: var(--palette-amber-700); }
     .opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
@@ -603,7 +611,7 @@
     .tx { width: 100%; min-height: 100px; padding: 13px 14px; background: rgba(255,255,255,.82); border: 1px solid transparent; border-radius: 14px; font-family: inherit; font-size: 14px; line-height: 1.5; color: var(--t1); resize: none; outline: none; transition: border-color .15s, background .15s; }
     .tx:focus { border-color: rgba(34,197,94,.4); background: rgba(255,255,255,.95); }
     .st-foot { flex-shrink: 0; padding: 12px 20px calc(var(--safe-b) + 14px); background: rgba(255,255,255,.82); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: .5px solid rgba(0,0,0,.05); display: flex; gap: 10px; position: relative; z-index: 2; }
-    .btn { height: 52px; border-radius: 14px; border: 0; font-family: inherit; font-size: 15px; font-weight: 800; letter-spacing: -.2px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: transform .1s; }
+    .btn { height: 52px; border-radius: 14px; border: 0; font-family: inherit; font-size: 15px; font-weight: 700; letter-spacing: -.2px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: transform .1s; }
     .btn:active { transform: scale(.97); }
     .btn iconify-icon { font-size: 18px; }
     .btn-prev { flex: 0 0 96px; background: rgba(0,0,0,.05); color: var(--t2); }
@@ -643,7 +651,7 @@
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 14px;
     }
-    .bs-t { font-size: 18px; font-weight: 800; color: var(--t1); letter-spacing: -.4px; line-height: 1.2; }
+    .bs-t { font-size: 18px; font-weight: 700; color: var(--t1); letter-spacing: -.4px; line-height: 1.2; }
     .bs-s { font-size: 12px; font-weight: 600; color: var(--t2); margin-top: 2px; }
     .bs-close {
       width: 34px; height: 34px; border-radius: 50%;
@@ -671,7 +679,7 @@
       transition: all .15s;
     }
     .bs-pt-c:active { transform: scale(.98); }
-    .bs-pt-nm { font-size: 13px; font-weight: 800; color: var(--t1); letter-spacing: -.2px; }
+    .bs-pt-nm { font-size: 13px; font-weight: 700; color: var(--t1); letter-spacing: -.2px; }
     .bs-pt-rm { font-size: 10px; font-weight: 700; color: var(--t3); margin-left: 2px; }
     .bs-pt-c.on {
       background: var(--accent-soft);
@@ -693,7 +701,7 @@
     .bs-f.on { background: var(--accent-soft); border-color: rgba(34,197,94,.3); }
     .bs-f.full { grid-column: 1 / -1; }
     .bs-f-l { font-size: 11px; font-weight: 700; color: var(--t3); letter-spacing: .2px; text-transform: uppercase; }
-    .bs-f-v { margin-top: 5px; font-size: 20px; font-weight: 800; color: var(--t1); letter-spacing: -.4px; line-height: 1; }
+    .bs-f-v { margin-top: 5px; font-size: 20px; font-weight: 700; color: var(--t1); letter-spacing: -.4px; line-height: 1; }
     .bs-f-v .u { font-size: 11px; font-weight: 600; color: var(--t3); margin-left: 2px; }
     .bs-f-prev { margin-top: 4px; font-size: 10px; font-weight: 600; color: var(--t3); }
 
@@ -702,7 +710,7 @@
     }
     .bs-btn {
       flex: 1; height: 52px; border-radius: 14px; border: 0;
-      font-family: inherit; font-size: 15px; font-weight: 800;
+      font-family: inherit; font-size: 15px; font-weight: 700;
       letter-spacing: -.2px;
       display: inline-flex; align-items: center; justify-content: center; gap: 5px;
       cursor: pointer; transition: transform .1s;
@@ -723,7 +731,7 @@
       border: .5px solid rgba(34,197,94,.2);
       margin-bottom: 14px;
     }
-    .voice-prev-l { font-size: 11px; font-weight: 800; color: var(--accent-strong); letter-spacing: .3px; text-transform: uppercase; }
+    .voice-prev-l { font-size: 11px; font-weight: 700; color: var(--accent-strong); letter-spacing: .3px; text-transform: uppercase; }
     .voice-prev-q { margin-top: 6px; font-size: 14px; font-weight: 700; color: var(--t1); line-height: 1.45; font-style: italic; }
     .voice-prev-q::before { content: '"'; color: var(--t3); }
     .voice-prev-q::after { content: '"'; color: var(--t3); }
@@ -746,11 +754,12 @@
       display: flex; align-items: stretch; justify-content: space-around; padding: 0 6px;
     }
     .tab {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      text-decoration: none; color: var(--t3); border-radius: 999px;
-      transition: color .15s;
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; text-decoration: none; color: var(--t3); border-radius: 999px;
+      transition: color .15s; min-height: 48px; padding: 6px 4px;
     }
-    .tab iconify-icon { font-size: 24px; }
+    .tab iconify-icon { font-size: 22px; }
+    .tab-label { font-size: 11px; font-weight: 600; letter-spacing: -.1px; line-height: 1; }
     .tab.active { color: var(--accent-strong); }
     .tab.active iconify-icon { filter: drop-shadow(0 2px 6px rgba(34,197,94,.28)); }
     .sos {
@@ -954,7 +963,7 @@
       </button>
       <button class="q" onclick="openQuick('med')">
         <span class="q-c ok">완료</span>
-        <iconify-icon icon="tabler:pill-filled"></iconify-icon>
+        <iconify-icon icon="fluent:pill-24-filled"></iconify-icon>
         <span class="q-l">복약</span>
       </button>
       <button class="q" onclick="openQuick('rotate')">
@@ -1040,7 +1049,7 @@
 
       <button class="g-card done" onclick="openStepperAt(3)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="tabler:pill-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon></span>
           <span class="g-state">완료</span>
         </div>
         <div class="g-t">투약</div>
@@ -1080,7 +1089,7 @@
 
       <button class="g-card idle" onclick="openStepperAt(7)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="ph:smiley-fill"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="fluent:emoji-24-filled"></iconify-icon></span>
           <span class="g-state">대기</span>
         </div>
         <div class="g-t">인지·정서</div>
@@ -1102,13 +1111,28 @@
 
   <!-- ============ 탭바 + SOS ============ -->
   <div class="tab-wrap">
-    <nav class="tabbar">
-      <a href="c01-today.html" class="tab" aria-label="홈"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></a>
-      <a href="c02-checklist.html" class="tab active" aria-label="기록"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></a>
-      <a href="c03-sotong.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></a>
-      <a href="c04-mypage.html" class="tab" aria-label="마이"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></a>
+    <nav class="tabbar" aria-label="요양보호사 앱 탭바">
+      <a href="c01-today.html" class="tab" aria-label="오늘">
+        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <span class="tab-label">오늘</span>
+      </a>
+      <a href="c02-checklist.html" class="tab active" aria-current="page" aria-label="기록">
+        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <span class="tab-label">기록</span>
+      </a>
+      <a href="c03-sotong.html" class="tab" aria-label="소통">
+        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <span class="tab-label">소통</span>
+      </a>
+      <a href="c04-mypage.html" class="tab" aria-label="마이">
+        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <span class="tab-label">마이</span>
+      </a>
     </nav>
-    <button class="sos" onclick="toast('SOS 호출 · 홈에서 선택')" aria-label="긴급 SOS">
+    <button class="cg-sos" data-sos-bind aria-label="긴급 SOS · 3초 길게 누르면 즉시 발신">
+      <span class="cg-sos__ring" aria-hidden="true">
+        <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
+      </span>
       <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
     </button>
   </div>
@@ -1198,11 +1222,11 @@
           <p class="step-hint">어제 혈압 128/82 · 체온 36.5°</p>
         </div>
         <div class="v-grid">
-          <button class="v-field" onclick="toast('혈압 수축')"><div class="v-field-l">혈압 · 수축</div><div class="v-field-v">132<span class="u">mmHg</span></div></button>
-          <button class="v-field" onclick="toast('혈압 이완')"><div class="v-field-l">혈압 · 이완</div><div class="v-field-v">84<span class="u">mmHg</span></div></button>
-          <button class="v-field" onclick="toast('체온')"><div class="v-field-l">체온</div><div class="v-field-v">36.7<span class="u">°C</span></div></button>
-          <button class="v-field" onclick="toast('맥박')"><div class="v-field-l">맥박</div><div class="v-field-v">76<span class="u">bpm</span></div></button>
-          <button class="v-field full warn" onclick="toast('혈당')"><div class="v-field-l">혈당 · 식후 2시간</div><div class="v-field-v">142<span class="u">mg/dL · 주의 범위</span></div></button>
+          <button class="v-field" onclick="openVitalKeypad('혈압 · 수축','mmHg','132','128',this)"><div class="v-field-l">혈압 · 수축</div><div class="v-field-v">132<span class="u">mmHg</span></div></button>
+          <button class="v-field" onclick="openVitalKeypad('혈압 · 이완','mmHg','84','82',this)"><div class="v-field-l">혈압 · 이완</div><div class="v-field-v">84<span class="u">mmHg</span></div></button>
+          <button class="v-field" onclick="openVitalKeypad('체온','°C','36.7','36.5',this)"><div class="v-field-l">체온</div><div class="v-field-v">36.7<span class="u">°C</span></div></button>
+          <button class="v-field" onclick="openVitalKeypad('맥박','bpm','76','74',this)"><div class="v-field-l">맥박</div><div class="v-field-v">76<span class="u">bpm</span></div></button>
+          <button class="v-field full warn" onclick="openVitalKeypad('혈당 · 식후 2시간','mg/dL','142','135',this)"><div class="v-field-l">혈당 · 식후 2시간</div><div class="v-field-v">142<span class="u">mg/dL · 주의 범위</span></div></button>
         </div>
       </section>
 
@@ -1231,7 +1255,7 @@
 
       <section class="step" data-step="3">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="tabler:pill-filled"></iconify-icon>Step 3 · 투약</span>
+          <span class="step-kicker"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon>Step 3 · 투약</span>
           <h2 class="step-title">복용한 약을 체크하세요</h2>
           <p class="step-hint">거부한 약이 있으면 아래에 메모</p>
         </div>
@@ -1298,7 +1322,7 @@
 
       <section class="step" data-step="7">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="ph:smiley-fill"></iconify-icon>Step 7 · 인지·정서</span>
+          <span class="step-kicker"><iconify-icon icon="fluent:emoji-24-filled"></iconify-icon>Step 7 · 인지·정서</span>
           <h2 class="step-title">오늘 기분은 어떠셨나요?</h2>
         </div>
         <div class="opts" style="grid-template-columns: repeat(5,1fr)">
@@ -1335,6 +1359,15 @@
   </div>
 
   <div class="toast" id="toastEl"></div>
+
+  <!-- ============ HaruCG 공유 오버레이 (SOS countdown · vital keypad) ============ -->
+  <div class="cg-overlay" id="cgOverlay">
+    <div class="cg-sheet">
+      <div class="cg-sheet__handle"></div>
+      <div id="cgSheetContent"></div>
+    </div>
+  </div>
+  <div class="cg-toast" id="cgToast"></div>
 
   <script>
     // ============================================================
@@ -1387,11 +1420,11 @@
     const QUICK_BODIES = {
       bp: (p) => `
         <div class="bs-grid">
-          <button class="bs-f on" onclick="toast('혈압 수축')"><div class="bs-f-l">수축</div><div class="bs-f-v">132<span class="u">mmHg</span></div><div class="bs-f-prev">어제 128</div></button>
-          <button class="bs-f on" onclick="toast('혈압 이완')"><div class="bs-f-l">이완</div><div class="bs-f-v">84<span class="u">mmHg</span></div><div class="bs-f-prev">어제 82</div></button>
-          <button class="bs-f" onclick="toast('체온')"><div class="bs-f-l">체온</div><div class="bs-f-v">36.7<span class="u">°C</span></div><div class="bs-f-prev">어제 36.5</div></button>
-          <button class="bs-f" onclick="toast('맥박')"><div class="bs-f-l">맥박</div><div class="bs-f-v">76<span class="u">bpm</span></div><div class="bs-f-prev">어제 74</div></button>
-          ${p === 'park' ? '<button class="bs-f full" style="background:var(--warn-soft)" onclick="toast(\'혈당\')"><div class="bs-f-l" style="color:var(--palette-amber-700)">혈당 · 재측정 권장</div><div class="bs-f-v" style="color:var(--palette-amber-700)">142<span class="u">mg/dL</span></div><div class="bs-f-prev">아침 142 (주의)</div></button>' : ''}
+          <button class="bs-f on" onclick="openVitalKeypad('혈압 · 수축','mmHg','132','128',this)"><div class="bs-f-l">수축</div><div class="bs-f-v">132<span class="u">mmHg</span></div><div class="bs-f-prev">어제 128</div></button>
+          <button class="bs-f on" onclick="openVitalKeypad('혈압 · 이완','mmHg','84','82',this)"><div class="bs-f-l">이완</div><div class="bs-f-v">84<span class="u">mmHg</span></div><div class="bs-f-prev">어제 82</div></button>
+          <button class="bs-f" onclick="openVitalKeypad('체온','°C','36.7','36.5',this)"><div class="bs-f-l">체온</div><div class="bs-f-v">36.7<span class="u">°C</span></div><div class="bs-f-prev">어제 36.5</div></button>
+          <button class="bs-f" onclick="openVitalKeypad('맥박','bpm','76','74',this)"><div class="bs-f-l">맥박</div><div class="bs-f-v">76<span class="u">bpm</span></div><div class="bs-f-prev">어제 74</div></button>
+          ${p === 'park' ? '<button class="bs-f full" style="background:var(--warn-soft)" onclick="openVitalKeypad(\'혈당\',\'mg/dL\',\'142\',\'135\',this)"><div class="bs-f-l" style="color:var(--palette-amber-700)">혈당 · 재측정 권장</div><div class="bs-f-v" style="color:var(--palette-amber-700)">142<span class="u">mg/dL</span></div><div class="bs-f-prev">아침 142 (주의)</div></button>' : ''}
         </div>
       `,
       meal: () => `
@@ -1462,7 +1495,98 @@
     }
     function saveQuick() {
       closeBS();
-      toast('기록 저장됨');
+      // 환자 행 progress 즉시 갱신 (선택된 환자 + 현재 quickKind 기준)
+      const sel = document.querySelector('#bsPt .bs-pt-c.on');
+      const ptId = sel ? sel.dataset.id : curPatient;
+      bumpPatientProgress(ptId);
+      // 동기화 상태 갱신: 오프라인이면 대기, 온라인이면 즉시 저장
+      const online = navigator.onLine !== false;
+      const syncMsg = online ? '서버 저장 완료' : '오프라인 대기 — 연결 시 자동 전송';
+      if (window.HaruCG) HaruCG.toast('기록 저장됨 · ' + syncMsg, 2400);
+      else toast('기록 저장됨 · ' + syncMsg);
+    }
+
+    /* ---- 환자 row progress 갱신 (반영적 UI) ---- */
+    function bumpPatientProgress(ptId) {
+      const row = document.querySelector(`.pt-row-c[onclick*="${ptId}"]`);
+      if (!row) return;
+      const pctEl = row.querySelector('.pt-row-pct');
+      const barEl = row.querySelector('.pt-row-bar > span');
+      if (!pctEl || !barEl) return;
+      const m = (pctEl.textContent || '').match(/(\d+)\s*\/\s*(\d+)/);
+      if (m) {
+        let cur = Math.min(parseInt(m[2], 10), parseInt(m[1], 10) + 1);
+        const total = parseInt(m[2], 10);
+        pctEl.textContent = cur + '/' + total;
+        barEl.style.width = (cur / total * 100) + '%';
+        if (cur >= total) {
+          row.classList.add('done');
+          pctEl.innerHTML = '<span class="ok"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>완료</span>';
+        }
+      }
+      // 동기화 pill의 대기 카운트도 +1 (오프라인일 때만)
+      if (navigator.onLine === false) {
+        const pillBold = document.querySelector('#syncPill b');
+        if (pillBold) {
+          const n = parseInt(pillBold.textContent || '0', 10) || 0;
+          pillBold.textContent = n + 1;
+        }
+      }
+    }
+
+    /* ---- Vital keypad sheet (toast-only 폐기, 실제 numeric input) ---- */
+    let _kpField = null;
+    function openVitalKeypad(label, unit, current, prev, fieldEl) {
+      _kpField = fieldEl || null;
+      if (!window.HaruCG) { toast(label); return; }
+      let buf = String(current || '');
+      function render() {
+        HaruCG.openSheet(
+          '<div class="cg-sheet__head">' +
+            '<div class="cg-sheet__ico"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></div>' +
+            '<div>' +
+              '<div class="cg-sheet__ttl">' + label + ' 입력</div>' +
+              '<div class="cg-sheet__sub">이전 값 ' + (prev || '-') + ' · 입력 후 저장</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="cg-vital-display">' +
+            '<div class="cg-vital-display__label">' + label + '</div>' +
+            '<div class="cg-vital-display__val" id="kpVal">' + (buf || '0') + '<span class="cg-vital-display__unit">' + (unit || '') + '</span></div>' +
+          '</div>' +
+          '<div class="cg-keypad">' +
+            ['1','2','3','4','5','6','7','8','9'].map(function(n){return '<button class="cg-keypad__btn" type="button" onclick="kpPush(\''+n+'\')">'+n+'</button>'}).join('') +
+            '<button class="cg-keypad__btn cg-keypad__btn--util" type="button" onclick="kpPush(\'.\')">.</button>' +
+            '<button class="cg-keypad__btn" type="button" onclick="kpPush(\'0\')">0</button>' +
+            '<button class="cg-keypad__btn cg-keypad__btn--util" type="button" onclick="kpBack()" aria-label="지우기"><iconify-icon icon="fluent:backspace-24-filled"></iconify-icon></button>' +
+          '</div>' +
+          '<div class="cg-sheet__cta">' +
+            '<button class="btn" style="flex:1;background:var(--palette-gray-100);color:var(--color-text-secondary)" onclick="HaruCG.closeSheet()">취소</button>' +
+            '<button class="btn btn-primary" style="flex:1" onclick="kpSave(\''+label+'\',\''+unit+'\')">저장</button>' +
+          '</div>'
+        );
+      }
+      window._kpBuf = function(){ return buf; };
+      window.kpPush = function(ch) {
+        if (ch === '.' && buf.includes('.')) return;
+        if (buf.length >= 5) return;
+        buf = buf === '0' && ch !== '.' ? ch : (buf + ch);
+        const v = document.getElementById('kpVal');
+        if (v) v.firstChild.textContent = buf;
+      };
+      window.kpBack = function() {
+        buf = buf.slice(0, -1);
+        const v = document.getElementById('kpVal');
+        if (v) v.firstChild.textContent = buf || '0';
+      };
+      window.kpSave = function(lab, un) {
+        if (_kpField) {
+          const valEl = _kpField.querySelector('.v-field-v, .bs-f-v');
+          if (valEl) valEl.innerHTML = (buf || '0') + '<span class="u">' + (un || '') + '</span>';
+        }
+        HaruCG.closeSheet();
+        HaruCG.toast(lab + ' ' + (buf || '-') + ' ' + (un || '') + ' 저장됨');
+      };
+      render();
     }
 
     // ============================================================

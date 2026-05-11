@@ -8,8 +8,16 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#DCFCE7">
   <title>하루안부 · 요양보호사 · 소통</title>
+  <!-- Noto Sans SC: 중국어 폴백 (요양보호사 다국어 지원) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <link rel="stylesheet" href="../07_디자인/system/app.css">
+  <link rel="stylesheet" href="../07_디자인/system/components.css">
+  <link rel="stylesheet" href="caregiver.css">
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script defer src="caregiver.js"></script>
   <style>
     /* ============================================================
        c03 · 소통
@@ -34,7 +42,7 @@
       --page-pad: 16px;
     }
 
-    html { height: 100%; background: var(--brand-green-100); }
+    html { height: 100%; background: #F4FAF6; }
     body { min-height: 100%; color: var(--t1); overflow-x: hidden; font-size: var(--text-body); }
 
     .bg {
@@ -59,7 +67,7 @@
       -webkit-backdrop-filter: blur(10px) saturate(140%);
     }
     .header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-    .header-ttl { font-size: 24px; font-weight: 800; color: var(--t1); letter-spacing: -.5px; line-height: 1.2; }
+    .header-ttl { font-size: 24px; font-weight: 700; color: var(--t1); letter-spacing: -.5px; line-height: 1.2; }
 
     .icon-btn {
       width: 40px; height: 40px; border-radius: 50%;
@@ -88,14 +96,14 @@
     }
     .hand-k {
       display: inline-flex; align-items: center; gap: 5px;
-      font-size: 12px; font-weight: 800; color: var(--t2);
+      font-size: 12px; font-weight: 700; color: var(--t2);
       letter-spacing: -.2px;
     }
     .hand-k iconify-icon { font-size: 15px; color: var(--accent-strong); }
     .hand-pct {
       font-size: 11px; font-weight: 700; color: var(--t3);
     }
-    .hand-pct b { color: var(--t1); font-weight: 800; }
+    .hand-pct b { color: var(--t1); font-weight: 700; }
     .hand-checks {
       display: flex; flex-wrap: wrap; gap: 5px;
       margin-bottom: 10px;
@@ -121,7 +129,7 @@
     .hc.todo .hc-dot { background: var(--palette-amber-600); }
     .hand-cta {
       width: 100%; height: 38px; border: 0; border-radius: 11px;
-      font-family: inherit; font-size: 12px; font-weight: 800;
+      font-family: inherit; font-size: 12px; font-weight: 700;
       background: rgba(245,158,11,.12); color: var(--palette-amber-700);
       display: inline-flex; align-items: center; justify-content: center; gap: 4px;
       cursor: pointer; transition: transform .1s;
@@ -145,7 +153,7 @@
     }
     .share-k {
       display: inline-flex; align-items: center; gap: 5px;
-      font-size: 13px; font-weight: 800; color: var(--t1);
+      font-size: 13px; font-weight: 700; color: var(--t1);
       letter-spacing: -.2px;
     }
     .share-k iconify-icon { font-size: 16px; color: var(--accent-strong); }
@@ -175,7 +183,7 @@
       width: 100%; height: 44px; border: 0; border-radius: 12px;
       background: linear-gradient(135deg, var(--brand-green-400), var(--accent));
       color: #fff;
-      font-family: inherit; font-size: 14px; font-weight: 800;
+      font-family: inherit; font-size: 14px; font-weight: 700;
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
       cursor: pointer; transition: transform .1s;
       box-shadow: 0 3px 10px rgba(34,197,94,.22);
@@ -200,7 +208,7 @@
       transition: all .15s;
       display: inline-flex; align-items: center; gap: 4px;
     }
-    .chip .n { font-weight: 800; color: var(--t3); }
+    .chip .n { font-weight: 700; color: var(--t3); }
     .chip.active {
       color: #fff; background: var(--accent); border-color: transparent;
     }
@@ -219,7 +227,7 @@
       letter-spacing: -.1px;
     }
     .sec-l .n {
-      font-size: 11px; font-weight: 800;
+      font-size: 11px; font-weight: 700;
       padding: 2px 9px; border-radius: 999px;
       background: var(--accent-soft); color: var(--accent-strong);
     }
@@ -271,7 +279,7 @@
       width: 46px; height: 46px; border-radius: 50%;
       flex-shrink: 0;
       display: inline-flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 17px; color: #fff;
+      font-weight: 700; font-size: 17px; color: #fff;
       position: relative;
     }
     .av iconify-icon { font-size: 22px; color: #fff; }
@@ -295,9 +303,9 @@
       display: flex; align-items: center; gap: 6px;
       margin-bottom: 3px; flex-wrap: wrap;
     }
-    .msg-name { font-size: 14px; font-weight: 800; color: var(--t1); letter-spacing: -.2px; }
+    .msg-name { font-size: 14px; font-weight: 700; color: var(--t1); letter-spacing: -.2px; }
     .msg-tag {
-      font-size: 9.5px; font-weight: 800;
+      font-size: 9.5px; font-weight: 700;
       padding: 2px 7px; border-radius: 999px;
       flex-shrink: 0; letter-spacing: .1px;
     }
@@ -324,7 +332,7 @@
     .msg-badge {
       min-width: 22px; padding: 1px 7px; line-height: 18px;
       background: var(--accent); color: #fff;
-      font-size: 11px; font-weight: 800;
+      font-size: 11px; font-weight: 700;
       border-radius: 999px; text-align: center;
     }
     .msg-badge.red   { background: var(--danger); }
@@ -348,13 +356,15 @@
       display: flex; align-items: stretch; justify-content: space-around; padding: 0 6px;
     }
     .tab {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      color: var(--t3); text-decoration: none;
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; color: var(--t3); text-decoration: none;
       border-radius: 999px; transition: color .15s;
+      min-height: 48px; padding: 6px 4px;
     }
     .tab.active { color: var(--accent-strong); }
     .tab.active iconify-icon { filter: drop-shadow(0 2px 6px rgba(34,197,94,.28)); }
     .tab iconify-icon { font-size: 22px; }
+    .tab-label { font-size: 11px; font-weight: 600; letter-spacing: -.1px; line-height: 1; }
     .sos-fab {
       width: var(--tab-h); height: var(--tab-h); flex-shrink: 0;
       border-radius: 50%;
@@ -401,11 +411,11 @@
       flex-shrink: 0;
     }
     .sh-ic iconify-icon { font-size: 20px; }
-    .sh-ttl { font-size: 17px; font-weight: 800; letter-spacing: -.3px; line-height: 1.25; }
+    .sh-ttl { font-size: 17px; font-weight: 700; letter-spacing: -.3px; line-height: 1.25; }
     .sh-sub { font-size: 12.5px; color: var(--t2); margin-top: 2px; font-weight: 600; }
 
     .sh-sec {
-      font-size: 11px; font-weight: 800; color: var(--t2);
+      font-size: 11px; font-weight: 700; color: var(--t2);
       letter-spacing: .4px; text-transform: uppercase;
       margin: 14px 0 8px;
     }
@@ -428,7 +438,7 @@
     }
     .pick .mini-av {
       width: 22px; height: 22px; border-radius: 50%;
-      font-size: 10px; font-weight: 800;
+      font-size: 10px; font-weight: 700;
       display: inline-flex; align-items: center; justify-content: center;
       background: rgba(0,0,0,.06); color: var(--t1);
     }
@@ -450,7 +460,7 @@
     .cta-btn {
       flex: 1; height: 50px; border-radius: 14px;
       border: none; font-family: inherit;
-      font-size: 15.5px; font-weight: 800; cursor: pointer;
+      font-size: 15.5px; font-weight: 700; cursor: pointer;
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     }
     .cta-primary {
@@ -513,12 +523,12 @@
           <span class="hc-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
           배회·폭력
         </button>
-        <button class="hc todo" onclick="toast('이정숙 미열 → 가족 통보 필요')">
+        <button class="hc todo" onclick="openHandoverTodo()">
           <span class="hc-dot"><iconify-icon icon="fluent:alert-16-filled"></iconify-icon></span>
           가족 통보
         </button>
       </div>
-      <button class="hand-cta" onclick="toast('이정숙 어르신 가족 통보 작성')">
+      <button class="hand-cta" onclick="openHandoverTodo()">
         미확인 항목 확인 하기
         <iconify-icon icon="fluent:arrow-right-24-filled"></iconify-icon>
       </button>
@@ -539,7 +549,7 @@
     </div>
     <div class="msg-list" id="list-unread">
 
-      <a class="msg unread" data-type="alert" onclick="toast('이정숙 · 미열')">
+      <a class="msg unread" data-type="alert" onclick="openAlertDetail('fever')">
         <div class="av crit"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></div>
         <div class="msg-body">
           <div class="msg-top">
@@ -628,7 +638,7 @@
         </div>
       </a>
 
-      <a class="msg" data-type="alert" onclick="toast('체위 변경 리마인더')">
+      <a class="msg" data-type="alert" onclick="openAlertDetail('rotate')">
         <div class="av warn"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></div>
         <div class="msg-body">
           <div class="msg-top">
@@ -712,7 +722,7 @@
           <iconify-icon icon="fluent:emoji-24-filled"></iconify-icon>기분·수면
         </button>
       </div>
-      <button class="share-cta" onclick="toast('보호자 4명에게 오늘의 안부 전송 완료')">
+      <button class="share-cta" onclick="openSharePreview()">
         <iconify-icon icon="fluent:send-24-filled"></iconify-icon>오늘의 안부 보내기 (4명)
       </button>
     </section>
@@ -721,13 +731,28 @@
 
   <!-- ============ 탭바 ============ -->
   <div class="bottom-bar">
-    <nav class="tabbar">
-      <a href="c01-today.html" class="tab" aria-label="홈"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></a>
-      <a href="c02-checklist.html" class="tab" aria-label="체크리스트"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></a>
-      <a href="c03-sotong.html" class="tab active" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></a>
-      <a href="c04-mypage.html" class="tab" aria-label="마이"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></a>
+    <nav class="tabbar" aria-label="요양보호사 앱 탭바">
+      <a href="c01-today.html" class="tab" aria-label="오늘">
+        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <span class="tab-label">오늘</span>
+      </a>
+      <a href="c02-checklist.html" class="tab" aria-label="기록">
+        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <span class="tab-label">기록</span>
+      </a>
+      <a href="c03-sotong.html" class="tab active" aria-current="page" aria-label="소통">
+        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <span class="tab-label">소통</span>
+      </a>
+      <a href="c04-mypage.html" class="tab" aria-label="마이">
+        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <span class="tab-label">마이</span>
+      </a>
     </nav>
-    <button class="sos-fab" onclick="toast('SOS 호출 · 유형을 선택하세요')" aria-label="긴급 SOS">
+    <button class="cg-sos" data-sos-bind aria-label="긴급 SOS · 3초 길게 누르면 즉시 발신">
+      <span class="cg-sos__ring" aria-hidden="true">
+        <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
+      </span>
       <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
     </button>
   </div>
@@ -780,7 +805,141 @@
 
   <div class="toast" id="toastEl"></div>
 
+  <!-- HaruCG 공유 오버레이 (detail sheets · SOS countdown) -->
+  <div class="cg-overlay" id="cgOverlay">
+    <div class="cg-sheet">
+      <div class="cg-sheet__handle"></div>
+      <div id="cgSheetContent"></div>
+    </div>
+  </div>
+  <div class="cg-toast" id="cgToast"></div>
+
   <script>
+
+    /* ============ Detail 시트 (toast-only 폐기) ============ */
+
+    function openHandoverTodo() {
+      if (!window.HaruCG) { toast('이정숙 미열 → 가족 통보 필요'); return; }
+      HaruCG.openSheet(
+        '<div class="cg-sheet__head">' +
+          '<div class="cg-sheet__ico cg-sheet__ico--warn">' +
+            '<iconify-icon icon="fluent:person-warning-24-filled"></iconify-icon>' +
+          '</div>' +
+          '<div>' +
+            '<div class="cg-sheet__ttl">미확인 인수인계 · 가족 통보</div>' +
+            '<div class="cg-sheet__sub">이정숙 어르신 · 미열 관찰</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="cg-sheet__body">' +
+          '<div class="cg-row">' +
+            '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="fluent:temperature-24-filled"></iconify-icon></span>' +
+            '<div class="cg-row__body"><div class="cg-row__t">관찰 사유</div><div class="cg-row__d">체온 37.4℃ · 마른 기침 3회</div></div>' +
+          '</div>' +
+          '<div class="cg-row">' +
+            '<span class="cg-row__ico"><iconify-icon icon="fluent:lightbulb-24-filled"></iconify-icon></span>' +
+            '<div class="cg-row__body"><div class="cg-row__t">추천 문구</div><div class="cg-row__d">"오늘 아침 미열이 있어 관찰 중입니다. 점심 전 재측정 결과 공유드릴게요."</div></div>' +
+          '</div>' +
+          '<div class="cg-row">' +
+            '<span class="cg-row__ico"><iconify-icon icon="fluent:people-24-filled"></iconify-icon></span>' +
+            '<div class="cg-row__body"><div class="cg-row__t">전송 대상</div><div class="cg-row__d">보호자 (이정숙 따님 · 010-****-1234)</div></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="cg-sheet__cta">' +
+          '<button class="cta-btn cta-soft" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--palette-gray-100);font:inherit;font-weight:600;color:var(--t2)" onclick="HaruCG.closeSheet()">취소</button>' +
+          '<button class="cta-btn cta-primary" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--accent);color:#fff;font:inherit;font-weight:700" onclick="confirmHandover()"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon> 확인 처리 + 전송</button>' +
+        '</div>',
+        { variant: 'warn' }
+      );
+    }
+    function confirmHandover() {
+      HaruCG.closeSheet();
+      // 인수인계 카드의 4/5 → 5/5 갱신
+      const todo = document.querySelector('.hc.todo');
+      if (todo) { todo.classList.remove('todo'); todo.classList.add('done'); }
+      const summary = document.querySelector('.hand-summary');
+      if (summary) summary.textContent = '5/5 확인 완료';
+      HaruCG.toast('가족 통보 전송 완료 · 인수인계 5/5 확인 완료');
+    }
+
+    function openAlertDetail(kind) {
+      if (!window.HaruCG) { toast('알림 상세'); return; }
+      const data = {
+        fever: {
+          title: '이상감지 · 미열 관찰',
+          sub: '이정숙 어르신 · 2층 B-2호',
+          rows: [
+            ['fluent:temperature-24-filled', '발생 시각', '06:40'],
+            ['fluent:warning-24-filled', '관찰 값', '체온 37.4℃ · 기침 3회'],
+            ['fluent:lightbulb-24-filled', '다음 행동', '10:30 재측정 · 38℃ 이상 시 간호사 호출']
+          ],
+          ctaLink: 'c02-checklist.html?pt=lee'
+        },
+        rotate: {
+          title: '체위 변경 리마인더',
+          sub: '최명자 어르신 · A-7호 · 다음 11:00',
+          rows: [
+            ['fluent:clock-24-filled', '주기', '2시간 (10:30 마지막)'],
+            ['fluent:warning-24-filled', '주의', '오른쪽 둔부 발적 지속'],
+            ['fluent:lightbulb-24-filled', '권장', '오른쪽 → 왼쪽 측위 30분 → 등받이']
+          ],
+          ctaLink: 'c02-checklist.html?pt=choi'
+        }
+      };
+      const d = data[kind] || data.fever;
+      HaruCG.openSheet(
+        '<div class="cg-sheet__head">' +
+          '<div class="cg-sheet__ico cg-sheet__ico--warn"><iconify-icon icon="fluent:alert-24-filled"></iconify-icon></div>' +
+          '<div><div class="cg-sheet__ttl">' + d.title + '</div><div class="cg-sheet__sub">' + d.sub + '</div></div>' +
+        '</div>' +
+        '<div class="cg-sheet__body">' +
+          d.rows.map(function(r){
+            return '<div class="cg-row">' +
+              '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="' + r[0] + '"></iconify-icon></span>' +
+              '<div class="cg-row__body"><div class="cg-row__t">' + r[1] + '</div><div class="cg-row__d">' + r[2] + '</div></div>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+        '<div class="cg-sheet__cta">' +
+          '<button class="cta-btn cta-soft" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--palette-gray-100);font:inherit;font-weight:600;color:var(--t2)" onclick="HaruCG.closeSheet();HaruCG.toast(\'간호사 호출됨\')">간호사 호출</button>' +
+          '<button class="cta-btn cta-primary" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--accent);color:#fff;font:inherit;font-weight:700" onclick="HaruCG.closeSheet();location.href=\'' + d.ctaLink + '\'"><iconify-icon icon="fluent:pen-24-filled"></iconify-icon> 기록 시작</button>' +
+        '</div>',
+        { variant: 'warn' }
+      );
+    }
+
+    function openSharePreview() {
+      if (!window.HaruCG) { toast('보호자 4명에게 전송'); return; }
+      HaruCG.openSheet(
+        '<div class="cg-sheet__head">' +
+          '<div class="cg-sheet__ico cg-sheet__ico--info"><iconify-icon icon="fluent:share-24-filled"></iconify-icon></div>' +
+          '<div><div class="cg-sheet__ttl">오늘의 안부 미리보기</div><div class="cg-sheet__sub">전송 전 항목·대상·민감정보 확인</div></div>' +
+        '</div>' +
+        '<div class="cg-sheet__body">' +
+          '<div class="cg-row">' +
+            '<span class="cg-row__ico"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></span>' +
+            '<div class="cg-row__body"><div class="cg-row__t">공유 항목</div><div class="cg-row__d">기상·식사·복약·산책 사진 (4명 전체)</div></div>' +
+          '</div>' +
+          '<div class="cg-row">' +
+            '<span class="cg-row__ico"><iconify-icon icon="fluent:people-24-filled"></iconify-icon></span>' +
+            '<div class="cg-row__body"><div class="cg-row__t">대상 보호자</div><div class="cg-row__d">박영자(따님) · 최명자(아드님) · 김순자(따님) · 이정숙(따님)</div></div>' +
+          '</div>' +
+          '<div class="cg-row">' +
+            '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="fluent:lock-shield-24-filled"></iconify-icon></span>' +
+            '<div class="cg-row__body"><div class="cg-row__t">민감정보 제외</div><div class="cg-row__d">배변·체중·약 이름은 제외 (요약 표현으로 대체)</div></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="cg-sheet__cta">' +
+          '<button class="cta-btn cta-soft" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--palette-gray-100);font:inherit;font-weight:600;color:var(--t2)" onclick="HaruCG.closeSheet()">취소</button>' +
+          '<button class="cta-btn cta-primary" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--accent);color:#fff;font:inherit;font-weight:700" onclick="confirmShare()"><iconify-icon icon="fluent:send-24-filled"></iconify-icon> 4명에게 전송</button>' +
+        '</div>',
+        { variant: 'info' }
+      );
+    }
+    function confirmShare() {
+      HaruCG.closeSheet();
+      HaruCG.toast('보호자 4명 전송 완료 · 발송 로그 보기');
+    }
+
     function toggleSection(key) {
       var sec = document.getElementById('sec-' + key);
       var list = document.getElementById('list-' + key);

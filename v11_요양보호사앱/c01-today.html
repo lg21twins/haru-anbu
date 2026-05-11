@@ -8,8 +8,16 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#DCFCE7">
   <title>하루안부 · 요양보호사 · 오늘</title>
+  <!-- Noto Sans SC: 중국어 폴백 (요양보호사 다국어 지원) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <link rel="stylesheet" href="../07_디자인/system/app.css">
+  <link rel="stylesheet" href="../07_디자인/system/components.css">
+  <link rel="stylesheet" href="caregiver.css">
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script defer src="caregiver.js"></script>
   <style>
     /* ============================================================
        c01 · 오늘 (요양보호사 홈)
@@ -43,7 +51,7 @@
       --page-pad: 16px;
     }
 
-    html { height: 100%; background: var(--brand-green-100); font-size: 16px; }
+    html { height: 100%; background: #F4FAF6; font-size: 16px; }
     body { height: 100%; color: var(--t1); overflow-x: hidden; font-size: var(--text-body); }
 
     /* ---- 배경 (역할 그라디언트 + 은은한 orb) ---- */
@@ -52,7 +60,7 @@
       background:
         radial-gradient(520px 420px at 50% -6%, rgba(34,197,94,.14), transparent 65%),
         radial-gradient(620px 500px at 50% 32%, rgba(74,222,128,.10), transparent 65%),
-        linear-gradient(180deg, #D9F4E1 0%, #E8F6EE 28%, #F0F8F3 62%, #F4FAF6 100%);
+        linear-gradient(180deg,#EAF6EE 0%,#F0F8F3 35%,#F4FAF6 100%);
     }
 
     .app {
@@ -71,10 +79,10 @@
     .header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; }
     .logo svg { width: 24px; height: 24px; }
-    .logo-name { font-size: 17px; font-weight: 800; letter-spacing: -.4px; }
+    .logo-name { font-size: 17px; font-weight: 700; letter-spacing: -.4px; }
     .header-actions { display: flex; align-items: center; gap: 6px; }
     .icon-btn {
-      width: 40px; height: 40px; border-radius: 50%;
+      width: 48px; height: 48px; border-radius: 50%;
       background: rgba(255,255,255,.7);
       border: .5px solid rgba(255,255,255,.9);
       display: inline-flex; align-items: center; justify-content: center;
@@ -83,10 +91,10 @@
       position: relative; transition: transform .1s;
     }
     .icon-btn:active { transform: scale(.93); }
-    .icon-btn iconify-icon { font-size: 19px; color: var(--accent-strong); }
+    .icon-btn iconify-icon { font-size: 22px; color: var(--accent-strong); }
     .notif-dot {
-      position: absolute; top: 8px; right: 8px;
-      width: 8px; height: 8px; border-radius: 50%;
+      position: absolute; top: 11px; right: 11px;
+      width: 9px; height: 9px; border-radius: 50%;
       background: var(--danger); border: 1.5px solid #fff;
     }
 
@@ -105,16 +113,16 @@
     .shift-ring svg { transform: rotate(-90deg); }
     .shift-ring-val {
       position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 800; color: var(--accent-strong); letter-spacing: -.2px;
+      font-size: 12px; font-weight: 700; color: var(--accent-strong); letter-spacing: -.2px;
     }
     .shift-meta { flex: 1; min-width: 0; line-height: 1.35; }
     .shift-main {
-      font-size: 14px; font-weight: 800; color: var(--t1); letter-spacing: -.2px;
+      font-size: 14px; font-weight: 700; color: var(--t1); letter-spacing: -.2px;
     }
     .shift-sub {
       font-size: 12px; font-weight: 600; color: var(--t2); margin-top: 2px;
     }
-    .shift-sub b { color: var(--accent-strong); font-weight: 800; }
+    .shift-sub b { color: var(--accent-strong); font-weight: 700; }
 
     /* ============ 히어로 · 지금 할 것 ============ */
     .hero-wrap { padding: 0 var(--page-pad); margin-top: 14px; position: relative; z-index: 1; }
@@ -144,7 +152,7 @@
 
     .hero-title {
       margin: 0;
-      font-size: 22px; font-weight: 800; letter-spacing: -.5px;
+      font-size: 22px; font-weight: 700; letter-spacing: -.5px;
       color: var(--t1); line-height: 1.2;
     }
     .hero-title b { color: var(--accent-strong); }
@@ -159,12 +167,12 @@
       font-size: 13px; font-weight: 600; color: var(--t3);
     }
     .hero-ok-pill iconify-icon { font-size: 15px; color: var(--accent-strong); flex-shrink: 0; }
-    .hero-ok-pill b { font-weight: 800; color: var(--t1); }
+    .hero-ok-pill b { font-weight: 700; color: var(--t1); }
 
     .hero-actions { margin-top: 16px; }
     .btn {
       height: 52px; border-radius: 14px; border: 0; font-family: inherit;
-      font-size: 15px; font-weight: 800; letter-spacing: -.2px;
+      font-size: 15px; font-weight: 700; letter-spacing: -.2px;
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
       transition: transform .1s; cursor: pointer;
     }
@@ -195,7 +203,7 @@
       margin-bottom: 8px;
     }
     .handover-label {
-      font-size: 11px; font-weight: 800; color: var(--t2);
+      font-size: 11px; font-weight: 700; color: var(--t2);
       letter-spacing: .5px; text-transform: uppercase;
       display: inline-flex; align-items: center; gap: 5px;
     }
@@ -235,7 +243,7 @@
     .handover-items { display: flex; flex-direction: column; gap: 8px; }
     .handover-item { display: flex; gap: 8px; align-items: flex-start; }
     .handover-item .nm {
-      flex-shrink: 0; font-size: 12px; font-weight: 800; color: var(--accent-strong);
+      flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--accent-strong);
       background: var(--accent-soft); padding: 2px 8px; border-radius: 999px; height: 22px;
       display: inline-flex; align-items: center;
     }
@@ -268,10 +276,10 @@
     .obs-ic iconify-icon { font-size: 15px; }
     .obs-title { flex: 1; min-width: 0; line-height: 1.35; }
     .obs-name {
-      font-size: 13px; font-weight: 800; color: var(--t1);
+      font-size: 13px; font-weight: 700; color: var(--t1);
       letter-spacing: -.2px;
     }
-    .obs-name b { color: var(--palette-amber-700); font-weight: 800; }
+    .obs-name b { color: var(--palette-amber-700); font-weight: 700; }
     .obs-meta {
       font-size: 11px; font-weight: 600; color: var(--t3); margin-top: 2px;
     }
@@ -280,7 +288,7 @@
       border: 0; border-radius: 999px;
       background: rgba(245, 158, 11, .14);
       color: var(--palette-amber-700);
-      font-family: inherit; font-size: 12px; font-weight: 800;
+      font-family: inherit; font-size: 12px; font-weight: 700;
       display: inline-flex; align-items: center; gap: 4px;
       cursor: pointer; transition: transform .1s;
     }
@@ -301,11 +309,11 @@
       min-width: 0;
     }
     .ov-l {
-      font-size: 10px; font-weight: 800; color: var(--t3);
+      font-size: 10px; font-weight: 700; color: var(--t3);
       letter-spacing: .3px; text-transform: uppercase;
     }
     .ov-v {
-      font-size: 17px; font-weight: 800; color: var(--palette-amber-700);
+      font-size: 17px; font-weight: 700; color: var(--palette-amber-700);
       letter-spacing: -.3px; margin-top: 2px;
       line-height: 1.05;
       font-variant-numeric: tabular-nums;
@@ -345,7 +353,7 @@
       margin-bottom: 8px; padding: 0 2px;
     }
     .roster-t {
-      font-size: 13px; font-weight: 800; color: var(--t1); letter-spacing: -.2px;
+      font-size: 13px; font-weight: 700; color: var(--t1); letter-spacing: -.2px;
     }
     .roster-sub {
       font-size: 11px; font-weight: 700; color: var(--t3);
@@ -370,7 +378,7 @@
       width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
       background: rgba(0,0,0,.05);
       color: var(--t2);
-      font-size: 12px; font-weight: 800;
+      font-size: 12px; font-weight: 700;
       display: inline-flex; align-items: center; justify-content: center;
       letter-spacing: -.2px;
     }
@@ -381,7 +389,7 @@
       line-height: 1.25;
     }
     .rs-nm {
-      font-size: 13px; font-weight: 800; color: var(--t1); letter-spacing: -.2px;
+      font-size: 13px; font-weight: 700; color: var(--t1); letter-spacing: -.2px;
     }
     .rs-nm .rm {
       font-size: 11px; font-weight: 600; color: var(--t3); margin-left: 4px;
@@ -406,8 +414,8 @@
     .rs-next b { color: var(--t2); font-weight: 700; }
     .roster-row.warn .rs-next { color: var(--palette-amber-700); }
     .roster-row.warn .rs-next iconify-icon { color: var(--palette-amber-700); }
-    .roster-row.warn .rs-next b { color: var(--palette-amber-700); font-weight: 800; }
-    .roster-row.now .rs-next b { color: var(--accent-strong); font-weight: 800; }
+    .roster-row.warn .rs-next b { color: var(--palette-amber-700); font-weight: 700; }
+    .roster-row.now .rs-next b { color: var(--accent-strong); font-weight: 700; }
     .rs-chev {
       flex-shrink: 0; font-size: 15px; color: var(--t3);
     }
@@ -432,10 +440,13 @@
     }
     .tab {
       flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 2px; text-decoration: none; color: var(--t3); border-radius: 999px; padding: 0 4px;
-      transition: color .15s;
+      gap: 2px; text-decoration: none; color: var(--t3); border-radius: 999px; padding: 6px 4px;
+      transition: color .15s; min-height: 48px;
     }
-    .tab iconify-icon { font-size: 24px; }
+    .tab iconify-icon { font-size: 22px; }
+    .tab-label {
+      font-size: 11px; font-weight: 600; letter-spacing: -.1px; line-height: 1;
+    }
     .tab.active { color: var(--accent-strong); }
     .tab.active iconify-icon {
       filter: drop-shadow(0 2px 6px rgba(34,197,94,.28));
@@ -488,7 +499,7 @@
       display: inline-flex; align-items: center; justify-content: center; color: #fff;
     }
     .sheet-ico iconify-icon { font-size: 22px; }
-    .sheet-ttl { font-size: 20px; font-weight: 800; letter-spacing: -.4px; color: var(--t1); }
+    .sheet-ttl { font-size: 20px; font-weight: 700; letter-spacing: -.4px; color: var(--t1); }
     .sheet-sub { font-size: 13px; font-weight: 500; color: var(--t2); margin-top: 2px; }
 
     .sheet-row {
@@ -506,7 +517,7 @@
     .sheet-row-label { font-size: 12px; font-weight: 600; color: var(--t3); }
     .sheet-row-val { font-size: 14px; font-weight: 700; color: var(--t1); margin-top: 1px; }
     .sheet-row-badge {
-      flex-shrink: 0; font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px;
+      flex-shrink: 0; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
     }
 
     .sheet-cta {
@@ -525,14 +536,14 @@
     }
     .sos-card:active { transform: scale(.96); }
     .sos-card iconify-icon { font-size: 30px; color: var(--palette-red-700); }
-    .sos-card-t { font-size: 15px; font-weight: 800; color: var(--palette-red-700); letter-spacing: -.2px; }
+    .sos-card-t { font-size: 15px; font-weight: 700; color: var(--palette-red-700); letter-spacing: -.2px; }
     .sos-hint {
       font-size: 13px; font-weight: 600; color: var(--palette-red-700);
       background: rgba(239,68,68,.08);
       padding: 10px 14px; border-radius: 12px; text-align: center;
       margin-top: 12px; line-height: 1.45;
     }
-    .sos-hint b { font-weight: 800; }
+    .sos-hint b { font-weight: 700; }
 
     /* Toast */
     .toast {
@@ -577,7 +588,7 @@
           </svg>
         </a>
         <div class="header-actions">
-          <a href="#" class="icon-btn" aria-label="알림" onclick="toast('알림 3건');return false">
+          <a href="c03-sotong.html#alerts" class="icon-btn" aria-label="알림 3건 · 소통 탭">
             <iconify-icon icon="fluent:alert-24-filled"></iconify-icon>
             <span class="notif-dot"></span>
           </a>
@@ -605,14 +616,14 @@
     </section>
 
     <!-- ============ 관찰 카드 (보조 · 4px 악센트) ============ -->
-    <section class="obs-card" onclick="toast('이정숙 어르신 상세 보기')" aria-label="이정숙 어르신 미열 관찰">
+    <section class="obs-card" onclick="openObsDetail()" aria-label="이정숙 어르신 미열 관찰 상세 보기" role="button" tabindex="0">
       <div class="obs-head">
         <span class="obs-ic"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></span>
         <div class="obs-title">
           <div class="obs-name"><b>이정숙</b> 어르신 · 미열 관찰</div>
           <div class="obs-meta">2층 B-2호 · 마지막 체크 06:40</div>
         </div>
-        <button class="obs-call-mini" onclick="event.stopPropagation();toast('간호사 호출 · 김영미 선생님')">
+        <button class="obs-call-mini" onclick="event.stopPropagation();callNurse('이정숙 미열')" aria-label="간호사 호출">
           <iconify-icon icon="fluent:call-24-filled"></iconify-icon>호출
         </button>
       </div>
@@ -662,7 +673,7 @@
       <section class="handover" id="handover" onclick="toggleHandover()">
         <div class="handover-head">
           <span class="handover-label">
-            <iconify-icon icon="ph:sparkle-fill"></iconify-icon>AI 인수인계 · 야간 → 주간
+            <iconify-icon icon="fluent:sparkle-24-filled"></iconify-icon>AI 인수인계 · 야간 → 주간
           </span>
           <span class="handover-time">06:45</span>
         </div>
@@ -785,11 +796,23 @@
 
   <!-- ============ 하단 바 ============ -->
   <div class="tab-wrap">
-    <nav class="tabbar" role="tablist">
-      <a href="c01-today.html" class="tab active" aria-label="홈"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></a>
-      <a href="c02-checklist.html" class="tab" aria-label="기록"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></a>
-      <a href="c03-sotong.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></a>
-      <a href="c04-mypage.html" class="tab" aria-label="마이"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></a>
+    <nav class="tabbar" aria-label="요양보호사 앱 탭바">
+      <a href="c01-today.html" class="tab active" aria-current="page" aria-label="오늘">
+        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <span class="tab-label">오늘</span>
+      </a>
+      <a href="c02-checklist.html" class="tab" aria-label="기록">
+        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <span class="tab-label">기록</span>
+      </a>
+      <a href="c03-sotong.html" class="tab" aria-label="소통">
+        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <span class="tab-label">소통</span>
+      </a>
+      <a href="c04-mypage.html" class="tab" aria-label="마이">
+        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <span class="tab-label">마이</span>
+      </a>
     </nav>
     <button class="sos" id="sosBtn" aria-label="긴급 SOS (3초 누르면 즉시 발신)">
       <span class="sos-ring" aria-hidden="true">
@@ -801,7 +824,7 @@
     </button>
   </div>
 
-  <!-- ============ 오버레이 ============ -->
+  <!-- ============ 오버레이 (화면 자체 sheet) ============ -->
   <div class="overlay" id="overlay" onclick="if(event.target===this)closeSheet()">
     <div class="sheet">
       <div class="sheet-handle"></div>
@@ -810,11 +833,68 @@
   </div>
   <div class="toast" id="toastEl"></div>
 
+  <!-- ============ HaruCG 공유 오버레이 (SOS countdown 등) ============ -->
+  <div class="cg-overlay" id="cgOverlay">
+    <div class="cg-sheet">
+      <div class="cg-sheet__handle"></div>
+      <div id="cgSheetContent"></div>
+    </div>
+  </div>
+  <div class="cg-toast" id="cgToast"></div>
+
   <script>
 
     /* ---- 인수인계 접힘 ---- */
     function toggleHandover() {
       document.getElementById('handover').classList.toggle('open');
+    }
+
+    /* ---- 관찰 카드 detail (이정숙 미열) — toast-only 폐기, 실제 detail sheet ---- */
+    function openObsDetail() {
+      if (!window.HaruCG) { toast('이정숙 어르신 상세'); return; }
+      HaruCG.openSheet(
+        '<div class="cg-sheet__head">' +
+          '<div class="cg-sheet__ico cg-sheet__ico--warn">' +
+            '<iconify-icon icon="fluent:warning-24-filled"></iconify-icon>' +
+          '</div>' +
+          '<div>' +
+            '<div class="cg-sheet__ttl">이정숙 어르신 · 미열 관찰</div>' +
+            '<div class="cg-sheet__sub">2층 B-2호 · 마지막 체크 06:40 · 단계 <b>관찰</b></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="cg-sheet__body">' +
+          '<div class="cg-row">' +
+            '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="fluent:temperature-24-filled"></iconify-icon></span>' +
+            '<div class="cg-row__body">' +
+              '<div class="cg-row__t">체온 37.4℃ · 4회 측정</div>' +
+              '<div class="cg-row__d">06:00 36.9 → 06:20 37.1 → 06:40 37.4 (상승 추세)</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="cg-row">' +
+            '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="fluent:lungs-24-filled"></iconify-icon></span>' +
+            '<div class="cg-row__body">' +
+              '<div class="cg-row__t">기침 3회 · 오전</div>' +
+              '<div class="cg-row__d">마른 기침. 가래 소리는 없음</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="cg-row">' +
+            '<span class="cg-row__ico"><iconify-icon icon="fluent:lightbulb-24-filled"></iconify-icon></span>' +
+            '<div class="cg-row__body">' +
+              '<div class="cg-row__t">다음 행동</div>' +
+              '<div class="cg-row__d">10:30 체온 재측정 · 38℃ 이상 시 간호사 호출</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="cg-sheet__cta">' +
+          '<button class="btn" style="flex:1;background:var(--color-warning-soft);color:var(--palette-amber-700)" onclick="HaruCG.closeSheet();callNurse(\'미열 관찰\')"><iconify-icon icon="fluent:call-24-filled"></iconify-icon>간호사 호출</button>' +
+          '<button class="btn btn-primary" style="flex:1" onclick="HaruCG.closeSheet();location.href=\'c02-checklist.html?pt=lee\'"><iconify-icon icon="fluent:pen-24-filled"></iconify-icon>기록 시작</button>' +
+        '</div>',
+        { variant: 'warn' }
+      );
+    }
+    function callNurse(reason) {
+      if (window.HaruCG) HaruCG.toast('간호사 호출 · 김영미 선생님 (' + reason + ')');
+      else toast('간호사 호출 · 김영미 선생님');
     }
 
     /* ---- 히어로 더보기 (완료 · 연기 · 상세) ---- */
@@ -871,8 +951,45 @@
         } else if (p >= 1 && !holdFired) {
           holdFired = true;
           navigator.vibrate && navigator.vibrate([30, 60, 120]);
-          toast('SOS 즉시 발신 · 음성 녹음 시작');
-          setTimeout(resetRing, 500);
+          resetRing();
+          // 1초 카운트다운 + 취소 가능. countdown 종료 시 자동 발신 + 로그.
+          if (window.HaruCG && HaruCG.openSheet) {
+            // openSosCountdown은 HaruCG 내부 함수이므로 type sheet 대신 직접 트리거
+            const _orig = HaruCG.openSosTypeSheet;
+            // 직접 countdown 진입
+            (function ensureCountdown(){
+              // 라이브러리에 노출되지 않은 경우 fallback
+              if (typeof HaruCG._cancelCountdown === 'function') {
+                // 노출 함수가 없을 수 있으므로 아래 fallback 호출
+                HaruCG.openSheet(
+                  '<div class="cg-sheet__head">' +
+                    '<div class="cg-sheet__ico cg-sheet__ico--danger">' +
+                      '<iconify-icon icon="fluent:warning-24-filled"></iconify-icon>' +
+                    '</div>' +
+                    '<div>' +
+                      '<div class="cg-sheet__ttl" style="color:var(--palette-red-700)">SOS 발신 준비</div>' +
+                      '<div class="cg-sheet__sub">아래 카운트가 0이 되면 자동 발신됩니다</div>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div class="cg-sos-countdown">' +
+                    '<div class="cg-sos-countdown__num" id="cgSosCount">1</div>' +
+                    '<div class="cg-sos-countdown__t">즉시 음성 SOS · 자동 발신</div>' +
+                    '<button type="button" class="cg-sos-countdown__cancel" onclick="HaruCG._cancelCountdown()">취소</button>' +
+                  '</div>',
+                  { variant: 'danger' }
+                );
+                window._cgCountdownTimer = setTimeout(function(){
+                  if (!window._cgCountdownTimer) return;
+                  window._cgCountdownTimer = null;
+                  HaruCG.sosSend('즉시 발신 · 음성 녹음');
+                }, 1000);
+              } else {
+                toast('SOS 즉시 발신 · 음성 녹음 시작');
+              }
+            })();
+          } else {
+            toast('SOS 즉시 발신 · 음성 녹음 시작');
+          }
         }
       }
       function start(e) {

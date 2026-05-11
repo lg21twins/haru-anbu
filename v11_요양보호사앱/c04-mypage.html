@@ -8,8 +8,16 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#DCFCE7">
   <title>하루안부 · 요양보호사 · 마이</title>
+  <!-- Noto Sans SC: 중국어 폴백 (요양보호사 다국어 지원) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <link rel="stylesheet" href="../07_디자인/system/app.css">
+  <link rel="stylesheet" href="../07_디자인/system/components.css">
+  <link rel="stylesheet" href="caregiver.css">
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script defer src="caregiver.js"></script>
   <style>
     /* ============================================================
        c04 · 마이
@@ -39,7 +47,7 @@
       --glass-b: rgba(0,0,0,.05);
     }
 
-    html { height: 100%; background: var(--brand-green-100); }
+    html { height: 100%; background: #F4FAF6; }
     body { min-height: 100%; color: var(--t1); overflow-x: hidden; font-size: var(--text-body); }
 
     .bg {
@@ -64,10 +72,10 @@
       -webkit-backdrop-filter: blur(10px) saturate(140%);
       display: flex; align-items: center; justify-content: space-between;
     }
-    .header-ttl { font-size: 17px; font-weight: 800; color: var(--t1); letter-spacing: -.3px; }
+    .header-ttl { font-size: 17px; font-weight: 700; color: var(--t1); letter-spacing: -.3px; }
 
     .icon-btn {
-      width: 34px; height: 34px; border-radius: 50%;
+      width: 48px; height: 48px; border-radius: 50%;
       background: rgba(255,255,255,.8);
       border: 1px solid var(--glass-b);
       display: inline-flex; align-items: center; justify-content: center;
@@ -75,7 +83,7 @@
       transition: transform .1s; font-family: inherit;
     }
     .icon-btn:active { transform: scale(.93); }
-    .icon-btn iconify-icon { font-size: 16px; color: var(--t2); }
+    .icon-btn iconify-icon { font-size: 22px; color: var(--t2); }
 
     /* ============ 컨텐츠 ============ */
     .content {
@@ -102,7 +110,7 @@
       width: 64px; height: 64px; border-radius: 50%;
       background: linear-gradient(135deg, #DCFCE7, #86EFAC);
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px; font-weight: 800; color: var(--accent-strong);
+      font-size: 24px; font-weight: 700; color: var(--accent-strong);
       flex-shrink: 0; letter-spacing: -.5px;
       position: relative;
     }
@@ -115,7 +123,7 @@
     }
     .profile-av-edit iconify-icon { font-size: 11px; color: #fff; }
     .profile-info { flex: 1; min-width: 0; }
-    .profile-name { font-size: 20px; font-weight: 800; letter-spacing: -.5px; color: var(--t1); }
+    .profile-name { font-size: 20px; font-weight: 700; letter-spacing: -.5px; color: var(--t1); }
     .profile-sub { font-size: 12px; color: var(--t3); margin-top: 2px; font-weight: 600; }
     .profile-badge {
       display: inline-flex; align-items: center; gap: 4px;
@@ -137,7 +145,7 @@
       border-radius: 14px;
       border: 1px solid rgba(34,197,94,.06);
     }
-    .sc-v { font-size: 16px; font-weight: 800; color: var(--t1); letter-spacing: -.3px; }
+    .sc-v { font-size: 16px; font-weight: 700; color: var(--t1); letter-spacing: -.3px; }
     .sc-l { font-size: 10px; color: var(--t3); margin-top: 2px; font-weight: 700; letter-spacing: .2px; }
 
     /* ============ 오늘 근무 카드 ============ */
@@ -218,7 +226,7 @@
       font-variant-numeric: tabular-nums;
     }
     .se-sub .sep { color: rgba(0,0,0,.18); }
-    .se-sub b { font-weight: 800; color: var(--t2); }
+    .se-sub b { font-weight: 700; color: var(--t2); }
     .se-chev { color: var(--t3); flex-shrink: 0; }
     .se-chev iconify-icon { font-size: 14px; }
 
@@ -228,7 +236,7 @@
       display: flex; align-items: baseline; justify-content: space-between;
       margin-bottom: 10px;
     }
-    .prog-title { font-size: 13px; font-weight: 800; color: var(--t1); letter-spacing: -.2px; }
+    .prog-title { font-size: 13px; font-weight: 700; color: var(--t1); letter-spacing: -.2px; }
     .prog-meta { font-size: 11px; font-weight: 700; color: var(--t3); }
     .prog-row {
       display: grid; grid-template-columns: 1fr 110px;
@@ -241,7 +249,7 @@
     .prog-info { min-width: 0; }
     .prog-label { font-size: 12px; font-weight: 700; color: var(--t2); }
     .prog-val {
-      font-size: 16px; font-weight: 800; color: var(--t1);
+      font-size: 16px; font-weight: 700; color: var(--t1);
       letter-spacing: -.3px; margin-top: 2px;
       font-variant-numeric: tabular-nums;
     }
@@ -259,7 +267,7 @@
     .prog-bar > span.ok   { background: var(--accent); }
     .prog-bar > span.warn { background: var(--palette-amber-600); }
     .prog-pct {
-      font-size: 10px; font-weight: 800; color: var(--t2);
+      font-size: 10px; font-weight: 700; color: var(--t2);
       letter-spacing: -.2px;
     }
     .prog-pct.ok   { color: var(--accent-strong); }
@@ -329,20 +337,25 @@
 
     /* 토글 */
     .switch {
-      position: relative; width: 42px; height: 24px;
+      position: relative; width: 52px; height: 32px;
       background: rgba(0,0,0,.14); border-radius: 999px;
       flex-shrink: 0; cursor: pointer;
       transition: background .2s;
+      border: 0; padding: 0;
     }
-    .switch.on { background: var(--accent); }
+    .switch.on,
+    .switch[aria-checked="true"] { background: var(--accent); }
     .switch::after {
       content: ''; position: absolute; top: 2px; left: 2px;
-      width: 20px; height: 20px; background: #fff;
+      width: 28px; height: 28px; background: #fff;
       border-radius: 50%;
       box-shadow: 0 2px 6px rgba(0,0,0,.18);
       transition: transform .2s;
     }
-    .switch.on::after { transform: translateX(18px); }
+    .switch.on::after,
+    .switch[aria-checked="true"]::after { transform: translateX(20px); }
+    /* row 전체 클릭 가능: switch 부모 menu-item에 큰 hit area 보장 */
+    .menu-item.with-switch { cursor: pointer; min-height: 56px; }
 
     /* ============ 로그아웃 ============ */
     .logout {
@@ -383,13 +396,15 @@
       display: flex; align-items: stretch; justify-content: space-around; padding: 0 6px;
     }
     .tab {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      color: var(--t3); text-decoration: none;
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; color: var(--t3); text-decoration: none;
       border-radius: 999px; transition: color .15s;
+      min-height: 48px; padding: 6px 4px;
     }
     .tab.active { color: var(--accent-strong); }
     .tab.active iconify-icon { filter: drop-shadow(0 2px 6px rgba(34,197,94,.28)); }
     .tab iconify-icon { font-size: 22px; }
+    .tab-label { font-size: 11px; font-weight: 600; letter-spacing: -.1px; line-height: 1; }
     .sos-fab {
       width: var(--tab-h); height: var(--tab-h); flex-shrink: 0;
       border-radius: 50%;
@@ -439,9 +454,9 @@
 
     <!-- ============ 헤더 ============ -->
     <header class="header">
-      <div style="width:34px"></div>
+      <div style="width:48px"></div>
       <span class="header-ttl">마이</span>
-      <button class="icon-btn" onclick="toast('설정')" aria-label="설정">
+      <button class="icon-btn" onclick="HaruCG && HaruCG.toast ? HaruCG.toast('설정') : toast('설정')" aria-label="설정">
         <iconify-icon icon="fluent:settings-24-filled"></iconify-icon>
       </button>
     </header>
@@ -534,7 +549,7 @@
           <div class="prog-title">이달 의무 진척도</div>
           <div class="prog-meta">4월 · 20일 경과</div>
         </div>
-        <div class="prog-row" onclick="toast('이달 급여제공기록지 17/20일 제출')">
+        <div class="prog-row" onclick="openDetail('이달 급여제공기록지','17/20일 제출 · 미제출 3건은 25일까지 마감','fluent:document-text-24-filled')" role="button" tabindex="0">
           <div class="prog-info">
             <div class="prog-label">급여제공기록지</div>
             <div class="prog-val"><b>17</b><span class="u">/20일 제출</span></div>
@@ -544,7 +559,7 @@
             <div class="prog-pct">85%</div>
           </div>
         </div>
-        <div class="prog-row" onclick="toast('연간 의무교육 6h/8h 이수')">
+        <div class="prog-row" onclick="openDetail('연간 의무교육','6h/8h 이수 · 12월까지 추가 2시간','fluent:learning-app-24-filled')" role="button" tabindex="0">
           <div class="prog-info">
             <div class="prog-label">연간 의무교육 (8h)</div>
             <div class="prog-val"><b>6</b><span class="u">/8시간 이수</span></div>
@@ -554,7 +569,7 @@
             <div class="prog-pct warn">75%</div>
           </div>
         </div>
-        <div class="prog-row" onclick="toast('출퇴근 GPS 15일 기록 완료')">
+        <div class="prog-row" onclick="openDetail('출퇴근 GPS','15/15일 기록 완료 · 현장 좌표 일치','fluent:clock-alarm-24-filled')" role="button" tabindex="0">
           <div class="prog-info">
             <div class="prog-label">출퇴근 기록 (GPS)</div>
             <div class="prog-val"><b>15</b><span class="u">/15일 완료</span></div>
@@ -569,7 +584,7 @@
       <!-- ============ 서비스 기록 ============ -->
       <div class="menu-title">서비스 기록</div>
       <div class="menu-group">
-        <a class="menu-item" onclick="toast('서비스 제공기록지')">
+        <a class="menu-item" onclick="openDetail('서비스 제공기록지','이달 17/20일 제출 · 미제출 3건','fluent:document-text-24-filled')">
           <div class="mi-icon green"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">서비스 제공기록지</div>
@@ -580,7 +595,7 @@
             <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
           </div>
         </a>
-        <a class="menu-item" onclick="toast('출퇴근 기록')">
+        <a class="menu-item" onclick="openDetail('출퇴근 기록','이달 15/15일 GPS 자동 기록 완료','fluent:clock-alarm-24-filled')">
           <div class="mi-icon green"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">출퇴근 기록</div>
@@ -591,13 +606,14 @@
             <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
           </div>
         </a>
-        <a class="menu-item" onclick="toast('인수인계 메모')">
+        <a class="menu-item" aria-disabled="true" onclick="openComingSoon('인수인계 메모')">
           <div class="mi-icon green"><iconify-icon icon="fluent:clipboard-text-ltr-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">인수인계 메모</div>
             <div class="mi-desc">음성 · 텍스트 · 사진</div>
           </div>
           <div class="mi-right">
+            <span class="mi-badge" style="background:var(--palette-gray-300);color:var(--t1)">준비중</span>
             <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
           </div>
         </a>
@@ -606,44 +622,44 @@
       <!-- ============ 알림 설정 ============ -->
       <div class="menu-title">알림 설정</div>
       <div class="menu-group">
-        <div class="menu-item">
+        <div class="menu-item with-switch" role="button" tabindex="0" onclick="rowToggle(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rowToggle(this)}">
           <div class="mi-icon red"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">SOS 수신 알림</div>
             <div class="mi-desc">다른 직원의 긴급 발송 수신</div>
           </div>
-          <div class="switch on" onclick="togSw(this)"></div>
+          <button type="button" class="switch on" role="switch" aria-checked="true" aria-label="SOS 수신 알림" onclick="event.stopPropagation();togSw(this)"></button>
         </div>
-        <div class="menu-item">
+        <div class="menu-item with-switch" role="button" tabindex="0" onclick="rowToggle(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rowToggle(this)}">
           <div class="mi-icon amber"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">업무 리마인더</div>
             <div class="mi-desc">투약 · 체위 변경 · 식사</div>
           </div>
-          <div class="switch on" onclick="togSw(this)"></div>
+          <button type="button" class="switch on" role="switch" aria-checked="true" aria-label="업무 리마인더" onclick="event.stopPropagation();togSw(this)"></button>
         </div>
-        <div class="menu-item">
+        <div class="menu-item with-switch" role="button" tabindex="0" onclick="rowToggle(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rowToggle(this)}">
           <div class="mi-icon green"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">보호자 메시지</div>
             <div class="mi-desc">읽지 않은 메시지 푸시</div>
           </div>
-          <div class="switch on" onclick="togSw(this)"></div>
+          <button type="button" class="switch on" role="switch" aria-checked="true" aria-label="보호자 메시지 푸시" onclick="event.stopPropagation();togSw(this)"></button>
         </div>
-        <div class="menu-item">
+        <div class="menu-item with-switch" role="button" tabindex="0" onclick="rowToggle(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();rowToggle(this)}">
           <div class="mi-icon grey"><iconify-icon icon="fluent:weather-moon-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">집중 모드</div>
             <div class="mi-desc">긴급 외 알림 숨기기</div>
           </div>
-          <div class="switch" onclick="togSw(this)"></div>
+          <button type="button" class="switch" role="switch" aria-checked="false" aria-label="집중 모드" onclick="event.stopPropagation();togSw(this)"></button>
         </div>
       </div>
 
       <!-- ============ 자격 · 앱 ============ -->
       <div class="menu-title">자격 · 앱 설정</div>
       <div class="menu-group">
-        <a class="menu-item" onclick="toast('자격증 · 교육이수')">
+        <a class="menu-item" onclick="openDetail('자격증 · 교육이수','1급 · 만료 2028.07 · 보수교육 6h/8h','fluent:shield-checkmark-24-filled')">
           <div class="mi-icon green"><iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">자격증 · 교육이수</div>
@@ -653,17 +669,18 @@
             <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
           </div>
         </a>
-        <a class="menu-item" onclick="toast('AI 업무 가이드')">
-          <div class="mi-icon green"><iconify-icon icon="ph:sparkle-fill"></iconify-icon></div>
+        <a class="menu-item" aria-disabled="true" onclick="openComingSoon('AI 업무 가이드')">
+          <div class="mi-icon green"><iconify-icon icon="fluent:sparkle-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">AI 업무 가이드</div>
             <div class="mi-desc">매뉴얼 · 규정 · 상황별 대응</div>
           </div>
           <div class="mi-right">
+            <span class="mi-badge" style="background:var(--palette-gray-300);color:var(--t1)">준비중</span>
             <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
           </div>
         </a>
-        <a class="menu-item" onclick="toast('언어 설정')">
+        <a class="menu-item" onclick="openLanguage()">
           <div class="mi-icon grey"><iconify-icon icon="fluent:local-language-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">언어</div>
@@ -674,20 +691,21 @@
             <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
           </div>
         </a>
-        <a class="menu-item" onclick="toast('고객센터')">
+        <a class="menu-item" aria-disabled="true" onclick="openComingSoon('고객센터 · 문의')">
           <div class="mi-icon grey"><iconify-icon icon="fluent:question-circle-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">고객센터 · 문의</div>
             <div class="mi-desc">1:1 상담 · FAQ</div>
           </div>
           <div class="mi-right">
+            <span class="mi-badge" style="background:var(--palette-gray-300);color:var(--t1)">준비중</span>
             <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
           </div>
         </a>
       </div>
 
       <!-- ============ 로그아웃 ============ -->
-      <a class="logout" onclick="toast('로그아웃')">
+      <a class="logout" onclick="HaruCG && HaruCG.toast ? HaruCG.toast('로그아웃 · 다음 로그인 시 PIN 설정 필요') : toast('로그아웃')">
         <iconify-icon icon="fluent:sign-out-24-filled"></iconify-icon>
         로그아웃
       </a>
@@ -698,21 +716,94 @@
 
   <!-- ============ 탭바 + SOS ============ -->
   <div class="bottom-bar">
-    <nav class="tabbar">
-      <a href="c01-today.html" class="tab" aria-label="홈"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></a>
-      <a href="c02-checklist.html" class="tab" aria-label="체크리스트"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></a>
-      <a href="c03-sotong.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></a>
-      <a href="c04-mypage.html" class="tab active" aria-label="마이"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></a>
+    <nav class="tabbar" aria-label="요양보호사 앱 탭바">
+      <a href="c01-today.html" class="tab" aria-label="오늘">
+        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <span class="tab-label">오늘</span>
+      </a>
+      <a href="c02-checklist.html" class="tab" aria-label="기록">
+        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <span class="tab-label">기록</span>
+      </a>
+      <a href="c03-sotong.html" class="tab" aria-label="소통">
+        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <span class="tab-label">소통</span>
+      </a>
+      <a href="c04-mypage.html" class="tab active" aria-current="page" aria-label="마이">
+        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <span class="tab-label">마이</span>
+      </a>
     </nav>
-    <button class="sos-fab" onclick="toast('SOS 호출 · 홈에서 유형 선택')" aria-label="긴급 SOS">
+    <button class="cg-sos" data-sos-bind aria-label="긴급 SOS · 3초 길게 누르면 즉시 발신">
+      <span class="cg-sos__ring" aria-hidden="true">
+        <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
+      </span>
       <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
     </button>
   </div>
 
   <div class="toast" id="toastEl"></div>
 
+  <!-- HaruCG 공유 오버레이 (detail · SOS countdown) -->
+  <div class="cg-overlay" id="cgOverlay">
+    <div class="cg-sheet">
+      <div class="cg-sheet__handle"></div>
+      <div id="cgSheetContent"></div>
+    </div>
+  </div>
+  <div class="cg-toast" id="cgToast"></div>
+
   <script>
-    function togSw(el) { el.classList.toggle('on'); }
+    /* switch a11y: aria-checked 동기화 + 클래스 토글 */
+    function togSw(el) {
+      var on = el.classList.toggle('on');
+      el.setAttribute('aria-checked', String(on));
+    }
+    /* row 전체 클릭 → 내부 switch 트리거 */
+    function rowToggle(row) {
+      var sw = row.querySelector('.switch');
+      if (sw) togSw(sw);
+    }
+
+    /* detail 시트: toast-only 폐기 */
+    function openDetail(title, sub, icon) {
+      if (!window.HaruCG) { toast(title); return; }
+      HaruCG.openSheet(
+        '<div class="cg-sheet__head">' +
+          '<div class="cg-sheet__ico"><iconify-icon icon="' + icon + '"></iconify-icon></div>' +
+          '<div><div class="cg-sheet__ttl">' + title + '</div><div class="cg-sheet__sub">' + sub + '</div></div>' +
+        '</div>' +
+        '<div class="cg-sheet__body">' +
+          '<div class="cg-row"><span class="cg-row__ico"><iconify-icon icon="fluent:document-24-filled"></iconify-icon></span><div class="cg-row__body"><div class="cg-row__t">상세 화면</div><div class="cg-row__d">실제 detail 페이지로 이동 예정</div></div></div>' +
+        '</div>' +
+        '<div class="cg-sheet__cta">' +
+          '<button class="cta-btn cta-soft" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--palette-gray-100);font:inherit;font-weight:600;color:var(--t2)" onclick="HaruCG.closeSheet()">닫기</button>' +
+        '</div>'
+      );
+    }
+    function openComingSoon(label) {
+      if (window.HaruCG) HaruCG.toast(label + ' · 준비중 · 다음 업데이트에 추가됩니다');
+      else toast(label + ' · 준비중');
+    }
+    function openLanguage() {
+      if (!window.HaruCG) { toast('언어 설정'); return; }
+      HaruCG.openSheet(
+        '<div class="cg-sheet__head">' +
+          '<div class="cg-sheet__ico"><iconify-icon icon="fluent:local-language-24-filled"></iconify-icon></div>' +
+          '<div><div class="cg-sheet__ttl">언어 설정</div><div class="cg-sheet__sub">현재 한국어</div></div>' +
+        '</div>' +
+        '<div class="cg-sheet__body">' +
+          '<button class="cg-row" onclick="pickLang(\'한국어\')"><span class="cg-row__ico"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span><div class="cg-row__body"><div class="cg-row__t">한국어</div><div class="cg-row__d">기본</div></div></button>' +
+          '<button class="cg-row" onclick="pickLang(\'中文\')"><span class="cg-row__ico"><iconify-icon icon="fluent:globe-24-filled"></iconify-icon></span><div class="cg-row__body"><div class="cg-row__t">中文 · 中国语</div><div class="cg-row__d">Noto Sans SC 자동 폴백</div></div></button>' +
+          '<button class="cg-row" onclick="pickLang(\'Tiếng Việt\')"><span class="cg-row__ico"><iconify-icon icon="fluent:globe-24-filled"></iconify-icon></span><div class="cg-row__body"><div class="cg-row__t">Tiếng Việt</div><div class="cg-row__d">베트남 출신 보호사</div></div></button>' +
+        '</div>'
+      );
+    }
+    function pickLang(lang) {
+      HaruCG.closeSheet();
+      HaruCG.toast('언어 ' + lang + '(으)로 변경됨');
+    }
+
     function toast(m) {
       var t = document.getElementById('toastEl');
       t.textContent = m;

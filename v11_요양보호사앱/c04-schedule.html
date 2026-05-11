@@ -8,8 +8,16 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#DCFCE7">
   <title>하루안부 · 요양보호사 · 일정</title>
+  <!-- Noto Sans SC: 중국어 폴백 (요양보호사 다국어 지원) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <link rel="stylesheet" href="../07_디자인/system/app.css">
+  <link rel="stylesheet" href="../07_디자인/system/components.css">
+  <link rel="stylesheet" href="caregiver.css">
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <script defer src="caregiver.js"></script>
   <style>
     /* ============================================================
        c04-schedule · 근무 일정 풀스크린 (c04 마이에서 push)
@@ -32,7 +40,7 @@
       --glass-b: rgba(0,0,0,.05);
     }
 
-    html { height: 100%; background: var(--brand-green-100); }
+    html { height: 100%; background: #F4FAF6; }
     body { min-height: 100%; color: var(--t1); overflow-x: hidden; font-size: var(--text-body); }
 
     .bg {
@@ -57,10 +65,10 @@
       -webkit-backdrop-filter: blur(10px) saturate(140%);
       display: flex; align-items: center; justify-content: space-between;
     }
-    .header-ttl { font-size: 17px; font-weight: 800; color: var(--t1); letter-spacing: -.3px; }
+    .header-ttl { font-size: 17px; font-weight: 700; color: var(--t1); letter-spacing: -.3px; }
 
     .icon-btn {
-      width: 34px; height: 34px; border-radius: 50%;
+      width: 48px; height: 48px; border-radius: 50%;
       background: rgba(255,255,255,.8);
       border: 1px solid var(--glass-b);
       display: inline-flex; align-items: center; justify-content: center;
@@ -68,7 +76,7 @@
       transition: transform .1s; font-family: inherit;
     }
     .icon-btn:active { transform: scale(.93); }
-    .icon-btn iconify-icon { font-size: 16px; color: var(--t2); }
+    .icon-btn iconify-icon { font-size: 22px; color: var(--t2); }
 
     /* ============ 컨텐츠 ============ */
     .content {
@@ -89,7 +97,7 @@
     /* ============ 주 네비 카드 ============ */
     .nav-card { padding: 16px 18px 14px; }
     .nav-month {
-      font-size: 11px; font-weight: 800; color: var(--t3);
+      font-size: 11px; font-weight: 700; color: var(--t3);
       letter-spacing: .3px; text-transform: uppercase;
       margin-bottom: 6px;
     }
@@ -98,17 +106,17 @@
       gap: 10px; margin-bottom: 12px;
     }
     .nav-range {
-      font-size: 18px; font-weight: 800; color: var(--t1); letter-spacing: -.4px;
+      font-size: 18px; font-weight: 700; color: var(--t1); letter-spacing: -.4px;
       font-variant-numeric: tabular-nums;
     }
     .nav-btns { display: flex; gap: 4px; flex-shrink: 0; }
     .nav-btns button {
-      width: 32px; height: 32px; border-radius: 10px;
+      width: 48px; height: 48px; border-radius: 14px;
       background: rgba(0,0,0,.04); border: none;
       cursor: pointer; color: var(--t2);
       display: inline-flex; align-items: center; justify-content: center;
     }
-    .nav-btns iconify-icon { font-size: 15px; }
+    .nav-btns iconify-icon { font-size: 22px; }
 
     .sum-row {
       display: flex; flex-wrap: wrap; gap: 6px;
@@ -119,7 +127,7 @@
       font-size: 11px; font-weight: 700;
       background: rgba(0,0,0,.04); color: var(--t2);
     }
-    .sum-pill b { font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; }
+    .sum-pill b { font-weight: 700; color: var(--t1); font-variant-numeric: tabular-nums; }
     .sum-pill .dot {
       width: 7px; height: 7px; border-radius: 50%;
       background: #D97706;
@@ -134,9 +142,27 @@
       grid-template-columns: 44px 54px 1fr auto auto;
       gap: 10px; align-items: center;
       padding: 13px 16px;
+      min-height: 56px;
       text-decoration: none; color: inherit;
       cursor: pointer;
       transition: background .12s;
+    }
+    /* 작은 화면(<=360px): 환자 아바타 줄을 다음 줄로, count chip으로 축약 */
+    @media (max-width: 360px) {
+      .sch-day {
+        grid-template-columns: 44px 54px 1fr auto;
+        grid-template-areas:
+          "date  shift  time   chev"
+          "date  shift  pts    chev";
+        row-gap: 4px;
+      }
+      .sch-day .sd-date  { grid-area: date; }
+      .sch-day .sd-shift,
+      .sch-day > div:nth-child(2) { grid-area: shift; }
+      .sch-day .sd-time  { grid-area: time; }
+      .sch-day .sd-pts   { grid-area: pts; }
+      .sch-day .sd-chev,
+      .sch-day > iconify-icon:last-child { grid-area: chev; }
     }
     .sch-day + .sch-day {
       border-top: 1px solid rgba(0,0,0,.04);
@@ -148,7 +174,7 @@
       font-variant-numeric: tabular-nums;
     }
     .sd-dow { font-size: 12px; color: var(--t3); font-weight: 700; }
-    .sd-num { font-size: 16px; color: var(--t1); font-weight: 800; }
+    .sd-num { font-size: 16px; color: var(--t1); font-weight: 700; }
 
     .sch-day.today .sd-dow,
     .sch-day.today .sd-num { color: var(--accent-strong); }
@@ -189,7 +215,7 @@
     .sd-pts .pt {
       width: 26px; height: 26px; border-radius: 50%;
       display: inline-flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 800; color: #fff;
+      font-size: 11px; font-weight: 700; color: #fff;
       letter-spacing: -.2px;
       border: 2px solid rgba(255,255,255,.95);
       box-shadow: 0 1px 3px rgba(0,0,0,.08);
@@ -203,7 +229,7 @@
     .sd-pts .more {
       width: 26px; height: 26px; border-radius: 50%;
       display: inline-flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 800; color: var(--t2);
+      font-size: 10px; font-weight: 700; color: var(--t2);
       background: rgba(0,0,0,.06);
       border: 2px solid rgba(255,255,255,.95);
       margin-left: -8px;
@@ -216,7 +242,7 @@
     .sd-now {
       display: inline-flex; align-items: center; gap: 4px;
       padding: 2px 7px; border-radius: 999px;
-      font-size: 10px; font-weight: 800;
+      font-size: 10px; font-weight: 700;
       background: var(--palette-red-600); color: #fff;
       letter-spacing: -.1px; flex-shrink: 0;
     }
@@ -304,7 +330,7 @@
         <iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon>
       </a>
       <span class="header-ttl">일정</span>
-      <button class="icon-btn" onclick="toast('공유')" aria-label="공유">
+      <button class="icon-btn" onclick="HaruCG && HaruCG.toast ? HaruCG.toast('주간 일정 PDF 공유 준비중') : toast('공유')" aria-label="공유">
         <iconify-icon icon="fluent:share-24-filled"></iconify-icon>
       </button>
     </header>
@@ -317,8 +343,8 @@
         <div class="nav-row">
           <div class="nav-range">4월 13일 → 19일</div>
           <div class="nav-btns">
-            <button aria-label="이전 주"><iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon></button>
-            <button aria-label="다음 주"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></button>
+            <button aria-label="이전 주" onclick="navWeek(-1)"><iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon></button>
+            <button aria-label="다음 주" onclick="navWeek(1)"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></button>
           </div>
         </div>
         <div class="sum-row">
@@ -330,7 +356,7 @@
 
       <!-- ============ 주간 리스트 (환자 아바타 인라인) ============ -->
       <div class="card list-card">
-        <a class="sch-day" onclick="toast('4월 13일 · 김영자·이순자·박정식')">
+        <a class="sch-day" role="button" tabindex="0" onclick="openDay({date:'4월 13일 (월)', shift:'주간 07:00–15:00', pts:['김영자','이순자','박정식']})">
           <div class="sd-date"><span class="sd-dow">월</span><span class="sd-num">13</span></div>
           <div><span class="sd-chip">주간</span></div>
           <div class="sd-time">07:00 → 15:00</div>
@@ -341,7 +367,7 @@
           </div>
           <iconify-icon class="mi-chevron" icon="fluent:chevron-right-24-filled"></iconify-icon>
         </a>
-        <a class="sch-day" onclick="toast('4월 14일 · 최말자·김영자')">
+        <a class="sch-day" role="button" tabindex="0" onclick="openDay({date:'4월 14일 (화)', shift:'야간 22:00–06:00', pts:['최말자','김영자']})">
           <div class="sd-date"><span class="sd-dow">화</span><span class="sd-num">14</span></div>
           <div><span class="sd-chip n">야간</span></div>
           <div class="sd-time">22:00 → 06:00</div>
@@ -351,14 +377,14 @@
           </div>
           <iconify-icon class="mi-chevron" icon="fluent:chevron-right-24-filled"></iconify-icon>
         </a>
-        <a class="sch-day" onclick="toast('4월 15일 휴무')">
+        <a class="sch-day" role="button" tabindex="0" onclick="openDay({date:'4월 15일 (수)', shift:'휴무', pts:[]})">
           <div class="sd-date"><span class="sd-dow">수</span><span class="sd-num">15</span></div>
           <div><span class="sd-chip off">휴무</span></div>
           <div class="sd-time muted">—</div>
           <div class="sd-pts empty">—</div>
           <iconify-icon class="mi-chevron" icon="fluent:chevron-right-24-filled"></iconify-icon>
         </a>
-        <a class="sch-day" onclick="toast('4월 16일 · 이순자·박정식·최말자·김영자')">
+        <a class="sch-day" role="button" tabindex="0" onclick="openDay({date:'4월 16일 (목)', shift:'주간 07:00–15:00', pts:['이순자','박정식','최말자','김영자']})">
           <div class="sd-date"><span class="sd-dow">목</span><span class="sd-num">16</span></div>
           <div><span class="sd-chip">주간</span></div>
           <div class="sd-time">07:00 → 15:00</div>
@@ -370,7 +396,7 @@
           </div>
           <iconify-icon class="mi-chevron" icon="fluent:chevron-right-24-filled"></iconify-icon>
         </a>
-        <a class="sch-day" onclick="toast('4월 17일 · 김영자·이순자·박정식')">
+        <a class="sch-day" role="button" tabindex="0" onclick="openDay({date:'4월 17일 (금)', shift:'주간 07:00–15:00', pts:['김영자','이순자','박정식']})">
           <div class="sd-date"><span class="sd-dow">금</span><span class="sd-num">17</span></div>
           <div><span class="sd-chip">주간</span></div>
           <div class="sd-time">07:00 → 15:00</div>
@@ -381,7 +407,7 @@
           </div>
           <iconify-icon class="mi-chevron" icon="fluent:chevron-right-24-filled"></iconify-icon>
         </a>
-        <a class="sch-day today" onclick="toast('4월 18일 · 김영자·박정식·최말자')">
+        <a class="sch-day today" role="button" tabindex="0" onclick="openDay({date:'4월 18일 (토) · 오늘', shift:'주간 07:00–15:00', pts:['김영자','박정식','최말자'], today:true})">
           <div class="sd-date"><span class="sd-dow">토</span><span class="sd-num">18</span></div>
           <div><span class="sd-chip">주간</span></div>
           <div class="sd-time">07:00 → 15:00</div>
@@ -392,7 +418,7 @@
           </div>
           <span class="sd-now">지금</span>
         </a>
-        <a class="sch-day" onclick="toast('4월 19일 휴무')">
+        <a class="sch-day" role="button" tabindex="0" onclick="openDay({date:'4월 19일 (일)', shift:'휴무', pts:[]})">
           <div class="sd-date"><span class="sd-dow">일</span><span class="sd-num">19</span></div>
           <div><span class="sd-chip off">휴무</span></div>
           <div class="sd-time muted">—</div>
@@ -404,7 +430,7 @@
       <!-- ============ 근무 관리 ============ -->
       <div class="menu-title">근무 관리</div>
       <div class="menu-group">
-        <a class="menu-item" onclick="toast('월간 근무표')">
+        <a class="menu-item" aria-disabled="true" onclick="HaruCG && HaruCG.toast ? HaruCG.toast('월간 근무표 · 준비중') : toast('준비중')">
           <div class="mi-icon"><iconify-icon icon="fluent:calendar-month-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">월간 근무표</div>
@@ -412,7 +438,7 @@
           </div>
           <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
         </a>
-        <a class="menu-item" onclick="toast('근무 교환 요청')">
+        <a class="menu-item" aria-disabled="true" onclick="HaruCG && HaruCG.toast ? HaruCG.toast('근무 교환 요청 · 준비중') : toast('준비중')">
           <div class="mi-icon indigo"><iconify-icon icon="fluent:arrow-swap-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">근무 교환 요청</div>
@@ -420,7 +446,7 @@
           </div>
           <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
         </a>
-        <a class="menu-item" onclick="toast('휴무·연차 신청')">
+        <a class="menu-item" aria-disabled="true" onclick="HaruCG && HaruCG.toast ? HaruCG.toast('휴무·연차 신청 · 준비중') : toast('준비중')">
           <div class="mi-icon amber"><iconify-icon icon="fluent:beach-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">휴무 · 연차 신청</div>
@@ -428,7 +454,7 @@
           </div>
           <span class="mi-chevron"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
         </a>
-        <a class="menu-item" onclick="toast('출퇴근 기록')">
+        <a class="menu-item" onclick="openDay({date:'출퇴근 기록 (이달 15일)', shift:'GPS · 시간 · 서명 이력', pts:[]})">
           <div class="mi-icon grey"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></div>
           <div class="mi-body">
             <div class="mi-label">출퇴근 기록</div>
@@ -443,6 +469,15 @@
 
   <div class="toast" id="toastEl"></div>
 
+  <!-- HaruCG 공유 오버레이 (date detail · menu detail) -->
+  <div class="cg-overlay" id="cgOverlay">
+    <div class="cg-sheet">
+      <div class="cg-sheet__handle"></div>
+      <div id="cgSheetContent"></div>
+    </div>
+  </div>
+  <div class="cg-toast" id="cgToast"></div>
+
   <script>
     function toast(m) {
       var t = document.getElementById('toastEl');
@@ -450,6 +485,41 @@
       t.classList.add('show');
       clearTimeout(t._x);
       t._x = setTimeout(function() { t.classList.remove('show'); }, 2200);
+    }
+
+    /* 주 네비 — 데모용 시각 피드백만 */
+    function navWeek(dir) {
+      if (window.HaruCG) HaruCG.toast(dir > 0 ? '다음 주 일정 (4월 20–26일)' : '이전 주 일정 (4월 6–12일)');
+      else toast(dir > 0 ? '다음 주' : '이전 주');
+    }
+
+    /* 날짜 detail sheet — toast-only 폐기 */
+    function openDay(d) {
+      if (!window.HaruCG) { toast(d.date + ' · ' + d.shift); return; }
+      var ptHtml = '';
+      if (d.pts && d.pts.length) {
+        ptHtml = d.pts.map(function (n) {
+          return '<div class="cg-row"><span class="cg-row__ico"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></span><div class="cg-row__body"><div class="cg-row__t">' + n + '</div><div class="cg-row__d">담당 환자</div></div></div>';
+        }).join('');
+      } else {
+        ptHtml = '<div class="cg-row"><span class="cg-row__ico"><iconify-icon icon="fluent:beach-24-filled"></iconify-icon></span><div class="cg-row__body"><div class="cg-row__t">휴무</div><div class="cg-row__d">근무 없음</div></div></div>';
+      }
+      HaruCG.openSheet(
+        '<div class="cg-sheet__head">' +
+          '<div class="cg-sheet__ico"><iconify-icon icon="fluent:calendar-24-filled"></iconify-icon></div>' +
+          '<div><div class="cg-sheet__ttl">' + d.date + '</div><div class="cg-sheet__sub">' + d.shift + '</div></div>' +
+        '</div>' +
+        '<div class="cg-sheet__body">' + ptHtml +
+          (d.pts && d.pts.length
+            ? '<div class="cg-row"><span class="cg-row__ico"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></span><div class="cg-row__body"><div class="cg-row__t">인수인계 메모</div><div class="cg-row__d">전 근무자에게서 받은 메모 0건</div></div></div>' +
+              '<div class="cg-row"><span class="cg-row__ico"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></span><div class="cg-row__body"><div class="cg-row__t">출퇴근 GPS</div><div class="cg-row__d">현장 좌표 자동 기록</div></div></div>'
+            : '') +
+        '</div>' +
+        '<div class="cg-sheet__cta">' +
+          '<button class="btn cta-soft" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--palette-gray-100);color:var(--t2);font:inherit;font-weight:600" onclick="HaruCG.closeSheet()">닫기</button>' +
+          (d.today ? '<button class="btn" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--accent);color:#fff;font:inherit;font-weight:700" onclick="HaruCG.closeSheet();location.href=\'c01-today.html\'"><iconify-icon icon="fluent:home-24-filled"></iconify-icon> 오늘 화면</button>' : '')+
+        '</div>'
+      );
     }
   </script>
 </body>

@@ -1,0 +1,24 @@
+{
+  "loop": null,
+  "status": "init",
+  "round": 0,
+  "max_rounds": 1,
+  "result": null,
+  "started_at": null,
+  "ended_at": null,
+  "baseline_ref": null,
+  "worktree": null,
+  "branch": null,
+  "models": {
+    "claude": null,
+    "codex": null,
+    "codex_effort": null
+  },
+  "budget_usd": null,
+  "verify": {
+    "mode": null,
+    "passed": null,
+    "checks": []
+  },
+  "history": []
+}

@@ -1,0 +1,215 @@
+#!/usr/bin/env bash
+# Auto review loop: Claude (impl) <-> Codex (review)
+# v2 plan: 07_디자인/CLAUDE_CODEX_AUTO_LOOP_PLAN_V2_20260510.md
+# bash 3.2 compatible (macOS default).
+
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+#---------------------------------------------------------------------- paths
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+LOOP_ROOT_REL="07_디자인/_review_loop"
+LOOP_ROOT_ABS="$REPO_ROOT/$LOOP_ROOT_REL"
+SCHEMA_REL="$LOOP_ROOT_REL/schemas/codex-verdict.schema.json"
+
+LIB="$SCRIPT_DIR/review-loop.lib.sh"
+PROMPTS="$SCRIPT_DIR/review-loop.prompts.sh"
+# shellcheck source=/dev/null
+. "$LIB"
+# shellcheck source=/dev/null
+. "$PROMPTS"
+
+#---------------------------------------------------------------------- defaults
+USE_WT=1
+ROUNDS=1
+VERIFY="static"
+BUDGET="3"
+DRY_RUN=0
+NAME=""
+BODY=""
+CLAUDE_MODEL="${CLAUDE_MODEL:-claude-sonnet-4-6}"
+CODEX_MODEL="${CODEX_MODEL:-}"          # empty = codex default
+CODEX_EFFORT="${CODEX_EFFORT:-medium}"
+WORKTREE_ROOT="${HARU_LOOP_WORKTREE_ROOT:-/tmp/haru-anbu-loops}"
+
+#---------------------------------------------------------------------- usage
+usage() {
+  cat <<USAGE
+usage: review-loop.sh [OPTIONS] <name> [request-body]
+
+Options:
+  --no-worktree       run in current dir (requires clean tree)
+  --rounds N          1 or 2 (default 1)
+  --verify MODE       none | static (default static)
+  --budget USD        Claude --max-budget-usd (default 3)
+  --dry-run           create folder + REQUEST.md only, no AI calls
+  -h, --help          show this help
+
+Env:
+  CLAUDE_MODEL                 default ${CLAUDE_MODEL}
+  CODEX_MODEL                  default codex default
+  CODEX_EFFORT                 default ${CODEX_EFFORT}
+  HARU_LOOP_WORKTREE_ROOT      default ${WORKTREE_ROOT}
+USAGE
+}
+
+#---------------------------------------------------------------------- args
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -h|--help) usage; exit 0 ;;
+    --no-worktree) USE_WT=0; shift ;;
+    --rounds) ROUNDS="$2"; shift 2 ;;
+    --verify) VERIFY="$2"; shift 2 ;;
+    --budget) BUDGET="$2"; shift 2 ;;
+    --dry-run) DRY_RUN=1; shift ;;
+    --) shift; break ;;
+    -*) die "unknown option: $1" 1 ;;
+    *)
+      if [ -z "$NAME" ]; then NAME="$1"; shift
+      elif [ -z "$BODY" ]; then BODY="$1"; shift
+      else die "too many positional args" 1
+      fi ;;
+  esac
+done
+
+[ -n "$NAME" ] || { usage; exit 1; }
+case "$ROUNDS" in 1|2) : ;; *) die "--rounds must be 1 or 2" 1 ;; esac
+case "$VERIFY" in none|static) : ;; *) die "--verify must be none|static" 1 ;; esac
+
+#---------------------------------------------------------------------- preflight
+need_cmd git
+need_cmd jq
+[ "$DRY_RUN" -eq 1 ] || need_cmd claude
+[ "$DRY_RUN" -eq 1 ] || need_cmd codex
+# static verify uses rg if available, else python3 fallback
+if [ "$VERIFY" = "static" ]; then
+  command -v rg >/dev/null 2>&1 || need_cmd python3
+fi
+
+# pick unique loop dir name
+DATE=$(date +%Y-%m-%d)
+LOOP_NAME=$(unique_loop_name "$LOOP_ROOT_ABS" "$DATE" "$NAME")
+LOCK_DIR="$LOOP_ROOT_ABS/.review-loop.lock"
+
+mkdir -p "$LOOP_ROOT_ABS"
+acquire_lock_or_die "$LOCK_DIR" "$LOOP_NAME"
+trap 'on_exit' EXIT
+trap 'on_signal' INT TERM
+
+#---------------------------------------------------------------------- worktree
+BASELINE_REF=$(git -C "$REPO_ROOT" -c core.quotepath=false rev-parse HEAD)
+BRANCH="loop/$LOOP_NAME"
+
+if [ "$USE_WT" -eq 1 ]; then
+  WORKDIR="$WORKTREE_ROOT/$LOOP_NAME"
+  mkdir -p "$WORKTREE_ROOT"
+  git -C "$REPO_ROOT" -c core.quotepath=false worktree add -b "$BRANCH" "$WORKDIR" "$BASELINE_REF" >/dev/null
+  log "worktree:  $WORKDIR"
+  log "branch:    $BRANCH"
+else
+  ensure_clean_tree "$REPO_ROOT"
+  WORKDIR="$REPO_ROOT"
+  log "worktree:  (none, --no-worktree)"
+fi
+
+LOOP_DIR_REL="$LOOP_ROOT_REL/$LOOP_NAME"
+LOOP_DIR="$WORKDIR/$LOOP_DIR_REL"
+mkdir -p "$LOOP_DIR/stdio"
+
+# copy template
+cp -R "$LOOP_ROOT_ABS/_TEMPLATE/." "$LOOP_DIR/"
+cp "$LOOP_ROOT_ABS/_GUIDE_COMPACT.md" "$LOOP_DIR/GUIDE_SNAPSHOT.md"
+
+# write REQUEST
+if [ -n "$BODY" ]; then
+  write_request_with_body "$LOOP_DIR/REQUEST.md" "$BODY"
+else
+  : > /dev/null   # leave template REQUEST.md as-is for editor
+  if [ "$DRY_RUN" -eq 0 ]; then
+    "${EDITOR:-vim}" "$LOOP_DIR/REQUEST.md" </dev/tty >/dev/tty 2>&1 || true
+  fi
+fi
+
+# parse allowlist
+ALLOWED_FILES=()
+ALLOWED_GLOBS=()
+parse_allowlist "$LOOP_DIR/REQUEST.md"
+if [ ${#ALLOWED_FILES[@]} -eq 0 ] && [ ${#ALLOWED_GLOBS[@]} -eq 0 ]; then
+  die "REQUEST.md missing 'Allowed files' or 'Allowed-file globs' entries" 1 MISSING_ALLOWLIST
+fi
+# always allow our own loop dir
+ALLOWED_GLOBS+=("$LOOP_DIR_REL/*" "$LOOP_DIR_REL/**")
+
+# init meta
+init_meta "$LOOP_DIR/meta.json"
+
+#---------------------------------------------------------------------- dry-run
+if [ "$DRY_RUN" -eq 1 ]; then
+  log "dry-run done."
+  log "loop dir:  $LOOP_DIR"
+  log "log:       $LOOP_DIR/LOG.md (will be generated by real run)"
+  log "next:      run without --dry-run"
+  exit 0
+fi
+
+#---------------------------------------------------------------------- rounds
+RESULT=""
+for round in $(seq 1 "$ROUNDS"); do
+  RD="$LOOP_DIR/round-$round"
+  mkdir -p "$RD"
+  log "----- round $round -----"
+
+  # 1. Claude work
+  set_meta_status "claude-work" "$round"
+  step_claude_work "$round" "$RD" "$WORKDIR" "$LOOP_DIR" "$BASELINE_REF"
+  enforce_scope "$WORKDIR" "$BASELINE_REF" "${ALLOWED_FILES[@]}" -- "${ALLOWED_GLOBS[@]}"
+  refresh_diff_patch "$WORKDIR" "$BASELINE_REF" "$LOOP_DIR/diff.patch" "${ALLOWED_FILES[@]}"
+
+  # 2. Codex review (read-only)
+  set_meta_status "codex-review" "$round"
+  step_codex_review "$round" "$RD" "$WORKDIR" "$LOOP_DIR"
+  V=$(read_verdict "$RD/codex-review.json")
+  log "codex review verdict: $V"
+  case "$V" in
+    PASS|PASS_WITH_NOTES) RESULT="$V"; break ;;
+    ESCALATED) RESULT="ESCALATED"; break ;;
+    FAIL) : ;;
+    *) die "invalid verdict: $V" 6 BAD_VERDICT ;;
+  esac
+
+  # 3. Claude respond
+  set_meta_status "claude-respond" "$round"
+  step_claude_respond "$round" "$RD" "$WORKDIR" "$LOOP_DIR" "$BASELINE_REF"
+  enforce_scope "$WORKDIR" "$BASELINE_REF" "${ALLOWED_FILES[@]}" -- "${ALLOWED_GLOBS[@]}"
+  refresh_diff_patch "$WORKDIR" "$BASELINE_REF" "$LOOP_DIR/diff.patch" "${ALLOWED_FILES[@]}"
+
+  # 4. Codex final
+  set_meta_status "codex-final" "$round"
+  step_codex_final "$round" "$RD" "$WORKDIR" "$LOOP_DIR"
+  VF=$(read_verdict "$RD/codex-final.json")
+  log "codex final verdict: $VF"
+  case "$VF" in
+    PASS|PASS_WITH_NOTES) RESULT="$VF"; break ;;
+    ESCALATED) RESULT="ESCALATED"; break ;;
+    FAIL) : ;;          # try next round if any
+    *) die "invalid verdict: $VF" 6 BAD_VERDICT ;;
+  esac
+  if [ "$round" = "$ROUNDS" ]; then RESULT="ESCALATED"; fi
+done
+
+#---------------------------------------------------------------------- verify (static)
+if [ "$VERIFY" = "static" ]; then
+  if static_verify "$WORKDIR" "${ALLOWED_FILES[@]}"; then
+    set_meta_field ".verify.passed" true
+  else
+    set_meta_field ".verify.passed" false
+    log "static verify: FAIL"
+    [ "$RESULT" = "PASS" ] && RESULT="PASS_WITH_NOTES"
+  fi
+fi
+
+#---------------------------------------------------------------------- finalize
+build_log_md "$LOOP_DIR"
+copy_artifacts_to_main_if_worktree "$WORKDIR" "$REPO_ROOT" "$LOOP_DIR_REL"
+finalize "$RESULT" "$LOOP_DIR" "$LOOP_DIR_REL" "$WORKDIR" "$REPO_ROOT" "$BRANCH" "$USE_WT"

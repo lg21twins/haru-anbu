@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="ko" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
+  <title>하루안부 디자인 시스템 v3.1</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="_preview-shared.css">
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+  <style>
+    body {
+      background: var(--color-bg-canvas);
+      color: var(--color-text-primary);
+      padding: 0;
+      margin: 0;
+    }
+    /* v3.1: 차분한 헤더 — 강한 그라디언트 제거. 운영 문서처럼 조용히. */
+    .hero {
+      padding: var(--space-11) var(--space-7) var(--space-10);
+      text-align: center;
+      background: var(--color-bg-surface);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .hero__roles {
+      display: inline-flex;
+      gap: var(--space-2);
+      margin-bottom: var(--space-6);
+    }
+    .hero__role-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-pill);
+      font-size: var(--font-11);
+      font-weight: var(--weight-medium);
+      color: var(--color-text-secondary);
+      background: var(--color-bg-canvas);
+      border: 1px solid var(--color-border-subtle);
+    }
+    .hero__role-chip__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-pill);
+    }
+    .hero__role-chip--guardian .hero__role-chip__dot { background: var(--brand-blue-500); }
+    .hero__role-chip--medical .hero__role-chip__dot { background: var(--brand-green-500); }
+    .hero__role-chip--patient .hero__role-chip__dot { background: var(--brand-orange-400); }
+    .hero__symbol {
+      width: var(--size-avatar-lg);
+      height: var(--size-avatar-lg);
+      margin: 0 auto var(--space-5);
+      display: block;
+    }
+    .hero__title {
+      font-size: var(--font-32);
+      font-weight: var(--weight-bold);
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-primary);
+      letter-spacing: -0.01em;
+    }
+    .hero__subtitle {
+      font-size: var(--font-16);
+      color: var(--color-text-secondary);
+      margin: 0 auto var(--space-3);
+      max-width: 600px;
+      line-height: var(--leading-relaxed);
+    }
+    .hero__version {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-11);
+      color: var(--color-text-tertiary);
+      margin-top: var(--space-5);
+    }
+
+    .container {
+      max-width: var(--size-content-max, 1200px);
+      margin: 0 auto;
+      padding: var(--space-11) var(--space-7) var(--space-12);
+    }
+    .section-title {
+      font-size: var(--text-callout);
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-secondary);
+      margin: 0 0 var(--space-7);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+      margin-bottom: var(--space-10);
+    }
+    @media (max-width: 720px) {
+      .card-grid { grid-template-columns: 1fr; }
+    }
+    /* v3.1: 카드 균일 — 같은 높이, 같은 밀도 */
+    .preview-card {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-7);
+      text-decoration: none;
+      color: inherit;
+      transition: var(--motion-micro) var(--easing-standard);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 240px;
+    }
+    .preview-card:hover {
+      box-shadow: var(--shadow-2);
+      border-color: var(--brand-blue-300);
+    }
+    .preview-card__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      height: 22px;
+      padding: 0 var(--space-3);
+      border-radius: var(--radius-pill);
+      background: var(--color-bg-canvas);
+      color: var(--color-text-secondary);
+      font-size: var(--font-11);
+      font-weight: var(--weight-semibold);
+      margin-bottom: var(--space-4);
+      align-self: flex-start;
+    }
+    .preview-card__title {
+      font-size: var(--font-22);
+      font-weight: var(--weight-semibold);
+      margin: 0 0 var(--space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+    .preview-card__title iconify-icon {
+      font-size: var(--size-icon-md);
+      color: var(--brand-blue-500);
+    }
+    .preview-card__desc {
+      font-size: var(--text-callout);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-relaxed);
+      margin: 0 0 var(--space-6);
+    }
+    .preview-card__list {
+      margin: 0;
+      padding-left: 18px;
+      font-size: var(--text-caption);
+      color: var(--color-text-tertiary);
+      line-height: var(--leading-relaxed);
+    }
+    .preview-card__list li { padding: 2px 0; }
+    .preview-card__arrow {
+      position: absolute;
+      bottom: var(--space-7);
+      right: var(--space-7);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-pill);
+      background: var(--brand-blue-500);
+      color: var(--color-text-on-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-18);
+      transition: var(--motion-transition) var(--easing-standard);
+    }
+    .preview-card:hover .preview-card__arrow {
+      transform: translateX(2px);
+    }
+
+    .doc-list {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card-lg);
+      padding: var(--space-7) var(--space-8);
+      margin-bottom: var(--space-7);
+    }
+    .doc-list__title {
+      font-size: var(--text-callout);
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-secondary);
+      margin: 0 0 var(--space-5);
+    }
+    .doc-list ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .doc-list li {
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-border-subtle);
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-5);
+    }
+    .doc-list li:last-child { border-bottom: 0; }
+    .doc-list a {
+      color: var(--color-text-primary);
+      text-decoration: none;
+      font-weight: var(--weight-semibold);
+      font-size: var(--font-14);
+      flex-shrink: 0;
+      min-width: 240px;
+    }
+    .doc-list a:hover { color: var(--brand-blue-500); }
+    .doc-list__hint {
+      font-size: var(--text-caption);
+      color: var(--color-text-secondary);
+    }
+
+    .principles {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card-lg);
+      padding: var(--space-8);
+      margin-bottom: var(--space-7);
+    }
+    .principles__title {
+      font-size: var(--font-22);
+      font-weight: var(--weight-semibold);
+      margin: 0 0 var(--space-7);
+    }
+    .principles__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+    @media (max-width: 720px) {
+      .principles__list { grid-template-columns: 1fr; }
+    }
+    .principles__item {
+      display: flex;
+      gap: var(--space-5);
+      align-items: flex-start;
+    }
+    .principles__num {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-pill);
+      background: var(--brand-blue-100);
+      color: var(--brand-blue-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--weight-bold);
+      font-size: var(--font-13);
+      flex-shrink: 0;
+    }
+    .principles__text {
+      font-size: var(--text-callout);
+      line-height: var(--leading-relaxed);
+      color: var(--color-text-secondary);
+    }
+    .principles__text strong {
+      color: var(--color-text-primary);
+      font-weight: var(--weight-semibold);
+    }
+
+    .footer {
+      text-align: center;
+      font-size: var(--text-caption);
+      color: var(--color-text-tertiary);
+      padding: var(--space-8) var(--space-7) var(--space-11);
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* 4-role 미니 앱 프리뷰 — 동일 4단 구조 (head → hero → row → caption)
+       data-role 기반 스타일링으로 inline style 최소화 */
+    .role-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-5);
+      margin-bottom: var(--space-11);
+    }
+    @media (max-width: 960px) { .role-strip { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 540px) { .role-strip { grid-template-columns: 1fr; } }
+
+    .role-mini {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      transition: var(--motion-micro) var(--easing-standard);
+    }
+    .role-mini:hover {
+      box-shadow: var(--shadow-2);
+      border-color: var(--color-border-strong);
+    }
+
+    /* head — 모든 카드 동일 구조. dot은 semantic token (--color-accent)이
+       data-role 컨텍스트에서 자동으로 보호자 블루/의료진 그린/환자 오렌지로 변환된다. */
+    .role-mini__head {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--font-13);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-secondary);
+    }
+    .role-mini__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-accent);
+    }
+
+    /* hero — 모든 카드 동일 구조. linear-gradient만 semantic accent로. */
+    .role-mini__hero {
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      color: var(--color-accent-on);
+      min-height: 96px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--color-accent), var(--color-accent-strong));
+      box-shadow: 0 4px 16px rgba(var(--color-accent-rgb), 0.20);
+    }
+    .role-mini__hero-eyebrow {
+      font-size: var(--font-11);
+      opacity: 0.85;
+      margin-bottom: var(--space-2);
+    }
+    .role-mini__hero-title {
+      font-size: var(--font-16);
+      font-weight: var(--weight-semibold);
+      line-height: var(--leading-normal);
+    }
+
+    /* row — 모든 카드 동일 구조. icon color는 --color-accent. 환자만 자동 상향. */
+    .role-mini__row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      font-size: var(--font-13);
+      color: var(--color-text-primary);
+      background: var(--color-bg-surface);
+    }
+    .role-mini__row iconify-icon {
+      font-size: var(--size-icon-sm);
+      flex-shrink: 0;
+      color: var(--color-accent);
+    }
+    .role-mini__row > span:first-of-type { flex: 1; }
+    /* 환자 자동 상향 — 큰 글자, 큰 패딩 */
+    .role-mini--upscaled .role-mini__row {
+      font-size: var(--font-16);
+      font-weight: var(--weight-semibold);
+      padding: var(--space-4);
+    }
+    .role-mini--upscaled .role-mini__row iconify-icon { font-size: var(--size-icon-md); }
+
+    .role-mini__pill {
+      font-size: var(--font-11);
+      font-weight: var(--weight-semibold);
+      padding: 2px var(--space-3);
+      border-radius: var(--radius-pill);
+      flex-shrink: 0;
+    }
+    .role-mini__pill--success { background: var(--color-success-soft); color: var(--brand-green-700); }
+    .role-mini__pill--warning { background: var(--color-warning-soft); color: var(--palette-amber-700); }
+
+    .role-mini__caption {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-11);
+      color: var(--color-text-tertiary);
+      text-align: center;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <nav class="pv-nav">
+    <div class="pv-nav__inner">
+      <a href="preview.html" class="pv-nav__brand">
+        <img src="logo/brand-system/01_심볼단독.svg" alt="">
+        하루안부 DS
+      </a>
+      <div class="pv-nav__links">
+        <a href="preview.html" class="pv-nav__link pv-nav__link--active">개요</a>
+        <a href="preview-foundations.html" class="pv-nav__link">Foundations</a>
+        <a href="preview-components.html" class="pv-nav__link">Components</a>
+        <a href="preview-patterns.html" class="pv-nav__link">Patterns</a>
+        <a href="preview-roles.html" class="pv-nav__link">Roles</a>
+      </div>
+      <div class="pv-nav__version">v3.1</div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <img src="logo/brand-system/01_심볼단독.svg" alt="하루안부" class="hero__symbol">
+    <div class="hero__roles">
+      <span class="hero__role-chip hero__role-chip--guardian"><span class="hero__role-chip__dot"></span>보호자</span>
+      <span class="hero__role-chip hero__role-chip--medical"><span class="hero__role-chip__dot"></span>의료진 + 요양보호사</span>
+      <span class="hero__role-chip hero__role-chip--patient"><span class="hero__role-chip__dot"></span>환자</span>
+    </div>
+    <h1 class="hero__title">하루안부 디자인 시스템</h1>
+    <p class="hero__subtitle">하나의 토큰 시스템 위에 <strong>3 컬러 테마</strong>(보호자 블루 · 의료진/요양 그린 · 환자 오렌지)와 <strong>5 제품 표면</strong>(보호자앱 · 의료진웹 · 요양보호사앱 · 환자앱 · 온보딩) — 모든 화면이 시각적으로 단일한 제품처럼 보이게 만드는 규칙</p>
+    <div class="hero__version">v3.1 · 2026.05.10 · M3 + KRDS + KT Seamless Flow IA</div>
+  </header>
+
+  <main class="container">
+
+    <!-- 4-role 미니 앱 프리뷰 — 같은 구조, 다른 맥락
+         모든 카드는 동일한 4단 구조: head → hero → row → caption.
+         차이는 색상/아이콘/문장 톤/접근성 스케일만. -->
+    <h2 class="section-title">같은 구조, 다른 맥락</h2>
+    <p style="font-size: var(--font-14); color: var(--color-text-secondary); margin: calc(var(--space-7) * -1) 0 var(--space-7); line-height: var(--leading-relaxed);">보호자는 안심을 확인하고, 의료진은 위험을 판단하고, 요양보호사는 현장을 기록하고, 환자는 지금 할 일을 쉽게 실행합니다. 모든 카드는 <strong>동일한 4단 구조</strong>(head → hero → row → caption) — <code>data-role</code>이 액센트·접근성 스케일만 조정합니다.</p>
+
+    <div class="role-strip">
+      <!-- 보호자 — 안심 확인 -->
+      <a href="preview-roles.html" class="role-mini" data-role="guardian">
+        <div class="role-mini__head">
+          <span class="role-mini__dot"></span>
+          <span class="role-mini__name">보호자</span>
+        </div>
+        <div class="role-mini__hero">
+          <div class="role-mini__hero-eyebrow">오늘의 안부</div>
+          <div class="role-mini__hero-title">안정적이세요</div>
+        </div>
+        <div class="role-mini__row">
+          <iconify-icon icon="fluent:pill-24-filled"></iconify-icon>
+          <span>오전 투약 완료</span>
+          <span class="role-mini__pill role-mini__pill--success">정상</span>
+        </div>
+        <div class="role-mini__caption">안심 확인 · 10초</div>
+      </a>
+
+      <!-- 의료진 — 위험 판단 -->
+      <a href="preview-roles.html" class="role-mini" data-role="medical">
+        <div class="role-mini__head">
+          <span class="role-mini__dot"></span>
+          <span class="role-mini__name">의료진</span>
+        </div>
+        <div class="role-mini__hero">
+          <div class="role-mini__hero-eyebrow">위험 환자</div>
+          <div class="role-mini__hero-title">205호 낙상 의심</div>
+        </div>
+        <div class="role-mini__row">
+          <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+          <span>박미영 · 203호</span>
+          <span class="role-mini__pill role-mini__pill--warning">주의</span>
+        </div>
+        <div class="role-mini__caption">위험 판단 · 즉시</div>
+      </a>
+
+      <!-- 요양보호사 — 현장 기록 -->
+      <a href="preview-roles.html" class="role-mini" data-role="caregiver">
+        <div class="role-mini__head">
+          <span class="role-mini__dot"></span>
+          <span class="role-mini__name">요양보호사</span>
+        </div>
+        <div class="role-mini__hero">
+          <div class="role-mini__hero-eyebrow">담당 환자 5명</div>
+          <div class="role-mini__hero-title">근무 중 · 오후 1시 30분</div>
+        </div>
+        <div class="role-mini__row">
+          <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+          <span>점심 투약 체크</span>
+          <span class="role-mini__pill role-mini__pill--success">완료</span>
+        </div>
+        <div class="role-mini__caption">현장 기록 · 한 손 조작</div>
+      </a>
+
+      <!-- 환자 — 지금 할 일 (자동 상향) -->
+      <a href="preview-roles.html" class="role-mini role-mini--upscaled" data-role="patient">
+        <div class="role-mini__head">
+          <span class="role-mini__dot"></span>
+          <span class="role-mini__name">환자 (자동 상향)</span>
+        </div>
+        <div class="role-mini__hero">
+          <div class="role-mini__hero-eyebrow">오늘의 한마디</div>
+          <div class="role-mini__hero-title">아드님이 사진을<br>보내셨어요</div>
+        </div>
+        <div class="role-mini__row">
+          <iconify-icon icon="fluent:hand-wave-24-filled"></iconify-icon>
+          <span>도움이 필요해요</span>
+          <span class="role-mini__pill role-mini__pill--warning">대기</span>
+        </div>
+        <div class="role-mini__caption">큰 버튼 · 18px 본문 · 56px 터치</div>
+      </a>
+    </div>
+
+    <h2 class="section-title">시각화 페이지</h2>
+    <div class="card-grid">
+
+      <a href="preview-foundations.html" class="preview-card">
+        <div class="preview-card__badge">
+          <iconify-icon icon="fluent:color-24-filled"></iconify-icon>
+          파운데이션
+        </div>
+        <h3 class="preview-card__title">
+          <iconify-icon icon="fluent:layer-24-filled"></iconify-icon>
+          Foundations
+        </h3>
+        <p class="preview-card__desc">컬러·타이포·간격·형태·고도·모션·아이콘·로고·접근성·다국어 — 모든 UI 결정의 기반</p>
+        <ul class="preview-card__list">
+          <li>3 역할 테마 (보호자 / 의료진 / 환자)</li>
+          <li>로고 시스템 5종 변형 + 사용 규칙</li>
+          <li>4px 간격 그리드, 8단계 라운드 사다리</li>
+          <li>Pretendard + Noto Sans SC (다국어)</li>
+        </ul>
+        <div class="preview-card__arrow">→</div>
+      </a>
+
+      <a href="preview-components.html" class="preview-card">
+        <div class="preview-card__badge">
+          <iconify-icon icon="fluent:apps-list-detail-24-filled"></iconify-icon>
+          컴포넌트
+        </div>
+        <h3 class="preview-card__title">
+          <iconify-icon icon="fluent:apps-24-filled"></iconify-icon>
+          Components
+        </h3>
+        <p class="preview-card__desc">버튼·카드·탭바·인풋·모달·뱃지 등 모든 UI 컴포넌트의 라이브 데모</p>
+        <ul class="preview-card__list">
+          <li>Action: 버튼 4종 + FAB + 칩</li>
+          <li>Containment: 카드 4종 + 바텀시트 + 모달</li>
+          <li>Navigation: 헤더·탭바·사이드바</li>
+          <li>Input: 텍스트필드·검색·토글·체크박스</li>
+        </ul>
+        <div class="preview-card__arrow">→</div>
+      </a>
+
+      <a href="preview-patterns.html" class="preview-card">
+        <div class="preview-card__badge">
+          <iconify-icon icon="fluent:document-multiple-24-filled"></iconify-icon>
+          패턴
+        </div>
+        <h3 class="preview-card__title">
+          <iconify-icon icon="fluent:phone-screen-time-24-filled"></iconify-icon>
+          Patterns
+        </h3>
+        <p class="preview-card__desc">홈 화면·AI 리포트·경보 위계 등 화면 단위 목업과 플로우</p>
+        <ul class="preview-card__list">
+          <li>보호자 홈 — "오늘 안심 확인"</li>
+          <li>AI 리포트 카드 (6 섹션 고정)</li>
+          <li>경보 위계 4단계 비교</li>
+          <li>빈 상태·폼 검증·로딩 스켈레톤</li>
+        </ul>
+        <div class="preview-card__arrow">→</div>
+      </a>
+
+      <a href="preview-roles.html" class="preview-card">
+        <div class="preview-card__badge">
+          <iconify-icon icon="fluent:people-24-filled"></iconify-icon>
+          역할 비교
+        </div>
+        <h3 class="preview-card__title">
+          <iconify-icon icon="fluent:multiselect-ltr-24-filled"></iconify-icon>
+          Roles Side-by-Side
+        </h3>
+        <p class="preview-card__desc">같은 컴포넌트가 보호자·의료진·환자 테마에서 어떻게 다른지 나란히 비교</p>
+        <ul class="preview-card__list">
+          <li>3 테마 미니 홈 화면 비교</li>
+          <li>같은 버튼·카드·탭바의 색 변화</li>
+          <li>환자 자동 상향 (18px·56px)</li>
+          <li>역할 그라디언트 배경 비교</li>
+        </ul>
+        <div class="preview-card__arrow">→</div>
+      </a>
+
+    </div>
+
+    <h2 class="section-title">문서</h2>
+    <div class="doc-list">
+      <ul>
+        <li>
+          <a href="README.md">README.md</a>
+          <span class="doc-list__hint">진입점 + 5분 시작 가이드 + 변경 이력</span>
+        </li>
+        <li>
+          <a href="01_FOUNDATIONS.md">01_FOUNDATIONS.md</a>
+          <span class="doc-list__hint">브랜드·로고·컬러·타이포·간격·형태·고도·모션·아이콘·접근성·i18n</span>
+        </li>
+        <li>
+          <a href="02_COMPONENTS.md">02_COMPONENTS.md</a>
+          <span class="doc-list__hint">Action·Containment·Navigation·Communication·Input·Display 6 카테고리</span>
+        </li>
+        <li>
+          <a href="03_PATTERNS.md">03_PATTERNS.md</a>
+          <span class="doc-list__hint">14개 화면·플로우 패턴 (홈·AI리포트·경보위계·빈상태·폼검증)</span>
+        </li>
+        <li>
+          <a href="tokens/tokens.css">tokens/tokens.css</a>
+          <span class="doc-list__hint">진실의 원천 — 3계층(Primitive/Semantic/Component) + 2축(role/platform)</span>
+        </li>
+        <li>
+          <a href="tokens/README.md">tokens/README.md</a>
+          <span class="doc-list__hint">토큰 사용법 — data-role / data-platform 선언 방식</span>
+        </li>
+        <li>
+          <a href="tokens/MIGRATION.md">tokens/MIGRATION.md</a>
+          <span class="doc-list__hint">구 토큰 → 신 토큰 매핑 (v11 보호자앱 마이그레이션)</span>
+        </li>
+      </ul>
+    </div>
+
+    <h2 class="section-title">핵심 원칙 5가지</h2>
+    <div class="principles">
+      <ol class="principles__list">
+        <li class="principles__item">
+          <span class="principles__num">1</span>
+          <span class="principles__text"><strong>하나의 차체, 세 개의 테마</strong> — 모든 컴포넌트는 구조적으로 동일하고, <code>data-role</code>이 보호자 블루(#2C7AFC) / 의료진 그린(#22C55E) / 환자 오렌지(#FB923C)로 색만 바꾼다.</span>
+        </li>
+        <li class="principles__item">
+          <span class="principles__num">2</span>
+          <span class="principles__text"><strong>Flat surface가 기본</strong> — 일반 정보 카드는 흰 surface + 1px 보더 + 약한 shadow. Glass(반투명+blur)는 탭바·모달·AI 리포트·환자 가족 사진 카드처럼 플로팅/감성 맥락에만 제한적으로 쓴다.</span>
+        </li>
+        <li class="principles__item">
+          <span class="principles__num">3</span>
+          <span class="principles__text"><strong>플로팅 필 탭바</strong> — 좌우 16px 인셋, 56px 높이, radius pill. 절대 풀-블리드 금지. AI FAB은 별도 원형으로 분리.</span>
+        </li>
+        <li class="principles__item">
+          <span class="principles__num">4</span>
+          <span class="principles__text"><strong>Pretendard + Fluent Filled 단일</strong> — 모든 글자는 Pretendard, 모든 아이콘은 fluent filled. 라인 혼용·이모지 절대 금지.</span>
+        </li>
+        <li class="principles__item">
+          <span class="principles__num">5</span>
+          <span class="principles__text"><strong>AI 진입점 = 하루안부 심볼</strong> — sparkle 대신 브랜드 심볼이 AI를 대표. FAB·챗 진입점·AI 리포트 마크 모두 같은 심볼.</span>
+        </li>
+      </ol>
+    </div>
+
+    <p class="footer">
+      하루안부 디자인 시스템 v3.1 · 2026.05.09<br>
+      진실의 원천: <code>07_디자인/tokens/tokens.css</code><br>
+      문서 IA: M3 (Material Design 3) + KRDS (Korea) + KT Seamless Flow 패턴 차용
+    </p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,32 @@
+/* ============================================================
+   하루안부 · 의료진 모바일앱 v15 — 공통 별칭 토큰
+   ------------------------------------------------------------
+   tokens.css → _shared.css 순서로 import.
+   각 화면에서 반복 정의되던 :root 별칭과 레이아웃 변수만 모음.
+   화면 컴포넌트 스타일은 점진적으로 system/components.css로 이전.
+   ============================================================ */
+
+:root {
+  /* 의료진 accent */
+  --accent: var(--color-accent);
+  --accent-soft: var(--color-accent-soft);
+  --accent-strong: var(--color-accent-strong);
+
+  /* status */
+  --danger: var(--color-danger);
+  --danger-soft: var(--color-danger-soft);
+  --warn: var(--color-warning);
+  --warn-soft: var(--color-warning-soft);
+
+  /* text */
+  --t1: var(--color-text-primary);
+  --t2: var(--color-text-secondary);
+  --t3: var(--color-text-tertiary);
+
+  /* layout */
+  --safe-t: max(env(safe-area-inset-top, 0px), 52px);
+  --safe-b: max(env(safe-area-inset-bottom, 0px), 20px);
+  --tab-h: 64px;
+  --tab-bot: 14px;
+  --pad: 22px;
+}
