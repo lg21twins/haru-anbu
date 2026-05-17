@@ -523,8 +523,41 @@
     }
     .sc-tab:hover{border-color:var(--ink-2);color:var(--ink)}
     .sc-tab.active{background:var(--ink);color:white;border-color:var(--ink)}
-    .showcase-stage{display:flex;justify-content:center;gap:40px;align-items:flex-end;flex-wrap:wrap;min-height:640px}
+    .showcase-stage{display:flex;justify-content:center;gap:40px;align-items:flex-start;flex-wrap:wrap;min-height:640px}
     .showcase-hint{text-align:center;margin-top:32px;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--mute-2)}
+
+    /* ── PNG DEVICE MOCKUPS (Showcase) ── */
+    .sc-device-col{display:flex;flex-direction:column;align-items:center;gap:28px;width:100%}
+    .sc-screen-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+    .sc-stab{padding:7px 16px;border:1px solid var(--line);border-radius:100px;background:transparent;color:var(--mute);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:var(--font)}
+    .sc-stab:hover{border-color:rgba(0,0,0,.3);color:var(--ink)}
+    .sc-stab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+    /* Phone */
+    .sc-phone-wrap{position:relative;width:360px;height:736px;flex-shrink:0}
+    .sc-phone-wrap .sc-frame-png{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;display:block}
+    .sc-phone-screen{position:absolute;left:5.33%;top:7.97%;width:89.26%;height:89.49%;overflow:hidden;background:transparent;z-index:1}
+    .sc-phone-screen iframe{position:absolute;left:0;top:0;width:390px;height:801px;transform:scale(0.823);transform-origin:top left;border:none;pointer-events:auto;display:block}
+    .sc-ios-statusbar{position:absolute;left:5.33%;top:5.4%;width:89.26%;z-index:2;display:flex;align-items:center;pointer-events:none}
+    .sc-ios-sb-left{width:34%;display:flex;justify-content:center;align-items:center}
+    .sc-ios-sb-mid{flex:0 0 32%}
+    .sc-ios-sb-right{width:34%;display:flex;justify-content:center;align-items:center;gap:5px}
+    .sc-ios-statusbar img{height:11px;width:auto;display:block}
+    /* iPad */
+    .sc-ipad-wrap{position:relative;width:720px;height:513px;flex-shrink:0}
+    .sc-ipad-wrap .sc-frame-png{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;display:block}
+    .sc-ipad-screen{position:absolute;left:4.17%;top:5.64%;width:91.63%;height:88.67%;overflow:hidden;border-radius:10px;background:#fff;z-index:1}
+    .sc-ipad-screen iframe{width:1102px;height:760px;transform:scale(0.599);transform-origin:top left;border:none;pointer-events:auto;display:block}
+    /* iMac */
+    .sc-imac-wrap{position:relative;width:820px;height:698px;flex-shrink:0}
+    .sc-imac-wrap .sc-frame-png{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;display:block}
+    .sc-imac-screen{position:absolute;left:2.60%;top:3.40%;width:94.80%;height:62.80%;overflow:hidden;background:#fff;z-index:1;display:flex;flex-direction:column}
+    .sc-browser-bar{flex-shrink:0;height:34px;background:#EBEBEB;border-bottom:1px solid #CACACA;display:flex;align-items:center;padding:0 12px;gap:8px}
+    .sc-b-dots{display:flex;gap:6px}
+    .sc-b-dot{width:11px;height:11px;border-radius:50%}
+    .sc-b-dot.r{background:#FF5F57}.sc-b-dot.y{background:#FEBC2E}.sc-b-dot.g{background:#28C840}
+    .sc-b-url{flex:1;height:20px;background:#fff;border-radius:5px;margin:0 60px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#999;font-family:-apple-system,sans-serif}
+    .sc-browser-content{flex:1;overflow:hidden;position:relative}
+    .sc-browser-content iframe{width:1200px;height:622px;transform:scale(0.643);transform-origin:top left;border:none;pointer-events:auto;display:block}
 
     /* ═══════════════════ CONNECTION ═══════════════════ */
     .conn-wrap{display:flex;flex-direction:column;align-items:center;gap:64px}
@@ -993,10 +1026,10 @@
       <p class="sec-sub">각 역할의 화면을 스크롤하고 탭하며 직접 경험해보세요.</p>
     </div>
     <div class="showcase-tabs reveal">
-      <button class="sc-tab active" data-sc="guardian-home" data-type="phone">보호자 앱</button>
-      <button class="sc-tab" data-sc="caregiver-today" data-type="phone">요양보호사 앱</button>
-      <button class="sc-tab" data-sc="patient" data-type="tablet">환자 앱</button>
-      <button class="sc-tab" data-sc="guardian-report" data-type="phone">AI 리포트</button>
+      <button class="sc-tab active" data-role="guardian">보호자 앱</button>
+      <button class="sc-tab" data-role="caregiver">요양보호사 앱</button>
+      <button class="sc-tab" data-role="patient">환자 앱</button>
+      <button class="sc-tab" data-role="nurse">의료진 웹</button>
     </div>
     <div class="showcase-stage reveal" id="showcase-stage"></div>
     <p class="showcase-hint reveal">스크롤하고 탭해보세요 — 실제 앱과 동일합니다</p>
@@ -1613,40 +1646,156 @@ function interactNext() {
 }
 
 /* ══════════════════════════════════════════
-   SHOWCASE
+   SHOWCASE — PNG Device Mockups
 ══════════════════════════════════════════ */
-function createInteractiveDevice(type, key) {
-  const el = createDevice(type, key);
-  setTimeout(() => {
-    el.querySelectorAll('iframe').forEach(ifr => {
-      ifr.style.pointerEvents = 'auto';
+const SC_ROLES = {
+  guardian: {
+    type: 'phone',
+    iframeStyle: 'top:-7px;height:809px;',
+    screens: [
+      {label:'실시간',    src:'07_디자인/mockup/v11_보호자앱/g-guardian-live.html'},
+      {label:'알림',      src:'07_디자인/mockup/v11_보호자앱/g06-alert.html'},
+      {label:'AI 리포트', src:'07_디자인/mockup/v11_보호자앱/g02-ai-report.html'},
+      {label:'채팅',      src:'07_디자인/mockup/v11_보호자앱/g03-chat-nurse.html'},
+    ]
+  },
+  caregiver: {
+    type: 'phone',
+    iframeStyle: 'top:-46px;height:857px;',
+    screens: [
+      {label:'오늘',      src:'07_디자인/mockup/v11_요양보호사앱/c01-today.html'},
+      {label:'체크리스트',src:'07_디자인/mockup/v11_요양보호사앱/c02-checklist.html'},
+      {label:'소통',      src:'07_디자인/mockup/v11_요양보호사앱/c03-sotong.html'},
+    ]
+  },
+  patient: {
+    type: 'ipad',
+    screens: [
+      {label:'오늘',      src:'07_디자인/mockup/v12_환자앱/p01-today.html'},
+      {label:'복약 알림', src:'07_디자인/mockup/v12_환자앱/p02-med-alert.html'},
+      {label:'영상통화',  src:'07_디자인/mockup/v12_환자앱/p03-call.html'},
+      {label:'SOS',       src:'07_디자인/mockup/v12_환자앱/p09-sos.html'},
+    ]
+  },
+  nurse: {
+    type: 'imac',
+    url: 'haru-anbu.kr/nurse',
+    screens: [
+      {label:'대시보드',  src:'07_디자인/mockup/v1_의료진웹/n01-dashboard.html'},
+      {label:'환자 목록', src:'07_디자인/mockup/v1_의료진웹/n02-patients.html'},
+      {label:'체크리스트',src:'07_디자인/mockup/v1_의료진웹/n03-checklist.html'},
+      {label:'SOS',       src:'07_디자인/mockup/v1_의료진웹/n05-sos.html'},
+    ]
+  }
+};
+
+const SB_PATH = 'Mockup-templates/iOS iPadOS 26 Community/';
+
+function buildPhoneMockup(role) {
+  const d = SC_ROLES[role];
+  const wrap = document.createElement('div');
+  wrap.className = 'sc-phone-wrap';
+  wrap.innerHTML = `
+    <div class="sc-phone-screen">
+      <iframe src="${d.screens[0].src}" style="${d.iframeStyle||''}"></iframe>
+    </div>
+    <div class="sc-ios-statusbar">
+      <div class="sc-ios-sb-left"><img src="${SB_PATH}Time.svg" alt="9:41"></div>
+      <div class="sc-ios-sb-mid"></div>
+      <div class="sc-ios-sb-right">
+        <img src="${SB_PATH}Cellular Connection.svg" alt="">
+        <img src="${SB_PATH}Wifi.svg" alt="">
+        <img src="${SB_PATH}Frame.svg" alt="">
+      </div>
+    </div>
+    <img class="sc-frame-png" src="Mockup-templates/iPhone 17 Pro - Silver - Portrait.png" alt="">
+  `;
+  return wrap;
+}
+
+function buildIpadMockup(role) {
+  const d = SC_ROLES[role];
+  const wrap = document.createElement('div');
+  wrap.className = 'sc-ipad-wrap';
+  wrap.innerHTML = `
+    <div class="sc-ipad-screen">
+      <iframe src="${d.screens[0].src}"></iframe>
+    </div>
+    <img class="sc-frame-png" src="Mockup-templates/iPad Pro (M5) 11&quot; - Silver - Landscape.png" alt="">
+  `;
+  return wrap;
+}
+
+function buildImacMockup(role) {
+  const d = SC_ROLES[role];
+  const wrap = document.createElement('div');
+  wrap.className = 'sc-imac-wrap';
+  wrap.innerHTML = `
+    <div class="sc-imac-screen">
+      <div class="sc-browser-bar">
+        <div class="sc-b-dots">
+          <div class="sc-b-dot r"></div>
+          <div class="sc-b-dot y"></div>
+          <div class="sc-b-dot g"></div>
+        </div>
+        <div class="sc-b-url">${d.url || 'haru-anbu.kr'}</div>
+      </div>
+      <div class="sc-browser-content">
+        <iframe src="${d.screens[0].src}"></iframe>
+      </div>
+    </div>
+    <img class="sc-frame-png" src="Mockup-templates/iMac M4 24-inch Silver.png" alt="">
+  `;
+  return wrap;
+}
+
+function renderScRole(role, stageEl) {
+  const d = SC_ROLES[role];
+  stageEl.innerHTML = '';
+
+  const col = document.createElement('div');
+  col.className = 'sc-device-col';
+
+  let deviceWrap;
+  if (d.type === 'phone')      deviceWrap = buildPhoneMockup(role);
+  else if (d.type === 'ipad')  deviceWrap = buildIpadMockup(role);
+  else                          deviceWrap = buildImacMockup(role);
+
+  // screen selector — find the iframe inside the device
+  const tabsEl = document.createElement('div');
+  tabsEl.className = 'sc-screen-tabs';
+  d.screens.forEach((sc, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'sc-stab' + (i === 0 ? ' active' : '');
+    btn.textContent = sc.label;
+    btn.addEventListener('click', () => {
+      tabsEl.querySelectorAll('.sc-stab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const ifr = deviceWrap.querySelector('iframe');
+      if (ifr) ifr.src = sc.src;
     });
-  }, 300);
-  return el;
+    tabsEl.appendChild(btn);
+  });
+
+  col.appendChild(deviceWrap);
+  col.appendChild(tabsEl);
+  stageEl.appendChild(col);
 }
 
 function initShowcase() {
   const scStage = document.getElementById('showcase-stage');
-  const tabs    = document.querySelectorAll('.sc-tab');
+  const tabs    = document.querySelectorAll('.sc-tab[data-role]');
   if (!scStage || !tabs.length) return;
-
-  function renderShowcase(key, type) {
-    scStage.innerHTML = '';
-    const el = createInteractiveDevice(type, key);
-    el.classList.add('anim-enter-center');
-    scStage.appendChild(el);
-  }
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      renderShowcase(tab.dataset.sc, tab.dataset.type);
+      renderScRole(tab.dataset.role, scStage);
     });
   });
 
-  const first = document.querySelector('.sc-tab[data-sc]');
-  if (first) renderShowcase(first.dataset.sc, first.dataset.type);
+  renderScRole('guardian', scStage);
 }
 
 initShowcase();
