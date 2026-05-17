@@ -281,13 +281,11 @@
     .flow-png-phone .device-screen iframe{position:absolute;left:0;top:0;width:390px;height:801px;transform:scale(0.732);transform-origin:top left;border:0;display:block;background:white}
     .flow-png-phone .flow-sb{position:absolute;left:5.33%;top:5.4%;width:89.26%;z-index:2;display:flex;align-items:center;pointer-events:none}
     .flow-png-phone .sc-frame-png{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
-    /* Tablet: 480×342 (iPad PNG at 2/3 size) */
-    .flow-png-tablet{position:relative;width:480px;height:342px;flex-shrink:0}
+    /* Tablet: 918×654 (iPad PNG, same height as single phone) */
+    .flow-png-tablet{position:relative;width:918px;height:654px;flex-shrink:0}
     .flow-png-tablet .device-screen{position:absolute;left:4.17%;top:5.64%;width:91.63%;height:88.67%;overflow:hidden;border-radius:7px;background:#fff;z-index:1}
-    .flow-png-tablet .device-screen iframe{width:768px;height:529px;transform:scale(0.573);transform-origin:top left;border:0;display:block;background:white}
+    .flow-png-tablet .device-screen iframe{width:768px;height:529px;transform:scale(1.096);transform-origin:top left;border:0;display:block;background:white}
     .flow-png-tablet .sc-frame-png{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
-    /* Dual mode: two phones side by side */
-    #flow-stage.dual .flow-png-phone{zoom:0.84}
 
     /* Iframe inside screen */
     .device-screen iframe{display:block;border:0;pointer-events:none;background:white}
@@ -701,8 +699,7 @@
       .persona-v2-grid{grid-template-columns:1fr}
       #flow-stage{padding:16px;gap:16px}
       .flow-png-phone{zoom:0.67}
-      .flow-png-tablet{zoom:0.55}
-      #flow-stage.dual .flow-png-phone{zoom:0.56}
+      .flow-png-tablet{zoom:0.37}
       .intro-stack{max-width:calc(100vw - 48px)}
     }
 
@@ -878,7 +875,6 @@
         <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.2 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/>
         <path d="M4.68 19.34C1286.35-131.48 1286.35 630.4 1286.35 1246.66L28.31 2526C7.32 2031.8 3.73 1368.08 867.14 1263.52C-115.88 1211.75 4.68 424.16 4.68 19.34Z" fill="#2C7AFC"/>
       </svg>
-      <span class="logo-text">하루안부</span>
     </a>
     <div class="topbar-nav">
       <a class="nav-link" href="#overview" data-nav="overview">Overview</a>
