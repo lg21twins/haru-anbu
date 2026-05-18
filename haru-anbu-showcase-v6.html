@@ -1388,6 +1388,7 @@ const IFRAMES = {
 
 /* Preload HTML content as srcdoc for reliable local file rendering */
 const SRCDOC = {};
+let iframePoolReady = Promise.resolve();
 (async () => {
   const jobs = Object.entries(IFRAMES).map(async ([key, d]) => {
     try {
@@ -1400,6 +1401,33 @@ const SRCDOC = {};
     } catch(e) { /* fallback to src */ }
   });
   await Promise.all(jobs);
+
+  /* Paint-warmup: pre-render every mockup off-screen so the first real
+     `enterDevice`/`rebindIframe` lands on already-parsed/painted documents.
+     Without this, each phase transition triggers fresh HTML parse + paint on
+     the main thread, which is the dominant cause of the intro frame drops. */
+  iframePoolReady = new Promise(resolve => {
+    const pool = document.createElement('div');
+    pool.id = 'iframe-prewarm';
+    pool.setAttribute('aria-hidden', 'true');
+    pool.style.cssText = 'position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;contain:strict';
+    let pending = Object.keys(IFRAMES).length;
+    if (!pending) { resolve(); return; }
+    const done = () => { if (--pending <= 0) resolve(); };
+    Object.entries(IFRAMES).forEach(([key, d]) => {
+      const ifr = document.createElement('iframe');
+      ifr.style.cssText = `width:${d.nw}px;height:${d.nh}px;border:0;display:block;background:white`;
+      const onSettled = () => requestAnimationFrame(() => requestAnimationFrame(done));
+      ifr.addEventListener('load', onSettled, {once:true});
+      ifr.addEventListener('error', onSettled, {once:true});
+      if (SRCDOC[key]) ifr.srcdoc = SRCDOC[key];
+      else ifr.src = d.src;
+      pool.appendChild(ifr);
+    });
+    document.body.appendChild(pool);
+    /* Safety: never block the flow more than 2.5s */
+    setTimeout(resolve, 2500);
+  });
 })();
 
 const AI_STEPS = [
@@ -1439,7 +1467,6 @@ function makeIframeEl(key, cW, cH) {
   const iH = Math.ceil(cH / scale);
   const ifr = document.createElement('iframe');
   ifr.style.cssText = `width:${d.nw}px;height:${iH}px;transform:scale(${scale}) translateZ(0);transform-origin:top left;border:0;display:block;background:white;pointer-events:none;will-change:transform;backface-visibility:hidden;contain:layout paint;`;
-  ifr.loading = 'lazy';
   if (SRCDOC[key]) {
     ifr.srcdoc = SRCDOC[key];
   } else {
@@ -1458,7 +1485,6 @@ function makePngIframe(key, w, h, scale) {
   if (!d) return null;
   const ifr = document.createElement('iframe');
   ifr.style.cssText = `position:absolute;left:0;top:0;width:${w}px;height:${h}px;transform:scale(${scale}) translateZ(0);transform-origin:top left;border:0;display:block;background:white;will-change:transform;backface-visibility:hidden;contain:layout paint;`;
-  ifr.loading = 'lazy';
   if (SRCDOC[key]) ifr.srcdoc = SRCDOC[key];
   else ifr.src = d.src;
   return ifr;
@@ -1876,14 +1902,17 @@ function startFlow() {
   document.getElementById('intro-screen').style.display = 'none';
   const ts = document.getElementById('timestamp-screen');
   ts.classList.add('show');
-  setTimeout(() => {
+  /* Use the timestamp interlude (~1.3s) to also await iframe paint-warmup.
+     Whichever finishes last wins; usually warmup is done well within 1.3s. */
+  const interlude = new Promise(r => setTimeout(r, 1300));
+  Promise.all([interlude, iframePoolReady]).then(() => {
     ts.classList.add('out');
     setTimeout(() => {
       ts.style.display = 'none';
       document.getElementById('flow-screen').classList.remove('hidden');
       goToPhase(1);
     }, 450);
-  }, 1300);
+  });
 }
 
 function completeFlow() {
