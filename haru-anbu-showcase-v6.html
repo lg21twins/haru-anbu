@@ -278,13 +278,13 @@
     /* Phone: 320×654 (iPhone PNG at 8/9 size) */
     .flow-png-phone{position:relative;width:320px;height:654px;flex-shrink:0}
     .flow-png-phone .device-screen{position:absolute;left:5.33%;top:7.97%;width:89.26%;height:89.49%;overflow:hidden;background:transparent;z-index:1}
-    .flow-png-phone .device-screen iframe{position:absolute;left:0;top:0;width:390px;height:801px;transform:scale(0.732);transform-origin:top left;border:0;display:block;background:white}
+    .flow-png-phone .device-screen iframe{position:absolute;left:0;top:0;width:390px;height:801px;transform:scale(0.732) translateZ(0);transform-origin:top left;border:0;display:block;background:white;will-change:transform;backface-visibility:hidden;contain:layout paint;content-visibility:auto;contain-intrinsic-size:390px 801px}
     .flow-png-phone .flow-sb{position:absolute;left:5.33%;top:5.4%;width:89.26%;z-index:2;display:flex;align-items:center;pointer-events:none}
     .flow-png-phone .sc-frame-png{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
     /* Tablet: 918×654 (iPad PNG, same height as single phone) */
     .flow-png-tablet{position:relative;width:918px;height:654px;flex-shrink:0}
     .flow-png-tablet .device-screen{position:absolute;left:4.17%;top:5.64%;width:91.63%;height:88.67%;overflow:hidden;border-radius:7px;background:#fff;z-index:1}
-    .flow-png-tablet .device-screen iframe{width:768px;height:529px;transform:scale(1.096);transform-origin:top left;border:0;display:block;background:white}
+    .flow-png-tablet .device-screen iframe{width:768px;height:529px;transform:scale(1.096) translateZ(0);transform-origin:top left;border:0;display:block;background:white;will-change:transform;backface-visibility:hidden;contain:layout paint;content-visibility:auto;contain-intrinsic-size:768px 529px}
     .flow-png-tablet .sc-frame-png{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
 
     /* Iframe inside screen */
@@ -409,8 +409,14 @@
     #complete-cta:hover{background:var(--blue)}
 
     /* ═══════════════════════ MAIN PAGE ═══════════════════════ */
-    #main-page{filter:blur(14px);opacity:.25;pointer-events:none;user-select:none;transition:filter .7s ease,opacity .7s ease}
-    #main-page.revealed{filter:none;opacity:1;pointer-events:auto;user-select:auto}
+    #main-page{filter:blur(14px);opacity:.25;pointer-events:none;user-select:none;transition:filter .7s ease,opacity .7s ease;isolation:isolate;will-change:filter,opacity;transform:translateZ(0)}
+    #main-page.revealed{filter:none;opacity:1;pointer-events:auto;user-select:auto;will-change:auto}
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+    }
+    @media (prefers-reduced-transparency: reduce),(max-resolution:1dppx){
+      .topbar,.device-notif-banner,#fullscreen-indicator,#exit-indicator{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;background:rgba(255,255,255,.96) !important}
+    }
 
     .container{max-width:var(--container);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter)}
     section{padding-top:var(--pad-section);padding-bottom:var(--pad-section)}
@@ -422,6 +428,7 @@
       padding:0 var(--gutter);z-index:100;
       background:rgba(255,255,255,.88);backdrop-filter:saturate(180%) blur(14px);
       -webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid transparent;transition:border-color .3s;
+      transform:translateZ(0);will-change:border-color;
     }
     .topbar.scrolled{border-bottom-color:var(--line)}
     .topbar-left{display:flex;align-items:center;gap:10px}
@@ -605,7 +612,7 @@
     .sc-phone-wrap{position:relative;width:360px;height:736px;flex-shrink:0}
     .sc-phone-wrap .sc-frame-png{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;display:block}
     .sc-phone-screen{position:absolute;left:5.33%;top:7.97%;width:89.26%;height:89.49%;overflow:hidden;background:transparent;z-index:1}
-    .sc-phone-screen iframe{position:absolute;left:0;top:0;width:390px;height:801px;transform:scale(0.823);transform-origin:top left;border:none;pointer-events:auto;display:block}
+    .sc-phone-screen iframe{position:absolute;left:0;top:0;width:390px;height:801px;transform:scale(0.823) translateZ(0);transform-origin:top left;border:none;pointer-events:auto;display:block;will-change:transform;backface-visibility:hidden;contain:layout paint;content-visibility:auto;contain-intrinsic-size:390px 801px}
     .sc-ios-statusbar{position:absolute;left:5.33%;top:5.4%;width:89.26%;z-index:2;display:flex;align-items:center;pointer-events:none}
     .sc-ios-sb-left{width:34%;display:flex;justify-content:center;align-items:center}
     .sc-ios-sb-mid{flex:0 0 32%}
@@ -615,7 +622,7 @@
     .sc-ipad-wrap{position:relative;width:720px;height:513px;flex-shrink:0}
     .sc-ipad-wrap .sc-frame-png{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;display:block}
     .sc-ipad-screen{position:absolute;left:4.17%;top:5.64%;width:91.63%;height:88.67%;overflow:hidden;border-radius:10px;background:#fff;z-index:1}
-    .sc-ipad-screen iframe{width:1102px;height:760px;transform:scale(0.599);transform-origin:top left;border:none;pointer-events:auto;display:block}
+    .sc-ipad-screen iframe{width:1102px;height:760px;transform:scale(0.599) translateZ(0);transform-origin:top left;border:none;pointer-events:auto;display:block;will-change:transform;backface-visibility:hidden;contain:layout paint;content-visibility:auto;contain-intrinsic-size:1102px 760px}
     /* iMac */
     .sc-imac-wrap{position:relative;width:820px;height:698px;flex-shrink:0}
     .sc-imac-wrap .sc-frame-png{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;display:block}
@@ -626,7 +633,7 @@
     .sc-b-dot.r{background:#FF5F57}.sc-b-dot.y{background:#FEBC2E}.sc-b-dot.g{background:#28C840}
     .sc-b-url{flex:1;height:20px;background:#fff;border-radius:5px;margin:0 60px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#999;font-family:-apple-system,sans-serif}
     .sc-browser-content{flex:1;overflow:hidden;position:relative}
-    .sc-browser-content iframe{width:1200px;height:622px;transform:scale(0.643);transform-origin:top left;border:none;pointer-events:auto;display:block}
+    .sc-browser-content iframe{width:1200px;height:622px;transform:scale(0.643) translateZ(0);transform-origin:top left;border:none;pointer-events:auto;display:block;will-change:transform;backface-visibility:hidden;contain:layout paint;content-visibility:auto;contain-intrinsic-size:1200px 622px}
 
     /* ═══════════════════ CONNECTION ═══════════════════ */
     .conn-wrap{display:flex;flex-direction:column;align-items:center;gap:64px}
@@ -1431,7 +1438,8 @@ function makeIframeEl(key, cW, cH) {
   const scale = cW / d.nw;
   const iH = Math.ceil(cH / scale);
   const ifr = document.createElement('iframe');
-  ifr.style.cssText = `width:${d.nw}px;height:${iH}px;transform:scale(${scale});transform-origin:top left;border:0;display:block;background:white;pointer-events:none;`;
+  ifr.style.cssText = `width:${d.nw}px;height:${iH}px;transform:scale(${scale}) translateZ(0);transform-origin:top left;border:0;display:block;background:white;pointer-events:none;will-change:transform;backface-visibility:hidden;contain:layout paint;`;
+  ifr.loading = 'lazy';
   if (SRCDOC[key]) {
     ifr.srcdoc = SRCDOC[key];
   } else {
@@ -1449,7 +1457,8 @@ function makePngIframe(key, w, h, scale) {
   const d = IFRAMES[key];
   if (!d) return null;
   const ifr = document.createElement('iframe');
-  ifr.style.cssText = `position:absolute;left:0;top:0;width:${w}px;height:${h}px;transform:scale(${scale});transform-origin:top left;border:0;display:block;background:white;`;
+  ifr.style.cssText = `position:absolute;left:0;top:0;width:${w}px;height:${h}px;transform:scale(${scale}) translateZ(0);transform-origin:top left;border:0;display:block;background:white;will-change:transform;backface-visibility:hidden;contain:layout paint;`;
+  ifr.loading = 'lazy';
   if (SRCDOC[key]) ifr.srcdoc = SRCDOC[key];
   else ifr.src = d.src;
   return ifr;
@@ -1967,7 +1976,7 @@ function buildPhoneMockup(role) {
   wrap.className = 'sc-phone-wrap';
   wrap.innerHTML = `
     <div class="sc-phone-screen">
-      <iframe src="${d.screens[0].src}" style="${d.iframeStyle||''}"></iframe>
+      <iframe src="${d.screens[0].src}" style="${d.iframeStyle||''}" loading="lazy" fetchpriority="low"></iframe>
     </div>
     <div class="sc-ios-statusbar">
       <div class="sc-ios-sb-left"><img src="${SB_PATH}Time.svg" alt="9:41"></div>
@@ -1989,7 +1998,7 @@ function buildIpadMockup(role) {
   wrap.className = 'sc-ipad-wrap';
   wrap.innerHTML = `
     <div class="sc-ipad-screen">
-      <iframe src="${d.screens[0].src}"></iframe>
+      <iframe src="${d.screens[0].src}" loading="lazy" fetchpriority="low"></iframe>
     </div>
     <img class="sc-frame-png" src="Mockup-templates/iPad Pro (M5) 11&quot; - Silver - Landscape.png" alt="">
   `;
@@ -2011,7 +2020,7 @@ function buildImacMockup(role) {
         <div class="sc-b-url">${d.url || 'haru-anbu.kr'}</div>
       </div>
       <div class="sc-browser-content">
-        <iframe src="${d.screens[0].src}"></iframe>
+        <iframe src="${d.screens[0].src}" loading="lazy" fetchpriority="low"></iframe>
       </div>
     </div>
     <img class="sc-frame-png" src="Mockup-templates/iMac M4 24-inch Silver.png" alt="">
@@ -2074,10 +2083,18 @@ initShowcase();
    MAIN PAGE
 ══════════════════════════════════════════ */
 const progressBar = document.getElementById('progressBar');
+const topbarEl = document.getElementById('topbar');
+let scrollTicking = false;
 window.addEventListener('scroll', () => {
-  const s = window.scrollY, t = document.documentElement.scrollHeight - window.innerHeight;
-  if (progressBar) progressBar.style.width = (s / t * 100) + '%';
-  document.getElementById('topbar')?.classList.toggle('scrolled', window.scrollY > 20);
+  if (scrollTicking) return;
+  scrollTicking = true;
+  requestAnimationFrame(() => {
+    const s = window.scrollY;
+    const t = document.documentElement.scrollHeight - window.innerHeight;
+    if (progressBar) progressBar.style.width = (s / t * 100) + '%';
+    topbarEl?.classList.toggle('scrolled', s > 20);
+    scrollTicking = false;
+  });
 }, {passive:true});
 
 const io = new IntersectionObserver(es => {
