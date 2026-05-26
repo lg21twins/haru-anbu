@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 · CONCEPT 시각화 옵션 비교</title>
+<link rel="stylesheet" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../../07_디자인/tokens/tokens.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+<style>
+:root{
+  --c-patient:#FB923C;
+  --c-care:#22C55E;
+  --c-guardian:#2C7AFC;
+  --c-ai:#8B5CF6;
+  --c-red:#E32B25;
+  --c-ink:#1C1C1E;
+  --c-ink-2:#3F3F46;
+  --c-mute:#8E8E93;
+  --c-mute-2:#B5B5B5;
+  --c-line:#E5E5EA;
+  --c-line-soft:#F4F4F5;
+  --c-paper:#FAFAFA;
+  --c-canvas:#F0F4F8;
+  --c-white:#FFFFFF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+body{
+  font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
+  font-size:16px;line-height:1.6;color:var(--c-ink);
+  background:var(--c-canvas);
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;cursor:pointer;border:none;outline:none;background:none;color:inherit}
+
+/* topbar */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 32px;
+  background:rgba(255,255,255,.86);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--c-line-soft);
+}
+.brand{font-size:13px;font-weight:700}
+.topnav{display:flex;gap:4px;flex-wrap:wrap}
+.topnav a{
+  font-size:12px;font-weight:600;color:var(--c-ink-2);text-decoration:none;
+  padding:8px 14px;border-radius:999px;transition:.18s;
+}
+.topnav a:hover{background:var(--c-paper);color:var(--c-ink)}
+
+.intro{padding:80px 32px 56px;text-align:center;border-bottom:1px solid var(--c-line-soft)}
+.intro .eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--c-guardian);text-transform:uppercase;margin-bottom:16px}
+.intro h1{font-size:clamp(24px,3.5vw,40px);font-weight:800;letter-spacing:-.03em;margin-bottom:14px;line-height:1.2}
+.intro p{font-size:15px;color:var(--c-ink-2);max-width:680px;margin:0 auto}
+
+.opt{padding:64px 32px 88px;border-bottom:1px solid var(--c-line-soft)}
+.opt-head{max-width:880px;margin:0 auto 36px}
+.opt-eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--c-mute);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.opt-eyebrow::before{content:'';width:8px;height:8px;background:var(--c-ink);border-radius:2px}
+.opt-eyebrow.rec{color:var(--c-guardian)}
+.opt-eyebrow.rec::before{background:var(--c-guardian)}
+.opt-title{font-size:clamp(22px,2.6vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.24;margin-bottom:12px}
+.opt-desc{font-size:14px;color:var(--c-ink-2);margin-bottom:18px;line-height:1.65}
+.opt-meta{list-style:none;display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--c-ink-2)}
+.opt-meta li{display:flex;gap:8px;align-items:baseline}
+.opt-meta strong{font-weight:700}
+.opt-meta li.pro strong{color:var(--c-care)}
+.opt-meta li.con strong{color:var(--c-red)}
+
+.demo{
+  position:relative;
+  background:var(--c-paper);
+  border-radius:24px;
+  overflow:hidden;
+  max-width:1200px;margin:0 auto;
+  border:1px solid var(--c-line-soft);
+  padding:56px 40px;
+}
+.demo-label{
+  position:absolute;top:18px;left:22px;z-index:5;
+  font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--c-mute);text-transform:uppercase;
+}
+
+/* role chips */
+.role-chip{display:inline-flex;align-items:center;font-size:11px;font-weight:700;letter-spacing:.02em;padding:4px 10px;border-radius:999px;color:#fff;white-space:nowrap}
+.role-chip.patient{background:var(--c-patient)}
+.role-chip.care{background:var(--c-care)}
+.role-chip.guardian{background:var(--c-guardian)}
+.role-chip.ai{background:var(--c-ai)}
+
+/* ═══════════ OPTION A — 하루 타임라인 ═══════════ */
+.tl-stage{position:relative;padding-top:20px}
+.tl-hours{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  padding-left:88px;font-size:11px;color:var(--c-mute);font-weight:600;margin-bottom:14px;
+}
+.tl-hours span{text-align:left}
+.tl-lane{display:flex;align-items:stretch;min-height:88px;border-top:1px dashed var(--c-line)}
+.tl-lane:last-child{border-bottom:1px dashed var(--c-line)}
+.tl-lane-label{width:88px;display:flex;align-items:center;gap:8px;flex-shrink:0;padding-right:8px}
+.tl-lane-label .role-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tl-lane-label .lab{font-size:13px;font-weight:700;color:var(--c-ink)}
+.tl-track{flex:1;position:relative}
+.tl-event{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:var(--c-white);border:1px solid var(--c-line);border-radius:10px;
+  padding:8px 12px;font-size:12px;font-weight:600;color:var(--c-ink);
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+  white-space:nowrap;line-height:1.3;
+}
+.tl-event.patient{border-color:rgba(251,146,60,.5)}
+.tl-event.care{border-color:rgba(34,197,94,.5)}
+.tl-event.care.urgent{border-color:rgba(227,43,37,.6);background:rgba(227,43,37,.04)}
+.tl-event.guardian{border-color:rgba(44,122,252,.5)}
+.tl-event .et{font-size:10px;color:var(--c-mute);font-weight:500;display:block;margin-bottom:2px;letter-spacing:.04em}
+.tl-svg{position:absolute;top:0;left:88px;right:0;bottom:0;pointer-events:none;width:calc(100% - 88px);height:100%}
+.tl-legend{display:flex;gap:14px;margin-top:20px;justify-content:center;font-size:11px;color:var(--c-mute);flex-wrap:wrap}
+.tl-legend span{display:inline-flex;align-items:center;gap:6px}
+.tl-legend .ld{width:18px;height:0;border-top:2px dashed currentColor}
+.tl-legend .lc-patient{color:var(--c-patient)}
+.tl-legend .lc-care{color:var(--c-care)}
+.tl-legend .lc-guardian{color:var(--c-guardian)}
+.tl-legend .lc-red{color:var(--c-red)}
+
+/* ═══════════ OPTION B — 같은 순간 ═══════════ */
+.sm-head{text-align:center;margin-bottom:32px}
+.sm-moment{font-size:clamp(20px,2.4vw,28px);font-weight:800;letter-spacing:-.02em;color:var(--c-ink);margin-bottom:8px}
+.sm-sub{font-size:13px;color:var(--c-mute)}
+.sm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto}
+.sm-card{
+  background:var(--c-white);border-radius:18px;
+  box-shadow:0 4px 16px rgba(0,0,0,.06);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.sm-card-head{padding:12px 16px;border-bottom:1px solid var(--c-line-soft);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sm-card-tag{font-size:10px;color:var(--c-mute);font-weight:500}
+.sm-card-body{padding:28px 22px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:200px;gap:12px}
+.sm-msg{font-size:15px;font-weight:600;line-height:1.5;color:var(--c-ink)}
+.sm-msg.lg{font-size:18px;font-weight:700}
+.sm-meta{font-size:11px;color:var(--c-mute);font-weight:500}
+.sm-card.patient .sm-card-head{background:rgba(251,146,60,.06)}
+.sm-card.care .sm-card-head{background:rgba(34,197,94,.06)}
+.sm-card.guardian .sm-card-head{background:rgba(44,122,252,.06)}
+
+.sm-stepper{display:flex;gap:4px;margin-bottom:8px}
+.sm-stepper span{width:14px;height:4px;background:var(--c-line);border-radius:2px}
+.sm-stepper span.done{background:var(--c-care)}
+.sm-stepper span.now{background:var(--c-care);width:18px}
+
+.sm-bottom-line{
+  text-align:center;margin-top:32px;font-size:13px;color:var(--c-mute);
+  padding-top:20px;border-top:1px solid var(--c-line-soft);
+}
+.sm-bottom-line strong{color:var(--c-ink);font-weight:700}
+
+/* ═══════════ OPTION C — 데이터 흐름 애니메이션 ═══════════ */
+.df-stage{position:relative;display:grid;grid-template-columns:1fr 30px 1fr 30px 1fr 30px 1fr;gap:0;align-items:stretch}
+.df-node{
+  background:var(--c-white);border-radius:14px;
+  padding:20px 16px;text-align:center;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+  border:2px solid transparent;
+  transition:.4s cubic-bezier(.16,1,.3,1);
+  min-height:160px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;
+  position:relative;
+}
+.df-node-role{font-size:11px;font-weight:700;letter-spacing:.04em;opacity:.55;text-transform:uppercase}
+.df-node-name{font-size:13px;font-weight:800;color:var(--c-ink)}
+.df-node-msg{
+  font-size:13px;font-weight:700;color:var(--c-ink);line-height:1.5;letter-spacing:-.01em;
+  opacity:0;transform:translateY(6px);transition:.5s;
+  padding:8px 10px;background:var(--c-paper);border-radius:8px;
+}
+.df-node.patient .df-node-role{color:var(--c-patient)}
+.df-node.care .df-node-role{color:var(--c-care)}
+.df-node.ai .df-node-role{color:var(--c-ai)}
+.df-node.guardian .df-node-role{color:var(--c-guardian)}
+.df-node.active{transform:translateY(-4px);box-shadow:0 8px 28px rgba(0,0,0,.10)}
+.df-node.active.patient{border-color:var(--c-patient)}
+.df-node.active.care{border-color:var(--c-care)}
+.df-node.active.ai{border-color:var(--c-ai)}
+.df-node.active.guardian{border-color:var(--c-guardian)}
+.df-node.active .df-node-msg{opacity:1;transform:none}
+.df-arrow{display:flex;align-items:center;justify-content:center;color:var(--c-mute-2);font-size:20px;transition:.4s}
+.df-arrow.active{color:var(--c-guardian);transform:scale(1.2)}
+.df-cycle{text-align:center;font-size:11px;color:var(--c-mute);margin-top:24px;letter-spacing:.06em}
+
+/* ═══════════ OPTION D — 현재 개선 ═══════════ */
+.imp-grid{display:grid;grid-template-columns:1fr 50px 1fr;gap:24px;align-items:center}
+.imp-side{
+  position:relative;aspect-ratio:1;
+  background:var(--c-white);border-radius:24px;padding:24px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.imp-side.scatter{background:var(--c-paper)}
+.imp-side-label{
+  position:absolute;top:16px;left:50%;transform:translateX(-50%);
+  font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--c-mute);text-transform:uppercase;
+}
+.imp-frag{
+  position:absolute;
+  font-size:11px;font-weight:500;color:var(--c-mute);font-style:italic;
+  background:var(--c-white);padding:5px 10px;border-radius:8px;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+  white-space:nowrap;
+  animation:imp-float 4s ease-in-out infinite;
+}
+@keyframes imp-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.imp-node{
+  position:absolute;width:52px;height:52px;border-radius:50%;
+  background:var(--c-white);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+  color:var(--c-mute-2);
+}
+.imp-node iconify-icon{font-size:22px}
+.imp-node-label{
+  position:absolute;top:60px;left:50%;transform:translateX(-50%);
+  font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--c-mute);
+  background:rgba(255,255,255,.7);padding:2px 7px;border-radius:6px;white-space:nowrap;
+}
+.imp-side.connect .imp-node.patient{background:var(--c-patient);color:#fff;box-shadow:0 8px 20px rgba(251,146,60,.32)}
+.imp-side.connect .imp-node.care{background:var(--c-care);color:#fff;box-shadow:0 8px 20px rgba(34,197,94,.32)}
+.imp-side.connect .imp-node.guardian{background:var(--c-guardian);color:#fff;box-shadow:0 8px 20px rgba(44,122,252,.32)}
+.imp-side.connect .imp-node-label{color:var(--c-ink)}
+.imp-hub{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:var(--c-white);padding:14px 18px;border-radius:14px;
+  box-shadow:0 8px 28px rgba(0,0,0,.10);
+  text-align:center;min-width:160px;
+  border:1.5px solid var(--c-guardian);
+}
+.imp-hub-date{font-size:9px;color:var(--c-mute);font-weight:600;letter-spacing:.08em;margin-bottom:4px;text-transform:uppercase}
+.imp-hub-msg{font-size:13px;font-weight:700;color:var(--c-ink);line-height:1.4}
+.imp-hub-meta{font-size:10px;color:var(--c-guardian);font-weight:600;margin-top:4px}
+.imp-arrow{font-size:28px;color:var(--c-mute-2);text-align:center}
+.imp-side .imp-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+@media(max-width:780px){
+  .opt{padding:48px 16px}
+  .demo{padding:32px 20px;border-radius:18px}
+  .topbar{padding:12px 16px}
+  .topnav a{padding:6px 10px;font-size:11px}
+  .sm-grid{grid-template-columns:1fr;gap:14px}
+  .df-stage{grid-template-columns:1fr;gap:12px}
+  .df-arrow{transform:rotate(90deg)}
+  .imp-grid{grid-template-columns:1fr;gap:20px}
+  .imp-arrow{transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">하루안부 · CONCEPT 시각화 옵션 비교</div>
+  <nav class="topnav">
+    <a href="#optA">A. 타임라인</a>
+    <a href="#optB">B. 같은 순간</a>
+    <a href="#optC">C. 데이터 흐름</a>
+    <a href="#optD">D. 개선</a>
+  </nav>
+</header>
+
+<section class="intro">
+  <p class="eyebrow">CONCEPT VISUALIZATION OPTIONS</p>
+  <h1>같은 컨셉 · 네 가지 시각화 방향</h1>
+  <p>"흩어진 시선을 한 하루로 잇는다"를 어떻게 보여줄까요. 같은 메시지를 4가지 다른 방식으로 시각화한 결과를 비교합니다.</p>
+</section>
+
+<!-- ═══════════ OPTION A: 하루 타임라인 ═══════════ -->
+<section class="opt" id="optA">
+  <div class="opt-head">
+    <div class="opt-eyebrow rec">OPTION A · RECOMMENDED</div>
+    <h2 class="opt-title">하루 타임라인 — 실제 한 날의 흐름</h2>
+    <p class="opt-desc">06시~21시 타임라인 위에 환자/케어팀/보호자 3개 레인을 두고, 시간대별 실제 이벤트(아침 약, 케어 기록, SOS, 저녁 리포트)를 카드로 배치. 역할 간 데이터 이동은 점선으로 연결.</p>
+    <ul class="opt-meta">
+      <li class="pro"><strong>장점</strong> 서비스 가치가 즉시 보임 · 추상이 아닌 구체 콘텐츠</li>
+      <li class="con"><strong>단점</strong> 제작 난이도 중간 · 카피 셋 필요</li>
+    </ul>
+  </div>
+
+  <div class="demo">
+    <div class="demo-label">REAL DAY · 5월 18일</div>
+    <div class="tl-stage">
+      <div class="tl-hours">
+        <span>06:00</span><span>09:00</span><span>12:00</span><span>15:00</span><span>18:00</span><span>21:00</span><span>24:00</span>
+      </div>
+
+      <div class="tl-lane">
+        <div class="tl-lane-label">
+          <span class="role-dot" style="background:var(--c-patient)"></span>
+          <span class="lab">환자</span>
+        </div>
+        <div class="tl-track">
+          <div class="tl-event patient" style="left:4%"><span class="et">07:00</span>기상</div>
+          <div class="tl-event patient" style="left:22%"><span class="et">08:30</span>아침 약 복용</div>
+          <div class="tl-event patient" style="left:42%"><span class="et">12:00</span>점심</div>
+          <div class="tl-event patient" style="left:60%"><span class="et">15:00</span>가슴 답답</div>
+          <div class="tl-event patient" style="left:78%"><span class="et">18:30</span>저녁</div>
+        </div>
+      </div>
+
+      <div class="tl-lane">
+        <div class="tl-lane-label">
+          <span class="role-dot" style="background:var(--c-care)"></span>
+          <span class="lab">케어팀</span>
+        </div>
+        <div class="tl-track">
+          <div class="tl-event care" style="left:26%"><span class="et">09:00</span>아침 체크 기록</div>
+          <div class="tl-event care urgent" style="left:62%"><span class="et">15:08</span>SOS 응답</div>
+          <div class="tl-event care" style="left:82%"><span class="et">19:30</span>인계 노트</div>
+        </div>
+      </div>
+
+      <div class="tl-lane">
+        <div class="tl-lane-label">
+          <span class="role-dot" style="background:var(--c-guardian)"></span>
+          <span class="lab">보호자</span>
+        </div>
+        <div class="tl-track">
+          <div class="tl-event guardian" style="left:30%"><span class="et">10:00</span>오늘의 안부</div>
+          <div class="tl-event guardian" style="left:66%"><span class="et">15:12</span>긴급 알림</div>
+          <div class="tl-event guardian" style="left:88%"><span class="et">21:00</span>저녁 리포트</div>
+        </div>
+      </div>
+
+      <svg class="tl-svg" viewBox="0 0 1000 264" preserveAspectRatio="none">
+        <path d="M 220,44 Q 240,90 260,132" stroke="var(--c-care)" stroke-width="1.5" fill="none" stroke-dasharray="3 4" opacity=".55"/>
+        <path d="M 260,132 Q 280,176 300,220" stroke="var(--c-guardian)" stroke-width="1.5" fill="none" stroke-dasharray="3 4" opacity=".55"/>
+        <path d="M 600,44 Q 615,90 620,132" stroke="var(--c-red)" stroke-width="1.8" fill="none" stroke-dasharray="3 4" opacity=".7"/>
+        <path d="M 620,132 Q 640,176 660,220" stroke="var(--c-red)" stroke-width="1.8" fill="none" stroke-dasharray="3 4" opacity=".7"/>
+        <path d="M 820,132 Q 850,176 880,220" stroke="var(--c-guardian)" stroke-width="1.5" fill="none" stroke-dasharray="3 4" opacity=".55"/>
+      </svg>
+    </div>
+
+    <div class="tl-legend">
+      <span><span class="ld lc-care"></span> 환자 → 케어팀 기록</span>
+      <span><span class="ld lc-guardian"></span> 케어팀 → 보호자 알림</span>
+      <span><span class="ld lc-red"></span> 응급(SOS) 흐름</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ OPTION B: 같은 순간 / 3 시점 ═══════════ -->
+<section class="opt" id="optB">
+  <div class="opt-head">
+    <div class="opt-eyebrow">OPTION B</div>
+    <h2 class="opt-title">같은 순간 · 세 시점 — 한 모먼트, 세 사람이 보는 방식</h2>
+    <p class="opt-desc">오전 9시 17분, 같은 순간을 환자/케어팀/보호자가 각자 어떤 메시지·UI로 만나는지 옆에 나란히 배치. "같은 사건, 세 언어"를 한눈에.</p>
+    <ul class="opt-meta">
+      <li class="pro"><strong>장점</strong> 메시지 매우 명확 · 직관적</li>
+      <li class="con"><strong>단점</strong> 실제 카피 세트 필요 · 정적 (애니메이션 없음)</li>
+    </ul>
+  </div>
+
+  <div class="demo">
+    <div class="demo-label">SAME MOMENT · 3 VIEWS</div>
+    <div class="sm-head">
+      <div class="sm-moment">오전 9시 17분</div>
+      <div class="sm-sub">같은 순간, 세 사람이 보는 어머니의 아침.</div>
+    </div>
+
+    <div class="sm-grid">
+      <div class="sm-card patient">
+        <div class="sm-card-head"><span class="role-chip patient">환자</span><span class="sm-card-tag">큰 글씨 화면</span></div>
+        <div class="sm-card-body">
+          <div class="sm-msg lg">오늘도 잘 일어나셨어요.<br>아침 약 챙겨드세요.</div>
+          <div class="sm-meta">하루안부 · AI 아침 인사</div>
+        </div>
+      </div>
+
+      <div class="sm-card care">
+        <div class="sm-card-head"><span class="role-chip care">케어팀</span><span class="sm-card-tag">스텝퍼 2/8</span></div>
+        <div class="sm-card-body">
+          <div class="sm-stepper">
+            <span class="done"></span><span class="now"></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="sm-msg">[2/8] 아침 식사 체크<br><span style="color:var(--c-mute);font-weight:500;font-size:13px">식사량 80% · 약 복용 완료</span></div>
+          <div class="sm-meta">102호 · 김순자 어르신</div>
+        </div>
+      </div>
+
+      <div class="sm-card guardian">
+        <div class="sm-card-head"><span class="role-chip guardian">보호자</span><span class="sm-card-tag">알림 카드</span></div>
+        <div class="sm-card-body">
+          <div class="sm-msg">어머니, 아침 잘 드셨어요.<br>약도 챙겨드셨고요.</div>
+          <div class="sm-meta">9:23 AM · 안심 지수 <strong style="color:var(--c-care);font-weight:800">92</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sm-bottom-line">
+      한 가지 사건, <strong>세 가지 언어</strong> — 하루안부가 자동으로 번역합니다.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ OPTION C: 데이터 흐름 애니메이션 ═══════════ -->
+<section class="opt" id="optC">
+  <div class="opt-head">
+    <div class="opt-eyebrow">OPTION C</div>
+    <h2 class="opt-title">데이터 흐름 — 한 조각의 정보가 어떻게 흐르는가</h2>
+    <p class="opt-desc">한 조각의 정보(예: 아침 약 복용 기록)가 환자 → 케어팀 → AI 요약 → 보호자 알림 순으로 흐르는 단일 루프 애니메이션. 노드가 순차적으로 활성화되며 메시지 표시.</p>
+    <ul class="opt-meta">
+      <li class="pro"><strong>장점</strong> 동적 · 시선이 흐름을 자연스럽게 따라감</li>
+      <li class="con"><strong>단점</strong> 다소 기술적 느낌 · "사람" 보다 "데이터"</li>
+    </ul>
+  </div>
+
+  <div class="demo">
+    <div class="demo-label">AUTO LOOP · 6s/cycle</div>
+    <div class="df-stage" id="dfStage">
+      <div class="df-node patient" data-i="0">
+        <div class="df-node-role">환자</div>
+        <div class="df-node-name">어머니</div>
+        <div class="df-node-msg">아침 약 챙겨먹었어요.</div>
+      </div>
+      <div class="df-arrow" data-i="0">→</div>
+      <div class="df-node care" data-i="1">
+        <div class="df-node-role">케어팀</div>
+        <div class="df-node-name">간호사 박</div>
+        <div class="df-node-msg">완료 · 혈압 정상</div>
+      </div>
+      <div class="df-arrow" data-i="1">→</div>
+      <div class="df-node ai" data-i="2">
+        <div class="df-node-role">AI 요약</div>
+        <div class="df-node-name">하루안부</div>
+        <div class="df-node-msg">아침 루틴 정상</div>
+      </div>
+      <div class="df-arrow" data-i="2">→</div>
+      <div class="df-node guardian" data-i="3">
+        <div class="df-node-role">보호자</div>
+        <div class="df-node-name">아들</div>
+        <div class="df-node-msg">어머니 잘 드셨어요</div>
+      </div>
+    </div>
+    <div class="df-cycle">한 사이클 = 6초 · 자동 반복</div>
+  </div>
+</section>
+
+<!-- ═══════════ OPTION D: 현재 다이어그램 개선 ═══════════ -->
+<section class="opt" id="optD">
+  <div class="opt-head">
+    <div class="opt-eyebrow">OPTION D</div>
+    <h2 class="opt-title">현재 다이어그램 개선 — 대비 강화 + 실제 콘텐츠</h2>
+    <p class="opt-desc">현재 좌(흩어진)/우(연결된) 구조 유지. 좌측에는 떠다니는 텍스트 조각("어디 계세요?", "기록해야지", "전화해야지")으로 혼란을 시각화. 우측 허브에는 추상 로고 대신 실제 메시지 카드(5월 18일 · 잘 주무셨어요)를 표시.</p>
+    <ul class="opt-meta">
+      <li class="pro"><strong>장점</strong> 최소 작업 · 현재 구조와 호환</li>
+      <li class="con"><strong>단점</strong> 근본적 차별화는 아님</li>
+    </ul>
+  </div>
+
+  <div class="demo">
+    <div class="demo-label">CURRENT · ENHANCED</div>
+    <div class="imp-grid">
+      <div class="imp-side scatter">
+        <div class="imp-side-label">흩어진 시선</div>
+        <div class="imp-node" style="top:18%;left:18%">
+          <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+          <div class="imp-node-label">환자</div>
+        </div>
+        <div class="imp-node" style="top:18%;right:18%">
+          <iconify-icon icon="fluent:home-heart-24-filled"></iconify-icon>
+          <div class="imp-node-label">보호자</div>
+        </div>
+        <div class="imp-node" style="bottom:18%;left:50%;transform:translateX(-50%)">
+          <iconify-icon icon="fluent:stethoscope-24-filled"></iconify-icon>
+          <div class="imp-node-label">케어팀</div>
+        </div>
+        <div class="imp-frag" style="top:42%;left:36%;animation-delay:0s">"어디 계세요?"</div>
+        <div class="imp-frag" style="top:54%;right:30%;animation-delay:.6s">"전화해야지..."</div>
+        <div class="imp-frag" style="top:36%;right:6%;animation-delay:1.2s">"보고는 어떻게?"</div>
+        <div class="imp-frag" style="bottom:36%;left:8%;animation-delay:1.8s">"기록해야지"</div>
+        <svg class="imp-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M22,24 Q50,50 22,76" stroke="#C7CCD4" stroke-width=".4" stroke-dasharray="1 1.5" fill="none" opacity=".6"/>
+          <path d="M78,24 Q50,50 78,76" stroke="#C7CCD4" stroke-width=".4" stroke-dasharray="1 1.5" fill="none" opacity=".6"/>
+          <path d="M22,24 Q50,12 78,24" stroke="#C7CCD4" stroke-width=".4" stroke-dasharray="1 1.5" fill="none" opacity=".5"/>
+        </svg>
+      </div>
+
+      <div class="imp-arrow">→</div>
+
+      <div class="imp-side connect">
+        <div class="imp-side-label">연결된 하루</div>
+        <div class="imp-node patient" style="bottom:14%;right:14%">
+          <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+          <div class="imp-node-label">환자</div>
+        </div>
+        <div class="imp-node guardian" style="top:14%;left:50%;transform:translateX(-50%)">
+          <iconify-icon icon="fluent:home-heart-24-filled"></iconify-icon>
+          <div class="imp-node-label">보호자</div>
+        </div>
+        <div class="imp-node care" style="bottom:14%;left:14%">
+          <iconify-icon icon="fluent:stethoscope-24-filled"></iconify-icon>
+          <div class="imp-node-label">케어팀</div>
+        </div>
+        <svg class="imp-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <line x1="50" y1="22" x2="50" y2="46" stroke="var(--c-guardian)" stroke-width=".4" opacity=".5"/>
+          <line x1="18" y1="78" x2="42" y2="54" stroke="var(--c-care)" stroke-width=".4" opacity=".5"/>
+          <line x1="82" y1="78" x2="58" y2="54" stroke="var(--c-patient)" stroke-width=".4" opacity=".5"/>
+        </svg>
+        <div class="imp-hub">
+          <div class="imp-hub-date">5월 18일 · 오늘</div>
+          <div class="imp-hub-msg">잘 주무셨어요.<br>아침 약 챙겨드셨고요.</div>
+          <div class="imp-hub-meta">안심 지수 92</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// OPTION C: data flow auto-loop
+(function(){
+  const stage = document.getElementById('dfStage');
+  if (!stage) return;
+  const nodes  = stage.querySelectorAll('.df-node');
+  const arrows = stage.querySelectorAll('.df-arrow');
+  let cur = -1;
+  const STEP = 1500; // ms per node
+  function tick(){
+    cur = (cur + 1) % nodes.length;
+    nodes.forEach((n,i)=> n.classList.toggle('active', i===cur));
+    arrows.forEach((a,i)=> a.classList.toggle('active', i === cur));
+  }
+  tick();
+  setInterval(tick, STEP);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 · PAIN ZONE 확장안 비교</title>
+<link rel="preload" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+<style>
+:root{
+  --blue:#2C7AFC; --green:#22C55E; --orange:#FB923C; --purple:#8B5CF6; --red:#EF4444;
+  --ink:#111; --ink-2:#333; --mute:#888; --mute-2:#B5B5B5;
+  --line:#E8E8E8; --line-soft:#F1F1F1; --paper:#FAFAFA; --bg:#FFFFFF;
+  --font:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
+  --role-guardian:#2C7AFC;
+  --role-medical:#22C55E;
+  --role-caregiver:#FB923C;
+  --role-patient:#8B5CF6;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+body{font-family:var(--font);font-size:16px;line-height:1.6;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+button{font-family:inherit;cursor:pointer;border:none;outline:none;background:none;color:inherit}
+
+/* topbar */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 32px;
+  background:rgba(255,255,255,.86);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--line-soft);
+}
+.brand{font-size:13px;font-weight:700;letter-spacing:-.01em}
+.topnav{display:flex;gap:4px}
+.topnav a{
+  font-size:12px;font-weight:600;color:var(--ink-2);text-decoration:none;
+  padding:8px 14px;border-radius:999px;transition:.18s;
+}
+.topnav a:hover{background:var(--paper);color:var(--ink)}
+.topnav a.active{background:var(--ink);color:#fff}
+
+/* intro */
+.intro{
+  padding:96px 32px 64px;text-align:center;
+  border-bottom:1px solid var(--line-soft);
+}
+.intro .eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--blue);text-transform:uppercase;margin-bottom:18px}
+.intro h1{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.18;margin-bottom:14px}
+.intro p{font-size:15px;color:var(--ink-2);max-width:640px;margin:0 auto}
+
+/* option section */
+.opt{padding:80px 32px 96px;border-bottom:1px solid var(--line-soft)}
+.opt-head{max-width:880px;margin:0 auto 40px}
+.opt-eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--mute);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.opt-eyebrow::before{content:'';width:8px;height:8px;background:var(--ink);border-radius:2px}
+.opt-eyebrow.recommended::before{background:var(--blue)}
+.opt-title{font-size:clamp(22px,2.8vw,32px);font-weight:800;letter-spacing:-.02em;line-height:1.24;margin-bottom:12px}
+.opt-desc{font-size:14px;color:var(--ink-2);margin-bottom:20px;line-height:1.65}
+.opt-meta{list-style:none;display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
+.opt-meta li{display:flex;gap:8px;align-items:baseline}
+.opt-meta strong{font-weight:700}
+.opt-meta li.pro strong{color:var(--green)}
+.opt-meta li.con strong{color:var(--red)}
+
+/* demo container */
+.demo{
+  position:relative;
+  background:var(--paper);
+  border-radius:24px;
+  overflow:hidden;
+  height:640px;
+  max-width:1200px;margin:0 auto;
+  border:1px solid var(--line-soft);
+}
+.demo-label{
+  position:absolute;top:18px;left:22px;z-index:5;
+  font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--mute);text-transform:uppercase;
+}
+
+/* shared role chip */
+.role-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;letter-spacing:.01em;
+  padding:5px 11px;border-radius:999px;
+  color:#fff;
+  white-space:nowrap;
+}
+.role-chip iconify-icon{font-size:12px}
+.role-chip[data-role="guardian"]{background:var(--role-guardian)}
+.role-chip[data-role="medical"]{background:var(--role-medical)}
+.role-chip[data-role="caregiver"]{background:var(--role-caregiver)}
+.role-chip[data-role="patient"]{background:var(--role-patient)}
+
+/* ─────────────────────────────────── DEMO 1 ─────────────────────────────────── */
+.d1-stage{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 64px 56px}
+.d1-list{position:relative;width:100%;height:480px;overflow:hidden}
+.d1-track{position:absolute;left:0;right:0;top:50%;transition:transform .7s cubic-bezier(.16,1,.3,1);will-change:transform}
+.d1-item{
+  height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+  opacity:.04;transform:scale(.82);
+}
+.d1-copy{font-size:clamp(20px,2.4vw,30px);font-weight:700;letter-spacing:-.02em;line-height:1.36;text-align:center;color:var(--ink)}
+.d1-item[data-dist="0"]{opacity:1;transform:scale(1)}
+.d1-item[data-dist="1"]{opacity:.22;transform:scale(.92)}
+.d1-item[data-dist="2"]{opacity:.10;transform:scale(.86)}
+.d1-item[data-dist="3"]{opacity:.04;transform:scale(.82)}
+.d1-dots{position:absolute;right:22px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:7px}
+.d1-dots div{width:4px;height:4px;border-radius:50%;background:#d0d0d0;transition:.3s}
+.d1-dots div.on{background:var(--ink);transform:scale(1.7)}
+.d1-hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.14em;color:var(--mute-2);text-transform:uppercase;white-space:nowrap}
+
+/* ─────────────────────────────────── DEMO 2 ─────────────────────────────────── */
+.d2-stage{position:relative;height:100%;display:flex;flex-direction:column}
+.d2-chapter-bar{
+  display:flex;gap:0;padding:24px 28px 12px;border-bottom:1px solid var(--line-soft);background:#fff;
+}
+.d2-chap{
+  flex:1;display:flex;flex-direction:column;gap:6px;
+  padding:6px 4px;text-align:left;color:var(--mute);
+  position:relative;
+}
+.d2-chap .num{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute-2)}
+.d2-chap .name{font-size:13px;font-weight:700;letter-spacing:-.01em}
+.d2-chap.on{color:var(--ink)}
+.d2-chap.on .num{color:var(--ink)}
+.d2-chap::after{content:'';position:absolute;left:0;right:0;bottom:-13px;height:2px;background:transparent;transition:.3s}
+.d2-chap.on::after{background:var(--ink)}
+.d2-body{position:relative;flex:1;overflow:hidden}
+.d2-scene{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px 60px 48px;
+  opacity:0;transition:opacity .5s;
+  pointer-events:none;
+}
+.d2-scene.on{opacity:1;pointer-events:auto}
+.d2-scene-chip{margin-bottom:22px}
+.d2-intro{font-size:clamp(22px,2.6vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.3;text-align:center;color:var(--ink);margin-bottom:28px}
+.d2-list{display:flex;flex-direction:column;gap:14px;align-items:center}
+.d2-copy{
+  font-size:clamp(15px,1.5vw,18px);font-weight:600;letter-spacing:-.01em;line-height:1.5;
+  color:var(--ink-2);text-align:center;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .5s, transform .5s;
+}
+.d2-scene.on .d2-copy{opacity:1;transform:none}
+.d2-scene.on .d2-copy:nth-child(1){transition-delay:.10s}
+.d2-scene.on .d2-copy:nth-child(2){transition-delay:.22s}
+.d2-scene.on .d2-copy:nth-child(3){transition-delay:.34s}
+.d2-scene.on .d2-copy:nth-child(4){transition-delay:.46s}
+.d2-scene.on .d2-copy:nth-child(5){transition-delay:.58s}
+.d2-progress{position:absolute;bottom:0;left:0;height:2px;background:var(--ink);transition:width .12s linear}
+
+/* ─────────────────────────────────── DEMO 3 ─────────────────────────────────── */
+.d3-stage{height:100%;display:flex;flex-direction:column;padding:32px 32px 24px}
+.d3-chips{display:flex;gap:10px;justify-content:center;margin-bottom:36px;flex-wrap:wrap}
+.d3-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 18px;border-radius:999px;
+  background:#fff;border:1px solid var(--line);
+  font-size:13px;font-weight:700;color:var(--ink-2);
+  transition:.2s;
+}
+.d3-chip iconify-icon{font-size:16px}
+.d3-chip:hover{border-color:var(--ink-2)}
+.d3-chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.d3-panel{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.d3-list{display:flex;flex-direction:column;gap:14px;align-items:center;transition:opacity .3s}
+.d3-list.swap{opacity:0}
+.d3-copy{
+  font-size:clamp(16px,1.7vw,22px);font-weight:600;line-height:1.4;letter-spacing:-.01em;
+  color:var(--ink-2);text-align:center;
+  opacity:.32;transition:.35s;
+}
+.d3-copy.center{color:var(--ink);font-size:clamp(20px,2.2vw,30px);font-weight:800;opacity:1;padding:6px 0}
+
+/* ─────────────────────────────────── DEMO 4 ─────────────────────────────────── */
+.d4-stage{height:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-soft)}
+.d4-col{background:var(--paper);display:flex;flex-direction:column;padding:28px 20px}
+.d4-head{display:flex;align-items:center;gap:8px;padding-bottom:16px;border-bottom:1px solid var(--line-soft);margin-bottom:22px}
+.d4-icon{
+  width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;
+}
+.d4-icon iconify-icon{font-size:18px}
+.d4-icon[data-role="guardian"]{background:var(--role-guardian)}
+.d4-icon[data-role="medical"]{background:var(--role-medical)}
+.d4-icon[data-role="caregiver"]{background:var(--role-caregiver)}
+.d4-icon[data-role="patient"]{background:var(--role-patient)}
+.d4-name{font-size:13px;font-weight:800;letter-spacing:-.01em}
+.d4-list{display:flex;flex-direction:column;gap:16px}
+.d4-pain{font-size:14px;line-height:1.5;font-weight:600;color:var(--ink-2);letter-spacing:-.005em}
+.d4-pain.hi{color:var(--ink);font-weight:800;font-size:15px}
+
+@media(max-width:780px){
+  .opt{padding:48px 16px}
+  .demo{height:560px;border-radius:18px}
+  .topbar{padding:12px 16px}
+  .topnav a{padding:6px 10px;font-size:11px}
+  .d2-chapter-bar{padding:18px 14px 10px}
+  .d2-chap .name{font-size:11px}
+  .d4-stage{grid-template-columns:1fr 1fr}
+  .d4-stage>.d4-col:nth-child(n+3){border-top:1px solid var(--line-soft)}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">하루안부 · PAIN ZONE 확장안 비교</div>
+  <nav class="topnav">
+    <a href="#opt1">옵션 1</a>
+    <a href="#opt2">옵션 2</a>
+    <a href="#opt3">옵션 3</a>
+    <a href="#opt4">옵션 4</a>
+  </nav>
+</header>
+
+<section class="intro">
+  <p class="eyebrow">CONTEXT</p>
+  <h1>역할이 4개일 때, PAIN ZONE을 어떻게 보여줄까?</h1>
+  <p>현재 쇼케이스의 PAIN ZONE은 보호자 관점만 다루지만, 실제 사용자는 보호자 · 의료진 · 요양보호사 · 환자 4개 역할이 있어요. 같은 콘텐츠 셋으로 4가지 확장안을 비교합니다.</p>
+</section>
+
+<!-- ════════════════ OPTION 1 ════════════════ -->
+<section class="opt" id="opt1">
+  <div class="opt-head">
+    <div class="opt-eyebrow recommended">OPTION 1 · RECOMMENDED</div>
+    <h2 class="opt-title">역할 태그 인터리브 — 한 흐름에서 4개 역할을 교차</h2>
+    <p class="opt-desc">기존 sticky 스크롤 패턴을 유지하되, 각 카피 위에 역할 칩을 붙이고 보호자 → 요양보호사 → 의료진 → 환자 순서로 교차합니다. "모두가 동시에 힘들다"는 메시지가 한 흐름 안에서 자연스럽게 누적돼요.</p>
+    <ul class="opt-meta">
+      <li class="pro"><strong>장점</strong> 흐름 안 끊김 · 분량 컨트롤 쉬움 (총 12카피, 기존 7카피 대비 +5)</li>
+      <li class="con"><strong>단점</strong> 역할별 메시지 깊이는 다소 얕음</li>
+    </ul>
+  </div>
+
+  <div class="demo">
+    <div class="demo-label">AUTO PREVIEW</div>
+    <div class="d1-stage">
+      <div class="d1-list" id="d1List">
+        <div class="d1-track" id="d1Track"></div>
+      </div>
+      <div class="d1-dots" id="d1Dots"></div>
+      <div class="d1-hint">auto · 실제 적용 시 페이지 스크롤에 연동</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ OPTION 2 ════════════════ -->
+<section class="opt" id="opt2">
+  <div class="opt-head">
+    <div class="opt-eyebrow">OPTION 2</div>
+    <h2 class="opt-title">역할별 챕터 — 각 역할마다 독립된 PAIN 섹션 반복</h2>
+    <p class="opt-desc">현재 PAIN ZONE 패턴을 그대로 4번 반복합니다. 역할마다 자기 인트로 질문 + 카피 4~5개. 가장 명확하지만 스크롤 분량이 4배로 늘어나요.</p>
+    <ul class="opt-meta">
+      <li class="pro"><strong>장점</strong> 역할별 메시지가 가장 깊고 명확</li>
+      <li class="con"><strong>단점</strong> 스크롤 매우 김 · 같은 패턴 반복 피로</li>
+    </ul>
+  </div>
+
+  <div class="demo">
+    <div class="demo-label">AUTO PREVIEW · 챕터 전환</div>
+    <div class="d2-stage">
+      <div class="d2-chapter-bar" id="d2Bar"></div>
+      <div class="d2-body" id="d2Body"></div>
+      <div class="d2-progress" id="d2Prog" style="width:0"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ OPTION 3 ════════════════ -->
+<section class="opt" id="opt3">
+  <div class="opt-head">
+    <div class="opt-eyebrow">OPTION 3</div>
+    <h2 class="opt-title">역할 칩 전환형 — 사용자가 직접 역할을 선택</h2>
+    <p class="opt-desc">한 화면에 4개 역할 칩을 두고, 클릭하면 카피 셋이 교체됩니다. 가장 컴팩트하지만 사용자가 클릭하지 않으면 기본 역할 관점만 보고 지나칠 위험이 있어요.</p>
+    <ul class="opt-meta">
+      <li class="pro"><strong>장점</strong> 매우 컴팩트 · 능동적 탐색 가능</li>
+      <li class="con"><strong>단점</strong> 클릭 안 하면 서사 누락 · 감정 누적이 약함</li>
+    </ul>
+  </div>
+
+  <div class="demo">
+    <div class="demo-label">INTERACTIVE · 칩을 눌러보세요</div>
+    <div class="d3-stage">
+      <div class="d3-chips" id="d3Chips"></div>
+      <div class="d3-panel">
+        <div class="d3-list" id="d3List"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ OPTION 4 ════════════════ -->
+<section class="opt" id="opt4">
+  <div class="opt-head">
+    <div class="opt-eyebrow">OPTION 4</div>
+    <h2 class="opt-title">4-칼럼 스윔레인 — 4개 역할을 한 화면에 나란히</h2>
+    <p class="opt-desc">4개 칼럼으로 한 번에 비교. "모두가 힘들다"가 한눈에 보이지만, 현재의 cinematic한 한 줄 강조 톤이 사라지고 데이터 표 느낌이 됩니다.</p>
+    <ul class="opt-meta">
+      <li class="pro"><strong>장점</strong> 한눈 비교 · 스크롤 절약</li>
+      <li class="con"><strong>단점</strong> 감정 톤 사라짐 · 모바일에서 좁아짐</li>
+    </ul>
+  </div>
+
+  <div class="demo">
+    <div class="demo-label">STATIC COMPARISON</div>
+    <div class="d4-stage" id="d4Stage"></div>
+  </div>
+</section>
+
+<script>
+// ── Data ────────────────────────────────────────────────────────────
+const ROLES = {
+  guardian:  { name:'보호자',     icon:'fluent:home-person-20-regular' },
+  medical:   { name:'의료진',     icon:'fluent:stethoscope-20-regular' },
+  caregiver: { name:'요양보호사', icon:'fluent:hand-wave-20-regular' },
+  patient:   { name:'환자',       icon:'fluent:person-20-regular' },
+};
+
+const PAINS = {
+  guardian: [
+    '오늘 밥은 잘 드셨는지 모르겠어요.',
+    '멀리 살아서 자주 못 가요.',
+    '어떤 치료를 받고 계신지 알 수가 없어요.',
+    '상태가 나빠졌을 때 제때 연락이 올지 걱정돼요.',
+    '부모님 곁에 있어드리고 싶어요.',
+  ],
+  medical: [
+    '보호자 전화에 하루 두 시간을 써요.',
+    'SOS가 오면 환자부터 찾아야 해요.',
+    '야간 호출이 두려워요.',
+    '가족마다 같은 설명을 반복해요.',
+    '차트와 메신저를 오가며 일해요.',
+  ],
+  caregiver: [
+    '보호자께 어떻게 설명할지 막막해요.',
+    '같은 안부 전화를 매일 받아요.',
+    '작은 변화도 외워서 전달해요.',
+    '기록과 보고가 매번 따로예요.',
+    '새벽 호출 대응이 부담돼요.',
+  ],
+  patient: [
+    '자식들 걱정시키고 싶지 않아요.',
+    '통증이 와도 누구한테 말할지 모르겠어요.',
+    '약 먹었는지 자꾸 잊어버려요.',
+    '매일 똑같은 질문에 지쳐요.',
+    '혼자라는 느낌이 들어요.',
+  ],
+};
+
+function chipEl(role){
+  const r = ROLES[role];
+  return `<span class="role-chip" data-role="${role}"><iconify-icon icon="${r.icon}"></iconify-icon>${r.name}</span>`;
+}
+
+// ── DEMO 1: interleave auto ──────────────────────────────────────────
+(function(){
+  const order = [
+    ['guardian',0], ['caregiver',1], ['medical',0], ['patient',0],
+    ['guardian',1], ['medical',2],   ['caregiver',2], ['patient',1],
+    ['guardian',2], ['medical',1],   ['caregiver',0], ['patient',4],
+  ];
+  const track = document.getElementById('d1Track');
+  const dots  = document.getElementById('d1Dots');
+  const ITEM_H = 96;
+
+  track.innerHTML = order.map(([role,i],idx)=>
+    `<div class="d1-item" data-idx="${idx}">${chipEl(role)}<div class="d1-copy">${PAINS[role][i]}</div></div>`
+  ).join('');
+  dots.innerHTML = order.map(()=>'<div></div>').join('');
+
+  const items  = track.querySelectorAll('.d1-item');
+  const dotEls = dots.querySelectorAll('div');
+  let cur = 0;
+  function update(){
+    const offset = -(cur*ITEM_H + ITEM_H/2);
+    track.style.transform = `translateY(${offset}px)`;
+    items.forEach((el,i)=> el.dataset.dist = String(Math.min(Math.abs(i-cur),3)));
+    dotEls.forEach((d,i)=> d.classList.toggle('on', i===cur));
+  }
+  update();
+  setInterval(()=>{ cur = (cur+1) % order.length; update(); }, 2400);
+})();
+
+// ── DEMO 2: chapter sections ─────────────────────────────────────────
+(function(){
+  const chapters = [
+    { role:'guardian',  intro:'그렇다면 왜 가족은<br>여전히 불안할까요?', pains: PAINS.guardian.slice(0,4) },
+    { role:'medical',   intro:'그렇다면 왜 의료진은<br>지쳐갈까요?',     pains: PAINS.medical.slice(0,4) },
+    { role:'caregiver', intro:'그렇다면 왜 현장은<br>늘 분주할까요?',     pains: PAINS.caregiver.slice(0,4) },
+    { role:'patient',   intro:'그렇다면 어르신은<br>무엇을 바라실까요?', pains: PAINS.patient.slice(0,4) },
+  ];
+  const bar  = document.getElementById('d2Bar');
+  const body = document.getElementById('d2Body');
+  const prog = document.getElementById('d2Prog');
+
+  bar.innerHTML = chapters.map((c,i)=>{
+    const r = ROLES[c.role];
+    return `<button class="d2-chap" data-i="${i}">
+      <span class="num">CH ${String(i+1).padStart(2,'0')}</span>
+      <span class="name">${r.name}</span>
+    </button>`;
+  }).join('');
+
+  body.innerHTML = chapters.map((c,i)=>`
+    <div class="d2-scene" data-i="${i}">
+      <div class="d2-scene-chip">${chipEl(c.role)}</div>
+      <div class="d2-intro">${c.intro}</div>
+      <div class="d2-list">${c.pains.map(p=>`<div class="d2-copy">${p}</div>`).join('')}</div>
+    </div>
+  `).join('');
+
+  const chaps  = bar.querySelectorAll('.d2-chap');
+  const scenes = body.querySelectorAll('.d2-scene');
+  let cur=0, t0=performance.now();
+  const DUR = 4600;
+  function show(i){
+    cur=i; t0=performance.now();
+    chaps.forEach((b,k)=> b.classList.toggle('on', k===i));
+    scenes.forEach((s,k)=> s.classList.toggle('on', k===i));
+  }
+  show(0);
+  chaps.forEach(b=> b.addEventListener('click', ()=> show(Number(b.dataset.i))));
+
+  function tick(now){
+    const pct = Math.min((now-t0)/DUR, 1);
+    prog.style.width = (pct*100)+'%';
+    if(pct>=1) show((cur+1) % chapters.length);
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+// ── DEMO 3: chip switching ───────────────────────────────────────────
+(function(){
+  const order = ['guardian','medical','caregiver','patient'];
+  const chips = document.getElementById('d3Chips');
+  const list  = document.getElementById('d3List');
+
+  chips.innerHTML = order.map(r=>{
+    const role = ROLES[r];
+    return `<button class="d3-chip" data-r="${r}"><iconify-icon icon="${role.icon}"></iconify-icon>${role.name}</button>`;
+  }).join('');
+
+  function render(r){
+    const pains = PAINS[r].slice(0,5);
+    const center = 2;
+    list.classList.add('swap');
+    setTimeout(()=>{
+      list.innerHTML = pains.map((p,i)=> `<div class="d3-copy${i===center?' center':''}">${p}</div>`).join('');
+      list.classList.remove('swap');
+    }, 220);
+  }
+  function set(r){
+    chips.querySelectorAll('.d3-chip').forEach(c=> c.classList.toggle('on', c.dataset.r===r));
+    render(r);
+  }
+  set('guardian');
+  chips.querySelectorAll('.d3-chip').forEach(c=> c.addEventListener('click', ()=> set(c.dataset.r)));
+})();
+
+// ── DEMO 4: swimlanes ────────────────────────────────────────────────
+(function(){
+  const stage = document.getElementById('d4Stage');
+  const order = ['guardian','medical','caregiver','patient'];
+  const hi = [2,1,3,0]; // highlighted row per column
+  stage.innerHTML = order.map((r,colIdx)=>{
+    const role = ROLES[r];
+    const items = PAINS[r].slice(0,4);
+    const listH = items.map((p,i)=> `<div class="d4-pain${i===hi[colIdx]?' hi':''}">${p}</div>`).join('');
+    return `<div class="d4-col">
+      <div class="d4-head">
+        <div class="d4-icon" data-role="${r}"><iconify-icon icon="${role.icon}"></iconify-icon></div>
+        <div class="d4-name">${role.name}</div>
+      </div>
+      <div class="d4-list">${listH}</div>
+    </div>`;
+  }).join('');
+})();
+
+// ── topnav active state ──────────────────────────────────────────────
+(function(){
+  const links = document.querySelectorAll('.topnav a');
+  const sections = ['opt1','opt2','opt3','opt4'].map(id=>document.getElementById(id));
+  function update(){
+    const y = window.scrollY + window.innerHeight*0.35;
+    let active = -1;
+    sections.forEach((s,i)=>{ if(s.offsetTop<=y) active=i; });
+    links.forEach((l,i)=> l.classList.toggle('active', i===active));
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+</script>
+</body>
+</html>

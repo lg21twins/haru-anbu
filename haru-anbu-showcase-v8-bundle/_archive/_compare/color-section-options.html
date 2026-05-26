@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Color Section · 5 Options</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:#F0F4F8;color:#0A0E1A;letter-spacing:-.01em;line-height:1.5;padding:60px 40px}
+  .wrap{max-width:1280px;margin:0 auto}
+  .page-head{margin-bottom:80px;text-align:center}
+  .page-head h1{font-size:42px;font-weight:800;letter-spacing:-.03em;margin-bottom:12px}
+  .page-head p{color:#6B7280;font-size:15px}
+  .opt{background:#fff;border-radius:24px;padding:56px 48px;margin-bottom:32px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+  .opt-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+  .opt-num{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:600;color:#2C7AFC;letter-spacing:.18em;background:rgba(44,122,252,.08);padding:5px 12px;border-radius:100px}
+  .opt-name{font-size:22px;font-weight:700;letter-spacing:-.02em}
+  .opt-desc{font-size:13px;color:#6B7280;line-height:1.7;margin-bottom:36px;max-width:680px}
+
+  /* ───── Option A · Hero Block Trio (current refined) ───── */
+  .a-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .a-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .a-sw{aspect-ratio:1.1;padding:28px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;position:relative}
+  .a-sw-tag{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+  .a-sw-hex{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:28px;font-weight:700;letter-spacing:-.01em}
+  .a-meta{padding:22px 24px 26px}
+  .a-meta-name{font-size:17px;font-weight:700;margin-bottom:6px}
+  .a-meta-use{font-size:13px;color:#6B7280;line-height:1.6}
+
+  /* ───── Option B · Full-Bleed Mosaic ───── */
+  .b-mosaic{display:grid;grid-template-columns:1.4fr 1fr 1fr;border-radius:24px;overflow:hidden;min-height:380px}
+  .b-tile{padding:36px 32px;color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+  .b-tile-top{display:flex;flex-direction:column;gap:8px}
+  .b-tile-tag{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.78)}
+  .b-tile-name{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+  .b-tile-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+  .b-tile-use{font-size:13px;line-height:1.55;color:rgba(255,255,255,.85);max-width:260px}
+  .b-tile-hex{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:14px;font-weight:600;letter-spacing:.02em;color:rgba(255,255,255,.95)}
+
+  /* ───── Option C · Spec Card with Tint Scale ───── */
+  .c-stack{display:flex;flex-direction:column;gap:20px}
+  .c-row{background:#fff;border-radius:18px;padding:28px;display:grid;grid-template-columns:140px 1fr auto;gap:36px;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .c-sw{aspect-ratio:1;border-radius:14px;display:flex;align-items:flex-end;padding:14px;color:#fff;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:600}
+  .c-body{display:flex;flex-direction:column;gap:14px}
+  .c-body-head{display:flex;align-items:baseline;gap:14px}
+  .c-body-tag{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9CA3AF}
+  .c-body-name{font-size:18px;font-weight:700}
+  .c-body-use{font-size:13px;color:#6B7280;line-height:1.55}
+  .c-scale{display:flex;gap:4px}
+  .c-tint{width:32px;height:32px;border-radius:6px}
+
+  /* ───── Option D · Application-in-Context ───── */
+  .d-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .d-card{background:#fff;border-radius:18px;padding:32px;box-shadow:0 1px 3px rgba(0,0,0,.04);display:flex;flex-direction:column;gap:22px}
+  .d-head{display:flex;align-items:center;gap:14px}
+  .d-dot{width:36px;height:36px;border-radius:12px;flex-shrink:0}
+  .d-head-text{display:flex;flex-direction:column;gap:2px}
+  .d-tag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#9CA3AF}
+  .d-name{font-size:17px;font-weight:700}
+  .d-hex{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;color:#9CA3AF;font-weight:500}
+  .d-use{font-size:13px;color:#6B7280;line-height:1.6}
+  .d-demo{background:#F7F9FC;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px}
+  .d-demo-label{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9CA3AF}
+  .d-demo-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .d-btn{padding:8px 16px;border-radius:100px;font-size:12px;font-weight:600;color:#fff;border:none}
+  .d-pill{padding:4px 10px;border-radius:100px;font-size:11px;font-weight:600}
+  .d-bar{width:100%;height:4px;border-radius:100px}
+  .d-bar-inner{height:100%;border-radius:100px}
+
+  /* ───── Option E · Editorial Stack with Big Hex ───── */
+  .e-stack{display:flex;flex-direction:column}
+  .e-row{display:grid;grid-template-columns:1fr 2fr 1fr;gap:32px;align-items:center;padding:32px 0;border-top:1px solid #E5E7EB}
+  .e-row:first-child{border-top:0}
+  .e-band{height:80px;border-radius:6px}
+  .e-mid{display:flex;flex-direction:column;gap:6px}
+  .e-tag{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9CA3AF}
+  .e-name{font-size:24px;font-weight:700;letter-spacing:-.02em}
+  .e-use{font-size:13px;color:#6B7280;line-height:1.55;margin-top:4px}
+  .e-hex{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:32px;font-weight:700;letter-spacing:-.02em;text-align:right;line-height:1}
+
+  @media (max-width:900px){
+    .a-grid,.d-grid{grid-template-columns:1fr}
+    .b-mosaic{grid-template-columns:1fr}
+    .c-row{grid-template-columns:1fr;gap:20px}
+    .e-row{grid-template-columns:1fr;gap:16px}
+    .e-hex{text-align:left;font-size:24px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="page-head">
+    <h1>Color Section · 5 Options</h1>
+    <p>Mobbin 레퍼런스(Adobe Color · Squarespace · Relume · Kickstarter · Sketch) + 디자인 패턴 기반</p>
+  </div>
+
+  <!-- ═══ A · Hero Block Trio ═══ -->
+  <div class="opt">
+    <div class="opt-head">
+      <span class="opt-num">A</span>
+      <span class="opt-name">Hero Block Trio</span>
+    </div>
+    <p class="opt-desc">현재 카드 패턴의 정제판. 큰 사각 컬러 블록 안에 라벨(상단)과 헥스(하단) 만, 카드 하단에 한글 라벨·설명. Kickstarter 브랜드 가이드 톤. — <strong>현재와 가장 유사 · 안정</strong>.</p>
+    <div class="a-grid">
+      <div class="a-card">
+        <div class="a-sw" style="background:#2C7AFC">
+          <span class="a-sw-tag">Guardian · 보호자</span>
+          <span class="a-sw-hex">#2C7AFC</span>
+        </div>
+        <div class="a-meta">
+          <div class="a-meta-name">보호자 블루</div>
+          <div class="a-meta-use">멀리 있는 가족에게 안심·신뢰의 톤.</div>
+        </div>
+      </div>
+      <div class="a-card">
+        <div class="a-sw" style="background:#22C55E">
+          <span class="a-sw-tag">Care · 케어팀</span>
+          <span class="a-sw-hex">#22C55E</span>
+        </div>
+        <div class="a-meta">
+          <div class="a-meta-name">케어 그린</div>
+          <div class="a-meta-use">의료진과 요양보호사의 임상 톤.</div>
+        </div>
+      </div>
+      <div class="a-card">
+        <div class="a-sw" style="background:#FB923C">
+          <span class="a-sw-tag">Patient · 환자</span>
+          <span class="a-sw-hex">#FB923C</span>
+        </div>
+        <div class="a-meta">
+          <div class="a-meta-name">환자 오렌지</div>
+          <div class="a-meta-use">따뜻한 캔버스 위 부담 없는 액센트.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ B · Full-Bleed Mosaic ═══ -->
+  <div class="opt">
+    <div class="opt-head">
+      <span class="opt-num">B</span>
+      <span class="opt-name">Full-Bleed Mosaic</span>
+    </div>
+    <p class="opt-desc">3개 컬러를 갭 없이 하나의 라운드 모자이크로. 첫 컬러(보호자)는 비율을 키워서 시각 무게 부여. 라벨·설명·헥스 모두 컬러 위 화이트 텍스트. — <strong>편집 디자인 · 임팩트 큼</strong>.</p>
+    <div class="b-mosaic">
+      <div class="b-tile" style="background:#2C7AFC">
+        <div class="b-tile-top">
+          <span class="b-tile-tag">Guardian · 보호자</span>
+          <span class="b-tile-name">보호자<br>블루</span>
+        </div>
+        <div class="b-tile-bottom">
+          <span class="b-tile-use">멀리 있는 가족에게<br>안심·신뢰의 톤.</span>
+          <span class="b-tile-hex">#2C7AFC</span>
+        </div>
+      </div>
+      <div class="b-tile" style="background:#22C55E">
+        <div class="b-tile-top">
+          <span class="b-tile-tag">Care · 케어팀</span>
+          <span class="b-tile-name">케어<br>그린</span>
+        </div>
+        <div class="b-tile-bottom">
+          <span class="b-tile-use">의료진과 요양보호사의<br>임상 톤.</span>
+          <span class="b-tile-hex">#22C55E</span>
+        </div>
+      </div>
+      <div class="b-tile" style="background:#FB923C">
+        <div class="b-tile-top">
+          <span class="b-tile-tag">Patient · 환자</span>
+          <span class="b-tile-name">환자<br>오렌지</span>
+        </div>
+        <div class="b-tile-bottom">
+          <span class="b-tile-use">따뜻한 캔버스 위<br>부담 없는 액센트.</span>
+          <span class="b-tile-hex">#FB923C</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ C · Spec Card with Tint Scale ═══ -->
+  <div class="opt">
+    <div class="opt-head">
+      <span class="opt-num">C</span>
+      <span class="opt-name">Spec Card · Tint Scale</span>
+    </div>
+    <p class="opt-desc">각 컬러를 가로 카드로 → 좌측 메인 스왓치 + 우측 50→900 틴트 스케일 7단계. 디자인 시스템 깊이 어필. 실제 토큰 구조 노출. — <strong>전문가스럽다 · "토큰 있다" 신호</strong>.</p>
+    <div class="c-stack">
+      <div class="c-row">
+        <div class="c-sw" style="background:#2C7AFC">#2C7AFC</div>
+        <div class="c-body">
+          <div class="c-body-head">
+            <span class="c-body-tag">Guardian · 보호자</span>
+            <span class="c-body-name">보호자 블루</span>
+          </div>
+          <div class="c-body-use">멀리 있는 가족에게 안심·신뢰의 톤.</div>
+        </div>
+        <div class="c-scale">
+          <div class="c-tint" style="background:#EFF6FF" title="50"></div>
+          <div class="c-tint" style="background:#DBEAFE" title="100"></div>
+          <div class="c-tint" style="background:#93C5FD" title="300"></div>
+          <div class="c-tint" style="background:#2C7AFC;outline:2px solid #0A0E1A;outline-offset:2px" title="500"></div>
+          <div class="c-tint" style="background:#1D4ED8" title="700"></div>
+          <div class="c-tint" style="background:#1E3A8A" title="900"></div>
+        </div>
+      </div>
+      <div class="c-row">
+        <div class="c-sw" style="background:#22C55E">#22C55E</div>
+        <div class="c-body">
+          <div class="c-body-head">
+            <span class="c-body-tag">Care · 케어팀</span>
+            <span class="c-body-name">케어 그린</span>
+          </div>
+          <div class="c-body-use">의료진과 요양보호사의 임상 톤.</div>
+        </div>
+        <div class="c-scale">
+          <div class="c-tint" style="background:#F0FDF4"></div>
+          <div class="c-tint" style="background:#DCFCE7"></div>
+          <div class="c-tint" style="background:#86EFAC"></div>
+          <div class="c-tint" style="background:#22C55E;outline:2px solid #0A0E1A;outline-offset:2px"></div>
+          <div class="c-tint" style="background:#15803D"></div>
+          <div class="c-tint" style="background:#14532D"></div>
+        </div>
+      </div>
+      <div class="c-row">
+        <div class="c-sw" style="background:#FB923C">#FB923C</div>
+        <div class="c-body">
+          <div class="c-body-head">
+            <span class="c-body-tag">Patient · 환자</span>
+            <span class="c-body-name">환자 오렌지</span>
+          </div>
+          <div class="c-body-use">따뜻한 캔버스 위 부담 없는 액센트.</div>
+        </div>
+        <div class="c-scale">
+          <div class="c-tint" style="background:#FFF7ED"></div>
+          <div class="c-tint" style="background:#FFEDD5"></div>
+          <div class="c-tint" style="background:#FDBA74"></div>
+          <div class="c-tint" style="background:#FB923C;outline:2px solid #0A0E1A;outline-offset:2px"></div>
+          <div class="c-tint" style="background:#C2410C"></div>
+          <div class="c-tint" style="background:#7C2D12"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ D · Application-in-Context ═══ -->
+  <div class="opt">
+    <div class="opt-head">
+      <span class="opt-num">D</span>
+      <span class="opt-name">Application in Context</span>
+    </div>
+    <p class="opt-desc">컬러를 그냥 보여주지 않고, 실제 UI에 적용된 모습(버튼·뱃지·바)으로 노출. "이렇게 쓰인다"는 단서. — <strong>스토리텔링 강함 · 추상 ↓</strong>.</p>
+    <div class="d-grid">
+      <div class="d-card">
+        <div class="d-head">
+          <div class="d-dot" style="background:#2C7AFC"></div>
+          <div class="d-head-text">
+            <span class="d-tag">Guardian · 보호자</span>
+            <span class="d-name">보호자 블루 <span class="d-hex">· #2C7AFC</span></span>
+          </div>
+        </div>
+        <p class="d-use">멀리 있는 가족에게 안심·신뢰의 톤.</p>
+        <div class="d-demo">
+          <span class="d-demo-label">Applied to</span>
+          <div class="d-demo-row">
+            <button class="d-btn" style="background:#2C7AFC">안심지수 보기</button>
+            <span class="d-pill" style="background:rgba(44,122,252,.1);color:#2C7AFC">실시간</span>
+          </div>
+          <div class="d-bar" style="background:#DBEAFE"><div class="d-bar-inner" style="width:78%;background:#2C7AFC"></div></div>
+        </div>
+      </div>
+      <div class="d-card">
+        <div class="d-head">
+          <div class="d-dot" style="background:#22C55E"></div>
+          <div class="d-head-text">
+            <span class="d-tag">Care · 케어팀</span>
+            <span class="d-name">케어 그린 <span class="d-hex">· #22C55E</span></span>
+          </div>
+        </div>
+        <p class="d-use">의료진과 요양보호사의 임상 톤.</p>
+        <div class="d-demo">
+          <span class="d-demo-label">Applied to</span>
+          <div class="d-demo-row">
+            <button class="d-btn" style="background:#22C55E">처치 완료</button>
+            <span class="d-pill" style="background:rgba(34,197,94,.1);color:#22C55E">정상</span>
+          </div>
+          <div class="d-bar" style="background:#DCFCE7"><div class="d-bar-inner" style="width:92%;background:#22C55E"></div></div>
+        </div>
+      </div>
+      <div class="d-card">
+        <div class="d-head">
+          <div class="d-dot" style="background:#FB923C"></div>
+          <div class="d-head-text">
+            <span class="d-tag">Patient · 환자</span>
+            <span class="d-name">환자 오렌지 <span class="d-hex">· #FB923C</span></span>
+          </div>
+        </div>
+        <p class="d-use">따뜻한 캔버스 위 부담 없는 액센트.</p>
+        <div class="d-demo">
+          <span class="d-demo-label">Applied to</span>
+          <div class="d-demo-row">
+            <button class="d-btn" style="background:#FB923C">오늘 기분</button>
+            <span class="d-pill" style="background:rgba(251,146,60,.12);color:#C2410C">기록</span>
+          </div>
+          <div class="d-bar" style="background:#FFEDD5"><div class="d-bar-inner" style="width:64%;background:#FB923C"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ E · Editorial Stack with Big Hex ═══ -->
+  <div class="opt">
+    <div class="opt-head">
+      <span class="opt-num">E</span>
+      <span class="opt-name">Editorial Stack · Big Hex</span>
+    </div>
+    <p class="opt-desc">세로 스택. 각 컬러 = 얇은 밴드 + 라벨/설명 + 큰 모노 헥스. 카드·테두리 없이 헤어라인만. 타이포 중심. — <strong>매우 미니멀 · 활자/스펙 시트 느낌</strong>.</p>
+    <div class="e-stack">
+      <div class="e-row">
+        <div class="e-band" style="background:#2C7AFC"></div>
+        <div class="e-mid">
+          <span class="e-tag">Guardian · 보호자</span>
+          <span class="e-name">보호자 블루</span>
+          <span class="e-use">멀리 있는 가족에게 안심·신뢰의 톤.</span>
+        </div>
+        <div class="e-hex" style="color:#2C7AFC">#2C7AFC</div>
+      </div>
+      <div class="e-row">
+        <div class="e-band" style="background:#22C55E"></div>
+        <div class="e-mid">
+          <span class="e-tag">Care · 케어팀</span>
+          <span class="e-name">케어 그린</span>
+          <span class="e-use">의료진과 요양보호사의 임상 톤.</span>
+        </div>
+        <div class="e-hex" style="color:#22C55E">#22C55E</div>
+      </div>
+      <div class="e-row">
+        <div class="e-band" style="background:#FB923C"></div>
+        <div class="e-mid">
+          <span class="e-tag">Patient · 환자</span>
+          <span class="e-name">환자 오렌지</span>
+          <span class="e-use">따뜻한 캔버스 위 부담 없는 액센트.</span>
+        </div>
+        <div class="e-hex" style="color:#FB923C">#FB923C</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
