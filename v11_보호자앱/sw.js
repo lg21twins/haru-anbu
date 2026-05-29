@@ -1,4 +1,4 @@
-const V = 'haru-v2';
+const V = 'haru-v41';
 
 const PRECACHE = [
   './g-guardian-live.html',
@@ -19,6 +19,10 @@ const PRECACHE = [
   './g03-chat-patient.html',
   './manifest.json',
   './common.css',
+  './icon-192.png',
+  './icon-512.png',
+  './apple-touch-icon.png',
+  './image (16).png',
   './img/간호사.png',
   './img/보호자.png',
   './img/보호자2.png',

@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ko">
+<head><title>fixture: broken keyframes</title></head>
+<body>
+<style>
+  /* keyframes 닫는 } 누락 — 다음 룰이 안에 빨려 들어감 */
+  @keyframes syncPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+  .header-act { display: flex; gap: 6px; }
+
+  .other-rule { color: red; }
+</style>
+</body>
+</html>

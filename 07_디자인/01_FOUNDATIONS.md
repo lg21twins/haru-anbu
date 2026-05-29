@@ -19,6 +19,21 @@
 - **카드 타입 4종 고정**: default / action / alert / hero. 화면마다 카드 스타일을 고를 필요가 없게.
 - **좌측 컬러 바(border-left) 패턴 금지**: 정보 강조는 `card-alert` 또는 flat tinted 배경으로만. 수직 컬러 라인 장식은 통일감을 깨고 어디에도 어울리지 않는다.
 
+## v3.2.13 — 3앱 통일 라운드 결과 반영
+
+> **임상 모바일(보호자·요양보호사·의료진) 디자인 시스템 1:1 정렬.**
+
+3개 앱의 모바일 화면을 픽셀-퍼펙트 동일하게 만든 결과를 SoT 토큰·컴포넌트에 흡수했다:
+
+- **모바일 헤더**: `<header class="header"><div class="top-nav">` 신표준. 홈은 flex space-between, 서브(`:has(.title-block)`)는 grid 44/1fr/44.
+- **`.icon-btn`** 글라스 44×44 — 헤더 액션 / floating action 표준. `.notif-dot` 8×8 포함.
+- **카드 elevation**: `.card` 기본 shadow → `--shadow-card-floating` (0 4px 12px / hairline). 3앱 마이페이지 통일.
+- **임상 캔버스 토큰**: `--clinical-canvas` (#F4FAF6) + `--clinical-bg-image` (radial+linear gradient).
+- **`.bottom-bar / .tab-wrap`** 임상 변형: 흰색 글라스 알약 탭바 + 64×64 SOS sibling.
+- **상태 pill 5단계**: `.status-observe/watch/urgent/ready/pending`.
+- **공통 애니메이션**: `haru-fade-in-up` (등장) · `haru-pulse` (라이브 dot) · `haru-ring` (GPS).
+- **medical+mobile = caregiver 토큰**: 본문 18px / 터치 48px / 버튼 52px / row 60px (`[data-role="medical"|"nurse"|"doctor"][data-platform="mobile"]`).
+
 ---
 
 ## 1. 브랜드
@@ -148,7 +163,7 @@ Fluent 2의 Done/Finish/Close/Dismiss 컨벤션을 하루안부 한국어 톤에
 |---|---|---|
 | `01_심볼단독.svg` | 앱 아이콘 · 파비콘 · FAB · AI 진입점 (정사각 컨테이너) | 512×512 |
 | `02_워드마크단독.svg` | 헤더 · 푸터 · 텍스트 위주 자리 | 220×56 |
-| `03_콤비네이션_가로.svg` | ★ **일반 헤더 · 명함 · 발표자료 · 광고 (기본)** | 360×96 |
+| `03_콤비네이션_가로.svg` | **(기본) 일반 헤더 · 명함 · 발표자료 · 광고** | 360×96 |
 | `04_콤비네이션_세로.svg` | 스플래시 · 온보딩 · 포스터 · 인쇄물 | 240×220 |
 | `05_단색버전.svg` | 단색 인쇄 · 음각 · 워터마크 · 컬러 배경 위 | 512×512 |
 | `06_콤비네이션_심플.svg` | **모바일 헤더 · 사이드바 상단 · 좁은 자리** (태그라인 없음, 24~48px 높이) | 200×48 |
@@ -217,7 +232,7 @@ Fluent 2의 Done/Finish/Close/Dismiss 컨벤션을 하루안부 한국어 톤에
 |---|---|---|---|---|
 | 정상/완료 | `--color-success` | `#16A34A` | `#DCFCE7` | 체크리스트 완료, "정상" 뱃지 |
 | 주의 | `--color-warning` | `#F59E0B` | `#FEF3C7` | 미완료, 확인 필요 |
-| 위험/긴급 | `--color-danger` | `#DC2626` | `#FEE2E2` | SOS, 긴급 알림, 삭제 액션 |
+| 위험/긴급 | `--color-danger` | `#E32B25` (Rivian Alarm) | `#FEE2E2` | 긴급 알림 CTA·뱃지·삭제 액션 (SOS는 `--palette-red-600` `#C8231E` 직접 참조 — 위계 차) |
 | 정보 | `--color-info` | accent와 alias | accent-soft | 일반 안내 — **역할 색을 따라간다** |
 | 포인트 | `--color-point` | `#F5D310` | — | 별점, 중요 뱃지, 역할 무관 강조 1회용 |
 
@@ -703,7 +718,7 @@ AI 진입점은 다른 일반 아이콘처럼 Fluent에서 가져오지 않는�
 
 ### 9.5 금지 사항
 
-- **이모지 절대 금지** — 😊 ✅ 🙂 💊 🩺 등 일체 사용 안 함. 모두 fluent 아이콘 또는 하루안부 심볼로 대체.
+- **이모지 절대 금지** — Unicode emoji (스마일·체크·약·청진기 등 어떤 종류든) 일체 사용 안 함. 모두 fluent 아이콘 또는 하루안부 심볼로 대체.
 - 다른 아이콘 라이브러리 혼용 금지 (Lucide, Phosphor, Tabler, Material Symbols).
 - Filled / Outline 토글로 활성 상태 표현 금지 — 색만 바꾼다.
 - 커스텀 SVG는 **로고 자산 + AI 심볼 한정**. 일반 UI 아이콘은 Fluent에서 가져온다.
@@ -857,11 +872,11 @@ AI 진입점은 다른 일반 아이콘처럼 Fluent에서 가져오지 않는�
 
 ---
 
-## 13. ~~다크 모드~~ (v3.2.3 봉인 — 라이트 단일 운영)
+## 13. ~~다크 모드~~ (v3.2.8 제거 — 라이트 단일 운영)
 
-> **결정 (2026-05-11):** 하루안부는 **라이트 모드 단일**로 운영. 다크 모드는 v3.2에서 한 번 도입했으나, v9.5 시대 페이지 다수가 hex를 직접 사용해 다크 토큰과 충돌하면서 사용자 시야에 깨진 화면("글자 안 보임", "반은 라이트 반은 다크")이 노출됨. 사용자 지시로 **`_app-theme.js`가 항상 `data-theme="light"` 강제**, 토글 위젯·시스템 자동 따라가기·localStorage 'dark' 값 모두 자동 무력화.
+> **결정 (2026-05-17, v3.2.8):** 하루안부는 **라이트 모드 단일**. 다크 모드는 v3.2에서 도입했으나 v9.5 시대 페이지의 hex 직접 사용과 충돌하며 깨진 화면("글자 안 보임", "반은 라이트 반은 다크")을 노출. v3.2.3에서 일단 봉인했고, v3.2.8에서 **코드 자체를 삭제**(`tokens.css` THEME D, `_app-theme.js`의 `setTheme`/`isDark`, `_preview-controls.js`의 강제 라이트 + 토글 바인딩, `_preview-shared.css`의 `[data-theme="dark"]` 보강 분기).
 >
-> `tokens.css`에는 다크 블록 코드가 남아있으나 동작하지 않음. 향후 모든 페이지가 토큰 기반으로 마이그레이션되면 봉인 해제 검토.
+> 신규 페이지는 `data-theme` 속성 자체를 쓰지 않는다. 라이트가 기본값. `prefers-color-scheme: dark`도 무시한다 — 사용자 OS 설정과 무관하게 항상 라이트로 렌더된다.
 
 ---
 
@@ -892,7 +907,7 @@ Okabe-Ito 색맹 안전 팔레트를 하루안부 톤에 맞춰 변형한 8단�
 |---|---|---|
 | `--chart-positive` | `#16A34A` | "정상", "완료", "달성" 시리즈 |
 | `--chart-attention` | `#F59E0B` | "주의", "미완료", "확인 필요" |
-| `--chart-critical` | `#DC2626` | "위험", "이상치", "긴급" |
+| `--chart-critical` | `#C8231E` (Rivian Alarm 600) | "위험", "이상치", "긴급" |
 | `--chart-baseline` | `#9E9E9E` | "평균", "기준선" — **dashed** 표현 |
 | `--chart-prediction` | `#93C5FD` | "예측", "추세선" — **dashed** 표현 |
 

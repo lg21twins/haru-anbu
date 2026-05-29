@@ -1,0 +1,5 @@
+/* fixture: CSS 파일 안 직접 hex가 audit에 잡혀야 함 */
+.bad {
+  color: #2C7AFC;            /* FAIL: 직접 hex */
+  background: #fff;          /* FAIL: 단색 키워드 대신 var(--palette-white) 권장 */
+}

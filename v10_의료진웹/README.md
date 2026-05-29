@@ -26,7 +26,7 @@
 ```
 v10_의료진웹/
 ├── README.md                      (이 파일)
-├── 의료진_대시보드_v9.5.html       ★ 메인 파일
+├── 의료진_대시보드_v9.5.html       (메인 파일)
 └── _archive/                      (참고용 · 운영 미사용)
     ├── v3_preview/                (초기 프리뷰 3종)
     ├── mockup_v1/                 (n01~n10 초기 목업)
@@ -37,18 +37,18 @@ v10_의료진웹/
 
 | 파일 | 설명 | 상태 |
 |---|---|---|
-| `의료진_대시보드_v9.5.html` | 의료진 메인 대시보드 — 오늘의 환자 / 케어 요약 / 소통 / 기록 / 스케줄 / 마이페이지 통합 | ✅ 현재 메인 |
+| `의료진_대시보드_v9.5.html` | 의료진 메인 대시보드 — 오늘의 환자 / 케어 요약 / 소통 / 기록 / 스케줄 / 마이페이지 통합 | 현재 메인 |
 
 ---
 
 ## 규칙 준수 현황 (2026-04-19 기준)
 
-- ✅ `<html data-role="medical" data-platform="web">` 설정
-- ✅ `tokens.css` import (`../07_디자인/tokens/tokens.css`)
-- ✅ `iconify-icon` CDN 로드 (버전 2.1.0)
-- ✅ 이모지 0개
-- ✅ 브랜드 그린 하드코딩 제거 (Chart.js fallback 1개만 방어적으로 유지)
-- ⚠️ 잔여 항목 (2차 작업):
+- DONE — `<html data-role="medical" data-platform="web">` 설정
+- DONE — `tokens.css` import (`../07_디자인/tokens/tokens.css`)
+- DONE — `iconify-icon` CDN 로드 (버전 2.1.0)
+- DONE — 이모지 0개
+- DONE — 브랜드 그린 하드코딩 제거 (Chart.js fallback 1개만 방어적으로 유지)
+- TODO — 잔여 항목 (2차 작업):
   - `--ink-*` 무채색 팔레트가 tokens.css의 `--palette-gray-*`와 톤이 달라 유지 중 (디자인 톤 리뷰 후 통합 예정)
   - 인라인 `style=` 속성 다수 (차트 높이, KPI 바 width 등) — CSS 클래스화 대상
 

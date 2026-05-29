@@ -120,7 +120,7 @@
           '<iconify-icon icon="fluent:warning-24-filled"></iconify-icon>' +
         '</div>' +
         '<div>' +
-          '<div class="cg-sheet__ttl" style="color:var(--palette-red-700)">긴급 상황 알리기</div>' +
+          '<div class="cg-sheet__ttl cg-sheet__ttl--danger">긴급 상황 알리기</div>' +
           '<div class="cg-sheet__sub">상황을 선택하면 간호사·보호자에게 즉시 전송됩니다</div>' +
         '</div>' +
       '</div>' +
@@ -164,7 +164,7 @@
             '<iconify-icon icon="fluent:warning-24-filled"></iconify-icon>' +
           '</div>' +
           '<div>' +
-            '<div class="cg-sheet__ttl" style="color:var(--palette-red-700)">SOS 발신 준비</div>' +
+            '<div class="cg-sheet__ttl cg-sheet__ttl--danger">SOS 발신 준비</div>' +
             '<div class="cg-sheet__sub">아래 카운트가 0이 되면 자동 발신됩니다</div>' +
           '</div>' +
         '</div>' +

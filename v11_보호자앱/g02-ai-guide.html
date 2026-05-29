@@ -8,14 +8,16 @@
   <meta name="theme-color" content="#EFF6FF">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="icon-192.png" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — AI 가이드</title>
 
-  <!-- v3.1 디자인 시스템 -->
-  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <!-- v3.1 디자인 시스템 (sw cache-bust: v23) -->
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css?v=24">
 
-  <script src="../07_디자인/_app-theme.js"></script>  <link rel="stylesheet" href="../07_디자인/system/app.css">
-  <link rel="stylesheet" href="../07_디자인/system/components.css">
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="../07_디자인/system/app.css?v=24">
+  <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
 
   <style>
@@ -71,15 +73,13 @@
       cursor: pointer; background: 0; border: 0;
     }
 
-    /* 카테고리 칩 row — fade mask */
+    /* 카테고리 칩 row */
     .cat-row {
       display: flex; gap: var(--space-2);
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       padding-right: var(--space-7);
-      mask-image: linear-gradient(90deg, #000 86%, transparent 100%);
-      -webkit-mask-image: linear-gradient(90deg, #000 86%, transparent 100%);
     }
     .cat-row::-webkit-scrollbar { display: none; }
     .cat-row .chip { flex-shrink: 0; }
@@ -166,6 +166,8 @@
       font-size: var(--text-mini);
       color: var(--color-text-secondary);
       line-height: var(--leading-normal);
+      word-break: keep-all;
+      overflow-wrap: anywhere;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
     .article-card__thumb {
@@ -178,23 +180,110 @@
     .article-card__thumb img { width: 100%; height: 100%; object-fit: cover; }
   </style>
   <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g03-sotong.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
+
+  <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn 표준 (2026-05-22 통합) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
+<style>
+  /* === 3앱 공통 헤더 표준 (d01-home 기준, 보호자앱에도 강제) === */
+  [data-platform="mobile"] .header{
+    padding: calc(env(safe-area-inset-top, 0px) + 6px) 20px 0 !important;
+    position: static !important;
+    background: transparent !important;
+  }
+  /* 기본 = 홈 패턴: 로고 + 액션 그룹 (flex space-between) */
+  [data-platform="mobile"] .header .top-nav{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    margin-bottom: 24px !important;
+  }
+  /* 서브 패턴: title-block 있을 때 → grid 3-col (44 / 1fr / 44) */
+  [data-platform="mobile"] .header .top-nav:has(> .title-block){
+    display: grid !important;
+    grid-template-columns: 44px 1fr 44px !important;
+    margin-bottom: 8px !important;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-left{
+    width: 44px; height: 44px;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .title-block{
+    grid-column: 2; text-align: center; line-height: 1.2; min-width: 0;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-name{
+    font: 600 17px/1.2 inherit; color: var(--color-text-primary); letter-spacing: -.3px; text-align: center;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :first-child{
+    grid-column: 1; justify-self: start;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :last-child{
+    grid-column: 3; justify-self: end;
+  }
+  /* logo */
+  [data-platform="mobile"] .header .top-nav > .logo{
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    background: transparent !important;
+    border: 0 !important;
+    padding: 4px !important;
+    margin: -4px !important;
+    cursor: pointer !important;
+  }
+  [data-platform="mobile"] .header .top-nav > .logo svg{ width: 28px !important; height: 28px !important; display: block !important; }
+  /* top-actions 그룹 (홈 페이지) */
+  [data-platform="mobile"] .header .top-actions{
+    display: flex !important; align-items: center !important; gap: 8px !important;
+  }
+  /* icon-btn 글라스 (44×44, blur, shadow) */
+  [data-platform="mobile"] .header .icon-btn{
+    width: 44px !important; height: 44px !important; border-radius: 50% !important;
+    background: rgba(255,255,255,.55) !important;
+    border: .5px solid rgba(255,255,255,.55) !important;
+    backdrop-filter: blur(12px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
+    box-shadow: 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06) !important;
+    display: inline-flex !important; align-items: center !important; justify-content: center !important;
+    cursor: pointer !important; text-decoration: none !important;
+    position: relative !important;
+    transition: transform .1s !important;
+  }
+  [data-platform="mobile"] .header .icon-btn:active{ transform: scale(.93); }
+  [data-platform="mobile"] .header .icon-btn iconify-icon{
+    font-size: 22px !important;
+    color: var(--color-accent-strong) !important;
+  }
+  [data-platform="mobile"] .header .icon-btn .notif-dot,
+  [data-platform="mobile"] .header .notif-dot{
+    position: absolute !important; top: 10px !important; right: 10px !important;
+    width: 8px !important; height: 8px !important; border-radius: 50% !important;
+    background: var(--color-danger) !important;
+    border: 1.5px solid white !important;
+    z-index: 2 !important;
+  }
+</style>
 </head>
 <body>
 
 <div class="app-shell">
 
-  <header class="header-mobile">
-    <button class="header-mobile__left" aria-label="뒤로" onclick="history.back()">
-      <iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon>
-    </button>
-    <h1 class="header-mobile__title">AI 가이드</h1>
-    <a class="header-mobile__right" href="g06-alert.html" aria-label="알림">
-      <iconify-icon icon="fluent:alert-24-filled"></iconify-icon>
-    </a>
+  <header class="header">
+    <div class="top-nav">
+      <span class="h-left" aria-hidden="true"></span>
+      <div class="title-block">
+        <h1 class="h-name">AI 가이드</h1>
+      </div>
+      <a class="icon-btn" href="g06-alert.html" aria-label="알림"><iconify-icon icon="fluent:alert-24-filled"></iconify-icon></a>
+    </div>
   </header>
 
   <main class="app-main">
-    <div class="stack-loose" style="padding-top: var(--space-5);">
+    <div class="stack-loose u-pt-5">
 
       <!-- 추천 카드 (1차 콘텐츠 — AI 채팅과 분리) -->
       <button type="button" class="card-action rec-card fade-in fade-in--d1" onclick="location.href='g-guardian-live.html?chat=1'">
@@ -220,7 +309,7 @@
           <button class="chip" type="button" onclick="filterQ('cost',this)">비용·제도</button>
           <button class="chip" type="button" onclick="filterQ('mental',this)">감정 지원</button>
         </div>
-        <div class="q-list" style="margin-top: var(--space-4);">
+        <div class="q-list u-mt-4">
           <div class="q-item" data-cat="med" onclick="toggleQ(this)">
             <div class="q-item__row">
               <span class="q-item__badge">Q</span>
@@ -301,7 +390,7 @@
           <button type="button" class="sec-head__more">전체보기</button>
         </div>
         <div class="article-list">
-          <article class="card article-card" onclick="location.href='#'">
+          <article class="card article-card" onclick="location.href='g-guardian-live.html?chat=1'">
             <div class="article-card__body">
               <span class="article-card__tag">식단</span>
               <div class="article-card__title">고혈압 환자를 위한 저염식 가이드</div>
@@ -309,7 +398,7 @@
             </div>
             <div class="article-card__thumb"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=160&q=80&fit=crop" alt="" aria-hidden="true"></div>
           </article>
-          <article class="card article-card" onclick="location.href='#'">
+          <article class="card article-card" onclick="location.href='g-guardian-live.html?chat=1'">
             <div class="article-card__body">
               <span class="article-card__tag">운동</span>
               <div class="article-card__title">집에서 할 수 있는 낙상 예방 체조 5가지</div>
@@ -317,7 +406,7 @@
             </div>
             <div class="article-card__thumb"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=160&q=80&fit=crop" alt="" aria-hidden="true"></div>
           </article>
-          <article class="card article-card" onclick="location.href='#'">
+          <article class="card article-card" onclick="location.href='g-guardian-live.html?chat=1'">
             <div class="article-card__body">
               <span class="article-card__tag">복약</span>
               <div class="article-card__title">약 먹는 시간, 왜 중요한가요?</div>
@@ -325,7 +414,7 @@
             </div>
             <div class="article-card__thumb"><img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=160&q=80&fit=crop" alt="" aria-hidden="true"></div>
           </article>
-          <article class="card article-card" onclick="location.href='#'">
+          <article class="card article-card" onclick="location.href='g-guardian-live.html?chat=1'">
             <div class="article-card__body">
               <span class="article-card__tag">마음 건강</span>
               <div class="article-card__title">보호자 번아웃, 이런 신호가 보이면 쉬세요</div>
@@ -341,14 +430,14 @@
 
   <div class="bottom-bar">
     <nav class="tabbar">
-      <a href="g-guardian-live.html" class="tab" aria-label="홈"><span class="tab-icon"><iconify-icon icon="fluent:home-24-filled" style="font-size:26px"></iconify-icon></span></a>
-      <a href="g02-ai-guide.html" class="tab active" aria-label="AI 가이드"><span class="tab-icon"><iconify-icon icon="fluent:book-24-filled" style="font-size:26px"></iconify-icon></span></a>
-      <a href="g03-sotong.html" class="tab" aria-label="소통"><span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.81 2 10.5c0 2.65 1.56 5.02 4 6.56V22l4.34-2.41c.54.07 1.1.11 1.66.11 5.52 0 10-3.81 10-8.5S17.52 2 12 2z"/></svg></span></a>
-      <a href="g05-records.html" class="tab" aria-label="기록"><span class="tab-icon"><iconify-icon icon="fluent:folder-24-filled" style="font-size:26px"></iconify-icon></span></a>
-      <a href="g05-mypage.html" class="tab" aria-label="마이"><span class="tab-icon"><iconify-icon icon="fluent:person-24-filled" style="font-size:26px"></iconify-icon></span></a>
+      <a href="g-guardian-live.html" class="tab" aria-label="홈"><span class="tab-icon"><iconify-icon icon="fluent:home-24-filled" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g02-ai-guide.html" class="tab active" aria-label="AI 가이드"><span class="tab-icon"><iconify-icon icon="fluent:book-24-filled" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g03-sotong.html" class="tab" aria-label="소통"><span class="tab-icon"><iconify-icon icon="fluent:chat-24-filled" class="text-22"></iconify-icon></span></a>
+      <a href="g05-records.html" class="tab" aria-label="기록"><span class="tab-icon"><iconify-icon icon="fluent:folder-24-filled" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g05-mypage.html" class="tab" aria-label="마이"><span class="tab-icon"><iconify-icon icon="fluent:person-24-filled" class="u-fs-26"></iconify-icon></span></a>
     </nav>
     <a href="g-guardian-live.html?chat=1" class="ai-fab" aria-label="AI 어시스턴트">
-      <svg width="22" height="22" viewBox="0 0 2526 2526" fill="var(--color-accent)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
+      <svg width="22" height="22" viewBox="0 0 2526 2526" fill="var(--brand-blue-500)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
     </a>
   </div>
 
@@ -394,5 +483,6 @@
     }
   }
 </script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
 </body>
 </html>

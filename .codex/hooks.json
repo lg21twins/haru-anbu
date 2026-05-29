@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"\\n---\\n## $(date '+%Y.%m.%d %H:%M') 세션 종료\\n- 자동 기록: 대화 세션이 종료되었습니다.\\n- 상세 내용은 다음 대화에서 \\\"대화 로그 업데이트해라\\\"로 요청하세요.\\n\" >> /Users/yechanshon/Desktop/shonz_vibe/care_platform/06_로그/대화기록_작업로그.md",
+            "command": "echo \"\\n---\\n## $(date '+%Y.%m.%d %H:%M') 세션 종료\\n- 자동 기록: 대화 세션이 종료되었습니다.\\n- 상세 내용은 다음 대화에서 \\\"대화 로그 업데이트해라\\\"로 요청하세요.\\n\" >> \"/Users/yechanshon/Desktop/Haru Anbu/06_로그/대화기록_작업로그.md\"",
             "timeout": 10,
             "statusMessage": "대화 로그 기록 중..."
           }

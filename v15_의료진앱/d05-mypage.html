@@ -1,60 +1,67 @@
 <!DOCTYPE html>
-<html lang="ko" data-role="medical" data-platform="mobile">
+<html lang="ko" data-role="medical" data-platform="mobile" class="has-c01-bg">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#F4FAF6">
+  <meta name="theme-color" content="#DCFCE7">
   <title>하루안부 · 의료진 · 마이</title>
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
 
   <script src="../07_디자인/_app-theme.js"></script>
-  <link rel="stylesheet" href="./_shared.css">
+  <link rel="stylesheet" href="./_shared.css?v=20260525p">
+  <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
-    /* :root 별칭은 _shared.css 에서 정의 */
+    /* ============================================================
+       마이페이지 통일 기준 (d-base) — medical · guardian · caregiver 공통
+       구조: bg → app → header → profile-hero(아바타+KPI) → status(GPS/오늘 케어)
+              → sec×N (rows: switch / link / value) → logout → ver
+       ============================================================ */
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-    html{height:100%;background:#F4FAF6;font-size:16px;}
-    body{height:100%;color:var(--t1);overflow-x:hidden;font-family:var(--font-family-base);font-size:16px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;}
-    .bg{
-      position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
-      background:
-        radial-gradient(720px 540px at 50% -10%, rgba(34,197,94,.10), transparent 70%),
-        linear-gradient(180deg,#EAF6EE 0%,#F0F8F3 35%,#F4FAF6 100%);
+    /* v3.2.11: 시스템 기본 캔버스 토큰(블루그레이) + 역할 그라디언트 */
+    html{height:100%;background:var(--clinical-canvas);font-size:16px;}
+    body{
+      height:100%;color:var(--t1);overflow-x:hidden;
+      font-family:var(--font-family-base);font-size:18px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
+      background:transparent;
     }
+    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background: var(--clinical-bg-image);}
     .app{
       max-width:430px;margin:0 auto;min-height:100%;position:relative;
-      padding-bottom:calc(var(--safe-b) + 32px);
+      padding-bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 40px);
     }
 
-    .header{padding:calc(var(--safe-t) + 6px) var(--pad) 0;position:relative;z-index:5;}
-    .top-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
-    .icon-btn{
-      width:48px;height:48px;border-radius:50%;background:#fff;border:0;cursor:pointer;text-decoration:none;
-      display:inline-flex;align-items:center;justify-content:center;
-      box-shadow:0 2px 8px rgba(0,0,0,.05);
-    }
-    .icon-btn iconify-icon{font-size:22px;color:var(--t1);}
-    .h-title{flex:1;text-align:center;line-height:1.2;}
+    /* HEADER (v15 통일 — grid 44·1fr·44 / h-eyebrow + h-name) */
+    .header{padding:calc(var(--safe-t) + 14px) var(--pad) 8px;position:relative;z-index:5;}
+    .top-nav .icon-btn{grid-column:3;justify-self:end;}
+    .top-nav .icon-btn:first-child{grid-column:1;justify-self:start;}
     .h-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
-    .h-name{font-size:17px;font-weight:700;color:var(--t1);letter-spacing:-.4px;margin-top:3px;}
+    .h-title{
+      font-size:20px;font-weight:700;color:var(--t1);
+      letter-spacing:-.4px;line-height:1.2;text-align:center;
+    }
 
-    /* PROFILE Hero — Profile + KPI 통합 */
-    .profile-hero{
+    /* PROFILE HERO */
+    .profile-hero{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;
       margin:8px var(--pad) 0;padding:24px;
-      background:#fff;border-radius:24px;
-      box-shadow:0 8px 28px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+      background:var(--palette-white);border-radius:24px;
+      box-shadow:var(--shadow-card-floating);
       position:relative;z-index:1;
     }
     .pf-top{display:flex;align-items:center;gap:18px;}
     .pf-ava{
       width:68px;height:68px;border-radius:50%;flex-shrink:0;
-      background:linear-gradient(135deg,var(--accent),var(--accent-strong));
-      color:#fff;display:inline-flex;align-items:center;justify-content:center;
+      background:var(--accent);
+      color:var(--palette-white);display:inline-flex;align-items:center;justify-content:center;
       font-size:26px;font-weight:700;letter-spacing:-.7px;
-      box-shadow:0 6px 18px rgba(34,197,94,.3);
+      box-shadow:0 6px 18px rgba(var(--brand-green-500-rgb), .3);
+      overflow:hidden;
     }
+    .pf-ava img{width:100%;height:100%;object-fit:cover;object-position:center top;}
     .pf-meta{flex:1;min-width:0;line-height:1.3;}
     .pf-name{font-size:22px;font-weight:700;color:var(--t1);letter-spacing:-.5px;}
     .pf-role{font-size:13px;font-weight:600;color:var(--accent-strong);margin-top:6px;}
@@ -74,12 +81,12 @@
     .pf-stat-val .sm{font-size:12px;color:var(--t3);font-weight:600;}
     .pf-stat-label{font-size:11px;font-weight:500;color:var(--t3);margin-top:6px;}
 
-    /* GPS */
-    .gps{
+    /* GPS / STATUS row */
+    .gps{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 80ms both;
       margin:16px var(--pad) 0;padding:18px 20px;
-      background:#fff;border-radius:18px;
+      background:var(--palette-white);border-radius:var(--cg-card-radius);
       display:flex;align-items:center;gap:14px;
-      box-shadow:0 2px 8px rgba(0,0,0,.04);
+      box-shadow:var(--shadow-card-floating);
       position:relative;z-index:1;
     }
     .gps-pulse{
@@ -89,9 +96,8 @@
     }
     .gps-pulse::before{
       content:"";position:absolute;inset:-4px;border-radius:50%;
-      border:2px solid var(--accent);opacity:0;animation:gps 2s infinite;
+      border:2px solid var(--accent);opacity:0;animation: haru-ring 2s ease-out infinite;
     }
-    @keyframes gps{0%{transform:scale(.9);opacity:.5;}100%{transform:scale(1.5);opacity:0;}}
     .gps-pulse iconify-icon{font-size:20px;}
     .gps-meta{flex:1;min-width:0;line-height:1.3;}
     .gps-main{font-size:14px;font-weight:600;color:var(--t1);letter-spacing:-.2px;}
@@ -103,19 +109,20 @@
     }
 
     /* SECTION + ROWS */
-    .sec{margin:32px var(--pad) 0;position:relative;z-index:1;}
+    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--pad) 0;position:relative;z-index:1;}
     .sec-ttl{
       font-size:11px;font-weight:600;color:var(--t3);
       letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px;padding-left:4px;
     }
     .rows{
-      background:#fff;border-radius:20px;overflow:hidden;
-      box-shadow:0 2px 10px rgba(0,0,0,.04);
+      background:var(--palette-white);border-radius:var(--cg-card-radius);overflow:hidden;
+      box-shadow:var(--shadow-card-floating);
     }
     .row{
       padding:16px 18px;display:flex;align-items:center;gap:14px;
       border-bottom:1px solid rgba(0,0,0,.05);
       cursor:pointer;text-decoration:none;color:inherit;
+      font-family:inherit;background:transparent;border-left:0;border-right:0;border-top:0;width:100%;text-align:left;
     }
     .row:last-child{border-bottom:0;}
     .row-ico{
@@ -125,7 +132,8 @@
     .row-ico iconify-icon{font-size:20px;}
     .row-ico.ok{background:var(--accent-soft);color:var(--accent-strong);}
     .row-ico.warn{background:var(--warn-soft);color:var(--palette-amber-700);}
-    .row-ico.neutral{background:#F4F6F8;color:var(--t2);}
+    .row-ico.danger{background:var(--danger-soft);color:var(--palette-red-700);}
+    .row-ico.neutral{background:var(--clinical-surface-muted);color:var(--t2);}
     .row-meta{flex:1;min-width:0;line-height:1.3;}
     .row-label{font-size:14.5px;font-weight:600;color:var(--t1);letter-spacing:-.2px;}
     .row-sub{font-size:12.5px;font-weight:500;color:var(--t3);margin-top:3px;}
@@ -134,7 +142,12 @@
     .row-pending{
       font-size:10.5px;font-weight:700;letter-spacing:.2px;
       padding:3px 8px;border-radius:999px;
-      background:var(--palette-gray-100,#F4F4F5);color:var(--palette-gray-700,#3F3F46);
+      background:var(--palette-gray-100);color:var(--palette-gray-700);
+    }
+    .row-badge{
+      font-size:10.5px;font-weight:700;letter-spacing:.2px;
+      padding:3px 8px;border-radius:999px;
+      background:var(--danger);color:var(--palette-white);
     }
     .switch{
       position:relative;width:48px;height:30px;border-radius:999px;
@@ -142,7 +155,7 @@
     }
     .switch::after{
       content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;
-      border-radius:50%;background:#fff;
+      border-radius:50%;background:var(--palette-white);
       box-shadow:0 1px 3px rgba(0,0,0,.2);transition:.2s;
     }
     .switch.on{background:var(--accent);}
@@ -151,11 +164,11 @@
     .logout{
       margin:24px var(--pad) 0;padding:15px;
       width:calc(100% - 44px);
-      background:#fff;border:0;border-radius:16px;
+      background:var(--palette-white);border:0;border-radius:16px;
       color:var(--palette-red-600);font-size:13.5px;font-weight:600;
       cursor:pointer;font-family:inherit;
       display:flex;align-items:center;justify-content:center;gap:8px;
-      box-shadow:0 2px 8px rgba(0,0,0,.04);
+      box-shadow:var(--cg-card-shadow);
       position:relative;z-index:1;
     }
     .logout iconify-icon{font-size:18px;}
@@ -165,39 +178,29 @@
       position:relative;z-index:1;
     }
 
-    /* TAB BAR */
+    /* TAB BAR · v3.2.5: 세 앱 탭바 위치 통일 — env(safe-bottom) + 12px (d01 기준) */
     .tab-wrap{
-      position:fixed;bottom:calc(var(--safe-b) + var(--tab-bot));
+      position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);
       left:50%;transform:translateX(-50%);
       display:flex;align-items:center;gap:10px;
       width:calc(100% - 32px);max-width:398px;z-index:40;
     }
-    .tabbar{
-      flex:1;min-width:0;height:var(--tab-h);
-      background:rgba(255,255,255,.85);
-      backdrop-filter:blur(22px) saturate(140%);
-      -webkit-backdrop-filter:blur(22px) saturate(140%);
-      border:1px solid rgba(255,255,255,.7);
-      border-radius:999px;
-      box-shadow:0 6px 22px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
-      display:flex;align-items:stretch;justify-content:space-around;padding:0 6px;
-    }
-    .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--t3);border-radius:999px;}
-    .tab iconify-icon{font-size:22px;}
-    .tab-label{font-size:10.5px;font-weight:600;letter-spacing:-.1px;line-height:1;}
+    .tab iconify-icon{font-size:26px;}
+    .tab-label{display:none;}
     .tab.active{color:var(--accent-strong);}
-    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(34,197,94,.28));}
+    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(var(--brand-green-500-rgb), .28));}
     .sos{
       position:relative;width:var(--tab-h);height:var(--tab-h);flex-shrink:0;border-radius:50%;
-      background:linear-gradient(135deg,#F87171,var(--palette-red-600));border:0;
-      box-shadow:0 8px 22px rgba(220,38,38,.38), inset 0 1px 0 rgba(255,255,255,.32);
-      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+      background:var(--color-danger);border:0;
+      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
+      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;
     }
-    .sos iconify-icon{font-size:26px;color:#fff;}
+    .sos iconify-icon{font-size:26px;color:var(--palette-white);}
+
     .toast{
       position:fixed;left:50%;bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 18px);
       transform:translateX(-50%) translateY(20px);
-      background:rgba(28,28,30,.92);color:#fff;font-size:14px;font-weight:600;
+      background:rgba(28,28,30,.92);color:var(--palette-white);font-size:14px;font-weight:600;
       padding:11px 20px;border-radius:999px;
       opacity:0;transition:.25s;pointer-events:none;z-index:300;white-space:nowrap;
     }
@@ -206,14 +209,14 @@
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
+  <div class="ai-orb-bg" aria-hidden="true"><div class="ai-orb"></div></div>
   <div class="app">
 
     <header class="header">
       <div class="top-nav">
-        <a class="icon-btn" href="d01-home.html" aria-label="뒤로"><iconify-icon icon="fluent:arrow-left-24-filled"></iconify-icon></a>
-        <div class="h-title">
-          <div class="h-eyebrow">마이페이지</div>
-          <div class="h-name">설정 · 근무</div>
+        <span class="h-left" aria-hidden="true"></span>
+        <div class="title-block">
+          <h1 class="h-name">마이</h1>
         </div>
         <button class="icon-btn" aria-label="설정"><iconify-icon icon="fluent:settings-24-filled"></iconify-icon></button>
       </div>
@@ -390,7 +393,16 @@
 
   </div>
 
-  <!-- 마이는 detail 화면 — 하단 탭바는 표시하지 않음 (좌상단 뒤로 버튼으로 복귀) -->
+  <div class="tab-wrap">
+    <nav class="tabbar" role="tablist">
+      <a href="d01-home.html" class="tab" aria-label="지금"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="tab-label">지금</span></a>
+      <a href="d02-round.html" class="tab" aria-label="회진"><iconify-icon icon="fluent:bed-24-filled"></iconify-icon><span class="tab-label">회진</span></a>
+      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon><span class="tab-label">소통</span></a>
+      <a href="d04-handover.html" class="tab" aria-label="인계"><iconify-icon icon="fluent:document-arrow-right-24-filled"></iconify-icon><span class="tab-label">인계</span></a>
+      <a href="d05-mypage.html" class="tab active" aria-current="page" aria-label="마이"><iconify-icon icon="fluent:person-24-filled"></iconify-icon><span class="tab-label">마이</span></a>
+    </nav>
+    <a href="d-sos.html" class="sos" aria-label="SOS"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></a>
+  </div>
 
   <div class="toast" id="toast"></div>
   <script>
@@ -400,5 +412,6 @@
       clearTimeout(window.__t);window.__t=setTimeout(()=>el.classList.remove('show'),1800);
     }
   </script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
 </body>
 </html>

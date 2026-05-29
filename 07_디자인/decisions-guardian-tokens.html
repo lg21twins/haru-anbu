@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="guardian" data-platform="mobile">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#2C7AFC">
+<title>보호자앱 — 색상 결정 필요 항목</title>
+<link rel="stylesheet" href="tokens/tokens.css">
+<style>
+  body {
+    background: var(--color-bg-canvas);
+    padding: 0 0 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: calc(env(safe-area-inset-top, 0px) + 20px) 16px 0;
+  }
+
+  /* 헤더 */
+  .hdr {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .hdr h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.4px;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .hdr .meta {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    letter-spacing: .3px;
+  }
+  .sub {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0 0 24px;
+  }
+  .sub b {
+    color: var(--color-text-primary);
+    font-weight: 700;
+  }
+
+  /* 카드 */
+  .card {
+    background: var(--color-bg-surface);
+    border-radius: 18px;
+    padding: 18px 18px 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-card-borderless);
+  }
+  .card .num {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--color-text-tertiary);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .card h2 {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.3px;
+    color: var(--color-text-primary);
+    margin: 0 0 6px;
+    line-height: 1.3;
+  }
+  .card .where {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0 0 14px;
+  }
+
+  /* 색상 비교 */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .swatch {
+    border-radius: 12px;
+    padding: 12px 12px 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .swatch .label {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, .55);
+    letter-spacing: .4px;
+    margin-bottom: 4px;
+  }
+  .swatch .hex {
+    font-family: var(--font-family-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -.2px;
+  }
+  .swatch .name {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+  .swatch .chip {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08);
+  }
+
+  /* 옵션 */
+  .opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--color-bg-surface-muted);
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .opt:last-child { margin-bottom: 0; }
+  .opt .dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .opt .txt {
+    flex: 1;
+    min-width: 0;
+  }
+  .opt .ttl {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+    letter-spacing: -.2px;
+  }
+  .opt .desc {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.45;
+  }
+
+  /* 안내 푸터 */
+  .foot {
+    margin: 20px 4px 0;
+    padding: 14px 16px;
+    background: rgba(var(--color-accent-rgb), .06);
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+  .foot b {
+    color: var(--color-accent-strong);
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hdr">
+    <h1>색상 결정 필요</h1>
+    <span class="meta">v11_보호자앱 · 3건</span>
+  </div>
+  <p class="sub">
+    보호자 홈에 박혀있는 hex 중 <b>토큰값과 실제 색이 다른 3가지</b>.
+    토큰을 따라가게 할지, 현재 색을 유지할지 결정 필요.
+  </p>
+
+  <!-- 1 -->
+  <div class="card">
+    <span class="num">01</span>
+    <h2>경보 빨강</h2>
+    <p class="where">긴급 알림 닷, SOS 버튼, 119 연결 버튼 등 위험·긴급 시그널.</p>
+
+    <div class="compare">
+      <div class="swatch" style="background:#FFE5E2">
+        <div class="chip" style="background:#FF3B30"></div>
+        <div class="label">현재</div>
+        <div class="hex">#FF3B30</div>
+        <div class="name">iOS Red</div>
+      </div>
+      <div class="swatch" style="background:#FEE2E2">
+        <div class="chip" style="background:#E32B25"></div>
+        <div class="label">토큰</div>
+        <div class="hex">#E32B25</div>
+        <div class="name">Rivian Alarm</div>
+      </div>
+    </div>
+
+    <div class="opt">
+      <div class="dot" style="background:#FF3B30"></div>
+      <div class="txt">
+        <div class="ttl">현재 유지 (iOS Red)</div>
+        <div class="desc">친숙한 시스템 톤. 단 v11/v15와 위험 색이 달라짐.</div>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="dot" style="background:#E32B25"></div>
+      <div class="txt">
+        <div class="ttl">토큰 따라가기 (Rivian Alarm)</div>
+        <div class="desc">고령 사용자 위협감 ↓, 세 앱 일관성 확보. 살짝 어두워짐.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card">
+    <span class="num">02</span>
+    <h2>상태 초록 (정상·완료)</h2>
+    <p class="where">위젯 상태 닷(.w-dot.ok), 완료 배지, 식사·기분 카드 아이콘.</p>
+
+    <div class="compare">
+      <div class="swatch" style="background:#DCFCE7">
+        <div class="chip" style="background:#34D399"></div>
+        <div class="label">현재</div>
+        <div class="hex">#34D399</div>
+        <div class="name">Emerald 400</div>
+      </div>
+      <div class="swatch" style="background:#DCFCE7">
+        <div class="chip" style="background:#15803D"></div>
+        <div class="label">토큰</div>
+        <div class="hex">#15803D</div>
+        <div class="name">Green 700</div>
+      </div>
+    </div>
+
+    <div class="opt">
+      <div class="dot" style="background:#34D399"></div>
+      <div class="txt">
+        <div class="ttl">현재 유지 (라이트 톤)</div>
+        <div class="desc">밝고 친근. 단 작은 아이콘에서 채도 강해 보일 수 있음.</div>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="dot" style="background:#15803D"></div>
+      <div class="txt">
+        <div class="ttl">토큰 따라가기 (어두운 그린)</div>
+        <div class="desc">의료진 accent와 시각 분리 의도. 톤 차이 큼 — 디자인 인상 바뀜.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card">
+    <span class="num">03</span>
+    <h2>AI 코멘트 사이언</h2>
+    <p class="where">AI 코멘트 아이콘 그라디언트 시작색(.ai-comment-icon).</p>
+
+    <div class="compare">
+      <div class="swatch" style="background:#CFFAFE">
+        <div class="chip" style="background:#22D3EE"></div>
+        <div class="label">현재</div>
+        <div class="hex">#22D3EE</div>
+        <div class="name">Cyan 400</div>
+      </div>
+      <div class="swatch" style="background:#F4F4F5">
+        <div class="chip" style="background:#E5E5EA;color:#9E9E9E;font-size:14px;display:flex;align-items:center;justify-content:center;font-weight:700">?</div>
+        <div class="label">토큰</div>
+        <div class="hex" style="color:var(--color-text-tertiary);font-size:11px">매칭 없음</div>
+        <div class="name">시멘틱 부재</div>
+      </div>
+    </div>
+
+    <div class="opt">
+      <div class="dot" style="background:#22D3EE"></div>
+      <div class="txt">
+        <div class="ttl">현재 유지 (그라디언트 시작색)</div>
+        <div class="desc">AI 아이콘의 미감 보존. 단일 사용 — 글로벌 영향 작음.</div>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="dot" style="background:linear-gradient(135deg,var(--color-accent),var(--color-accent-strong))"></div>
+      <div class="txt">
+        <div class="ttl">accent 그라디언트로 통합</div>
+        <div class="desc">var(--color-accent) → var(--color-accent-strong). 보호자 톤 일관.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>참고</b> · 어떤 옵션을 골라도 보호자 홈만 영향. v11_요양보호사앱·v15_의료진앱은
+    이미 토큰 정렬 완료 상태라 그대로. 각 항목 번호로 답해줘 — 예: "1번 토큰, 2번 현재, 3번 통합".
+  </div>
+
+</div>
+</body>
+</html>

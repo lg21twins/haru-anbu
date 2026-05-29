@@ -12,6 +12,12 @@
    1. 추가 리셋 (tokens.css의 box-sizing 외 보강)
    ------------------------------------------------------------ */
 
+/* OS 다크 모드에서도 라이트만 운영 (v3.2.8 다크 제거 정책) —
+   color-scheme + body 배경을 명시하지 않으면 모바일 셸(430px) 바깥이
+   UA 기본 다크 배경으로 새어 나온다. */
+html { color-scheme: light; }
+body { background: var(--color-bg-canvas); }
+
 h1, h2, h3, h4, h5, h6, p, ul, ol, li {
   margin: 0;
   padding: 0;
@@ -169,9 +175,13 @@ textarea::placeholder {
 .fade-in--d2 { animation-delay: 100ms; }
 .fade-in--d3 { animation-delay: 150ms; }
 .fade-in--d4 { animation-delay: 200ms; }
+.fade-in--d5 { animation-delay: 250ms; }
+.fade-in--d6 { animation-delay: 300ms; }
 
 @media (prefers-reduced-motion: reduce) {
-  .fade-in, .fade-in--d1, .fade-in--d2, .fade-in--d3, .fade-in--d4 {
+  .fade-in,
+  .fade-in--d1, .fade-in--d2, .fade-in--d3,
+  .fade-in--d4, .fade-in--d5, .fade-in--d6 {
     animation: none;
   }
 }

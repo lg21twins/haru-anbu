@@ -6,6 +6,16 @@
 
 > **v3.1 변경**: Flat이 기본, Glass는 예외. 카드 타입은 4종으로 고정 (default / action / alert / hero). Glass card는 더 이상 일반 정보 카드의 기본이 아니다.
 
+> **v3.2.13 변경 (3앱 통일 라운드 결과 반영)**:
+> - **모바일 헤더 신표준** `<header class="header"><div class="top-nav">` — 3개 앱 픽셀-퍼펙트 동일 (보호자/요양보호사/의료진)
+> - **`.icon-btn`** 44×44 글라스 신설 (헤더 액션 / floating action) — `.notif-dot` 포함
+> - **`.card` 기본 elevation** `--shadow-card-borderless` → **`--shadow-card-floating`** 변경. modifier `.card--floating` / `.card--borderless` / `.card--hero`
+> - **임상 floating tab wrap** `.bottom-bar / .tab-wrap` + 흰색 글라스 `.tabbar` + 64×64 `.sos` 추가
+> - **`.status-*`** 5단계 임상 상태 pill 호환 별칭 (observe/watch/urgent/ready/pending)
+> - **`--clinical-canvas` / `--clinical-bg-image`** 토큰 신설 (임상 모바일 그린 캔버스)
+> - **공통 keyframes** `haru-fade-in-up` · `haru-pulse` · `haru-ring` (transitions.css)
+> - **medical+mobile / nurse+mobile / doctor+mobile** role override — caregiver 동일 사이즈 (본문 18px / 터치 48px)
+
 카테고리는 M3 / KT Seamless Flow 패턴을 따른다:
 - **Action** — 사용자가 누르는 것 (버튼, FAB, 칩)
 - **Containment** — 콘텐츠를 담는 그릇 (카드 4종, 시트, 모달)
@@ -198,7 +208,7 @@ Primary와 함께 짝지을 때. 흰 표면 + 보더.
 
 ### B1. Card — 4종 고정 (v3.1)
 
-#### B1.1 `card-default` — 기본 정보 카드 ★
+#### B1.1 `card-default` — 기본 정보 카드 (가장 많이 쓰임)
 
 대부분의 카드는 이것. 흰 surface + 약한 보더 + 약한 shadow. **Glass·blur 사용 안 함.**
 
@@ -513,6 +523,21 @@ v3.1부터 일반 정보 카드의 기본 Glass는 **사용 안 함**. Glass 효
 - 탭 라벨 항상 표시. 환자 화면도 동일.
 - AI FAB은 별도 원형 버튼으로 탭바 우측에 떨어뜨려 배치.
 - **탭바 배경은 모든 역할에서 동일** (v3.1) — 역할별 글래스 tint 사용하지 않는다. 활성 아이콘·라벨 색만 변한다.
+- **아이콘은 fill 단일 톤** — 라인 아이콘 혼용 금지. 같은 탭바 안에서 home/chat-bubble 같은 솔리드 매스와 stethoscope/arrow-swap 같은 라인 매스가 섞이면 위계가 깨진다. 모든 탭 아이콘은 시각적 부피가 비슷한 fill 계열로.
+
+#### C3.2 의료진앱 탭 아이콘 매핑 (v3.2.6)
+
+청진기·arrow-swap의 라인 톤이 home·chat-bubble의 솔리드 매스와 충돌해 v3.2.6에서 침대·문서 메타포로 통일.
+
+| 탭 | 아이콘 | 기존(deprecated) | 메타포 |
+|---|---|---|---|
+| 지금 (Home) | `fluent:home-24-filled` | — | 홈 |
+| 회진 (Rounds) | `fluent:bed-24-filled` | ~~stethoscope-24-filled~~ | 환자 침상 라운드 |
+| 소통 (Inbox) | inline chat-bubble SVG | — | 대화 |
+| 인계 (SBAR) | `fluent:document-arrow-right-24-filled` | ~~arrow-swap-24-filled~~ | SBAR 문서 전송 |
+| SOS | `fluent:warning-24-filled` (분리 배치) | — | 응급 |
+
+위 매핑은 v15_의료진앱/d01~d05 + 회진/인계 액션 버튼·시트 메뉴까지 전 사용처에 일관 적용.
 
 ---
 
@@ -1333,7 +1358,7 @@ AI가 사용자에게 답하는 카드. 일반 정보 카드와 외형은 비슷
 
 ### H3. AI Text Field (Inline Suggestion)
 
-본문 안에 AI가 제안하는 텍스트. 사용자가 쓰는 인풋·textarea 위에 **회색 흐림 제안**으로 떠 있다가 Tab 또는 우측 ✓ 버튼으로 채택. 요양보호사 메모, 보호자 답장 작성에 사용.
+본문 안에 AI가 제안하는 텍스트. 사용자가 쓰는 인풋·textarea 위에 **회색 흐림 제안**으로 떠 있다가 Tab 또는 우측 체크 버튼으로 채택. 요양보호사 메모, 보호자 답장 작성에 사용.
 
 ```css
 .ai-suggest {

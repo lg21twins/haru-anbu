@@ -1,6 +1,6 @@
 # 하루안부 · 온보딩 v13
 
-**상태**: 🚧 POC 1페이지 (ob01-welcome.html)
+**상태**: WIP — POC 1페이지 (ob01-welcome.html)
 **역할 선택 전** 공통 화면 묶음
 
 ---

@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#FFF5E8">
+  <meta name="theme-color" content="var(--patient-canvas-warm)">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>하루안부 · 가족에게 전화</title>
+  <title>하루안부 · 가족과 연결</title>
 
   <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
@@ -15,143 +15,255 @@
   <script src="../07_디자인/_iconify-icon.min.js"></script>
 
   <style>
+    /* ─────────────────────────────────────────────────────
+       토큰 (페이지 로컬, A+B 적용)
+       타이포: 28 / 22 / 18 / 16 / 14 (4의 배수 모듈러)
+       라운드: 24 / 16 / 12 (3단계)
+       콘트라스트: 본문 var(--palette-gray-800), 보조 var(--palette-gray-700) — WCAG AAA
+       포커스: 3px 오렌지 ring
+       ───────────────────────────────────────────────────── */
     .main {
       flex: 1;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: var(--space-8);
+      gap: 18px;
       min-height: 0;
     }
 
-    .call-heading {
-      text-align: center;
-      margin-top: var(--space-2);
+    /* 키보드 포커스 — 전역 (WCAG AAA) */
+    .call-heading a:focus-visible,
+    .fam-row:focus-visible,
+    .fam-icon-btn:focus-visible,
+    .tl-item:focus-visible {
+      outline: 3px solid var(--brand-orange-500);
+      outline-offset: 3px;
+      border-radius: 16px;
     }
+    .fam-icon-btn:focus-visible { border-radius: 50%; outline-offset: 4px; }
+
+    /* ── 페이지 헤딩 ─────────────────────────── */
     .call-heading h1 {
-      font: var(--weight-bold) 34px / 1.15 var(--font-family-base);
-      letter-spacing: -0.03em;
+      font: 700 28px / 1.15 var(--font-family-base);
+      letter-spacing: -0.5px;
     }
     .call-heading p {
-      font: var(--weight-medium) 19px / 1.4 var(--font-family-base);
-      color: var(--color-text-secondary);
-      margin-top: 6px;
+      font: 500 18px / 1.4 var(--font-family-base);
+      color: var(--palette-gray-700);
+      margin-top: 4px;
     }
 
-    /* 가족 3명 타일 — 화면 중심에 큼지막하게 */
-    .family-grid {
+    /* ── 2열 레이아웃 ─────────────────────────── */
+    .call-cols {
       flex: 1;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-7);
-      width: 100%;
-      max-width: 1080px;
+      grid-template-columns: 5fr 4fr;
+      gap: 18px;
       min-height: 0;
     }
 
-    .family-tile {
-      padding: var(--space-7) var(--space-5) var(--space-5);
+    .call-panel {
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: var(--space-4);
-      text-decoration: none;
-      color: var(--color-text-primary);
-      transition: box-shadow var(--motion-transition) var(--easing-standard);
+      gap: 12px;
+      min-height: 0;
+      overflow: hidden;
     }
-    .family-tile:hover { box-shadow: 0 12px 32px rgba(194, 98, 28, 0.12); }
 
-    .family-tile-meta {
+    .panel-title {
+      font: 700 14px / 1 var(--font-family-base);
+      color: var(--palette-gray-700);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      padding: 4px 6px 6px;
+      margin: 0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .family-tile-name {
-      font: var(--weight-bold) 30px / 1 var(--font-family-base);
-      letter-spacing: -0.02em;
-    }
-    .family-tile-relation {
-      font: var(--weight-medium) 18px / 1 var(--font-family-base);
-      color: var(--color-text-secondary);
-    }
-
-    .status-pill {
-      display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 16px;
-      border-radius: var(--radius-full);
-      font: var(--weight-bold) 16px / 1 var(--font-family-base);
-      letter-spacing: -0.1px;
     }
-    .status-pill--online {
-      background: var(--brand-green-100);
-      color: var(--brand-green-700);
-    }
-    .status-pill--offline {
-      background: var(--palette-gray-100);
-      color: var(--palette-gray-500);
-    }
-    .status-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-    }
-    .status-pill--online .status-dot { background: var(--brand-green-500); }
-    .status-pill--offline .status-dot { background: var(--palette-gray-400); }
+    .panel-title iconify-icon { color: var(--brand-orange-500); font-size: 16px; }
 
-    /* ── CTA 스택: primary + ghost 2단 ───────────────
-       상태에 따라 조합이 바뀜 (온라인=영상+음성, 자리비움=음성메시지+문자) */
-    .cta-stack {
-      width: 100%;
-      display: flex; flex-direction: column; gap: 10px;
-      margin-top: auto;
+    /* ── 좌측: 가족 row 리스트 ─────────────────── */
+    .fam-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      min-height: 0;
     }
-    .cta {
+    .fam-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      border-radius: 16px;                                /* B: 모듈러 라운드 */
+      background: rgba(255, 255, 255, 0.75);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+      text-decoration: none;
+      color: var(--palette-gray-800);                                     /* A: 본문 콘트라스트 강화 */
+      transition: background .12s, box-shadow .15s, transform .1s;
+    }
+    .fam-row:hover {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 6px 18px rgba(var(--color-accent-rgb), 0.15);
+    }
+    /* A4: 아바타 컬러 ring으로 상태 시각화 강화 */
+    .fam-row .avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      position: relative; flex-shrink: 0;
+      overflow: hidden;
+      box-shadow: 0 0 0 3px var(--brand-green-500), 0 4px 14px rgba(0, 0, 0, 0.12);
+    }
+    .fam-row--offline .avatar {
+      box-shadow: 0 0 0 3px var(--patient-avatar-offline), 0 4px 14px rgba(0, 0, 0, 0.12);
+    }
+    .fam-row .avatar img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .fam-row .avatar .dot {
+      position: absolute; right: 3px; bottom: 3px; z-index: 1;
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 3px solid white; background: var(--patient-avatar-offline);
+    }
+    .fam-row .avatar .dot--on { background: var(--brand-green-500); }
+
+    .fam-row-meta { flex: 1; min-width: 0; }
+    .fam-row-name {
+      font: 700 22px / 1.1 var(--font-family-base);       /* B: 24 → 22 (모듈러) */
+      letter-spacing: -0.4px;
+      display: inline-flex; align-items: baseline; gap: 10px;
+      color: var(--palette-gray-800);
+    }
+    .fam-row-name .rel {
+      font-size: 14px;                                    /* B: 16 → 14 */
+      font-weight: 600;
+      color: var(--palette-gray-700);
+      padding: 3px 10px;
+      border-radius: 12px;                                /* B: 999 → 12 (모듈러) */
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .fam-row-status {
+      margin-top: 6px;
+      font: 600 14px / 1.2 var(--font-family-base);       /* B: 15 → 14 */
+      color: var(--brand-green-700);                                     /* A3: 콘트라스트 ↑ (green-700) */
+    }
+    .fam-row--offline .fam-row-status { color: var(--palette-gray-700); }
+
+    .fam-row-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .fam-icon-btn {
+      width: 60px; height: 60px;
+      border-radius: 50%;
       display: inline-flex; align-items: center; justify-content: center;
-      gap: 10px;
-      border-radius: 18px;
-      font-family: var(--font-family-base);
-      letter-spacing: -0.2px;
+      background: var(--brand-orange-50);
+      color: var(--brand-orange-700);                     /* A3: 600 → 700 콘트라스트 */
       text-decoration: none;
       cursor: pointer;
-      border: 0;
-      transition: transform .15s, box-shadow .15s;
-      white-space: nowrap;
+      transition: transform .1s, background .12s;
     }
-    .cta:active { transform: scale(.97); }
-
-    .cta--primary {
-      height: 72px;
-      background: linear-gradient(135deg, var(--brand-orange-400), var(--brand-orange-600));
-      color: #fff;
-      font: var(--weight-bold) 23px / 1 var(--font-family-base);
-      box-shadow: 0 8px 22px rgba(251, 146, 60, 0.38);
+    .fam-icon-btn:hover { background: var(--brand-orange-100); }
+    .fam-icon-btn:active { transform: scale(.94); }
+    .fam-icon-btn iconify-icon { font-size: 26px; }
+    .fam-icon-btn--primary {
+      background: var(--brand-orange-500);
+      color: white;
+      box-shadow: 0 6px 16px rgba(var(--color-accent-rgb), 0.35);
     }
-    .cta--primary:hover { box-shadow: 0 12px 28px rgba(251, 146, 60, 0.45); }
-
-    .cta--ghost {
-      height: 58px;
-      background: rgba(255, 255, 255, 0.92);
-      color: var(--color-text-primary);
-      border: 1.5px solid rgba(0, 0, 0, 0.08);
-      font: var(--weight-bold) 19px / 1 var(--font-family-base);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
-    .cta--ghost iconify-icon { color: var(--brand-orange-600); }
-    .cta--ghost:hover {
-      border-color: var(--brand-orange-300);
-      background: var(--brand-orange-50, #FFF7E8);
+    .fam-icon-btn--primary:hover { background: var(--brand-orange-600); }
+    .fam-row--offline .fam-icon-btn--primary {
+      background: var(--palette-gray-200);
+      color: var(--palette-gray-700);                                     /* A3: 콘트라스트 ↑ */
+      box-shadow: none;
     }
 
-    @media (max-width: 900px) {
-      .family-grid { grid-template-columns: 1fr; gap: var(--space-5); }
-      .family-tile { padding: var(--space-6) var(--space-5); }
-      .family-tile-name { font-size: 26px; }
-      .family-tile-relation { font-size: 17px; }
-      .call-heading h1 { font-size: 32px; }
-      .call-heading p { font-size: 18px; }
-      .cta--primary { height: 64px; font-size: 20px; }
-      .cta--ghost { height: 54px; font-size: 18px; }
+    /* ── 우측: 받은 안부 타임라인 ──────────────── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 4px;
+      scrollbar-color: rgba(0,0,0,0.15) transparent;       /* Firefox */
+      scrollbar-width: thin;
+    }
+    .timeline::-webkit-scrollbar { width: 6px; }
+    .timeline::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 12px; }
+
+    .tl-day {
+      font: 700 14px / 1 var(--font-family-base);          /* B: 13 → 14 */
+      color: var(--palette-gray-700);                                       /* A3: 콘트라스트 강화 */
+      letter-spacing: 0.2px;
+      padding: 12px 8px 6px;
+    }
+    .tl-day:first-of-type { padding-top: 4px; }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 12px 10px;
+      border-radius: 12px;                                 /* B: 14 → 12 (모듈러) */
+      text-decoration: none;
+      color: var(--palette-gray-800);                                       /* A3: 본문 강화 */
+      transition: background .12s;
+      min-height: 56px;                                     /* 터치 타깃 보장 */
+    }
+    .tl-item:hover { background: rgba(255, 255, 255, 0.6); }
+    .tl-item .avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      position: relative; overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    .tl-item .avatar img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .tl-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .tl-line {
+      font: 700 16px / 1.25 var(--font-family-base);
+      letter-spacing: -0.2px;
+    }
+    .tl-line iconify-icon {
+      font-size: 16px;
+      color: var(--brand-orange-600);                       /* A3: 500 → 600 */
+      vertical-align: -2px;
+      margin-right: 5px;
+    }
+    .tl-preview {
+      font: 500 14px / 1.4 var(--font-family-base);
+      color: var(--palette-gray-700);                                        /* A3: secondary → 명시적 8:1 */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .tl-time {
+      font: 600 14px / 1 var(--font-family-base);            /* B: 13 → 14 */
+      color: var(--palette-gray-700);
+      margin-top: 2px;
+    }
+    .tl-item--unread .tl-line { color: var(--brand-orange-700); }
+    .tl-item--unread {
+      background: rgba(255, 224, 178, 0.55);                 /* 진한 오렌지 배경으로 색맹 색 대비 보강 */
+    }
+    .tl-item--unread:hover { background: rgba(255, 247, 232, 0.95); }
+    .tl-unread-badge {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+
+    @media (max-width: 1000px) {
+      .call-cols { grid-template-columns: 1fr; }
+      .call-panel { padding: 14px 16px; }
+      .fam-row { padding: 14px 16px; gap: 14px; }
+      .fam-row .avatar { width: 60px; height: 60px; }
+      .fam-row-name { font-size: 18px; }                     /* B: 21 → 18 */
+      .fam-icon-btn { width: 52px; height: 52px; }
+      .fam-icon-btn iconify-icon { font-size: 22px; }
     }
   </style>
 </head>
@@ -160,10 +272,7 @@
   <div class="app">
 
     <header class="p-header p-header--nav">
-      <a href="p01-today.html" class="p-back" aria-label="뒤로">
-        <iconify-icon icon="fluent:chevron-left-24-filled" width="28" aria-hidden="true"></iconify-icon>
-        뒤로
-      </a>
+      <div aria-hidden="true"></div>
       <nav class="top-nav" aria-label="주요 메뉴">
         <a class="nav-tab" href="p01-today.html">
           <iconify-icon icon="fluent:home-24-filled" width="22" aria-hidden="true"></iconify-icon>
@@ -188,92 +297,184 @@
     <div class="main">
 
       <div class="call-heading">
-        <h1>누구와 통화하시겠어요?</h1>
-        <p>얼굴 한 번 누르시면 바로 걸립니다.</p>
+        <h1>가족과 연결</h1>
+        <p>접속 중인 가족에게 바로 영상통화, 또는 받은 안부를 확인하세요.</p>
       </div>
 
-      <div class="family-grid" role="list">
+      <div class="call-cols">
 
-        <!-- 민지 (온라인) — 영상통화 + 음성통화 -->
-        <article class="family-tile glass" role="listitem">
-          <div class="avatar avatar--xl avatar--orange" aria-hidden="true">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt=""
-                 style="position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;">
-            <span class="avatar-dot avatar-dot--online"></span>
-          </div>
-          <div class="family-tile-meta">
-            <div class="family-tile-name">민지</div>
-            <div class="family-tile-relation">딸</div>
-          </div>
-          <span class="status-pill status-pill--online">
-            <span class="status-dot"></span>
-            지금 접속 중
-          </span>
-          <div class="cta-stack">
-            <a href="#" class="cta cta--primary" aria-label="딸 민지에게 영상통화">
-              <iconify-icon icon="fluent:video-24-filled" width="26" aria-hidden="true"></iconify-icon>
-              영상통화
-            </a>
-            <a href="#" class="cta cta--ghost" aria-label="딸 민지에게 음성통화">
-              <iconify-icon icon="fluent:call-24-filled" width="22" aria-hidden="true"></iconify-icon>
-              목소리만 통화
-            </a>
-          </div>
-        </article>
+        <!-- ═══════════════ 좌측: 가족 리스트 ═══════════════ -->
+        <section class="call-panel glass" aria-labelledby="panel-title-call">
+          <h2 class="panel-title" id="panel-title-call">
+            <iconify-icon icon="fluent:people-24-filled" aria-hidden="true"></iconify-icon>
+            통화 · 메시지
+          </h2>
 
-        <!-- 서연 (온라인) — 영상통화 + 음성 메시지 -->
-        <article class="family-tile glass" role="listitem">
-          <div class="avatar avatar--xl avatar--green" aria-hidden="true">
-            <img src="https://randomuser.me/api/portraits/women/9.jpg" alt=""
-                 style="position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;">
-            <span class="avatar-dot avatar-dot--online"></span>
-          </div>
-          <div class="family-tile-meta">
-            <div class="family-tile-name">서연</div>
-            <div class="family-tile-relation">손녀</div>
-          </div>
-          <span class="status-pill status-pill--online">
-            <span class="status-dot"></span>
-            지금 접속 중
-          </span>
-          <div class="cta-stack">
-            <a href="#" class="cta cta--primary" aria-label="손녀 서연에게 영상통화">
-              <iconify-icon icon="fluent:video-24-filled" width="26" aria-hidden="true"></iconify-icon>
-              영상통화
-            </a>
-            <a href="p05-voice.html" class="cta cta--ghost" aria-label="손녀 서연에게 음성 메시지 남기기">
-              <iconify-icon icon="fluent:mic-24-filled" width="22" aria-hidden="true"></iconify-icon>
-              음성 메시지
-            </a>
-          </div>
-        </article>
+          <div class="fam-list">
 
-        <!-- 태우 (자리 비움) — 음성 메시지 + 문자 남기기 -->
-        <article class="family-tile glass" role="listitem">
-          <div class="avatar avatar--xl avatar--blue" aria-hidden="true">
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt=""
-                 style="position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;">
-            <span class="avatar-dot"></span>
-          </div>
-          <div class="family-tile-meta">
-            <div class="family-tile-name">태우</div>
-            <div class="family-tile-relation">아들</div>
-          </div>
-          <span class="status-pill status-pill--offline">
-            <span class="status-dot"></span>
-            자리 비움
-          </span>
-          <div class="cta-stack">
-            <a href="p05-voice.html" class="cta cta--primary" aria-label="아들 태우에게 음성 메시지 남기기">
-              <iconify-icon icon="fluent:mic-24-filled" width="24" aria-hidden="true"></iconify-icon>
-              음성 메시지
+            <a href="p03-call.html" class="fam-row" aria-label="딸 민지에게 바로 영상통화 — 지금 접속 중">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="딸 민지">
+                <span class="dot dot--on"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name">민지 <span class="rel">딸</span></div>
+                <div class="fam-row-status">지금 접속 중</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="민지 영상통화">
+                  <iconify-icon icon="fluent:video-24-filled" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="민지 음성통화">
+                  <iconify-icon icon="fluent:call-24-filled" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
             </a>
-            <a href="p07-message.html" class="cta cta--ghost" aria-label="아들 태우에게 문자 남기기">
-              <iconify-icon icon="fluent:chat-24-filled" width="22" aria-hidden="true"></iconify-icon>
-              문자로 남기기
+
+            <a href="p03-call.html" class="fam-row" aria-label="손녀 서연에게 바로 영상통화 — 지금 접속 중">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="손녀 서연">
+                <span class="dot dot--on"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name">서연 <span class="rel">손녀</span></div>
+                <div class="fam-row-status">지금 접속 중</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="서연 영상통화">
+                  <iconify-icon icon="fluent:video-24-filled" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="서연 메시지">
+                  <iconify-icon icon="fluent:chat-24-filled" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
             </a>
+
+            <a href="p05-voice.html" class="fam-row fam-row--offline" aria-label="아들 태우에게 음성 메시지 — 자리 비움">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="아들 태우">
+                <span class="dot"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name">태우 <span class="rel">아들</span></div>
+                <div class="fam-row-status">자리 비움 · 3시간 전 활동</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="태우 음성 메시지 남기기">
+                  <iconify-icon icon="fluent:mic-24-filled" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="태우 문자">
+                  <iconify-icon icon="fluent:chat-24-filled" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
           </div>
-        </article>
+        </section>
+
+        <!-- ═══════════════ 우측: 받은 안부 타임라인 ═══════════════ -->
+        <section class="call-panel glass" aria-labelledby="panel-title-timeline">
+          <h2 class="panel-title" id="panel-title-timeline">
+            <iconify-icon icon="fluent:heart-pulse-24-filled" aria-hidden="true"></iconify-icon>
+            최근 받은 안부
+          </h2>
+
+          <div class="timeline" role="list">
+
+            <div class="tl-day">오늘</div>
+
+            <a href="p06-photo.html" class="tl-item tl-item--unread" role="listitem" aria-label="읽지 않음 — 민지가 사진을 보냈어요, 오전 9:32">
+              <span class="tl-unread-badge">읽지 않음</span>
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="fluent:image-24-filled" aria-hidden="true"></iconify-icon>
+                  민지가 사진을 보냈어요
+                </div>
+                <div class="tl-preview">손녀 졸업식 사진 1장</div>
+                <div class="tl-time">오전 9:32</div>
+              </div>
+            </a>
+
+            <a href="p07-message.html" class="tl-item tl-item--unread" role="listitem" aria-label="읽지 않음 — 서연 메시지, 오전 8:10">
+              <span class="tl-unread-badge">읽지 않음</span>
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="fluent:chat-24-filled" aria-hidden="true"></iconify-icon>
+                  서연 메시지
+                </div>
+                <div class="tl-preview">"할머니 사랑해요. 오늘도 좋은 하루 보내세요!"</div>
+                <div class="tl-time">오전 8:10</div>
+              </div>
+            </a>
+
+            <div class="tl-day">어제</div>
+
+            <a href="p07-message.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="fluent:mic-24-filled" aria-hidden="true"></iconify-icon>
+                  민지 음성 메시지
+                </div>
+                <div class="tl-preview">23초 · "엄마 잘 지내시죠? 곧 갈게요"</div>
+                <div class="tl-time">저녁 7:45</div>
+              </div>
+            </a>
+
+            <a href="p07-message.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="fluent:chat-24-filled" aria-hidden="true"></iconify-icon>
+                  서연 메시지
+                </div>
+                <div class="tl-preview">"할머니 오늘 학교에서 상 받았어요"</div>
+                <div class="tl-time">오후 4:20</div>
+              </div>
+            </a>
+
+            <div class="tl-day">3일 전</div>
+
+            <a href="p03-call.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="fluent:video-24-filled" aria-hidden="true"></iconify-icon>
+                  태우와 영상통화
+                </div>
+                <div class="tl-preview">18분 · 영상통화 종료</div>
+                <div class="tl-time">저녁 8:15</div>
+              </div>
+            </a>
+
+            <a href="p06-photo.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="fluent:image-24-filled" aria-hidden="true"></iconify-icon>
+                  민지가 사진을 보냈어요
+                </div>
+                <div class="tl-preview">공원 산책 사진 3장</div>
+                <div class="tl-time">오후 3:00</div>
+              </div>
+            </a>
+
+          </div>
+        </section>
 
       </div>
     </div>

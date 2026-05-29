@@ -32,7 +32,7 @@ v9 보호자앱 HTML 인라인 CSS에서 자주 쓰던 값들의 매핑.
 | `--green` / `#34D399` | `var(--brand-green-400)` *정의용*, 화면은 `--color-success` |
 | `--green-d` / `#059669` | `var(--color-success)` |
 | `--amber` / `#F59E0B` | `var(--color-warning)` |
-| `--red` / `#EF4444` | `var(--color-danger)` |
+| `--red` / `#EF4444` / `#F43F5E` (rose) | `var(--color-danger)` (v3.2.7부터 `#E32B25` Rivian Alarm) |
 | `--t1` / `#111827` | `var(--color-text-primary)` |
 | `--t2` / `rgba(0,0,0,.5)` | `var(--color-text-secondary)` |
 | `--t3` / `rgba(0,0,0,.25)` | `var(--color-text-tertiary)` |
@@ -65,22 +65,22 @@ v9 보호자앱 HTML 인라인 CSS에서 자주 쓰던 값들의 매핑.
 신규 화면에서는 절대 쓰지 말 것.
 
 ```css
-/* ❌ 구 변수명 */
+/* DON'T — 구 변수명 */
 color: var(--blue);
 color: var(--t1);
 background: var(--green);
 
-/* ❌ backdrop-filter: blur (성능 우려로 v9에서 금지했으나,
+/* DON'T — backdrop-filter: blur (성능 우려로 v9에서 금지했으나,
       tokens.css는 카드용 8px / 탭바용 20px 수준만 제한적으로 허용)
       남용 금지. 리스트 아이템 1개씩에 blur 넣지 말 것. */
 backdrop-filter: blur(40px);
 
-/* ❌ 하드코딩 */
+/* DON'T — 하드코딩 */
 color: #2C7AFC;
 padding: 16px;
 border-radius: 12px;
 
-/* ❌ Layer 1 원시 팔레트 직접 사용 */
+/* DON'T — Layer 1 원시 팔레트 직접 사용 */
 color: var(--brand-blue-500);
 background: var(--palette-gray-50);
 ```

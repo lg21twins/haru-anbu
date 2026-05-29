@@ -337,25 +337,14 @@ body {
   cursor: pointer;
 }
 
-/* 다크 모드 nav 보강 — sticky bar 가독성 */
-[data-theme="dark"] .pv-nav,
+/* nav — sticky bar 가독성 */
 .pv-nav {
   background: var(--color-bg-glass);
 }
 
-/* 다크모드에서도 .pv-nav__link--active를 accent로 표시 */
 .pv-nav__link--active {
   color: var(--color-accent);
   background: var(--color-accent-soft);
 }
 
-/* 다크 — preview-card 보더가 너무 어두워지지 않도록 보완 */
-[data-theme="dark"] .pv-callout {
-  background: rgba(91, 155, 255, 0.10);
-}
-[data-theme="dark"] .pv-callout--green {
-  background: rgba(74, 222, 128, 0.10);
-}
-[data-theme="dark"] .pv-callout--orange {
-  background: rgba(253, 186, 116, 0.10);
-}
+/* (v3.2.8) 다크 모드 nav/callout 보강 분기 제거 — 라이트 단일 운영 */

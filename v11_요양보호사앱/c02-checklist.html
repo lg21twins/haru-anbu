@@ -16,7 +16,7 @@
 
   <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="../07_디자인/system/app.css">
-  <link rel="stylesheet" href="../07_디자인/system/components.css">
+  <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
   <link rel="stylesheet" href="caregiver.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <script defer src="caregiver.js"></script>
@@ -41,11 +41,11 @@
       --t2:            var(--color-text-secondary);
       --t3:            var(--color-text-tertiary);
 
-      --safe-t: max(env(safe-area-inset-top, 0px), 52px);
+      --safe-t: env(safe-area-inset-top, 0px); /* v3.2.5: 단순 env() — 데스크톱 빈공간 제거 */
       --safe-b: max(env(safe-area-inset-bottom, 0px), 20px);
       --tab-h:  64px;
       --tab-bot: 12px;
-      --page-pad: 16px;
+      --page-pad: 20px; /* v3.2.5: 본문 좌우 padding 통일 */
     }
 
     /* v4.1 (2026-04-19) · 보호자앱(g-guardian-live)과 공통 톤 정렬
@@ -53,27 +53,13 @@
        - 배경: 저채도 그린 그라디언트 + 상단 녹색 라디얼 힌트 (역할 앵커만)
        - .lq 공통 클래스 도입 (보호자앱과 동일 선언)
        - 탭바: 저채도 녹색 틴트 알약 (보호자 파란-틴트의 카운터파트) */
-    html { height: 100%; background: #F2F8F5; font-size: 17px; }
+    html { height: 100%; background: var(--clinical-canvas); font-size: 17px; }
     body { min-height: 100%; color: var(--t1); overflow-x: hidden; font-size: var(--text-body); }
 
     .bg {
       position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
-      background:
-        linear-gradient(180deg, #D7EEDF 0%, #E8F4EE 34%, #F1F7F4 66%, #F2F8F5 100%);
+      background: var(--clinical-bg-image);
     }
-    .bg::before {
-      content: ''; position: absolute; width: 500px; height: 500px;
-      left: 50%; top: -5%; transform: translateX(-50%); border-radius: 50%;
-      background: radial-gradient(circle, rgba(34,197,94,.14) 0%, transparent 65%);
-      filter: blur(30px);
-    }
-    .bg::after {
-      content: ''; position: absolute; width: 600px; height: 400px;
-      left: 50%; top: 35%; transform: translate(-50%,-50%); border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(220,240,230,.28) 0%, transparent 65%);
-      filter: blur(40px);
-    }
-
     /* ============ 공통 Liquid Glass (보호자앱과 동일 선언) ============ */
     .lq {
       background: rgba(255,255,255,0.45);
@@ -83,39 +69,40 @@
       box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 4px 16px rgba(0,0,0,0.06);
       position: relative; overflow: hidden;
     }
-    .lq::before {
-      content: ''; position: absolute; inset: 0; border-radius: inherit;
-      pointer-events: none; z-index: 0;
-      background: linear-gradient(148deg, rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.10) 28%, transparent 55%);
-    }
     .lq > * { position: relative; z-index: 1; }
 
     .app {
       max-width: 430px; margin: 0 auto; min-height: 100%;
       position: relative;
-      padding-bottom: calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 28px);
+      /* v3.2.6: 빠른 기록 영역이 탭바에 가려지지 않도록 여유 +72px */
+      padding-bottom: calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 72px);
     }
     .view { display: none; }
     .view.active { display: block; }
 
-    /* ============ 공통 헤더 ============ */
-    .header {
-      position: sticky; top: 0; z-index: 10;
-      padding: calc(var(--safe-t) + 4px) var(--page-pad) 10px;
-      background: linear-gradient(180deg, rgba(242,248,245,.92) 0%, rgba(242,248,245,.78) 70%, rgba(242,248,245,0) 100%);
-      backdrop-filter: blur(14px) saturate(140%);
-      -webkit-backdrop-filter: blur(14px) saturate(140%);
+    /* ============ 공통 헤더 · 보호자앱 header-mobile 통일 v4.0 ============ */
+    .app .header-mobile {
+      position: static !important;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
     }
-    .header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-    .header-ttl { font-size: 18px; font-weight: 700; color: var(--t1); letter-spacing: -.4px; line-height: 1.2; }
-    .header-sub {
-      font-size: 11px; font-weight: 600; color: var(--t2); margin-top: 2px;
+    .app .header-mobile__left,
+    .app .header-mobile__right {
+      color: var(--accent-strong);
+    }
+    .app .header-mobile__right iconify-icon,
+    .app .header-mobile__left iconify-icon { font-size: var(--size-icon-md); }
+    /* 상태 스트립 — 위치·피크·동기화 (헤더 바로 아래) */
+    .status-strip {
+      margin: 0 var(--page-pad) 10px;
       display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      font-size: 11px; font-weight: 600; color: var(--t2);
     }
     .sync-pill {
       display: inline-flex; align-items: center; gap: 4px;
       padding: 2px 8px; border-radius: 999px;
-      background: rgba(245, 158, 11, .14);
+      background: rgba(var(--color-warning-rgb), .14);
       color: var(--palette-amber-700);
       font-size: 10px; font-weight: 700; letter-spacing: .2px;
       cursor: pointer;
@@ -136,21 +123,12 @@
     }
     @keyframes syncPulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: .45; transform: scale(.85); }
+      50%      { opacity: .6; transform: scale(.85); }
     }
     .header-act { display: flex; gap: 6px; }
 
-    .icon-btn {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(255,255,255,.7);
-      border: .5px solid rgba(255,255,255,.9);
-      display: inline-flex; align-items: center; justify-content: center;
-      cursor: pointer; text-decoration: none;
-      box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04);
-      transition: transform .1s; font-family: inherit;
-    }
-    .icon-btn:active { transform: scale(.93); }
-    .icon-btn iconify-icon { font-size: 19px; color: var(--accent-strong); }
+    /* .icon-btn 표준은 caregiver.css가 SoT — 인라인 정의 제거.
+       backdrop-filter: blur(12px) saturate(140%) 포함, shadow 통일 */
 
     .back-btn {
       width: 36px; height: 36px; border-radius: 50%;
@@ -185,7 +163,7 @@
     .av.lg { width: 44px; height: 44px; font-size: 17px; }
     .av.sm { width: 24px; height: 24px; font-size: 11px; }
     .av.warn { background: var(--warn-soft); color: var(--palette-amber-700); }
-    .av.ok   { background: rgba(34,197,94,.14); color: var(--accent-strong); }
+    .av.ok   { background: rgba(var(--brand-green-500-rgb), .14); color: var(--accent-strong); }
 
     /* ============================================================
        L1 · 라운딩 허브
@@ -194,10 +172,11 @@
     .now-card {
       margin: 12px var(--page-pad) 0;
       padding: 14px 14px 12px;
-      background: rgba(255,255,255,.80);
-      border: .5px solid rgba(255,255,255,.88);
-      border-radius: 20px;
-      box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 2px 10px rgba(0,0,0,.04);
+      /* v3.2.8: 카드 베이스라인 토큰 (5개 화면 동일) */
+      background: var(--cg-card-bg);
+      border: 0;
+      border-radius: var(--cg-card-radius);
+      box-shadow: var(--cg-card-shadow);
       position: relative; z-index: 1;
       display: flex; flex-direction: column;
     }
@@ -249,12 +228,12 @@
     /* 카드 하단 풀너비 primary CTA (c01 패턴 승계) */
     .now-card-cta {
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; margin-top: 10px; padding: 0 14px; height: 46px;
-      border: 0; border-radius: 13px;
-      background: linear-gradient(135deg, var(--brand-green-400), var(--accent));
-      color: #fff; font-family: inherit;
+      width: 100%; margin-top: 10px; padding: 0 14px; height: 48px;
+      border: 0; border-radius: 14px;
+      background: var(--accent);
+      color: var(--palette-white); font-family: inherit;
       font-size: 14px; font-weight: 700; letter-spacing: -.2px;
-      box-shadow: 0 4px 14px rgba(34,197,94,.26);
+      box-shadow: 0 4px 14px rgba(var(--brand-green-500-rgb), .26);
       cursor: pointer; transition: transform .1s;
       position: relative;
     }
@@ -301,12 +280,12 @@
     .pt-row-c {
       display: flex; align-items: center; gap: 12px;
       padding: 12px 14px;
-      background: rgba(255,255,255,.80);
-      border: .5px solid rgba(255,255,255,.88);
-      border-radius: 16px;
+      background: var(--cg-card-bg);
+      border: 0;
+      border-radius: var(--cg-card-radius);
       cursor: pointer; transition: transform .1s;
       font-family: inherit; text-align: left; width: 100%;
-      box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 2px 10px rgba(0,0,0,.04);
+      box-shadow: var(--cg-card-shadow);
     }
     .pt-row-c:active { transform: scale(.99); }
 
@@ -336,6 +315,7 @@
     }
     .pt-row-bar > span {
       display: block; height: 100%;
+      width: var(--bar-w, 0%);
       background: var(--t2);
       border-radius: 999px;
     }
@@ -356,49 +336,6 @@
     .pt-row-c.done .pt-row-next { color: var(--t3); }
     .pt-row-c.warn .pt-row-next iconify-icon { color: var(--palette-amber-700); }
     .pt-row-c.warn .pt-row-next b { color: var(--palette-amber-700); }
-
-    /* 빠른 기록 헤드 (섹션 레이블 대체 · 얇게) */
-    .quick-head {
-      margin: 18px var(--page-pad) 8px;
-      display: flex; align-items: baseline; justify-content: space-between;
-      position: relative; z-index: 1;
-    }
-    .quick-head > span:first-child {
-      font-size: 13px; font-weight: 700; color: var(--t1); letter-spacing: -.2px;
-    }
-    .quick-head-sub {
-      font-size: 11px; font-weight: 700; color: var(--t3);
-    }
-
-    /* 빠른 기록 6버튼 (장기요양 급여제공기록지 카테고리) */
-    .quick {
-      margin: 0 var(--page-pad);
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
-      position: relative; z-index: 1;
-    }
-    .q {
-      padding: 14px 4px 12px;
-      background: rgba(255,255,255,.80);
-      border: .5px solid rgba(255,255,255,.88);
-      border-radius: 16px;
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      font-family: inherit; cursor: pointer; transition: transform .1s;
-      box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 2px 10px rgba(0,0,0,.04);
-      position: relative;
-    }
-    .q:active { transform: scale(.96); }
-    .q iconify-icon { font-size: 22px; color: var(--t1); }
-    .q-l { font-size: 11px; font-weight: 700; color: var(--t2); letter-spacing: -.2px; }
-    /* 뱃지: 3축으로 통일 (기본=숫자/시각 · warn=대기/주의 · ok=완료) */
-    .q-c {
-      position: absolute; top: 8px; right: 8px;
-      font-size: 9px; font-weight: 700; color: var(--t3);
-      background: rgba(0,0,0,.05); padding: 1px 5px; border-radius: 999px;
-      letter-spacing: -.1px;
-    }
-    .q-c.warn { background: rgba(245, 158, 11, .16); color: var(--palette-amber-700); }
-    /* ok는 배경 제거 · 텍스트만 그린 (primary 그린과의 경쟁 최소화) */
-    .q-c.ok { background: transparent; color: var(--accent-strong); padding: 1px 0; }
 
     /* ============================================================
        L2 · 환자 상세 (그리드)
@@ -423,10 +360,10 @@
     .profile {
       margin: 12px var(--page-pad) 0;
       padding: 12px 14px;
-      background: rgba(255,255,255,.80);
-      border: .5px solid rgba(255,255,255,.88);
-      border-radius: 16px;
-      box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 2px 10px rgba(0,0,0,.04);
+      background: var(--cg-card-bg);
+      border: 0;
+      border-radius: var(--cg-card-radius);
+      box-shadow: var(--cg-card-shadow);
       position: relative; z-index: 1;
     }
     .pf-tags { display: flex; flex-wrap: wrap; gap: 5px; }
@@ -476,7 +413,8 @@
     .pd-bar { flex: 1; height: 4px; background: rgba(0,0,0,.06); border-radius: 999px; overflow: hidden; }
     .pd-bar > span {
       display: block; height: 100%;
-      background: linear-gradient(90deg, var(--brand-green-400), var(--accent));
+      width: var(--bar-w, 0%);
+      background: var(--accent);
       border-radius: 999px;
     }
     .pd-ratio { font-size: 12px; font-weight: 700; color: var(--t1); letter-spacing: -.2px; }
@@ -491,12 +429,12 @@
     .g-card {
       position: relative;
       padding: 12px 12px 11px;
-      background: rgba(255,255,255,.80);
-      border: .5px solid rgba(255,255,255,.88);
-      border-radius: 16px;
+      background: var(--cg-card-bg);
+      border: 0;
+      border-radius: var(--cg-card-radius);
       cursor: pointer; transition: transform .1s;
       font-family: inherit; text-align: left;
-      box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 2px 10px rgba(0,0,0,.04);
+      box-shadow: var(--cg-card-shadow);
       min-height: 108px;
       display: flex; flex-direction: column;
     }
@@ -515,13 +453,16 @@
       font-size: 10px; font-weight: 700; color: var(--t3);
       letter-spacing: .3px; text-transform: uppercase;
     }
-    .g-card.done .g-ic { background: rgba(34,197,94,.14); }
+    .g-card.done .g-ic { background: var(--color-accent-soft); }
     .g-card.done .g-ic iconify-icon { color: var(--accent-strong); }
     .g-card.done .g-state { color: var(--accent-strong); }
-    .g-card.now .g-ic { background: var(--warn-soft); }
+    .g-card.now .g-ic { background: var(--color-warning-soft); }
     .g-card.now .g-ic iconify-icon { color: var(--palette-amber-700); }
     .g-card.now .g-state { color: var(--palette-amber-700); }
-    .g-card.now { box-shadow: 0 1px 3px rgba(245,158,11,.12); border-color: rgba(245,158,11,.2); }
+    /* v3.2.8: now 강조는 token-based outline */
+    .g-card.now {
+      box-shadow: var(--cg-card-shadow), 0 0 0 1.5px var(--palette-amber-300);
+    }
     .g-card.skip { opacity: .6; }
     .g-t {
       font-size: 14px; font-weight: 700; color: var(--t1);
@@ -545,20 +486,18 @@
        ============================================================ */
     .stepper {
       position: fixed; inset: 0; z-index: 200;
-      background: #F4FAF6;
+      background: var(--clinical-canvas);
       display: none; flex-direction: column;
     }
     .stepper.show { display: flex; }
     .stepper .bg2 {
       position: absolute; inset: 0; z-index: 0; pointer-events: none;
-      background:
-        radial-gradient(520px 420px at 50% -6%, rgba(34,197,94,.12), transparent 65%),
-        linear-gradient(180deg,#EAF6EE 0%,#F0F8F3 35%,#F4FAF6 100%);
+      background: var(--clinical-linear-canvas);
     }
     .st-header {
       position: relative; z-index: 2;
       padding: calc(var(--safe-t) + 4px) 20px 14px;
-      background: linear-gradient(180deg, rgba(232,246,238,.96) 0%, rgba(232,246,238,.82) 70%, rgba(232,246,238,0) 100%);
+      background: transparent; /* v3.2.5: 흰 그라데이션 제거 — .bg 그린이 그대로 비치게 */
       backdrop-filter: blur(10px) saturate(140%);
       -webkit-backdrop-filter: blur(10px) saturate(140%);
     }
@@ -571,16 +510,17 @@
     .dot { width: 22px; height: 3px; border-radius: 999px; background: rgba(0,0,0,.08); transition: background .25s; }
     .dot.done { background: var(--accent); }
     .dot.now  { background: var(--accent-strong); }
-    .st-progress { height: 4px; background: rgba(34,197,94,.14); border-radius: 999px; overflow: hidden; }
+    .st-progress { height: 4px; background: rgba(var(--brand-green-500-rgb), .14); border-radius: 999px; overflow: hidden; }
     .st-progress > span {
       display: block; height: 100%;
-      background: linear-gradient(90deg, var(--brand-green-400), var(--accent));
+      width: var(--bar-w, 0%);
+      background: var(--accent);
       border-radius: 999px; transition: width .4s cubic-bezier(.4,0,.2,1);
     }
     .st-body { flex: 1; overflow-y: auto; padding: 20px 20px 24px; -webkit-overflow-scrolling: touch; position: relative; z-index: 1; }
-    .step { display: none; animation: stepIn .3s ease; }
+    .step { display: none; animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both; }
     .step.active { display: block; }
-    @keyframes stepIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    to { opacity: 1; transform: translateY(0); } }
     .step-head { margin-bottom: 20px; }
     .step-kicker { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: var(--accent-strong); letter-spacing: .4px; text-transform: uppercase; }
     .step-kicker iconify-icon { font-size: 13px; }
@@ -596,29 +536,26 @@
     .v-field-v { margin-top: 6px; font-size: 22px; font-weight: 700; color: var(--t1); letter-spacing: -.5px; line-height: 1; }
     .v-field-v .u { font-size: 12px; font-weight: 600; color: var(--t3); margin-left: 3px; }
     .v-field.warn .v-field-v { color: var(--palette-amber-700); }
-    .opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .opts { display: grid; grid-template-columns: repeat(var(--opts-cols, 3), 1fr); gap: 6px; }
     .opt { padding: 11px 6px; background: rgba(255,255,255,.82); border: 1px solid transparent; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 700; color: var(--t2); letter-spacing: -.2px; cursor: pointer; transition: all .15s; }
     .opt:active { transform: scale(.97); }
-    .opt.on { background: var(--accent-soft); color: var(--accent-strong); border-color: rgba(34,197,94,.3); }
+    .opt.on { background: var(--accent-soft); color: var(--accent-strong); border-color: rgba(var(--brand-green-500-rgb), .3); }
     .chks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .chk { display: flex; align-items: center; gap: 10px; padding: 13px 12px; background: rgba(255,255,255,.82); border: 1px solid transparent; border-radius: 12px; font-family: inherit; cursor: pointer; transition: all .15s; text-align: left; }
     .chk:active { transform: scale(.99); }
     .chk-dot { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,.18); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s; }
-    .chk-dot iconify-icon { font-size: 13px; color: #fff; opacity: 0; }
-    .chk.on { background: var(--accent-soft); border-color: rgba(34,197,94,.3); }
+    .chk-dot iconify-icon { font-size: 13px; color: var(--palette-white); opacity: 0; }
+    .chk.on { background: var(--accent-soft); border-color: rgba(var(--brand-green-500-rgb), .3); }
     .chk.on .chk-dot { background: var(--accent); border-color: var(--accent); }
     .chk.on .chk-dot iconify-icon { opacity: 1; }
     .chk-t { font-size: 14px; font-weight: 700; color: var(--t1); letter-spacing: -.2px; }
     .chk.on .chk-t { color: var(--accent-strong); }
     .tx { width: 100%; min-height: 100px; padding: 13px 14px; background: rgba(255,255,255,.82); border: 1px solid transparent; border-radius: 14px; font-family: inherit; font-size: 14px; line-height: 1.5; color: var(--t1); resize: none; outline: none; transition: border-color .15s, background .15s; }
-    .tx:focus { border-color: rgba(34,197,94,.4); background: rgba(255,255,255,.95); }
+    .tx:focus { border-color: rgba(var(--brand-green-500-rgb), .4); background: rgba(255,255,255,.95); }
     .st-foot { flex-shrink: 0; padding: 12px 20px calc(var(--safe-b) + 14px); background: rgba(255,255,255,.82); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: .5px solid rgba(0,0,0,.05); display: flex; gap: 10px; position: relative; z-index: 2; }
-    .btn { height: 52px; border-radius: 14px; border: 0; font-family: inherit; font-size: 15px; font-weight: 700; letter-spacing: -.2px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: transform .1s; }
-    .btn:active { transform: scale(.97); }
-    .btn iconify-icon { font-size: 18px; }
     .btn-prev { flex: 0 0 96px; background: rgba(0,0,0,.05); color: var(--t2); }
     .btn-prev:disabled { opacity: .4; cursor: default; }
-    .btn-next, .btn-done { flex: 1; background: linear-gradient(135deg, var(--brand-green-400), var(--accent)); color: #fff; box-shadow: 0 3px 10px rgba(34,197,94,.22); }
+    .btn-next, .btn-done { flex: 1; background: var(--accent); color: var(--palette-white); box-shadow: 0 3px 10px rgba(var(--brand-green-500-rgb), .22); }
 
     /* ============================================================
        바텀시트 (빠른 기록 / 음성 결과)
@@ -685,10 +622,10 @@
     .bs-pt-rm { font-size: 10px; font-weight: 700; color: var(--t3); margin-left: 2px; }
     .bs-pt-c.on {
       background: var(--accent-soft);
-      border-color: rgba(34,197,94,.3);
+      border-color: rgba(var(--brand-green-500-rgb), .3);
     }
     .bs-pt-c.on .bs-pt-nm { color: var(--accent-strong); }
-    .bs-pt-c.on .av { background: var(--accent); color: #fff; }
+    .bs-pt-c.on .av { background: var(--accent); color: var(--palette-white); }
 
     /* 바이탈 필드 (바텀시트 내부) */
     .bs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -700,7 +637,7 @@
       transition: all .15s;
     }
     .bs-f:active { transform: scale(.98); }
-    .bs-f.on { background: var(--accent-soft); border-color: rgba(34,197,94,.3); }
+    .bs-f.on { background: var(--accent-soft); border-color: rgba(var(--brand-green-500-rgb), .3); }
     .bs-f.full { grid-column: 1 / -1; }
     .bs-f-l { font-size: 11px; font-weight: 700; color: var(--t3); letter-spacing: .2px; text-transform: uppercase; }
     .bs-f-v { margin-top: 5px; font-size: 20px; font-weight: 700; color: var(--t1); letter-spacing: -.4px; line-height: 1; }
@@ -720,55 +657,32 @@
     .bs-btn:active { transform: scale(.97); }
     .bs-btn.ghost { background: rgba(0,0,0,.05); color: var(--t2); flex: 0 0 auto; padding: 0 18px; }
     .bs-btn.primary {
-      background: linear-gradient(135deg, var(--brand-green-400), var(--accent));
-      color: #fff; box-shadow: 0 4px 14px rgba(34,197,94,.28);
+      background: var(--accent);
+      color: var(--palette-white); box-shadow: 0 3px 10px rgba(var(--brand-green-500-rgb), .22);
     }
     .bs-btn iconify-icon { font-size: 17px; }
 
     /* 음성 결과 프리뷰 */
     .voice-prev {
       padding: 14px;
-      background: rgba(34,197,94,.08);
+      background: rgba(var(--brand-green-500-rgb), .08);
       border-radius: 14px;
-      border: .5px solid rgba(34,197,94,.2);
+      border: .5px solid rgba(var(--brand-green-500-rgb), .2);
       margin-bottom: 14px;
     }
     .voice-prev-l { font-size: 11px; font-weight: 700; color: var(--accent-strong); letter-spacing: .3px; text-transform: uppercase; }
-    .voice-prev-q { margin-top: 6px; font-size: 14px; font-weight: 700; color: var(--t1); line-height: 1.45; font-style: italic; }
+    .voice-prev-q { margin-top: 6px; font-size: 14px; font-weight: 700; color: var(--t1); line-height: 1.45; }
     .voice-prev-q::before { content: '"'; color: var(--t3); }
     .voice-prev-q::after { content: '"'; color: var(--t3); }
 
     /* ============ 탭바 + SOS ============ */
-    .bottom-bar {
-      position: fixed; bottom: calc(var(--safe-b) + var(--tab-bot));
-      left: 50%; transform: translateX(-50%);
-      display: flex; align-items: center; gap: 10px;
-      width: calc(100% - 32px); max-width: 398px; z-index: 40;
-    }
-    .tabbar {
-      flex: 1; min-width: 0; height: var(--tab-h);
-      background: #fff;
-      border: 1px solid rgba(0,0,0,.08);
-      border-radius: 999px;
-      box-shadow: 0 2px 6px rgba(0,0,0,.05);
-      display: flex; align-items: stretch; justify-content: space-around; padding: 0 6px;
-    }
-    .tab {
-      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 2px; color: var(--t3); text-decoration: none;
-      border-radius: 999px; transition: color .15s;
-      min-height: 48px; padding: 6px 4px;
-    }
-    .tab.active { color: var(--accent-strong); }
-    .tab.active iconify-icon { filter: drop-shadow(0 2px 6px rgba(34,197,94,.28)); }
-    .tab iconify-icon { font-size: 22px; }
-    .tab-label { font-size: 11px; font-weight: 600; letter-spacing: -.1px; line-height: 1; }
+    /* v3.2.7: .bottom-bar / .tabbar / .tab 로컬 정의 제거 — caregiver.css가 SoT (4-b 섹션) */
 
     /* Toast */
     .toast {
       position: fixed; top: 72px; left: 50%;
       transform: translateX(-50%) translateY(-8px);
-      background: rgba(28,28,30,.9); color: #fff;
+      background: rgba(28,28,30,.92); color: var(--palette-white);
       padding: 11px 20px; border-radius: 999px;
       font-size: 13px; font-weight: 600;
       box-shadow: 0 8px 24px rgba(0,0,0,.2);
@@ -778,12 +692,21 @@
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* 등장 */
-    @keyframes fadeUp {
+    @keyframes haru-fade-in-up {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     .now-card, .pt-toggle-row, .pt-list, .quick-head, .quick,
-    .profile, .seg, .pd-bar-wrap, .grid8 { animation: fadeUp .35s ease both; }
+    .profile, .seg, .pd-bar-wrap, .grid8 { animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both; }
+
+    /* Inline 대체 (audit 정책: inline 0) */
+    .sec-l--gap-b   { margin-bottom: 8px; }
+    .sec-l--gap-tb  { margin-top: 14px; margin-bottom: 8px; }
+    .bs-f--warn { background: var(--color-warning-soft); }
+    .bs-f--warn .bs-f-l,
+    .bs-f--warn .bs-f-v { color: var(--palette-amber-700); }
+    .kp-btn { flex: 1; }
+    .kp-btn--cancel { background: var(--palette-gray-100); color: var(--color-text-secondary); }
   </style>
 </head>
 <body>
@@ -794,24 +717,14 @@
        ============================================================ -->
   <div class="app view active" id="viewHub">
     <header class="header">
-      <div class="header-row">
-        <div>
-          <div class="header-ttl">케어 기록</div>
-          <div class="header-sub">
-            A동 2층 · 10:15
-            <span class="peak-pill" title="피크 08–10 · 18–20">
-              <iconify-icon icon="fluent:flash-24-filled"></iconify-icon>피크 08–10
-            </span>
-            <span class="sync-pill" id="syncPill" onclick="toast('오프라인 대기 2건 · 연결 시 자동 전송')">
-              <span class="sync-dot"></span>대기 <b>2</b>
-            </span>
-          </div>
+      <div class="top-nav">
+        <span class="h-left" aria-hidden="true"></span>
+        <div class="title-block">
+          <h1 class="h-name">케어 기록</h1>
         </div>
-        <div class="header-act">
-          <button class="icon-btn" onclick="toast('음성 메모 시작 (5초)')" aria-label="음성 메모">
-            <iconify-icon icon="fluent:mic-24-filled"></iconify-icon>
-          </button>
-        </div>
+        <button class="icon-btn" type="button" aria-label="음성 메모" onclick="toast('음성 메모 시작 (5초)')">
+          <iconify-icon icon="fluent:mic-24-filled"></iconify-icon>
+        </button>
       </div>
     </header>
 
@@ -822,7 +735,6 @@
           <iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon>
           지금 해야 할 일
         </span>
-        <span class="now-time">3건 대기</span>
       </div>
 
       <div class="now-rows">
@@ -876,11 +788,10 @@
             <div class="pt-row-pct"><span class="warn">3/8</span></div>
           </div>
           <div class="pt-row-bar-wrap">
-            <div class="pt-row-bar"><span style="width:37.5%"></span></div>
+            <div class="pt-row-bar"><span style="--bar-w:37.5%"></span></div>
           </div>
           <div class="pt-row-next">
-            <iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
-            다음 · <b>혈당 재측정</b> · 점심 전
+            <b>혈당 재측정</b> · 점심 전
           </div>
         </div>
       </button>
@@ -893,11 +804,10 @@
             <div class="pt-row-pct">5/8</div>
           </div>
           <div class="pt-row-bar-wrap">
-            <div class="pt-row-bar"><span style="width:62.5%"></span></div>
+            <div class="pt-row-bar"><span style="--bar-w:62.5%"></span></div>
           </div>
           <div class="pt-row-next">
-            <iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
-            다음 · <b>위생 마무리</b> · 10분 전
+            <b>위생 마무리</b> · 10분 전
           </div>
         </div>
       </button>
@@ -910,11 +820,10 @@
             <div class="pt-row-pct">4/8</div>
           </div>
           <div class="pt-row-bar-wrap">
-            <div class="pt-row-bar"><span style="width:50%"></span></div>
+            <div class="pt-row-bar"><span style="--bar-w:50%"></span></div>
           </div>
           <div class="pt-row-next">
-            <iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
-            다음 · <b>체위 변경</b> · 11:00
+            <b>체위 변경</b> · 11:00
           </div>
         </div>
       </button>
@@ -927,7 +836,7 @@
             <div class="pt-row-pct"><span class="ok"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>완료</span></div>
           </div>
           <div class="pt-row-bar-wrap">
-            <div class="pt-row-bar"><span style="width:100%"></span></div>
+            <div class="pt-row-bar"><span style="--bar-w:100%"></span></div>
           </div>
           <div class="pt-row-next">
             오후 활동 · 14:00 예정
@@ -936,43 +845,6 @@
       </button>
     </div>
 
-    <!-- 빠른 기록 (장기요양 급여제공기록지 6분류) · 환자 선택 없이 바로 -->
-    <div class="quick-head">
-      <span>빠른 기록</span>
-      <span class="quick-head-sub">환자 선택 → 5초 저장</span>
-    </div>
-    <div class="quick">
-      <button class="q" onclick="openQuick('meal')">
-        <span class="q-c warn">대기</span>
-        <iconify-icon icon="fluent:food-24-filled"></iconify-icon>
-        <span class="q-l">식사</span>
-      </button>
-      <button class="q" onclick="openQuick('toilet')">
-        <span class="q-c">1/4</span>
-        <iconify-icon icon="fluent:toilet-24-filled"></iconify-icon>
-        <span class="q-l">배설</span>
-      </button>
-      <button class="q" onclick="openQuick('med')">
-        <span class="q-c ok">완료</span>
-        <iconify-icon icon="fluent:pill-24-filled"></iconify-icon>
-        <span class="q-l">복약</span>
-      </button>
-      <button class="q" onclick="openQuick('rotate')">
-        <span class="q-c warn">주기</span>
-        <iconify-icon icon="fluent:arrow-rotate-clockwise-24-filled"></iconify-icon>
-        <span class="q-l">체위</span>
-      </button>
-      <button class="q" onclick="openQuick('bp')">
-        <span class="q-c">2/4</span>
-        <iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon>
-        <span class="q-l">바이탈</span>
-      </button>
-      <button class="q" onclick="openQuick('activity')">
-        <span class="q-c">14:00</span>
-        <iconify-icon icon="fluent:note-24-filled"></iconify-icon>
-        <span class="q-l">특이</span>
-      </button>
-    </div>
   </div>
 
   <!-- ============================================================
@@ -980,19 +852,22 @@
        ============================================================ -->
   <div class="app view" id="viewPatient">
     <header class="header">
-      <div class="head-back">
-        <button class="back-btn" onclick="backToHub()" aria-label="뒤로">
+      <div class="top-nav">
+        <button class="icon-btn" type="button" onclick="backToHub()" aria-label="뒤로">
           <iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon>
         </button>
-        <div class="head-nm">
-          <div class="n" id="pdName">박영자 어르신 · A-3 <span class="head-pct" id="pdPct">3/8</span></div>
-          <div class="m" id="pdMeta">82세 · 당뇨 · 고혈압</div>
+        <div class="title-block">
+          <h1 class="h-name" id="pdName">박영자 어르신 · A-3</h1>
         </div>
-        <button class="icon-btn" onclick="openStepperMode()" aria-label="순서대로 점검">
+        <button class="icon-btn" type="button" onclick="openStepperMode()" aria-label="순서대로 점검">
           <iconify-icon icon="fluent:list-bar-tree-24-filled"></iconify-icon>
         </button>
       </div>
     </header>
+    <div class="status-strip">
+      <span id="pdMeta">82세 · 당뇨 · 고혈압</span>
+      <span class="head-pct" id="pdPct">3/8</span>
+    </div>
 
     <section class="profile" id="pdProfile">
       <div class="pf-tags">
@@ -1013,7 +888,7 @@
     </div>
 
     <div class="pd-bar-wrap">
-      <div class="pd-bar"><span id="pdBarFill" style="width:37.5%"></span></div>
+      <div class="pd-bar"><span id="pdBarFill" style="--bar-w:37.5%"></span></div>
     </div>
 
     <!-- 2×4 그리드 -->
@@ -1070,7 +945,7 @@
 
       <button class="g-card idle" onclick="openStepperAt(6)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="fluent:toilet-24-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="fluent:drop-24-filled"></iconify-icon></span>
           <span class="g-state">대기</span>
         </div>
         <div class="g-t">배변</div>
@@ -1080,7 +955,7 @@
 
       <button class="g-card idle" onclick="openStepperAt(7)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="fluent:emoji-24-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="fluent:brain-circuit-24-filled"></iconify-icon></span>
           <span class="g-state">대기</span>
         </div>
         <div class="g-t">인지·정서</div>
@@ -1122,7 +997,7 @@
     </nav>
     <button class="cg-sos" data-sos-bind aria-label="긴급 SOS · 3초 길게 누르면 즉시 발신">
       <span class="cg-sos__ring" aria-hidden="true">
-        <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
+        <svg class="sos-ring" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
       </span>
       <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
     </button>
@@ -1136,7 +1011,7 @@
       <div class="bs-grab"></div>
 
       <!-- 음성 결과 프리뷰 (음성 시에만) -->
-      <div class="voice-prev" id="voicePrev" style="display:none">
+      <div class="voice-prev" id="voicePrev" hidden>
         <div class="voice-prev-l">음성 인식</div>
         <div class="voice-prev-q" id="voiceQ">박영자 어르신 혈압 132에 84, 체온 36.7</div>
       </div>
@@ -1146,7 +1021,7 @@
           <div class="bs-t" id="bsT">바이탈 기록</div>
           <div class="bs-s" id="bsS">이전 값 자동 반영 · 탭해서 수정</div>
         </div>
-        <button class="bs-close" onclick="closeBS()"><iconify-icon icon="fluent:dismiss-24-filled"></iconify-icon></button>
+        <button class="bs-close" onclick="closeBS()" aria-label="닫기"><iconify-icon icon="fluent:dismiss-24-filled"></iconify-icon></button>
       </div>
 
       <!-- 환자 셀렉터 -->
@@ -1202,7 +1077,7 @@
         </button>
       </div>
       <div class="dots" id="dots"></div>
-      <div class="st-progress"><span id="progBar" style="width:12.5%"></span></div>
+      <div class="st-progress"><span id="progBar" style="--bar-w:12.5%"></span></div>
     </div>
 
     <div class="st-body">
@@ -1227,7 +1102,7 @@
           <h2 class="step-title">아침 식사량은요?</h2>
           <p class="step-hint">어제 80%, 오늘 평소 범위 내 예상</p>
         </div>
-        <div class="opts" style="grid-template-columns: repeat(5, 1fr)">
+        <div class="opts" style="--opts-cols:5">
           <button class="opt" onclick="pickOne(this)">0%</button>
           <button class="opt" onclick="pickOne(this)">25%</button>
           <button class="opt" onclick="pickOne(this)">50%</button>
@@ -1290,7 +1165,7 @@
 
       <section class="step" data-step="6">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="fluent:toilet-24-filled"></iconify-icon>Step 6 · 배변</span>
+          <span class="step-kicker"><iconify-icon icon="fluent:drop-24-filled"></iconify-icon>Step 6 · 배변</span>
           <h2 class="step-title">배변 기록</h2>
         </div>
         <div class="sec">
@@ -1313,10 +1188,10 @@
 
       <section class="step" data-step="7">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="fluent:emoji-24-filled"></iconify-icon>Step 7 · 인지·정서</span>
+          <span class="step-kicker"><iconify-icon icon="fluent:brain-circuit-24-filled"></iconify-icon>Step 7 · 인지·정서</span>
           <h2 class="step-title">오늘 기분은 어떠셨나요?</h2>
         </div>
-        <div class="opts" style="grid-template-columns: repeat(5,1fr)">
+        <div class="opts" style="--opts-cols:5">
           <button class="opt" onclick="pickOne(this)">우울</button>
           <button class="opt" onclick="pickOne(this)">무기력</button>
           <button class="opt on" onclick="pickOne(this)">양호</button>
@@ -1415,19 +1290,19 @@
           <button class="bs-f on" onclick="openVitalKeypad('혈압 · 이완','mmHg','84','82',this)"><div class="bs-f-l">이완</div><div class="bs-f-v">84<span class="u">mmHg</span></div><div class="bs-f-prev">어제 82</div></button>
           <button class="bs-f" onclick="openVitalKeypad('체온','°C','36.7','36.5',this)"><div class="bs-f-l">체온</div><div class="bs-f-v">36.7<span class="u">°C</span></div><div class="bs-f-prev">어제 36.5</div></button>
           <button class="bs-f" onclick="openVitalKeypad('맥박','bpm','76','74',this)"><div class="bs-f-l">맥박</div><div class="bs-f-v">76<span class="u">bpm</span></div><div class="bs-f-prev">어제 74</div></button>
-          ${p === 'park' ? '<button class="bs-f full" style="background:var(--warn-soft)" onclick="openVitalKeypad(\'혈당\',\'mg/dL\',\'142\',\'135\',this)"><div class="bs-f-l" style="color:var(--palette-amber-700)">혈당 · 재측정 권장</div><div class="bs-f-v" style="color:var(--palette-amber-700)">142<span class="u">mg/dL</span></div><div class="bs-f-prev">아침 142 (주의)</div></button>' : ''}
+          ${p === 'park' ? '<button class="bs-f full bs-f--warn" onclick="openVitalKeypad(\'혈당\',\'mg/dL\',\'142\',\'135\',this)"><div class="bs-f-l">혈당 · 재측정 권장</div><div class="bs-f-v">142<span class="u">mg/dL</span></div><div class="bs-f-prev">아침 142 (주의)</div></button>' : ''}
         </div>
       `,
       meal: () => `
-        <div class="sec-l" style="margin-bottom:8px">섭취량</div>
-        <div class="opts" style="grid-template-columns:repeat(5,1fr)">
+        <div class="sec-l sec-l--gap-b">섭취량</div>
+        <div class="opts" style="--opts-cols:5">
           <button class="opt" onclick="pickOne(this)">0%</button>
           <button class="opt" onclick="pickOne(this)">25%</button>
           <button class="opt" onclick="pickOne(this)">50%</button>
           <button class="opt on" onclick="pickOne(this)">75%</button>
           <button class="opt" onclick="pickOne(this)">100%</button>
         </div>
-        <div class="sec-l" style="margin-top:14px;margin-bottom:8px">형태</div>
+        <div class="sec-l sec-l--gap-tb">형태</div>
         <div class="opts">
           <button class="opt on" onclick="pickOne(this)">일반</button>
           <button class="opt" onclick="pickOne(this)">연식</button>
@@ -1435,7 +1310,7 @@
         </div>
       `,
       med: () => `
-        <div class="sec-l" style="margin-bottom:8px">복용한 약</div>
+        <div class="sec-l sec-l--gap-b">복용한 약</div>
         <div class="chks">
           <button class="chk on" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">혈압약 · 아침</span></button>
           <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">당뇨약 · 점심</span></button>
@@ -1551,8 +1426,8 @@
             '<button class="cg-keypad__btn cg-keypad__btn--util" type="button" onclick="kpBack()" aria-label="지우기"><iconify-icon icon="fluent:backspace-24-filled"></iconify-icon></button>' +
           '</div>' +
           '<div class="cg-sheet__cta">' +
-            '<button class="btn" style="flex:1;background:var(--palette-gray-100);color:var(--color-text-secondary)" onclick="HaruCG.closeSheet()">취소</button>' +
-            '<button class="btn btn-primary" style="flex:1" onclick="kpSave(\''+label+'\',\''+unit+'\')">저장</button>' +
+            '<button class="btn kp-btn kp-btn--cancel" onclick="HaruCG.closeSheet()">취소</button>' +
+            '<button class="btn btn--primary kp-btn" onclick="kpSave(\''+label+'\',\''+unit+'\')">저장</button>' +
           '</div>'
         );
       }
@@ -1684,7 +1559,6 @@
         const c = cards.find(el => el.getAttribute('onclick').includes(`'${id}'`));
         if (c) list.appendChild(c);
       });
-      toast(mode === 'time' ? '시간순 · 다음 할 일 기준' : '환자별 · 호실 순');
     }
     function toast(msg) {
       const t = document.getElementById('toastEl');
@@ -1692,5 +1566,6 @@
       clearTimeout(t._x); t._x = setTimeout(() => t.classList.remove('show'), 2000);
     }
   </script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
 </body>
 </html>

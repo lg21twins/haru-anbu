@@ -27,7 +27,7 @@
 v15_의료진앱/
 ├── README.md
 ├── d01-home.html        ← 지금 (Now)
-├── d02-round.html       ← 회진 모드 ★ 킬러
+├── d02-round.html       ← 회진 모드 (킬러)
 ├── d03-inbox.html       ← 통합 소통
 ├── d04-handover.html    ← 인수인계 적립함
 ├── d05-mypage.html      ← 마이
@@ -40,7 +40,7 @@ v15_의료진앱/
 |---|---|---|---|
 | 1 | 지금 | d01-home.html | `fluent:home-24-filled` |
 | 2 | 회진 | d02-round.html | `fluent:stethoscope-24-filled` |
-| 3 | 소통 | d03-inbox.html | `fluent:chat-multiple-24-filled` |
+| 3 | 소통 | d03-inbox.html | 인라인 채팅버블 SVG (보호자앱 g03-sotong 동일) |
 | 4 | 인수인계 | d04-handover.html | `fluent:arrow-swap-24-filled` |
 | ㆍ | 마이 | d05-mypage.html | `fluent:person-24-filled` (헤더) |
 | FAB | SOS | d-sos.html | `fluent:warning-24-filled` |
@@ -78,10 +78,10 @@ python3 -m http.server 9292
 
 | 기능 | v10 웹 | v15 모바일 |
 |---|---|---|
-| 분석·배치·통계 | 메인 | ✗ |
+| 분석·배치·통계 | 메인 | — |
 | 환자 종합 상세 6탭 | 메인 | 빠른 조회 |
 | 신규 처방 | 메인 | 반복 처방 1탭 |
 | 회진 중 기록 | 사후 검토 | **킬러** |
 | SOS 송수신 | 보조 | **메인** |
-| 이동 중 소통 | ✗ | **메인** |
+| 이동 중 소통 | — | **메인** |
 | 인수인계 적립 | 정리·열람 | **현장 누적** |

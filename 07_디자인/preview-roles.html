@@ -133,10 +133,11 @@
       padding: var(--space-5) var(--space-4) 80px;
       overflow: hidden;
     }
+    /* g-guardian-live.html 홈 화면 톤 — cream base + 중앙 AI 오브 */
     .mini-device__screen--guardian {
       background:
-        radial-gradient(circle at 50% 0%, rgba(44, 122, 252, 0.14) 0%, transparent 65%),
-        linear-gradient(180deg, #d4e4ff 0%, #e8f0fe 40%, #f2f6ff 70%, #EEF3FB 100%);
+        radial-gradient(circle at 50% 30%, rgba(70, 168, 255, 0.32) 0%, rgba(27, 231, 234, 0.18) 30%, transparent 60%),
+        #fafaf6;
     }
     .mini-device__screen--medical { background: linear-gradient(180deg, var(--brand-green-100) 0%, var(--color-bg-canvas) 120px); }
     .mini-device__screen--patient { background: linear-gradient(180deg, var(--brand-orange-100) 0%, var(--color-bg-canvas) 120px); }
@@ -433,9 +434,9 @@
     <div class="compare">
       <div class="demo-box demo-box--guardian-bg" data-role="guardian">
         <div class="demo-card demo-card--guardian">
-          <h4 style="margin: 0 0 8px;">오늘의 안부</h4>
-          <p style="margin: 0; font-size: 13px; color: var(--color-text-secondary);">식사 정상 · 투약 완료</p>
-          <button class="btn btn--guardian" style="margin-top: 12px; height: 36px; padding: 0 14px; font-size: 13px;">자세히</button>
+          <h4 style="margin: 0 0 8px;">일일 리포트</h4>
+          <p style="margin: 0; font-size: 13px; color: var(--color-text-secondary);">투약 1/3 · 맥박 72 BPM · 수면 7h 32m</p>
+          <button class="btn btn--guardian" style="margin-top: 12px; height: 36px; padding: 0 14px; font-size: 13px;">전체 보기</button>
         </div>
       </div>
       <div class="demo-box demo-box--medical-bg" data-role="medical">
@@ -465,9 +466,9 @@
         <div style="font-size: var(--font-11); color: var(--brand-blue-600); font-weight: var(--weight-bold); margin-bottom: var(--space-4); text-transform: uppercase;">보호자</div>
         <nav class="mini-tabbar mini-tabbar--guardian">
           <button class="mini-tab mini-tab--active mini-tab--guardian-active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></button>
-          <button class="mini-tab"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:book-24-filled"></iconify-icon></button>
           <button class="mini-tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></button>
-          <button class="mini-tab"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:folder-24-filled"></iconify-icon></button>
           <button class="mini-tab"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></button>
         </nav>
         <div style="margin-top: var(--space-3); font-size: var(--font-11); color: var(--color-text-tertiary); font-family: var(--font-family-mono);">--tabbar-bg · active = brand-blue-500</div>
@@ -536,33 +537,54 @@
         <div style="text-align: center; font-size: 13px; font-weight: 600; color: var(--brand-blue-600); margin-bottom: 12px; text-transform: uppercase;">보호자</div>
         <div class="mini-device">
           <div class="mini-device__screen mini-device__screen--guardian" data-role="guardian">
-            <div class="mini-hero mini-hero--guardian">
-              <div style="font-size: 10px; opacity: 0.85; margin-bottom: 4px;">오늘의 안부</div>
-              <div style="font-size: 16px; font-weight: 600;">안정적이세요</div>
+            <!-- 인트로 카피 (홈 진입 직후 AI 오브 위) -->
+            <div style="text-align: center; padding-top: 56px; margin-bottom: 14px;">
+              <div style="font-size: 11px; color: rgba(28,28,30,0.55); font-weight: 500;">지욱님,</div>
+              <div style="font-size: 14px; font-weight: 700; line-height: 1.3; color: #1C1C1E; margin-top: 4px;">영자님은 오늘<br><span style="color: var(--brand-blue-500);">잘 지내셨어요</span></div>
             </div>
+
+            <!-- 모먼트 카드 — 간호사가 남긴 사진 + 코멘트 -->
+            <div class="mini-c" style="padding: 8px; margin-bottom: 8px; display: flex; gap: 8px; align-items: center;">
+              <div style="width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, #FDE68A, #F59E0B); flex-shrink: 0;"></div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: 10px; line-height: 1.35; color: var(--color-text-primary);">"오전 산책 때 햇빛이 좋아서 한참 머무르셨어요"</div>
+                <div style="font-size: 9px; color: var(--color-text-tertiary); margin-top: 2px;">김서연 간호사 · 10:24</div>
+              </div>
+            </div>
+
+            <!-- 일일 리포트 위젯: 투약 + 맥박 -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
               <div class="mini-c" style="padding: 10px; margin: 0;">
-                <div style="font-size: 10px; color: var(--color-text-secondary);">식사</div>
-                <div style="font-size: 16px; font-weight: 600;">2/3</div>
+                <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--color-text-secondary); margin-bottom: 2px;">
+                  <iconify-icon icon="fluent:pill-24-filled" style="color: #6EE7B7; font-size: 12px;"></iconify-icon>투약
+                </div>
+                <div style="font-size: 18px; font-weight: 800; letter-spacing: -0.5px;">33<span style="font-size: 10px; opacity: 0.4;">%</span></div>
+                <div style="font-size: 9px; color: var(--color-text-tertiary);">1/3 · 다음 18:00</div>
               </div>
               <div class="mini-c" style="padding: 10px; margin: 0;">
-                <div style="font-size: 10px; color: var(--color-text-secondary);">투약</div>
-                <div style="font-size: 16px; font-weight: 600;">3/3</div>
+                <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--color-text-secondary); margin-bottom: 2px;">
+                  <iconify-icon icon="fluent:pulse-24-filled" style="color: var(--color-danger); font-size: 12px;"></iconify-icon>맥박
+                </div>
+                <div style="font-size: 18px; font-weight: 800; letter-spacing: -0.5px;">72<span style="font-size: 10px; opacity: 0.4;"> BPM</span></div>
+                <div style="font-size: 9px; color: var(--color-text-tertiary);">평균 근처 ±74</div>
               </div>
             </div>
-            <div class="mini-c" style="border-color: rgba(44,122,252,0.20);">
-              <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 6px;">
-                <img src="logo/brand-system/01_심볼단독.svg" style="width: 14px; height: 14px;">
-                <span style="font-size: 10px; color: var(--brand-blue-500); font-weight: 600;">AI 안부 리포트</span>
+
+            <!-- AI 인사이트 (홈 하단) -->
+            <div class="mini-c" style="border-color: rgba(44,122,252,0.20); padding: 10px;">
+              <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
+                <iconify-icon icon="fluent:sleep-24-filled" style="font-size: 12px; color: var(--brand-blue-500);"></iconify-icon>
+                <span style="font-size: 10px; color: var(--brand-blue-500); font-weight: 600;">AI 인사이트</span>
               </div>
-              <div style="font-size: 11px; line-height: 1.4;">"오늘은 식사·투약 모두 잘 하셨어요"</div>
+              <div style="font-size: 10px; line-height: 1.35; color: var(--color-text-primary);">수면 패턴이 안정적이에요 (이번 주 평균 7.5시간)</div>
             </div>
+
             <div class="mini-tabbar-pos">
               <nav class="mini-tabbar mini-tabbar--guardian">
                 <button class="mini-tab mini-tab--active mini-tab--guardian-active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></button>
-                <button class="mini-tab"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:book-24-filled"></iconify-icon></button>
                 <button class="mini-tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></button>
-                <button class="mini-tab"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:folder-24-filled"></iconify-icon></button>
                 <button class="mini-tab"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></button>
               </nav>
             </div>

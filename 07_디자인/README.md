@@ -73,7 +73,9 @@
 
 ## 변경 이력
 
-- **v3.2.3 (2026.05.11)**: **다크 모드 봉인 — 라이트 단일 운영.** v9.5 시대 페이지들이 hex를 직접 사용해 다크 토큰과 충돌(글자 안 보임 / 사이드바·본문 명도 불일치)하는 문제로 봉인. `_app-theme.js`가 항상 `data-theme="light"` 강제, 다크 토글 위젯 제거, localStorage 자동 정리. tokens.css 다크 블록 코드는 보존(향후 모든 페이지가 토큰 기반이 되면 봉인 해제 검토).
+- **v3.2.8 (2026.05.17)**: **다크 모드 코드 제거 — 라이트 단일 운영 확정.** v3.2.3에서 봉인했던 다크 블록을 `tokens.css` / `_app-theme.js` / `_preview-controls.js` / `_preview-shared.css`에서 전부 삭제. `data-theme` 강제 코드와 다크 토글 바인딩도 함께 제거. 레거시 localStorage 키(`haru-app-theme`, `haru-preview-theme`)는 기존 브라우저 정리를 위해 자동 청소 루틴만 유지.
+- **v3.2.7 (2026.05.17)**: Danger Red 재정의 — rose 계열에서 Rivian Alarm `#E32B25`로 swap. Mobbin 응급 CTA 8종 비교 후 선정. 하드코딩된 rose 그래디언트를 단색 `var(--color-danger)`로 통일.
+- **v3.2.3 (2026.05.11)**: 다크 모드 봉인(v3.2.8에서 코드 제거).
 - **v3.2 (2026.05.11)**: 외부 디자인 시스템 3사이트(KRDS·Fluent 2·KT Seamless Flow) 갭 분석 기반 15건 개선. 
   **신설:** AI 컴포넌트 카테고리(H1~H4), AI 패턴 5종(P3A~P3E), 차트 팔레트(--chart-1~8 + 의미 별칭, Okabe-Ito 색맹 안전), Side Panel(Non-modal B4), 알림 4채널 통합 매트릭스(P6), 의료진 웹 hover 상태(--state-*), 다중 에러 + 비동기 검증 패턴(P8.3~P8.4), 라이팅 액션 동사 매트릭스(§1.5), 컴포넌트 6종 추가(Section Tab/Stepper/Progress/Accordion/Tooltip/Pagination), 매직넘버 명도 사다리(--neutral-10~90 + strong), 스켈레톤 토큰(--skeleton-*), 일러스트 시스템(§15 라인 일러스트 vs 마스코트 분리), 저전력 폴백(@prefers-reduced-transparency + .no-blur), 환자앱 접근성 토글([data-a11y-text="large"] · [data-a11y-contrast="high"]).
   *(다크 모드 §13 도입은 v3.2.3에서 봉인됨 — 위 항목 참조.)*

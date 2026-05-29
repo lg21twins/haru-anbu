@@ -16,7 +16,7 @@
 
   <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="../07_디자인/system/app.css">
-  <link rel="stylesheet" href="../07_디자인/system/components.css">
+  <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
   <link rel="stylesheet" href="caregiver.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <script defer src="caregiver.js"></script>
@@ -27,7 +27,7 @@
        원칙: 주간 리스트 + 액션 메뉴 · 복잡한 타임라인 금지
        ============================================================ */
     :root {
-      --text-body: 16px;
+      --text-body: 18px; /* v3.2.7: 본문 18px — caregiver 표준 통일 */
       --accent:        var(--color-accent);
       --accent-soft:   var(--color-accent-soft);
       --accent-strong: var(--color-accent-strong);
@@ -35,21 +35,19 @@
       --t2:            var(--color-text-secondary);
       --t3:            var(--color-text-tertiary);
 
-      --safe-t: max(env(safe-area-inset-top, 0px), 52px);
+      --safe-t: env(safe-area-inset-top, 0px); /* v3.2.5: 단순 env() — 데스크톱 빈공간 제거 */
       --safe-b: max(env(safe-area-inset-bottom, 0px), 20px);
-      --page-pad: 16px;
+      --page-pad: 20px; /* v3.2.5: 본문 좌우 padding 통일 */
 
       --glass-b: rgba(0,0,0,.05);
     }
 
-    html { height: 100%; background: #F4FAF6; }
+    html { height: 100%; background: var(--clinical-canvas); }
     body { min-height: 100%; color: var(--t1); overflow-x: hidden; font-size: var(--text-body); }
 
     .bg {
       position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
-      background:
-        radial-gradient(520px 420px at 50% -6%, rgba(34,197,94,.12), transparent 65%),
-        linear-gradient(180deg, #D9F4E1 0%, #E8F6EE 28%, #F0F8F3 62%, #F4FAF6 100%);
+      background: var(--clinical-bg-image);
     }
 
     .app {
@@ -58,27 +56,30 @@
       padding-bottom: calc(var(--safe-b) + 24px);
     }
 
-    /* ============ 헤더 ============ */
-    .header {
-      position: sticky; top: 0; z-index: 10;
-      padding: calc(var(--safe-t) + 4px) var(--page-pad) 10px;
-      background: linear-gradient(180deg, rgba(232,246,238,.96) 0%, rgba(232,246,238,.82) 70%, rgba(232,246,238,0) 100%);
-      backdrop-filter: blur(10px) saturate(140%);
-      -webkit-backdrop-filter: blur(10px) saturate(140%);
-      display: flex; align-items: center; justify-content: space-between;
+    /* ============ 헤더 · 보호자앱 header-mobile 통일 v4.0 ============ */
+    .app .header-mobile {
+      position: static !important;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
     }
-    .header-ttl { font-size: 17px; font-weight: 700; color: var(--t1); letter-spacing: -.3px; }
+    .app .header-mobile__left,
+    .app .header-mobile__right { color: var(--t2); }
+    .app .header-mobile__right iconify-icon,
+    .app .header-mobile__left iconify-icon { font-size: var(--size-icon-md); }
 
+    /* v3.2.5: 헤더 icon-btn 글라스 통일 (c01 홈 스펙) */
     .icon-btn {
-      width: 48px; height: 48px; border-radius: 50%;
-      background: rgba(255,255,255,.8);
-      border: 1px solid var(--glass-b);
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,.55);
+      border: .5px solid rgba(255,255,255,.55);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
       display: inline-flex; align-items: center; justify-content: center;
       cursor: pointer; text-decoration: none;
-      transition: transform .1s; font-family: inherit;
+      box-shadow: 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06);
+      position: relative; transition: transform .1s; font-family: inherit;
     }
-    .icon-btn:active { transform: scale(.93); }
-    .icon-btn iconify-icon { font-size: 22px; color: var(--t2); }
 
     /* ============ 컨텐츠 ============ */
     .content {
@@ -86,14 +87,13 @@
       padding: 0 var(--page-pad) 0;
     }
 
-    /* 카드 공통 */
+    /* 카드 공통 — v3.2.8: 솔리드 베이스라인 (caregiver.css --cg-card-*) */
     .card {
-      background: rgba(255,255,255,.82);
-      border: 1px solid var(--glass-b);
-      border-radius: 20px;
+      background: var(--cg-card-bg);
+      border: 0;
+      border-radius: var(--cg-card-radius);
       margin-bottom: 12px;
-      backdrop-filter: blur(16px) saturate(140%);
-      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      box-shadow: var(--cg-card-shadow);
     }
 
     /* ============ 주 네비 카드 ============ */
@@ -132,9 +132,9 @@
     .sum-pill b { font-weight: 700; color: var(--t1); font-variant-numeric: tabular-nums; }
     .sum-pill .dot {
       width: 7px; height: 7px; border-radius: 50%;
-      background: #D97706;
+      background: var(--palette-amber-600);
     }
-    .sum-pill .dot.n   { background: #6366F1; }
+    .sum-pill .dot.n   { background: var(--shift-night); }
     .sum-pill .dot.off { background: rgba(107,114,128,.55); }
 
     /* ============ 주간 리스트 카드 ============ */
@@ -143,12 +143,18 @@
       display: grid;
       grid-template-columns: 44px 54px 1fr auto auto;
       gap: 10px; align-items: center;
-      padding: 13px 16px;
+      padding: 13px 16px 13px 13px;
       min-height: 56px;
       text-decoration: none; color: inherit;
       cursor: pointer;
       transition: background .12s;
+      /* 외부 roster 표준(When I Work/7shifts): 좌측 3px shift-type bar */
+      border-left: 3px solid var(--shift-bar, transparent);
     }
+    .sch-day:has(.sd-chip:not(.off):not(.n)) { --shift-bar: var(--accent-strong); }
+    .sch-day:has(.sd-chip.n)                { --shift-bar: var(--shift-night); }
+    /* 휴무 row: 시각적 후퇴 (60-72% opacity) — 일하는 날 시각 우선순위 강화 */
+    .sch-day:has(.sd-chip.off) { opacity: .68; }
     /* 작은 화면(<=360px): 환자 아바타 줄을 다음 줄로, count chip으로 축약 */
     @media (max-width: 360px) {
       .sch-day {
@@ -167,7 +173,7 @@
       .sch-day > iconify-icon:last-child { grid-area: chev; }
     }
     .sch-day + .sch-day {
-      border-top: 1px solid rgba(0,0,0,.04);
+      border-top: 1px solid rgba(0,0,0,.05);
     }
     .sch-day:active { background: rgba(0,0,0,.02); }
 
@@ -186,16 +192,16 @@
       padding: 4px 9px; border-radius: 999px;
       font-size: 11px; font-weight: 700;
       letter-spacing: -.1px;
-      background: rgba(217,119,6,.12); color: #B45309;
+      background: rgba(217,119,6,.12); color: var(--palette-amber-700);
     }
-    .sd-chip.n { background: rgba(99,102,241,.12); color: #4338CA; }
+    .sd-chip.n { background: rgba(99,102,241,.12); color: var(--shift-night-text); }
     .sd-chip.off {
       background: transparent;
       color: var(--t3);
       border: 1px dashed rgba(0,0,0,.15);
     }
     .sch-day.today .sd-chip {
-      background: rgba(34,197,94,.14); color: var(--accent-strong);
+      background: rgba(var(--brand-green-500-rgb), .14); color: var(--accent-strong);
     }
 
     .sd-time {
@@ -217,17 +223,17 @@
     .sd-pts .pt {
       width: 26px; height: 26px; border-radius: 50%;
       display: inline-flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; color: #fff;
+      font-size: 11px; font-weight: 700; color: var(--palette-white);
       letter-spacing: -.2px;
       border: 2px solid rgba(255,255,255,.95);
       box-shadow: 0 1px 3px rgba(0,0,0,.08);
       font-variant-numeric: tabular-nums;
     }
     .sd-pts .pt + .pt { margin-left: -8px; }
-    .sd-pts .pt.k { background: linear-gradient(135deg, #F59E0B, #D97706); }
-    .sd-pts .pt.l { background: linear-gradient(135deg, #6366F1, #4338CA); }
-    .sd-pts .pt.p { background: linear-gradient(135deg, #10B981, #047857); }
-    .sd-pts .pt.c { background: linear-gradient(135deg, #EC4899, #BE185D); }
+    .sd-pts .pt.k { background: var(--palette-amber-600); }
+    .sd-pts .pt.l { background: var(--shift-night-text); }
+    .sd-pts .pt.p { background: var(--shift-day); }
+    .sd-pts .pt.c { background: var(--shift-evening); }
     .sd-pts .more {
       width: 26px; height: 26px; border-radius: 50%;
       display: inline-flex; align-items: center; justify-content: center;
@@ -245,12 +251,13 @@
       display: inline-flex; align-items: center; gap: 4px;
       padding: 2px 7px; border-radius: 999px;
       font-size: 10px; font-weight: 700;
-      background: var(--palette-red-600); color: #fff;
+      /* v3.2.8: danger 시멘틱 토큰 통일 (라벨 일관성) */
+      background: var(--color-danger); color: var(--palette-white);
       letter-spacing: -.1px; flex-shrink: 0;
     }
     .sd-now::before {
       content: ''; width: 5px; height: 5px; border-radius: 50%;
-      background: #fff;
+      background: var(--palette-white);
     }
 
     /* ============ 메뉴 그룹 ============ */
@@ -260,13 +267,12 @@
       letter-spacing: .2px;
     }
     .menu-group {
-      background: rgba(255,255,255,.82);
-      border: 1px solid var(--glass-b);
-      border-radius: 20px;
+      background: var(--cg-card-bg);
+      border: 0;
+      border-radius: var(--cg-card-radius);
       overflow: hidden;
       margin-bottom: 12px;
-      backdrop-filter: blur(16px) saturate(140%);
-      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      box-shadow: var(--cg-card-shadow);
     }
     .menu-item {
       display: flex; align-items: center; gap: 12px;
@@ -275,18 +281,18 @@
       cursor: pointer; transition: background .15s;
     }
     .menu-item:active { background: rgba(0,0,0,.02); }
-    .menu-item + .menu-item { border-top: 1px solid rgba(0,0,0,.04); }
+    .menu-item + .menu-item { border-top: 1px solid rgba(0,0,0,.05); }
 
     .mi-icon {
       width: 32px; height: 32px; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      background: rgba(34,197,94,.06);
+      background: rgba(var(--brand-green-500-rgb), .06);
       color: var(--accent-strong);
     }
     .mi-icon iconify-icon { font-size: 16px; }
-    .mi-icon.amber { background: rgba(245,158,11,.08); color: var(--palette-amber-700); }
-    .mi-icon.indigo { background: rgba(99,102,241,.1); color: #4338CA; }
+    .mi-icon.amber { background: rgba(var(--color-warning-rgb), .08); color: var(--palette-amber-700); }
+    .mi-icon.indigo { background: rgba(99,102,241,.1); color: var(--shift-night-text); }
     .mi-icon.grey { background: rgba(0,0,0,.04); color: var(--t1); }
 
     .mi-body { flex: 1; min-width: 0; }
@@ -299,7 +305,7 @@
     .toast {
       position: fixed; top: 80px; left: 50%;
       transform: translateX(-50%) translateY(-8px);
-      background: rgba(28,28,30,.9); color: #fff;
+      background: rgba(28,28,30,.92); color: var(--palette-white);
       padding: 11px 22px; border-radius: 999px;
       font-size: 14px; font-weight: 600;
       box-shadow: 0 8px 24px rgba(0,0,0,.18);
@@ -310,15 +316,23 @@
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* ============ 애니메이션 ============ */
-    @keyframes fadeUp {
+    @keyframes haru-fade-in-up {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .content > * { animation: fadeUp .4s cubic-bezier(0.2, 0, 0, 1) both; }
+    .content > * { animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both; }
     .content > *:nth-child(2) { animation-delay: .05s; }
     .content > *:nth-child(3) { animation-delay: .1s; }
     .content > *:nth-child(4) { animation-delay: .15s; }
     .content > *:nth-child(5) { animation-delay: .2s; }
+
+    /* Sheet footer buttons (JS template — inline 대체) */
+    .sh-btn {
+      flex: 1; height: 48px; border-radius: 14px; border: 0;
+      font: inherit; font-weight: 600;
+    }
+    .sh-btn--close   { background: var(--palette-gray-100); color: var(--t2); }
+    .sh-btn--go      { background: var(--accent); color: var(--palette-white); font-weight: 700; }
   </style>
 </head>
 <body>
@@ -328,13 +342,15 @@
 
     <!-- ============ 헤더 ============ -->
     <header class="header">
-      <a class="icon-btn" href="c04-mypage.html" aria-label="뒤로">
-        <iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon>
-      </a>
-      <span class="header-ttl">일정</span>
-      <button class="icon-btn" onclick="HaruCG && HaruCG.toast ? HaruCG.toast('주간 일정 PDF 공유 준비중') : toast('공유')" aria-label="공유">
-        <iconify-icon icon="fluent:share-24-filled"></iconify-icon>
-      </button>
+      <div class="top-nav">
+        <span class="h-left" aria-hidden="true"></span>
+        <div class="title-block">
+          <h1 class="h-name">일정</h1>
+        </div>
+        <button class="icon-btn" type="button" aria-label="근무표 공유" onclick="HaruCG && HaruCG.toast ? HaruCG.toast('근무표 공유 · 준비중') : toast('근무표 공유')">
+          <iconify-icon icon="fluent:share-24-filled"></iconify-icon>
+        </button>
+      </div>
     </header>
 
     <div class="content">
@@ -518,8 +534,8 @@
             : '') +
         '</div>' +
         '<div class="cg-sheet__cta">' +
-          '<button class="btn cta-soft" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--palette-gray-100);color:var(--t2);font:inherit;font-weight:600" onclick="HaruCG.closeSheet()">닫기</button>' +
-          (d.today ? '<button class="btn" style="flex:1;height:48px;border-radius:14px;border:0;background:var(--accent);color:#fff;font:inherit;font-weight:700" onclick="HaruCG.closeSheet();location.href=\'c01-today.html\'"><iconify-icon icon="fluent:home-24-filled"></iconify-icon> 오늘 화면</button>' : '')+
+          '<button class="btn sh-btn sh-btn--close" onclick="HaruCG.closeSheet()">닫기</button>' +
+          (d.today ? '<button class="btn sh-btn sh-btn--go" onclick="HaruCG.closeSheet();location.href=\'c01-today.html\'"><iconify-icon icon="fluent:home-24-filled"></iconify-icon> 오늘 화면</button>' : '')+
         '</div>'
       );
     }

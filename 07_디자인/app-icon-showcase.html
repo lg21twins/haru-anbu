@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 — App Icon</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #2C7AFC;
+    --ink: #0F172A;
+    --ink-2: #475569;
+    --ink-3: #94A3B8;
+    --canvas: #F5F6F8;
+    --paper: #FFFFFF;
+    --line: #E5E7EB;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { background:var(--canvas); color:var(--ink); font-family:'Outfit','Noto Sans KR',system-ui,sans-serif; }
+  body { padding:80px 48px 120px; }
+
+  .wrap { max-width:1180px; margin:0 auto; }
+
+  .kicker { font-size:11px; letter-spacing:6px; font-weight:700; color:var(--brand); margin-bottom:14px; }
+  h1 { font-family:'Noto Sans KR'; font-weight:900; font-size:52px; letter-spacing:-0.02em; }
+  h1 .light { font-weight:500; color:var(--ink-2); }
+  .lede { margin-top:14px; color:var(--ink-2); font-size:16px; max-width:560px; line-height:1.6; }
+
+  /* Hero — single huge icon, generous breathing room */
+  .hero {
+    margin-top:72px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:80px 24px;
+  }
+  .hero-icon {
+    width:280px; height:280px;
+    background:#FFFFFF;
+    clip-path:url(#squircle);
+    display:flex; align-items:center; justify-content:center;
+    filter:
+      drop-shadow(0 30px 60px rgba(15,23,42,0.14))
+      drop-shadow(0 12px 24px rgba(15,23,42,0.06));
+  }
+  .hero-icon svg { width:54%; height:54%; }
+  .hero-label { margin-top:36px; font-family:'Noto Sans KR'; font-weight:700; font-size:20px; }
+  .hero-sub { margin-top:6px; font-size:13px; color:var(--ink-3); letter-spacing:0.5px; }
+
+  /* Size scale */
+  .section { margin-top:120px; }
+  .section-head { margin-bottom:40px; }
+  .section-title { font-family:'Noto Sans KR'; font-weight:800; font-size:24px; }
+  .section-desc { margin-top:8px; color:var(--ink-2); font-size:14px; }
+
+  .scale-row {
+    display:flex; align-items:flex-end; justify-content:center; gap:48px;
+    padding:60px 24px;
+    background:var(--paper);
+    border-radius:28px;
+  }
+  .scale-item { display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .scale-item .ico {
+    background:#FFFFFF;
+    display:flex; align-items:center; justify-content:center;
+    clip-path:url(#squircle);
+    filter:drop-shadow(0 10px 24px rgba(15,23,42,0.12));
+  }
+  .scale-item .ico svg { width:54%; height:54%; }
+  .scale-item .meta { font-size:11px; color:var(--ink-3); letter-spacing:1px; font-weight:600; }
+
+  .s-180 { width:180px; height:180px; }
+  .s-120 { width:120px; height:120px; }
+  .s-80  { width:80px;  height:80px;  }
+  .s-60  { width:60px;  height:60px;  }
+  .s-40  { width:40px;  height:40px;  }
+
+  /* Backgrounds — flat solid colors only, no gradients */
+  .bg-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; }
+  .bg-cell {
+    aspect-ratio:1/1;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:24px;
+    position:relative;
+  }
+  .bg-cell .ico {
+    width:54%; height:54%;
+    clip-path:url(#squircle);
+    display:flex; align-items:center; justify-content:center;
+    background:#FFFFFF;
+    filter:drop-shadow(0 12px 28px rgba(15,23,42,0.22));
+  }
+  .bg-cell .ico svg { width:54%; height:54%; }
+  .bg-cell .tag {
+    position:absolute; bottom:14px; left:18px;
+    font-size:10px; letter-spacing:1.5px; font-weight:700;
+    color:rgba(255,255,255,0.6);
+  }
+  .bg-white { background:#FFFFFF; }
+  .bg-white .tag { color:var(--ink-3); }
+  .bg-warm  { background:#FAFAF7; }
+  .bg-warm  .tag { color:var(--ink-3); }
+  .bg-ink   { background:#0F172A; }
+  .bg-noir  { background:#000000; }
+
+  /* Home screen mockup — flat single-color wallpaper, no gradient */
+  .home {
+    margin:0 auto;
+    width:360px; height:720px;
+    background:#E8EEF7; /* flat soft blue — single solid token */
+    border-radius:48px;
+    padding:56px 26px 28px;
+    position:relative;
+    box-shadow:
+      0 40px 80px rgba(15,23,42,0.18),
+      0 0 0 10px #111317,
+      0 0 0 11px #2A2D33;
+  }
+  .home::before {
+    content:""; position:absolute; top:18px; left:50%; transform:translateX(-50%);
+    width:96px; height:24px; border-radius:14px; background:#111317;
+  }
+  .home-time {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 16px 24px;
+    font-size:14px; font-weight:700; color:var(--ink);
+  }
+  .home-time .right { display:flex; gap:6px; align-items:center; }
+  .home-time iconify-icon { font-size:14px; color:var(--ink); }
+
+  .home-grid {
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:22px 18px;
+    padding:8px 6px;
+  }
+  .app { display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .app .icon {
+    width:60px; height:60px;
+    clip-path:url(#squircle);
+    display:flex; align-items:center; justify-content:center;
+    filter:drop-shadow(0 4px 10px rgba(15,23,42,0.18));
+  }
+  .app .icon iconify-icon { font-size:30px; color:#fff; }
+  .app .name { font-size:10px; color:var(--ink); font-weight:500; }
+
+  /* Haru Anbu icon on the home grid — highlighted */
+  .app.haru .icon {
+    background:#FFFFFF;
+    filter:drop-shadow(0 8px 18px rgba(15,23,42,0.22));
+  }
+  .app.haru .icon svg { width:54%; height:54%; }
+  .app.haru .name { color:var(--brand); font-weight:700; }
+
+  .app .icon.c1 { background:#22C55E; }
+  .app .icon.c2 { background:#F97316; }
+  .app .icon.c3 { background:#EF4444; }
+  .app .icon.c4 { background:#0EA5E9; }
+  .app .icon.c5 { background:#8B5CF6; }
+  .app .icon.c6 { background:#F59E0B; }
+  .app .icon.c7 { background:#14B8A6; }
+  .app .icon.c8 { background:#1E293B; }
+  .app .icon.c9 { background:#EC4899; }
+  .app .icon.c10 { background:#64748B; }
+  .app .icon.c11 { background:#0F172A; }
+
+  .home-dock {
+    position:absolute; left:24px; right:24px; bottom:22px;
+    background:rgba(255,255,255,0.55);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-radius:24px; padding:12px 14px;
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;
+  }
+  .home-dock .app .name { display:none; }
+  .home-dock .app .icon { width:48px; height:48px; }
+  .home-dock .app .icon iconify-icon { font-size:24px; }
+
+  .home-foot { text-align:center; margin-top:36px; font-size:12px; color:var(--ink-3); letter-spacing:0.5px; }
+
+  .mockup-wrap { display:flex; flex-direction:column; align-items:center; }
+</style>
+</head>
+<body>
+
+<!-- iOS squircle (superellipse n=5, 240 samples) — applied via clip-path on all icon containers -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="squircle" clipPathUnits="objectBoundingBox">
+      <path d="M 1.0000 0.5000 L 0.9999 0.6164 L 0.9997 0.6536 L 0.9994 0.6806 L 0.9989 0.7026 L 0.9983 0.7214 L 0.9975 0.7381 L 0.9966 0.7531 L 0.9956 0.7668 L 0.9944 0.7794 L 0.9931 0.7912 L 0.9917 0.8022 L 0.9901 0.8126 L 0.9883 0.8224 L 0.9864 0.8317 L 0.9844 0.8405 L 0.9822 0.8489 L 0.9799 0.8569 L 0.9774 0.8646 L 0.9748 0.8719 L 0.9720 0.8789 L 0.9691 0.8857 L 0.9660 0.8921 L 0.9628 0.8983 L 0.9594 0.9043 L 0.9558 0.9100 L 0.9520 0.9154 L 0.9481 0.9207 L 0.9440 0.9258 L 0.9397 0.9306 L 0.9353 0.9353 L 0.9306 0.9397 L 0.9258 0.9440 L 0.9207 0.9481 L 0.9154 0.9520 L 0.9100 0.9558 L 0.9043 0.9594 L 0.8983 0.9628 L 0.8921 0.9660 L 0.8857 0.9691 L 0.8789 0.9720 L 0.8719 0.9748 L 0.8646 0.9774 L 0.8569 0.9799 L 0.8489 0.9822 L 0.8405 0.9844 L 0.8317 0.9864 L 0.8224 0.9883 L 0.8126 0.9901 L 0.8022 0.9917 L 0.7912 0.9931 L 0.7794 0.9944 L 0.7668 0.9956 L 0.7531 0.9966 L 0.7381 0.9975 L 0.7214 0.9983 L 0.7026 0.9989 L 0.6806 0.9994 L 0.6536 0.9997 L 0.6164 0.9999 L 0.5000 1.0000 L 0.3836 0.9999 L 0.3464 0.9997 L 0.3194 0.9994 L 0.2974 0.9989 L 0.2786 0.9983 L 0.2619 0.9975 L 0.2469 0.9966 L 0.2332 0.9956 L 0.2206 0.9944 L 0.2088 0.9931 L 0.1978 0.9917 L 0.1874 0.9901 L 0.1776 0.9883 L 0.1683 0.9864 L 0.1595 0.9844 L 0.1511 0.9822 L 0.1431 0.9799 L 0.1354 0.9774 L 0.1281 0.9748 L 0.1211 0.9720 L 0.1143 0.9691 L 0.1079 0.9660 L 0.1017 0.9628 L 0.0957 0.9594 L 0.0900 0.9558 L 0.0846 0.9520 L 0.0793 0.9481 L 0.0742 0.9440 L 0.0694 0.9397 L 0.0647 0.9353 L 0.0603 0.9306 L 0.0560 0.9258 L 0.0519 0.9207 L 0.0480 0.9154 L 0.0442 0.9100 L 0.0406 0.9043 L 0.0372 0.8983 L 0.0340 0.8921 L 0.0309 0.8857 L 0.0280 0.8789 L 0.0252 0.8719 L 0.0226 0.8646 L 0.0201 0.8569 L 0.0178 0.8489 L 0.0156 0.8405 L 0.0136 0.8317 L 0.0117 0.8224 L 0.0099 0.8126 L 0.0083 0.8022 L 0.0069 0.7912 L 0.0056 0.7794 L 0.0044 0.7668 L 0.0034 0.7531 L 0.0025 0.7381 L 0.0017 0.7214 L 0.0011 0.7026 L 0.0006 0.6806 L 0.0003 0.6536 L 0.0001 0.6164 L 0.0000 0.5000 L 0.0001 0.3836 L 0.0003 0.3464 L 0.0006 0.3194 L 0.0011 0.2974 L 0.0017 0.2786 L 0.0025 0.2619 L 0.0034 0.2469 L 0.0044 0.2332 L 0.0056 0.2206 L 0.0069 0.2088 L 0.0083 0.1978 L 0.0099 0.1874 L 0.0117 0.1776 L 0.0136 0.1683 L 0.0156 0.1595 L 0.0178 0.1511 L 0.0201 0.1431 L 0.0226 0.1354 L 0.0252 0.1281 L 0.0280 0.1211 L 0.0309 0.1143 L 0.0340 0.1079 L 0.0372 0.1017 L 0.0406 0.0957 L 0.0442 0.0900 L 0.0480 0.0846 L 0.0519 0.0793 L 0.0560 0.0742 L 0.0603 0.0694 L 0.0647 0.0647 L 0.0694 0.0603 L 0.0742 0.0560 L 0.0793 0.0519 L 0.0846 0.0480 L 0.0900 0.0442 L 0.0957 0.0406 L 0.1017 0.0372 L 0.1079 0.0340 L 0.1143 0.0309 L 0.1211 0.0280 L 0.1281 0.0252 L 0.1354 0.0226 L 0.1431 0.0201 L 0.1511 0.0178 L 0.1595 0.0156 L 0.1683 0.0136 L 0.1776 0.0117 L 0.1874 0.0099 L 0.1978 0.0083 L 0.2088 0.0069 L 0.2206 0.0056 L 0.2332 0.0044 L 0.2469 0.0034 L 0.2619 0.0025 L 0.2786 0.0017 L 0.2974 0.0011 L 0.3194 0.0006 L 0.3464 0.0003 L 0.3836 0.0001 L 0.5000 0.0000 L 0.6164 0.0001 L 0.6536 0.0003 L 0.6806 0.0006 L 0.7026 0.0011 L 0.7214 0.0017 L 0.7381 0.0025 L 0.7531 0.0034 L 0.7668 0.0044 L 0.7794 0.0056 L 0.7912 0.0069 L 0.8022 0.0083 L 0.8126 0.0099 L 0.8224 0.0117 L 0.8317 0.0136 L 0.8405 0.0156 L 0.8489 0.0178 L 0.8569 0.0201 L 0.8646 0.0226 L 0.8719 0.0252 L 0.8789 0.0280 L 0.8857 0.0309 L 0.8921 0.0340 L 0.8983 0.0372 L 0.9043 0.0406 L 0.9100 0.0442 L 0.9154 0.0480 L 0.9207 0.0519 L 0.9258 0.0560 L 0.9306 0.0603 L 0.9353 0.0647 L 0.9397 0.0694 L 0.9440 0.0742 L 0.9481 0.0793 L 0.9520 0.0846 L 0.9558 0.0900 L 0.9594 0.0957 L 0.9628 0.1017 L 0.9660 0.1079 L 0.9691 0.1143 L 0.9720 0.1211 L 0.9748 0.1281 L 0.9774 0.1354 L 0.9799 0.1431 L 0.9822 0.1511 L 0.9844 0.1595 L 0.9864 0.1683 L 0.9883 0.1776 L 0.9901 0.1874 L 0.9917 0.1978 L 0.9931 0.2088 L 0.9944 0.2206 L 0.9956 0.2332 L 0.9966 0.2469 L 0.9975 0.2619 L 0.9983 0.2786 L 0.9989 0.2974 L 0.9994 0.3194 L 0.9997 0.3464 L 0.9999 0.3836 Z"/>
+    </clipPath>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <header>
+    <div class="kicker">HARU ANBU · APP ICON</div>
+    <h1>하루 안부 <span class="light">앱 아이콘</span></h1>
+    <p class="lede">브랜드 심볼을 iOS squircle 컨테이너에 정렬한 표준 앱 아이콘입니다. 모든 사이즈에서 동일한 시각 균형을 유지합니다.</p>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-icon">
+      <svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg" aria-label="Haru Anbu Symbol">
+        <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/>
+        <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/>
+      </svg>
+    </div>
+    <div class="hero-label">하루 안부</div>
+    <div class="hero-sub">HARU ANBU</div>
+  </section>
+
+  <!-- Size scale -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-title">사이즈 스케일</div>
+      <div class="section-desc">180 / 120 / 80 / 60 / 40 — 모든 크기에서 corner radius 비율 22% 유지</div>
+    </div>
+    <div class="scale-row">
+      <div class="scale-item">
+        <div class="ico s-180">
+          <svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></svg>
+        </div>
+        <div class="meta">180 PX</div>
+      </div>
+      <div class="scale-item">
+        <div class="ico s-120">
+          <svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></svg>
+        </div>
+        <div class="meta">120 PX</div>
+      </div>
+      <div class="scale-item">
+        <div class="ico s-80">
+          <svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></svg>
+        </div>
+        <div class="meta">80 PX</div>
+      </div>
+      <div class="scale-item">
+        <div class="ico s-60">
+          <svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></svg>
+        </div>
+        <div class="meta">60 PX</div>
+      </div>
+      <div class="scale-item">
+        <div class="ico s-40">
+          <svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></svg>
+        </div>
+        <div class="meta">40 PX</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Background variants -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-title">배경별 검증</div>
+      <div class="section-desc">단색 배경 4종에서 가독성과 그림자 균형 확인</div>
+    </div>
+    <div class="bg-grid">
+      <div class="bg-cell bg-white">
+        <div class="ico"><svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></svg></div>
+        <div class="tag">WHITE</div>
+      </div>
+      <div class="bg-cell bg-warm">
+        <div class="ico"><svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></svg></div>
+        <div class="tag">WARM</div>
+      </div>
+      <div class="bg-cell bg-ink">
+        <div class="ico"><svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></svg></div>
+        <div class="tag">INK</div>
+      </div>
+      <div class="bg-cell bg-noir">
+        <div class="ico"><svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></svg></div>
+        <div class="tag">BLACK</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Home screen mockup -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-title">홈 화면 시뮬레이션</div>
+      <div class="section-desc">실제 폰 홈 그리드에서의 시인성</div>
+    </div>
+
+    <div class="mockup-wrap">
+      <div class="home">
+        <div class="home-time">
+          <span>9:41</span>
+          <span class="right">
+            <iconify-icon icon="fluent:cellular-data-1-24-filled"></iconify-icon>
+            <iconify-icon icon="fluent:wifi-1-24-filled"></iconify-icon>
+            <iconify-icon icon="fluent:battery-10-24-filled"></iconify-icon>
+          </span>
+        </div>
+
+        <div class="home-grid">
+          <div class="app"><div class="icon c1"><iconify-icon icon="fluent:phone-24-filled"></iconify-icon></div><div class="name">전화</div></div>
+          <div class="app"><div class="icon c4"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></div><div class="name">메시지</div></div>
+          <div class="app"><div class="icon c5"><iconify-icon icon="fluent:camera-24-filled"></iconify-icon></div><div class="name">카메라</div></div>
+          <div class="app"><div class="icon c2"><iconify-icon icon="fluent:weather-sunny-24-filled"></iconify-icon></div><div class="name">날씨</div></div>
+
+          <div class="app"><div class="icon c7"><iconify-icon icon="fluent:music-note-2-24-filled"></iconify-icon></div><div class="name">음악</div></div>
+          <div class="app"><div class="icon c9"><iconify-icon icon="fluent:image-24-filled"></iconify-icon></div><div class="name">사진</div></div>
+          <div class="app"><div class="icon c10"><iconify-icon icon="fluent:settings-24-filled"></iconify-icon></div><div class="name">설정</div></div>
+          <div class="app"><div class="icon c6"><iconify-icon icon="fluent:mail-24-filled"></iconify-icon></div><div class="name">메일</div></div>
+
+          <div class="app haru">
+            <div class="icon">
+              <svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></svg>
+            </div>
+            <div class="name">하루안부</div>
+          </div>
+          <div class="app"><div class="icon c8"><iconify-icon icon="fluent:calendar-24-filled"></iconify-icon></div><div class="name">캘린더</div></div>
+          <div class="app"><div class="icon c3"><iconify-icon icon="fluent:heart-24-filled"></iconify-icon></div><div class="name">건강</div></div>
+          <div class="app"><div class="icon c11"><iconify-icon icon="fluent:apps-24-filled"></iconify-icon></div><div class="name">앱</div></div>
+        </div>
+
+        <div class="home-dock">
+          <div class="app"><div class="icon c1"><iconify-icon icon="fluent:phone-24-filled"></iconify-icon></div></div>
+          <div class="app"><div class="icon c4"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></div></div>
+          <div class="app"><div class="icon c6"><iconify-icon icon="fluent:mail-24-filled"></iconify-icon></div></div>
+          <div class="app"><div class="icon c5"><iconify-icon icon="fluent:compass-northwest-24-filled"></iconify-icon></div></div>
+        </div>
+      </div>
+      <div class="home-foot">실제 홈 화면 그리드에서 본 하루 안부</div>
+    </div>
+  </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+</body>
+</html>

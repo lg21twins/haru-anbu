@@ -1,6 +1,6 @@
 # 하루안부 · 환자 앱 v12
 
-**상태**: 🚧 POC 1페이지 시작 (p01-today.html)
+**상태**: WIP — POC 1페이지 시작 (p01-today.html)
 **대상 기기**: 태블릿 (iPad 10", Galaxy Tab A) — 거치형 사용
 
 ---

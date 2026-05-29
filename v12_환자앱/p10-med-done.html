@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#FFF5E8">
+  <meta name="theme-color" content="var(--patient-canvas-warm)">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <title>하루안부 · 약 잘 드셨어요</title>
 
@@ -30,10 +30,10 @@
     .done-mark {
       width: 130px; height: 130px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--brand-orange-300), var(--brand-orange-500));
+      background: var(--brand-orange-500);
       display: flex; align-items: center; justify-content: center;
-      color: #fff;
-      box-shadow: 0 14px 36px rgba(251, 146, 60, 0.38);
+      color: white;
+      box-shadow: 0 14px 36px rgba(var(--color-accent-rgb), 0.38);
       flex-shrink: 0;
       animation: done-pop .5s cubic-bezier(.2, .9, .3, 1.4) both;
     }
@@ -94,15 +94,13 @@
       font: var(--weight-medium) 21px / 1.3 var(--font-family-base);
       letter-spacing: -0.2px;
       padding: 10px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
-    .info-card li:last-child { border-bottom: 0; }
     .info-card li .med-dot {
       width: 14px; height: 14px; border-radius: 50%;
       flex-shrink: 0;
       background: var(--brand-orange-400);
     }
-    .info-card.done-list li .med-dot { background: var(--brand-green-500, #16A34A); }
+    .info-card.done-list li .med-dot { background: var(--brand-green-500); }
 
     .info-card .next-time {
       font: var(--weight-bold) 40px / 1 var(--font-family-base);
@@ -125,8 +123,7 @@
       padding: var(--space-4) var(--space-6);
       display: flex; align-items: center; gap: var(--space-4);
       border-radius: 20px;
-      background: rgba(251, 146, 60, 0.08);
-      border: 1px solid rgba(251, 146, 60, 0.2);
+      background: rgba(var(--color-accent-rgb), 0.08);
     }
     .notify .avatars {
       display: flex; align-items: center;
@@ -135,7 +132,7 @@
     .notify .avatars .av {
       width: 48px; height: 48px;
       border-radius: 50%; overflow: hidden;
-      border: 3px solid #fff;
+      border: 3px solid white;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
       position: relative;
     }
@@ -160,9 +157,9 @@
       display: flex; align-items: center; justify-content: center; gap: 14px;
       font: var(--weight-bold) 26px / 1 var(--font-family-base);
       letter-spacing: -0.3px;
-      background: linear-gradient(135deg, var(--brand-orange-400), var(--brand-orange-600));
-      color: #fff;
-      box-shadow: 0 10px 30px rgba(251, 146, 60, 0.38);
+      background: var(--brand-orange-500);
+      color: white;
+      box-shadow: 0 10px 30px rgba(var(--color-accent-rgb), 0.38);
       text-decoration: none;
       transition: transform .15s, box-shadow .15s;
     }

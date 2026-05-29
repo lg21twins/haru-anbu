@@ -635,6 +635,10 @@
 
     <p class="pv-section__desc">새 화면을 만들 때 이 4개 중 하나만 고르면 된다. Glass는 일반 정보 카드의 기본이 아니라 탭바·모달·AI 리포트·환자 가족 사진 4곳 한정의 OPTIONAL.</p>
 
+    <div class="pv-callout">
+      <strong>v3.2.13 변경:</strong> <code>.card</code> 기본 shadow를 <code>--shadow-card-floating</code> (0 4px 12px rgba(0,0,0,.06) + hairline)으로 변경. 3개 앱 마이페이지 elevation 통일 기준. 명시적 modifier: <code>.card--borderless</code>(미세 hairline), <code>.card--floating</code>(기본 명시), <code>.card--hero</code>(24px radius + padding).
+    </div>
+
     <div class="pv-demo">
       <div class="pv-grid pv-grid--2">
         <div class="demo-card demo-card--default">
@@ -716,6 +720,77 @@
   <section class="pv-section">
     <h2 class="pv-section__title">C. Navigation</h2>
 
+    <h3 class="pv-subsection__title">C1.0 Mobile Header v3.2.13 — 3앱 통일 표준 (.header > .top-nav)</h3>
+    <div class="pv-callout">
+      <strong>채택:</strong> 보호자(v11_보호자앱) / 요양보호사(v11_요양보호사앱) / 의료진(v15_의료진앱) 모바일 페이지 전체. 마크업·padding·icon-btn 픽셀 단위 동일.<br>
+      <strong>두 가지 패턴:</strong><br>
+      • <code>홈</code>: <code>.logo + .top-actions(.icon-btn)</code> → flex space-between<br>
+      • <code>서브</code>: <code>.icon-btn/.h-left + .title-block + .icon-btn</code> → grid 44px 1fr 44px (<code>:has(.title-block)</code>로 자동)
+    </div>
+    <div class="device-frame" data-platform="mobile" data-role="caregiver" style="background: var(--clinical-canvas);">
+      <div class="device-screen" style="background: var(--clinical-bg-image);">
+        <header class="header">
+          <div class="top-nav">
+            <a class="logo" href="#" aria-label="홈">
+              <svg viewBox="0 0 512 512" fill="none" width="28" height="28"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="currentColor" style="color:var(--color-accent-strong)"/><path d="M4.68 19.34C1286.35-131.48 1286.35 630.4 1286.35 1246.66L28.31 2526C7.32 2031.8 3.73 1368.08 867.14 1263.52C-115.88 1211.75 4.68 424.16 4.68 19.34Z" fill="currentColor" style="color:var(--color-accent-strong)"/></g></svg>
+            </a>
+            <div class="top-actions">
+              <a class="icon-btn" href="#" aria-label="알림"><iconify-icon icon="fluent:alert-24-filled"></iconify-icon><span class="notif-dot"></span></a>
+              <a class="icon-btn" href="#" aria-label="마이"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></a>
+            </div>
+          </div>
+        </header>
+        <div style="padding: 0 20px; color: var(--color-text-tertiary); font-size: 13px;">홈 패턴 (로고 + 액션 그룹)</div>
+        <div style="height:1px; background: rgba(0,0,0,.05); margin: 20px;"></div>
+        <header class="header">
+          <div class="top-nav">
+            <button class="icon-btn" type="button" aria-label="뒤로"><iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon></button>
+            <div class="title-block"><h1 class="h-name">소통</h1></div>
+            <button class="icon-btn" type="button" aria-label="설정"><iconify-icon icon="fluent:settings-24-filled"></iconify-icon></button>
+          </div>
+        </header>
+        <div style="padding: 0 20px; color: var(--color-text-tertiary); font-size: 13px;">서브 패턴 (좌버튼 + 중앙 타이틀 + 우버튼)</div>
+      </div>
+    </div>
+    <div class="pv-callout">
+      <strong>표준값:</strong> .header padding <code>calc(safe-t + 6px) 20px 0</code> · .top-nav margin-bottom 24px · .logo svg 28×28 (padding 4px + margin -4px tap zone) · .icon-btn 44×44 글라스(rgba(255,255,255,.55) + blur(12px) saturate(140%) + box-shadow 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06)) · iconify 22px · .notif-dot 8×8 @ top:10 right:10
+    </div>
+
+    <h3 class="pv-subsection__title">C0.5 Clinical Tab Wrap + SOS (v3.2.13 — 요양보호사·의료진 표준)</h3>
+    <div class="pv-callout">
+      <strong>구조:</strong> <code>.bottom-bar / .tab-wrap</code>(wrapper, max-width 398px) + <code>.tabbar</code>(white glass pill) + <code>.tab</code>(icon-only 26px) + <code>.sos</code>(64px red circle, 옵션)
+    </div>
+    <div class="device-frame" data-platform="mobile" data-role="caregiver" style="height: 240px; background: var(--clinical-canvas);">
+      <div class="device-screen" style="background: var(--clinical-bg-image); position: relative; height: 100%;">
+        <div class="bottom-bar">
+          <nav class="tabbar">
+            <a href="#" class="tab active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></a>
+            <a href="#" class="tab"><iconify-icon icon="fluent:bed-24-filled"></iconify-icon></a>
+            <a href="#" class="tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></a>
+            <a href="#" class="tab"><iconify-icon icon="fluent:document-arrow-right-24-filled"></iconify-icon></a>
+          </nav>
+          <button class="sos" type="button" aria-label="SOS"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></button>
+        </div>
+      </div>
+    </div>
+    <div class="pv-callout">
+      <strong>표준값:</strong> wrapper bottom <code>safe-b + 12px</code> · tabbar 64px / rgba(255,255,255,.85) / blur(20) saturate(140) / radius pill · tab icon 26px · sos 64×64 / var(--color-danger) / 6px·22px drop shadow · 활성 탭은 <code>var(--color-accent-strong)</code> 색 + drop-shadow filter
+    </div>
+
+    <h3 class="pv-subsection__title">D5. Status Pill (.status-* — 임상 5단계)</h3>
+    <div class="pv-demo">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <span class="badge status-observe"><iconify-icon icon="fluent:eye-24-filled"></iconify-icon>관찰</span>
+        <span class="badge status-watch"><iconify-icon icon="fluent:alert-24-filled"></iconify-icon>주의</span>
+        <span class="badge status-urgent"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon>응급</span>
+        <span class="badge status-ready"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>정상</span>
+        <span class="badge status-pending"><iconify-icon icon="fluent:clock-24-filled"></iconify-icon>대기</span>
+      </div>
+    </div>
+    <div class="pv-callout">
+      <code>.badge.status-observe</code> · <code>.status-watch</code> · <code>.status-urgent</code> · <code>.status-ready</code> · <code>.status-pending</code> — 임상 5단계 상태. caregiver.css <code>.cg-status-*</code>의 시스템 호환 별칭.
+    </div>
+
     <h3 class="pv-subsection__title">C1. Mobile Header + Floating Pill Tabbar (시그니처)</h3>
     <div class="device-frame">
       <div class="device-screen">
@@ -726,8 +801,8 @@
         </div>
         <div style="padding: 16px;">
           <div class="demo-card demo-card--glass">
-            <h4>오늘 어머님은 안정적이세요</h4>
-            <p>식사 정상, 투약 완료, 활동 보통</p>
+            <h4>영자님은 오늘 잘 지내셨어요</h4>
+            <p>투약 1/3 · 맥박 72 BPM · 수면 7h 32m</p>
           </div>
         </div>
         <nav class="tabbar" role="tablist">
@@ -736,7 +811,7 @@
             <span>홈</span>
           </button>
           <button class="tabbar__item" role="tab">
-            <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+            <iconify-icon icon="fluent:book-24-filled"></iconify-icon>
             <span>가이드</span>
           </button>
           <button class="tabbar__item" role="tab">
@@ -744,7 +819,7 @@
             <span>소통</span>
           </button>
           <button class="tabbar__item" role="tab">
-            <iconify-icon icon="fluent:document-text-24-filled"></iconify-icon>
+            <iconify-icon icon="fluent:folder-24-filled"></iconify-icon>
             <span>기록</span>
           </button>
           <button class="tabbar__item" role="tab">
@@ -936,6 +1011,54 @@
         </label>
       </div>
     </div>
+  </section>
+
+  <!-- M. Motion (v3.2.13 — 3앱 표준 keyframes) -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">M. Motion — 3앱 공통 애니메이션</h2>
+    <p class="pv-section__desc">보호자/요양보호사/의료진 모바일 페이지가 동일하게 사용. <code>system/transitions.css</code>에 정의.</p>
+
+    <h3 class="pv-subsection__title">M1. haru-fade-in-up — 페이지·카드 등장</h3>
+    <div class="pv-demo">
+      <style>
+        .motion-demo-card { background: var(--color-bg-surface); border-radius: 18px; padding: 16px 20px; box-shadow: var(--shadow-card-floating); }
+        .motion-demo-card.is-playing { animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both; }
+        .motion-demo-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+      </style>
+      <div class="motion-demo-grid" id="motionFadeDemo">
+        <div class="motion-demo-card is-playing">카드 1</div>
+        <div class="motion-demo-card is-playing" style="animation-delay: 80ms;">카드 2</div>
+        <div class="motion-demo-card is-playing" style="animation-delay: 160ms;">카드 3</div>
+      </div>
+      <button class="btn btn--ghost" onclick="document.querySelectorAll('#motionFadeDemo .motion-demo-card').forEach((el,i)=>{el.classList.remove('is-playing');void el.offsetWidth;el.style.animationDelay=(i*80)+'ms';el.classList.add('is-playing');});" style="margin-top:12px;">다시 재생</button>
+    </div>
+    <div class="pv-callout">
+      <code>animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both</code> · 카드별 80ms staggered delay 권장
+    </div>
+
+    <h3 class="pv-subsection__title">M2. haru-pulse — 라이브·알림 dot</h3>
+    <div class="pv-demo">
+      <style>
+        .pulse-dot-demo { width: 12px; height: 12px; border-radius: 50%; background: var(--brand-green-500); display: inline-block; animation: haru-pulse 2s ease-in-out infinite; }
+      </style>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span class="pulse-dot-demo"></span>
+        <span style="font-size: 13px; color: var(--color-text-secondary);">라이브 측정 중</span>
+      </div>
+    </div>
+    <div class="pv-callout"><code>animation: haru-pulse 2s ease-in-out infinite</code></div>
+
+    <h3 class="pv-subsection__title">M3. haru-ring — GPS 위치 ring</h3>
+    <div class="pv-demo">
+      <style>
+        .ring-demo { width: 42px; height: 42px; border-radius: 50%; background: var(--color-accent-soft); color: var(--color-accent-strong); display: inline-flex; align-items: center; justify-content: center; position: relative; }
+        .ring-demo::before { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--color-accent); opacity: 0; animation: haru-ring 2s ease-out infinite; }
+      </style>
+      <div class="ring-demo">
+        <iconify-icon icon="fluent:location-24-filled" style="font-size:20px;"></iconify-icon>
+      </div>
+    </div>
+    <div class="pv-callout"><code>animation: haru-ring 2s ease-out infinite</code></div>
   </section>
 
   <!-- F. Display -->

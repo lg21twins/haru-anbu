@@ -4,35 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#B91C1C">
+  <meta name="theme-color" content="#A51B16">
   <title>하루안부 · 의료진 · SOS</title>
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
 
   <script src="../07_디자인/_app-theme.js"></script>
-  <link rel="stylesheet" href="./_shared.css">
+  <link rel="stylesheet" href="./_shared.css?v=20260525p">
+  <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     /* :root 별칭은 _shared.css 에서 정의 */
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
     html,body{height:100%;font-family:var(--font-family-base);overflow:hidden;letter-spacing:-.2px;}
     body{
-      color:#fff;
-      background:
-        radial-gradient(800px 600px at 50% 20%, rgba(248,113,113,.55), transparent 65%),
-        linear-gradient(180deg, var(--palette-red-700) 0%, var(--palette-red-900,#7F1D1D) 100%);
-      animation:bgPulse 2s ease-in-out infinite alternate;
-    }
-    @keyframes bgPulse{
-      from{filter:brightness(1);}
-      to{filter:brightness(1.18);}
+      color:var(--palette-white);
+      background:var(--color-danger);
     }
 
     .app{
-      max-width:430px;margin:0 auto;height:100vh;
+      max-width:430px;margin:0 auto;min-height:100vh;
       display:flex;flex-direction:column;
       padding:calc(var(--safe-t) + 8px) 20px calc(var(--safe-b) + 16px);
-      position:relative;
+      position:relative;z-index:1;
     }
 
     /* ===== HEADER ===== */
@@ -42,7 +38,7 @@
     }
     .close-btn{
       width:48px;height:48px;border-radius:50%;
-      background:rgba(255,255,255,.15);border:0;color:#fff;cursor:pointer;
+      background:rgba(255,255,255,.15);border:0;color:var(--palette-white);cursor:pointer;
       display:inline-flex;align-items:center;justify-content:center;
       backdrop-filter:blur(8px);
     }
@@ -58,32 +54,31 @@
 
     /* ===== ALERT BIG ===== */
     .alert-big{
-      text-align:center;margin:20px 0 16px;
+      text-align:center;margin:8px 0 18px;
     }
     .alert-icon-wrap{
-      width:120px;height:120px;border-radius:50%;
-      background:rgba(255,255,255,.15);
+      width:104px;height:104px;border-radius:50%;
+      background:rgba(255,255,255,.18);
       display:inline-flex;align-items:center;justify-content:center;
-      position:relative;margin-bottom:18px;
-      border:3px solid rgba(255,255,255,.3);
+      position:relative;margin-bottom:14px;
     }
     .alert-icon-wrap::before, .alert-icon-wrap::after{
-      content:"";position:absolute;inset:-3px;border-radius:50%;
-      border:3px solid rgba(255,255,255,.5);
-      animation:ring 2s infinite;
+      content:"";position:absolute;inset:0;border-radius:50%;
+      box-shadow:0 0 0 2px rgba(255,255,255,.55);
+      animation:ring 2.4s cubic-bezier(.2,.7,.3,1) infinite;
     }
-    .alert-icon-wrap::after{animation-delay:1s;}
+    .alert-icon-wrap::after{animation-delay:1.2s;}
     @keyframes ring{
-      0%{transform:scale(1);opacity:1;}
-      100%{transform:scale(1.5);opacity:0;}
+      0%{transform:scale(1);opacity:.9;}
+      100%{transform:scale(1.6);opacity:0;}
     }
-    .alert-icon-wrap iconify-icon{font-size:60px;color:#fff;}
+    .alert-icon-wrap iconify-icon{font-size:56px;color:var(--palette-white);position:relative;z-index:1;}
     .alert-title{
-      font-size:32px;font-weight:800;letter-spacing:-1px;
-      text-shadow:0 2px 8px rgba(0,0,0,.2);
+      font-size:36px;font-weight:800;letter-spacing:-1.2px;line-height:1.1;
+      text-shadow:0 2px 12px rgba(0,0,0,.18);
     }
     .alert-sub{
-      font-size:14px;font-weight:600;color:rgba(255,255,255,.85);margin-top:8px;
+      font-size:15px;font-weight:600;color:rgba(255,255,255,.92);margin-top:8px;
     }
 
     /* ===== INFO CARD ===== */
@@ -100,60 +95,62 @@
     .info-row:first-child{padding-top:0;}
     .info-ico{
       width:36px;height:36px;border-radius:10px;flex-shrink:0;
-      background:var(--danger-soft,#FEE2E2);color:var(--danger);
+      background:var(--danger-soft);color:var(--danger);
       display:inline-flex;align-items:center;justify-content:center;
     }
     .info-ico iconify-icon{font-size:18px;}
     .info-meta{flex:1;min-width:0;line-height:1.25;}
-    .info-label{font-size:10px;font-weight:800;color:var(--color-text-tertiary,#9E9E9E);letter-spacing:.4px;text-transform:uppercase;}
+    .info-label{font-size:10px;font-weight:800;color:var(--color-text-tertiary);letter-spacing:.4px;text-transform:uppercase;}
     .info-val{font-size:15px;font-weight:800;color:var(--color-text-primary);margin-top:2px;}
     .info-val small{font-size:12px;font-weight:600;color:var(--color-text-secondary);margin-left:4px;}
     .info-val.danger{color:var(--danger);}
 
     /* ===== COUNTDOWN ===== */
     .countdown-bar{
-      background:rgba(0,0,0,.25);border-radius:14px;padding:12px 16px;
-      display:flex;align-items:center;gap:10px;margin-bottom:14px;
-      backdrop-filter:blur(8px);
+      background:rgba(0,0,0,.28);border-radius:16px;padding:14px 16px;
+      display:flex;align-items:center;gap:12px;margin-bottom:14px;
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
     }
-    .countdown-bar iconify-icon{font-size:20px;color:#fff;flex-shrink:0;}
-    .countdown-text{flex:1;font-size:13px;font-weight:700;line-height:1.3;}
-    .countdown-text b{font-size:18px;font-variant-numeric:tabular-nums;}
+    .countdown-bar > iconify-icon{font-size:22px;color:var(--palette-white);flex-shrink:0;opacity:.9;}
+    .countdown-text{flex:1;font-size:13px;font-weight:600;line-height:1.35;color:rgba(255,255,255,.92);}
+    .countdown-text b{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--palette-white);margin-right:2px;}
 
     /* ===== BIG ACTIONS ===== */
     .actions{
       margin-top:auto;display:flex;flex-direction:column;gap:10px;
     }
     .action-primary{
-      background:#fff;color:var(--palette-red-700);
-      border:0;border-radius:18px;padding:18px;
-      font-size:17px;font-weight:800;letter-spacing:-.3px;
+      background:var(--palette-white);color:var(--palette-red-700);
+      border:0;border-radius:18px;padding:20px;
+      font-size:18px;font-weight:800;letter-spacing:-.3px;
       cursor:pointer;font-family:inherit;
       display:flex;align-items:center;justify-content:center;gap:10px;
-      box-shadow:0 8px 28px rgba(0,0,0,.25);
+      box-shadow:0 10px 32px rgba(0,0,0,.28);
       transition:transform .1s;
     }
     .action-primary:active{transform:scale(.98);}
-    .action-primary iconify-icon{font-size:22px;}
+    .action-primary iconify-icon{font-size:24px;}
 
     .action-row{
       display:grid;grid-template-columns:1fr 1fr;gap:8px;
     }
     .action-secondary{
-      background:rgba(255,255,255,.18);color:#fff;
-      border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:14px;
-      font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;
-      display:flex;align-items:center;justify-content:center;gap:6px;
-      backdrop-filter:blur(8px);
-      transition:transform .1s;
+      background:rgba(255,255,255,.18);color:var(--palette-white);
+      border:0;border-radius:16px;padding:16px 12px;
+      font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      letter-spacing:-.2px;
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      text-decoration:none;
+      transition:transform .1s, background .15s;
     }
-    .action-secondary:active{transform:scale(.97);}
-    .action-secondary iconify-icon{font-size:18px;}
+    .action-secondary:active{transform:scale(.97);background:rgba(255,255,255,.26);}
+    .action-secondary iconify-icon{font-size:20px;}
 
     .toast{
       position:fixed;left:50%;bottom:calc(var(--safe-b) + 110px);
       transform:translateX(-50%) translateY(20px);
-      background:rgba(0,0,0,.85);color:#fff;font-size:13px;font-weight:600;
+      background:rgba(0,0,0,.85);color:var(--palette-white);font-size:13px;font-weight:600;
       padding:10px 18px;border-radius:999px;
       opacity:0;transition:.25s;pointer-events:none;z-index:300;white-space:nowrap;
     }
@@ -163,7 +160,7 @@
     .cd-pause{
       width:40px;height:40px;border-radius:50%;flex-shrink:0;
       background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
-      color:#fff;cursor:pointer;font-family:inherit;
+      color:var(--palette-white);cursor:pointer;font-family:inherit;
       display:inline-flex;align-items:center;justify-content:center;
     }
     .cd-pause iconify-icon{font-size:18px;}
@@ -176,7 +173,7 @@
     }
     .conf-overlay.show{display:flex;}
     .conf-sheet{
-      background:#fff;color:var(--color-text-primary);
+      background:var(--palette-white);color:var(--color-text-primary);
       width:100%;max-width:430px;
       border-radius:24px 24px 0 0;
       padding:14px 20px calc(24px + env(safe-area-inset-bottom,0px));
@@ -197,19 +194,19 @@
     .conf-options{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
     .conf-opt{
       display:flex;align-items:center;gap:14px;
-      padding:14px 16px;background:var(--palette-gray-50,#FAFAFA);
-      border:1px solid var(--palette-gray-200,#E5E5EA);
+      padding:14px 16px;background:var(--palette-gray-50);
+      border:1px solid var(--palette-gray-200);
       border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;width:100%;
       color:var(--color-text-primary);
       transition:transform .12s, background .12s;
     }
-    .conf-opt:active{transform:scale(.99);background:var(--palette-gray-100,#F4F4F5);}
+    .conf-opt:active{transform:scale(.99);background:var(--palette-gray-100);}
     .conf-opt iconify-icon{font-size:22px;color:var(--color-text-secondary);flex-shrink:0;}
     .conf-opt-ttl{font-size:15px;font-weight:700;color:var(--color-text-primary);}
     .conf-opt-sub{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-top:2px;}
     .conf-opt-warn iconify-icon{color:var(--palette-amber-700);}
     .conf-summary{
-      background:var(--palette-gray-50,#FAFAFA);border-radius:14px;padding:14px 16px;margin-bottom:14px;
+      background:var(--palette-gray-50);border-radius:14px;padding:14px 16px;margin-bottom:14px;
       display:flex;flex-direction:column;gap:8px;
     }
     .conf-summary>div{display:flex;justify-content:space-between;align-items:center;font-size:13px;gap:12px;}
@@ -218,11 +215,11 @@
     .conf-summary b.conf-danger{color:var(--color-danger);}
     .conf-action-danger{
       width:100%;padding:18px;border:0;border-radius:16px;
-      background:var(--color-danger);color:#fff;
+      background:var(--color-danger);color:var(--palette-white);
       font-size:16px;font-weight:800;font-family:inherit;
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
       cursor:pointer;
-      box-shadow:0 8px 24px rgba(220,38,38,.35);
+      box-shadow:0 8px 24px rgba(var(--color-danger-rgb), .35);
       transition:transform .1s;
     }
     .conf-action-danger:active{transform:scale(.98);}
@@ -232,6 +229,10 @@
       background:transparent;border:0;cursor:pointer;font-family:inherit;
       font-size:14px;font-weight:700;color:var(--color-text-secondary);
     }
+
+    /* Inline 대체 */
+    .w-48     { width: 48px; }
+    .no-deco  { text-decoration: none; }
   </style>
 </head>
 <body>
@@ -245,7 +246,7 @@
       <span class="top-title">
         <iconify-icon icon="fluent:warning-24-filled" class="blink"></iconify-icon>SOS 수신 · LIVE
       </span>
-      <div style="width:48px;"></div>
+      <div class="w-48"></div>
     </div>
 
     <!-- ============ ALERT BIG ============ -->
@@ -302,7 +303,7 @@
 
     <!-- ============ ACTIONS ============ -->
     <div class="actions">
-      <button class="action-primary" onclick="toast('박미선 요보사와 음성 통화 연결 중');">
+      <button class="action-primary" onclick="toast('박미선 요양보호사와 음성 통화 연결 중');">
         <iconify-icon icon="fluent:call-24-filled"></iconify-icon>지금 응답 · 음성 통화
       </button>
       <div class="action-row">
@@ -317,7 +318,7 @@
         <button class="action-secondary" id="callEmergencyBtn">
           <iconify-icon icon="fluent:vehicle-truck-bag-24-filled"></iconify-icon>119 연결
         </button>
-        <a href="d03-inbox.html?thread=c1" class="action-secondary" style="text-decoration:none;">
+        <a href="d03-inbox.html?thread=c1" class="action-secondary no-deco">
           <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>채팅 열기
         </a>
       </div>
@@ -389,10 +390,11 @@
 
     /* === 카운트다운 + 일시정지 + 도달 시 119 confirm === */
     let cd = 15;
-    let cdPaused = false;
+    let cdUserPaused = false;
+    let cdSheetOpen = false;
     let cdFired = false;
     setInterval(()=>{
-      if(cdPaused || cdFired) return;
+      if(cdUserPaused || cdSheetOpen || cdFired) return;
       cd = Math.max(0, cd-1);
       document.getElementById('cd').textContent = cd;
       if(cd===0){
@@ -403,13 +405,13 @@
 
     document.getElementById('cdPause').addEventListener('click', ()=>{
       if(cdFired) return;
-      cdPaused = !cdPaused;
+      cdUserPaused = !cdUserPaused;
       const ico = document.querySelector('#cdPause iconify-icon');
-      ico.setAttribute('icon', cdPaused ? 'fluent:play-24-filled' : 'fluent:pause-24-filled');
-      document.getElementById('cdText').innerHTML = cdPaused
-        ? '<b>자동 통화 일시정지</b> · 직접 응답하거나 119 연결을 눌러 주세요'
+      ico.setAttribute('icon', cdUserPaused ? 'fluent:play-24-filled' : 'fluent:pause-24-filled');
+      document.getElementById('cdText').innerHTML = cdUserPaused
+        ? '<b id="cd">'+cd+'</b>초 · 자동 통화 일시정지'
         : '<b id="cd">'+cd+'</b>초 후 자동 통화 · 보호자에게도 자동 알림';
-      toast(cdPaused ? '자동 연결 일시정지' : '자동 연결 재개');
+      toast(cdUserPaused ? '자동 연결 일시정지' : '자동 연결 재개');
     });
 
     /* === Confirm sheets === */
@@ -417,14 +419,14 @@
     document.getElementById('callEmergencyBtn').addEventListener('click', ()=> openSheet('call'));
 
     function openSheet(kind){
-      cdPaused = true; // 시트 열려 있는 동안 카운트다운 정지
+      cdSheetOpen = true; // 시트 열려 있는 동안 카운트다운 정지
       const id = kind==='close' ? 'closeOverlay' : 'callOverlay';
       document.getElementById(id).classList.add('show');
     }
     function closeConfirm(kind){
       const id = kind==='close' ? 'closeOverlay' : 'callOverlay';
       document.getElementById(id).classList.remove('show');
-      if(!cdFired) cdPaused = false;
+      cdSheetOpen = false;
     }
     function confirmClose(reason){
       const labels = {

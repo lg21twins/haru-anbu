@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko" data-platform="mobile">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#2C7AFC">
+<title>키컬러 적용 제안</title>
+<link rel="stylesheet" href="tokens/tokens.css">
+<script src="https://code.iconify.design/iconify-icon/2.0.0/iconify-icon.min.js"></script>
+<style>
+  body {
+    background: var(--color-bg-canvas);
+    padding: 0 0 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: calc(env(safe-area-inset-top, 0px) + 18px) 14px 0;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.4px;
+    color: var(--color-text-primary);
+    margin: 0 0 4px;
+  }
+  .lead {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0 0 22px;
+  }
+  .lead b { color: var(--color-text-primary); font-weight: 700; }
+
+  /* 의미 헤더 */
+  .rule {
+    background: var(--color-bg-surface);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow-card-borderless);
+  }
+  .rule-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+  }
+  .rule-row + .rule-row { border-top: 1px solid var(--color-border-subtle); }
+  .rule-swatch {
+    width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+  }
+  .rule-swatch iconify-icon { font-size: 18px; }
+  .rule-text { flex: 1; min-width: 0; }
+  .rule-title { font-size: 13px; font-weight: 700; color: var(--color-text-primary); letter-spacing: -.2px; }
+  .rule-meaning { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+  .rule-hex { font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-tertiary); font-weight: 600; }
+
+  /* 섹션 */
+  .sec { margin-bottom: 28px; }
+  .sec-hdr {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 0 4px 10px;
+  }
+  .sec-hdr h2 {
+    font-size: 16px; font-weight: 800; letter-spacing: -.3px;
+    color: var(--color-text-primary); margin: 0;
+  }
+  .sec-hdr .meta {
+    font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); letter-spacing: .5px;
+  }
+  .grid-2 {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .grid-1 { display: block; }
+
+  /* 미니 모크업 카드 */
+  .mock {
+    background: var(--color-bg-surface);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: var(--shadow-card-borderless);
+    position: relative;
+    overflow: hidden;
+  }
+  .mock + .mock { margin-top: 10px; }
+  .mock .app-tag {
+    position: absolute; top: 8px; right: 8px;
+    font-size: 9px; font-weight: 800;
+    color: var(--color-text-tertiary);
+    background: var(--color-bg-surface-muted);
+    padding: 2px 7px; border-radius: 999px; letter-spacing: .3px;
+  }
+
+  /* 보호자 위젯 닷 */
+  .mw-head {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;
+  }
+  .mw-ttl { font-size: 12px; font-weight: 700; color: var(--color-text-primary); letter-spacing: -.2px; }
+  .w-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mw-num {
+    font-size: 22px; font-weight: 800; letter-spacing: -.5px; line-height: 1;
+    color: var(--color-text-primary);
+  }
+  .mw-sub { font-size: 10px; color: var(--color-text-tertiary); margin-top: 2px; font-weight: 500; }
+
+  /* 요양보호사 체크리스트 */
+  .mc-row {
+    display: flex; align-items: center; gap: 8px; padding: 6px 0;
+  }
+  .mc-row:not(:last-child) {
+    border-bottom: 1px solid var(--color-border-subtle); margin-bottom: 4px;
+  }
+  .mc-check {
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: #fff;
+  }
+  .mc-check iconify-icon { font-size: 12px; }
+  .mc-label { flex: 1; font-size: 12px; font-weight: 600; color: var(--color-text-primary); }
+  .mc-status { font-size: 10px; font-weight: 700; }
+
+  /* 의료진 환자 카드 */
+  .md-pat { display: flex; align-items: center; gap: 10px; }
+  .md-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--color-bg-surface-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: var(--color-text-secondary);
+    flex-shrink: 0; position: relative;
+  }
+  .md-status {
+    position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--color-bg-surface);
+  }
+  .md-info { flex: 1; }
+  .md-name { font-size: 13px; font-weight: 700; color: var(--color-text-primary); line-height: 1.2; }
+  .md-meta { font-size: 10px; color: var(--color-text-tertiary); margin-top: 2px; }
+  .md-state-label {
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 999px; color: #fff;
+  }
+
+  /* AI 코멘트 카드 */
+  .ai-head { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+  .ai-icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: #fff;
+  }
+  .ai-icon iconify-icon { font-size: 15px; }
+  .ai-title {
+    font-size: 11px; font-weight: 800;
+    color: var(--color-text-tertiary); letter-spacing: .4px;
+  }
+  .ai-body { font-size: 12px; line-height: 1.5; color: var(--color-text-primary); }
+  .ai-body b { font-weight: 700; }
+
+  /* 키컬러 변수 */
+  .key-care {
+    --key-color: #22C55E;
+    --key-soft: rgba(34, 197, 94, .18);
+    --key-grad: linear-gradient(135deg, #4ADE80, #16A34A);
+  }
+  .key-haru {
+    --key-color: #2C7AFC;
+    --key-soft: rgba(44, 122, 252, .15);
+    --key-grad: linear-gradient(135deg, #5B9BFF, #1E5FD6);
+  }
+
+  /* 푸터 */
+  .foot {
+    margin: 24px 4px 0;
+    padding: 14px 16px;
+    background: rgba(var(--color-accent-rgb), .06);
+    border-radius: 12px;
+    font-size: 12px; line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .foot b { color: var(--color-accent-strong); font-weight: 700; }
+  .foot .ok {
+    display: inline-block;
+    background: rgba(255, 59, 48, .12); color: #BF1F18;
+    font-size: 10px; font-weight: 800; letter-spacing: .5px;
+    padding: 2px 8px; border-radius: 999px;
+    margin-right: 4px; vertical-align: middle;
+  }
+</style>
+</head>
+<body data-role="guardian">
+<div class="wrap">
+
+  <h1>키컬러 적용 제안</h1>
+  <p class="lead">
+    <b>케어 = 그린, AI = 하루안부 블루</b> — 의미 기반 분리. 같은 컴포넌트로 적용한 모습.
+  </p>
+
+  <!-- 규칙 -->
+  <div class="rule">
+    <div class="rule-row">
+      <div class="rule-swatch" style="background:#22C55E">
+        <iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>
+      </div>
+      <div class="rule-text">
+        <div class="rule-title">케어 키컬러</div>
+        <div class="rule-meaning">정상·완료·안정 — 임상 도메인</div>
+      </div>
+      <span class="rule-hex">#22C55E</span>
+    </div>
+    <div class="rule-row">
+      <div class="rule-swatch" style="background:linear-gradient(135deg,#5B9BFF,#1E5FD6)">
+        <iconify-icon icon="fluent:sparkle-24-filled"></iconify-icon>
+      </div>
+      <div class="rule-text">
+        <div class="rule-title">하루안부 키컬러</div>
+        <div class="rule-meaning">AI·브랜드 — 보호자 컨텍스트</div>
+      </div>
+      <span class="rule-hex">#2C7AFC</span>
+    </div>
+  </div>
+
+  <!-- 02 케어 그린 적용 -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <h2>02 · 상태 초록 → 케어 키컬러</h2>
+      <span class="meta">3개 앱</span>
+    </div>
+
+    <div class="grid-1">
+      <!-- 보호자 위젯 -->
+      <div class="mock key-care">
+        <span class="app-tag">보호자</span>
+        <div class="mw-head">
+          <span class="mw-ttl">맥박</span>
+          <span class="w-dot" style="background:var(--key-color);box-shadow:0 0 0 3px var(--key-soft)"></span>
+        </div>
+        <div class="mw-num">72<span style="font-size:11px;font-weight:700;color:var(--color-text-tertiary);margin-left:3px">BPM</span></div>
+        <div class="mw-sub">정상 범위</div>
+      </div>
+
+      <!-- 요양보호사 체크리스트 -->
+      <div class="mock key-care">
+        <span class="app-tag">요양보호사</span>
+        <div class="mc-row">
+          <div class="mc-check" style="background:var(--key-color)"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></div>
+          <div class="mc-label">아침 투약</div>
+          <div class="mc-status" style="color:var(--key-color)">완료</div>
+        </div>
+        <div class="mc-row">
+          <div class="mc-check" style="background:var(--key-color)"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></div>
+          <div class="mc-label">아침 식사</div>
+          <div class="mc-status" style="color:var(--key-color)">완료</div>
+        </div>
+        <div class="mc-row">
+          <div class="mc-check" style="background:var(--key-color)"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></div>
+          <div class="mc-label">세면·위생</div>
+          <div class="mc-status" style="color:var(--key-color)">완료</div>
+        </div>
+      </div>
+
+      <!-- 의료진 환자 카드 -->
+      <div class="mock key-care">
+        <span class="app-tag">의료진</span>
+        <div class="md-pat">
+          <div class="md-avatar">영
+            <span class="md-status" style="background:var(--key-color)"></span>
+          </div>
+          <div class="md-info">
+            <div class="md-name">박영자 (82)</div>
+            <div class="md-meta">302호 · 안정</div>
+          </div>
+          <span class="md-state-label" style="background:var(--key-color)">정상</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 AI 카드 적용 -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <h2>03 · AI 카드 → 하루안부 키컬러</h2>
+      <span class="meta">보호자 전용</span>
+    </div>
+
+    <div class="grid-1">
+      <div class="mock key-haru">
+        <span class="app-tag">보호자</span>
+        <div class="ai-head">
+          <div class="ai-icon" style="background:var(--key-grad)">
+            <iconify-icon icon="fluent:sparkle-24-filled"></iconify-icon>
+          </div>
+          <span class="ai-title">AI 코멘트</span>
+        </div>
+        <div class="ai-body">
+          오늘 영자님 <b>맥박이 평소보다 안정적</b>이에요.
+          저녁 산책이 도움된 것 같아요.
+        </div>
+      </div>
+
+      <div class="mock key-haru">
+        <span class="app-tag">보호자</span>
+        <div class="ai-head">
+          <div class="ai-icon" style="background:var(--key-grad)">
+            <iconify-icon icon="fluent:lightbulb-24-filled"></iconify-icon>
+          </div>
+          <span class="ai-title">AI 인사이트</span>
+        </div>
+        <div class="ai-body">
+          이번 주 <b>수면 패턴이 개선</b>되었어요.
+          평균 7.5시간 잠드셨어요.
+        </div>
+      </div>
+
+      <div class="mock key-haru">
+        <span class="app-tag">보호자</span>
+        <div class="ai-head">
+          <div class="ai-icon" style="background:var(--key-grad)">
+            <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+          </div>
+          <span class="ai-title">AI 채팅</span>
+        </div>
+        <div class="ai-body">
+          영자님의 오늘 상태에 대해 <b>더 알고 싶으세요?</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p style="margin:0 0 8px"><span class="ok">완료</span><b>01 경보 빨강</b> — iOS Red #FF3B30 적용 (tokens.css)</p>
+    <p style="margin:0">이대로 좋으면 <b>"이대로"</b>, 수정할 점 있으면 알려줘. 적용하면 세 앱 즉시 반영.</p>
+  </div>
+
+</div>
+</body>
+</html>

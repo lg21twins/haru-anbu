@@ -1,47 +1,55 @@
 <!DOCTYPE html>
-<html lang="ko" data-role="medical" data-platform="mobile">
+<html lang="ko" data-role="medical" data-platform="mobile" class="has-c01-bg">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#F4FAF6">
+  <meta name="theme-color" content="#DCFCE7">
   <title>하루안부 · 의료진 · 인수인계</title>
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
 
   <script src="../07_디자인/_app-theme.js"></script>
-  <link rel="stylesheet" href="./_shared.css">
+  <link rel="stylesheet" href="./_shared.css?v=20260525p">
+  <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     /* :root 별칭은 _shared.css 에서 정의 */
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-    html{height:100%;background:#F4FAF6;font-size:16px;}
-    body{height:100%;color:var(--t1);overflow-x:hidden;font-family:var(--font-family-base);font-size:16px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;}
-    .bg{
-      position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
-      background:
-        radial-gradient(720px 540px at 50% -10%, rgba(34,197,94,.10), transparent 70%),
-        linear-gradient(180deg,#EAF6EE 0%,#F0F8F3 35%,#F4FAF6 100%);
+    /* v3.2.12+: clinical 캔버스 (v11 요양보호사앱과 동일 — var(--clinical-canvas) 토큰 참조) */
+    html{height:100%;background:var(--clinical-canvas);font-size:16px;}
+    body{
+      height:100%;color:var(--t1);overflow-x:hidden;
+      font-family:var(--font-family-base);font-size:18px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
+      background:transparent;
     }
+    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background: var(--clinical-bg-image);}
     .app{
       max-width:430px;margin:0 auto;min-height:100%;position:relative;
       padding-bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 40px);
     }
 
-    .header{padding:calc(var(--safe-t) + 6px) var(--pad) 0;position:relative;z-index:5;}
-    .top-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
-    .title-block{line-height:1.2;}
-    .h-eyebrow{font-size:12px;font-weight:600;color:var(--accent-strong);letter-spacing:.3px;}
-    .h-name{font-size:24px;font-weight:700;color:var(--t1);letter-spacing:-.6px;margin-top:6px;}
+    /* HEADER (v15 통일 — grid 44·1fr·44 / h-eyebrow + h-name) */
+    .header{padding:calc(var(--safe-t) + 14px) var(--pad) 8px;position:relative;z-index:5;}
+    .top-nav .icon-btn{grid-column:3;justify-self:end;}
+    .h-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
+    /* v3.2.5: 헤더 icon-btn 글라스 통일 (d01 홈 스펙) */
     .icon-btn{
-      width:48px;height:48px;border-radius:50%;background:#fff;border:0;cursor:pointer;text-decoration:none;
+      width:44px;height:44px;border-radius:50%;
+      background:rgba(255,255,255,.55);
+      border:.5px solid rgba(255,255,255,.55);
+      backdrop-filter:blur(12px) saturate(140%);
+      -webkit-backdrop-filter:blur(12px) saturate(140%);
+      cursor:pointer;text-decoration:none;
       display:inline-flex;align-items:center;justify-content:center;
-      box-shadow:0 2px 8px rgba(0,0,0,.05);
+      box-shadow:0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06);
+      position:relative;transition:transform .1s;
     }
-    .icon-btn iconify-icon{font-size:22px;color:var(--t1);}
 
     /* COUNTDOWN — 슬림 인포 스트립 */
-    .countdown{
+    .countdown{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 60ms both;
       margin:0 var(--pad);padding:14px 18px;
       display:flex;align-items:center;gap:14px;
       background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.9);
@@ -60,77 +68,115 @@
     .countdown-main{font-size:13px;font-weight:600;color:var(--t1);margin-top:3px;letter-spacing:-.2px;}
 
     /* SECTION */
-    .sec{margin:32px var(--pad) 0;position:relative;z-index:1;}
+    .sec{margin:20px var(--pad) 0;position:relative;z-index:1;}
     .sec-head{
       display:flex;align-items:baseline;justify-content:space-between;
-      margin-bottom:14px;padding:0 2px;
+      margin-bottom:10px;padding:0 2px;
     }
     .sec-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
     .sec-ttl{font-size:18px;font-weight:700;color:var(--t1);letter-spacing:-.4px;margin-top:5px;}
     .sec-action{
       font-size:12px;font-weight:600;padding:7px 12px;border-radius:999px;
-      background:#fff;color:var(--accent-strong);border:0;
+      background:var(--palette-white);color:var(--accent-strong);border:0;
       cursor:pointer;font-family:inherit;align-self:flex-end;
       box-shadow:0 1px 3px rgba(0,0,0,.04);
     }
 
-    /* SBAR — Hero 카드, S(Situation)이 가장 강조 */
+    /* SBAR — 헤드라인+키밸류 위급 + 접힘 비위급 (배경필·사이드레일 금지) */
+    /* === SBAR 대시보드 컴포짓 (시안 5) ===
+       상단: 24h 추이 차트 / 중단: 2×2 그리드 / 하단: 권고 가중치
+       위계는 타이포·간격·태그 색상으로만. 좌측 스트로크/레일 없음. */
     .sbar{
-      background:#fff;border-radius:24px;
-      box-shadow:0 8px 24px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
-      overflow:hidden;
+      animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;
+      display:flex;flex-direction:column;gap:10px;
     }
-    .sbar-row{
-      padding:20px 22px;border-bottom:1px solid rgba(0,0,0,.05);
-      display:flex;align-items:flex-start;gap:14px;
+
+    /* 상단: 24h 추이 차트 */
+    .sbar-trend{
+      background:var(--palette-white);border-radius:20px;
+      box-shadow:var(--cg-card-shadow);
+      padding:18px 20px 14px;
     }
-    .sbar-row:last-child{border-bottom:0;}
-    /* S — 강조 (큰 padding/text, 색은 기본 neutral) */
-    .sbar-row.primary{
-      padding:24px 22px;
+    .sbar-trend-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px;}
+    .sbar-trend-ttl{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-.2px;}
+    .sbar-trend-sub{font-size:11px;color:var(--t3);margin-top:2px;line-height:1.3;}
+    .sbar-trend-val{
+      font-size:26px;font-weight:800;color:var(--color-danger);
+      letter-spacing:-.5px;line-height:1;font-variant-numeric:tabular-nums;text-align:right;
     }
-    /* danger modifier — 실제 위험 상황일 때만 부착 */
-    .sbar-row--danger{
-      background:linear-gradient(135deg,var(--danger-soft) 0%,transparent 60%);
+    .sbar-trend-val small{font-size:12px;font-weight:600;color:var(--t3);margin-left:2px;}
+    .sbar-trend-time{font-size:10px;font-weight:600;color:var(--t3);margin-top:4px;text-align:right;letter-spacing:.2px;}
+    .sbar-chart{width:100%;height:108px;display:block;}
+    .sbar-chart-legend{
+      margin-top:8px;display:flex;align-items:center;gap:14px;
+      font-size:11px;font-weight:500;color:var(--t3);
     }
-    .sbar-tag{
-      width:38px;height:38px;border-radius:12px;flex-shrink:0;
+    .sbar-chart-legend > span{display:inline-flex;align-items:center;gap:5px;}
+    .sbar-chart-legend i{width:8px;height:8px;border-radius:2px;display:inline-block;}
+    .sbar-chart-legend .i-danger{background:var(--color-danger);}
+    .sbar-chart-legend .i-warn{background:var(--color-warning);}
+    .sbar-chart-legend .last{margin-left:auto;color:var(--t2);font-weight:600;}
+    .sbar-chart-legend .last b{color:var(--t1);font-weight:700;}
+
+    /* 중단: 2×2 SBAR 타일 그리드 */
+    .sbar-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .sbar-tile{
+      background:var(--palette-white);border-radius:16px;
+      box-shadow:var(--cg-card-shadow);
+      padding:14px 16px;text-align:left;
+      font-family:inherit;border:0;cursor:pointer;
+      display:flex;flex-direction:column;gap:6px;
+      transition:transform .12s;
+    }
+    .sbar-tile:active{transform:scale(.99);}
+    .sbar-tile-head{display:flex;align-items:center;gap:8px;}
+    .sbar-tile-tag{
+      width:22px;height:22px;border-radius:7px;flex-shrink:0;
       display:inline-flex;align-items:center;justify-content:center;
-      font-size:15px;font-weight:700;letter-spacing:-.3px;
-      background:var(--palette-gray-100,#F4F4F5);
-      color:var(--palette-gray-700,#3F3F46);
+      font-size:11px;font-weight:800;letter-spacing:-.2px;
+      background:var(--palette-gray-100);color:var(--palette-gray-700);
     }
-    .sbar-row.primary .sbar-tag{
-      background:var(--accent-soft);color:var(--accent-strong);
+    .sbar-tile--danger .sbar-tile-tag{background:var(--danger-soft);color:var(--palette-red-700);}
+    .sbar-tile--warn  .sbar-tile-tag{background:var(--warn-soft);color:var(--palette-amber-700);}
+    .sbar-tile-label{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.3px;text-transform:uppercase;}
+    .sbar-tile-headline{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-.2px;line-height:1.3;}
+    .sbar-tile--danger .sbar-tile-headline{color:var(--palette-red-700);}
+    .sbar-tile--warn  .sbar-tile-headline{color:var(--palette-amber-700);}
+    .sbar-tile-sub{font-size:11.5px;font-weight:500;color:var(--t2);line-height:1.4;}
+
+    /* 하단: 권고 가중치 */
+    .sbar-rec{
+      background:var(--palette-white);border-radius:20px;
+      box-shadow:var(--cg-card-shadow);
+      padding:16px 20px;
     }
-    .sbar-row--danger .sbar-tag{
-      background:var(--danger-soft);color:var(--palette-red-700);
+    .sbar-rec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;}
+    .sbar-rec-ttl{font-size:11px;font-weight:700;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
+    .sbar-rec-cnt{font-size:11px;font-weight:500;color:var(--t3);}
+    .sbar-rec-row{
+      display:flex;align-items:center;gap:10px;padding:9px 0;
+      border-top:1px solid rgba(0,0,0,.04);
     }
-    .sbar-body{flex:1;min-width:0;line-height:1.5;}
-    .sbar-label{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.4px;text-transform:uppercase;}
-    .sbar-label-row{display:flex;align-items:center;gap:8px;}
-    .sbar-text{font-size:14px;font-weight:500;color:var(--t1);margin-top:6px;line-height:1.6;}
-    .sbar-row.primary .sbar-text{font-size:15px;font-weight:600;}
-    .sbar-text b{color:var(--t1);font-weight:700;}
-    .sbar-row--danger .sbar-text b{color:var(--palette-red-700);}
-    .sbar-risk{
-      display:inline-flex;align-items:center;gap:4px;
-      font-size:10.5px;font-weight:700;letter-spacing:.3px;
-      padding:3px 8px;border-radius:999px;text-transform:uppercase;
-    }
-    .sbar-risk iconify-icon{font-size:12px;}
-    .sbar-risk--danger{background:var(--danger-soft);color:var(--palette-red-700);}
-    .sbar-risk--warn{background:var(--warn-soft);color:var(--palette-amber-700);}
-    .sbar-edit{
-      flex-shrink:0;width:32px;height:32px;border-radius:10px;
-      background:#F4F6F8;border:0;cursor:pointer;
+    .sbar-rec-row:first-of-type{border-top:0;}
+    .sbar-rec-num{
+      width:22px;height:22px;border-radius:50%;flex-shrink:0;
       display:inline-flex;align-items:center;justify-content:center;
+      font-size:11px;font-weight:700;letter-spacing:-.2px;
+      background:var(--palette-gray-100);color:var(--palette-gray-700);
     }
-    .sbar-edit iconify-icon{font-size:15px;color:var(--t2);}
+    .sbar-rec-row.p-danger .sbar-rec-num{background:var(--color-danger);color:var(--palette-white);}
+    .sbar-rec-row.p-warn   .sbar-rec-num{background:var(--color-warning);color:var(--palette-white);}
+    .sbar-rec-text{flex:1;min-width:0;font-size:13px;font-weight:500;color:var(--t1);line-height:1.35;letter-spacing:-.1px;}
+    .sbar-rec-text b{font-weight:700;}
+    .sbar-rec-weight{width:60px;height:5px;background:rgba(0,0,0,.06);border-radius:3px;overflow:hidden;flex-shrink:0;}
+    .sbar-rec-weight i{display:block;height:100%;width:var(--weight, 0%);background:var(--palette-gray-400);}
+    .sbar-rec-row.p-danger .sbar-rec-weight i{background:var(--color-danger);}
+    .sbar-rec-row.p-warn   .sbar-rec-weight i{background:var(--color-warning);}
 
     .ai-hint{
-      margin:12px 0 0;padding:14px 18px;background:#F0FAF3;
-      border-radius:14px;
+      margin:12px 0 0;padding:14px 18px;background:var(--palette-white);
+      border-radius:20px;
+      box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .08);
       display:flex;align-items:center;gap:12px;
     }
     .ai-hint iconify-icon{font-size:20px;color:var(--accent-strong);flex-shrink:0;}
@@ -139,8 +185,8 @@
 
     /* CHECKS */
     .checks{
-      background:#fff;border-radius:20px;overflow:hidden;
-      box-shadow:0 2px 10px rgba(0,0,0,.04);
+      background:var(--palette-white);border-radius:20px;overflow:hidden;
+      box-shadow:var(--cg-card-shadow);
     }
     .check-row{
       padding:16px 18px;display:flex;align-items:center;gap:14px;
@@ -149,11 +195,11 @@
     .check-row:last-child{border-bottom:0;}
     .check-box{
       width:26px;height:26px;border-radius:8px;flex-shrink:0;
-      border:2px solid rgba(0,0,0,.12);background:#fff;
+      border:2px solid rgba(0,0,0,.12);background:var(--palette-white);
       display:inline-flex;align-items:center;justify-content:center;
       transition:.15s;
     }
-    .check-box iconify-icon{font-size:16px;color:#fff;opacity:0;transition:.15s;}
+    .check-box iconify-icon{font-size:16px;color:var(--palette-white);opacity:0;transition:.15s;}
     .check-row.checked .check-box{background:var(--accent);border-color:var(--accent);}
     .check-row.checked .check-box iconify-icon{opacity:1;}
     .check-text{flex:1;min-width:0;line-height:1.35;}
@@ -167,8 +213,8 @@
 
     /* TIMELINE */
     .accum{
-      background:#fff;border-radius:20px;padding:8px 0;
-      box-shadow:0 2px 10px rgba(0,0,0,.04);
+      background:var(--palette-white);border-radius:20px;padding:8px 0;
+      box-shadow:var(--cg-card-shadow);
     }
     .acc-row{
       padding:14px 18px;display:flex;align-items:flex-start;gap:14px;
@@ -180,7 +226,7 @@
     .acc-dot{
       width:12px;height:12px;border-radius:50%;background:var(--accent);
       position:absolute;top:0;left:50%;transform:translateX(-50%);
-      box-shadow:0 0 0 3px #fff;
+      box-shadow:0 0 0 3px white;
     }
     .acc-dot.warn{background:var(--warn);}
     .acc-dot.danger{background:var(--danger);}
@@ -197,75 +243,75 @@
 
     /* VOICE */
     .voice-bar{
-      background:#fff;border-radius:20px;
-      padding:18px 20px;display:flex;align-items:center;gap:14px;
-      box-shadow:0 2px 10px rgba(0,0,0,.04);
+      background:var(--palette-white);border-radius:18px;
+      padding:12px 14px;display:flex;align-items:center;gap:12px;
+      box-shadow:var(--cg-card-shadow);
     }
     .voice-mic-lg{
-      width:56px;height:56px;border-radius:50%;flex-shrink:0;
-      background:linear-gradient(135deg,var(--accent),var(--accent-strong));
-      color:#fff;display:inline-flex;align-items:center;justify-content:center;
-      box-shadow:0 6px 18px rgba(34,197,94,.4);cursor:pointer;border:0;
+      width:46px;height:46px;border-radius:50%;flex-shrink:0;
+      background:var(--accent);
+      color:var(--palette-white);display:inline-flex;align-items:center;justify-content:center;
+      box-shadow:0 4px 14px rgba(var(--brand-green-500-rgb), .36);cursor:pointer;border:0;
     }
-    .voice-mic-lg iconify-icon{font-size:26px;}
+    .voice-mic-lg iconify-icon{font-size:22px;}
     .voice-info{flex:1;min-width:0;line-height:1.3;}
-    .voice-info-main{font-size:14.5px;font-weight:700;color:var(--t1);letter-spacing:-.3px;}
-    .voice-info-sub{font-size:12.5px;font-weight:500;color:var(--t2);margin-top:3px;}
+    .voice-info-main{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-.3px;}
+    .voice-info-sub{font-size:12px;font-weight:500;color:var(--t2);margin-top:2px;}
 
     /* SEND */
     .send-cta{
-      margin:32px var(--pad) 0;display:grid;grid-template-columns:1fr 2fr;gap:10px;
+      margin:10px var(--pad) 0;display:grid;grid-template-columns:1fr 2fr;gap:10px;
       position:relative;z-index:1;
     }
     .send-draft{
-      padding:16px;background:#fff;border:0;
+      padding:16px;background:var(--palette-white);border:0;
       border-radius:16px;font-size:14px;font-weight:700;color:var(--t2);
       cursor:pointer;font-family:inherit;
-      box-shadow:0 2px 8px rgba(0,0,0,.04);
+      box-shadow:var(--cg-card-shadow);
     }
     .send-now{
-      padding:16px;background:linear-gradient(135deg,var(--accent),var(--accent-strong));
-      border:0;border-radius:16px;color:#fff;
+      padding:16px;background:var(--accent);
+      border:0;border-radius:14px;color:var(--palette-white);
       font-size:15px;font-weight:700;letter-spacing:-.2px;
       cursor:pointer;font-family:inherit;
-      box-shadow:0 6px 18px rgba(34,197,94,.35);
+      box-shadow:0 6px 18px rgba(var(--brand-green-500-rgb), .35);
       display:inline-flex;align-items:center;justify-content:center;gap:8px;
     }
     .send-now iconify-icon{font-size:18px;}
 
-    /* TAB BAR */
+    /* TAB BAR · v3.2.5: 세 앱 탭바 위치 통일 — env(safe-bottom) + 12px (d01 기준) */
     .tab-wrap{
-      position:fixed;bottom:calc(var(--safe-b) + var(--tab-bot));
+      position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);
       left:50%;transform:translateX(-50%);
       display:flex;align-items:center;gap:10px;
       width:calc(100% - 32px);max-width:398px;z-index:40;
     }
+    /* v3.2.5: 탭바 — 보호자 스타일 통일 (글라스 + 아이콘 26px, 라벨 숨김) */
     .tabbar{
       flex:1;min-width:0;height:var(--tab-h);
       background:rgba(255,255,255,.85);
-      backdrop-filter:blur(22px) saturate(140%);
-      -webkit-backdrop-filter:blur(22px) saturate(140%);
-      border:1px solid rgba(255,255,255,.7);
+      backdrop-filter:blur(20px) saturate(140%);
+      -webkit-backdrop-filter:blur(20px) saturate(140%);
+      border:1px solid rgba(255,255,255,.55);
       border-radius:999px;
-      box-shadow:0 6px 22px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
-      display:flex;align-items:stretch;justify-content:space-around;padding:0 6px;
+      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
+      display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;
     }
-    .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--t3);border-radius:999px;}
-    .tab iconify-icon{font-size:22px;}
-    .tab-label{font-size:10.5px;font-weight:600;letter-spacing:-.1px;line-height:1;}
+    .tab iconify-icon{font-size:26px;}
+    .tab-label{display:none;}
     .tab.active{color:var(--accent-strong);}
-    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(34,197,94,.28));}
+    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(var(--brand-green-500-rgb), .28));}
     .sos{
       position:relative;width:var(--tab-h);height:var(--tab-h);flex-shrink:0;border-radius:50%;
-      background:linear-gradient(135deg,#F87171,var(--palette-red-600));border:0;
-      box-shadow:0 8px 22px rgba(220,38,38,.38), inset 0 1px 0 rgba(255,255,255,.32);
+      background:var(--color-danger);border:0;
+      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
       display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
     }
-    .sos iconify-icon{font-size:26px;color:#fff;}
+    .sos iconify-icon{font-size:26px;color:var(--palette-white);}
     .toast{
       position:fixed;left:50%;bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 18px);
       transform:translateX(-50%) translateY(20px);
-      background:rgba(28,28,30,.92);color:#fff;font-size:14px;font-weight:600;
+      background:rgba(28,28,30,.92);color:var(--palette-white);font-size:14px;font-weight:600;
       padding:11px 20px;border-radius:999px;
       opacity:0;transition:.25s;pointer-events:none;z-index:300;white-space:nowrap;
     }
@@ -279,14 +325,14 @@
     }
     .conf-overlay.show{display:flex;}
     .conf-sheet{
-      background:#fff;color:var(--t1);
+      background:var(--palette-white);color:var(--t1);
       width:100%;max-width:430px;
       border-radius:24px 24px 0 0;
       padding:14px 22px calc(24px + env(safe-area-inset-bottom,0px));
       box-shadow:0 -8px 28px rgba(0,0,0,.2);
-      animation:confUp .25s ease-out;max-height:88vh;overflow-y:auto;
+      animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both;max-height:88vh;overflow-y:auto;
     }
-    @keyframes confUp{from{transform:translateY(20px);opacity:.6;}to{transform:translateY(0);opacity:1;}}
+    @keyframes haru-fade-in-up {from{transform:translateY(8px);opacity:0;}to{transform:translateY(0);opacity:1;}}
     .conf-handle{width:40px;height:4px;background:rgba(0,0,0,.15);border-radius:2px;margin:0 auto 14px;}
     .conf-eyebrow{font-size:11px;font-weight:700;letter-spacing:.4px;color:var(--accent-strong);text-transform:uppercase;}
     .conf-ttl{font-size:20px;font-weight:700;color:var(--t1);letter-spacing:-.4px;line-height:1.3;margin-top:4px;}
@@ -303,7 +349,7 @@
     .conf-warn-list{margin-top:6px;font-size:12.5px;font-weight:500;color:var(--palette-amber-700);line-height:1.5;}
 
     .conf-meta{
-      background:#F8FAF9;border-radius:14px;padding:14px 16px;margin-bottom:16px;
+      background:var(--clinical-surface);border-radius:14px;padding:14px 16px;margin-bottom:16px;
       display:flex;flex-direction:column;gap:8px;
     }
     .conf-meta>div{display:flex;justify-content:space-between;align-items:center;font-size:13px;gap:12px;}
@@ -326,11 +372,11 @@
     .conf-pill iconify-icon{font-size:13px;}
 
     .conf-action-primary{
-      width:100%;padding:18px;border:0;border-radius:16px;cursor:pointer;font-family:inherit;
-      background:linear-gradient(135deg,var(--accent),var(--accent-strong));color:#fff;
+      width:100%;padding:18px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
+      background:var(--accent);color:var(--palette-white);
       font-size:16px;font-weight:700;letter-spacing:-.2px;
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      box-shadow:0 6px 18px rgba(34,197,94,.3);
+      box-shadow:0 6px 18px rgba(var(--brand-green-500-rgb), .3);
     }
     .conf-action-primary iconify-icon{font-size:20px;}
     .conf-cancel{
@@ -342,13 +388,14 @@
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
+  <div class="ai-orb-bg" aria-hidden="true"><div class="ai-orb"></div></div>
   <div class="app">
 
     <header class="header">
       <div class="top-nav">
+        <span class="h-left" aria-hidden="true"></span>
         <div class="title-block">
-          <div class="h-eyebrow">인수인계 적립함</div>
-          <div class="h-name">SBAR · 7건</div>
+          <div class="h-name">SBAR</div>
         </div>
         <button class="icon-btn" aria-label="이력"><iconify-icon icon="fluent:history-24-filled"></iconify-icon></button>
       </div>
@@ -356,7 +403,7 @@
 
     <section class="countdown">
       <div class="countdown-ring">
-        <svg viewBox="0 0 44 44" width="44" height="44">
+        <svg class="countdown-ring-svg" viewBox="0 0 44 44" width="44" height="44">
           <circle cx="22" cy="22" r="19" fill="none" stroke="rgba(34,197,94,.15)" stroke-width="3"/>
           <circle cx="22" cy="22" r="19" fill="none" stroke="var(--accent)" stroke-width="3"
                   stroke-dasharray="119" stroke-dashoffset="44" stroke-linecap="round"/>
@@ -372,6 +419,23 @@
     <section class="sec">
       <div class="sec-head">
         <div>
+          <h2 class="sec-ttl">음성 메모</h2>
+        </div>
+      </div>
+      <div class="voice-bar">
+        <button class="voice-mic-lg" onclick="toast('녹음 시작 — 60초');" aria-label="음성 메모 녹음">
+          <iconify-icon icon="fluent:mic-24-filled"></iconify-icon>
+        </button>
+        <div class="voice-info">
+          <div class="voice-info-main">1분 음성 메모 추가</div>
+          <div class="voice-info-sub">STT로 변환되어 SBAR 끝에 첨부</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head">
+        <div>
           <div class="sec-eyebrow">AI 자동 분류</div>
           <h2 class="sec-ttl">SBAR 초안</h2>
         </div>
@@ -379,47 +443,96 @@
       </div>
 
       <div class="sbar">
-        <div class="sbar-row primary sbar-row--danger">
-          <span class="sbar-tag">S</span>
-          <div class="sbar-body">
-            <div class="sbar-label-row">
-              <span class="sbar-label">Situation · 상황</span>
-              <span class="sbar-risk sbar-risk--danger"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon>위험</span>
+
+        <!-- 상단: 24h 혈압 추이 -->
+        <div class="sbar-trend">
+          <div class="sbar-trend-head">
+            <div>
+              <div class="sbar-trend-ttl">최명자 어르신 · 24h 혈압</div>
+              <div class="sbar-trend-sub">2층 B-2호 · 82F · 고혈압 기저</div>
             </div>
-            <div class="sbar-text"><b>최명자(82F · 2층 B-2호)</b> 14:02 혈압 180/110. 24시간 내 수축기 170+ 3회 측정. 이상훈 촉탁의 보고 완료, 암로디핀 5→10mg 증량 처방.</div>
-          </div>
-          <button class="sbar-edit" aria-label="편집"><iconify-icon icon="fluent:edit-24-filled"></iconify-icon></button>
-        </div>
-
-        <div class="sbar-row">
-          <span class="sbar-tag">B</span>
-          <div class="sbar-body">
-            <div class="sbar-label">Background · 배경</div>
-            <div class="sbar-text">고혈압 · 당뇨 기저질환. 입소 전부터 혈압 변동 큼. 이번 주 평균 수축기 165. 보호자 14:30 통화 완료.</div>
-          </div>
-          <button class="sbar-edit" aria-label="편집"><iconify-icon icon="fluent:edit-24-filled"></iconify-icon></button>
-        </div>
-
-        <div class="sbar-row">
-          <span class="sbar-tag">A</span>
-          <div class="sbar-body">
-            <div class="sbar-label-row">
-              <span class="sbar-label">Assessment · 평가</span>
-              <span class="sbar-risk sbar-risk--warn"><iconify-icon icon="fluent:alert-urgent-24-filled"></iconify-icon>주의</span>
+            <div>
+              <div class="sbar-trend-val">180<small>/110</small></div>
+              <div class="sbar-trend-time">14:02 측정</div>
             </div>
-            <div class="sbar-text">현재 의식 명료, 두통·어지럼 호소 없음. 증량 처방 첫날, <b>16시·20시 재측정 필요</b>. 야간 낙상 주의.</div>
           </div>
-          <button class="sbar-edit" aria-label="편집"><iconify-icon icon="fluent:edit-24-filled"></iconify-icon></button>
+          <svg class="sbar-chart" viewBox="0 0 320 108" preserveAspectRatio="none" role="img" aria-label="24시간 혈압 추이">
+            <defs>
+              <linearGradient id="bpAreaFill" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="var(--color-danger)" stop-opacity=".18"/>
+                <stop offset="1" stop-color="var(--color-danger)" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <line x1="0" y1="28" x2="320" y2="28" stroke="var(--color-danger)" stroke-width="1" stroke-dasharray="3 3" opacity=".5"/>
+            <text x="4" y="24" font-size="9" fill="var(--color-danger)" font-weight="700">위험 170+</text>
+            <line x1="0" y1="56" x2="320" y2="56" stroke="var(--color-warning)" stroke-width="1" stroke-dasharray="3 3" opacity=".35"/>
+            <text x="4" y="52" font-size="9" fill="var(--palette-amber-700)" font-weight="600">주의 140+</text>
+            <path d="M0,80 L40,72 L80,66 L120,58 L160,52 L200,40 L240,28 L280,18 L320,10 L320,108 L0,108 Z" fill="url(#bpAreaFill)"/>
+            <path d="M0,80 L40,72 L80,66 L120,58 L160,52 L200,40 L240,28 L280,18 L320,10" fill="none" stroke="var(--color-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="80" cy="66" r="3" fill="#fff" stroke="var(--color-warning)" stroke-width="2"/>
+            <circle cx="160" cy="52" r="3" fill="#fff" stroke="var(--color-warning)" stroke-width="2"/>
+            <circle cx="240" cy="28" r="3.5" fill="var(--color-danger)" stroke="#fff" stroke-width="2"/>
+            <circle cx="320" cy="10" r="5" fill="var(--color-danger)" stroke="#fff" stroke-width="2"/>
+          </svg>
+          <div class="sbar-chart-legend">
+            <span><i class="i-danger"></i>위험</span>
+            <span><i class="i-warn"></i>주의</span>
+            <span class="last">06시 → 현재 <b>14:02</b></span>
+          </div>
         </div>
 
-        <div class="sbar-row">
-          <span class="sbar-tag">R</span>
-          <div class="sbar-body">
-            <div class="sbar-label">Recommendation · 권고</div>
-            <div class="sbar-text">1. 16시·20시 혈압 측정 &nbsp; 2. 수축기 160+ 시 즉시 의사 호출 &nbsp; 3. 침상 주변 정돈, 수면등 ON &nbsp; 4. 보호자에게 저녁 상태 공유</div>
-          </div>
-          <button class="sbar-edit" aria-label="편집"><iconify-icon icon="fluent:edit-24-filled"></iconify-icon></button>
+        <!-- 중단: 2×2 SBAR 타일 -->
+        <div class="sbar-grid">
+          <button class="sbar-tile sbar-tile--danger" type="button" onclick="toast('S · 상황 상세');">
+            <div class="sbar-tile-head"><span class="sbar-tile-tag">S</span><span class="sbar-tile-label">상황</span></div>
+            <div class="sbar-tile-headline">위험 측정 3회</div>
+            <div class="sbar-tile-sub">촉탁의 보고 완료 · 5→10mg</div>
+          </button>
+          <button class="sbar-tile" type="button" onclick="toast('B · 배경 상세');">
+            <div class="sbar-tile-head"><span class="sbar-tile-tag">B</span><span class="sbar-tile-label">배경</span></div>
+            <div class="sbar-tile-headline">기저질환 2건</div>
+            <div class="sbar-tile-sub">평균 수축기 165 · 보호자 OK</div>
+          </button>
+          <button class="sbar-tile sbar-tile--warn" type="button" onclick="toast('A · 평가 상세');">
+            <div class="sbar-tile-head"><span class="sbar-tile-tag">A</span><span class="sbar-tile-label">평가</span></div>
+            <div class="sbar-tile-headline">재측정 필요</div>
+            <div class="sbar-tile-sub">16시·20시 · 야간 낙상</div>
+          </button>
+          <button class="sbar-tile" type="button" onclick="toast('R · 권고 상세');">
+            <div class="sbar-tile-head"><span class="sbar-tile-tag">R</span><span class="sbar-tile-label">권고</span></div>
+            <div class="sbar-tile-headline">4건 대기</div>
+            <div class="sbar-tile-sub">의사 호출 · 측정 · 보호자</div>
+          </button>
         </div>
+
+        <!-- 하단: 권고 가중치 -->
+        <div class="sbar-rec">
+          <div class="sbar-rec-head">
+            <div class="sbar-rec-ttl">권고 가중치</div>
+            <div class="sbar-rec-cnt">4건 · 우선순위 순</div>
+          </div>
+          <div class="sbar-rec-row p-danger">
+            <span class="sbar-rec-num">1</span>
+            <span class="sbar-rec-text">수축기 <b>160+</b> 시 즉시 의사 호출</span>
+            <span class="sbar-rec-weight"><i style="--weight:95%"></i></span>
+          </div>
+          <div class="sbar-rec-row p-warn">
+            <span class="sbar-rec-num">2</span>
+            <span class="sbar-rec-text">16시·20시 혈압 측정</span>
+            <span class="sbar-rec-weight"><i style="--weight:80%"></i></span>
+          </div>
+          <div class="sbar-rec-row p-warn">
+            <span class="sbar-rec-num">3</span>
+            <span class="sbar-rec-text">침상 주변 정돈, 수면등 ON</span>
+            <span class="sbar-rec-weight"><i style="--weight:55%"></i></span>
+          </div>
+          <div class="sbar-rec-row">
+            <span class="sbar-rec-num">4</span>
+            <span class="sbar-rec-text">보호자에게 저녁 상태 공유</span>
+            <span class="sbar-rec-weight"><i style="--weight:30%"></i></span>
+          </div>
+        </div>
+
       </div>
 
       <div class="ai-hint">
@@ -534,39 +647,14 @@
       </div>
     </section>
 
-    <section class="sec">
-      <div class="sec-head">
-        <div>
-          <div class="sec-eyebrow">추가 인계</div>
-          <h2 class="sec-ttl">음성 메모</h2>
-        </div>
-      </div>
-      <div class="voice-bar">
-        <button class="voice-mic-lg" onclick="toast('녹음 시작 — 60초');" aria-label="음성 메모 녹음">
-          <iconify-icon icon="fluent:mic-24-filled"></iconify-icon>
-        </button>
-        <div class="voice-info">
-          <div class="voice-info-main">1분 음성 메모 추가</div>
-          <div class="voice-info-sub">STT로 변환되어 SBAR 끝에 첨부</div>
-        </div>
-      </div>
-    </section>
-
-    <div class="send-cta">
-      <button class="send-draft" onclick="toast('초안 저장됨');">초안 저장</button>
-      <button class="send-now" onclick="openSendConfirm();">
-        교대조에게 전송<iconify-icon icon="fluent:send-24-filled"></iconify-icon>
-      </button>
-    </div>
-
   </div>
 
   <div class="tab-wrap">
     <nav class="tabbar" role="tablist">
       <a href="d01-home.html" class="tab" aria-label="지금"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="tab-label">지금</span></a>
-      <a href="d02-round.html" class="tab" aria-label="회진"><iconify-icon icon="fluent:stethoscope-24-filled"></iconify-icon><span class="tab-label">회진</span></a>
-      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-multiple-24-filled"></iconify-icon><span class="tab-label">소통</span></a>
-      <a href="d04-handover.html" class="tab active" aria-label="인수인계"><iconify-icon icon="fluent:arrow-swap-24-filled"></iconify-icon><span class="tab-label">인계</span></a>
+      <a href="d02-round.html" class="tab" aria-label="회진"><iconify-icon icon="fluent:bed-24-filled"></iconify-icon><span class="tab-label">회진</span></a>
+      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon><span class="tab-label">소통</span></a>
+      <a href="d04-handover.html" class="tab active" aria-label="인수인계"><iconify-icon icon="fluent:document-arrow-right-24-filled"></iconify-icon><span class="tab-label">인계</span></a>
     </nav>
     <a href="d-sos.html" class="sos" aria-label="SOS"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></a>
   </div>
@@ -638,5 +726,6 @@
       toast('이브닝 교대조에게 전송 완료 · 읽음 대기 중');
     }
   </script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
 </body>
 </html>

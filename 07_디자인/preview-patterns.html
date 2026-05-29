@@ -401,86 +401,84 @@
 
 <main class="pv-container">
 
-  <!-- P1. 보호자 홈 화면 -->
+  <!-- P1. 보호자 홈 화면 — AI 오브 + 일일 리포트 시트 (g-guardian-live 기반) -->
   <section class="pv-section">
-    <h2 class="pv-section__title">P1. 보호자 홈 — "오늘 안심 확인"</h2>
-    <p class="pv-section__desc">서비스개선안 v1.0 P0 핵심 화면. 위에서 아래로 1) 오늘 상태 → 2) 4축 요약 → 3) AI 리포트 → 4) 문의 → 5) 주간 추세.</p>
+    <h2 class="pv-section__title">P1. 보호자 홈 — "안심을 한눈에"</h2>
+    <p class="pv-section__desc">중앙 AI 오브가 항상 살아있고, 그 위로 일일 리포트 시트가 올라온다. 시트는 1) 호명·인사 → 2) 오늘의 순간(모먼트) → 3) 일일 리포트 위젯 그리드 → 4) AI 인사이트.</p>
 
     <div class="pattern-split">
       <div class="pattern-split__rules">
         <h3>핵심 규칙</h3>
         <ul>
-          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>1순위 강조 1개</strong> — 화면당 <code>card-hero</code>는 단 하나(오늘의 안부 상태). 나머지는 모두 <code>card-default</code>(흰 surface).</span></li>
-          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>4축 요약</strong> — 식사·투약·수면·활동을 2×2 그리드로. 각 카드에 큰 숫자 + 상태 뱃지.</span></li>
-          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>AI 리포트는 glass 예외</strong> — 4곳 한정 중 하나(감성 영역). 액센트 보더로 "특별한 카드" 표시.</span></li>
-          <li class="is-dont"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon><span>일반 정보 카드에 glass·blur 사용 금지 — 텍스트 대비와 정보 밀도 우선.</span></li>
-          <li class="is-dont"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon><span>한 화면에 hero 카드 2개 이상 두지 않기 — 강조가 흐려진다.</span></li>
+          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>AI 오브는 페이지의 hero</strong> — 별도 hero 카드 없이 중앙 radial-gradient 오브가 감정 톤을 잡는다. 배경은 cream(#fafaf6) 솔리드.</span></li>
+          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>호명 → 결론</strong> — "지욱님, / 영자님은 오늘 잘 지내셨어요" 인트로가 시트 위 첫 시선을 잡는다.</span></li>
+          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>모먼트 카드</strong> — 간호사가 남긴 사진 + 한 줄 코멘트가 숫자보다 위에 온다(감정 우선).</span></li>
+          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>2-col 위젯 그리드</strong> — 투약·맥박·기분·식사·수면·활동을 동일한 흰 surface 카드로. 숫자만 크게, 색은 액센트.</span></li>
+          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>AI 인사이트</strong> — 시트 하단에 1-2개. 약한 액센트 보더, 카드 좌측에 컨텍스트 아이콘.</span></li>
+          <li class="is-dont"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon><span>위젯 카드에 glass·blur·그라디언트 배경 금지 — 숫자 가독성이 최우선.</span></li>
+          <li class="is-dont"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon><span>탑바 sticky 금지 — 시트가 올라오면서 자연스럽게 가린다.</span></li>
         </ul>
 
         <div class="applies-to">
           <div class="applies-to__label">Applies to</div>
           <ul>
-            <li>v11_보호자앱/g-guardian-live.html</li>
-            <li>v11_보호자앱/g-home-v31-pilot.html ((system CSS 파일럿))</li>
+            <li>v11_보호자앱/g-guardian-live.html (정식 홈)</li>
           </ul>
         </div>
       </div>
 
       <div class="pattern-split__device">
     <div class="device">
-      <div class="device__screen" data-role="guardian">
-        <div class="h-mobile">
-          <iconify-icon icon="fluent:dismiss-24-filled"></iconify-icon>
-          <div class="h-mobile__title">오늘 · 5월 9일</div>
-          <iconify-icon icon="fluent:alert-24-filled"></iconify-icon>
-        </div>
-        <div class="device__content stack-16">
+      <div class="device__screen" data-role="guardian" style="background: radial-gradient(circle at 50% 28%, rgba(70, 168, 255, 0.36) 0%, rgba(27, 231, 234, 0.18) 32%, transparent 62%), #fafaf6;">
+        <div class="device__content stack-16" style="padding-top: 56px;">
 
-          <div class="c-hero" data-role="guardian">
-            <div style="font-size: 12px; opacity: 0.85; margin-bottom: 8px;">오늘의 안부 상태</div>
-            <div style="font-size: 22px; font-weight: 600; margin-bottom: 4px;">안정적이세요</div>
-            <div style="font-size: 14px; opacity: 0.9;">식사 정상 · 투약 완료 · 활동 보통</div>
+          <!-- 인트로 호명 + 결론 -->
+          <div style="text-align: center; margin-bottom: 4px;">
+            <div style="font-size: 13px; color: rgba(28,28,30,0.55); font-weight: 500;">지욱님,</div>
+            <div style="font-size: 22px; font-weight: 700; line-height: 1.28; color: #1C1C1E; margin-top: 4px;">영자님은 오늘<br><span style="color: var(--brand-blue-500);">잘 지내셨어요</span></div>
           </div>
 
+          <!-- 모먼트 카드 — 사진 + 간호사 코멘트 -->
+          <div class="c-default" style="display: flex; gap: 10px; align-items: center; padding: 10px;">
+            <div style="width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(135deg, #FDE68A, #F59E0B); flex-shrink: 0;"></div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 12px; line-height: 1.4; color: var(--color-text-primary);">"오전 산책 때 햇빛이 좋아서 한참 머무르셨어요"</div>
+              <div style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px;">김서연 간호사 · 10:24</div>
+            </div>
+          </div>
+
+          <!-- 일일 리포트 위젯 그리드 -->
           <div class="g-2x2">
             <div class="c-default">
-              <h5>식사</h5>
-              <div class="num">2/3</div>
-              <span class="b b--success" style="margin-top: 6px;">정상</span>
+              <h5 style="display: flex; align-items: center; gap: 4px;"><iconify-icon icon="fluent:pill-24-filled" style="color: #6EE7B7; font-size: 14px;"></iconify-icon>투약</h5>
+              <div class="num">33<span style="font-size: 14px; opacity: 0.4;">%</span></div>
+              <div style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px;">1/3 · 다음 18:00</div>
             </div>
             <div class="c-default">
-              <h5>투약</h5>
-              <div class="num">3/3</div>
-              <span class="b b--success" style="margin-top: 6px;">완료</span>
+              <h5 style="display: flex; align-items: center; gap: 4px;"><iconify-icon icon="fluent:pulse-24-filled" style="color: var(--color-danger); font-size: 14px;"></iconify-icon>맥박</h5>
+              <div class="num">72<span style="font-size: 13px; opacity: 0.4;"> BPM</span></div>
+              <div style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px;">평균 근처 ±74</div>
             </div>
             <div class="c-default">
-              <h5>수면 / 기분</h5>
-              <div class="num">좋음</div>
-              <span class="b b--success" style="margin-top: 6px;">안정</span>
+              <h5 style="display: flex; align-items: center; gap: 4px;"><iconify-icon icon="fluent:heart-24-filled" style="color: var(--brand-blue-500); font-size: 14px;"></iconify-icon>기분</h5>
+              <div class="num">87<span style="font-size: 13px; opacity: 0.4;">점</span></div>
+              <span class="b b--success" style="margin-top: 6px;">밝음</span>
             </div>
             <div class="c-default">
-              <h5>활동</h5>
-              <div class="num">30분</div>
-              <span class="b b--warning" style="margin-top: 6px;">짧음</span>
+              <h5 style="display: flex; align-items: center; gap: 4px;"><iconify-icon icon="fluent:food-24-filled" style="color: var(--brand-blue-500); font-size: 14px;"></iconify-icon>식사</h5>
+              <div class="num">90<span style="font-size: 13px; opacity: 0.4;">%</span></div>
+              <div style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px;">오늘 저녁</div>
             </div>
           </div>
 
+          <!-- AI 인사이트 -->
           <div class="ai-report">
             <div class="ai-report__head">
-              <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
-              AI 안부 리포트
+              <iconify-icon icon="fluent:sleep-24-filled" style="color: var(--brand-blue-500);"></iconify-icon>
+              AI 인사이트
             </div>
-            <div class="ai-report__title">"오늘은 식사·투약 모두 잘 하셨고, 오후에 짧은 산책에 참여하셨습니다."</div>
+            <div class="ai-report__title">"수면 패턴이 안정적이에요. 이번 주 평균 7.5시간으로 개선되었어요."</div>
             <a href="#" style="font-size: 13px; color: var(--brand-blue-500); font-weight: 600; text-decoration: none;">자세히 보기 →</a>
-          </div>
-
-          <div class="c-default" style="display: flex; align-items: center; gap: 12px;">
-            <iconify-icon icon="fluent:chat-24-filled" style="color: var(--brand-blue-500); font-size: 24px;"></iconify-icon>
-            <div style="flex: 1;">
-              <div style="font-weight: 600; font-size: 15px;">궁금한 점 남기기</div>
-              <div style="font-size: 12px; color: var(--color-text-secondary);">간호사가 근무 시간에 답변드려요</div>
-            </div>
-            <iconify-icon icon="fluent:chevron-right-24-filled" style="color: var(--color-text-tertiary);"></iconify-icon>
           </div>
 
         </div>
@@ -489,9 +487,9 @@
         </button>
         <nav class="tabbar" data-role="guardian">
           <button class="tab is-active" data-role="guardian"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span>홈</span></button>
-          <button class="tab"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon><span>가이드</span></button>
+          <button class="tab"><iconify-icon icon="fluent:book-24-filled"></iconify-icon><span>가이드</span></button>
           <button class="tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon><span>소통</span></button>
-          <button class="tab"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon><span>기록</span></button>
+          <button class="tab"><iconify-icon icon="fluent:folder-24-filled"></iconify-icon><span>기록</span></button>
           <button class="tab"><iconify-icon icon="fluent:person-24-filled"></iconify-icon><span>마이</span></button>
         </nav>
       </div>
@@ -571,7 +569,7 @@
             </tbody>
           </table>
         </div>
-        <div class="c-default" style="border-color: rgba(220, 38, 38, 0.30);">
+        <div class="c-default" style="border-color: rgba(227, 43, 37, 0.30);">
           <div style="font-size: 12px; color: var(--color-danger); font-weight: 600; margin-bottom: 8px;">SOS · 즉시 확인</div>
           <div style="font-weight: 600; font-size: 15px;">이영희 환자 (205호)</div>
           <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; line-height: 1.5;">낙상 의심 — 박간호사가 현장 도착 중</div>

@@ -1,185 +1,187 @@
 <!DOCTYPE html>
-<html lang="ko" data-role="medical" data-platform="mobile">
+<html lang="ko" data-role="medical" data-platform="mobile" class="has-c01-bg">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#F4FAF6">
+  <meta name="theme-color" content="#DCFCE7">
   <title>하루안부 · 의료진 · 회진</title>
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
 
   <script src="../07_디자인/_app-theme.js"></script>
-  <link rel="stylesheet" href="./_shared.css">
+  <link rel="stylesheet" href="./_shared.css?v=20260525p">
+  <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     /* :root 별칭은 _shared.css 에서 정의 */
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-    html{height:100%;background:#F4FAF6;font-size:16px;}
-    body{height:100%;color:var(--t1);overflow-x:hidden;font-family:var(--font-family-base);font-size:16px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;}
-    .bg{
-      position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
-      background:
-        radial-gradient(720px 540px at 50% -10%, rgba(34,197,94,.10), transparent 70%),
-        linear-gradient(180deg,#EAF6EE 0%,#F0F8F3 35%,#F4FAF6 100%);
+    /* v3.2.12+: clinical 캔버스 (v11 요양보호사앱과 동일 — var(--clinical-canvas) 토큰 참조) */
+    html{height:100%;background:var(--clinical-canvas);font-size:16px;}
+    body{
+      height:100%;color:var(--t1);overflow-x:hidden;
+      font-family:var(--font-family-base);font-size:18px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
+      background:transparent;
     }
+    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background: var(--clinical-bg-image);}
     .app{
       max-width:430px;margin:0 auto;min-height:100%;position:relative;
-      padding-bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 40px);
+      /* v3.2.9: 하단 탭바와 judge 버튼 겹침 방지 — 안전 여백 증량 (40 → 80) */
+      padding-bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 80px);
     }
 
-    /* ===== HEADER ===== */
+    /* ===== HEADER (v15 통일 — grid 44·1fr·44 / h-eyebrow + h-name) ===== */
     .header{
-      padding:calc(var(--safe-t) + 6px) var(--pad) 0;
+      padding:calc(var(--safe-t) + 14px) var(--pad) 8px;
       position:relative;z-index:5;
     }
-    .top-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
-    .icon-btn{
-      width:48px;height:48px;border-radius:50%;
-      background:#fff;border:0;cursor:pointer;text-decoration:none;
-      display:inline-flex;align-items:center;justify-content:center;
-      box-shadow:0 2px 8px rgba(0,0,0,.05);
-    }
-    .icon-btn iconify-icon{font-size:22px;color:var(--t1);}
-    .h-title{text-align:center;line-height:1.2;flex:1;}
     .h-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
-    .h-name{font-size:17px;font-weight:700;color:var(--t1);letter-spacing:-.4px;margin-top:3px;}
+    .top-nav .icon-btn{grid-column:3;justify-self:end;}
 
-    /* ===== PROGRESS ===== */
+    /* ===== PROGRESS — v3.2.7 슬림 strip: 카드 래퍼 제거, 헤더 직속
+       위계는 타이포·여백으로만 (rule: no bg color rails). */
     .progress{
-      margin-top:8px;background:#fff;border-radius:16px;
-      padding:12px 16px;display:flex;align-items:center;gap:12px;
-      box-shadow:0 2px 10px rgba(0,0,0,.04);
+      margin-top:18px;display:flex;align-items:center;gap:12px;
     }
-    .progress-bar{flex:1;height:6px;border-radius:999px;background:rgba(0,0,0,.06);overflow:hidden;}
+    .progress-bar{flex:1;height:4px;border-radius:999px;background:rgba(0,0,0,.06);overflow:hidden;}
     .progress-fill{
-      height:100%;width:53%;
-      background:linear-gradient(90deg,var(--accent),var(--accent-strong));
+      height:100%;width:var(--bar-w, 0%);
+      background:var(--accent-strong);
       border-radius:999px;transition:width .35s var(--easing-emphasize);
     }
     .progress-text{
-      font-size:14px;font-weight:700;color:var(--t1);
-      font-variant-numeric:tabular-nums;display:inline-flex;align-items:baseline;gap:6px;
+      font-size:13px;font-weight:600;color:var(--t2);
+      font-variant-numeric:tabular-nums;display:inline-flex;align-items:baseline;gap:5px;
     }
-    .progress-text b{color:var(--accent-strong);}
+    .progress-text b{color:var(--t1);font-weight:700;font-size:14px;}
     .prog-tag{
-      font-size:10.5px;font-weight:600;letter-spacing:.3px;
-      color:var(--accent-strong);text-transform:uppercase;
+      font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0;
     }
 
-    /* ===== ROUND CARD ===== */
-    .stage{padding:18px var(--pad) 0;position:relative;z-index:1;}
-    .deck{position:relative;}
+    /* ===== ROUND CARDS — v3.2.8: 2개 카드로 분리 (Review / Input)
+       그림자 또렷하게, 내부 divider 가시성 확보 */
+    .stage{padding:4px var(--pad) 0;position:relative;z-index:1;}
+    .deck{position:relative;display:flex;flex-direction:column;gap:12px;}
     .card{
-      background:#fff;border-radius:24px;
-      box-shadow:0 8px 24px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+      background:var(--palette-white);border-radius:var(--radius-card-lg);
+      box-shadow:var(--cg-card-shadow);
       overflow:hidden;
       transition:transform .35s var(--easing-emphasize), opacity .25s;
     }
     .card.swipe-out-left{transform:translateX(-120%) rotate(-6deg);opacity:0;}
     .card.swipe-out-right{transform:translateX(120%) rotate(6deg);opacity:0;}
 
-    /* 환자 헤더 — 이름 키움 */
+    /* 환자 헤더 — 1행 압축 (avatar | name+age+pos pill / meta) */
     .card-head{
-      padding:22px 22px 20px;display:flex;align-items:center;gap:14px;
-      border-bottom:1px solid rgba(0,0,0,.05);
+      padding:16px 18px;display:flex;align-items:center;gap:14px;
     }
     .card-ava{
-      width:60px;height:60px;border-radius:50%;flex-shrink:0;
-      background:linear-gradient(135deg,var(--brand-green-300),var(--accent));
-      color:#fff;display:inline-flex;align-items:center;justify-content:center;
-      font-size:22px;font-weight:700;letter-spacing:-.6px;
-      box-shadow:0 4px 12px rgba(34,197,94,.25);
+      width:48px;height:48px;border-radius:50%;flex-shrink:0;
+      background:var(--accent-soft);color:var(--accent-strong);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:18px;font-weight:700;letter-spacing:-.4px;
     }
-    .card-id{flex:1;min-width:0;line-height:1.2;}
-    .card-name{font-size:22px;font-weight:700;color:var(--t1);letter-spacing:-.6px;}
-    .card-name span{font-size:13px;font-weight:500;color:var(--t3);margin-left:8px;}
+    .card-id{flex:1;min-width:0;line-height:1.25;}
+    .card-name-row{
+      display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
+    }
+    .card-name{font-size:19px;font-weight:700;color:var(--t1);letter-spacing:-.5px;}
+    .card-age{font-size:12.5px;font-weight:500;color:var(--t3);}
+    /* v3.2.8: 9/15 인라인 pill (스택 컬럼 제거) */
+    .card-pos{
+      margin-left:auto;flex-shrink:0;
+      font-size:12px;font-weight:600;color:var(--accent-strong);
+      background:var(--accent-soft);
+      padding:3px 9px;border-radius:999px;
+      font-variant-numeric:tabular-nums;letter-spacing:-.1px;
+    }
+    .card-pos b{font-weight:700;font-size:13px;}
     .card-meta{
-      font-size:13px;font-weight:500;color:var(--t3);margin-top:6px;
+      font-size:12.5px;font-weight:500;color:var(--t3);margin-top:3px;
       display:flex;align-items:center;gap:6px;
     }
-    .card-meta iconify-icon{font-size:14px;color:var(--t3);}
-    .card-pos{
-      flex-shrink:0;text-align:center;line-height:1.05;
-      background:var(--accent-soft);color:var(--accent-strong);
-      padding:8px 12px;border-radius:12px;
-    }
-    .card-pos-cur{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.4px;}
-    .card-pos-tot{font-size:10px;font-weight:600;letter-spacing:.2px;margin-top:2px;}
+    .card-meta iconify-icon{font-size:13px;color:var(--t3);}
+    .card-meta-dot{color:rgba(0,0,0,.18);}
 
-    /* === ZONE 1 · 지난 라운드 (과거 / 무채색 톤) === */
-    .summary{padding:22px;background:#FAFBFC;}
+    /* === ZONE 1 · 지난 라운드 — v3.2.8
+       visible hairline + tight grid + 명확한 last-note 타이틀 */
+    .summary{
+      padding:18px 18px 16px;
+    }
     .summary-ttl{
       font-size:11px;font-weight:700;color:var(--t3);
-      letter-spacing:.4px;text-transform:uppercase;margin-bottom:14px;
+      letter-spacing:.2px;margin-bottom:12px;
       display:flex;align-items:center;gap:6px;
     }
     .summary-ttl iconify-icon{font-size:13px;}
     .summary-grid{
-      display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;
+      display:grid;grid-template-columns:1fr 1fr;
+      column-gap:18px;row-gap:12px;
+      margin-bottom:14px;
     }
     .vital{
-      background:#fff;border-radius:14px;padding:14px 16px;line-height:1.2;
+      line-height:1.2;
     }
-    .vital-label{font-size:11px;font-weight:500;color:var(--t3);}
+    .vital-label{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.1px;}
     .vital-val{
-      font-size:22px;font-weight:700;color:var(--t1);
-      font-variant-numeric:tabular-nums;margin-top:8px;
-      display:flex;align-items:baseline;gap:4px;letter-spacing:-.6px;
+      font-size:21px;font-weight:700;color:var(--t1);
+      font-variant-numeric:tabular-nums;margin-top:5px;
+      display:flex;align-items:baseline;gap:3px;letter-spacing:-.5px;
     }
-    .vital-val small{font-size:13px;font-weight:500;color:var(--t3);}
+    .vital-val small{font-size:11.5px;font-weight:500;color:var(--t3);}
     .vital.warn .vital-val{color:var(--palette-amber-700);}
     .vital.danger .vital-val{color:var(--palette-red-700);}
-    .vital-trend{font-size:11px;font-weight:500;color:var(--t2);margin-top:6px;}
+    .vital-trend{font-size:11px;font-weight:500;color:var(--t2);margin-top:3px;}
     .vital-trend.up{color:var(--palette-red-600);}
     .vital-trend.down{color:var(--accent-strong);}
 
+    /* 지난 메모 — 명시적 타이틀 + 톤 변화 */
     .last-note{
-      background:#fff;border-radius:14px;padding:16px 18px;
-      font-size:14px;font-weight:500;color:var(--t1);line-height:1.6;
+      padding-top:14px;margin-top:4px;
+      font-size:13.5px;font-weight:500;color:var(--t2);line-height:1.55;
     }
-    .last-note b{color:var(--t1);font-weight:600;}
-    .last-note-meta{font-size:11px;font-weight:500;color:var(--t3);margin-top:10px;}
+    .last-note-ttl{
+      font-size:11px;font-weight:700;color:var(--t3);
+      letter-spacing:.2px;margin-bottom:6px;
+    }
+    .last-note-meta{font-size:11px;font-weight:500;color:var(--t3);margin-top:8px;}
 
-    /* === ZONE 2 · 지금 기록 (현재 / 그린 톤 — primary action) === */
+    /* === ZONE 2 · 지금 기록 — v3.2.8: 별도 카드 (card--input) */
+    .card--input{
+      box-shadow:var(--cg-card-shadow);
+    }
     .input-zone{
-      padding:22px;
-      background:linear-gradient(180deg,#F0FAF3 0%,#fff 100%);
+      padding:16px 18px 18px;
     }
     .input-ttl{
       font-size:12px;font-weight:700;color:var(--accent-strong);
-      letter-spacing:.4px;text-transform:uppercase;margin-bottom:14px;
+      letter-spacing:.2px;margin-bottom:14px;
       display:flex;align-items:center;gap:6px;
     }
     .input-ttl::before{
       content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);
-      box-shadow:0 0 0 0 rgba(34,197,94,.5);animation:pulseSm 2s infinite;
-    }
-    @keyframes pulseSm{
-      0%{box-shadow:0 0 0 0 rgba(34,197,94,.5);}
-      70%{box-shadow:0 0 0 8px rgba(34,197,94,0);}
-      100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}
+      box-shadow:0 0 0 0 rgba(var(--brand-green-500-rgb), .5);animation: haru-pulse 2s ease-in-out infinite;
     }
 
     .voice{
       width:100%;display:flex;align-items:center;gap:14px;
-      padding:18px;background:linear-gradient(135deg,var(--accent-soft),rgba(34,197,94,.05));
-      border:1.5px solid var(--accent);border-radius:18px;
+      padding:16px;background:var(--accent-soft);
+      border:0;border-radius:16px;
       cursor:pointer;font-family:inherit;text-align:left;
       transition:transform .12s;
     }
     .voice:active{transform:scale(.99);}
     .voice.recording{
-      background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.04));
-      border-color:var(--danger);
+      background:rgba(var(--color-danger-rgb), .08);
     }
     .voice-mic{
-      width:54px;height:54px;border-radius:50%;flex-shrink:0;
-      background:var(--accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;
-      box-shadow:0 4px 14px rgba(34,197,94,.4);
+      width:48px;height:48px;border-radius:50%;flex-shrink:0;
+      background:var(--accent);color:var(--palette-white);display:inline-flex;align-items:center;justify-content:center;
     }
     .voice.recording .voice-mic{
-      background:var(--danger);box-shadow:0 4px 14px rgba(239,68,68,.4);
+      background:var(--danger);
       animation:rec 1.2s infinite;
     }
     @keyframes rec{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
@@ -189,7 +191,7 @@
     .voice-sub{font-size:12.5px;font-weight:500;color:var(--t2);margin-top:4px;}
 
     .stt-preview{
-      margin:14px 0 0;padding:16px 18px;background:#F0FAF3;
+      margin:14px 0 0;padding:16px 18px;background:var(--clinical-surface);
       border-radius:14px;font-size:14px;font-weight:500;color:var(--t1);line-height:1.65;
       display:none;
     }
@@ -197,32 +199,32 @@
     .stt-tag{
       display:inline-block;font-size:11px;font-weight:700;
       padding:2px 7px;border-radius:5px;
-      background:var(--accent);color:#fff;margin-right:6px;
+      background:var(--accent);color:var(--palette-white);margin-right:6px;
       vertical-align:1px;letter-spacing:.2px;
     }
     .stt-foot{margin-top:10px;font-size:12px;color:var(--t3);font-weight:600;}
 
-    .aux{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+    .aux{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
     .aux-btn{
-      display:flex;align-items:center;justify-content:center;gap:8px;
-      padding:14px;background:#F8FAF9;border:0;border-radius:14px;
-      font-size:14px;font-weight:700;color:var(--t1);
+      display:flex;align-items:center;justify-content:center;gap:6px;
+      height:46px;background:var(--clinical-surface-muted);border:0;border-radius:12px;
+      font-size:13.5px;font-weight:600;color:var(--t1);
       cursor:pointer;font-family:inherit;
     }
-    .aux-btn iconify-icon{font-size:20px;color:var(--accent-strong);}
+    .aux-btn iconify-icon{font-size:17px;color:var(--accent-strong);}
 
     /* 4단계 토글 */
     .judge-ttl{
-      font-size:12px;font-weight:700;color:var(--t2);
-      letter-spacing:.3px;margin:24px 0 12px;
+      font-size:11px;font-weight:700;color:var(--t3);
+      letter-spacing:.2px;margin:20px 0 10px;
       display:flex;align-items:center;gap:6px;
     }
-    .judge-ttl iconify-icon{font-size:14px;color:var(--accent-strong);}
+    .judge-ttl iconify-icon{font-size:13px;color:var(--accent-strong);}
     .judge{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
     .judge-btn{
-      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
-      padding:14px 6px;background:#F8FAF9;border:1.5px solid transparent;
-      border-radius:14px;font-family:inherit;cursor:pointer;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+      height:54px;background:var(--clinical-surface-muted);border:1.5px solid transparent;
+      border-radius:12px;font-family:inherit;cursor:pointer;
       transition:all .15s;
     }
     .judge-btn .judge-dot{width:12px;height:12px;border-radius:50%;}
@@ -236,38 +238,37 @@
     .judge-btn.selected[data-level="warn"]{border-color:var(--warn);background:var(--warn-soft);}
     .judge-btn.selected[data-level="danger"]{border-color:var(--danger);background:var(--danger-soft);}
 
-    /* 저장 힌트 */
+    /* 저장 힌트 — v3.2.7: 카드 외부 별도 컨테이너 X. 슬림 caption 톤. */
     .saved-hint{
-      margin:16px 0 0;padding:14px 18px;
-      background:#F0FAF3;border-radius:14px;
-      display:flex;align-items:center;gap:12px;
+      margin:10px 4px 0;
+      display:flex;align-items:center;gap:8px;
       position:relative;z-index:1;
     }
-    .saved-hint iconify-icon{font-size:20px;color:var(--accent-strong);flex-shrink:0;}
-    .saved-text{font-size:13px;font-weight:600;color:var(--t2);line-height:1.45;}
+    .saved-hint iconify-icon{font-size:14px;color:var(--accent-strong);flex-shrink:0;}
+    .saved-text{font-size:12px;font-weight:500;color:var(--t3);line-height:1.4;}
+    .saved-text b{color:var(--t2);font-weight:600;}
     .saved-text b{color:var(--t1);}
 
-    /* SWIPE BAR — prev / skip / next 3분할 */
+    /* SWIPE BAR — v3.2.7: 3분할 동일 높이/라운드/그림자.
+       primary 만 색으로 위계 표시, secondary 2개는 동일 톤 (시각 무게 균일) */
     .swipe-bar{
       display:grid;grid-template-columns:auto auto 1fr;gap:8px;
-      margin:18px 0 0;position:relative;z-index:1;
+      margin:14px 0 4px;position:relative;z-index:1;
     }
-    .swipe-prev, .swipe-skip{
-      display:flex;align-items:center;justify-content:center;gap:5px;
-      padding:14px 16px;background:#fff;border:0;
-      border-radius:16px;font-size:13px;font-weight:600;color:var(--t2);
-      cursor:pointer;font-family:inherit;
-      box-shadow:0 2px 8px rgba(0,0,0,.04);
+    .swipe-prev, .swipe-skip, .swipe-next{
+      height:50px;display:flex;align-items:center;justify-content:center;gap:6px;
+      border:0;border-radius:14px;font-family:inherit;font-size:13.5px;font-weight:700;
+      letter-spacing:-.2px;cursor:pointer;padding:0 16px;
+      box-shadow:0 1px 2px rgba(0,0,0,.04);
+      transition:transform .12s;
     }
+    .swipe-prev:active, .swipe-skip:active, .swipe-next:active{transform:scale(.98);}
+    .swipe-prev, .swipe-skip{background:var(--palette-white);color:var(--t2);}
     .swipe-prev iconify-icon, .swipe-skip iconify-icon{font-size:16px;}
     .swipe-skip{color:var(--palette-amber-700);}
     .swipe-next{
-      display:flex;align-items:center;justify-content:center;gap:8px;
-      padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent-strong));
-      border:0;border-radius:16px;color:#fff;
-      font-size:14.5px;font-weight:700;letter-spacing:-.2px;
-      cursor:pointer;font-family:inherit;
-      box-shadow:0 6px 18px rgba(34,197,94,.35);
+      background:var(--accent);color:var(--palette-white);font-size:14.5px;
+      box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .22);
     }
     .swipe-next iconify-icon{font-size:18px;}
 
@@ -279,34 +280,30 @@
     }
     .overlay.show{display:flex;}
     .sheet{
-      background:#fff;border-radius:28px 28px 0 0;
+      background:var(--palette-white);border-radius:28px 28px 0 0;
       padding:18px 18px calc(28px + env(safe-area-inset-bottom,0px));
       width:100%;max-width:430px;max-height:80vh;overflow-y:auto;
     }
-    .sheet-handle{width:40px;height:4px;background:rgba(0,0,0,.12);border-radius:2px;margin:0 auto 16px;}
-    .sheet-head{padding:0 6px 16px;border-bottom:1px solid rgba(0,0,0,.05);}
     .sheet-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
-    .sheet-ttl{font-size:18px;font-weight:700;color:var(--t1);letter-spacing:-.4px;margin-top:5px;}
-    .sheet-sub{font-size:12.5px;font-weight:500;color:var(--t3);margin-top:4px;}
 
     .pl-list{display:flex;flex-direction:column;}
     .pl-item{
       padding:12px 6px;display:flex;align-items:center;gap:12px;
-      border-bottom:1px solid rgba(0,0,0,.04);cursor:pointer;
+      border-bottom:1px solid rgba(0,0,0,.05);cursor:pointer;
       background:transparent;border-left:0;border-right:0;border-top:0;width:100%;
       font-family:inherit;text-align:left;
     }
     .pl-item:last-child{border-bottom:0;}
     .pl-status{
-      width:28px;height:28px;border-radius:50%;flex-shrink:0;
+      width:24px;flex-shrink:0;
       display:inline-flex;align-items:center;justify-content:center;
-      font-size:13px;font-weight:600;
+      font-size:13px;font-weight:600;color:var(--t3);
     }
-    .pl-status.done{background:var(--accent-soft);color:var(--accent-strong);}
-    .pl-status.current{background:var(--accent);color:#fff;box-shadow:0 0 0 3px var(--accent-soft);}
-    .pl-status.pending{background:#F4F6F8;color:var(--t3);}
-    .pl-status.skipped{background:var(--warn-soft);color:var(--palette-amber-700);}
-    .pl-status iconify-icon{font-size:14px;}
+    .pl-status.done{color:var(--accent-strong);}
+    .pl-status.current{color:var(--accent-strong);font-weight:700;}
+    .pl-status.pending{color:var(--t3);}
+    .pl-status.skipped{color:var(--palette-amber-700);}
+    .pl-status iconify-icon{font-size:16px;}
     .pl-meta{flex:1;min-width:0;line-height:1.25;}
     .pl-name{font-size:14.5px;font-weight:600;color:var(--t1);}
     .pl-name.current{color:var(--accent-strong);}
@@ -319,12 +316,12 @@
     .pl-tag.warn{background:var(--warn-soft);color:var(--palette-amber-700);}
 
     /* === INTRO STATE — 몇차 라운드/이어서/새로 시작 === */
-    .intro{
-      margin:18px 0 0;position:relative;z-index:1;
+    .intro{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;
+      margin:6px 0 0;position:relative;z-index:1;
     }
     .intro-card{
-      background:#fff;border-radius:24px;padding:24px;
-      box-shadow:0 8px 28px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+      background:var(--palette-white);border-radius:24px;padding:24px;
+      box-shadow:var(--cg-card-shadow);
       margin-bottom:14px;
     }
     .intro-eyebrow{
@@ -338,7 +335,7 @@
     .intro-sub{font-size:14px;font-weight:500;color:var(--t2);line-height:1.5;}
 
     .intro-progress{
-      margin-top:20px;padding:18px;background:#F8FAF9;border-radius:18px;
+      margin-top:20px;padding:18px;background:var(--clinical-surface);border-radius:18px;
     }
     .intro-prog-row{
       display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;
@@ -347,7 +344,7 @@
     .intro-prog-val{font-size:13px;font-weight:600;color:var(--accent-strong);font-variant-numeric:tabular-nums;}
     .intro-prog-bar{height:8px;border-radius:999px;background:rgba(0,0,0,.06);overflow:hidden;}
     .intro-prog-fill{
-      height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-strong));
+      height:100%;width:var(--bar-w, 0%);background:var(--accent-strong);
       border-radius:999px;
     }
     .intro-prog-foot{
@@ -362,7 +359,7 @@
     }
     .intro-next-ava{
       width:42px;height:42px;border-radius:50%;flex-shrink:0;
-      background:#fff;color:var(--accent-strong);
+      background:var(--palette-white);color:var(--accent-strong);
       display:inline-flex;align-items:center;justify-content:center;
       font-size:16px;font-weight:600;
     }
@@ -373,11 +370,11 @@
 
     .intro-cta{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
     .intro-btn-primary{
-      width:100%;padding:18px;border:0;border-radius:18px;cursor:pointer;font-family:inherit;
-      background:linear-gradient(135deg,var(--accent),var(--accent-strong));color:#fff;
+      width:100%;padding:18px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
+      background:var(--accent);color:var(--palette-white);
       font-size:16px;font-weight:700;letter-spacing:-.3px;
       display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      box-shadow:0 8px 22px rgba(34,197,94,.35);
+      box-shadow:0 3px 10px rgba(var(--brand-green-500-rgb), .22);
       transition:transform .12s;
     }
     .intro-btn-primary:active{transform:scale(.99);}
@@ -385,16 +382,16 @@
     .intro-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
     .intro-btn-secondary{
       padding:14px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
-      background:#fff;color:var(--t2);
+      background:var(--palette-white);color:var(--t2);
       font-size:13px;font-weight:600;
       display:inline-flex;align-items:center;justify-content:center;gap:6px;
-      box-shadow:0 2px 8px rgba(0,0,0,.04);
+      box-shadow:var(--cg-card-shadow);
     }
     .intro-btn-secondary iconify-icon{font-size:16px;color:var(--t2);}
 
     .intro-history{
-      background:#fff;border-radius:18px;padding:18px;
-      box-shadow:0 2px 10px rgba(0,0,0,.04);
+      background:var(--palette-white);border-radius:18px;padding:18px;
+      box-shadow:var(--cg-card-shadow);
     }
     .intro-hist-ttl{
       font-size:11px;font-weight:600;color:var(--t3);
@@ -422,15 +419,15 @@
     /* === COMPLETION STATE === */
     .complete{
       margin:32px 0 0;padding:32px 24px;
-      background:#fff;border-radius:24px;text-align:center;
+      background:var(--palette-white);border-radius:24px;text-align:center;
       box-shadow:0 8px 28px rgba(0,0,0,.06);
       position:relative;z-index:1;
     }
     .complete-ico{
       width:72px;height:72px;border-radius:50%;
-      background:linear-gradient(135deg,var(--accent),var(--accent-strong));
-      color:#fff;display:inline-flex;align-items:center;justify-content:center;
-      box-shadow:0 8px 24px rgba(34,197,94,.4);
+      background:var(--accent-strong);
+      color:var(--palette-white);display:inline-flex;align-items:center;justify-content:center;
+      box-shadow:0 3px 10px rgba(var(--brand-green-500-rgb), .22);
       margin-bottom:20px;
     }
     .complete-ico iconify-icon{font-size:36px;}
@@ -438,7 +435,7 @@
     .complete-sub{font-size:14px;font-weight:500;color:var(--t2);line-height:1.5;margin-bottom:24px;}
     .complete-stats{
       display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
-      margin-bottom:24px;padding:16px;background:#F8FAF9;border-radius:16px;
+      margin-bottom:24px;padding:16px;background:var(--clinical-surface);border-radius:16px;
     }
     .complete-stat-val{font-size:22px;font-weight:700;color:var(--accent-strong);font-variant-numeric:tabular-nums;letter-spacing:-.5px;}
     .complete-stat-label{font-size:11px;font-weight:500;color:var(--t3);margin-top:4px;}
@@ -451,43 +448,43 @@
       display:inline-flex;align-items:center;justify-content:center;gap:6px;
       text-decoration:none;
     }
-    .complete-cta .secondary{background:#F4F6F8;color:var(--t1);}
-    .complete-cta .primary{background:linear-gradient(135deg,var(--accent),var(--accent-strong));color:#fff;box-shadow:0 4px 14px rgba(34,197,94,.3);}
+    .complete-cta .secondary{background:var(--clinical-surface-muted);color:var(--t1);}
+    .complete-cta .primary{background:var(--accent);color:var(--palette-white);box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .22);}
     .complete-cta iconify-icon{font-size:16px;}
 
-    /* TAB BAR */
+    /* TAB BAR · v3.2.5: 세 앱 탭바 위치 통일 — env(safe-bottom) + 12px (d01 기준) */
     .tab-wrap{
-      position:fixed;bottom:calc(var(--safe-b) + var(--tab-bot));
+      position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);
       left:50%;transform:translateX(-50%);
       display:flex;align-items:center;gap:10px;
       width:calc(100% - 32px);max-width:398px;z-index:40;
     }
+    /* v3.2.5: 탭바 — 보호자 스타일 통일 (글라스 + 아이콘 26px, 라벨 숨김) */
     .tabbar{
       flex:1;min-width:0;height:var(--tab-h);
       background:rgba(255,255,255,.85);
-      backdrop-filter:blur(22px) saturate(140%);
-      -webkit-backdrop-filter:blur(22px) saturate(140%);
-      border:1px solid rgba(255,255,255,.7);
+      backdrop-filter:blur(20px) saturate(140%);
+      -webkit-backdrop-filter:blur(20px) saturate(140%);
+      border:1px solid rgba(255,255,255,.55);
       border-radius:999px;
-      box-shadow:0 6px 22px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
-      display:flex;align-items:stretch;justify-content:space-around;padding:0 6px;
+      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
+      display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;
     }
-    .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--t3);border-radius:999px;}
-    .tab iconify-icon{font-size:22px;}
-    .tab-label{font-size:10.5px;font-weight:600;letter-spacing:-.1px;line-height:1;}
+    .tab iconify-icon{font-size:26px;}
+    .tab-label{display:none;}
     .tab.active{color:var(--accent-strong);}
-    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(34,197,94,.28));}
+    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(var(--brand-green-500-rgb), .28));}
     .sos{
       position:relative;width:var(--tab-h);height:var(--tab-h);flex-shrink:0;border-radius:50%;
-      background:linear-gradient(135deg,#F87171,var(--palette-red-600));border:0;
-      box-shadow:0 8px 22px rgba(220,38,38,.38), inset 0 1px 0 rgba(255,255,255,.32);
+      background:var(--color-danger);border:0;
+      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
       display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
     }
-    .sos iconify-icon{font-size:26px;color:#fff;}
+    .sos iconify-icon{font-size:26px;color:var(--palette-white);}
     .toast{
       position:fixed;left:50%;bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 18px);
       transform:translateX(-50%) translateY(20px);
-      background:rgba(28,28,30,.92);color:#fff;font-size:14px;font-weight:600;
+      background:rgba(28,28,30,.92);color:var(--palette-white);font-size:14px;font-weight:600;
       padding:11px 20px;border-radius:999px;
       opacity:0;transition:.25s;pointer-events:none;z-index:300;white-space:nowrap;
     }
@@ -501,14 +498,14 @@
     }
     .ja-overlay.show{display:flex;}
     .ja-sheet{
-      background:#fff;color:var(--t1);
+      background:var(--palette-white);color:var(--t1);
       width:100%;max-width:430px;
       border-radius:24px 24px 0 0;
       padding:14px 20px calc(24px + env(safe-area-inset-bottom,0px));
       box-shadow:0 -8px 28px rgba(0,0,0,.2);
-      animation:jaUp .25s ease-out;
+      animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both;
     }
-    @keyframes jaUp{from{transform:translateY(20px);opacity:.6;}to{transform:translateY(0);opacity:1;}}
+    @keyframes haru-fade-in-up {from{transform:translateY(8px);opacity:0;}to{transform:translateY(0);opacity:1;}}
     .ja-handle{width:40px;height:4px;background:rgba(0,0,0,.15);border-radius:2px;margin:0 auto 14px;}
     .ja-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
     .ja-ico{
@@ -525,8 +522,8 @@
     .ja-options{display:flex;flex-direction:column;gap:8px;}
     .ja-opt{
       display:flex;align-items:center;gap:14px;
-      padding:14px 16px;background:#F8FAF9;
-      border:1px solid var(--palette-gray-200,#E5E5EA);
+      padding:14px 16px;background:var(--clinical-surface);
+      border:1px solid var(--palette-gray-200);
       border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;width:100%;
       color:var(--t1);
     }
@@ -540,23 +537,30 @@
       background:transparent;border:0;cursor:pointer;font-family:inherit;
       font-size:13.5px;font-weight:600;color:var(--t3);
     }
+
+    /* Inline 대체 */
+    .pt-row-bar > span { width: var(--bar-w, 0%); }
+    .mt-3 { margin-top: 14px; }
+    .alert-banner--warn { background: var(--warn-soft); color: var(--palette-amber-700); }
+    .text-amber-warn    { color: var(--palette-amber-700); }
   </style>
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
+  <div class="ai-orb-bg" aria-hidden="true"><div class="ai-orb"></div></div>
   <div class="app">
 
     <header class="header">
       <div class="top-nav">
-        <a class="icon-btn" href="d01-home.html" aria-label="홈으로"><iconify-icon icon="fluent:home-24-filled" id="hLeftIco"></iconify-icon></a>
-        <div class="h-title">
+        <span class="h-left" aria-hidden="true"></span>
+        <div class="title-block">
           <div class="h-eyebrow" id="hEyebrow">회진 모드</div>
           <div class="h-name" id="hName">2차 라운드</div>
         </div>
         <button class="icon-btn" onclick="openList()" aria-label="환자 목록"><iconify-icon icon="fluent:list-24-filled"></iconify-icon></button>
       </div>
       <div class="progress" id="progBar">
-        <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:53%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="progFill" style="--bar-w:53%"></div></div>
         <div class="progress-text"><span class="prog-tag">완료</span><b id="progNum">8</b>/15</div>
       </div>
     </header>
@@ -575,7 +579,7 @@
               <span class="intro-prog-label">진행 상황</span>
               <span class="intro-prog-val">8 / 15</span>
             </div>
-            <div class="intro-prog-bar"><div class="intro-prog-fill" style="width:53%"></div></div>
+            <div class="intro-prog-bar"><div class="intro-prog-fill" style="--bar-w:53%"></div></div>
             <div class="intro-prog-foot">
               <iconify-icon icon="fluent:clock-24-filled"></iconify-icon>13:30 시작 · 약 1시간 경과
             </div>
@@ -605,7 +609,7 @@
           </div>
         </div>
 
-        <div class="intro-history" style="margin-top:14px;">
+        <div class="intro-history mt-3">
           <div class="intro-hist-ttl">오늘 라운드 이력</div>
           <div class="intro-hist-row">
             <span class="intro-hist-num">1</span>
@@ -616,71 +620,62 @@
             <span class="intro-hist-stat">15/15 완료</span>
           </div>
           <div class="intro-hist-row">
-            <span class="intro-hist-num" style="background:var(--warn-soft);color:var(--palette-amber-700);">2</span>
+            <span class="intro-hist-num alert-banner--warn">2</span>
             <div class="intro-hist-meta">
               <div class="intro-hist-label">2차 라운드 · 애프터눈</div>
               <div class="intro-hist-time">13:30 시작 · 진행 중</div>
             </div>
-            <span class="intro-hist-stat" style="color:var(--palette-amber-700);">8/15</span>
+            <span class="intro-hist-stat text-amber-warn">8/15</span>
           </div>
         </div>
       </section>
 
       <!-- ============ ACTIVE 상태 (라운드 시작 후) ============ -->
-      <div class="round-active" id="active" style="display:none;">
+      <div class="round-active" id="active" hidden>
+
+      <!-- v3.2.6: swipe-bar 를 진행률 바 ↔ 환자 카드 사이로 이동.
+           이전/건너뛰기/저장하고 다음을 카드 상단에 두어 thumb-zone 친화. -->
+      <div class="swipe-bar">
+        <button class="swipe-prev" onclick="swipe('prev')" aria-label="이전 환자">
+          <iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon>이전
+        </button>
+        <button class="swipe-skip" onclick="swipe('skip')" aria-label="건너뛰기 (자고 계심·부재 등)">
+          <iconify-icon icon="fluent:arrow-clockwise-24-filled"></iconify-icon>건너뛰기
+        </button>
+        <button class="swipe-next" onclick="swipe('next')">
+          저장하고 다음<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
+        </button>
+      </div>
+
       <div class="deck" id="deck">
+        <!-- 카드 1: 환자 + 지난 라운드 (REVIEW) -->
         <article class="card" id="card">
 
           <div class="card-head">
             <span class="card-ava" id="cAva">박</span>
             <div class="card-id">
-              <div class="card-name" id="cName">박영자 <span>78세 · F</span></div>
+              <div class="card-name-row">
+                <span class="card-name" id="cName">박영자</span>
+                <span class="card-age" id="cAge">78세 · F</span>
+                <span class="card-pos"><b id="posCur">9</b>/15</span>
+              </div>
               <div class="card-meta">
                 <iconify-icon icon="fluent:location-24-filled"></iconify-icon><span id="cRoom">2층 A-3호</span>
-                <span style="color:var(--t3)">·</span>
+                <span class="card-meta-dot">·</span>
                 <span id="cDx">고혈압 · 치매 초기</span>
               </div>
             </div>
-            <div class="card-pos">
-              <div class="card-pos-cur" id="posCur">9</div>
-              <div class="card-pos-tot">번째</div>
-            </div>
           </div>
 
-
-
           <section class="summary">
-            <div class="summary-ttl"><iconify-icon icon="fluent:history-24-filled"></iconify-icon>지난 라운드 · 11:30</div>
-
-            <div class="summary-grid">
-              <div class="vital">
-                <div class="vital-label">혈압</div>
-                <div class="vital-val">130/80<small>mmHg</small></div>
-                <div class="vital-trend">안정</div>
-              </div>
-              <div class="vital">
-                <div class="vital-label">체온</div>
-                <div class="vital-val">36.7<small>°C</small></div>
-                <div class="vital-trend down">정상</div>
-              </div>
-              <div class="vital warn">
-                <div class="vital-label">통증 (VAS)</div>
-                <div class="vital-val">4<small>/10</small></div>
-                <div class="vital-trend up">↑ 2 → 4</div>
-              </div>
-              <div class="vital">
-                <div class="vital-label">식사</div>
-                <div class="vital-val">3/3<small>회</small></div>
-                <div class="vital-trend">전량 섭취</div>
-              </div>
-            </div>
-
-            <div class="last-note">
-              <b>지난 메모.</b> 오전 11시경 무릎 통증 호소. 자가 보행 가능하나 보행보조기 사용 권장. 보호자에게 통증 패턴 공유 예정.
-              <div class="last-note-meta">박지현 간호사 · 11:32 · 음성 입력</div>
-            </div>
+            <div class="summary-ttl"><iconify-icon icon="fluent:history-24-filled"></iconify-icon>지난 라운드 · <span id="sumTime">11:30</span></div>
+            <div class="summary-grid" id="sumGrid"></div>
+            <div class="last-note" id="sumNote"></div>
           </section>
+        </article>
 
+        <!-- 카드 2: 지금 기록 (INPUT) -->
+        <article class="card card--input">
           <section class="input-zone">
             <div class="input-ttl">지금 기록</div>
 
@@ -721,25 +716,12 @@
               </button>
             </div>
           </section>
-
         </article>
       </div>
 
       <div class="saved-hint">
         <iconify-icon icon="fluent:cloud-checkmark-24-filled"></iconify-icon>
         <div class="saved-text">기록은 <b>차트·체크리스트·인수인계</b> 3곳에 동시에 저장돼요.</div>
-      </div>
-
-      <div class="swipe-bar">
-        <button class="swipe-prev" onclick="swipe('prev')" aria-label="이전 환자">
-          <iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon>이전
-        </button>
-        <button class="swipe-skip" onclick="swipe('skip')" aria-label="건너뛰기 (자고 계심·부재 등)">
-          <iconify-icon icon="fluent:arrow-clockwise-24-filled"></iconify-icon>건너뛰기
-        </button>
-        <button class="swipe-next" onclick="swipe('next')">
-          저장하고 다음<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
-        </button>
       </div>
       </div><!-- /.round-active -->
     </main>
@@ -761,9 +743,9 @@
   <div class="tab-wrap">
     <nav class="tabbar" role="tablist">
       <a href="d01-home.html" class="tab" aria-label="지금"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="tab-label">지금</span></a>
-      <a href="d02-round.html" class="tab active" aria-label="회진"><iconify-icon icon="fluent:stethoscope-24-filled"></iconify-icon><span class="tab-label">회진</span></a>
-      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-multiple-24-filled"></iconify-icon><span class="tab-label">소통</span></a>
-      <a href="d04-handover.html" class="tab" aria-label="인수인계"><iconify-icon icon="fluent:arrow-swap-24-filled"></iconify-icon><span class="tab-label">인계</span></a>
+      <a href="d02-round.html" class="tab active" aria-label="회진"><iconify-icon icon="fluent:bed-24-filled"></iconify-icon><span class="tab-label">회진</span></a>
+      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon><span class="tab-label">소통</span></a>
+      <a href="d04-handover.html" class="tab" aria-label="인수인계"><iconify-icon icon="fluent:document-arrow-right-24-filled"></iconify-icon><span class="tab-label">인계</span></a>
     </nav>
     <a href="d-sos.html" class="sos" aria-label="SOS"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></a>
   </div>
@@ -795,22 +777,114 @@
     /* === 데모용 15명 (8명 done, 9번째 current, 6명 pending) === */
     const ROUND_TOTAL=15;
     const ROUND_DONE_COUNT=8;
+    /* v3.2.9: 환자별 지난 라운드 데이터. vitals = [bp, temp, pain, meal].
+       각 항목 {val, unit, trend, tone? 'up'|'down', cellTone? 'warn'|'danger'} */
     const patients=[
-      {name:'김복례',age:80,sex:'F',room:'2층 A-1호',dx:'고혈압',risk:null},
-      {name:'박순영',age:76,sex:'F',room:'2층 A-2호',dx:'당뇨',risk:null},
-      {name:'송말자',age:84,sex:'F',room:'2층 A-4호',dx:'치매',risk:null},
-      {name:'최영자',age:79,sex:'F',room:'2층 A-6호',dx:'고혈압',risk:null},
-      {name:'이금자',age:82,sex:'F',room:'2층 B-1호',dx:'심부전',risk:'warn'},
-      {name:'한복희',age:78,sex:'F',room:'2층 B-3호',dx:'COPD',risk:null},
-      {name:'정명호',age:75,sex:'M',room:'2층 B-4호',dx:'뇌경색',risk:null},
-      {name:'장순자',age:83,sex:'F',room:'2층 B-5호',dx:'고혈압',risk:null},
-      {name:'박영자',age:78,sex:'F',room:'2층 A-3호',dx:'고혈압 · 치매 초기',risk:'warn'},
-      {name:'최명자',age:82,sex:'F',room:'2층 B-2호',dx:'당뇨 · 고혈압',risk:'danger'},
-      {name:'김순자',age:79,sex:'F',room:'2층 A-5호',dx:'치매 중기',risk:'warn'},
-      {name:'이정숙',age:85,sex:'F',room:'3층 C-1호',dx:'낙상 주의',risk:'warn'},
-      {name:'정성호',age:74,sex:'M',room:'3층 C-3호',dx:'COPD',risk:null},
-      {name:'한미자',age:81,sex:'F',room:'3층 D-1호',dx:'고혈압',risk:null},
-      {name:'송영호',age:77,sex:'M',room:'3층 D-2호',dx:'뇌경색',risk:null}
+      {name:'김복례',age:80,sex:'F',room:'2층 A-1호',dx:'고혈압',risk:null,
+        last:{time:'11:00', vitals:[
+          {label:'혈압',val:'128/76',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.5',unit:'°C',trend:'정상',tone:'down'},
+          {label:'통증 (VAS)',val:'1',unit:'/10',trend:'경미'},
+          {label:'식사',val:'3/3',unit:'회',trend:'전량 섭취'}
+        ], note:'아침 산책 30분 양호. 약 복용 시간 잘 지킴.', noteBy:'박지현 간호사 · 11:02 · 메모'}},
+      {name:'박순영',age:76,sex:'F',room:'2층 A-2호',dx:'당뇨',risk:null,
+        last:{time:'11:05', vitals:[
+          {label:'혈당(공복)',val:'118',unit:'mg/dL',trend:'안정'},
+          {label:'체온',val:'36.6',unit:'°C',trend:'정상',tone:'down'},
+          {label:'통증 (VAS)',val:'0',unit:'/10',trend:'없음'},
+          {label:'식사',val:'3/3',unit:'회',trend:'전량 섭취'}
+        ], note:'당뇨식 잘 지키고 계심. 식후 혈당 점검 필요.', noteBy:'박지현 간호사 · 11:08 · 음성 입력'}},
+      {name:'송말자',age:84,sex:'F',room:'2층 A-4호',dx:'치매',risk:null,
+        last:{time:'11:10', vitals:[
+          {label:'혈압',val:'132/82',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.4',unit:'°C',trend:'정상',tone:'down'},
+          {label:'통증 (VAS)',val:'0',unit:'/10',trend:'없음'},
+          {label:'식사',val:'2/3',unit:'회',trend:'점심 1/2 섭취'}
+        ], note:'오전 인지 평가 결과 양호. 가족 사진 대화 즐거워하심.', noteBy:'이수진 간호사 · 11:12 · 음성 입력'}},
+      {name:'최영자',age:79,sex:'F',room:'2층 A-6호',dx:'고혈압',risk:null,
+        last:{time:'11:15', vitals:[
+          {label:'혈압',val:'135/82',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.7',unit:'°C',trend:'정상',tone:'down'},
+          {label:'통증 (VAS)',val:'2',unit:'/10',trend:'경미'},
+          {label:'식사',val:'3/3',unit:'회',trend:'전량 섭취'}
+        ], note:'기상 후 어지러움 호소 있었으나 30분 후 해소.', noteBy:'박지현 간호사 · 11:17 · 메모'}},
+      {name:'이금자',age:82,sex:'F',room:'2층 B-1호',dx:'심부전',risk:'warn',
+        last:{time:'11:20', vitals:[
+          {label:'혈압',val:'145/90',unit:'mmHg',trend:'↑ 138 → 145',tone:'up',cellTone:'warn'},
+          {label:'체온',val:'36.8',unit:'°C',trend:'정상',tone:'down'},
+          {label:'산소포화도',val:'94',unit:'%',trend:'경계',cellTone:'warn'},
+          {label:'식사',val:'2/3',unit:'회',trend:'점심 1/2'}
+        ], note:'호흡 시 가벼운 천명음. 산소포화도 추이 관찰 필요.', noteBy:'박지현 간호사 · 11:22 · 음성 입력'}},
+      {name:'한복희',age:78,sex:'F',room:'2층 B-3호',dx:'COPD',risk:null,
+        last:{time:'11:25', vitals:[
+          {label:'혈압',val:'126/78',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.6',unit:'°C',trend:'정상',tone:'down'},
+          {label:'산소포화도',val:'96',unit:'%',trend:'정상'},
+          {label:'식사',val:'3/3',unit:'회',trend:'전량 섭취'}
+        ], note:'흡입제 자가 사용 양호. 가벼운 기침 지속.', noteBy:'이수진 간호사 · 11:27 · 음성 입력'}},
+      {name:'정명호',age:75,sex:'M',room:'2층 B-4호',dx:'뇌경색',risk:null,
+        last:{time:'11:28', vitals:[
+          {label:'혈압',val:'130/80',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.5',unit:'°C',trend:'정상',tone:'down'},
+          {label:'우측근력',val:'4',unit:'/5',trend:'유지'},
+          {label:'식사',val:'3/3',unit:'회',trend:'자가 섭취'}
+        ], note:'재활운동 1회 완료. 우측 보행 안정적.', noteBy:'박지현 간호사 · 11:30 · 메모'}},
+      {name:'장순자',age:83,sex:'F',room:'2층 B-5호',dx:'고혈압',risk:null,
+        last:{time:'11:30', vitals:[
+          {label:'혈압',val:'138/85',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.6',unit:'°C',trend:'정상',tone:'down'},
+          {label:'통증 (VAS)',val:'1',unit:'/10',trend:'경미'},
+          {label:'식사',val:'3/3',unit:'회',trend:'전량 섭취'}
+        ], note:'특이사항 없음. 안정적.', noteBy:'박지현 간호사 · 11:32 · 메모'}},
+      {name:'박영자',age:78,sex:'F',room:'2층 A-3호',dx:'고혈압 · 치매 초기',risk:'warn',
+        last:{time:'11:30', vitals:[
+          {label:'혈압',val:'130/80',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.7',unit:'°C',trend:'정상',tone:'down'},
+          {label:'통증 (VAS)',val:'4',unit:'/10',trend:'↑ 2 → 4',tone:'up',cellTone:'warn'},
+          {label:'식사',val:'3/3',unit:'회',trend:'전량 섭취'}
+        ], note:'오전 11시경 무릎 통증 호소. 자가 보행 가능하나 보행보조기 사용 권장. 보호자에게 통증 패턴 공유 예정.', noteBy:'박지현 간호사 · 11:32 · 음성 입력'}},
+      {name:'최명자',age:82,sex:'F',room:'2층 B-2호',dx:'당뇨 · 고혈압',risk:'danger',
+        last:{time:'11:35', vitals:[
+          {label:'혈압',val:'180/110',unit:'mmHg',trend:'↑ 138 → 180',tone:'up',cellTone:'danger'},
+          {label:'맥박',val:'102',unit:'bpm',trend:'↑ 평소 78',tone:'up',cellTone:'warn'},
+          {label:'산소포화도',val:'96',unit:'%',trend:'정상'},
+          {label:'혈당',val:'168',unit:'mg/dL',trend:'식후 경계',cellTone:'warn'}
+        ], note:'혈압 급상승. 박미선 요양보호사 재측정 180/108. 촉탁의 보고 권장 (AI 위험 신호).', noteBy:'박미선 요양보호사 · 11:37 · 사진 첨부'}},
+      {name:'김순자',age:79,sex:'F',room:'2층 A-5호',dx:'치매 중기',risk:'warn',
+        last:{time:'11:40', vitals:[
+          {label:'혈압',val:'135/82',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.8',unit:'°C',trend:'정상',tone:'down'},
+          {label:'행동',val:'주의',unit:'',trend:'배회 1회',cellTone:'warn'},
+          {label:'식사',val:'1/3',unit:'회',trend:'아침 거부',cellTone:'warn'}
+        ], note:'오전 배회 1회 (병동 복도). 안전 확보 후 휴식. 식욕 저하 관찰.', noteBy:'이수진 간호사 · 11:42 · 음성 입력'}},
+      {name:'이정숙',age:85,sex:'F',room:'3층 C-1호',dx:'낙상 주의',risk:'warn',
+        last:{time:'11:45', vitals:[
+          {label:'혈압',val:'128/76',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.5',unit:'°C',trend:'정상',tone:'down'},
+          {label:'보행',val:'주의',unit:'',trend:'보조기 필수',cellTone:'warn'},
+          {label:'식사',val:'2/3',unit:'회',trend:'점심 2/3'}
+        ], note:'화장실 이동 시 보호자 동반 필요. 야간 낙상 방지 매트 점검 완료.', noteBy:'박지현 간호사 · 11:47 · 메모'}},
+      {name:'정성호',age:74,sex:'M',room:'3층 C-3호',dx:'COPD',risk:null,
+        last:{time:'11:50', vitals:[
+          {label:'혈압',val:'124/74',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.4',unit:'°C',trend:'정상',tone:'down'},
+          {label:'산소포화도',val:'95',unit:'%',trend:'정상'},
+          {label:'식사',val:'3/3',unit:'회',trend:'전량 섭취'}
+        ], note:'흡입제 사용 후 호흡 편안. 산책 가능.', noteBy:'이수진 간호사 · 11:52 · 메모'}},
+      {name:'한미자',age:81,sex:'F',room:'3층 D-1호',dx:'고혈압',risk:null,
+        last:{time:'11:55', vitals:[
+          {label:'혈압',val:'132/80',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.6',unit:'°C',trend:'정상',tone:'down'},
+          {label:'통증 (VAS)',val:'0',unit:'/10',trend:'없음'},
+          {label:'식사',val:'3/3',unit:'회',trend:'전량 섭취'}
+        ], note:'안정적. 가족 면회 예정 알림.', noteBy:'박지현 간호사 · 11:57 · 메모'}},
+      {name:'송영호',age:77,sex:'M',room:'3층 D-2호',dx:'뇌경색',risk:null,
+        last:{time:'12:00', vitals:[
+          {label:'혈압',val:'126/78',unit:'mmHg',trend:'안정'},
+          {label:'체온',val:'36.5',unit:'°C',trend:'정상',tone:'down'},
+          {label:'좌측근력',val:'3',unit:'/5',trend:'재활 진행'},
+          {label:'식사',val:'3/3',unit:'회',trend:'반찬 보조'}
+        ], note:'언어 재활 1회 완료. 발음 개선 진행 중.', noteBy:'이수진 간호사 · 12:02 · 음성 입력'}}
     ];
     /* status: 'done' | 'current' | 'pending' | 'skipped' */
     const status=patients.map((_,i)=>i<ROUND_DONE_COUNT?'done':(i===ROUND_DONE_COUNT?'current':'pending'));
@@ -827,32 +901,69 @@
       document.getElementById('intro').style.display='none';
       document.getElementById('active').style.display='block';
       document.getElementById('hEyebrow').textContent='회진 모드 · 진행 중';
-      document.getElementById('hLeftIco').setAttribute('icon','fluent:pause-24-filled');
-      document.querySelector('.icon-btn[aria-label="홈으로"]').setAttribute('aria-label','라운드 일시정지 · 홈으로');
       renderCard();
     }
 
     function renderCard(){
-      const p=patients[idx];
       // 모든 환자 끝났으면 완료 상태
       if(idx>=patients.length){renderComplete();return;}
+      const p=patients[idx];
+
+      // v3.2.9: 이름/나이 분리 갱신 (직전 카드 분리 작업 중복 출력 버그 수정)
       document.getElementById('cAva').textContent=p.name[0];
-      document.getElementById('cName').innerHTML=`${p.name} <span>${p.age}세 · ${p.sex}</span>`;
+      document.getElementById('cName').textContent=p.name;
+      document.getElementById('cAge').textContent=`${p.age}세 · ${p.sex}`;
       document.getElementById('cRoom').textContent=p.room;
       document.getElementById('cDx').textContent=p.dx;
       document.getElementById('hName').textContent=p.name+' 어르신';
       document.getElementById('posCur').textContent=(idx+1).toString();
+
+      // v3.2.9: 환자별 지난 라운드 데이터 렌더링 (이전엔 박영자 고정값)
+      renderSummary(p);
+
       const completed=status.filter(s=>s==='done'||s==='skipped').length;
       const pct=Math.min(100,Math.round((completed)/ROUND_TOTAL*100));
       document.getElementById('progFill').style.width=pct+'%';
       document.getElementById('progNum').textContent=completed.toString();
+
+      // v3.2.9: risk 기반 judge 기본 선택
+      const defaultLevel=p.risk==='danger'?'danger':p.risk==='warn'?'watch':'ok';
       document.querySelectorAll('.judge-btn').forEach(b=>b.classList.remove('selected'));
-      document.querySelector('.judge-btn[data-level="ok"]').classList.add('selected');
+      const defBtn=document.querySelector(`.judge-btn[data-level="${defaultLevel}"]`);
+      if(defBtn) defBtn.classList.add('selected');
+
       document.getElementById('sttPreview').classList.remove('show');
       document.getElementById('voiceBtn').classList.remove('recording');
       document.getElementById('voiceIco').setAttribute('icon','fluent:mic-24-filled');
       document.getElementById('voiceMain').textContent='음성으로 한 번에 기록';
       document.getElementById('voiceSub').textContent='바이탈·통증·관찰을 한 번 발화로';
+    }
+
+    function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);}
+
+    function renderSummary(p){
+      const last=p.last;
+      const sumTime=document.getElementById('sumTime');
+      const sumGrid=document.getElementById('sumGrid');
+      const sumNote=document.getElementById('sumNote');
+      if(!last){
+        sumTime.textContent='기록 없음';
+        sumGrid.innerHTML='';
+        sumNote.innerHTML='<div class="last-note-ttl">지난 메모</div>이전 라운드 기록이 없습니다.';
+        return;
+      }
+      sumTime.textContent=last.time;
+      sumGrid.innerHTML=last.vitals.map(v=>{
+        const cellCls=v.cellTone?` ${v.cellTone}`:'';
+        const trendCls=v.tone?` ${v.tone}`:'';
+        const unit=v.unit?`<small>${escapeHtml(v.unit)}</small>`:'';
+        return `<div class="vital${cellCls}">
+          <div class="vital-label">${escapeHtml(v.label)}</div>
+          <div class="vital-val">${escapeHtml(v.val)}${unit}</div>
+          <div class="vital-trend${trendCls}">${escapeHtml(v.trend)}</div>
+        </div>`;
+      }).join('');
+      sumNote.innerHTML=`<div class="last-note-ttl">지난 메모</div>${escapeHtml(last.note)}<div class="last-note-meta">${escapeHtml(last.noteBy)}</div>`;
     }
 
     function renderComplete(){
@@ -869,13 +980,21 @@
             <div><div class="complete-stat-val">${ROUND_TOTAL}</div><div class="complete-stat-label">전체</div></div>
           </div>
           <div class="complete-cta">
-            <a class="secondary" href="d04-handover.html"><iconify-icon icon="fluent:arrow-swap-24-filled"></iconify-icon>인수인계 보기</a>
+            <a class="secondary" href="d04-handover.html"><iconify-icon icon="fluent:document-arrow-right-24-filled"></iconify-icon>인수인계 보기</a>
             <a class="primary" href="d01-home.html"><iconify-icon icon="fluent:home-24-filled"></iconify-icon>홈으로</a>
           </div>
         </div>`;
       document.getElementById('hName').textContent='완료';
       document.getElementById('progFill').style.width='100%';
       document.getElementById('progNum').textContent=ROUND_TOTAL;
+    }
+
+    /* v3.2.9: current 는 항상 1명만. 이동 시 기존 current 정리 후 새 current 지정. */
+    function setCurrent(newIdx){
+      for(let i=0;i<status.length;i++){
+        if(status[i]==='current') status[i]='pending';
+      }
+      if(newIdx<patients.length && status[newIdx]==='pending') status[newIdx]='current';
     }
 
     function swipe(dir){
@@ -886,7 +1005,7 @@
         card.classList.add('swipe-out-left');
         setTimeout(()=>{
           idx=idx+1;
-          if(idx<patients.length && status[idx]==='pending') status[idx]='current';
+          setCurrent(idx);
           card.classList.remove('swipe-out-left');
           renderCard();
           if(idx<patients.length) toast('저장 완료 · 다음 환자');
@@ -896,7 +1015,7 @@
         card.classList.add('swipe-out-left');
         setTimeout(()=>{
           idx=idx+1;
-          if(idx<patients.length && status[idx]==='pending') status[idx]='current';
+          setCurrent(idx);
           card.classList.remove('swipe-out-left');
           renderCard();
           if(idx<patients.length) toast('건너뜀 · 나중에 다시 방문');
@@ -904,7 +1023,12 @@
       } else {
         if(idx<=0){toast('첫 환자입니다');return;}
         card.classList.add('swipe-out-right');
-        setTimeout(()=>{idx=idx-1;card.classList.remove('swipe-out-right');renderCard();},280);
+        setTimeout(()=>{
+          idx=idx-1;
+          setCurrent(idx);
+          card.classList.remove('swipe-out-right');
+          renderCard();
+        },280);
       }
     }
 
@@ -930,7 +1054,7 @@
     function closeList(){document.getElementById('ov').classList.remove('show');}
     function jumpTo(i){
       idx=i;
-      if(status[i]==='pending') status[i]='current';
+      setCurrent(i);  /* v3.2.9: 기존 current 정리 (다수 잔존 버그 수정) */
       closeList();
       if(!active) startRound('resume');
       else renderCard();
@@ -981,7 +1105,7 @@
           sub:'기록은 저장되었습니다. 의료진이 직접 다음 행동을 결정합니다.',
           options:[
             {ico:'fluent:doctor-24-filled', ttl:'촉탁의 보고', sub:'이상훈 의사에게 메시지 전송', act:'doctor'},
-            {ico:'fluent:arrow-swap-24-filled', ttl:'인수인계 추가', sub:'다음 교대조 SBAR에 자동 추가', act:'handover'},
+            {ico:'fluent:document-arrow-right-24-filled', ttl:'인수인계 추가', sub:'다음 교대조 SBAR에 자동 추가', act:'handover'},
             {ico:'fluent:timer-24-filled', ttl:'30분 후 재측정 알림', sub:'타이머 자동 설정', act:'remeasure'}
           ]
         },
@@ -995,7 +1119,7 @@
             {ico:'fluent:warning-24-filled', ttl:'SOS 전환 · 응급 대응', sub:'전 직원에게 SOS 알림 발신', act:'sos', danger:true},
             {ico:'fluent:vehicle-truck-bag-24-filled', ttl:'119 연결 검토', sub:'환자 정보 자동 전달 준비', act:'emergency', danger:true},
             {ico:'fluent:doctor-24-filled', ttl:'촉탁의 즉시 호출', sub:'이상훈 의사에게 긴급 메시지', act:'doctor'},
-            {ico:'fluent:arrow-swap-24-filled', ttl:'인수인계 우선 항목으로', sub:'빨간 배지로 다음 교대조에 전달', act:'handover'}
+            {ico:'fluent:document-arrow-right-24-filled', ttl:'인수인계 우선 항목으로', sub:'빨간 배지로 다음 교대조에 전달', act:'handover'}
           ]
         }
       };
@@ -1058,5 +1182,6 @@
     }
     // 그 외 → 인트로 화면 유지 (기본)
   </script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
 </body>
 </html>

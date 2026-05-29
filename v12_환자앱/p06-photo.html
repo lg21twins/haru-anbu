@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#FFF5E8">
+  <meta name="theme-color" content="var(--patient-canvas-warm)">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <title>하루안부 · 사진 크게 보기</title>
 
@@ -32,7 +32,7 @@
     .sender .avatar {
       width: 64px; height: 64px; border-radius: 50%;
       overflow: hidden; position: relative; flex-shrink: 0;
-      box-shadow: 0 4px 14px rgba(251, 146, 60, 0.25);
+      box-shadow: 0 4px 14px rgba(var(--color-accent-rgb), 0.25);
     }
     .sender .avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .sender .who {
@@ -123,14 +123,13 @@
       text-decoration: none;
     }
     .action--primary {
-      background: linear-gradient(135deg, var(--brand-orange-400), var(--brand-orange-600));
-      color: #fff;
-      box-shadow: 0 8px 22px rgba(251, 146, 60, 0.35);
+      background: var(--brand-orange-500);
+      color: white;
+      box-shadow: 0 8px 22px rgba(var(--color-accent-rgb), 0.35);
     }
     .action--ghost {
       background: var(--color-bg-surface);
       color: var(--color-text-primary);
-      border: 1.5px solid rgba(0, 0, 0, 0.08);
     }
     .action:active { transform: scale(.97); }
 
