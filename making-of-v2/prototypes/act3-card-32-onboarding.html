@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Act 3 — #32 온보딩</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg:          #000000;
+    --bg-soft:     #0a0908;
+    --text:        #ffffff;
+    --mute-1:      rgba(255, 255, 255, 0.62);
+    --mute-2:      rgba(255, 255, 255, 0.40);
+    --mute-3:      rgba(255, 255, 255, 0.22);
+    --key:         #ff4d4d;     /* matches var(--color-key) in existing site */
+    --line:        rgba(255, 255, 255, 0.07);
+    --line-strong: rgba(255, 255, 255, 0.14);
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  body {
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+  }
+
+  /* ============================================================
+     SCENE 1 — Prompt (CommandScene/LineScene 톤)
+     180vh + sticky h-screen 풀스크린 중앙 정렬
+     ============================================================ */
+  .scene-prompt {
+    position: relative;
+    width: 100%;
+    background: var(--bg);
+    height: 180vh;
+  }
+
+  .scene-prompt .sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0 6vw;
+  }
+
+  .scene-prompt .stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3.5rem;
+    max-width: 100%;
+  }
+
+  .scene-prompt .meta {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-size: clamp(0.62rem, 0.85vw, 0.78rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mute-2);
+    font-weight: 600;
+  }
+  .scene-prompt .meta .id { color: var(--text); font-variant-numeric: tabular-nums; }
+  .scene-prompt .meta .dot {
+    width: 3px; height: 3px; border-radius: 50%;
+    background: var(--mute-3); display: inline-block;
+  }
+
+  .scene-prompt .quote {
+    font-size: clamp(2.2rem, 6.8vw, 6.8rem);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.028em;
+    color: var(--text);
+    text-align: center;
+    white-space: nowrap;
+  }
+  .scene-prompt .quote .arrow {
+    color: var(--key);
+    margin-right: 0.4em;
+    font-weight: 500;
+  }
+
+  /* ============================================================
+     SCENE 2 — Result (FailuresGallery 톤)
+     세로 풀-블리드 + 그리드 + 한 줄 캡션
+     ============================================================ */
+  .scene-result {
+    position: relative;
+    width: 100%;
+    background: var(--bg-soft);
+    padding: 14vh 0 18vh;
+  }
+
+  .scene-result .inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 6vw;
+  }
+
+  .scene-result .header {
+    text-align: center;
+    margin-bottom: 9vh;
+  }
+  .scene-result h2 {
+    font-size: clamp(1.6rem, 3.4vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .scene-result h2 .count {
+    color: var(--key);
+    margin-left: 0.3em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .scene-result .ai-trace {
+    margin-top: 2.4rem;
+    font-size: clamp(0.86rem, 1.1vw, 1rem);
+    color: var(--mute-1);
+    line-height: 1.7;
+    max-width: 38rem;
+    margin-left: auto;
+    margin-right: auto;
+    letter-spacing: -0.005em;
+  }
+  .scene-result .ai-trace strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .scene-result .thumbs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .scene-result .thumbs {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .scene-result .thumbs {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.4rem;
+    }
+  }
+
+  .thumb {
+    aspect-ratio: 9 / 19.5;
+    background: linear-gradient(180deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 320ms cubic-bezier(0.2,1,0.4,1), transform 320ms cubic-bezier(0.2,1,0.4,1);
+  }
+  .thumb::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 36%;
+    background: radial-gradient(ellipse at top, rgba(255,255,255,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .thumb:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-3px);
+  }
+  .thumb .id {
+    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.10em;
+    color: var(--mute-2);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.35rem;
+    font-weight: 500;
+  }
+  .thumb .name {
+    font-size: 0.85rem;
+    color: var(--mute-1);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  /* Bottom signature line */
+  .scene-result .signature {
+    margin-top: 10vh;
+    text-align: center;
+    font-size: clamp(0.78rem, 1vw, 0.92rem);
+    color: var(--mute-2);
+    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums;
+  }
+  .scene-result .signature .num {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .scene-result .signature .sep {
+    color: var(--mute-3);
+    margin: 0 1em;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SCENE 1 — PROMPT ============ -->
+<section class="scene-prompt">
+  <div class="sticky">
+    <div class="stack">
+      <div class="meta mono">
+        <span class="id">PROMPT #32</span>
+        <span class="dot"></span>
+        <span>ONBOARDING</span>
+        <span class="dot"></span>
+        <span>2026.04.12</span>
+      </div>
+
+      <p class="quote mono">
+        <span class="arrow">&gt;</span>"하던거 해봐라."
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCENE 2 — RESULT ============ -->
+<section class="scene-result">
+  <div class="inner">
+
+    <div class="header">
+      <h2>한 줄 명령에 화면<span class="count">7</span>개가 나왔다.</h2>
+
+      <p class="ai-trace">
+        AI가 한 일 8단계 — 로그인 분기, 소셜 로그인, 역할 카드, 역할별 인트로, 동의 동적 주입, 프로필 자동 포맷, 슬라이드 버그 수정, v7 배경 적용.
+        단순해 보이는 명령이 가능했던 건 <strong>그 전까지 함께 쌓은 v7 톤·역할 구조·UX 원칙</strong>이 이미 그 한 줄 안에 들어 있었기 때문이다.
+      </p>
+    </div>
+
+    <div class="thumbs">
+      <div class="thumb">
+        <div class="id">ob01</div>
+        <div class="name">시작 화면</div>
+      </div>
+      <div class="thumb">
+        <div class="id">ob02</div>
+        <div class="name">로그인 / 회원가입</div>
+      </div>
+      <div class="thumb">
+        <div class="id">ob03</div>
+        <div class="name">소셜 로그인</div>
+      </div>
+      <div class="thumb">
+        <div class="id">ob04</div>
+        <div class="name">역할 선택</div>
+      </div>
+      <div class="thumb">
+        <div class="id">ob05</div>
+        <div class="name">역할별 인트로</div>
+      </div>
+      <div class="thumb">
+        <div class="id">ob06</div>
+        <div class="name">동의 (동적)</div>
+      </div>
+      <div class="thumb">
+        <div class="id">ob07</div>
+        <div class="name">프로필 입력</div>
+      </div>
+    </div>
+
+    <div class="signature mono">
+      <span><span class="num">1</span> 줄 명령</span>
+      <span class="sep">→</span>
+      <span><span class="num">8</span> 단계 작업</span>
+      <span class="sep">→</span>
+      <span><span class="num">9</span> HTML 파일</span>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>
