@@ -1,0 +1,286 @@
+- generic [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "하루안부 DS" [ref=e4] [cursor=pointer]:
+        - /url: preview.html
+      - generic [ref=e5]:
+        - link "Foundations" [ref=e6] [cursor=pointer]:
+          - /url: preview-foundations.html
+        - link "Components" [ref=e7] [cursor=pointer]:
+          - /url: preview-components.html
+        - link "Patterns" [ref=e8] [cursor=pointer]:
+          - /url: preview-patterns.html
+        - link "Roles" [ref=e9] [cursor=pointer]:
+          - /url: preview-roles.html
+      - generic [ref=e10]: v3.1
+  - banner [ref=e11]:
+    - generic [ref=e12]: 02 · COMPONENTS
+    - heading "컴포넌트" [level=1] [ref=e13]
+    - paragraph [ref=e14]: "화면을 만들 때 가져다 쓰는 모든 UI 컴포넌트의 라이브 데모. 6 카테고리: Action · Containment · Navigation · Communication · Input · Display"
+  - main [ref=e15]:
+    - generic [ref=e16]:
+      - heading "A. Action — 사용자가 누르는 것" [level=2] [ref=e17]
+      - heading "A1. Button" [level=3] [ref=e18]
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - button "확인" [ref=e21] [cursor=pointer]
+          - button "취소" [ref=e22] [cursor=pointer]
+          - button "삭제하기" [ref=e23] [cursor=pointer]: 삭제하기
+          - button "자세히 보기" [ref=e24] [cursor=pointer]
+          - button "메시지 보내기" [ref=e25] [cursor=pointer]: 메시지 보내기
+          - button "비활성" [disabled]
+        - generic [ref=e26]:
+          - button "Compact 36px" [ref=e27] [cursor=pointer]
+          - button "Default 48px" [ref=e28] [cursor=pointer]
+          - button "Large 56px" [ref=e29] [cursor=pointer]
+        - button "풀 너비 버튼" [ref=e31] [cursor=pointer]
+      - heading "A2. FAB — AI 진입점 (하루안부 심볼)" [level=3] [ref=e32]
+      - generic [ref=e34]:
+        - button "AI 어시스턴트 열기" [ref=e35] [cursor=pointer]
+        - generic [ref=e36]:
+          - text: 탭바 우측에 분리 배치된 56×56 원형 버튼.
+          - strong [ref=e37]: Sparkle 아이콘이 아니라 하루안부 심볼
+          - text: 이 들어간다.
+          - text: 탭하면 AI 어시스턴트 바텀시트가 열림.
+      - heading "A3. Chip / Mode" [level=3] [ref=e38]
+      - generic [ref=e40]:
+        - button "전체" [ref=e41] [cursor=pointer]
+        - button "식사" [ref=e42] [cursor=pointer]
+        - button "투약" [ref=e43] [cursor=pointer]
+        - button "활동" [ref=e44] [cursor=pointer]
+        - button "배변" [ref=e45] [cursor=pointer]
+        - button "특이사항" [ref=e46] [cursor=pointer]
+    - generic [ref=e47]:
+      - heading "B. Containment — 콘텐츠를 담는 그릇" [level=2] [ref=e48]
+      - heading "B1. Card 4종 (v3.1 — 화면당 hero 1개, 일반은 default)" [level=3] [ref=e49]
+      - paragraph [ref=e50]: 새 화면을 만들 때 이 4개 중 하나만 고르면 된다. Glass는 일반 정보 카드의 기본이 아니라 탭바·모달·AI 리포트·환자 가족 사진 4곳 한정의 OPTIONAL.
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - heading "★ card-default (대부분의 카드)" [level=4] [ref=e54]
+            - paragraph [ref=e55]: 흰 surface + 1px 보더 + 약한 shadow. 정보 표시는 모두 이것. 블러·반투명 없음.
+          - button "card-action (클릭 가능) 탭하면 이동·실행. default + hover/active 피드백. 마우스 올려보세요." [ref=e56] [cursor=pointer]:
+            - heading "card-action (클릭 가능)" [level=4] [ref=e57]
+            - paragraph [ref=e58]: 탭하면 이동·실행. default + hover/active 피드백. 마우스 올려보세요.
+          - generic [ref=e59]:
+            - heading "card-alert · danger" [level=4] [ref=e60]
+            - paragraph [ref=e61]: SOS·위험 강조. 상태 soft 배경으로 즉시 식별.
+          - generic [ref=e62]:
+            - heading "card-hero (화면당 1개 한정)" [level=4] [ref=e63]
+            - paragraph [ref=e64]: 오늘의 한 줄·AI 리포트 표지. 더 강조할 게 있으면 우선순위를 다시 검토.
+        - heading "card-alert 4 intent" [level=4] [ref=e65]
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - heading "success" [level=4] [ref=e68]
+            - paragraph [ref=e69]: 정상·완료
+          - generic [ref=e70]:
+            - heading "warning" [level=4] [ref=e71]
+            - paragraph [ref=e72]: 주의·확인
+          - generic [ref=e73]:
+            - heading "danger" [level=4] [ref=e74]
+            - paragraph [ref=e75]: SOS·위험
+          - generic [ref=e76]:
+            - heading "info" [level=4] [ref=e77]
+            - paragraph [ref=e78]: 정보·안내
+      - heading "B1.5 Glass card — OPTIONAL (예외 4곳만)" [level=3] [ref=e79]
+      - paragraph [ref=e80]:
+        - text: 아래는
+        - strong [ref=e81]: 일반 정보 카드 기본이 아니다
+        - text: ". Glass(반투명 + blur)는 다음 4곳에만 한정 사용:"
+        - text: ① 플로팅 필 탭바 ② 모달 sheet ③ AI 리포트 카드(선택적) ④ 환자앱 가족 사진 카드.
+      - generic [ref=e83]:
+        - heading "card-glass (예외 사용)" [level=4] [ref=e84]
+        - paragraph [ref=e85]: 반투명 흰색 + blur(16px) + 프로스티드 하이라이트. 일반 정보 카드에 사용 금지 — 위 4곳만.
+      - heading "B2. Bottom Sheet (모바일 모달)" [level=3] [ref=e86]
+      - generic [ref=e88]:
+        - heading "AI 어시스턴트" [level=4] [ref=e90]
+        - paragraph [ref=e91]: 무엇을 도와드릴까요?
+        - generic [ref=e92]:
+          - button "시작하기" [ref=e93] [cursor=pointer]
+          - button "나중에" [ref=e94] [cursor=pointer]
+      - heading "B3. Modal Overlay (웹·강제 동의)" [level=3] [ref=e95]
+      - generic [ref=e97]:
+        - heading "정말 삭제하시겠어요?" [level=4] [ref=e98]
+        - paragraph [ref=e99]: 이 기록은 복구할 수 없습니다.
+        - generic [ref=e100]:
+          - button "취소" [ref=e101] [cursor=pointer]
+          - button "삭제" [ref=e102] [cursor=pointer]
+    - generic [ref=e103]:
+      - heading "C. Navigation" [level=2] [ref=e104]
+      - heading "C1. Mobile Header + Floating Pill Tabbar (시그니처)" [level=3] [ref=e105]
+      - generic [ref=e107]:
+        - generic [ref=e109]: 오늘
+        - generic [ref=e111]:
+          - heading "오늘 어머님은 안정적이세요" [level=4] [ref=e112]
+          - paragraph [ref=e113]: 식사 정상, 투약 완료, 활동 보통
+        - tablist [ref=e114]:
+          - tab "홈" [selected] [ref=e115] [cursor=pointer]:
+            - generic [ref=e116]: 홈
+          - tab "가이드" [ref=e117] [cursor=pointer]:
+            - generic [ref=e118]: 가이드
+          - tab "소통" [ref=e119] [cursor=pointer]:
+            - generic [ref=e120]: 소통
+          - tab "기록" [ref=e121] [cursor=pointer]:
+            - generic [ref=e122]: 기록
+          - tab "마이" [ref=e123] [cursor=pointer]:
+            - generic [ref=e124]: 마이
+      - generic [ref=e125]:
+        - strong [ref=e126]: "탭바 절대 규칙:"
+        - text: 좌우 16px 인셋, 56px 높이, radius pill. 풀-블리드 절대 금지. 5탭 이내. AI FAB은 별도 원형으로 분리.
+      - heading "C2. Web Header + Sidebar (의료진)" [level=3] [ref=e127]
+      - generic [ref=e128]:
+        - generic [ref=e129]:
+          - generic [ref=e130]: 하루안부 의료진
+          - generic [ref=e132]: 환자 이름·방번호 검색
+          - generic [ref=e134]: 박
+        - generic [ref=e135]:
+          - navigation [ref=e136]:
+            - generic [ref=e137]: 메뉴
+            - generic [ref=e138] [cursor=pointer]: 대시보드
+            - generic [ref=e139] [cursor=pointer]: 환자 목록
+            - generic [ref=e140] [cursor=pointer]: 기록
+            - generic [ref=e141] [cursor=pointer]: 처방
+            - generic [ref=e142] [cursor=pointer]: 소통
+            - generic [ref=e143] [cursor=pointer]: 설정
+          - generic [ref=e144]:
+            - generic [ref=e145]: 콘텐츠 영역
+            - heading "오늘의 환자 현황" [level=4] [ref=e146]
+            - generic [ref=e147]:
+              - generic [ref=e148]:
+                - generic [ref=e149]: 오늘 케어
+                - generic [ref=e150]: "42"
+                - generic [ref=e151]: +3 vs 어제
+              - generic [ref=e152]:
+                - generic [ref=e153]: 미완료
+                - generic [ref=e154]: "7"
+              - generic [ref=e155]:
+                - generic [ref=e156]: SOS
+                - generic [ref=e157]: "1"
+    - generic [ref=e158]:
+      - heading "D. Communication — 시스템이 말하는 것" [level=2] [ref=e159]
+      - heading "D1. Badge" [level=3] [ref=e160]
+      - generic [ref=e162]:
+        - generic [ref=e163]: 정상
+        - generic [ref=e164]: 확인 필요
+        - generic [ref=e165]: 긴급
+        - generic [ref=e166]: 정보
+      - heading "D2. Toast (탭바 위 100px, 자동 2.5초)" [level=3] [ref=e167]
+      - generic [ref=e170]: 기록이 저장되었어요
+      - heading "D3. SOS Banner (최상단, 닫기 없음)" [level=3] [ref=e171]
+      - alert [ref=e173]:
+        - generic [ref=e174]:
+          - generic [ref=e175]: 긴급 알림 — 어머님 낙상
+          - generic [ref=e176]: 2분 전 · 즉시 확인이 필요합니다
+        - button "전화" [ref=e177] [cursor=pointer]
+      - heading "D4. Inline Alert (4 intent)" [level=3] [ref=e178]
+      - generic [ref=e180]:
+        - generic [ref=e182]:
+          - generic [ref=e183]: 새로운 AI 리포트
+          - text: 오늘 저녁 7시에 발송됩니다
+        - generic [ref=e185]:
+          - generic [ref=e186]: 설정 저장 완료
+          - text: 알림 기본값이 적용되었습니다
+        - generic [ref=e188]:
+          - generic [ref=e189]: 연결 불안정
+          - text: 네트워크 상태를 확인해주세요
+        - generic [ref=e191]:
+          - generic [ref=e192]: 기록 저장 실패
+          - text: 잠시 후 다시 시도해주세요
+    - generic [ref=e193]:
+      - heading "E. Input" [level=2] [ref=e194]
+      - heading "E1. Text Field — 기본 / 포커스 / 에러 / 비활성" [level=3] [ref=e195]
+      - generic [ref=e197]:
+        - generic [ref=e198]:
+          - generic [ref=e199]: 이름
+          - textbox "홍길동" [ref=e200]: 박서영
+          - generic [ref=e201]: 담당 의료진 이름을 입력하세요
+        - generic [ref=e202]:
+          - generic [ref=e203]: 전화번호 (포커스 시뮬레이션)
+          - textbox "010-0000-0000" [active] [ref=e204]
+          - generic [ref=e205]: 긴급 알림이 이 번호로 전송됩니다
+        - generic [ref=e206]:
+          - generic [ref=e207]: 이메일
+          - textbox "email@example.com" [ref=e208]: abc@
+          - generic [ref=e209]: 올바른 이메일 형식이 아니에요
+        - generic [ref=e210]:
+          - generic [ref=e211]: 소속 (비활성)
+          - textbox [disabled] [ref=e212]: 시스템 관리
+          - generic [ref=e213]: 관리자에게 문의하세요
+      - heading "E2. Search" [level=3] [ref=e214]
+      - textbox "환자 이름이나 방번호로 검색" [ref=e217]
+      - heading "E3. Textarea (다중 행)" [level=3] [ref=e218]
+      - generic [ref=e219]:
+        - generic [ref=e220]: 특이사항 메모
+        - textbox "식사 후 가벼운 어지러움 호소. 30분 안정 후 회복..." [ref=e221]: 오늘 오후 식사 후 가벼운 어지러움 호소하셨고, 30분 안정 후 회복하셨습니다. 보호자에게 공유 예정.
+      - heading "E4. Toggle / Switch" [level=3] [ref=e222]
+      - generic [ref=e224]:
+        - generic [ref=e225]:
+          - switch [checked] [ref=e226] [cursor=pointer]
+          - text: 긴급 알림 받기
+        - generic [ref=e227]:
+          - switch [ref=e228] [cursor=pointer]
+          - text: 저녁 리포트
+      - heading "E5. Checkbox" [level=3] [ref=e229]
+      - generic [ref=e231]:
+        - generic [ref=e232] [cursor=pointer]: 식사 1/3 이상 완료
+        - generic [ref=e234] [cursor=pointer]: 오전 투약 완료
+        - generic [ref=e236] [cursor=pointer]: 오후 산책 완료
+        - generic [ref=e238] [cursor=pointer]: 저녁 체위 변경
+    - generic [ref=e240]:
+      - heading "F. Display" [level=2] [ref=e241]
+      - heading "F1. Avatar (4 사이즈)" [level=3] [ref=e242]
+      - generic [ref=e244]:
+        - generic [ref=e245]:
+          - generic [ref=e246]: 박
+          - generic [ref=e247]: 32px
+        - generic [ref=e248]:
+          - generic [ref=e249]: 박
+          - generic [ref=e250]: 40px
+        - generic [ref=e251]:
+          - generic [ref=e252]: 박
+          - generic [ref=e253]: 56px
+        - generic [ref=e254]:
+          - generic [ref=e255]: 박
+          - generic [ref=e256]: 72px
+      - heading "F2. Timeline" [level=3] [ref=e257]
+      - generic [ref=e259]:
+        - generic [ref=e260]:
+          - generic [ref=e261]: 09:30
+          - generic [ref=e262]: 아침 약 복용
+          - generic [ref=e263]: 고혈압약 1정 · 박간호사
+        - generic [ref=e264]:
+          - generic [ref=e265]: 12:15
+          - generic [ref=e266]: 점심 식사 완료
+          - generic [ref=e267]: 2/3 정도 드심 · 평소와 비슷
+        - generic [ref=e268]:
+          - generic [ref=e269]: 14:40
+          - generic [ref=e270]: 오후 산책 30분
+          - generic [ref=e271]: 정원에서 가족 산책 · 컨디션 좋음
+      - heading "F3. Stat Card (큰 숫자)" [level=3] [ref=e272]
+      - generic [ref=e274]:
+        - generic [ref=e275]:
+          - generic [ref=e276]: 이번 주 케어 완료율
+          - generic [ref=e277]: 94%
+          - generic [ref=e278]: +5% vs 지난주
+        - generic [ref=e279]:
+          - generic [ref=e280]: 평균 응답 시간
+          - generic [ref=e281]: 1.2시간
+          - generic [ref=e282]: 목표 2시간 이내
+        - generic [ref=e283]:
+          - generic [ref=e284]: 전화 문의 감소
+          - generic [ref=e285]: "-32%"
+          - generic [ref=e286]: 3개월 전 대비
+      - heading "F4. Empty State" [level=3] [ref=e287]
+      - generic [ref=e289]:
+        - generic [ref=e290]: 아직 오늘의 기록이 없어요
+        - generic [ref=e291]: 간호사가 첫 기록을 남기면 여기에 표시됩니다
+  - contentinfo [ref=e292]:
+    - text: 하루안부 디자인 시스템 v3.1 · 2026.05.09
+    - link "← 메인" [ref=e293] [cursor=pointer]:
+      - /url: preview.html
+    - text: ·
+    - link "02_COMPONENTS.md" [ref=e294] [cursor=pointer]:
+      - /url: 02_COMPONENTS.md
+    - text: ·
+    - link "tokens.css" [ref=e295] [cursor=pointer]:
+      - /url: tokens/tokens.css

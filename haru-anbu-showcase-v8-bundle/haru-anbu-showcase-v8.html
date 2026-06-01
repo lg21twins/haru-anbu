@@ -672,35 +672,33 @@
     .mkt-stat-desc{font-size:13px;line-height:1.65;color:var(--ink-2);margin-top:8px}
     .mkt-stat-source{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--mute-2);margin-top:10px;text-transform:uppercase}
 
-    /* ── Pain bridge + scroll zone ── */
-    /* pain-zone: sticky 스크롤 — 페이지 스크롤로 카피 전환 */
-    /* zone 높이 = intro 100vh + 카피 9개 × 100vh = 1000vh */
-    .pain-zone{position:relative;background:var(--paper);height:1000vh}
-    .pain-stage{position:sticky;top:0;height:100vh;overflow:hidden;z-index:1}
-    .pain-list{position:absolute;top:0;left:0;width:100%;transition:transform .72s cubic-bezier(.16,1,.3,1);will-change:transform}
-    /* intro item: 질문 전체화면 */
-    .pain-item--intro{height:100vh;display:flex;align-items:center;justify-content:center;padding:0 clamp(32px,8vw,140px);text-align:center}
-    .pain-copy--intro{font-size:clamp(28px,4vw,52px);font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1.3;opacity:1!important;transform:none!important;transition:none!important}
-    /* copy items: 200px 슬라이딩 (역할 칩 + 카피) */
-    .pain-item{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:0 clamp(32px,8vw,140px);text-align:center;opacity:.04;transform:scale(.84);transition:opacity .72s cubic-bezier(.16,1,.3,1),transform .72s cubic-bezier(.16,1,.3,1)}
-    .pain-copy{font-size:clamp(24px,3.8vw,48px);font-weight:700;letter-spacing:-.03em;line-height:1.38;color:var(--ink);text-align:center}
-    .pain-item[data-dist="0"]{opacity:1;transform:scale(1)}
-    .pain-item[data-dist="1"]{opacity:.22;transform:scale(.93)}
-    .pain-item[data-dist="2"]{opacity:.10;transform:scale(.88)}
-    .pain-item[data-dist="3"]{opacity:.04;transform:scale(.84)}
+    /* ── Pain section: 한 화면 말풍선 대화 (보호자·케어팀·환자) ── */
+    /* 기존 1000vh sticky 스크롤 연출 → 한 화면 진입 시 순차 등장으로 교체 */
+    .pain-zone{position:relative;background:var(--paper);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:clamp(72px,10vh,128px) clamp(24px,6vw,80px)}
+    .pain-convo{width:100%;max-width:920px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(16px,2.6vh,32px)}
+    .pain-q{font-size:clamp(20px,2.4vw,32px);font-weight:700;letter-spacing:-.03em;line-height:1.3;color:var(--mute);text-align:center;margin-bottom:clamp(8px,2vh,24px)}
+    .pain-bubble{max-width:80%;display:flex;flex-direction:column;gap:11px;opacity:0;transform:translateY(16px) scale(.96);transform-origin:bottom;transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.34,1.56,.64,1)}
+    .pain-bubble.show{opacity:1;transform:none}
+    .pain-bubble--left{align-self:flex-start;align-items:flex-start}
+    .pain-bubble--right{align-self:flex-end;align-items:flex-end}
+    .pain-msg{font-size:clamp(20px,2.8vw,38px);font-weight:700;letter-spacing:-.03em;line-height:1.4;color:var(--ink);background:#fff;padding:clamp(16px,2vw,26px) clamp(22px,2.6vw,34px);border-radius:24px;box-shadow:0 6px 28px -12px rgba(15,23,42,.16)}
+    .pain-bubble--left  .pain-msg{border-top-left-radius:8px}
+    .pain-bubble--right .pain-msg{border-top-right-radius:8px}
+    /* 타이핑 인디케이터(••• 통통) → 메시지 톡 등장 — 실제 채팅처럼 */
+    .pain-typing{display:inline-flex;gap:6px;align-items:center;padding:6px 2px}
+    .pain-typing i{width:9px;height:9px;border-radius:50%;background:var(--mute,#A1A1AA);animation:pain-typing 1.3s infinite ease-in-out}
+    .pain-typing i:nth-child(2){animation-delay:.18s}
+    .pain-typing i:nth-child(3){animation-delay:.36s}
+    @keyframes pain-typing{0%,60%,100%{opacity:.28;transform:translateY(0)}30%{opacity:1;transform:translateY(-5px)}}
+    .pain-text{display:none}
+    .pain-bubble.done .pain-typing{display:none}
+    .pain-bubble.done .pain-text{display:inline}
 
-    /* role chips inside pain items — 디자인 시스템 브랜드 컬러 직접 참조 */
-    .pain-role{display:inline-flex;align-items:center;font-size:var(--font-11, 11px);font-weight:700;letter-spacing:.02em;padding:var(--space-2, 5px) var(--space-4, 12px);border-radius:var(--radius-full, 999px);color:var(--palette-white, #fff);white-space:nowrap}
+    /* role chips — 디자인 시스템 브랜드 컬러 직접 참조 */
+    .pain-role{display:inline-flex;align-items:center;font-size:var(--font-12, 12px);font-weight:700;letter-spacing:.02em;padding:var(--space-2, 5px) var(--space-4, 13px);border-radius:var(--radius-full, 999px);color:var(--palette-white, #fff);white-space:nowrap}
     .pain-role[data-role="guardian"]{background:var(--brand-blue-500)}    /* 보호자 */
     .pain-role[data-role="care"]    {background:var(--brand-green-500)}   /* 케어팀(의료진+요양보호사 통합) */
     .pain-role[data-role="patient"] {background:var(--brand-orange-400)}  /* 환자 */
-
-    .pain-nav{position:absolute;right:36px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;pointer-events:none}
-    .pain-dot{width:4px;height:4px;border-radius:50%;background:var(--palette-gray-300);transition:background .4s,transform .4s}
-    .pain-dot.on{background:var(--ink);transform:scale(1.6)}
-
-    .pain-scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute-2);white-space:nowrap;pointer-events:none;animation:pain-cue 2.2s ease-in-out infinite}
-    @keyframes pain-cue{0%,100%{opacity:.9;transform:translateX(-50%) translateY(0)}55%{opacity:.35;transform:translateX(-50%) translateY(6px)}}
 
     /* ── Problem Bridge: 잘 계십니다. 아마도. ── */
     .problem-bridge{padding-top:clamp(80px,9vw,128px);padding-bottom:clamp(64px,7vw,96px)}
@@ -916,7 +914,7 @@
     .feat-sub-inner.layout-right .feat-info-side{order:1}
     .feat-sub-inner.layout-left .feat-device-side{justify-content:flex-start}
     .feat-sub-inner.layout-center{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:0}
-    .feat-sub-inner.layout-center .feat-device-side{margin:64px 0 0!important;justify-content:center;width:100%}
+    .feat-sub-inner.layout-center .feat-device-side{margin:24px 0 0!important;justify-content:center;width:100%}
     .feat-device-side{display:flex;justify-content:center;position:relative}
     .feat-info-side{display:flex;flex-direction:column;max-width:520px}
     .feat-role-tag{align-self:flex-start;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);padding:0;background:none!important;border-radius:0;margin-bottom:28px}
@@ -995,6 +993,12 @@
     #feat-medical-app .feat-sb img,
     #feat-caregiver .feat-sb img,
     #feat-guardian.feat-phone-wrap .feat-sb img{height:14px}
+
+    /* [2026-05-31→06-01] Apps(직접 체험) 섹션 목업 크기 축소 — frame+screen+iframe 통째 uniform 0.75× (음수 margin 으로 레이아웃 빈틈 보정). 복원: 이 블록 제거 */
+    #features .feat-phone-wrap,
+    #features-by-role .feat-phone-wrap{transform:scale(.75);transform-origin:center;margin:-123px -60px}
+    #features-by-role .feat-ipad-wrap{transform:scale(.75);transform-origin:center;margin:-90px -127px}
+    #features-by-role .feat-imac-wrap{transform:scale(.75);transform-origin:center;margin:-129px -151px}
 
     /* Floating callout cards — mockup-UI style */
     .feat-float{
@@ -1550,9 +1554,46 @@
     .ds-iconlib:hover .ds-iconlib-label{color:var(--blue)}
 
     /* ── Block · Brand mark (kept, simplified) ── */
-    .ds-brand{display:grid;grid-template-columns:minmax(280px,420px) 1fr;gap:clamp(48px,7vw,96px);align-items:center}
-    .ds-brand-mark{display:flex;align-items:center;justify-content:center;aspect-ratio:1;background:#fff;border-radius:28px;padding:80px;box-shadow:var(--shadow-card-floating)}
-    .ds-brand-mark svg{width:100%;height:auto;max-width:220px}
+    .ds-brand{display:grid;grid-template-columns:minmax(280px,420px) minmax(0,620px);gap:clamp(48px,7vw,96px);align-items:center;justify-content:center}
+    .ds-brand-mark{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:1;background:#fff;border-radius:28px;padding:0;box-shadow:var(--shadow-card-floating);overflow:hidden}
+    /* ── Brand mark 진입 시퀀스: 그리드 작도 → 작도선 → 로고 드로잉 ──
+       1) 점 그리드가 중앙에서 원형으로 퍼지며 그려짐
+       2) 바운딩박스·십자·대각 작도선이 그려지고 중심점이 찍힘 → 페이드아웃
+       3) 두 잎의 외곽선이 그려진 뒤 색이 채워지고, 전체가 살짝 확대되며 안착
+       4) 안착 후 은은한 호흡 루프 */
+    .ds-brand-grid{position:absolute;inset:0;z-index:0;width:100%;height:100%;opacity:0;clip-path:circle(0% at 50% 50%);pointer-events:none;
+      background-image:linear-gradient(to right,var(--palette-gray-200) 1px,transparent 1px),linear-gradient(to bottom,var(--palette-gray-200) 1px,transparent 1px);
+      background-size:calc(100%/12) calc(100%/12)}
+    .ds-brand.in .ds-brand-grid{animation:grid-reveal 1.05s ease .1s forwards}
+
+    .ds-guide{position:absolute;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);width:50%;height:auto;max-width:none;overflow:visible;pointer-events:none}
+    .ds-guide-box,.ds-guide-line{fill:none;stroke:var(--brand-blue-500);stroke-width:11;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;opacity:0}
+    .ds-guide-dot{fill:var(--brand-blue-500);opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ds-brand.in .ds-guide-box{animation:guide-draw 1.15s ease .5s forwards,guide-fade .55s ease 1.85s forwards}
+    .ds-brand.in .ds-guide-h{animation:guide-draw .85s ease .58s forwards,guide-fade .55s ease 1.85s forwards}
+    .ds-brand.in .ds-guide-v{animation:guide-draw .85s ease .66s forwards,guide-fade .55s ease 1.85s forwards}
+    .ds-brand.in .ds-guide-d{animation:guide-draw .9s ease .74s forwards,guide-fade .55s ease 1.7s forwards}
+    .ds-brand.in .ds-guide-dot{animation:guide-dot .5s cubic-bezier(.34,1.56,.64,1) .85s forwards,guide-fade .55s ease 1.85s forwards}
+
+    .ds-brand-mark svg.ds-logo{position:relative;z-index:2;width:50%;height:auto;max-width:none;transform-origin:center}
+    .ds-logo .petal{fill:var(--brand-blue-500);stroke:var(--brand-blue-500);stroke-width:26;stroke-linejoin:round;fill-opacity:0;stroke-dasharray:1;stroke-dashoffset:1}
+    .ds-brand.in .ds-logo .petal--a{animation:petal-draw 1.25s cubic-bezier(.65,0,.35,1) 1s forwards}
+    .ds-brand.in .ds-logo .petal--b{animation:petal-draw 1.25s cubic-bezier(.65,0,.35,1) 1.12s forwards}
+    .ds-brand.in .ds-logo{animation:logo-pop .85s cubic-bezier(.22,1,.36,1) .95s both}
+
+    @keyframes grid-reveal{from{opacity:0;clip-path:circle(0% at 50% 50%)}to{opacity:1;clip-path:circle(92% at 50% 50%)}}
+    @keyframes guide-draw{from{opacity:.5;stroke-dashoffset:1}to{opacity:.5;stroke-dashoffset:0}}
+    @keyframes guide-dot{from{opacity:.55;transform:scale(0)}to{opacity:.55;transform:scale(1)}}
+    @keyframes guide-fade{to{opacity:0}}
+    @keyframes petal-draw{0%{stroke-dashoffset:1;fill-opacity:0;stroke-width:26}52%{stroke-dashoffset:0;fill-opacity:0;stroke-width:26}100%{stroke-dashoffset:0;fill-opacity:1;stroke-width:0}}
+    @keyframes logo-pop{from{transform:scale(.84)}to{transform:scale(1.0096)}}
+    @keyframes brand-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2%) scale(1.025)}}
+    @media (prefers-reduced-motion:reduce){
+      .ds-brand-grid{opacity:1;clip-path:none;animation:none}
+      .ds-guide{display:none}
+      .ds-logo .petal{fill-opacity:1;stroke-dashoffset:0}
+      .ds-brand.in .ds-logo .petal--a,.ds-brand.in .ds-logo .petal--b,.ds-brand.in .ds-logo{animation:none}
+    }
     .ds-block-eyebrow{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:24px;display:block}
     .ds-brand-title{font-size:clamp(32px,4vw,48px);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--ink);margin-bottom:24px}
     .ds-brand-title em{font-style:normal;color:var(--blue)}
@@ -1574,7 +1615,7 @@
       .ds-color-support{grid-template-columns:repeat(4,1fr)}
       .ds-iconlib-grid{grid-template-columns:repeat(3,1fr)}
       .ds-brand{grid-template-columns:1fr;gap:32px}
-      .ds-brand-mark{aspect-ratio:auto;padding:56px}
+      .ds-brand-mark{aspect-ratio:1;padding:0}
     }
     @media (max-width:560px){
       .ds-color-support{grid-template-columns:repeat(2,1fr)}
@@ -1795,7 +1836,8 @@
       <a class="nav-link" href="#overview" data-nav="overview">Overview</a>
       <a class="nav-link" href="#direction" data-nav="direction">Direction</a>
       <a class="nav-link" href="#design" data-nav="design">Design</a>
-      <a class="nav-link" href="#flow-overlay" data-nav="flow-overlay">Flow</a>
+      <!-- [보류 2026-05-31] 케어 플로우 섹션 숨김 동안 네비 링크도 숨김 — 복원 시 hidden 제거 -->
+      <a class="nav-link" href="#flow-overlay" data-nav="flow-overlay" hidden>Flow</a>
       <a class="nav-link" href="#service-features" data-nav="service-features">Features</a>
       <a class="nav-link" href="#features" data-nav="features">Apps</a>
     </div>
@@ -1914,27 +1956,13 @@
     </div>
   </section>
 
-  <!-- ══ PAIN ZONE: 질문(index 0) + 카피(index 1-7) 통합 ══ -->
+  <!-- ══ PAIN ZONE: 보호자·케어팀·환자가 각자의 불편을 말한다 (한 화면 말풍선 대화) ══ -->
   <div class="pain-zone" id="painZone">
-    <!-- 시각 레이어 (sticky로 고정) -->
-    <div class="pain-stage">
-      <div class="pain-list" id="painList">
-        <!-- index 0: 질문 (100vh, 카피 완전히 숨김) -->
-        <div class="pain-item--intro" data-dist="0">
-          <p class="pain-copy--intro">그렇다면 왜 모두가<br>여전히 불안할까요?</p>
-        </div>
-        <!-- index 1-9: 3개 역할 교차 카피 (보호자 → 케어팀 → 환자 × 3사이클) -->
-        <div class="pain-item" data-dist="1"><span class="pain-role" data-role="guardian">보호자</span><p class="pain-copy">오늘 밥은 잘 드셨는지<br>모르겠어요.</p></div>
-        <div class="pain-item" data-dist="2"><span class="pain-role" data-role="care">케어팀</span><p class="pain-copy">보호자 전화에<br>하루 두 시간을 써요.</p></div>
-        <div class="pain-item" data-dist="3"><span class="pain-role" data-role="patient">환자</span><p class="pain-copy">자식들 걱정시키고<br>싶지 않아요.</p></div>
-        <div class="pain-item" data-dist="3"><span class="pain-role" data-role="guardian">보호자</span><p class="pain-copy">멀리 살아서<br>자주 못 가요.</p></div>
-        <div class="pain-item" data-dist="3"><span class="pain-role" data-role="care">케어팀</span><p class="pain-copy">SOS가 오면<br>환자부터 찾아야 해요.</p></div>
-        <div class="pain-item" data-dist="3"><span class="pain-role" data-role="patient">환자</span><p class="pain-copy">통증이 와도 누구한테<br>말할지 모르겠어요.</p></div>
-        <div class="pain-item" data-dist="3"><span class="pain-role" data-role="guardian">보호자</span><p class="pain-copy">어떤 치료를<br>받고 계신지 알 수가 없어요.</p></div>
-        <div class="pain-item" data-dist="3"><span class="pain-role" data-role="care">케어팀</span><p class="pain-copy">작은 변화도<br>외워서 전달해요.</p></div>
-        <div class="pain-item" data-dist="3"><span class="pain-role" data-role="patient">환자</span><p class="pain-copy">혼자라는 느낌이<br>들어요.</p></div>
-      </div>
-      <div class="pain-nav" id="painDots"></div>
+    <div class="pain-convo" id="painConvo">
+      <p class="pain-q">그렇다면 왜 모두가 여전히 불안할까요?</p>
+      <div class="pain-bubble pain-bubble--left"><span class="pain-role" data-role="guardian">보호자</span><p class="pain-msg"><span class="pain-typing"><i></i><i></i><i></i></span><span class="pain-text">오늘 밥은 잘 드셨는지 모르겠어요.</span></p></div>
+      <div class="pain-bubble pain-bubble--right"><span class="pain-role" data-role="care">케어팀</span><p class="pain-msg"><span class="pain-typing"><i></i><i></i><i></i></span><span class="pain-text">보호자 전화에 하루 두 시간을 써요.</span></p></div>
+      <div class="pain-bubble pain-bubble--left"><span class="pain-role" data-role="patient">환자</span><p class="pain-msg"><span class="pain-typing"><i></i><i></i><i></i></span><span class="pain-text">자식들 걱정시키고 싶지 않아요.</span></p></div>
     </div>
   </div>
 
@@ -2091,25 +2119,28 @@
   <!-- ══ DESIGN FOUNDATIONS — 트림된 갤러리 (Direction 직후, Flow 앞) ══ -->
   <section id="design" class="ds-section">
     <div class="ds-inner">
-      <div class="sec-head reveal">
-        <div class="sec-eyebrow">Design Foundations</div>
-        <h2 class="sec-title">기능 이전에,<br><em>안심이 보이는 형태.</em></h2>
-        <p class="sec-sub">다섯 개의 화면은 우연히 닮은 게 아닙니다. 로고·색·타이포·아이콘을 하나의 시스템으로 묶어, 어떤 화면을 열어도 같은 손길이 읽히도록 설계했습니다. 한 사람이 만든 듯한 일관성 — 그것이 안심에 닿는 가장 빠른 길입니다.</p>
-      </div>
-
       <div class="ds-stack">
 
         <!-- 00 · Brand Mark + Story -->
         <div class="ds-brand reveal">
           <div class="ds-brand-mark">
-            <svg viewBox="0 0 2526 2526" fill="none" aria-label="하루안부 로고">
-              <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.2 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="var(--brand-blue-500)"/>
-              <path d="M4.68 19.34C1286.35-131.48 1286.35 630.4 1286.35 1246.66L28.31 2526C7.32 2031.8 3.73 1368.08 867.14 1263.52C-115.88 1211.75 4.68 424.16 4.68 19.34Z" fill="var(--brand-blue-500)"/>
+            <div class="ds-brand-grid" aria-hidden="true"></div>
+            <!-- 작도선: 로고가 그리드 위에 작도되듯 그려진 뒤 사라짐 -->
+            <svg class="ds-guide" viewBox="0 0 2526 2526" fill="none" aria-hidden="true">
+              <rect class="ds-guide-box" x="0" y="0" width="2526" height="2526" rx="24" pathLength="1"/>
+              <line class="ds-guide-line ds-guide-h" x1="0" y1="1263" x2="2526" y2="1263" pathLength="1"/>
+              <line class="ds-guide-line ds-guide-v" x1="1263" y1="0" x2="1263" y2="2526" pathLength="1"/>
+              <line class="ds-guide-line ds-guide-d" x1="2526" y1="0" x2="0" y2="2526" pathLength="1"/>
+              <circle class="ds-guide-dot" cx="1263" cy="1263" r="38"/>
+            </svg>
+            <svg class="ds-logo" viewBox="0 0 2526 2526" fill="none" aria-label="하루안부 로고">
+              <path class="petal petal--b" pathLength="1" d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.2 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="var(--brand-blue-500)"/>
+              <path class="petal petal--a" pathLength="1" d="M4.68 19.34C1286.35-131.48 1286.35 630.4 1286.35 1246.66L28.31 2526C7.32 2031.8 3.73 1368.08 867.14 1263.52C-115.88 1211.75 4.68 424.16 4.68 19.34Z" fill="var(--brand-blue-500)"/>
             </svg>
           </div>
           <div class="ds-brand-meta">
             <span class="ds-block-eyebrow">Brand Mark</span>
-            <h3 class="ds-brand-title">두 시선이 만나서,<br><em>하루 한 줄.</em></h3>
+            <h3 class="ds-brand-title">기능 이전에,<br><em>안심이 보이는 형태.</em></h3>
             <p class="ds-brand-copy">서로를 향해 굽은 두 곡선은 멀리 있는 보호자와 가까이 있는 환자, 그 사이를 잇는 케어팀의 시선을 의미합니다. 한 점에서 만나는 형태로, 흩어진 세 시선이 하루 한 번 안부 한 줄로 모인다는 약속을 담았습니다.</p>
           </div>
         </div>
@@ -2149,7 +2180,6 @@
           <div class="ds-color-stack">
             <div class="ds-color-roles">
               <div class="ds-color-role ds-color-role--hero ds-color-role--guardian">
-                <iconify-icon class="ds-color-role-bg" icon="fluent:home-person-24-filled"></iconify-icon>
                 <div class="ds-color-role-top">
                   <span class="ds-color-role-tag">Guardian · 보호자</span>
                   <span class="ds-color-role-name">보호자 블루</span>
@@ -2210,7 +2240,8 @@
   </section>
 
   <!-- ══ EXPERIENCE — 새벽 SOS 시뮬레이션 (full-screen section) ══ -->
-  <section id="flow-overlay" aria-label="새벽 SOS 응답 플로우">
+  <!-- [보류 2026-05-31] 케어 플로우 섹션 임시 숨김 — 나중에 재사용 예정. 복원: 아래 style="display:none" 와 nav "Flow" 링크 hidden 제거 -->
+  <section id="flow-overlay" aria-label="새벽 SOS 응답 플로우" style="display:none">
     <!-- INTRO: centered SOS card -->
     <div id="intro-screen">
       <div class="intro-sos-card">
@@ -2620,7 +2651,7 @@
             <div class="ff-mini ff-phone-guardian">
               <div class="feat-phone-wrap">
                 <div class="feat-phone-screen">
-                  <iframe src="../v11_보호자앱/g-guardian-live.html?intro-only&embed=1&v=20260525-blur" title="AI 인트로 (자동 재생)"></iframe>
+                  <iframe src="../v11_보호자앱/g-guardian-live.html?intro-only&embed=1&v=20260531-blur" title="AI 인트로 (자동 재생)"></iframe>
                   <div class="feat-sb" aria-hidden="true">
                     <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                     <div class="feat-sb-mid"></div>
@@ -2642,7 +2673,7 @@
             <div class="ff-mini ff-phone-guardian">
               <div class="feat-phone-wrap">
                 <div class="feat-phone-screen">
-                  <iframe src="../v11_보호자앱/g-guardian-live.html?embed=1&v=20260525-blur" title="보호자 홈"></iframe>
+                  <iframe src="../v11_보호자앱/g-guardian-live.html?embed=1&v=20260531-blur" title="보호자 홈"></iframe>
                   <div class="feat-sb" aria-hidden="true">
                     <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                     <div class="feat-sb-mid"></div>
@@ -2664,7 +2695,7 @@
             <div class="ff-mini ff-phone-guardian">
               <div class="feat-phone-wrap">
                 <div class="feat-phone-screen">
-                  <iframe src="../v11_보호자앱/g-guardian-live.html?chat=1&embed=1&v=20260525-blur" title="AI 채팅 — 일일 리포트"></iframe>
+                  <iframe src="../v11_보호자앱/g-guardian-live.html?chat=1&embed=1&v=20260531-blur" title="AI 채팅 — 일일 리포트"></iframe>
                   <div class="feat-sb" aria-hidden="true">
                     <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                     <div class="feat-sb-mid"></div>
@@ -2698,7 +2729,7 @@
           <div class="ff-duo-phone ff-phone-caregiver">
             <div class="feat-phone-wrap">
               <div class="feat-phone-screen">
-                <iframe src="../v11_요양보호사앱/c02-checklist.html?embed=1&v=20260525-blur" title="요양보호사 체크리스트"></iframe>
+                <iframe src="../v11_요양보호사앱/c02-checklist.html?embed=1&v=20260531-blur" title="요양보호사 체크리스트"></iframe>
                 <div class="feat-sb" aria-hidden="true">
                   <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                   <div class="feat-sb-mid"></div>
@@ -2719,7 +2750,7 @@
           <div class="ff-duo-phone ff-phone-guardian">
             <div class="feat-phone-wrap">
               <div class="feat-phone-screen">
-                <iframe src="../v11_보호자앱/g-guardian-live.html?embed=1&v=20260525-blur" title="보호자 라이브"></iframe>
+                <iframe src="../v11_보호자앱/g-guardian-live.html?embed=1&v=20260531-blur" title="보호자 라이브"></iframe>
                 <div class="feat-sb" aria-hidden="true">
                   <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                   <div class="feat-sb-mid"></div>
@@ -2750,7 +2781,7 @@
             <div class="ff-mini ff-phone-caregiver">
               <div class="feat-phone-wrap">
                 <div class="feat-phone-screen">
-                  <iframe src="../v11_요양보호사앱/c01-today.html?embed=1&v=20260525-blur" title="요양보호사 오늘 (한국어)"></iframe>
+                  <iframe src="../v11_요양보호사앱/c01-today.html?embed=1&v=20260531-blur" title="요양보호사 오늘 (한국어)"></iframe>
                   <div class="feat-sb" aria-hidden="true">
                     <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                     <div class="feat-sb-mid"></div>
@@ -2772,7 +2803,7 @@
             <div class="ff-mini ff-phone-caregiver">
               <div class="feat-phone-wrap">
                 <div class="feat-phone-screen">
-                  <iframe src="../v11_요양보호사앱/c01-today.en.html?embed=1&v=20260525-blur" title="요양보호사 오늘 (영어)"></iframe>
+                  <iframe src="../v11_요양보호사앱/c01-today.en.html?embed=1&v=20260531-blur" title="요양보호사 오늘 (영어)"></iframe>
                   <div class="feat-sb" aria-hidden="true">
                     <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                     <div class="feat-sb-mid"></div>
@@ -2794,7 +2825,7 @@
             <div class="ff-mini ff-phone-caregiver">
               <div class="feat-phone-wrap">
                 <div class="feat-phone-screen">
-                  <iframe src="../v11_요양보호사앱/c01-today.zh.html?embed=1&v=20260525-blur" title="요양보호사 오늘 (중국어)"></iframe>
+                  <iframe src="../v11_요양보호사앱/c01-today.zh.html?embed=1&v=20260531-blur" title="요양보호사 오늘 (중국어)"></iframe>
                   <div class="feat-sb" aria-hidden="true">
                     <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                     <div class="feat-sb-mid"></div>
@@ -2825,7 +2856,7 @@
               <div class="feat-imac-wrap">
                 <div class="feat-imac-screen">
                   <div class="feat-browser-content">
-                    <iframe src="../v10_의료진웹/의료진_대시보드_v9.5.html?v=20260525-blur" title="의료진 대시보드"></iframe>
+                    <iframe src="../v10_의료진웹/의료진_대시보드_v9.5.html?v=20260531-blur" title="의료진 대시보드"></iframe>
                   </div>
                 </div>
                 <img class="feat-frame-img" src="Mockup-templates/iMac M4 24-inch Silver.png" alt="">
@@ -2834,7 +2865,7 @@
             <div class="ff-mix-phone ff-phone-medical">
               <div class="feat-phone-wrap">
                 <div class="feat-phone-screen">
-                  <iframe src="../v15_의료진앱/d01-home.html?embed=1&v=20260525-blur" title="의료진 앱 홈"></iframe>
+                  <iframe src="../v15_의료진앱/d01-home.html?embed=1&v=20260531-blur" title="의료진 앱 홈"></iframe>
                   <div class="feat-sb" aria-hidden="true">
                     <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                     <div class="feat-sb-mid"></div>
@@ -2877,7 +2908,7 @@
         <div class="feat-device-side reveal">
           <div class="feat-phone-wrap" id="feat-guardian">
             <div class="feat-phone-screen">
-              <iframe id="feat-guardian-iframe" src="../v11_보호자앱/g-guardian-live.html?v=20260525-iframefast" title="보호자 앱"></iframe>
+              <iframe id="feat-guardian-iframe" src="../v11_보호자앱/g-guardian-live.html?embed=1&v=20260531-iframefast" title="보호자 앱"></iframe>
               <div class="feat-sb" aria-hidden="true">
                 <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                 <div class="feat-sb-mid"></div>
@@ -2913,7 +2944,7 @@
         <div class="feat-device-side reveal">
           <div class="feat-ipad-wrap">
             <div class="feat-ipad-screen">
-              <iframe id="feat-patient-iframe" src="../v12_환자앱/p01-today.html?v=20260525-blur" title="환자 오늘 화면"></iframe>
+              <iframe id="feat-patient-iframe" src="../v12_환자앱/p01-today.html?v=20260531-blur" title="환자 오늘 화면"></iframe>
             </div>
             <img class="feat-frame-img" src='Mockup-templates/iPad Pro (M5) 11" - Silver - Landscape.png' alt="">
             <!-- Floating cards — extracted from p01-today.html (.now-action + .fam-quick) -->
@@ -2979,7 +3010,7 @@
         <div class="feat-device-side reveal">
           <div class="feat-phone-wrap">
             <div class="feat-phone-screen">
-              <iframe id="feat-caregiver-iframe" src="../v11_요양보호사앱/c02-checklist.html?v=20260525-blur" title="요양보호사 체크리스트"></iframe>
+              <iframe id="feat-caregiver-iframe" src="../v11_요양보호사앱/c02-checklist.html?embed=1&v=20260531-blur" title="요양보호사 체크리스트"></iframe>
               <div class="feat-sb" aria-hidden="true">
                 <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                 <div class="feat-sb-mid"></div>
@@ -3031,7 +3062,7 @@
         <div class="feat-device-side reveal">
           <div class="feat-phone-wrap">
             <div class="feat-phone-screen">
-              <iframe id="feat-medical-app-iframe" src="../v15_의료진앱/d01-home.html?embed=1&v=20260525-blur" title="의료진 앱 홈"></iframe>
+              <iframe id="feat-medical-app-iframe" src="../v15_의료진앱/d01-home.html?embed=1&v=20260531-blur" title="의료진 앱 홈"></iframe>
               <div class="feat-sb" aria-hidden="true">
                 <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41"></div>
                 <div class="feat-sb-mid"></div>
@@ -3063,7 +3094,7 @@
           <div class="feat-imac-wrap">
             <div class="feat-imac-screen">
               <div class="feat-browser-content">
-                <iframe id="feat-medical-iframe" src="../v10_의료진웹/의료진_대시보드_v9.5.html?v=20260525-blur" title="의료진 대시보드"></iframe>
+                <iframe id="feat-medical-iframe" src="../v10_의료진웹/의료진_대시보드_v9.5.html?v=20260531-blur" title="의료진 대시보드"></iframe>
               </div>
             </div>
             <img class="feat-frame-img" src="Mockup-templates/iMac M4 24-inch Silver.png" alt="">
@@ -4031,226 +4062,27 @@ function animateNum(id, target, unit) {
 document.getElementById('roi-patients')?.addEventListener('input', calcROI);
 document.getElementById('roi-staff')?.addEventListener('input', calcROI);
 
-// ── Pain scroll zone (질문 index=0 / 카피 index=1-12 혼합 높이) ──
+// ── Pain section: 말풍선 대화 — "입력 중…" → 메시지 톡 (실제 채팅처럼) ──
 (function () {
-  const COPY_H   = 200;        // 카피 아이템 높이
-  const zone     = document.getElementById('painZone');
-  const list     = document.getElementById('painList');
-  const dotsWrap = document.getElementById('painDots');
-  const hint     = document.querySelector('.pain-scroll-hint');
-  if (!zone || !list || !dotsWrap) return;
-
-  // 0: intro(100vh), 1-7: 카피(180px)
-  const introEl  = list.querySelector('.pain-item--intro');
-  const copyEls  = Array.from(list.querySelectorAll('.pain-item'));
-  const allItems = [introEl, ...copyEls];
-  const dots     = [];
-
-  // 도트는 카피(index 1-7)에만 생성
-  copyEls.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'pain-dot';
-    dotsWrap.appendChild(d);
-    dots.push(d);
-  });
-
-  // stage(보이는 영역) 높이 = 1 viewport. zone은 800vh 런웨이라 별개.
-  function stageH() { return window.innerHeight; }
-
-  // pain-list 내 각 index의 top 위치 (px)
-  function itemTop(idx) {
-    return idx === 0 ? 0 : stageH() + (idx - 1) * COPY_H;
-  }
-
-  function setActive(idx) {
-    let ty;
-    if (idx === 0) {
-      ty = 0;
-    } else {
-      const centerY = stageH() / 2;
-      ty = -(itemTop(idx) - (centerY - COPY_H / 2));
-    }
-    list.style.transform = `translateY(${ty}px)`;
-
-    // data-dist: intro는 독립 처리
-    introEl.dataset.dist = idx === 0 ? '0' : '3';
-    copyEls.forEach((el, i) => {
-      el.dataset.dist = String(Math.min(Math.abs((i + 1) - idx), 3));
-    });
-
-    // 도트 (카피 구간에서만 표시)
-    dots.forEach((d, i) => d.classList.toggle('on', i + 1 === idx));
-    dotsWrap.style.opacity  = idx === 0 ? '0' : '1';
-    if (hint) hint.style.opacity = idx === 0 ? '1' : '0';
-
-  }
-
-  // ── 자동 스크롤 상태 ─────────────────────────────────────────────────
-  const AUTO_INTERVAL     = 800;    // 카피당 대기 시간(ms)
-  const AUTO_INTRO_HOLD   = 2000;   // intro(idx=0) 머무는 시간 — 질문 읽을 시간
-  const SCROLL_DURATION   = 400;    // 한 카피 → 다음 카피 이동 애니메이션
-  const INTERRUPT_GRACE   = 1800;   // 자동 시작 후 N ms 동안 사용자 입력 무시(트랙패드 관성)
-  const PAUSE_AFTER_USER  = 2200;   // 사용자 의도적 스크롤 후 N ms 동안 자동 일시정지
-  const WHEEL_THRESHOLD   = 40;     // 이 값 이상의 deltaY만 사용자 의도로 간주
-  const POLL_INTERVAL     = 400;    // "자동 시작 가능?" 폴링 주기
-  const DEBUG = false;              // 우상단 상태 배지 (필요 시 true)
-
-  let currentIdx    = 0;
-  let autoActive    = false;
-  let autoTimer     = null;
-  let autoAnimRAF   = null;
-  let autoStartedAt = 0;
-  let autoTargetIdx = 0;
-  let pausedUntil   = 0;            // 이 시각까지 자동 일시정지
-  let autoDisabled  = false;        // 사용자가 위로 스크롤하면 영구 비활성화
-
-  // 디버그 배지
-  const dbg = DEBUG ? (() => {
-    const el = document.createElement('div');
-    el.style.cssText = 'position:fixed;top:12px;right:12px;z-index:9999;background:#111;color:#fff;font:600 11px/1.4 ui-monospace,monospace;padding:8px 12px;border-radius:8px;pointer-events:none;opacity:.85';
-    document.body.appendChild(el);
-    return el;
-  })() : null;
-  function updateDbg(){
-    if (!dbg) return;
-    const remain = Math.max(0, pausedUntil - performance.now());
-    dbg.textContent = `PAIN — AUTO:${autoActive?'ON ':'OFF'} idx:${currentIdx} pause:${(remain/1000).toFixed(1)}s`;
-  }
-
-  function isInPainZone() {
-    const rect = zone.getBoundingClientRect();
-    return rect.top <= 0 && rect.bottom > window.innerHeight;
-  }
-
-  function onPageScroll() {
-    const rect = zone.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const scrolled = Math.max(0, -rect.top);
-    let idx = Math.round(scrolled / vh);
-    idx = Math.max(0, Math.min(idx, copyEls.length));
-    currentIdx = idx;
-    setActive(idx);
-    maybeStartAuto();
-    updateDbg();
-  }
-  window.addEventListener('scroll', onPageScroll, { passive: true });
-  window.addEventListener('resize', onPageScroll, { passive: true });
-  onPageScroll();
-
-  function maybeStartAuto() {
-    if (autoActive) return;
-    if (autoDisabled) return;
-    if (performance.now() < pausedUntil) return;
-    if (currentIdx < 0 || currentIdx >= copyEls.length) return;
-    if (!isInPainZone()) return;
-    autoActive = true;
-    autoStartedAt = performance.now();
-    autoTargetIdx = currentIdx;
-    console.log('[PAIN] auto started at idx=' + currentIdx);
-    updateDbg();
-    scheduleNext();
-  }
-
-  function scheduleNext() {
-    clearTimeout(autoTimer);
-    const delay = autoTargetIdx === 0 ? AUTO_INTRO_HOLD : AUTO_INTERVAL;
-    autoTimer = setTimeout(() => {
-      if (!autoActive) return;
-      const nextIdx = autoTargetIdx + 1;
-      if (nextIdx > copyEls.length) {
-        console.log('[PAIN] auto reached end');
-        stopAuto();
-        return;
-      }
-      autoTargetIdx = nextIdx;
-      smoothScrollToIdx(nextIdx);
-    }, delay);
-  }
-
-  function smoothScrollToIdx(targetIdx) {
-    const zoneAbsTop = zone.getBoundingClientRect().top + window.scrollY;
-    const vh = window.innerHeight;
-    const targetY = zoneAbsTop + targetIdx * vh;
-    const startY  = window.scrollY;
-    const dist    = targetY - startY;
-    if (Math.abs(dist) < 1) { scheduleNext(); return; }
-    const t0 = performance.now();
-    function tick(now){
-      if (!autoActive) return;
-      const t = Math.min((now - t0) / SCROLL_DURATION, 1);
-      const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
-      window.scrollTo(0, startY + dist * eased);
-      if (t < 1) autoAnimRAF = requestAnimationFrame(tick);
-      else       scheduleNext();
-    }
-    autoAnimRAF = requestAnimationFrame(tick);
-  }
-
-  function stopAuto() {
-    autoActive = false;
-    clearTimeout(autoTimer);
-    if (autoAnimRAF) cancelAnimationFrame(autoAnimRAF);
-    updateDbg();
-  }
-
-  function escapeUp() {
-    // pain-zone 바로 위로 점프해서 sticky가 잡고 있던 느낌을 없앤다
-    const zoneAbsTop = zone.getBoundingClientRect().top + window.scrollY;
-    const target = Math.max(0, zoneAbsTop - window.innerHeight * 0.1);
-    // transition 잠시 끄고 즉시 이동 → 늘어지는 느낌 제거
-    list.style.transition = 'none';
-    window.scrollTo({ top: target, behavior: 'auto' });
-    requestAnimationFrame(() => {
-      list.style.transition = '';
+  const convo = document.getElementById('painConvo');
+  if (!convo) return;
+  const bubbles = convo.querySelectorAll('.pain-bubble');
+  const START = 350, TYPE_DUR = 950, CYCLE = 1450; // 등장 → 타이핑 지속 → 다음까지 간격
+  let played = false;
+  function reveal() {
+    if (played) return;
+    played = true;
+    bubbles.forEach((b, n) => {
+      const t = START + n * CYCLE;
+      setTimeout(() => b.classList.add('show'), t);            // 말풍선 등장(입력 중 표시)
+      setTimeout(() => b.classList.add('done'), t + TYPE_DUR); // 입력 끝 → 메시지 표시
     });
   }
-
-  function userInterrupt(reason, opts) {
-    const isUpward = !!(opts && opts.upward);
-    // 위로 스크롤은 grace 무시하고 즉시 영구 비활성화 + zone 위로 탈출
-    if (isUpward) {
-      console.log('[PAIN] upward interrupt by:', reason, '→ escape up');
-      autoDisabled = true;
-      pausedUntil = performance.now() + 60000;
-      stopAuto();
-      if (isInPainZone()) escapeUp();
-      return;
-    }
-    if (!autoActive) return;
-    if (performance.now() - autoStartedAt < INTERRUPT_GRACE) {
-      console.log('[PAIN] interrupt IGNORED (grace):', reason);
-      return;
-    }
-    console.log('[PAIN] interrupt by:', reason, '→ pause', PAUSE_AFTER_USER, 'ms');
-    pausedUntil = performance.now() + PAUSE_AFTER_USER;
-    stopAuto();
-  }
-
-  window.addEventListener('wheel', (e) => {
-    if (Math.abs(e.deltaY) < WHEEL_THRESHOLD) return;
-    userInterrupt('wheel ' + e.deltaY.toFixed(0), { upward: e.deltaY < 0 });
-  }, { passive: true });
-  let touchStartY = 0;
-  window.addEventListener('touchstart', (e) => {
-    if (e.touches && e.touches[0]) touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-  window.addEventListener('touchmove', (e) => {
-    const y = e.touches && e.touches[0] ? e.touches[0].clientY : touchStartY;
-    // 손가락이 아래로 내려옴 = 페이지는 위로 = 사용자가 위로 가려는 의도
-    userInterrupt('touch', { upward: y > touchStartY });
-  }, { passive: true });
-  window.addEventListener('keydown', (e) => {
-    if (['ArrowDown','ArrowUp','PageDown','PageUp','Space','Home','End'].includes(e.code)) {
-      const upward = ['ArrowUp','PageUp','Home'].includes(e.code);
-      userInterrupt('key:' + e.code, { upward });
-    }
-  });
-
-  // 폴링 — PAIN ZONE에 머물러 있고 자동이 꺼져있고 pause 끝났으면 자동 재시작
-  setInterval(() => {
-    maybeStartAuto();
-    updateDbg();
-  }, POLL_INTERVAL);
+  if (!('IntersectionObserver' in window)) { bubbles.forEach(b => b.classList.add('show', 'done')); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { reveal(); io.disconnect(); } });
+  }, { threshold: 0.4 });
+  io.observe(convo);
 })();
 
 // Problem → Pain zone: 자연 스크롤로 이동 (스크롤 잠금 제거)

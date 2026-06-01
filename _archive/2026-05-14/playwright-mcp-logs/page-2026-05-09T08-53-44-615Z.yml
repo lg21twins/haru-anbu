@@ -1,0 +1,374 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e2]:
+    - generic [ref=e4]:
+      - img [ref=e6]
+      - generic [ref=e9]:
+        - generic [ref=e10]: 하루안부
+        - generic [ref=e11]: 오늘 하루도, 안녕하셨습니다
+    - generic [ref=e14]: 햇살요양원 · 2병동
+    - generic [ref=e15]: 메인 메뉴
+    - list [ref=e16]:
+      - listitem [ref=e17]:
+        - generic [ref=e18] [cursor=pointer]:
+          - img [ref=e19]
+          - text: 대시보드
+      - listitem [ref=e21]:
+        - generic [ref=e22] [cursor=pointer]:
+          - img [ref=e23]
+          - text: 환자 관리
+          - generic [ref=e25]: "25"
+      - listitem [ref=e26]:
+        - generic [ref=e27] [cursor=pointer]:
+          - img [ref=e28]
+          - text: 투약 관리 (eMAR)
+          - generic [ref=e30]: "2"
+      - listitem [ref=e31]:
+        - generic [ref=e32] [cursor=pointer]:
+          - img [ref=e33]
+          - text: 케어 체크리스트
+      - listitem [ref=e36]:
+        - generic [ref=e37] [cursor=pointer]:
+          - img [ref=e38]
+          - text: 인수인계
+          - generic [ref=e40]: "3"
+      - listitem [ref=e41]:
+        - generic [ref=e42] [cursor=pointer]:
+          - img [ref=e43]
+          - text: 스케줄
+      - listitem [ref=e45]:
+        - generic [ref=e46] [cursor=pointer]:
+          - img [ref=e47]
+          - text: 기록·보고서
+          - generic [ref=e49]: "3"
+      - listitem [ref=e50]:
+        - generic [ref=e51] [cursor=pointer]:
+          - img [ref=e52]
+          - text: 마이페이지
+    - generic [ref=e54]:
+      - generic [ref=e55]: 김
+      - generic [ref=e56]:
+        - generic [ref=e57]: 김코디
+        - generic [ref=e58]: 간호사 · 오전 2교대
+  - generic [ref=e59]:
+    - banner [ref=e60]:
+      - generic [ref=e61]:
+        - generic [ref=e62]: 대시보드
+        - generic [ref=e63]: 2026년 4월 18일 토요일
+      - generic [ref=e64]:
+        - img
+        - textbox "환자명, 약품명, 기록 검색..." [ref=e65]
+      - generic [ref=e66]:
+        - button "알림" [ref=e67] [cursor=pointer]:
+          - img [ref=e68]
+        - button "SOS 발신" [ref=e71] [cursor=pointer]:
+          - img [ref=e72]
+          - text: SOS 발신
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - heading "좋은 아침입니다, 김코디 간호사님" [level=1] [ref=e77]
+          - paragraph [ref=e78]:
+            - text: 오늘 담당 환자
+            - strong [ref=e79]: 25명
+            - text: · 다음 인수인계까지
+            - strong [ref=e80]: 4시간 20분
+            - text: 남았습니다.
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - generic [ref=e85]:
+                - generic [ref=e86]: 오늘 우선 순위
+                - generic [ref=e87]: 지금 ~ 12:00 · 5건 · 긴급 2건
+              - generic [ref=e88]:
+                - generic [ref=e89]:
+                  - generic [ref=e90]: "3"
+                  - generic [ref=e91]: 명 주의
+                - generic [ref=e92]:
+                  - text: 인수인계
+                  - generic [ref=e93]: 14:00
+            - button "전체 보기" [ref=e94] [cursor=pointer]
+          - generic [ref=e95]:
+            - generic [ref=e96]:
+              - generic [ref=e97]: 10:30
+              - generic [ref=e98]:
+                - generic [ref=e99]: 혈압 재측정 및 촉탁의 보고
+                - generic [ref=e100]: 박영수 301호 · 180/110 감지 후 20분 경과
+              - generic [ref=e101]: 긴급
+              - button "대응" [ref=e102] [cursor=pointer]
+            - generic [ref=e103]:
+              - generic [ref=e104]: 10:45
+              - generic [ref=e105]:
+                - generic [ref=e106]: 오전 투약 미완료 (2건)
+                - generic [ref=e107]: 김순자 302호 거부 · 이철수 303호 보류 중
+              - generic [ref=e108]: 긴급
+              - button "대응" [ref=e109] [cursor=pointer]
+            - generic [ref=e110]:
+              - generic [ref=e111]: 11:00
+              - generic [ref=e112]:
+                - generic [ref=e113]: 드레싱 교체
+                - generic [ref=e114]: 박영수 301호 · 상처 관리 · 예정 시각 임박
+              - generic [ref=e115]: 임박
+              - button "기록" [ref=e116] [cursor=pointer]
+            - generic [ref=e117]:
+              - generic [ref=e118]: 11:30
+              - generic [ref=e119]:
+                - generic [ref=e120]: 낙상 사고보고서 제출
+                - generic [ref=e121]: 김순자 302호 · D-2 마감 · 장기요양 고시 필수
+              - generic [ref=e122]: 마감 임박
+              - button "작성" [ref=e123] [cursor=pointer]
+            - generic [ref=e124]:
+              - generic [ref=e125]: 12:00
+              - generic [ref=e126]:
+                - generic [ref=e127]: 점심 식사 섭취율 체크 (3건)
+                - generic [ref=e128]: 302·307·309호 · 식사량 관찰 대상
+              - generic [ref=e129]: 정시
+              - button "시작" [ref=e130] [cursor=pointer]
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - generic [ref=e133]:
+              - generic [ref=e135]: 케어 완료율
+              - generic [ref=e136]: +5%
+            - generic [ref=e137]:
+              - generic [ref=e138]: "68"
+              - generic [ref=e139]: "%"
+            - generic [ref=e140]: 2병동 · 17 / 25명 완료
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - generic [ref=e147]: 투약 현황
+              - generic [ref=e148]: "-2건"
+            - generic [ref=e149]:
+              - generic [ref=e150]: "12"
+              - generic [ref=e151]: / 22
+            - generic [ref=e152]: 2병동 · 미투여 2건 · 예정 8건
+          - generic [ref=e156]:
+            - generic [ref=e157]:
+              - generic [ref=e159]: 주의 환자
+              - generic [ref=e160]: +1명
+            - generic [ref=e161]:
+              - generic [ref=e162]: "3"
+              - generic [ref=e163]: 명
+            - generic [ref=e164]: 2병동 · 이상 징후 감지
+          - generic [ref=e166]:
+            - generic [ref=e167]:
+              - generic [ref=e169]: 상태변화기록 미작성
+              - generic [ref=e170]: +1건
+            - generic [ref=e171]:
+              - generic [ref=e172]: "3"
+              - generic [ref=e173]: 건
+            - generic [ref=e174]: 주간 마감 D-2 · 2병동
+        - generic [ref=e176]:
+          - generic [ref=e178]:
+            - generic [ref=e179]: 케어 완료율 추이
+            - generic [ref=e180]: 최근 7일
+          - generic [ref=e183]:
+            - generic [ref=e185]: 환자 상태
+            - generic [ref=e188]:
+              - generic [ref=e189]: 안정 20
+              - generic [ref=e191]: 모니터링 2
+              - generic [ref=e193]: 주의 3
+          - generic [ref=e195]:
+            - generic [ref=e197]: 투약 현황
+            - generic [ref=e200]:
+              - generic [ref=e201]: 완료 12
+              - generic [ref=e203]: 대기 8
+              - generic [ref=e205]: 미투약 2
+        - generic [ref=e207]:
+          - generic [ref=e208]:
+            - generic [ref=e209]:
+              - generic [ref=e210]: 업무 타임라인
+              - generic [ref=e211] [cursor=pointer]: 전체 보기
+            - generic [ref=e212]:
+              - generic [ref=e213]: 현재 10:24 — 상처 관리 진행 중
+              - generic [ref=e215]:
+                - generic [ref=e216]: 06:00
+                - generic [ref=e220]:
+                  - generic [ref=e221]:
+                    - generic [ref=e222]: 아침 투약
+                    - generic [ref=e223]: 완료
+                  - generic [ref=e224]: 전체 25명 · 23명 완료
+              - generic [ref=e225]:
+                - generic [ref=e226]: 07:00
+                - generic [ref=e230]:
+                  - generic [ref=e231]:
+                    - generic [ref=e232]: 아침 식사 체크
+                    - generic [ref=e233]: 완료
+                  - generic [ref=e234]: 섭취율 확인 완료
+              - generic [ref=e235]:
+                - generic [ref=e236]: 08:30
+                - generic [ref=e240]:
+                  - generic [ref=e241]:
+                    - generic [ref=e242]: 바이탈 측정
+                    - generic [ref=e243]: 이상 2건
+                  - generic [ref=e244]: 혈압·체온·맥박
+              - generic [ref=e245]:
+                - generic [ref=e246]: 10:00
+                - generic [ref=e250]:
+                  - generic [ref=e251]:
+                    - generic [ref=e252]: 상처 관리
+                    - generic [ref=e253]: 진행중
+                  - generic [ref=e254]: 301호 박영수님 · 드레싱 교체
+              - generic [ref=e255]:
+                - generic [ref=e256]: 11:00
+                - generic [ref=e260]:
+                  - generic [ref=e261]:
+                    - generic [ref=e262]: 중간 투약 (PRN)
+                    - generic [ref=e263]: 예정
+                  - generic [ref=e264]: 303호 이철수님 · 진통제
+              - generic [ref=e265]:
+                - generic [ref=e266]: 12:00
+                - generic [ref=e270]:
+                  - generic [ref=e271]:
+                    - generic [ref=e272]: 점심 식사 체크
+                    - generic [ref=e273]: 예정
+                  - generic [ref=e274]: 전체 환자 섭취율 기록
+              - generic [ref=e275]:
+                - generic [ref=e276]: 14:00
+                - generic [ref=e280]:
+                  - generic [ref=e281]:
+                    - generic [ref=e282]: 재활 치료 동행
+                    - generic [ref=e283]: 예정
+                  - generic [ref=e284]: 305호 최미경님 · 물리치료실
+              - generic [ref=e285]:
+                - generic [ref=e286]: 22:00
+                - generic [ref=e290]:
+                  - generic [ref=e291]:
+                    - generic [ref=e292]: 인수인계
+                    - generic [ref=e293]: 예정
+                  - generic [ref=e294]: 야간 근무자 대상 SBAR 구두 보고
+          - generic [ref=e295]:
+            - generic [ref=e296]:
+              - generic [ref=e297]: 주의 환자 알림
+              - generic [ref=e298] [cursor=pointer]: 모두 보기
+            - generic [ref=e299]:
+              - generic [ref=e300] [cursor=pointer]:
+                - generic [ref=e301]:
+                  - generic [ref=e302]: 301호 박영수 (남 · 82세)
+                  - generic [ref=e303]: 혈압 180/110 측정 · 2시간 내 재측정 후 이송 검토 권장
+                  - generic [ref=e304]: 10분 전 · AI 감지
+                - button "대응" [ref=e305]
+              - generic [ref=e306] [cursor=pointer]:
+                - generic [ref=e307]:
+                  - generic [ref=e308]: 302호 김순자 (여 · 78세)
+                  - generic [ref=e309]: 식사량 3일 연속 30% 미만 · 영양 상담 및 보호자 알림 고려
+                  - generic [ref=e310]: 어제부터 추이 감지
+                - button "확인" [ref=e311]
+              - generic [ref=e313] [cursor=pointer]:
+                - generic [ref=e314]: 303호 이철수 (남 · 75세)
+                - generic [ref=e315]: 09:00 투약 미완료 · 본인 거부 의사 표시
+                - generic [ref=e316]: 1시간 전 요양보호사 보고
+              - generic [ref=e317] [cursor=pointer]:
+                - generic [ref=e318]:
+                  - generic [ref=e319]: 305호 최미경 보호자
+                  - generic [ref=e320]: "\"오늘 어머니 재활 치료 결과 어떻게 됐나요?\" 미확인 메시지"
+                  - generic [ref=e321]: 30분 전
+                - button "답장" [ref=e322]
+      - text: 10:24
+  - complementary [ref=e323]:
+    - generic [ref=e324]:
+      - generic [ref=e325]:
+        - generic [ref=e326]:
+          - generic [ref=e327]: AI
+          - generic [ref=e328]: 요약 피드
+        - generic [ref=e329]: 오늘 3건
+        - button "집중 모드" [ref=e330] [cursor=pointer]
+      - generic [ref=e331] [cursor=pointer]:
+        - generic [ref=e332]:
+          - generic [ref=e333]: 패턴 감지
+          - generic [ref=e334]: 5분 전
+        - generic [ref=e335]: 박영수님· 301호
+        - generic [ref=e336]:
+          - text: 지난 4주간 동일 혈압 패턴 3회 — 2회 응급실 이송 이력.
+          - strong [ref=e337]: 프로토콜 상향 검토
+      - generic [ref=e338] [cursor=pointer]:
+        - generic [ref=e339]:
+          - generic [ref=e340]: 추이 분석
+          - generic [ref=e341]: 18분 전
+        - generic [ref=e342]: 김순자님· 302호
+        - generic [ref=e343]:
+          - text: 식사량 3일 연속 하락(28→25→22%) · 체중 2주 -1.2kg.
+          - strong [ref=e344]: 영양 상담 예약 권장
+      - generic [ref=e345] [cursor=pointer]:
+        - generic [ref=e346]:
+          - generic [ref=e347]: 이상 예측
+          - generic [ref=e348]: 42분 전
+        - generic [ref=e349]: 이철수님· 303호
+        - generic [ref=e350]:
+          - text: 오전 투약 거부 2건 · 지난주 유사 패턴 후 통증 점수 6↑.
+          - strong [ref=e351]: PRN 검토 권장
+    - generic [ref=e352]:
+      - generic [ref=e354]: 소통 패널
+      - generic [ref=e355]:
+        - generic [ref=e356] [cursor=pointer]: 전체
+        - generic [ref=e357] [cursor=pointer]: 현재 환자
+        - generic [ref=e358] [cursor=pointer]: AI 요약
+    - generic [ref=e360]:
+      - generic [ref=e361]: 보호자 채팅
+      - generic [ref=e362] [cursor=pointer]:
+        - generic [ref=e363]: 김
+        - generic [ref=e365]:
+          - generic [ref=e366]:
+            - generic [ref=e367]: 김민준 보호자
+            - generic [ref=e368]: 10분 전
+          - generic [ref=e369]: 302호 김순자님
+          - generic [ref=e370]:
+            - generic [ref=e371]: 어머니 오늘 식사는 잘 하셨나요?
+            - generic [ref=e372]: "2"
+      - generic [ref=e373] [cursor=pointer]:
+        - generic [ref=e374]: 최
+        - generic [ref=e376]:
+          - generic [ref=e377]:
+            - generic [ref=e378]: 최영수 보호자
+            - generic [ref=e379]: 30분 전
+          - generic [ref=e380]: 305호 최미경님
+          - generic [ref=e381]:
+            - generic [ref=e382]: 재활 치료 결과 어떻게 됐나요?
+            - generic [ref=e383]: "1"
+      - generic [ref=e384] [cursor=pointer]:
+        - generic [ref=e385]: 박
+        - generic [ref=e387]:
+          - generic [ref=e388]:
+            - generic [ref=e389]: 박지영 보호자
+            - generic [ref=e390]: 2시간 전
+          - generic [ref=e391]: 301호 박영수님
+          - generic [ref=e392]: 감사합니다, 확인했어요
+      - generic [ref=e393]: 요양보호사 보고
+      - generic [ref=e394] [cursor=pointer]:
+        - generic [ref=e395]: 이
+        - generic [ref=e397]:
+          - generic [ref=e398]:
+            - generic [ref=e399]: 이수진 요양보호사
+            - generic [ref=e400]: 1시간 전
+          - generic [ref=e401]: 303호 이철수님
+          - generic [ref=e402]:
+            - generic [ref=e403]: 환자분이 약 복용을 거부하십니다
+            - generic [ref=e404]: "1"
+      - generic [ref=e405] [cursor=pointer]:
+        - generic [ref=e406]: 정
+        - generic [ref=e408]:
+          - generic [ref=e409]:
+            - generic [ref=e410]: 정하늘 요양보호사
+            - generic [ref=e411]: 3시간 전
+          - generic [ref=e412]: 304호 오병석님
+          - generic [ref=e413]: 아침 식사 80% 섭취 완료했습니다
+      - generic [ref=e414]: 촉탁의 채널
+      - generic [ref=e415] [cursor=pointer]:
+        - generic [ref=e416]: 김
+        - generic [ref=e418]:
+          - generic [ref=e419]:
+            - generic [ref=e420]: 김태호 촉탁의
+            - generic [ref=e421]: 어제
+          - generic [ref=e422]: 301호 박영수님
+          - generic [ref=e423]:
+            - generic [ref=e424]: 혈압약 용량 조정 지시사항 확인
+            - generic [ref=e425]: "1"
+    - generic [ref=e427]:
+      - textbox "대화를 선택하면 답장할 수 있습니다" [ref=e428]
+      - button:
+        - img
+    - generic [ref=e429]:
+      - button [ref=e431] [cursor=pointer]:
+        - img [ref=e432]
+      - generic [ref=e439]:
+        - textbox [ref=e440]
+        - button [ref=e441] [cursor=pointer]:
+          - img [ref=e442]

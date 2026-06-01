@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>페인 섹션 — 스크롤 축소 옵션 비교</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2/dist/iconify-icon.min.js"></script>
+<style>
+  :root{
+    --blue:#2C7AFC;   /* 보호자 */
+    --green:#22C55E;  /* 케어팀 */
+    --orange:#FB923C; /* 환자 */
+    --ink:#1C1C1E;
+    --ink-2:#3F3F46;
+    --gray-300:#D4D4D8;
+    --gray-400:#A1A1AA;
+    --paper:#FAFAFA;
+    --canvas:#F0F4F8;
+    --font:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font);background:var(--canvas);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+
+  /* ── 비교 페이지 셸 ── */
+  .page{max-width:1180px;margin:0 auto;padding:56px 24px 120px}
+  .page-head{margin-bottom:8px}
+  .page-kicker{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--blue);text-transform:uppercase}
+  .page-title{font-size:30px;font-weight:800;letter-spacing:-.03em;margin-top:10px}
+  .page-desc{font-size:15px;color:var(--ink-2);margin-top:12px;max-width:62ch}
+
+  .opt{margin-top:64px}
+  .opt-bar{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .opt-no{font-size:13px;font-weight:800;color:#fff;background:var(--ink);width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .opt-name{font-size:20px;font-weight:800;letter-spacing:-.02em}
+  .opt-meta{font-size:13px;color:var(--gray-400);margin:6px 0 18px 38px}
+  .opt-meta b{color:var(--green);font-weight:700}
+
+  /* 뷰포트 프레임 — 한 화면임을 보여주는 16:10 박스 */
+  .screen{position:relative;aspect-ratio:16/10;background:var(--paper);border-radius:16px;overflow:hidden;box-shadow:0 24px 60px -28px rgba(15,23,42,.25)}
+  .screen-tag{position:absolute;top:14px;left:16px;z-index:5;font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--gray-400)}
+
+  /* 공통 역할 태그 */
+  .role{display:inline-flex;align-items:center;font-size:12px;font-weight:700;letter-spacing:.01em;padding:5px 13px;border-radius:999px;color:#fff;white-space:nowrap}
+  .role.guardian{background:var(--blue)}
+  .role.care{background:var(--green)}
+  .role.patient{background:var(--orange)}
+
+  /* ════ 옵션 A — 한 화면 3분할 (정적, 한눈에) ════ */
+  .a-wrap{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6% 7%;text-align:center}
+  .a-q{font-size:clamp(20px,2.4vw,30px);font-weight:800;letter-spacing:-.03em;line-height:1.3;margin-bottom:7%}
+  .a-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3.4vw,52px);width:100%}
+  .a-col{display:flex;flex-direction:column;align-items:center;gap:16px}
+  .a-copy{font-size:clamp(15px,1.7vw,21px);font-weight:700;letter-spacing:-.02em;line-height:1.45;color:var(--ink)}
+
+  /* ════ 옵션 B — 자동 전환 (스크롤 0) ════ */
+  .b-wrap{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 8%;text-align:center;position:relative}
+  .b-stage{position:relative;width:100%;min-height:42%;display:flex;align-items:center;justify-content:center}
+  .b-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;opacity:0;transform:translateY(14px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+  .b-slide.on{opacity:1;transform:none}
+  .b-copy{font-size:clamp(22px,3vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.3}
+  .b-dots{display:flex;gap:9px;margin-top:9%}
+  .b-dot{width:7px;height:7px;border-radius:50%;background:var(--gray-300);transition:transform .4s,background .4s}
+  .b-dot.on{background:var(--ink);transform:scale(1.5)}
+
+  /* ════ 옵션 C — 세로 스택 순차 페이드 (짧은 스크롤) ════ */
+  .c-wrap{height:100%;display:flex;flex-direction:column;justify-content:center;gap:clamp(14px,2.4vw,30px);padding:7% 9%}
+  .c-q{font-size:clamp(15px,1.6vw,19px);font-weight:700;color:var(--gray-400);letter-spacing:-.01em;margin-bottom:4px}
+  .c-row{display:flex;align-items:center;gap:18px;opacity:0;transform:translateX(-12px);transition:opacity .6s,transform .6s}
+  .c-row.on{opacity:1;transform:none}
+  .c-row .role{flex-shrink:0;width:70px;justify-content:center}
+  .c-copy{font-size:clamp(17px,2.1vw,28px);font-weight:700;letter-spacing:-.02em;line-height:1.35}
+
+  /* ════ 옵션 D — 말풍선 대화형 (한 화면) ════ */
+  .d-wrap{height:100%;display:flex;flex-direction:column;justify-content:center;gap:clamp(16px,2.6vw,30px);padding:7% 11%}
+  .d-q{font-size:clamp(15px,1.6vw,19px);font-weight:700;color:var(--gray-400);text-align:center;margin-bottom:6px}
+  .d-bubble{max-width:74%;display:flex;flex-direction:column;gap:9px;opacity:0;transform:translateY(10px);transition:opacity .6s,transform .6s}
+  .d-bubble.on{opacity:1;transform:none}
+  .d-bubble.left{align-self:flex-start;align-items:flex-start}
+  .d-bubble.right{align-self:flex-end;align-items:flex-end}
+  .d-msg{font-size:clamp(16px,1.9vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.4;background:#fff;padding:16px 22px;border-radius:20px}
+  .d-bubble.left  .d-msg{border-top-left-radius:6px}
+  .d-bubble.right .d-msg{border-top-right-radius:6px}
+
+  .replay{margin-top:14px;margin-left:38px;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--ink-2);background:#fff;padding:8px 15px;border-radius:999px;cursor:pointer;box-shadow:0 2px 10px -4px rgba(15,23,42,.2)}
+  .replay iconify-icon{font-size:15px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-head">
+    <div class="page-kicker">Pain Section · 스크롤 축소 비교</div>
+    <h1 class="page-title">"세 주체가 불편을 느낀다"를 한 화면 안에</h1>
+    <p class="page-desc">현재는 1000vh(화면 10개) 스크롤로 카피 9개를 하나씩 넘기는 구조라 피로감이 큽니다. 아래 4개 옵션은 모두 <b>한 화면(또는 거의 스크롤 없이)</b>에서 보호자·케어팀·환자가 각자의 불편을 말한다는 핵심만 전달합니다. 각 프레임은 한 화면 분량이라고 보시면 됩니다.</p>
+  </div>
+
+  <!-- ─────────── 옵션 A ─────────── -->
+  <section class="opt">
+    <div class="opt-bar"><span class="opt-no">A</span><span class="opt-name">한 화면 3분할 · 정적</span></div>
+    <p class="opt-meta">스크롤 <b>0</b> · 세 주체를 동시에 한눈에 · 가장 빠르고 정보 전달 명확 · 연출은 없음</p>
+    <div class="screen">
+      <span class="screen-tag">1 화면 고정</span>
+      <div class="a-wrap">
+        <p class="a-q">그렇다면 왜 모두가 여전히 불안할까요?</p>
+        <div class="a-grid">
+          <div class="a-col"><span class="role guardian">보호자</span><p class="a-copy">오늘 밥은 잘<br>드셨는지 모르겠어요.</p></div>
+          <div class="a-col"><span class="role care">케어팀</span><p class="a-copy">보호자 전화에 하루<br>두 시간을 써요.</p></div>
+          <div class="a-col"><span class="role patient">환자</span><p class="a-copy">자식들 걱정시키고<br>싶지 않아요.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 옵션 B ─────────── -->
+  <section class="opt">
+    <div class="opt-bar"><span class="opt-no">B</span><span class="opt-name">자동 전환 · 스크롤 0</span></div>
+    <p class="opt-meta">스크롤 <b>0</b> · 현재의 시네마틱 연출 유지 · 카피가 자동으로 페이드 전환 (기존 auto-scroll 로직 재활용)</p>
+    <div class="screen">
+      <span class="screen-tag">1 화면 고정 · 자동 재생</span>
+      <div class="b-wrap" id="bWrap">
+        <div class="b-stage">
+          <div class="b-slide"><span class="role guardian">보호자</span><p class="b-copy">오늘 밥은 잘 드셨는지<br>모르겠어요.</p></div>
+          <div class="b-slide"><span class="role care">케어팀</span><p class="b-copy">보호자 전화에<br>하루 두 시간을 써요.</p></div>
+          <div class="b-slide"><span class="role patient">환자</span><p class="b-copy">자식들 걱정시키고<br>싶지 않아요.</p></div>
+        </div>
+        <div class="b-dots" id="bDots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 옵션 C ─────────── -->
+  <section class="opt">
+    <div class="opt-bar"><span class="opt-no">C</span><span class="opt-name">세로 스택 · 순차 페이드</span></div>
+    <p class="opt-meta">스크롤 <b>1 화면 진입 시 한 번</b> · 세 줄이 위→아래로 순차 등장 · 리듬감 있으면서 한 화면에 다 들어옴</p>
+    <div class="screen">
+      <span class="screen-tag">1 화면 · 진입 시 순차 등장</span>
+      <div class="c-wrap" id="cWrap">
+        <p class="c-q">그렇다면 왜 모두가 여전히 불안할까요?</p>
+        <div class="c-row"><span class="role guardian">보호자</span><p class="c-copy">오늘 밥은 잘 드셨는지 모르겠어요.</p></div>
+        <div class="c-row"><span class="role care">케어팀</span><p class="c-copy">보호자 전화에 하루 두 시간을 써요.</p></div>
+        <div class="c-row"><span class="role patient">환자</span><p class="c-copy">자식들 걱정시키고 싶지 않아요.</p></div>
+      </div>
+    </div>
+    <div class="replay" data-replay="cWrap"><iconify-icon icon="fluent:arrow-clockwise-24-regular"></iconify-icon>다시 보기</div>
+  </section>
+
+  <!-- ─────────── 옵션 D ─────────── -->
+  <section class="opt">
+    <div class="opt-bar"><span class="opt-no">D</span><span class="opt-name">말풍선 대화형</span></div>
+    <p class="opt-meta">스크롤 <b>0</b> · "사람이 직접 말하는 불편"이라는 감정 전달이 가장 강함 · 메신저처럼 순차 등장</p>
+    <div class="screen">
+      <span class="screen-tag">1 화면 고정 · 순차 등장</span>
+      <div class="d-wrap" id="dWrap">
+        <p class="d-q">그렇다면 왜 모두가 여전히 불안할까요?</p>
+        <div class="d-bubble left"><span class="role guardian">보호자</span><p class="d-msg">오늘 밥은 잘 드셨는지 모르겠어요.</p></div>
+        <div class="d-bubble right"><span class="role care">케어팀</span><p class="d-msg">보호자 전화에 하루 두 시간을 써요.</p></div>
+        <div class="d-bubble left"><span class="role patient">환자</span><p class="d-msg">자식들 걱정시키고 싶지 않아요.</p></div>
+      </div>
+    </div>
+    <div class="replay" data-replay="dWrap"><iconify-icon icon="fluent:arrow-clockwise-24-regular"></iconify-icon>다시 보기</div>
+  </section>
+</div>
+
+<script>
+// ── 옵션 B: 자동 전환 캐러셀 ──
+(function(){
+  const wrap = document.getElementById('bWrap');
+  const slides = wrap.querySelectorAll('.b-slide');
+  const dotsWrap = document.getElementById('bDots');
+  let i = 0, timer = null;
+  slides.forEach((_,n)=>{ const d=document.createElement('div'); d.className='b-dot'; dotsWrap.appendChild(d); });
+  const dots = dotsWrap.querySelectorAll('.b-dot');
+  function show(n){
+    slides.forEach((s,k)=>s.classList.toggle('on',k===n));
+    dots.forEach((d,k)=>d.classList.toggle('on',k===n));
+  }
+  function start(){ show(0); i=0; clearInterval(timer); timer=setInterval(()=>{ i=(i+1)%slides.length; show(i); },2200); }
+  // 화면에 보일 때만 재생
+  new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) start(); else clearInterval(timer); }),{threshold:.4}).observe(wrap);
+})();
+
+// ── 옵션 C·D: 진입 시 순차 등장 ──
+function sequentialReveal(containerId, selector, gap){
+  const c = document.getElementById(containerId);
+  const items = c.querySelectorAll(selector);
+  function run(){
+    items.forEach(it=>it.classList.remove('on'));
+    items.forEach((it,n)=>setTimeout(()=>it.classList.add('on'), 300 + n*gap));
+  }
+  c._run = run;
+  new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) run(); }),{threshold:.4}).observe(c);
+}
+sequentialReveal('cWrap','.c-row',420);
+sequentialReveal('dWrap','.d-bubble',600);
+
+// 다시 보기
+document.querySelectorAll('.replay').forEach(btn=>{
+  btn.addEventListener('click',()=>{ const c=document.getElementById(btn.dataset.replay); if(c._run) c._run(); });
+});
+</script>
+</body>
+</html>

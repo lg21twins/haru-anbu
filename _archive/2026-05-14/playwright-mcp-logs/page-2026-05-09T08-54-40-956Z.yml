@@ -1,0 +1,747 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - heading "하루안부 · 환자 태블릿 앱 (v12)" [level=1] [ref=e5]
+      - generic [ref=e6]: 2026-04-18 전면 리디자인 — iPad 10" · Galaxy Tab A 거치형
+  - generic "디자인 원칙" [ref=e7]:
+    - generic [ref=e8]:
+      - img [ref=e10]
+      - text: 한 화면에 주인공 1개
+    - generic [ref=e12]:
+      - img [ref=e14]
+      - text: 큰 글자 · 큰 버튼
+    - generic [ref=e16]:
+      - img [ref=e18]
+      - text: 긴급=빨강 1곳만 (SOS)
+    - generic [ref=e20]:
+      - img [ref=e22]
+      - text: 장식 제거 · 이모지 금지
+  - generic [ref=e24]:
+    - link "P-01 오늘 홈 AI 말벗이 히어로, 오른쪽에 할 일·일정 타일 2개 열기" [ref=e25] [cursor=pointer]:
+      - /url: p01-today.html
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - text: P-01
+          - heading "오늘 홈" [level=2] [ref=e28]
+          - paragraph [ref=e29]: AI 말벗이 히어로, 오른쪽에 할 일·일정 타일 2개
+        - generic [ref=e30]:
+          - text: 열기
+          - img [ref=e32]
+      - iframe [ref=e35]:
+        - generic [ref=f1e2]:
+          - banner [ref=f1e3]:
+            - generic [ref=f1e4]:
+              - generic [ref=f1e5]: 오후 2:30
+              - generic [ref=f1e6]: 4월 18일 토요일
+            - navigation "주요 메뉴" [ref=f1e7]:
+              - link "홈" [ref=f1e8] [cursor=pointer]:
+                - /url: p01-today.html
+                - img [ref=f1e10]
+                - text: 홈
+              - link "할일" [ref=f1e12] [cursor=pointer]:
+                - /url: p02-med-alert.html
+              - link "가족" [ref=f1e13] [cursor=pointer]:
+                - /url: p03-call.html
+                - img [ref=f1e15]
+                - text: 가족
+              - link "도움" [ref=f1e17] [cursor=pointer]:
+                - /url: p08-help.html
+                - img [ref=f1e19]
+                - text: 도움
+          - generic [ref=f1e21]:
+            - generic [ref=f1e22]:
+              - generic [ref=f1e23]:
+                - generic [ref=f1e24]:
+                  - generic "하루안부" [ref=f1e25]:
+                    - img [ref=f1e26]
+                  - generic [ref=f1e30]:
+                    - generic [ref=f1e31]: 민지가 사진 보냈어요
+                    - generic [ref=f1e32]: 방금 · 사진 2장이랑 문자 한 통
+                - article "딸 민지의 메시지" [ref=f1e34] [cursor=pointer]:
+                  - generic [ref=f1e35]:
+                    - img "딸 민지" [ref=f1e37]
+                    - generic [ref=f1e39]:
+                      - generic [ref=f1e40]: 딸 민지
+                      - generic [ref=f1e41]: 방금 · 사진 2장 · 문자 1통
+                  - generic [ref=f1e42]:
+                    - link "사진 크게 보기" [ref=f1e43]:
+                      - /url: p06-photo.html
+                      - img "민지가 보낸 공원 사진" [ref=f1e44]
+                    - link "사진 크게 보기" [ref=f1e45]:
+                      - /url: p06-photo.html
+                      - img "민지가 보낸 손녀 사진" [ref=f1e46]
+                  - generic [ref=f1e47]: "\"엄마, 오늘 수지랑 공원 다녀왔어요. 날씨가 너무 좋아요!\""
+                - generic [ref=f1e48]:
+                  - button "예쁘구나, 잘 다녀왔네" [ref=f1e49] [cursor=pointer]
+                  - button "고맙다고 전해줘" [ref=f1e50] [cursor=pointer]
+                  - button "사진 더 크게" [ref=f1e51] [cursor=pointer]
+              - button "음성으로 말하기" [ref=f1e52] [cursor=pointer]:
+                - img [ref=f1e54]
+                - text: 눌러서 말하기
+            - generic [ref=f1e56]:
+              - region "가족에게 바로 전화" [ref=f1e57]:
+                - generic [ref=f1e58]:
+                  - generic [ref=f1e59]:
+                    - img [ref=f1e61]
+                    - text: 가족에게 전화
+                  - link "연결하기 화면 열기" [ref=f1e63] [cursor=pointer]:
+                    - /url: p03-call.html
+                    - text: 모두 보기
+                    - img [ref=f1e65]
+                - generic [ref=f1e67]:
+                  - link "딸 민지에게 영상통화" [ref=f1e68] [cursor=pointer]:
+                    - /url: p03-call.html
+                    - img "딸 민지" [ref=f1e70]
+                    - generic [ref=f1e72]: 민지
+                    - generic [ref=f1e73]: 딸
+                  - link "손녀 서연에게 영상통화" [ref=f1e74] [cursor=pointer]:
+                    - /url: p03-call.html
+                    - img "손녀 서연" [ref=f1e76]
+                    - generic [ref=f1e78]: 서연
+                    - generic [ref=f1e79]: 손녀
+                  - link "아들 태우에게 메시지" [ref=f1e80] [cursor=pointer]:
+                    - /url: p03-call.html
+                    - img "아들 태우" [ref=f1e82]
+                    - generic [ref=f1e84]: 태우
+                    - generic [ref=f1e85]: 아들
+              - region "지금 약 드실 시간" [ref=f1e86]:
+                - generic [ref=f1e87]:
+                  - img [ref=f1e89]
+                  - text: 지금 할 일
+                - generic [ref=f1e91]: 약 복용
+                - generic [ref=f1e92]: 오후 2:30 · 혈압약 · 당뇨약 · 비타민D
+                - button "약 복용 완료" [ref=f1e93] [cursor=pointer]:
+                  - img [ref=f1e95]
+                  - text: 먹었어요
+              - link "오늘 할 일 전체 보기" [ref=f1e97] [cursor=pointer]:
+                - /url: p02-med-alert.html
+                - generic [ref=f1e98]:
+                  - generic [ref=f1e99]: 오늘 일정
+                  - generic [ref=f1e100]: 4월 18일 토
+                - generic:
+                  - generic [ref=f1e101]:
+                    - generic [ref=f1e102]: 오전 7:00
+                    - generic [ref=f1e107]: 아침 식사
+                  - generic [ref=f1e108]:
+                    - generic [ref=f1e109]: 오전 8:00
+                    - generic [ref=f1e113]:
+                      - generic [ref=f1e114]: 혈압 측정
+                      - generic [ref=f1e115]: 118 / 76 mmHg
+                  - generic [ref=f1e116]:
+                    - generic [ref=f1e117]: 오전 9:00
+                    - generic [ref=f1e121]:
+                      - generic [ref=f1e122]: 아침 약 복용
+                      - generic [ref=f1e123]: 혈압약 · 당뇨약
+                  - generic [ref=f1e124]:
+                    - generic [ref=f1e125]: 오전 11:00
+                    - generic [ref=f1e129]:
+                      - generic [ref=f1e130]: 노인정 모임
+                      - generic [ref=f1e131]: 경로당 다녀옴
+                  - generic [ref=f1e132]:
+                    - generic [ref=f1e133]: 오후 12:00
+                    - generic [ref=f1e138]: 점심 식사
+                  - generic [ref=f1e139]:
+                    - generic [ref=f1e140]: 오후 1:30
+                    - generic [ref=f1e145]: 낮잠
+                  - generic [ref=f1e146]:
+                    - generic [ref=f1e147]: 오후 2:30
+                    - generic [ref=f1e151]:
+                      - generic [ref=f1e152]: 약 복용
+                      - generic [ref=f1e153]: 혈압약 · 당뇨약 · 비타민D
+                  - generic [ref=f1e154]:
+                    - generic [ref=f1e155]: 오후 4:00
+                    - generic [ref=f1e159]:
+                      - generic [ref=f1e160]: 산책
+                      - generic [ref=f1e161]: 공원 30분
+                  - generic [ref=f1e162]:
+                    - generic [ref=f1e163]: 오후 5:30
+                    - generic [ref=f1e167]:
+                      - generic [ref=f1e168]: 민지와 영상통화
+                      - generic [ref=f1e169]: 매주 토요일
+                  - generic [ref=f1e170]:
+                    - generic [ref=f1e171]: 오후 6:00
+                    - generic [ref=f1e176]: 저녁 식사
+                  - generic [ref=f1e177]:
+                    - generic [ref=f1e178]: 오후 8:00
+                    - generic [ref=f1e182]:
+                      - generic [ref=f1e183]: 저녁 약 복용
+                      - generic [ref=f1e184]: 혈압약 · 위장약
+                  - generic [ref=f1e185]:
+                    - generic [ref=f1e186]: 오후 9:30
+                    - generic [ref=f1e189]:
+                      - generic [ref=f1e190]: 취침 준비
+                      - generic [ref=f1e191]: 양치 · 세안
+                - generic [ref=f1e192]:
+                  - text: 전체 일정 보기
+                  - img [ref=f1e194]
+              - button "도움이 필요해요, 누르면 가족에게 알림이 갑니다" [ref=f1e196] [cursor=pointer]:
+                - img [ref=f1e198]
+                - text: 도움이 필요해요
+    - link "P-02 오늘 할 일 식사·약·건강 측정·산책을 시간 순 체크리스트로 열기" [ref=e36] [cursor=pointer]:
+      - /url: p02-med-alert.html
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - text: P-02
+          - heading "오늘 할 일" [level=2] [ref=e39]
+          - paragraph [ref=e40]: 식사·약·건강 측정·산책을 시간 순 체크리스트로
+        - generic [ref=e41]:
+          - text: 열기
+          - img [ref=e43]
+      - iframe [ref=e46]:
+        - generic [ref=f2e2]:
+          - banner [ref=f2e3]:
+            - link "뒤로" [ref=f2e4] [cursor=pointer]:
+              - /url: p01-today.html
+              - img [ref=f2e6]
+              - text: 뒤로
+            - navigation "주요 메뉴" [ref=f2e8]:
+              - link "홈" [ref=f2e9] [cursor=pointer]:
+                - /url: p01-today.html
+                - img [ref=f2e11]
+                - text: 홈
+              - link "할일" [ref=f2e13] [cursor=pointer]:
+                - /url: p02-med-alert.html
+              - link "가족" [ref=f2e14] [cursor=pointer]:
+                - /url: p03-call.html
+                - img [ref=f2e16]
+                - text: 가족
+              - link "도움" [ref=f2e18] [cursor=pointer]:
+                - /url: p08-help.html
+                - img [ref=f2e20]
+                - text: 도움
+          - generic [ref=f2e22]:
+            - generic [ref=f2e23]:
+              - heading "오늘의 일정" [level=1] [ref=f2e24]
+              - paragraph [ref=f2e25]: 4월 18일 토요일 · 지금은 오후 2:30
+            - generic "오늘 진행 상황" [ref=f2e26]:
+              - generic [ref=f2e27]:
+                - generic [ref=f2e28]:
+                  - text: 오늘
+                  - emphasis [ref=f2e29]: 4 / 7
+                  - text: 완료
+                - generic [ref=f2e30]: "다음 일: 오후 2:30 약 드시기"
+              - progressbar [ref=f2e31]
+            - list "오늘 할 일 타임라인" [ref=f2e33]:
+              - listitem [ref=f2e34]:
+                - generic [ref=f2e35]:
+                  - generic [ref=f2e36]: 오전
+                  - text: 8:00
+                - img [ref=f2e39]
+                - generic [ref=f2e41]:
+                  - generic [ref=f2e42]: 아침 식사
+                  - generic [ref=f2e43]: 죽 · 반찬 세 가지
+                - generic [ref=f2e44]: 완료
+              - listitem [ref=f2e45]:
+                - generic [ref=f2e46]:
+                  - generic [ref=f2e47]: 오전
+                  - text: 8:30
+                - img [ref=f2e50]
+                - generic [ref=f2e52]:
+                  - generic [ref=f2e53]: 아침 약
+                  - generic [ref=f2e54]: 혈압약 · 당뇨약
+                - generic [ref=f2e55]: 완료
+              - listitem [ref=f2e56]:
+                - generic [ref=f2e57]:
+                  - generic [ref=f2e58]: 오전
+                  - text: 10:00
+                - img [ref=f2e61]
+                - generic [ref=f2e63]:
+                  - generic [ref=f2e64]: 혈압 측정
+                  - generic [ref=f2e65]: 요양보호사 방문 · 122/78
+                - generic [ref=f2e66]: 완료
+              - listitem [ref=f2e67]:
+                - generic [ref=f2e68]:
+                  - generic [ref=f2e69]: 오후
+                  - text: 12:00
+                - img [ref=f2e72]
+                - generic [ref=f2e74]:
+                  - generic [ref=f2e75]: 점심 식사
+                  - generic [ref=f2e76]: 밥 · 국 · 반찬
+                - generic [ref=f2e77]: 완료
+              - listitem [ref=f2e78]:
+                - generic [ref=f2e79]:
+                  - generic [ref=f2e80]: 오후
+                  - text: 2:30
+                - img [ref=f2e83]
+                - generic [ref=f2e85]:
+                  - generic [ref=f2e86]: 점심 약 드시기
+                  - generic [ref=f2e87]: 혈압약 · 당뇨약 · 비타민 D · 물 한 컵과 함께
+                - generic [ref=f2e88]: 지금
+              - listitem [ref=f2e89]:
+                - generic [ref=f2e90]:
+                  - generic [ref=f2e91]: 오후
+                  - text: 4:00
+                - generic [ref=f2e93]:
+                  - generic [ref=f2e94]: 산책하기
+                  - generic [ref=f2e95]: 동네 공원 · 30분 정도
+                - generic [ref=f2e96]: 대기
+              - listitem [ref=f2e97]:
+                - generic [ref=f2e98]:
+                  - generic [ref=f2e99]: 오후
+                  - text: 6:00
+                - img [ref=f2e102]
+                - generic [ref=f2e104]:
+                  - generic [ref=f2e105]: 저녁 식사 · 저녁 약
+                  - generic [ref=f2e106]: 혈압약 · 당뇨약
+                - generic [ref=f2e107]: 대기
+            - button "점심 약 다 먹었어요" [ref=f2e109] [cursor=pointer]:
+              - img [ref=f2e111]
+              - text: 점심 약 다 먹었어요
+    - link "P-03 가족에게 전화 얼굴 3개 풀사이즈 타일 — 최근통화·메시지 제거 열기" [ref=e47] [cursor=pointer]:
+      - /url: p03-call.html
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - text: P-03
+          - heading "가족에게 전화" [level=2] [ref=e50]
+          - paragraph [ref=e51]: 얼굴 3개 풀사이즈 타일 — 최근통화·메시지 제거
+        - generic [ref=e52]:
+          - text: 열기
+          - img [ref=e54]
+      - iframe [ref=e57]:
+        - generic [ref=f3e2]:
+          - banner [ref=f3e3]:
+            - link "뒤로" [ref=f3e4] [cursor=pointer]:
+              - /url: p01-today.html
+              - img [ref=f3e6]
+              - text: 뒤로
+            - navigation "주요 메뉴" [ref=f3e8]:
+              - link "홈" [ref=f3e9] [cursor=pointer]:
+                - /url: p01-today.html
+                - img [ref=f3e11]
+                - text: 홈
+              - link "할일" [ref=f3e13] [cursor=pointer]:
+                - /url: p02-med-alert.html
+              - link "가족" [ref=f3e14] [cursor=pointer]:
+                - /url: p03-call.html
+                - img [ref=f3e16]
+                - text: 가족
+              - link "도움" [ref=f3e18] [cursor=pointer]:
+                - /url: p08-help.html
+                - img [ref=f3e20]
+                - text: 도움
+          - generic [ref=f3e22]:
+            - generic [ref=f3e23]:
+              - heading "누구와 통화하시겠어요?" [level=1] [ref=f3e24]
+              - paragraph [ref=f3e25]: 얼굴 한 번 누르시면 바로 걸립니다.
+            - list [ref=f3e26]:
+              - listitem [ref=f3e27]:
+                - generic [ref=f3e30]:
+                  - generic [ref=f3e31]: 민지
+                  - generic [ref=f3e32]: 딸
+                - generic [ref=f3e33]: 지금 접속 중
+                - generic [ref=f3e35]:
+                  - link "딸 민지에게 영상통화" [ref=f3e36] [cursor=pointer]:
+                    - /url: "#"
+                    - img [ref=f3e38]
+                    - text: 영상통화
+                  - link "딸 민지에게 음성통화" [ref=f3e40] [cursor=pointer]:
+                    - /url: "#"
+                    - img [ref=f3e42]
+                    - text: 목소리만 통화
+              - listitem [ref=f3e44]:
+                - generic [ref=f3e47]:
+                  - generic [ref=f3e48]: 서연
+                  - generic [ref=f3e49]: 손녀
+                - generic [ref=f3e50]: 지금 접속 중
+                - generic [ref=f3e52]:
+                  - link "손녀 서연에게 영상통화" [ref=f3e53] [cursor=pointer]:
+                    - /url: "#"
+                    - img [ref=f3e55]
+                    - text: 영상통화
+                  - link "손녀 서연에게 음성 메시지 남기기" [ref=f3e57] [cursor=pointer]:
+                    - /url: p05-voice.html
+                    - img [ref=f3e59]
+                    - text: 음성 메시지
+              - listitem [ref=f3e61]:
+                - generic [ref=f3e64]:
+                  - generic [ref=f3e65]: 태우
+                  - generic [ref=f3e66]: 아들
+                - generic [ref=f3e67]: 자리 비움
+                - generic [ref=f3e69]:
+                  - link "아들 태우에게 음성 메시지 남기기" [ref=f3e70] [cursor=pointer]:
+                    - /url: p05-voice.html
+                    - img [ref=f3e72]
+                    - text: 음성 메시지
+                  - link "아들 태우에게 문자 남기기" [ref=f3e74] [cursor=pointer]:
+                    - /url: p07-message.html
+                    - img [ref=f3e76]
+                    - text: 문자로 남기기
+    - link "P-05 말벗과 대화 듣는 중 파형 + 최근 교환 1쌍. 그만 말하기 버튼이 주인공 열기" [ref=e58] [cursor=pointer]:
+      - /url: p05-voice.html
+      - generic [ref=e59]:
+        - generic [ref=e60]:
+          - text: P-05
+          - heading "말벗과 대화" [level=2] [ref=e61]
+          - paragraph [ref=e62]: 듣는 중 파형 + 최근 교환 1쌍. 그만 말하기 버튼이 주인공
+        - generic [ref=e63]:
+          - text: 열기
+          - img [ref=e65]
+      - iframe [ref=e68]:
+        - generic [ref=f4e2]:
+          - banner [ref=f4e3]:
+            - link "뒤로" [ref=f4e4] [cursor=pointer]:
+              - /url: p01-today.html
+              - img [ref=f4e6]
+              - text: 뒤로
+            - navigation "주요 메뉴" [ref=f4e8]:
+              - link "홈" [ref=f4e9] [cursor=pointer]:
+                - /url: p01-today.html
+                - img [ref=f4e11]
+                - text: 홈
+              - link "할일" [ref=f4e13] [cursor=pointer]:
+                - /url: p02-med-alert.html
+              - link "가족" [ref=f4e14] [cursor=pointer]:
+                - /url: p03-call.html
+                - img [ref=f4e16]
+                - text: 가족
+              - link "도움" [ref=f4e18] [cursor=pointer]:
+                - /url: p08-help.html
+                - img [ref=f4e20]
+                - text: 도움
+          - generic [ref=f4e22]:
+            - region "말벗과의 대화" [ref=f4e23]:
+              - generic [ref=f4e24]:
+                - generic "하루안부" [ref=f4e25]:
+                  - img [ref=f4e26]
+                - generic [ref=f4e30]:
+                  - generic [ref=f4e31]: 하루안부
+                  - generic [ref=f4e32]: 오후엔 뭐 하셨어요? 창문으로 햇살 따뜻하게 들어오지요.
+              - generic [ref=f4e35]:
+                - generic [ref=f4e36]: 지금 말씀하시는 중
+                - generic [ref=f4e37]: 그럼, 햇살이 참 좋아서 베란다에 나갔다가 …
+            - generic [ref=f4e38]:
+              - generic [ref=f4e47]: 잘 듣고 있어요
+              - generic [ref=f4e48]: 천천히 말씀하셔도 돼요. 다 마치셨으면 아래 버튼을 눌러 주세요.
+            - generic [ref=f4e49]:
+              - link "대화 마치기" [ref=f4e50] [cursor=pointer]:
+                - /url: p01-today.html
+                - img [ref=f4e52]
+                - text: 대화 마치기
+              - button "그만 말하기 — AI에게 답변 요청" [ref=f4e54] [cursor=pointer]:
+                - img [ref=f4e56]
+                - text: 그만 말하기
+    - link "P-06 사진 크게 보기 민지가 보낸 사진 풀사이즈 + 좌우 큰 화살표 열기" [ref=e69] [cursor=pointer]:
+      - /url: p06-photo.html
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - text: P-06
+          - heading "사진 크게 보기" [level=2] [ref=e72]
+          - paragraph [ref=e73]: 민지가 보낸 사진 풀사이즈 + 좌우 큰 화살표
+        - generic [ref=e74]:
+          - text: 열기
+          - img [ref=e76]
+      - iframe [ref=e79]:
+        - generic [ref=f5e2]:
+          - banner [ref=f5e3]:
+            - link "뒤로" [ref=f5e4] [cursor=pointer]:
+              - /url: p07-message.html
+              - img [ref=f5e6]
+              - text: 뒤로
+            - navigation "주요 메뉴" [ref=f5e8]:
+              - link "홈" [ref=f5e9] [cursor=pointer]:
+                - /url: p01-today.html
+                - img [ref=f5e11]
+                - text: 홈
+              - link "할일" [ref=f5e13] [cursor=pointer]:
+                - /url: p02-med-alert.html
+              - link "가족" [ref=f5e14] [cursor=pointer]:
+                - /url: p03-call.html
+                - img [ref=f5e16]
+                - text: 가족
+              - link "도움" [ref=f5e18] [cursor=pointer]:
+                - /url: p08-help.html
+                - img [ref=f5e20]
+                - text: 도움
+          - generic [ref=f5e22]:
+            - generic [ref=f5e23]:
+              - generic [ref=f5e25]:
+                - generic [ref=f5e26]: 딸 민지
+                - generic [ref=f5e27]: 방금 · 사진 2장
+              - generic [ref=f5e28]: 1 / 2
+            - generic [ref=f5e29]:
+              - button "이전 사진" [disabled] [ref=f5e30]:
+                - img [ref=f5e32]
+              - figure [ref=f5e34]:
+                - img "민지가 보낸 공원 사진" [ref=f5e35]
+              - button "다음 사진" [ref=f5e36] [cursor=pointer]:
+                - img [ref=f5e38]
+            - generic [ref=f5e40]:
+              - generic [ref=f5e41]: "\"엄마, 오늘 수지랑 공원 다녀왔어요. 날씨가 너무 좋아요!\""
+              - link "답장하기" [ref=f5e42] [cursor=pointer]:
+                - /url: p07-message.html
+                - img [ref=f5e44]
+                - text: 답장하기
+              - link "민지에게 전화" [ref=f5e46] [cursor=pointer]:
+                - /url: p03-call.html
+                - img [ref=f5e48]
+                - text: 민지에게 전화
+    - link "P-07 민지와 대화 최근 교환 3개 + 빠른 답장 칩 + 음성 답장 열기" [ref=e80] [cursor=pointer]:
+      - /url: p07-message.html
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - text: P-07
+          - heading "민지와 대화" [level=2] [ref=e83]
+          - paragraph [ref=e84]: 최근 교환 3개 + 빠른 답장 칩 + 음성 답장
+        - generic [ref=e85]:
+          - text: 열기
+          - img [ref=e87]
+      - iframe [ref=e90]:
+        - generic [ref=f6e2]:
+          - banner [ref=f6e3]:
+            - link "뒤로" [ref=f6e4] [cursor=pointer]:
+              - /url: p03-call.html
+              - img [ref=f6e6]
+              - text: 뒤로
+            - navigation "주요 메뉴" [ref=f6e8]:
+              - link "홈" [ref=f6e9] [cursor=pointer]:
+                - /url: p01-today.html
+                - img [ref=f6e11]
+                - text: 홈
+              - link "할일" [ref=f6e13] [cursor=pointer]:
+                - /url: p02-med-alert.html
+              - link "가족" [ref=f6e14] [cursor=pointer]:
+                - /url: p03-call.html
+                - img [ref=f6e16]
+                - text: 가족
+              - link "도움" [ref=f6e18] [cursor=pointer]:
+                - /url: p08-help.html
+                - img [ref=f6e20]
+                - text: 도움
+          - generic [ref=f6e22]:
+            - region "딸 민지와의 대화" [ref=f6e23]:
+              - generic [ref=f6e26]:
+                - generic [ref=f6e27]: 딸 민지
+                - generic [ref=f6e28]: 지금 접속 중 · 방금 읽음
+              - link "민지에게 영상통화" [ref=f6e29] [cursor=pointer]:
+                - /url: p03-call.html
+                - img [ref=f6e31]
+                - text: 전화걸기
+            - region "최근 대화" [ref=f6e33]:
+              - generic [ref=f6e34]: 오늘
+              - generic [ref=f6e37]:
+                - generic [ref=f6e38]: 오전 9:12
+                - generic [ref=f6e39]: 엄마, 오늘 병원 가신다고 하셨죠? 몇 시에 출발하세요?
+              - generic [ref=f6e42]:
+                - generic [ref=f6e43]: 오전 9:15
+                - generic [ref=f6e44]: 응 10시쯤 나갈거야. 걱정말어
+              - generic [ref=f6e47]:
+                - generic [ref=f6e48]: 방금 · 사진 2장
+                - generic [ref=f6e49]:
+                  - link "사진 크게 보기" [ref=f6e50] [cursor=pointer]:
+                    - /url: p06-photo.html
+                    - img "민지가 보낸 공원 사진" [ref=f6e51]
+                  - link "사진 크게 보기" [ref=f6e52] [cursor=pointer]:
+                    - /url: p06-photo.html
+                    - img "민지가 보낸 손녀 사진" [ref=f6e53]
+                - generic [ref=f6e54]: 엄마, 오늘 수지랑 공원 다녀왔어요. 날씨가 너무 좋아요!
+            - group "빠른 답장" [ref=f6e55]:
+              - button "예쁘구나, 잘 다녀왔네" [ref=f6e56] [cursor=pointer]
+              - button "고맙다고 전해줘" [ref=f6e57] [cursor=pointer]
+              - button "나도 보고 싶다" [ref=f6e58] [cursor=pointer]
+              - button "저녁에 전화할게" [ref=f6e59] [cursor=pointer]
+            - generic [ref=f6e60]:
+              - link "사진 크게 보기" [ref=f6e61] [cursor=pointer]:
+                - /url: p06-photo.html
+                - img [ref=f6e63]
+                - text: 사진 크게 보기
+              - link "음성으로 답장" [ref=f6e65] [cursor=pointer]:
+                - /url: p05-voice.html
+                - img [ref=f6e67]
+                - text: 음성으로 답장
+    - link "P-08 도움 요청 확인 5초 카운트다운 + 취소 버튼 + 개별 가족 호출 열기" [ref=e91] [cursor=pointer]:
+      - /url: p08-help.html
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - text: P-08
+          - heading "도움 요청 확인" [level=2] [ref=e94]
+          - paragraph [ref=e95]: 5초 카운트다운 + 취소 버튼 + 개별 가족 호출
+        - generic [ref=e96]:
+          - text: 열기
+          - img [ref=e98]
+      - iframe [ref=e101]:
+        - generic [active] [ref=f7e1]:
+          - generic [ref=f7e2]:
+            - banner [ref=f7e3]:
+              - link "뒤로" [ref=f7e4] [cursor=pointer]:
+                - /url: p01-today.html
+                - img [ref=f7e6]
+                - text: 뒤로
+              - navigation "주요 메뉴" [ref=f7e8]:
+                - link "홈" [ref=f7e9] [cursor=pointer]:
+                  - /url: p01-today.html
+                  - img [ref=f7e11]
+                  - text: 홈
+                - link "할일" [ref=f7e13] [cursor=pointer]:
+                  - /url: p02-med-alert.html
+                - link "가족" [ref=f7e14] [cursor=pointer]:
+                  - /url: p03-call.html
+                  - img [ref=f7e16]
+                  - text: 가족
+                - link "도움" [ref=f7e18] [cursor=pointer]:
+                  - /url: p08-help.html
+                  - img [ref=f7e20]
+                  - text: 도움
+            - generic [ref=f7e22]:
+              - generic [ref=f7e23]:
+                - heading "무엇이 필요하세요?" [level=1] [ref=f7e24]
+                - paragraph [ref=f7e25]: 버튼을 누르시면 보호자에게 바로 알립니다.
+              - list [ref=f7e26]:
+                - listitem [ref=f7e27] [cursor=pointer]:
+                  - img [ref=f7e30]
+                  - generic [ref=f7e32]: 물 한 잔
+                  - generic [ref=f7e33]: 목 마를 때
+                - listitem [ref=f7e34] [cursor=pointer]:
+                  - generic [ref=f7e36]: 화장실
+                  - generic [ref=f7e37]: 도와주세요
+                - listitem [ref=f7e38] [cursor=pointer]:
+                  - img [ref=f7e41]
+                  - generic [ref=f7e43]: 식사
+                  - generic [ref=f7e44]: 배고파요
+                - listitem [ref=f7e45] [cursor=pointer]:
+                  - img [ref=f7e48]
+                  - generic [ref=f7e50]: 약 주세요
+                  - generic [ref=f7e51]: 복약 시간 같아요
+                - listitem [ref=f7e52] [cursor=pointer]:
+                  - img [ref=f7e55]
+                  - generic [ref=f7e57]: 자세 바꾸기
+                  - generic [ref=f7e58]: 몸이 불편해요
+                - listitem [ref=f7e59] [cursor=pointer]:
+                  - img [ref=f7e62]
+                  - generic [ref=f7e64]: 더워요 · 추워요
+                  - generic [ref=f7e65]: 온도 조절
+                - listitem [ref=f7e66] [cursor=pointer]:
+                  - img [ref=f7e69]
+                  - generic [ref=f7e71]: 말벗
+                  - generic [ref=f7e72]: 심심해요
+                - listitem [ref=f7e73] [cursor=pointer]:
+                  - img [ref=f7e76]
+                  - generic [ref=f7e78]: 아파요
+                  - generic [ref=f7e79]: 지금 바로 도움 요청
+              - generic "가족에게 도움 알림" [ref=f7e80]:
+                - generic [ref=f7e81]:
+                  - img [ref=f7e83]
+                  - text: 가족에게도 알림
+                - button "민지 · 서연 · 태우에게" [ref=f7e89] [cursor=pointer]:
+                  - img [ref=f7e91]
+                  - text: 민지 · 서연 · 태우에게
+          - status:
+            - generic:
+              - generic:
+                - img
+            - generic: 요청 전달됐어요
+            - generic: 보호자에게 알림을 보냈습니다. 곧 와요.
+    - link "P-09 긴급 SOS 119 자동 연결 + 가족 위치 공유. 큰 취소 버튼 열기" [ref=e102] [cursor=pointer]:
+      - /url: p09-sos.html
+      - generic [ref=e103]:
+        - generic [ref=e104]:
+          - text: P-09
+          - heading "긴급 SOS" [level=2] [ref=e105]
+          - paragraph [ref=e106]: 119 자동 연결 + 가족 위치 공유. 큰 취소 버튼
+        - generic [ref=e107]:
+          - text: 열기
+          - img [ref=e109]
+      - iframe [ref=e112]:
+        - generic [ref=f8e2]:
+          - banner [ref=f8e3]:
+            - link "닫기" [ref=f8e4] [cursor=pointer]:
+              - /url: p01-today.html
+              - img [ref=f8e6]
+              - text: 닫기
+            - generic [ref=f8e9]: 오후 2:30
+          - generic [ref=f8e10]:
+            - img [ref=f8e13]
+            - generic [ref=f8e15]:
+              - heading "긴급 도움 요청" [level=1] [ref=f8e16]
+              - paragraph [ref=f8e17]: 실수가 아니라면 그대로 두세요. 잠시 뒤 119와 가족에게 동시에 연락이 갑니다.
+            - region "긴급 카운트다운" [ref=f8e18]:
+              - generic [ref=f8e19]:
+                - img [ref=f8e20]
+                - generic [ref=f8e23]: "5"
+              - generic [ref=f8e24]:
+                - generic [ref=f8e25]: 5초 뒤 자동으로 실행됩니다
+                - generic [ref=f8e26]:
+                  - generic [ref=f8e27]:
+                    - img [ref=f8e29]
+                    - text: 119 응급 전화 자동 연결
+                  - generic [ref=f8e31]:
+                    - img [ref=f8e33]
+                    - text: 민지 · 서연 · 태우에게 위치 공유
+                  - generic [ref=f8e35]:
+                    - img [ref=f8e37]
+                    - text: "현재 위치: 집 (거실)"
+            - generic [ref=f8e39]:
+              - button "긴급 호출 취소 — 홈으로 돌아갑니다" [ref=f8e40] [cursor=pointer]:
+                - img [ref=f8e42]
+                - text: 실수예요, 취소할게요
+              - generic [ref=f8e44]:
+                - link "119 바로 전화" [ref=f8e45] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=f8e47]
+                  - text: 119 바로 전화
+                - link "119 대신 가족에게만 연락" [ref=f8e49] [cursor=pointer]:
+                  - /url: p03-call.html
+                  - img [ref=f8e51]
+                  - text: 가족에게만 연락
+    - link "P-10 약 복용 완료 방금 드신 약 + 다음 약 + 가족 자동 알림 확인 열기" [ref=e113] [cursor=pointer]:
+      - /url: p10-med-done.html
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - text: P-10
+          - heading "약 복용 완료" [level=2] [ref=e116]
+          - paragraph [ref=e117]: 방금 드신 약 + 다음 약 + 가족 자동 알림 확인
+        - generic [ref=e118]:
+          - text: 열기
+          - img [ref=e120]
+      - iframe [ref=e123]:
+        - generic [ref=f9e2]:
+          - banner [ref=f9e3]:
+            - link "뒤로" [ref=f9e4] [cursor=pointer]:
+              - /url: p02-med-alert.html
+              - img [ref=f9e6]
+              - text: 뒤로
+            - navigation "주요 메뉴" [ref=f9e8]:
+              - link "홈" [ref=f9e9] [cursor=pointer]:
+                - /url: p01-today.html
+                - img [ref=f9e11]
+                - text: 홈
+              - link "할일" [ref=f9e13] [cursor=pointer]:
+                - /url: p02-med-alert.html
+              - link "가족" [ref=f9e14] [cursor=pointer]:
+                - /url: p03-call.html
+                - img [ref=f9e16]
+                - text: 가족
+              - link "도움" [ref=f9e18] [cursor=pointer]:
+                - /url: p08-help.html
+                - img [ref=f9e20]
+                - text: 도움
+          - generic [ref=f9e22]:
+            - generic [ref=f9e23]:
+              - img [ref=f9e26]
+              - generic [ref=f9e28]:
+                - heading "약 잘 드셨어요" [level=1] [ref=f9e29]
+                - paragraph [ref=f9e30]: 점심 약 3가지 모두 확인했어요. 수고하셨습니다.
+            - generic [ref=f9e31]:
+              - article "방금 드신 약" [ref=f9e32]:
+                - generic [ref=f9e33]: 방금 드신 약
+                - generic [ref=f9e34]:
+                  - emphasis [ref=f9e35]: 3가지
+                  - text: · 오후 2:30
+                - list [ref=f9e36]:
+                  - listitem [ref=f9e37]: 혈압약
+                  - listitem [ref=f9e39]: 당뇨약
+                  - listitem [ref=f9e41]: 비타민 D
+              - article "다음 약" [ref=f9e43]:
+                - generic [ref=f9e44]: 다음 약
+                - generic [ref=f9e45]: 저녁 약
+                - generic [ref=f9e46]:
+                  - text: 오후 6:00
+                  - generic [ref=f9e47]: 3시간 30분 뒤
+                - list [ref=f9e48]:
+                  - listitem [ref=f9e49]: 혈압약
+                  - listitem [ref=f9e51]: 당뇨약
+            - status [ref=f9e53]:
+              - generic [ref=f9e58]: 민지 · 서연 · 태우에게 "약 드셨어요" 소식을 자동으로 전해드렸어요.
+            - link "오늘 홈으로 돌아가기" [ref=f9e59] [cursor=pointer]:
+              - /url: p01-today.html
+              - img [ref=f9e61]
+              - text: 오늘 홈으로
