@@ -629,8 +629,8 @@
     .hf-stat-val small{font-size:13px;font-weight:500;color:var(--mute);margin-left:2px}
 
     /* ── Floating audio (발표 음성, 우측 하단 — 거의 안 보이는 원형) ── */
-    .pa-fab{position:fixed;right:20px;bottom:20px;z-index:300;width:34px;height:34px;border-radius:var(--radius-full);padding:0;background:var(--ink);cursor:pointer;opacity:.12}
-    @media (max-width:640px){.pa-fab{right:14px;bottom:14px;width:30px;height:30px}}
+    .pa-fab{position:fixed;right:24px;bottom:24px;z-index:300;width:56px;height:56px;border-radius:var(--radius-full);padding:0;background:var(--ink);cursor:pointer;opacity:.05}
+    @media (max-width:640px){.pa-fab{right:16px;bottom:16px;width:48px;height:48px}}
 
     .sec-head{margin-bottom:var(--head-gap)}
     .sec-eyebrow{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:var(--eyebrow-gap)}
@@ -772,7 +772,7 @@
     .closing-title em{font-style:normal;color:var(--blue)}
     .closing-line{font-size:17px;line-height:1.72;color:var(--ink-2);max-width:var(--body-col-wide);margin:0 0 56px;letter-spacing:-.01em}
     .closing-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 28px;border:1px solid var(--ink);font-size:13px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);transition:all .2s;border-radius:12px}
-    .closing-cta:hover{background:var(--ink);color:white}
+    .closing-cta:hover{background:var(--blue);border-color:var(--blue);color:white}
     .closing-cta::after{content:"→"}
     footer{background:var(--brand-blue-500);padding:80px var(--gutter) 40px var(--gutter);color:#fff}
     .ft-grid{max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px}
@@ -3665,6 +3665,7 @@
     <div class="closing-mark">Epilogue</div>
     <h2 class="closing-title">오늘 하루도,<br><em>안녕하셨습니다.</em></h2>
     <p class="closing-line">매일 잊지 않고 안부를 묻는 마음, 그 마음을 한 화면 위로 옮겨 적은 것이 곧 하루안부입니다. 어제의 흐름이 오늘의 안심으로 이어지도록, 세 시선이 같은 하루 안에서 만납니다.</p>
+    <a class="closing-cta" href="https://haru-anbu-making-of.vercel.app/" target="_blank" rel="noopener">어떻게 만들었는지 보기</a>
   </section>
 
   <footer>
@@ -5026,7 +5027,10 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
   if(!fab) return;
   const PLAY = 'fluent:play-circle-24-regular';
   const PAUSE = 'fluent:pause-circle-24-regular';
-  const tracks = ['발표/audio/발표1.mp3','발표/audio/발표2.mp3','발표/audio/발표3.mp3'];
+  const SKIP = [];  // 전체 구간 복원 (생략 없음)
+  const tracks = Array.from({length:21}, (_,i)=>String(i+1).padStart(2,'0'))
+    .filter(n=>!SKIP.includes(n))
+    .map(n=>`발표/audio/clover/clover-${n}.mp3?v=v9`);
   const icon = fab.querySelector('iconify-icon');
   let idx = -1, audio = null;
 
