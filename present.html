@@ -43,6 +43,8 @@
   .say{flex:1;min-width:0;font-size:21px;letter-spacing:-.01em;word-break:keep-all;line-height:1.5}
   .line.shon .say{color:var(--ink2)}
   .num{flex-shrink:0;width:26px;text-align:right;font-size:13px;color:var(--mute);font-feature-settings:"tnum" 1;padding-top:5px}
+  .stage.skipped{margin-top:12px}
+  .skip-note{font-size:12px;color:#B6BBC3;background:var(--paper);border-radius:8px;padding:7px 14px;text-align:center;letter-spacing:.02em}
   @media (max-width:680px){
     .badge{width:96px}
     .say{font-size:19px}
@@ -85,7 +87,7 @@ const STAGES = [
     {w:S, text:"아, 전화 한 통 끊고 늘 따라붙는 그 마음이죠."},
     {w:C, clip:'05', text:"전화 한 통으로는, 그 누구도 진짜로 안심할 수 없습니다. 프랑스가 백오십사 년, 미국이 팔십팔 년. 육십오세 이상 일인 가구는 이백십사만 명입니다. 한국은 초고령사회로 가는 데 단 이십사 년. 노인 빈곤율은 오이씨디 일위입니다. 그런데 연결되는 방식은, 아직 전화 한 통에 머물러 있습니다."},
   ]},
-  { t:'App-preview — 하나로 모으다', screen:'화면: 하루안부 중심으로 기능 칩(음성안부·복약·긴급호출·리포트)', lines:[
+  { skip:true, t:'App-preview — 하나로 모으다', screen:'화면: 하루안부 중심으로 기능 칩(음성안부·복약·긴급호출·리포트)', lines:[
     {w:C, clip:'06', text:"그 답을, 저는 하루안부 하나에 모았습니다. 음성 안부부터 복약 알림, 긴급 호출, 활동 리포트까지. 흩어져 있던 것들이 한곳에서 움직입니다."},
   ]},
   { t:'Direction — 방향', screen:'화면: "흩어진 세 시선을 한 하루로 잇습니다."', lines:[
@@ -96,13 +98,13 @@ const STAGES = [
     {w:S, text:"오, 세 색으로 나뉘어 있네요?"},
     {w:C, clip:'09', text:"네. 보호자는 블루, 케어팀은 그린, 환자는 오렌지. 같은 화면 안에서도, 누구의 정보인지 색으로 바로 보입니다."},
   ]},
-  { t:'Persona — 같은 하루, 세 시점', screen:'화면: 보호자 / 환자 / 케어팀 시점 전환', lines:[
+  { skip:true, t:'Persona — 같은 하루, 세 시점', screen:'화면: 보호자 / 환자 / 케어팀 시점 전환', lines:[
     {w:C, clip:'10', text:"같은 하루가, 세 시점에서 이렇게 다릅니다. 보호자는 멀리 있어도 안심을 받습니다. 어르신은 버튼 하나로 안부를 전합니다. 케어팀은 기록하는 순간, 그것이 곧 하루의 안부가 됩니다."},
   ]},
-  { t:'Service — 여섯 가지 핵심 기능', screen:'화면: "서비스를 가로지르는 여섯 가지 핵심 기능"', lines:[
+  { skip:true, t:'Service — 여섯 가지 핵심 기능', screen:'화면: "서비스를 가로지르는 여섯 가지 핵심 기능"', lines:[
     {w:C, clip:'11', text:"어떤 화면을 열어도, 여섯 가지 핵심 기능이 함께 작동합니다. 자동 일일 리포트, 그리고 에이아이 안심지수. 새벽 에스오에스는, 평균 삼 분 안에 연결됩니다."},
   ]},
-  { t:'Flagship — 특히 자신 있는 넷', screen:'화면: 시그니처 4카드 (AI요약·실시간동기화·다국어·의료통합)', lines:[
+  { skip:true, t:'Flagship — 특히 자신 있는 넷', screen:'화면: 시그니처 4카드 (AI요약·실시간동기화·다국어·의료통합)', lines:[
     {w:C, clip:'12', text:"그중 넷은 특히 자신 있습니다. 매일 아침, 어제를 정리합니다. 기록하는 순간, 가족에게 닿습니다. 한국어로 만든 워크플로우가, 모국어로 그대로 동작합니다. 데스크와 회진이, 같은 데이터 위에서 만납니다."},
   ]},
   { t:'5앱 라이브 (시그니처)', screen:'화면: features-by-role — 5앱 순서대로 (보호자→환자→요양보호사→의료진앱→의료진웹)', lines:[
@@ -133,10 +135,18 @@ const rows = [];     // 모든 발화 행(순서대로)
 let current = null;  // 현재 오디오
 let curIdx = -1;
 
-STAGES.forEach((st, si)=>{
+let visNo = 0;
+STAGES.forEach((st)=>{
   const stage = document.createElement('section'); stage.className='stage';
+  if(st.skip){   // 시간 단축 생략 (복구: 해당 STAGE의 skip:true 제거)
+    stage.classList.add('skipped');
+    stage.innerHTML = `<div class="skip-note">생략 (시간 단축) · ${st.t}</div>`;
+    list.appendChild(stage);
+    return;
+  }
+  visNo++;
   const head = document.createElement('div'); head.className='stage-head';
-  head.innerHTML = `<span class="stage-no">STAGE ${si+1}</span><span class="stage-title">${st.t}</span><span class="stage-screen">${st.screen}</span>`;
+  head.innerHTML = `<span class="stage-no">STAGE ${visNo}</span><span class="stage-title">${st.t}</span><span class="stage-screen">${st.screen}</span>`;
   stage.appendChild(head);
   st.lines.forEach(l=>{
     const row = document.createElement('div');
