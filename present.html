@@ -151,7 +151,7 @@ function playClip(btn){
   const clip=btn.dataset.clip;
   if(current&&current.btn===btn){ stopAudio(); return; }
   stopAudio();
-  const audio=new Audio(`audio/clover/clover-${clip}.mp3?v=fade05`);
+  const audio=new Audio(`audio/clover/clover-${clip}.mp3?v=v9`);
   current={audio,btn,clip};
   btn.classList.add('playing'); btn.textContent='■ 정지 '+clip;
   audio.play().catch(()=>{});
