@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 — 일일 리포트 위젯</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2/dist/iconify-icon.min.js"></script>
+<style>
+  :root{
+    --t1:#1C1C1E;
+    --t2:rgba(28,28,30,.62);
+    --t3:rgba(28,28,30,.42);
+    --line:rgba(0,0,0,.06);
+    --accent:#2C7AFC;       /* 하루안부 키컬러 (로고 블루) */
+    --accent-soft:#DBEAFE;
+    --dot-off:rgba(0,0,0,.10);
+    --bg:#EFF6FF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    min-height:100vh;padding:40px 20px;color:var(--t1);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{width:100%;max-width:860px}
+
+  .section-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 4px 14px;gap:10px;
+  }
+  .section-title{font-size:21px;font-weight:800;letter-spacing:-.4px}
+  .section-date{font-size:14px;color:var(--t3);font-weight:500}
+
+  /* ── 미니 일일 리포트 카드 (좌: 사진+멘트 / 우: 지표) ── */
+  .report-card{
+    display:grid;grid-template-columns:1fr 1fr;align-items:stretch;
+    gap:16px;padding:16px;
+    width:100%;background:#fff;border-radius:22px;
+    box-shadow:0 4px 18px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  }
+
+  /* 왼쪽: 오늘의 순간 */
+  .moment{display:flex;flex-direction:column;gap:16px}
+  .moment-photo{
+    flex:1;min-height:240px;border-radius:16px;
+    background:#F5EFE4 url('mockup.png') center/cover no-repeat;
+  }
+  .moment-body{display:flex;flex-direction:column;gap:9px}
+  .moment-quote{
+    font-size:23px;font-weight:600;line-height:1.5;
+    letter-spacing:-.4px;color:var(--t1);
+  }
+  .moment-meta{font-size:14px;color:var(--t3);font-weight:500}
+
+  /* 오른쪽: 벤또 그리드 (투약·맥박 작게 / 수면 와이드) */
+  .bento{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;
+    align-content:stretch;
+  }
+  .tile{
+    position:relative;overflow:hidden;
+    background:rgba(15,23,42,.04);border-radius:16px;
+    padding:14px 16px 15px;display:flex;flex-direction:column;
+  }
+  .tile--wide{grid-column:1 / -1}
+  /* 카테고리 컬러 (타일별 로컬 액센트) */
+  .tile--pill{--accent:#1FA971;--accent-soft:#DCF2E8}   /* 투약 초록 */
+  .tile--beat{--accent:#E5484D;--accent-soft:#FBE0E1}   /* 맥박 빨강 */
+  .tile--sleep{--accent:#7C5CFC;--accent-soft:#E8E1FE}  /* 수면 보라 */
+  .tile-label{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:14px;color:var(--t2);font-weight:700;letter-spacing:-.2px;
+  }
+  .tile-label iconify-icon{font-size:20px;color:var(--accent)}
+  .tile-value{
+    font-size:38px;font-weight:800;color:var(--t1);
+    letter-spacing:-1.2px;line-height:1;margin-top:5px;
+  }
+  .tile-value small{font-size:16px;font-weight:700;color:var(--t3);margin-left:3px;letter-spacing:-.3px}
+  .tile-sub{font-size:12.5px;color:var(--t3);font-weight:500;margin-top:5px;line-height:1.45}
+
+  /* 투약 — 하단 파동 영역 (글자 아래, 가장자리까지 꽉, 살랑이는 애니메이션) */
+  .wave{margin:10px -16px -15px;height:74px;pointer-events:none;animation:waveBob 4.5s ease-in-out infinite}
+  .wave svg{width:100%;height:100%;display:block}
+  @keyframes waveBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+  /* 맥박 — 흐르는 심전도(EKG) 라인 + 박동하는 하트 */
+  .beat{margin-top:auto;height:40px;overflow:hidden;pointer-events:none}
+  .beat svg{display:block;width:200%;height:100%;animation:ekgScroll 2.4s linear infinite}
+  @keyframes ekgScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .tile--beat .tile-label iconify-icon{animation:heartBeat 1.3s ease-in-out infinite;transform-origin:center}
+  @keyframes heartBeat{0%,100%{transform:scale(1)}12%{transform:scale(1.22)}24%{transform:scale(1)}36%{transform:scale(1.12)}48%{transform:scale(1)}}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none!important}}
+
+  /* 수면 — 시간대 막대 + 깊이 바 */
+  .sleep-chart{display:flex;align-items:flex-end;gap:3px;height:54px;margin-top:8px}
+  .sleep-chart i{flex:1;background:var(--accent);border-radius:99px;min-height:3px}
+  .sleep-axis{display:flex;justify-content:space-between;margin-top:7px;font-size:11px;color:var(--t3);font-weight:500}
+  .sleep-depth{display:flex;align-items:center;gap:9px;margin-top:10px;font-size:11px;color:var(--t3);font-weight:500;white-space:nowrap}
+  .depth-bars{flex:1;display:flex;gap:3px}
+  .depth-bars i{flex:1;height:8px;border-radius:99px;background:var(--accent)}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="section-header">
+      <div class="section-title">일일 리포트</div>
+      <div class="section-date" id="reportDate"></div>
+    </div>
+
+    <div class="report-card">
+      <!-- 왼쪽: 오늘의 순간 -->
+      <div class="moment">
+        <div class="moment-photo"></div>
+        <div class="moment-body">
+          <div class="moment-quote">"산책 때 햇빛이 좋아서 한참 머무르셨어요.<br>기분이 정말 좋아 보이셨어요."</div>
+          <div class="moment-meta">김서연 간호사 · 10:24</div>
+        </div>
+      </div>
+
+      <!-- 오른쪽: 오늘의 지표 (벤또) -->
+      <div class="bento">
+
+        <!-- 투약 -->
+        <div class="tile tile--pill">
+          <span class="tile-label"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon>투약</span>
+          <span class="tile-value">33<small>%</small></span>
+          <span class="tile-sub">1/3 복용 완료<br>다음 복용 18:00</span>
+          <div class="wave">
+            <svg viewBox="0 0 200 80" preserveAspectRatio="none">
+              <path d="M0,38 C25,28 45,46 70,40 C95,34 120,24 145,32 C170,40 185,30 200,34 L200,80 L0,80 Z" fill="var(--accent-soft)"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 맥박 -->
+        <div class="tile tile--beat">
+          <span class="tile-label"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon>맥박</span>
+          <span class="tile-value">72 <small>BPM</small></span>
+          <span class="tile-sub">평균 근처 (±4)</span>
+          <div class="beat">
+            <svg viewBox="0 0 240 40" preserveAspectRatio="none">
+              <path d="M0,24 H30 L37,24 L43,8 L49,38 L55,16 L61,24 H150 L157,24 L163,8 L169,38 L175,16 L181,24 H240"
+                    fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 수면 (와이드) -->
+        <div class="tile tile--wide tile--sleep">
+          <span class="tile-label"><iconify-icon icon="fluent:weather-moon-24-filled"></iconify-icon>수면</span>
+          <span class="tile-value">7<small>시간</small> 32<small>분</small></span>
+          <span class="tile-sub">지난 밤 · 깨심 1회</span>
+          <div class="sleep-chart">
+            <i style="height:8%;opacity:.32"></i><i style="height:11%;opacity:.36"></i><i style="height:16%;opacity:.4"></i><i style="height:24%;opacity:.46"></i>
+            <i style="height:34%;opacity:.54"></i><i style="height:48%;opacity:.64"></i><i style="height:62%;opacity:.74"></i><i style="height:76%;opacity:.84"></i>
+            <i style="height:88%;opacity:.92"></i><i style="height:97%;opacity:1"></i><i style="height:100%;opacity:1"></i><i style="height:95%;opacity:.96"></i>
+            <i style="height:85%;opacity:.88"></i><i style="height:72%;opacity:.8"></i><i style="height:58%;opacity:.7"></i><i style="height:45%;opacity:.6"></i>
+            <i style="height:33%;opacity:.52"></i><i style="height:24%;opacity:.46"></i><i style="height:17%;opacity:.4"></i><i style="height:12%;opacity:.36"></i>
+            <i style="height:9%;opacity:.32"></i>
+          </div>
+          <div class="sleep-axis">
+            <span>22시</span><span>00시</span><span>02시</span><span>04시</span><span>06시</span><span>08시</span>
+          </div>
+          <div class="sleep-depth">
+            <span>깨어있음</span>
+            <div class="depth-bars">
+              <i style="opacity:.28"></i><i style="opacity:.42"></i><i style="opacity:.56"></i><i style="opacity:.7"></i><i style="opacity:.85"></i><i style="opacity:1"></i>
+            </div>
+            <span>깊은 수면</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const d=new Date();
+    const days=['일','월','화','수','목','금','토'];
+    document.getElementById('reportDate').textContent=
+      `${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})`;
+  </script>
+</body>
+</html>

@@ -55,7 +55,7 @@
 <div class="wrap">
   <div class="help">
     파란 줄 = <b>네잎클로버 음원</b>(▶ 또는 사이트 점 버튼). 검은 줄 = <b>Shon 직접</b> 발화.<br>
-    줄 <b>클릭</b> = 현재 위치 표시. <b>↓ / Space</b> = 다음(음원 자동재생), <b>↑</b> = 이전.
+    <b>Enter</b> = 네잎클로버 음원만 하나씩 재생(Shon 줄은 자동 건너뜀). <b>↑</b> = 이전 음원. 줄 <b>클릭</b> = 위치 지정.
   </div>
   <div id="list"></div>
 </div>
@@ -154,8 +154,8 @@ function playClip(btn){
   const audio=new Audio(`audio/clover/clover-${clip}.mp3?v=v9`);
   current={audio,btn,clip};
   btn.classList.add('playing'); btn.textContent='■ 정지 '+clip;
-  audio.play().catch(()=>{});
-  audio.addEventListener('ended', ()=>{ if(current&&current.btn===btn) stopAudio(); });
+  audio.play().catch(err=>{ const h=document.querySelector('.help'); if(h){ h.style.color='#C0392B'; h.innerHTML='<b>소리가 막혔어요</b> — 페이지를 한 번 클릭한 뒤 다시 Enter를 누르세요. (브라우저 자동재생 차단)'; } });
+  audio.addEventListener('ended', ()=>{ const wasLast = clip==='21'; if(current&&current.btn===btn) stopAudio(); if(wasLast) setTimeout(finale, 1000); });
 }
 document.querySelectorAll('.play').forEach(b=> b.addEventListener('click', ()=>playClip(b)) );
 function setCurrent(idx, autoplay){
@@ -165,9 +165,31 @@ function setCurrent(idx, autoplay){
   r.el.classList.add('cur'); r.el.scrollIntoView({behavior:'smooth',block:'center'});
   if(autoplay && r.line.w===C){ const btn=r.el.querySelector('.play'); if(btn) playClip(btn); }
 }
+function slowScrollTo(el, duration){
+  const rect = el.getBoundingClientRect();
+  const startY = window.scrollY;
+  const targetY = startY + rect.top - (window.innerHeight/2 - rect.height/2);
+  const dist = targetY - startY;
+  const start = performance.now();
+  (function step(now){
+    const p = Math.min(1,(now-start)/duration);
+    const ease = p<.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2;
+    window.scrollTo(0, startY + dist*ease);
+    if(p<1) requestAnimationFrame(step);
+  })(start);
+}
+// 마지막 음원(21) 종료 1초 뒤 → 마지막 전 대사(클로버)+마지막 대사(Shon 송별)로 천천히 자동스크롤
+function finale(){
+  const idx = rows.length-1;
+  rows.forEach(r=>r.el.classList.remove('cur'));
+  curIdx=idx; rows[idx].el.classList.add('cur');
+  slowScrollTo(rows[idx].el, 3500);
+}
+function nextClover(from){ for(let i=from;i<rows.length;i++){ if(rows[i].line.w===C) return i; } return -1; }
+function prevClover(from){ for(let i=from;i>=0;i--){ if(rows[i].line.w===C) return i; } return -1; }
 document.addEventListener('keydown',(e)=>{
-  if(e.key==='ArrowDown'||e.key===' '){ e.preventDefault(); setCurrent(curIdx+1,true); }
-  else if(e.key==='ArrowUp'){ e.preventDefault(); stopAudio(); setCurrent(curIdx-1,false); }
+  if(e.key==='Enter'||e.key==='ArrowDown'||e.key===' '){ e.preventDefault(); const n=nextClover(curIdx+1); if(n>=0) setCurrent(n,true); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); stopAudio(); const p=prevClover(curIdx-1); if(p>=0) setCurrent(p,false); }
 });
 </script>
 </body>

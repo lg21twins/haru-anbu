@@ -102,49 +102,37 @@
     .intro.brand-only{background:white}
     .intro.gone{opacity:0;visibility:hidden;pointer-events:none}
     /* 인트로 스테이지 — 브랜드 → 호명 → 메인 + 체크 → 클로징 */
-    .intro-stage{position:relative;z-index:2;text-align:center;width:100%;max-width:340px;margin:0 auto;color:var(--palette-gray-900);display:flex;flex-direction:column;align-items:center;transition:opacity .55s ease}
+    .intro-stage{position:relative;z-index:2;text-align:center;width:100%;max-width:340px;margin:0 auto;transform:translateY(-26px);color:var(--palette-gray-900);display:flex;flex-direction:column;align-items:center;transition:opacity .55s ease}
     .intro-stage.fade-out{opacity:0}
     /* Stage 0: 브랜드 로고만 (크게) — 들어올 때 살짝 확대 페이드인, 나갈 때 긴 페이드아웃 */
     .intro-brand{display:flex;flex-direction:column;align-items:center;gap:14px;opacity:0;transform:translateY(6px) scale(.96);transition:opacity .85s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
     .intro-brand.show{opacity:1;transform:translateY(0) scale(1);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
     .intro-brand-mark{width:112px;height:112px;display:flex;align-items:center;justify-content:center}
     .intro-brand-mark svg{width:100%;height:100%;display:block}
-    .intro-address{font-size:15px;font-weight:500;letter-spacing:-.2px;color:rgba(28,28,30,.55);margin-bottom:10px;opacity:0;transform:translateY(4px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
-    .intro-main{font-size:28px;font-weight:700;line-height:1.28;letter-spacing:-.7px;opacity:0;transform:translateY(6px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-    .intro-main b{color:var(--color-accent);font-weight:700;position:relative;display:inline-block}
-    .intro-main b::after{content:"";position:absolute;left:8%;right:8%;bottom:-4px;height:8px;background:rgba(var(--color-accent-rgb),.18);filter:blur(4px);border-radius:8px;opacity:0;transform:scaleX(.4);transform-origin:left center;transition:opacity .7s ease,transform .9s cubic-bezier(.22,1,.36,1);transition-delay:.3s}
-    .intro-main.show b::after{opacity:1;transform:scaleX(1)}
-    .intro-close{font-size:24px;font-weight:700;line-height:1.45;letter-spacing:-.5px;color:var(--palette-gray-900);opacity:0;transform:translateY(6px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-    /* 동심원 링 차트 — Stage 1 (호명 + 메인 → 링) */
-    .intro-text{transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1)}
-    .intro-text.fade-out{opacity:0;transform:translateY(-10px)}
-    .intro-rings{position:relative;width:min(85vw,320px);aspect-ratio:1;opacity:0;transform:scale(.96);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
-    .intro-rings.show{opacity:1;transform:scale(1)}
-    .intro-ring-svg{width:100%;height:100%;display:block;overflow:visible}
-    .intro-ring-track{fill:none;stroke:rgba(255,255,255,.42);stroke-linecap:round}
-    .intro-ring-progress{fill:none;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center;will-change:stroke-dashoffset}
-    .ring-group{opacity:0;visibility:hidden;transition:opacity .55s cubic-bezier(.22,1,.36,1)}
-    .ring-group.show{opacity:1;visibility:visible}
-    .intro-ring-center{position:absolute;top:50%;left:50%;width:42%;height:42%;transform:translate(-50%,-50%);pointer-events:none}
-    .intro-ring-center .center-card{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;opacity:0;transform:scale(.92);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
-    .intro-ring-center .center-card.show{opacity:1;transform:scale(1)}
-    .intro-ring-center .center-value{font-size:26px;font-weight:800;letter-spacing:-.6px;color:var(--palette-gray-900);font-variant-numeric:tabular-nums;line-height:1;display:inline-flex;align-items:baseline}
-    .intro-ring-center .center-value em{font-style:normal;font-size:13px;font-weight:600;color:rgba(28,28,30,.5);margin-left:2px}
-    .intro-ring-center .center-label{font-size:12px;font-weight:600;color:rgba(28,28,30,.55);letter-spacing:-.2px}
-    .intro-ring-center .center-icon{font-size:18px;color:var(--color-accent);line-height:1;margin-top:2px}
-    .intro-ring-center .center-summary{position:absolute;inset:0;display:grid;grid-template-columns:max-content max-content;justify-content:center;align-content:center;column-gap:18px;row-gap:12px;opacity:0;transform:scale(.94);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
-    .intro-ring-center .center-summary.show{opacity:1;transform:scale(1)}
-    .intro-ring-center .summary-row{display:contents}
-    .intro-ring-center .summary-label{font-size:13px;color:rgba(28,28,30,.55);font-weight:600;text-align:left;letter-spacing:-.2px;line-height:1;align-self:center}
-    .intro-ring-center .summary-val{font-weight:800;color:var(--palette-gray-900);font-variant-numeric:tabular-nums;font-size:26px;line-height:1;letter-spacing:-.5px;display:inline-flex;align-items:baseline;justify-self:end;align-self:center}
-    .intro-ring-center .summary-val em{font-style:normal;font-size:12px;font-weight:500;color:rgba(28,28,30,.5);margin-left:3px}
+    .intro-address{font-size:15px;font-weight:500;letter-spacing:-.2px;color:rgba(255,255,255,.78);text-shadow:0 1px 12px rgba(18,52,116,.18);margin-bottom:10px;opacity:0;transform:translateY(4px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
+    .intro-main{font-size:28px;font-weight:700;line-height:1.28;letter-spacing:-.7px;color:rgba(255,255,255,.92);text-shadow:0 1px 16px rgba(18,52,116,.22);opacity:0;transform:translateY(6px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+    .intro-main b{color:#fff;font-weight:700}
+    .intro-close{font-size:24px;font-weight:700;line-height:1.45;letter-spacing:-.5px;color:#fff;text-shadow:0 1px 16px rgba(18,52,116,.22);opacity:0;transform:translateY(6px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+    /* 일과 체크리스트 — Stage 1 (호명 + 메인 + 체크) — #8 형식 이식, 메인 컬러 토큰 유지 */
+    .intro-checks{margin-top:22px;display:flex;flex-direction:column;gap:8px;width:236px;min-width:0}
+    .intro-check{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:10px 14px 10px 10px;border-radius:16px;background:rgba(255,255,255,.82);backdrop-filter:blur(14px) saturate(1.1);-webkit-backdrop-filter:blur(14px) saturate(1.1);box-shadow:0 1px 2px rgba(16,32,64,.06),0 6px 16px rgba(16,32,64,.05);opacity:0;transform:translateY(8px) scale(.98);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
+    .intro-check-ico{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:10px;background:rgba(var(--color-accent-rgb),.14);color:var(--color-accent)}
+    .intro-check-ico iconify-icon{font-size:17px}
+    .intro-check-meta{display:flex;align-items:baseline;justify-content:space-between;gap:10px;min-width:0;padding-right:4px}
+    .intro-check-label{font-size:13.5px;color:rgba(28,28,30,.55);font-weight:500;letter-spacing:-.2px}
+    .intro-check-value{font-size:17px;font-weight:700;color:var(--palette-gray-900);letter-spacing:-.3px;font-variant-numeric:tabular-nums;display:inline-flex;align-items:baseline;gap:2px}
+    .intro-check-value em{font-style:normal;font-size:12.5px;font-weight:600;color:rgba(28,28,30,.5);margin-left:1px}
+    .intro-check-done{display:inline-flex;align-items:center;justify-content:center;opacity:0;transform:scale(.4);transition:opacity .4s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.34,1.56,.64,1)}
+    .intro-check-done iconify-icon{font-size:19px;color:var(--green)}
+    .intro-check.show{opacity:1;transform:translateY(0) scale(1)}
+    .intro-check.show .intro-check-done{opacity:1;transform:scale(1);transition-delay:.18s}
     @media (prefers-reduced-motion:reduce){
-      .intro-rings,.intro-text{transition:opacity .15s ease}
-      .intro-ring-progress{transition:none!important}
+      .intro-check{transition:opacity .15s ease}
+      .intro-check-done{transition:none!important}
     }
     .intro-address.show,.intro-main.show,.intro-close.show{opacity:1;transform:translateY(0)}
-    .intro-skip{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 118px);left:50%;transform:translateX(-50%);font-size:12.5px;letter-spacing:1.4px;color:var(--guardian);font-weight:600;text-transform:uppercase;cursor:pointer;background:none;border:none;padding:10px 18px;z-index:3;transition:opacity .45s cubic-bezier(.22,1,.36,1)}
-    .intro-skip:active{transform:translateX(-50%) scale(.96);color:rgba(28,28,30,.6)}
+    .intro-skip{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 118px);left:50%;transform:translateX(-50%);font-size:12.5px;letter-spacing:1.4px;color:rgba(40,60,100,.4);font-weight:600;text-transform:uppercase;cursor:pointer;background:none;border:none;padding:10px 18px;z-index:3;transition:opacity .45s cubic-bezier(.22,1,.36,1)}
+    .intro-skip:active{transform:translateX(-50%) scale(.96);color:rgba(40,60,100,.65)}
     /* 브랜드 로고만 보일 때(Stage 0)는 SKIP 숨김 */
     .intro.brand-only .intro-skip{opacity:0;pointer-events:none}
     /* brand-only: 로고를 뷰포트 정가운데로 고정 */
@@ -253,7 +241,7 @@
     /* AI 입력창 — 흰 바탕, 로고 제거, 마이크+전송 버튼 */
     /* 홈 모드: 탭바 위(104px), 채팅 모드: 맨 아래(24px)로 슬라이드 다운 */
     .chat-input-area{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 92px);left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;z-index:45;padding:0;--kb:0px;transition:bottom .22s cubic-bezier(.22,1,.36,1)}
-    body.chat-mode .chat-input-area{bottom:calc(env(safe-area-inset-bottom,0px) + 12px + var(--kb))}
+    body.chat-mode .chat-input-area{bottom:calc(max(env(safe-area-inset-bottom,0px), 20px) + 12px + var(--kb))}
     /* 키보드 올라와 있을 땐 safe-area 무시 — 키보드 바로 위에 딱 붙음 */
     body.chat-mode .chat-input-area.kb-up{bottom:calc(var(--kb) + 12px)}
     .ai-input-inner{border-radius:999px;display:flex;align-items:center;gap:4px;padding:8px 10px 8px 22px;background:white;border:0;box-shadow:0 4px 20px rgba(0,0,0,.1)}
@@ -305,7 +293,7 @@
     }
 
     /* 일일 리포트 보기 버튼 — 채팅 모드에서만 노출 */
-    .report-view-btn{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 90px);transform:translateX(-50%);display:inline-flex;align-items:center;gap:5px;padding:8px 14px;background:var(--guardian-bg-tint);border:0;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.12);font-size:13px;font-weight:700;color:var(--t1);font-family:inherit;z-index:46;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+    .report-view-btn{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 110px);transform:translateX(-50%);display:inline-flex;align-items:center;gap:5px;padding:8px 14px;background:var(--guardian-bg-tint);border:0;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.12);font-size:13px;font-weight:700;color:var(--t1);font-family:inherit;z-index:46;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
     .report-view-btn.show{opacity:1;pointer-events:auto}
     .report-view-btn:active{transform:translateX(-50%) scale(.96)}
     .report-view-btn iconify-icon{font-size:14px;color:var(--blue)}
@@ -425,7 +413,7 @@
     .pulse-sub{font-size:11.5px;color:var(--t3);font-weight:500}
     /* 식사 위젯 — 카드 전체 이미지 + 하단 검정 그라디언트 오버레이 */
     .food-w{padding:0;overflow:hidden;background:var(--guardian-warm-cream) url("image%20(16).png") center/cover no-repeat;min-height:180px;position:relative}
-    .food-overlay{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:rgba(0,0,0,.55);color:white}
+    .food-overlay{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.55) 35%,rgba(0,0,0,0) 100%);color:white}
     .food-overlay .lbl{display:flex;align-items:center;gap:6px;margin-bottom:3px}
     .food-overlay .lbl iconify-icon{color:white;font-size:16px;opacity:.95}
     .food-overlay .lbl span{font-size:11.5px;color:rgba(255,255,255,.88);font-weight:600;letter-spacing:.2px}
@@ -1253,114 +1241,51 @@
         await sleep(580);
         if (done) return;
 
-        // Stage 1: 호명 + 메인 → 동심원 링 시퀀스
+        // Stage 1: 호명 + 메인 + 체크리스트 (#8 형식)
         stage.innerHTML =
-          '<div class="intro-text">' +
-            '<div class="intro-address">지욱님,</div>' +
-            '<div class="intro-main">영자님은 오늘<br><b>잘 지내셨어요</b>.</div>' +
-          '</div>' +
-          '<div class="intro-rings">' +
-            '<svg class="intro-ring-svg" viewBox="0 0 320 320" aria-hidden="true">' +
-              '<g class="ring-group">' +
-                '<circle class="intro-ring-track" cx="160" cy="160" r="148" stroke-width="24"/>' +
-                '<circle class="intro-ring-progress" cx="160" cy="160" r="148" stroke="var(--brand-blue-50)" stroke-width="24" data-progress="0.83"/>' +
-              '</g>' +
-              '<g class="ring-group">' +
-                '<circle class="intro-ring-track" cx="160" cy="160" r="114" stroke-width="24"/>' +
-                '<circle class="intro-ring-progress" cx="160" cy="160" r="114" stroke="var(--brand-blue-200)" stroke-width="24" data-progress="1"/>' +
-              '</g>' +
-              '<g class="ring-group">' +
-                '<circle class="intro-ring-track" cx="160" cy="160" r="80" stroke-width="24"/>' +
-                '<circle class="intro-ring-progress" cx="160" cy="160" r="80" stroke="var(--brand-blue-200)" stroke-width="24" data-progress="1"/>' +
-              '</g>' +
-            '</svg>' +
-            '<div class="intro-ring-center">' +
-              '<div class="center-card" data-metric="walk">' +
-                '<div class="center-value">25<em>분</em></div>' +
-                '<div class="center-label">산책</div>' +
-                '<iconify-icon class="center-icon" icon="fluent:person-walking-20-filled"></iconify-icon>' +
-              '</div>' +
-              '<div class="center-card" data-metric="food">' +
-                '<div class="center-value">3<em>끼</em></div>' +
-                '<div class="center-label">식사</div>' +
-                '<iconify-icon class="center-icon" icon="fluent:food-24-filled"></iconify-icon>' +
-              '</div>' +
-              '<div class="center-card" data-metric="pill">' +
-                '<div class="center-value">3<em>회</em></div>' +
-                '<div class="center-label">투약</div>' +
-                '<iconify-icon class="center-icon" icon="fluent:pill-24-filled"></iconify-icon>' +
-              '</div>' +
-              '<div class="center-summary">' +
-                '<div class="summary-row"><span class="summary-label">산책</span><span class="summary-val">25<em>분</em></span></div>' +
-                '<div class="summary-row"><span class="summary-label">식사</span><span class="summary-val">3<em>끼</em></span></div>' +
-                '<div class="summary-row"><span class="summary-label">투약</span><span class="summary-val">3<em>회</em></span></div>' +
-              '</div>' +
+          '<div class="intro-address">지욱님,</div>' +
+          '<div class="intro-main">영자님은 오늘<br><b>잘 지내셨어요</b>.</div>' +
+          '<div class="intro-checks">' +
+            '<div class="intro-check">' +
+              '<span class="intro-check-ico"><iconify-icon icon="fluent:person-walking-20-filled"></iconify-icon></span>' +
+              '<span class="intro-check-meta"><span class="intro-check-label">산책</span><span class="intro-check-value">25<em>분</em></span></span>' +
+              '<span class="intro-check-done"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon></span>' +
+            '</div>' +
+            '<div class="intro-check">' +
+              '<span class="intro-check-ico"><iconify-icon icon="fluent:food-24-filled"></iconify-icon></span>' +
+              '<span class="intro-check-meta"><span class="intro-check-label">식사</span><span class="intro-check-value">3<em>끼</em></span></span>' +
+              '<span class="intro-check-done"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon></span>' +
+            '</div>' +
+            '<div class="intro-check">' +
+              '<span class="intro-check-ico"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon></span>' +
+              '<span class="intro-check-meta"><span class="intro-check-label">투약</span><span class="intro-check-value">3<em>회</em></span></span>' +
+              '<span class="intro-check-done"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon></span>' +
             '</div>' +
           '</div>';
 
-        var textEl = stage.querySelector('.intro-text');
         var addrEl = stage.querySelector('.intro-address');
         var mainEl = stage.querySelector('.intro-main');
-        var ringsEl = stage.querySelector('.intro-rings');
-        var ringEls = stage.querySelectorAll('.intro-ring-progress');
-        var ringGroups = stage.querySelectorAll('.ring-group');
-        var cards = stage.querySelectorAll('.center-card');
-        var summaryEl = stage.querySelector('.center-summary');
-
-        // 링 dasharray 초기화 (drawing 0%)
-        ringEls.forEach(function(r){
-          var len = r.getTotalLength();
-          r.style.transition = 'none';
-          r.style.strokeDasharray = len;
-          r.style.strokeDashoffset = len;
-        });
+        var checkEls = stage.querySelectorAll('.intro-check');
 
         addrEl.classList.add('show');
         await sleep(420);
         if (done) return;
 
         mainEl.classList.add('show');
-        await sleep(1500);
+        await sleep(1100);
         if (done) return;
 
-        // 호명+메인 페이드아웃 → 링 등장
-        textEl.classList.add('fade-out');
-        addrEl.classList.remove('show');
-        mainEl.classList.remove('show');
-        await sleep(620);
-        if (done) return;
-
+        // 체크리스트 순차 등장 (산책 → 식사 → 투약)
         orbBg.classList.add('stage-data');
-        ringsEl.classList.add('show');
-        await sleep(380);
-        if (done) return;
-
-        // 안쪽 → 바깥 순서로 링 그룹 페이드인 + 가운데 카드 전환 + 드로잉
-        for (var i = ringEls.length - 1; i >= 0; i--){
+        for (var i = 0; i < checkEls.length; i++){
           if (done) return;
-          ringGroups[i].classList.add('show');
-          cards.forEach(function(c, idx){ c.classList.toggle('show', idx === i); });
-          await sleep(220);
-
-          var r = ringEls[i];
-          var len = r.getTotalLength();
-          var progress = parseFloat(r.dataset.progress || '1');
-          r.style.transition = 'stroke-dashoffset 0.8s cubic-bezier(.22,1,.36,1)';
-          r.style.strokeDashoffset = len * (1 - progress);
-
-          await sleep(800 + 220);
+          checkEls[i].classList.add('show');
+          await sleep(480);
         }
-
-        // 카드 페이드아웃 → 요약 페이드인
-        await sleep(180);
-        if (done) return;
-        cards.forEach(function(c){ c.classList.remove('show'); });
-        await sleep(360);
-        summaryEl.classList.add('show');
-        await sleep(1500);
+        await sleep(1700);
         if (done) return;
 
-        // 링 + 텍스트 정리 후 클로징으로
+        // Stage 1 페이드아웃 → 클로징으로
         stage.classList.add('fade-out');
         await sleep(300);
         if (done) return;

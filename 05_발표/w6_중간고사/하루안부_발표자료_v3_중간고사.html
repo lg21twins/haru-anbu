@@ -331,11 +331,15 @@ html, body {
   grid-template-columns: 80px repeat(4, 1fr);
   border: 1px solid var(--border);
 }
-.matrix .cell { padding: 24px; border-right: 1px solid var(--border); border-top: 1px solid var(--border); font-size: 16px; line-height: 1.5; color: var(--text-2); }
+.matrix .cell { padding: 26px 24px; border-right: 1px solid var(--border); border-top: 1px solid var(--border); font-size: 16px; line-height: 1.5; color: var(--text-2); display: flex; flex-direction: column; justify-content: center; gap: 9px; }
 .matrix .cell:nth-child(5n) { border-right: none; }
-.matrix .h { font-weight: 700; font-size: 18px; color: var(--text); border-top: none; padding: 20px 24px; }
-.matrix .label-col { writing-mode: vertical-rl; transform: rotate(180deg); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--text-3); letter-spacing: 0.1em; }
+.matrix .cell .ct { font-size: 21px; font-weight: 700; color: var(--text); line-height: 1.28; letter-spacing: -0.01em; }
+.matrix .cell .cd { font-size: 15px; font-weight: 400; color: var(--text-2); line-height: 1.55; }
+.matrix .h { font-weight: 700; font-size: 18px; color: var(--text); border-top: none; padding: 20px 24px; display: block; }
+.matrix .label-col { writing-mode: vertical-rl; transform: rotate(180deg); align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--text-3); letter-spacing: 0.1em; gap: 0; }
 .matrix .insight-row { background: var(--primary); color: #fff !important; font-weight: 600; }
+.matrix .insight-row .ct { color: #fff; }
+.matrix .insight-row .cd { color: rgba(255,255,255,0.86); }
 .matrix .insight-row.label-col { background: var(--primary); color: var(--text-on-dark-2) !important; }
 
 /* Concept */
@@ -862,7 +866,7 @@ html, body {
   <div class="slide-body">
     <div class="eyebrow" style="font-size:14px;">Background</div>
     <div class="h-1" style="margin-bottom:50px;">초고령사회, 대한민국이<br>변하고 있습니다</div>
-    <div class="stat-row" style="gap:60px; margin-bottom:60px;">
+    <div class="stat-row" style="display:grid; grid-template-columns:repeat(3,1fr); gap:0; margin-bottom:60px;">
       <div class="stat-block"><div class="num">1,008만</div><div class="label">2024년 65세 이상 인구</div><div class="src">출처: 통계청</div></div>
       <div class="stat-block"><div class="num">37.8%</div><div class="label">노인 1인 가구 비율</div><div class="src">출처: 보건복지부 2023 노인실태조사</div></div>
       <div class="stat-block"><div class="num">88.5%</div><div class="label">65세 이상 만성질환 보유율</div><div class="src">출처: 보건복지부 2023</div></div>
@@ -1351,20 +1355,20 @@ html, body {
       <div class="cell h">케어팀</div>
       <div class="cell h">요양보호사</div>
       <div class="cell label-col">PAINPOINT</div>
-      <div class="cell">부모님의 하루를 실시간으로 알 방법이 없음</div>
-      <div class="cell">가족에게 연락하고 싶어도 방법이 너무 어려움</div>
-      <div class="cell">환자 상태 설명 반복에 드는 시간·자원 낭비</div>
-      <div class="cell">수기 기록 누락과 다국어 소통의 어려움</div>
+      <div class="cell"><div class="ct">실시간 단절</div><div class="cd">떨어져 사는 부모님이 오늘 어떻게 지내셨는지 실시간으로 알 길이 없어 늘 막연한 불안에 시달린다.</div></div>
+      <div class="cell"><div class="ct">연락 장벽</div><div class="cd">가족에게 안부를 전하고 싶어도 전화 걸기·앱 조작 자체가 어려워 마음과 달리 소통이 끊긴다.</div></div>
+      <div class="cell"><div class="ct">반복 설명</div><div class="cd">같은 환자 상태를 매일 여러 보호자에게 전화로 반복 설명하느라 돌봄에 쓸 시간과 자원을 낭비한다.</div></div>
+      <div class="cell"><div class="ct">기록 부담</div><div class="cd">바쁜 현장에서 수기 기록이 자주 누락되고, 외국인 인력 간 다국어 인수인계까지 겹쳐 부담이 크다.</div></div>
       <div class="cell label-col">NEEDS</div>
-      <div class="cell">확인 없이도 <b style="color:var(--text)">자동 알림</b>으로 받는 케어 시스템</div>
-      <div class="cell">가족과 연결되는 <b style="color:var(--text)">간단한 소통</b> 수단</div>
-      <div class="cell">보호자와 기록을 <b style="color:var(--text)">즉시 공유</b>하는 통합 채널</div>
-      <div class="cell">디지털 기록 입력과 <b style="color:var(--text)">언어 장벽 없는</b> 소통 도구</div>
+      <div class="cell"><div class="ct">자동 알림</div><div class="cd">따로 확인하지 않아도 부모님의 하루 케어 현황이 먼저 도착하는, 손이 가지 않는 케어 시스템.</div></div>
+      <div class="cell"><div class="ct">간단한 소통</div><div class="cd">복잡한 조작 없이 버튼 하나로 가족과 바로 연결되는, 어르신도 쉽게 쓰는 소통 수단.</div></div>
+      <div class="cell"><div class="ct">즉시 공유</div><div class="cd">보호자와 케어 기록·상태 변화를 실시간으로 나눌 수 있는 하나의 통합 소통 채널.</div></div>
+      <div class="cell"><div class="ct">언어 장벽 제로</div><div class="cd">말하면 자동으로 남는 디지털 기록과 다국어 지원으로, 언어와 손글씨의 벽이 없는 도구.</div></div>
       <div class="cell label-col insight-row">INSIGHT</div>
-      <div class="cell insight-row">AI 일일 케어 리포트로 자동 연결, 부담 최소화</div>
-      <div class="cell insight-row">버튼 하나로 음성 통화·안부 전송, 누구나 쉽게</div>
-      <div class="cell insight-row">케어 리포트 자동 생성으로 소통 효율 극대화</div>
-      <div class="cell insight-row">AI 인수인계·다국어 지원으로 기록 부담 제거</div>
+      <div class="cell insight-row"><div class="ct">AI 자동 연결</div><div class="cd">AI가 매일 일일 케어 리포트를 자동 생성·발송해, 보호자의 확인 부담을 최소화하고 먼저 다가간다.</div></div>
+      <div class="cell insight-row"><div class="ct">원터치 안부</div><div class="cd">버튼 하나로 음성 통화와 안부 전송을 끝내, 누구나 어렵지 않게 가족과 닿게 한다.</div></div>
+      <div class="cell insight-row"><div class="ct">자동 리포트</div><div class="cd">체크리스트 입력이 그대로 케어 리포트로 변환되어, 반복 설명 없이 소통 효율을 극대화한다.</div></div>
+      <div class="cell insight-row"><div class="ct">다국어 인수인계</div><div class="cd">AI 인수인계와 다국어 지원으로 기록·소통 부담을 덜어, 현장에 돌봄에만 집중할 여유를 준다.</div></div>
     </div>
   </div>
   <div class="page-num"><b>19</b> / 49</div>

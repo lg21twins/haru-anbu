@@ -37,6 +37,61 @@
   const SOS_COUNTDOWN_MS = 1000;  // confirmation 1초
 
   // -------------------------------------------------------------------------
+  // i18n — SOS 시트/토스트 문구를 <html lang>(ko·en·zh)에 맞춰 선택 (기본 ko)
+  // 다국어 화면(c0X-*.en.html / .zh.html)에서도 같은 공통 JS가 언어에 맞게 동작
+  // -------------------------------------------------------------------------
+
+  const I18N = {
+    ko: {
+      sosTitle: '긴급 상황 알리기',
+      sosSub: '상황을 선택하면 간호사·보호자에게 즉시 전송됩니다',
+      sosFall: '낙상', sosFaint: '의식 저하', sosBreath: '호흡 곤란', sosOther: '기타 · 음성',
+      sosHint: '버튼을 <b>3초 길게 누르면</b> 1초 확인 후 즉시 음성 SOS가 발신됩니다 (오발신 방지)',
+      cdTitle: 'SOS 발신 준비',
+      cdSub: '아래 카운트가 0이 되면 자동 발신됩니다',
+      cdLabel: '즉시 음성 SOS · 자동 발신',
+      cdCancel: '취소',
+      sendAuto: '즉시 발신 · 음성 녹음',
+      sentToast: function (t, s) { return 'SOS [' + t + '] · ' + s + ' 발송 — 간호사·보호자·센터 통지'; },
+      cancelToast: 'SOS 발신 취소됨',
+      locale: 'ko-KR'
+    },
+    en: {
+      sosTitle: 'Report emergency',
+      sosSub: 'Select a situation to notify the nurse and family instantly',
+      sosFall: 'Fall', sosFaint: 'Reduced consciousness', sosBreath: 'Difficulty breathing', sosOther: 'Other · Voice',
+      sosHint: '<b>Press and hold for 3 sec</b> to send a voice SOS instantly after a 1-sec confirmation (prevents misfires)',
+      cdTitle: 'Sending SOS',
+      cdSub: 'Sends automatically when the count reaches 0',
+      cdLabel: 'Instant voice SOS · Auto-send',
+      cdCancel: 'Cancel',
+      sendAuto: 'Instant send · Voice recording',
+      sentToast: function (t, s) { return 'SOS [' + t + '] · ' + s + ' sent — Nurse, family & center notified'; },
+      cancelToast: 'SOS canceled',
+      locale: 'en-US'
+    },
+    zh: {
+      sosTitle: '上报紧急情况',
+      sosSub: '选择情况后将立即通知护士和家属',
+      sosFall: '跌倒', sosFaint: '意识下降', sosBreath: '呼吸困难', sosOther: '其他 · 语音',
+      sosHint: '<b>长按按钮 3 秒</b>，经 1 秒确认后立即发送语音 SOS（防止误发）',
+      cdTitle: '准备发送 SOS',
+      cdSub: '计数归零后自动发送',
+      cdLabel: '即时语音 SOS · 自动发送',
+      cdCancel: '取消',
+      sendAuto: '即时发送 · 语音录音',
+      sentToast: function (t, s) { return 'SOS [' + t + '] · ' + s + ' 已发送 — 已通知护士、家属与中心'; },
+      cancelToast: '已取消发送 SOS',
+      locale: 'zh-CN'
+    }
+  };
+
+  function T() {
+    const l = (document.documentElement.getAttribute('lang') || 'ko').slice(0, 2).toLowerCase();
+    return I18N[l] || I18N.ko;
+  }
+
+  // -------------------------------------------------------------------------
   // util
   // -------------------------------------------------------------------------
 
@@ -114,23 +169,24 @@
   // -------------------------------------------------------------------------
 
   function openSosTypeSheet() {
+    const t = T();
     openSheet(
       '<div class="cg-sheet__head">' +
         '<div class="cg-sheet__ico cg-sheet__ico--danger">' +
           '<iconify-icon icon="fluent:warning-24-filled"></iconify-icon>' +
         '</div>' +
         '<div>' +
-          '<div class="cg-sheet__ttl cg-sheet__ttl--danger">긴급 상황 알리기</div>' +
-          '<div class="cg-sheet__sub">상황을 선택하면 간호사·보호자에게 즉시 전송됩니다</div>' +
+          '<div class="cg-sheet__ttl cg-sheet__ttl--danger">' + t.sosTitle + '</div>' +
+          '<div class="cg-sheet__sub">' + t.sosSub + '</div>' +
         '</div>' +
       '</div>' +
       '<div class="cg-sos-grid">' +
-        sosCard('낙상', 'fluent:person-arrow-back-24-filled') +
-        sosCard('의식 저하', 'fluent:brain-circuit-24-filled') +
-        sosCard('호흡 곤란', 'fluent:heart-pulse-24-filled') +
-        sosCard('기타 · 음성', 'fluent:mic-24-filled') +
+        sosCard(t.sosFall, 'fluent:person-arrow-back-24-filled') +
+        sosCard(t.sosFaint, 'fluent:brain-circuit-24-filled') +
+        sosCard(t.sosBreath, 'fluent:heart-pulse-24-filled') +
+        sosCard(t.sosOther, 'fluent:mic-24-filled') +
       '</div>' +
-      '<div class="cg-sos-hint">버튼을 <b>3초 길게 누르면</b> 1초 확인 후 즉시 음성 SOS가 발신됩니다 (오발신 방지)</div>',
+      '<div class="cg-sos-hint">' + t.sosHint + '</div>',
       { variant: 'danger' }
     );
   }
@@ -146,8 +202,9 @@
 
   function sosSend(typeLabel) {
     closeSheet();
-    const stamp = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
-    toast('SOS [' + typeLabel + '] · ' + stamp + ' 발송 — 간호사·보호자·센터 통지', 3200);
+    const t = T();
+    const stamp = new Date().toLocaleTimeString(t.locale, { hour: '2-digit', minute: '2-digit' });
+    toast(t.sentToast(typeLabel, stamp), 3200);
     vibrate([30, 60, 120, 60, 30]);
 
     if (typeof global.onSosSent === 'function') {
@@ -158,20 +215,21 @@
   function openSosCountdown() {
     let remaining = SOS_COUNTDOWN_MS / 1000;
     function render() {
+      const t = T();
       openSheet(
         '<div class="cg-sheet__head">' +
           '<div class="cg-sheet__ico cg-sheet__ico--danger">' +
             '<iconify-icon icon="fluent:warning-24-filled"></iconify-icon>' +
           '</div>' +
           '<div>' +
-            '<div class="cg-sheet__ttl cg-sheet__ttl--danger">SOS 발신 준비</div>' +
-            '<div class="cg-sheet__sub">아래 카운트가 0이 되면 자동 발신됩니다</div>' +
+            '<div class="cg-sheet__ttl cg-sheet__ttl--danger">' + t.cdTitle + '</div>' +
+            '<div class="cg-sheet__sub">' + t.cdSub + '</div>' +
           '</div>' +
         '</div>' +
         '<div class="cg-sos-countdown">' +
           '<div class="cg-sos-countdown__num" id="cgSosCount">' + remaining + '</div>' +
-          '<div class="cg-sos-countdown__t">즉시 음성 SOS · 자동 발신</div>' +
-          '<button type="button" class="cg-sos-countdown__cancel" onclick="HaruCG._cancelCountdown()">취소</button>' +
+          '<div class="cg-sos-countdown__t">' + t.cdLabel + '</div>' +
+          '<button type="button" class="cg-sos-countdown__cancel" onclick="HaruCG._cancelCountdown()">' + t.cdCancel + '</button>' +
         '</div>',
         { variant: 'danger' }
       );
@@ -184,7 +242,7 @@
       if (remaining <= 0) {
         clearInterval(timer);
         global._cgCountdownTimer = null;
-        sosSend('즉시 발신 · 음성 녹음');
+        sosSend(T().sendAuto);
       }
     }, 1000);
     global._cgCountdownTimer = timer;
@@ -196,7 +254,7 @@
       global._cgCountdownTimer = null;
     }
     closeSheet();
-    toast('SOS 발신 취소됨');
+    toast(T().cancelToast);
   }
 
   function bindSOS(btn) {

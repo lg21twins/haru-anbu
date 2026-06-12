@@ -12,6 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하루안부 — AI 채팅</title>
   <link rel="stylesheet" href="pretendard.css">
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css?v=24">
   <script src="../07_디자인/_app-theme.js"></script>
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
@@ -27,16 +28,16 @@
       --font:'Pretendard Variable','Pretendard',-apple-system,system-ui,sans-serif;
     }
     html{color-scheme:light;height:100%}
-    body{height:100%;font-family:var(--font);color:var(--t1);-webkit-font-smoothing:antialiased;background:var(--brand-blue-50);overflow:hidden}
+    body{height:100%;font-family:var(--font);color:var(--t1);-webkit-font-smoothing:antialiased;background:var(--color-bg-canvas);overflow:hidden}
     .app{max-width:430px;height:100%;margin:0 auto;display:flex;flex-direction:column;position:relative}
 
     /* ═══ 배경 ═══ */
-    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--guardian-bg-tint);pointer-events:none}
+    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--color-bg-canvas);pointer-events:none}
     .bg-logo{position:absolute;width:140%;height:auto;left:50%;top:42%;transform:translate(-50%,-50%);opacity:.06;filter:blur(32px);animation:bgl 8s ease-in-out infinite}
     @keyframes bgl{0%,100%{transform:translate(-50%,-50%)scale(1);opacity:.05}50%{transform:translate(-50%,-50%)scale(1.06)rotate(1.5deg);opacity:.08}}
 
     /* ═══ 헤더 — 표준(대화 특화) ═══ */
-    .header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 10px;background:var(--brand-blue-200)}
+    .header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 10px;background:var(--color-bg-canvas)}
     .btn-back{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;color:var(--t1);transition:transform .1s}
     .btn-back:active{transform:scale(.93)}
     .ai-avatar{width:40px;height:40px;border-radius:50%;background:var(--brand-blue-500);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(44,122,252,.25)}

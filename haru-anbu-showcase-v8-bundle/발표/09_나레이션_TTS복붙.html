@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 나레이션 — TTS 복붙용 (편집 가능)</title>
+<style>
+  :root{ --blue:#2C7AFC; --ink:#1A1D23; --mute:#8A9099; --line:#ECEEF1; --paper:#F7F8FA; --amber:#F0A000; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;background:#fff;color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:780px;margin:0 auto;padding:48px 24px 140px}
+  header{margin-bottom:24px}
+  h1{font-size:24px;font-weight:700;letter-spacing:-.02em}
+  .sub{font-size:14px;color:var(--mute);margin-top:8px}
+  .hint{font-size:13px;color:var(--mute);margin-top:16px;padding:12px 16px;background:var(--paper);border-radius:10px;line-height:1.6}
+  .hint b{color:var(--blue)}
+  .bar{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .allbtn{font:inherit;font-size:13px;font-weight:600;color:var(--blue);background:none;border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+  .allbtn.primary{color:#fff;background:var(--blue);border-color:var(--blue)}
+  .allbtn.done{color:#fff;background:var(--ink);border-color:var(--ink)}
+  .row{display:flex;gap:14px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--line)}
+  .row.edited{background:#FFFCF2;margin:0 -12px;padding:18px 12px;border-radius:8px}
+  .meta{flex-shrink:0;width:108px;padding-top:2px}
+  .num{font-size:12px;color:var(--mute);font-feature-settings:"tnum" 1}
+  .file{font-size:11px;color:var(--blue);font-weight:600;margin-top:3px;word-break:break-all}
+  .sec{font-size:11px;color:var(--mute);margin-top:3px}
+  .editbadge{display:none;font-size:10px;font-weight:700;color:#fff;background:var(--amber);border-radius:5px;padding:1px 6px;margin-top:5px}
+  .row.edited .editbadge{display:inline-block}
+  .body{flex:1;min-width:0}
+  .text{font-size:16px;letter-spacing:-.01em;white-space:pre-wrap;word-break:keep-all}
+  .ta{display:none;width:100%;font:inherit;font-size:16px;line-height:1.6;color:var(--ink);border:1.5px solid var(--blue);border-radius:10px;padding:12px 14px;resize:vertical;min-height:120px;letter-spacing:-.01em}
+  .row.editing .text{display:none}
+  .row.editing .ta{display:block}
+  .row.editing .copy,.row.editing .editbtn{display:none}
+  .actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .btn{font:inherit;font-size:13px;font-weight:600;border-radius:8px;padding:6px 12px;cursor:pointer;border:1px solid var(--line);background:none;transition:background .12s,color .12s}
+  .copy{color:var(--blue)} .copy:hover{background:var(--paper)} .copy.done{color:#fff;background:var(--blue);border-color:var(--blue)}
+  .editbtn{color:var(--ink2,#3A4049)} .editbtn:hover{background:var(--paper)}
+  .save{display:none;color:#fff;background:var(--blue);border-color:var(--blue)} .row.editing .save{display:inline-block}
+  .cancel{display:none;color:var(--mute)} .row.editing .cancel{display:inline-block}
+  .reset1{display:none;color:#C0392B} .row.edited.editing .reset1{display:inline-block}
+  /* 재사용 그룹 — 발표 페르소나 말풍선(글로우+타이핑) 그대로 사용, 재추출 불필요 */
+  .reuse{margin:18px 0;padding:16px 18px;background:#F4FBF6;border:1px solid #D6EFDF;border-radius:12px}
+  .reuse-head{font-size:13px;font-weight:700;color:#1B8A4B;margin-bottom:4px}
+  .reuse-desc{font-size:12.5px;color:var(--mute);line-height:1.55;margin-bottom:12px}
+  .reuse-item{display:flex;gap:12px;align-items:center;padding:8px 0;border-top:1px solid #E4F1E9}
+  .reuse-item:first-of-type{border-top:none}
+  .reuse-meta{flex-shrink:0;width:108px}
+  .reuse-file{font-size:11px;color:#1B8A4B;font-weight:600;word-break:break-all}
+  .reuse-role{font-size:11px;color:var(--mute);margin-top:2px}
+  .reuse-line{flex:1;font-size:15px;color:var(--ink);word-break:keep-all}
+  .reuse-tag{flex-shrink:0;font-size:10px;font-weight:700;color:#1B8A4B;background:#DDF1E4;border-radius:5px;padding:2px 7px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>하루안부 나레이션 — TTS 복붙용</h1>
+    <p class="sub">셀프 투어 · 단일 화자(네잎클로버) · <b>각 블록 직접 편집 가능</b></p>
+    <div class="hint">
+      약어는 한국어 발음(에스오에스·에이아이·오이씨디), 숫자 풀어 읽기, 특수기호(—·…) 제거 완료.<br>
+      <b>정지 지점 1곳 = 파일 1개</b>로 뽑으세요. <b>편집</b>으로 문장을 고치면 <b>이 브라우저에 자동 저장</b>되고, <b>복사</b>에 수정본이 반영됩니다.<br>
+      고친 내용을 사이트에 영구 반영하려면 <b>수정본 내보내기</b>로 받은 걸 개발자(클로드)에게 전달하세요.
+    </div>
+    <div class="bar">
+      <button class="allbtn primary" id="exportBtn">수정본 내보내기</button>
+      <button class="allbtn" id="copyAll">전체 한 번에 복사</button>
+      <button class="allbtn" id="resetAll">전체 수정 초기화</button>
+    </div>
+  </header>
+  <div id="list"></div>
+</div>
+<script>
+// [번호, 권장파일명, 섹션라벨, 기본 나레이션] — 단일 화자(네잎클로버)
+const LINES = [
+ ["01","clover-n01","Hero","안녕하세요. 저는 네잎클로버, 하루안부 안에서 일하는 에이아이입니다. 지금부터 하루안부를 제가 직접 안내해 드릴게요. 떨어져 사는 가족과, 곁에서 돌보는 사람들을 하루 한 줄의 안부로 잇는 에이아이 케어 서비스입니다."],
+ ["02","clover-n02","Overview","케어 현장엔 늘 세 사람이 있습니다. 돌봄을 받는 환자, 곁에서 돌보는 케어팀, 멀리서 걱정하는 가족. 문제는 셋이 같은 하루를 따로 본다는 거예요. 하루안부는 이 세 시선을 다섯 화면으로 잇습니다. 환자의 기록이 케어팀을 거쳐 보호자에게 자동으로 닿습니다."],
+ ["03","clover-n03","Problem 1 가장 무거운 질문","멀리 사는 자식에게 부모님 안부는, 매일 아침 가장 무거운 질문입니다. 잘 계시겠지 하면서도, 끝엔 늘 아마도가 붙어요. 전화 한 통으로는, 그 누구도 진짜로 안심할 수 없습니다."],
+ ["04","clover-n04","Problem 2 왜 지금인가","이건 한국의 고령화 곡선입니다. 초고령사회까지 가는 데 프랑스는 백오십사년, 미국은 팔십팔년 걸렸지만, 한국은 단 이십사년입니다. 그사이 육십오세 이상 홀로 사는 가구는 이백십사만명. 그런데 연결되는 방식은 아직 전화 한 통에 머물러 있습니다."],
+ ["05","clover-n05","Problem 페르소나 도입","숫자 뒤에는, 결국 사람이 있습니다. 같은 하루를 두고 네 사람이 서로 다른 걱정을 안고 있어요. 그 속마음을, 한 명씩 직접 들어보겠습니다."],
+ // ※ 위 05 도입 뒤에 발표의 페르소나 말풍선(글로우+타이핑)을 그대로 재사용 — 아래 PAIN 그룹. 그 5줄은 기존 음원이라 재추출 없음.
+ ["06","clover-n06","App-preview","지금까진 안부 전화 따로, 약 따로, 병원 기록 따로였습니다. 저는 그 답을 하루안부 하나에 모았어요. 음성 안부, 복약 알림, 긴급 호출, 활동 리포트까지 한곳에서 움직입니다."],
+ ["07","clover-n07","Direction","방향은 하나입니다. 흩어진 세 시선을 하루 한 줄의 안부로 잇는 것. 어제의 흐름이 오늘 아침의 안심으로 이어지게 하는 것. 그게 하루안부입니다."],
+ ["08","clover-n08","Design 브랜드 마크","이 약속은 디자인에도 담겨 있습니다. 로고의 두 곡선은 멀리 있는 보호자와 가까이 있는 환자, 그 사이를 잇는 케어팀이 한 점에서 만나는 모습이에요."],
+ ["09","clover-n09","Design 타이포그래피","글자체도 현장을 생각해 골랐습니다. 기본은 프리텐다드, 한글과 숫자가 또렷해 큰 글씨로도 편합니다. 중국어는 노토 산스로 자연스럽게 이어져, 외국인 요양보호사도 또렷하게 읽습니다."],
+ ["10","clover-n10","Design 컬러","색은 세 사람을 구분하는 언어입니다. 보호자는 안심과 신뢰의 블루, 케어팀은 완료와 안전을 뜻하는 그린, 환자는 따뜻한 오렌지. 한 화면에 정보가 섞여 있어도, 누구의 것인지 색으로 바로 압니다."],
+ ["11","clover-n11","Design 아이콘","아이콘도 한 벌로 통일했습니다. 단색 플루언트 아이콘으로, 복약이든 에스오에스든 같은 결로 보여요. 한 번 익히면 어느 앱에서나 같은 뜻으로 읽힙니다."],
+ ["12","clover-n12","Design UI 키트","지금 보시는 투약 진행률, 기분 점수, 수면 그래프, 에이아이 채팅은 실제 앱에서 그대로 쓰는 컴포넌트입니다. 같은 부품으로 다섯 앱을 지어, 어느 화면을 열어도 손에 익은 느낌이 이어집니다."],
+ ["13","clover-n13","Persona 세 시점","같은 하루가 누가 보느냐에 따라 달라집니다. 보호자는 멀리 있어도 매일 안부를 받고, 어르신은 버튼 하나로 안부를 전하고, 케어팀은 기록하는 순간 그게 곧 가족에게 닿는 안부가 됩니다."],
+ ["14","clover-n14","Service 여섯 기능","앱이 다섯이라도, 그 전부를 가로지르는 여섯 기능이 있습니다. 에이아이 안심지수, 자동 일일 리포트, 평균 삼분 안에 연결되는 새벽 에스오에스, 이상 패턴 감지, 세 시선 통합 인계, 음성 인계 정리. 어떤 화면을 열어도 이 여섯이 늘 함께 작동합니다."],
+ ["15","clover-n15","화면 밖","이제, 화면 밖의 장면도 보여드릴게요. 결국 이 모든 기능이 향하는 건, 멀리 있는 자식이 부모님 안부를 확인하고 케어팀은 손쉽게 하루를 남기는, 그 평범한 안심입니다."],
+ ["16","clover-n16","Flagship 1 일일 요약","특히 자신 있는 셋을 보여드릴게요. 첫째, 에이아이 일일 요약. 수면, 식사, 복약, 기분을 제가 한 장의 카드로 응축해, 보호자가 출근길 오초면 어제의 부모님을 그려보게 합니다."],
+ ["17","clover-n17","Flagship 2 실시간 동기화","둘째, 실시간 동기화. 요양보호사가 체크리스트를 누르는 손짓이 의료진을 거쳐 보호자 화면의 한 카드로 닿습니다. 세 시점이 같은 데이터 위에서 실시간으로 만나요."],
+ ["18","clover-n18","Flagship 3 의료 연동","셋째, 의료 연동. 데스크의 웹과 회진 중의 폰이 같은 데이터 위에서 함께 움직입니다. 에스오에스와 바이탈을 그 자리에서 받아 처치하고 인계까지, 행정 시간을 줄여 환자 곁의 시간을 늘립니다."],
+ ["19","clover-n19","Features 직접 만져보기","지금부터 보실 다섯 화면은 실제로 작동하는 앱입니다. 제가 한 화면씩 넘기며 안내할게요. 같은 데이터가 역할마다 어떻게 다르게 닿는지 보세요."],
+ ["20","clover-n20","앱 1 보호자","첫 번째, 보호자 앱. 묻기 전에 먼저 전해집니다. 전날의 수면, 투약, 식사, 기분을 한 카드로 정리하고 사진과 코멘트를 함께 얹어, 출근길 오초면 어제의 부모님을 봅니다."],
+ ["21","clover-n21","앱 2 환자","두 번째, 어르신이 쓰는 환자 앱. 글자는 크게, 터치는 넓게. 누구나 오초 안에 도움을 청하고, 약과 식사 알림도 큰 한 줄로 차분히 안내됩니다."],
+ ["22","clover-n22","앱 3 요양보호사","세 번째, 요양보호사 앱. 현장에서 십초면 오늘 기록이 끝납니다. 여덟단계 스텝퍼로 한 어르신 회진이 한 흐름에 마무리돼요. 게다가 한국어로 만든 이 화면이, 그대로 모국어로 동작합니다."],
+ ["23","clover-n23","앱 4 의료진 앱","네 번째, 의사가 쓰는 의료진 앱. 병동을 걸으면서 처치부터 인계까지 손 안에서 끝납니다. 에스오에스가 울리면 이초 안에 위치와 바이탈이 잡혀요."],
+ ["24","clover-n24","앱 5 의료진 웹","다섯 번째, 간호 데스크의 의료진 웹. 전체 환자를 한 화면에 담았습니다. 제가 이상 신호를 중요도 순으로 정렬해 가장 먼저 볼 어르신을 맨 위에 올립니다. 다섯 화면 모두 같은 데이터 위에서 실제로 작동합니다."],
+ ["25","clover-n25","Gallery","다시 화면 밖으로 나와 봅니다. 보호자와 어르신, 곁을 지키는 케어팀. 하루안부가 닿는 자리엔 이런 표정들이 남습니다. 저희가 만들고 싶었던 건, 이 안심의 순간이었어요."],
+ ["26","clover-n26","Closing","매일 잊지 않고 안부를 묻는 마음. 그 마음을 한 화면에 옮긴 것이 곧 하루안부입니다. 함께해 주셔서 고맙습니다. 저는 네잎클로버였습니다. 오늘 하루도, 안녕하셨습니다."],
+];
+
+// 05 구간 — 발표 페르소나 말풍선. 기존 음원(clover-pain1~5.mp3) 그대로 재사용 · 재추출 불필요.
+const PAIN = [
+ ["clover-pain1","보호자","오늘 밥은 잘 드셨는지 모르겠어요."],
+ ["clover-pain2","요양보호사","보호자 전화에 하루 두 시간을 써요."],
+ ["clover-pain3","환자","자식들 걱정시키고 싶지 않아요."],
+ ["clover-pain4","의료진","어르신 상태를 매번 따로 기록해요."],
+ ["clover-pain5","보호자","멀리 있어서 자주 가보지도 못해요."],
+];
+
+const STORE = 'haru-narr-tts-edits-v2';
+let edits = {};
+try { edits = JSON.parse(localStorage.getItem(STORE) || '{}'); } catch(e){ edits = {}; }
+function saveStore(){ localStorage.setItem(STORE, JSON.stringify(edits)); }
+function curText(num, def){ return (edits[num] != null) ? edits[num] : def; }
+function breakText(t){ return t.replace(/([.?!])\s+/g,'$1\n'); }
+
+const list = document.getElementById('list');
+LINES.forEach((l)=>{
+  const [num,file,sec,def]=l;
+  const row=document.createElement('div'); row.className='row';
+  row.dataset.num=num;
+  row.innerHTML=
+    `<div class="meta"><div class="num">${num}</div><div class="file">${file}.mp3</div><div class="sec">${sec}</div><span class="editbadge">수정됨</span></div>`+
+    `<div class="body">`+
+      `<div class="text"></div>`+
+      `<textarea class="ta" spellcheck="false"></textarea>`+
+      `<div class="actions">`+
+        `<button class="btn copy">복사</button>`+
+        `<button class="btn editbtn">편집</button>`+
+        `<button class="btn save">저장</button>`+
+        `<button class="btn cancel">취소</button>`+
+        `<button class="btn reset1">이 블록 원복</button>`+
+      `</div>`+
+    `</div>`;
+  const textEl = row.querySelector('.text');
+  const ta = row.querySelector('.ta');
+
+  function refresh(){
+    const t = curText(num, def);
+    textEl.textContent = breakText(t);
+    row.classList.toggle('edited', edits[num] != null && edits[num] !== def);
+  }
+  refresh();
+
+  row.querySelector('.copy').addEventListener('click',(e)=>{
+    navigator.clipboard.writeText(breakText(curText(num,def))).then(()=>{
+      e.target.textContent='복사됨'; e.target.classList.add('done');
+      setTimeout(()=>{e.target.textContent='복사'; e.target.classList.remove('done');},1200);
+    });
+  });
+  row.querySelector('.editbtn').addEventListener('click',()=>{
+    ta.value = curText(num,def);
+    row.classList.add('editing');
+    ta.focus();
+  });
+  row.querySelector('.save').addEventListener('click',()=>{
+    const v = ta.value.trim();
+    if(v === def || v === ''){ delete edits[num]; } else { edits[num] = v; }
+    saveStore(); row.classList.remove('editing'); refresh();
+  });
+  row.querySelector('.cancel').addEventListener('click',()=>{ row.classList.remove('editing'); });
+  row.querySelector('.reset1').addEventListener('click',()=>{
+    delete edits[num]; saveStore(); row.classList.remove('editing'); refresh();
+  });
+
+  list.appendChild(row);
+
+  // 05 도입 나레이션 뒤에 페르소나 재사용 그룹 삽입
+  if(num === '05'){
+    const g=document.createElement('div'); g.className='reuse';
+    let inner=`<div class="reuse-head">05 · Problem · 흩어진 네 사람의 마음</div>`+
+      `<div class="reuse-desc">이 구간은 발표의 <b>페르소나 말풍선(역할별 글로우 + 한 명씩 타이핑)</b>을 그대로 재사용합니다. 아래 음원은 <b>이미 녹음돼 있어 재추출하지 않습니다.</b> 네잎클로버 나레이션 없음.</div>`;
+    PAIN.forEach(p=>{
+      inner+=`<div class="reuse-item"><div class="reuse-meta"><div class="reuse-file">${p[0]}.mp3</div><div class="reuse-role">${p[1]}</div></div><div class="reuse-line">${p[2]}</div><span class="reuse-tag">기존 음원 재사용</span></div>`;
+    });
+    g.innerHTML=inner;
+    list.appendChild(g);
+  }
+});
+
+// 전체 한 번에 복사 (현재 상태 = 수정 반영)
+document.getElementById('copyAll').addEventListener('click',(e)=>{
+  const all=LINES.map(l=>breakText(curText(l[0],l[3]))).join('\n\n');
+  navigator.clipboard.writeText(all).then(()=>{
+    e.target.textContent='전체 복사됨'; e.target.classList.add('done');
+    setTimeout(()=>{e.target.textContent='전체 한 번에 복사'; e.target.classList.remove('done');},1400);
+  });
+});
+
+// 수정본 내보내기 — 변경된 블록만 모아 클립보드로 (개발자에게 전달용)
+document.getElementById('exportBtn').addEventListener('click',(e)=>{
+  const changed = LINES.filter(l => edits[l[0]] != null && edits[l[0]] !== l[3]);
+  if(changed.length === 0){
+    e.target.textContent='수정된 블록 없음';
+    setTimeout(()=>{e.target.textContent='수정본 내보내기';},1400);
+    return;
+  }
+  let out = `하루안부 나레이션 — 수정본 (${changed.length}개 블록)\n`;
+  out += `이 내용을 클로드에게 그대로 전달하면 파일에 영구 반영됩니다.\n`;
+  out += `====================================\n\n`;
+  changed.forEach(l=>{
+    out += `[${l[0]} · ${l[1]}.mp3 · ${l[2]}]\n${edits[l[0]]}\n\n`;
+  });
+  navigator.clipboard.writeText(out).then(()=>{
+    e.target.textContent=`${changed.length}개 복사됨`; e.target.classList.add('done');
+    setTimeout(()=>{e.target.textContent='수정본 내보내기'; e.target.classList.remove('done');},1600);
+  });
+});
+
+// 전체 수정 초기화
+document.getElementById('resetAll').addEventListener('click',()=>{
+  if(!confirm('모든 수정을 원래 대본으로 되돌립니다. 계속할까요?')) return;
+  edits = {}; saveStore();
+  document.querySelectorAll('.row').forEach(r=>{
+    const num=r.dataset.num; const def=LINES.find(l=>l[0]===num)[3];
+    r.querySelector('.text').textContent=breakText(def);
+    r.classList.remove('edited');
+  });
+});
+</script>
+</body>
+</html>

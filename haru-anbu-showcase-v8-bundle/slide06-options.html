@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko" data-platform="mobile">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>06 페르소나 — 개선안 5종 비교</title>
+<link rel="stylesheet" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+  :root{
+    --ink: var(--color-text-primary);
+    --ink-soft: var(--palette-gray-700);
+    --muted: var(--palette-gray-500);
+    --paper:#FAFAF7; --white:#fff;
+    --c-guardian: var(--brand-blue-500);
+    --c-patient:  var(--brand-orange-400);
+    --c-care:     var(--brand-green-500);
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:#23262d; font-family:var(--font-family-base); color:#e8ebf0; }
+  .page-head{ padding:48px 56px 8px; }
+  .page-head h1{ font-size:30px; margin:0 0 8px; font-weight:800; letter-spacing:-.02em; }
+  .page-head p{ font-size:16px; color:#9aa3b2; margin:0; }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(380px, 1fr));
+    gap:48px 40px; padding:40px 56px 96px; justify-items:center;
+  }
+  .opt{ width:100%; max-width:430px; }
+  .opt-cap{ display:flex; align-items:baseline; gap:12px; margin:0 0 16px; }
+  .opt-cap .n{ font-size:22px; font-weight:800; color:#fff;
+    background:var(--c-guardian); width:40px; height:40px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .opt-cap .t{ font-size:19px; font-weight:700; color:#fff; }
+  .opt-cap .d{ font-size:14px; color:#9aa3b2; margin-top:3px; }
+  .opt-capwrap{ display:flex; gap:12px; align-items:flex-start; margin-bottom:16px; }
+  .opt-capwrap .meta h3{ margin:0; font-size:19px; font-weight:700; color:#fff; }
+  .opt-capwrap .meta p{ margin:4px 0 0; font-size:13.5px; color:#9aa3b2; line-height:1.5; }
+
+  /* scaled viewport */
+  .vp{ --s:.398; width:calc(1080px*var(--s)); height:calc(1350px*var(--s));
+    overflow:hidden; border-radius:16px; box-shadow:0 16px 44px rgba(0,0,0,.42); }
+  .vp .slide{ transform:scale(var(--s)); transform-origin:top left; }
+
+  .slide{ position:relative; width:1080px; height:1350px; overflow:hidden;
+    background:var(--paper); color:var(--ink); display:flex; flex-direction:column; }
+  .slide *{ box-sizing:border-box; }
+
+  .eyebrow{ font-size:26px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin:0 0 30px; }
+  .headline{ font-size:80px; line-height:1.16; font-weight:700; letter-spacing:-.02em; margin:0; }
+
+  /* ============================================================
+     OPTION 1 — 에디토리얼 가로 행 (사진 + 텍스트)
+     ============================================================ */
+  .o1{ padding:90px 84px; }
+  .o1-rows{ display:flex; flex-direction:column; gap:26px; margin-top:54px; flex:1; }
+  .o1-row{ display:grid; grid-template-columns:360px 1fr; background:var(--white);
+    border-radius:36px; overflow:hidden; box-shadow:var(--shadow-card-floating); }
+  .o1-row img{ width:360px; height:100%; object-fit:cover; display:block; }
+  .o1-tx{ padding:46px 52px; display:flex; flex-direction:column; justify-content:center; }
+  .o1-tag{ font-size:25px; font-weight:700; letter-spacing:.01em; }
+  .o1-tx h3{ font-size:44px; line-height:1.18; font-weight:700; letter-spacing:-.02em; margin:14px 0 0; }
+  .o1-tx p{ font-size:25px; line-height:1.5; color:var(--ink-soft); margin:20px 0 0; }
+
+  /* ============================================================
+     OPTION 2 — 트립틱 세로 카드 3열
+     ============================================================ */
+  .o2{ padding:90px 72px; }
+  .o2 .headline{ text-align:center; }
+  .o2 .eyebrow{ text-align:center; }
+  .o2-cols{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:56px; flex:1; }
+  .o2-card{ background:var(--white); border-radius:34px; overflow:hidden;
+    display:flex; flex-direction:column; box-shadow:var(--shadow-card-floating); }
+  .o2-card .ph{ height:430px; overflow:hidden; }
+  .o2-card .ph img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .o2-bd{ padding:34px 30px 38px; display:flex; flex-direction:column; flex:1; }
+  .o2-tag{ font-size:23px; font-weight:700; }
+  .o2-bd h3{ font-size:33px; line-height:1.24; font-weight:700; letter-spacing:-.02em; margin:14px 0 0; }
+  .o2-bd p{ font-size:21px; line-height:1.5; color:var(--ink-soft); margin:16px 0 0; }
+
+  /* ============================================================
+     OPTION 3 — 히어로 사진 + 하단 인용 카드 3
+     ============================================================ */
+  .o3{ padding:0; }
+  .o3-hero{ position:relative; height:760px; overflow:hidden; }
+  .o3-hero img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .o3-scrim{ position:absolute; inset:0; background:linear-gradient(180deg,rgba(16,18,22,0) 30%,rgba(16,18,22,.62)); }
+  .o3-hcap{ position:absolute; left:84px; bottom:72px; right:84px; color:#fff; z-index:2; }
+  .o3-hcap .eyebrow{ color:rgba(255,255,255,.8); }
+  .o3-hcap .headline{ color:#fff; }
+  .o3-cards{ flex:1; display:grid; grid-template-columns:repeat(3,1fr); gap:24px; padding:56px 76px; }
+  .o3-c{ background:var(--paper); border-radius:30px; padding:40px 32px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .o3-c .av{ width:128px; height:128px; border-radius:50%; object-fit:cover; }
+  .o3-c .tag{ font-size:23px; font-weight:700; margin-top:24px; }
+  .o3-c p{ font-size:23px; line-height:1.45; font-weight:600; color:var(--ink); margin:14px 0 0; letter-spacing:-.01em; }
+
+  /* ============================================================
+     OPTION 4 — 연결된 세로 내러티브 (한 하루를 잇다)
+     ============================================================ */
+  .o4{ padding:90px 84px; }
+  .o4-list{ position:relative; margin-top:60px; flex:1; display:flex; flex-direction:column; justify-content:space-between; padding-left:8px; }
+  .o4-list::before{ content:""; position:absolute; left:97px; top:110px; bottom:110px; width:4px; background:var(--palette-gray-200); z-index:0; }
+  .o4-node{ position:relative; z-index:1; display:grid; grid-template-columns:186px 1fr; gap:44px; align-items:center; }
+  .o4-av{ width:186px; height:186px; border-radius:50%; padding:8px; background:var(--paper); }
+  .o4-av img{ width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; }
+  .o4-tx .tag{ font-size:25px; font-weight:700; }
+  .o4-tx h3{ font-size:42px; line-height:1.2; font-weight:700; letter-spacing:-.02em; margin:12px 0 0; }
+  .o4-tx p{ font-size:24px; line-height:1.5; color:var(--ink-soft); margin:16px 0 0; }
+
+  /* ============================================================
+     OPTION 5 — 타이포 중심 컬러 블록 (미니멀)
+     ============================================================ */
+  .o5{ padding:90px 84px; }
+  .o5-bands{ flex:1; display:flex; flex-direction:column; justify-content:center; gap:18px; margin-top:30px; }
+  .o5-band{ display:grid; grid-template-columns:1fr 150px; align-items:center; gap:32px; padding:42px 0; }
+  .o5-band + .o5-band{ border-top:0; }
+  .o5-tag{ font-size:27px; font-weight:700; letter-spacing:.01em; }
+  .o5-band h3{ font-size:54px; line-height:1.14; font-weight:800; letter-spacing:-.03em; margin:14px 0 0; color:var(--ink); }
+  .o5-band p{ font-size:22px; color:var(--muted); margin:14px 0 0; font-weight:500; }
+  .o5-av{ width:150px; height:150px; border-radius:50%; object-fit:cover; }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>06 페르소나 — 개선안 5종</h1>
+  <p>다섯 가지 레이아웃 방향. 마음에 드는 번호를 골라주세요. (실제 1080×1350 슬라이드를 축소 렌더)</p>
+</div>
+
+<div class="grid">
+
+  <!-- ===================== OPTION 1 ===================== -->
+  <div class="opt">
+    <div class="opt-capwrap">
+      <span class="n" style="background:var(--c-guardian)">1</span>
+      <div class="meta"><h3>에디토리얼 행</h3><p>사진+텍스트 가로 카드 3행. 텍스트 공간이 가장 넉넉하고 안정적.</p></div>
+    </div>
+    <div class="vp"><article class="slide o1">
+      <p class="eyebrow">Three Views, One Day</p>
+      <h2 class="headline">한 사람의 하루를<br>세 시선이 함께.</h2>
+      <div class="o1-rows">
+        <div class="o1-row">
+          <img src="img/persona/guardian.png" alt="">
+          <div class="o1-tx">
+            <span class="o1-tag" style="color:var(--c-guardian)">보호자 · Guardian</span>
+            <h3>멀리 있어도<br>매일 안부를 받습니다</h3>
+            <p>하루 한 줄 리포트로, 오늘도 잘 계신지 바로 압니다.</p>
+          </div>
+        </div>
+        <div class="o1-row">
+          <img src="img/persona/patient.png" alt="">
+          <div class="o1-tx">
+            <span class="o1-tag" style="color:var(--c-patient)">환자 · Patient</span>
+            <h3>버튼 하나로<br>오늘도 잘 지낸다고</h3>
+            <p>큰 글씨, 쉬운 터치. 안부는 한 번이면 충분합니다.</p>
+          </div>
+        </div>
+        <div class="o1-row">
+          <img src="img/persona/care.png" alt="">
+          <div class="o1-tx">
+            <span class="o1-tag" style="color:var(--c-care)">요양보호사 · 의료진</span>
+            <h3>기록하는 순간<br>가족에게 닿습니다</h3>
+            <p>케어의 손길이 그대로 하루의 안부가 됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </article></div>
+  </div>
+
+  <!-- ===================== OPTION 2 ===================== -->
+  <div class="opt">
+    <div class="opt-capwrap">
+      <span class="n" style="background:var(--c-patient)">2</span>
+      <div class="meta"><h3>트립틱 3열</h3><p>세로 카드 3개. 매거진 느낌, 사진이 크게 보임.</p></div>
+    </div>
+    <div class="vp"><article class="slide o2">
+      <p class="eyebrow">Three Views, One Day</p>
+      <h2 class="headline">한 사람의 하루를<br>세 시선이 함께.</h2>
+      <div class="o2-cols">
+        <div class="o2-card">
+          <div class="ph"><img src="img/persona/guardian.png" alt=""></div>
+          <div class="o2-bd">
+            <span class="o2-tag" style="color:var(--c-guardian)">보호자</span>
+            <h3>멀리 있어도<br>매일 안부를</h3>
+            <p>하루 한 줄 리포트로 바로 압니다.</p>
+          </div>
+        </div>
+        <div class="o2-card">
+          <div class="ph"><img src="img/persona/patient.png" alt=""></div>
+          <div class="o2-bd">
+            <span class="o2-tag" style="color:var(--c-patient)">환자</span>
+            <h3>버튼 하나로<br>잘 지낸다고</h3>
+            <p>큰 글씨, 쉬운 터치. 한 번이면 충분.</p>
+          </div>
+        </div>
+        <div class="o2-card">
+          <div class="ph"><img src="img/persona/care.png" alt=""></div>
+          <div class="o2-bd">
+            <span class="o2-tag" style="color:var(--c-care)">케어팀</span>
+            <h3>기록하는 순간<br>가족에게</h3>
+            <p>케어의 손길이 안부가 됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </article></div>
+  </div>
+
+  <!-- ===================== OPTION 3 ===================== -->
+  <div class="opt">
+    <div class="opt-capwrap">
+      <span class="n" style="background:var(--c-care)">3</span>
+      <div class="meta"><h3>히어로 + 인용</h3><p>큰 라이프 사진 위 헤드라인, 하단 3인 인용 카드. 감성·임팩트.</p></div>
+    </div>
+    <div class="vp"><article class="slide o3">
+      <div class="o3-hero">
+        <img src="img/gallery/life-guardian-patient.png" alt="">
+        <div class="o3-scrim"></div>
+        <div class="o3-hcap">
+          <p class="eyebrow">Three Views, One Day</p>
+          <h2 class="headline">한 사람의 하루를<br>세 시선이 함께.</h2>
+        </div>
+      </div>
+      <div class="o3-cards">
+        <div class="o3-c">
+          <img class="av" src="img/persona/guardian.png" alt="">
+          <span class="tag" style="color:var(--c-guardian)">보호자</span>
+          <p>멀리 있어도<br>매일 안부를</p>
+        </div>
+        <div class="o3-c">
+          <img class="av" src="img/persona/patient.png" alt="">
+          <span class="tag" style="color:var(--c-patient)">환자</span>
+          <p>버튼 하나로<br>잘 지낸다고</p>
+        </div>
+        <div class="o3-c">
+          <img class="av" src="img/persona/care.png" alt="">
+          <span class="tag" style="color:var(--c-care)">케어팀</span>
+          <p>기록하는 순간<br>가족에게</p>
+        </div>
+      </div>
+    </article></div>
+  </div>
+
+  <!-- ===================== OPTION 4 ===================== -->
+  <div class="opt">
+    <div class="opt-capwrap">
+      <span class="n" style="background:var(--c-guardian)">4</span>
+      <div class="meta"><h3>연결된 내러티브</h3><p>세로 라인으로 셋을 잇는다. "한 하루를 잇다" 메시지와 직결.</p></div>
+    </div>
+    <div class="vp"><article class="slide o4">
+      <p class="eyebrow">Three Views, One Day</p>
+      <h2 class="headline">한 사람의 하루를<br>세 시선이 함께.</h2>
+      <div class="o4-list">
+        <div class="o4-node">
+          <div class="o4-av" style="background:var(--c-guardian)"><img src="img/persona/guardian.png" alt=""></div>
+          <div class="o4-tx">
+            <span class="tag" style="color:var(--c-guardian)">보호자 · Guardian</span>
+            <h3>멀리 있어도<br>매일 안부를 받습니다</h3>
+            <p>하루 한 줄 리포트로, 오늘도 잘 계신지 바로 압니다.</p>
+          </div>
+        </div>
+        <div class="o4-node">
+          <div class="o4-av" style="background:var(--c-patient)"><img src="img/persona/patient.png" alt=""></div>
+          <div class="o4-tx">
+            <span class="tag" style="color:var(--c-patient)">환자 · Patient</span>
+            <h3>버튼 하나로<br>오늘도 잘 지낸다고</h3>
+            <p>큰 글씨, 쉬운 터치. 안부는 한 번이면 충분합니다.</p>
+          </div>
+        </div>
+        <div class="o4-node">
+          <div class="o4-av" style="background:var(--c-care)"><img src="img/persona/care.png" alt=""></div>
+          <div class="o4-tx">
+            <span class="tag" style="color:var(--c-care)">요양보호사 · 의료진</span>
+            <h3>기록하는 순간<br>가족에게 닿습니다</h3>
+            <p>케어의 손길이 그대로 하루의 안부가 됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </article></div>
+  </div>
+
+  <!-- ===================== OPTION 5 ===================== -->
+  <div class="opt">
+    <div class="opt-capwrap">
+      <span class="n" style="background:var(--c-patient)">5</span>
+      <div class="meta"><h3>타이포 미니멀</h3><p>큰 글씨 중심, 작은 아바타. 위계는 타이포·간격으로. 가장 절제됨.</p></div>
+    </div>
+    <div class="vp"><article class="slide o5">
+      <p class="eyebrow">Three Views, One Day</p>
+      <h2 class="headline">한 사람의 하루를<br>세 시선이 함께.</h2>
+      <div class="o5-bands">
+        <div class="o5-band">
+          <div>
+            <span class="o5-tag" style="color:var(--c-guardian)">보호자 · Guardian</span>
+            <h3>멀리 있어도 매일<br>안부를 받습니다</h3>
+            <p>하루 한 줄 리포트로 바로 압니다.</p>
+          </div>
+          <img class="o5-av" src="img/persona/guardian.png" alt="">
+        </div>
+        <div class="o5-band">
+          <div>
+            <span class="o5-tag" style="color:var(--c-patient)">환자 · Patient</span>
+            <h3>버튼 하나로 오늘도<br>잘 지낸다고</h3>
+            <p>큰 글씨, 쉬운 터치. 한 번이면 충분.</p>
+          </div>
+          <img class="o5-av" src="img/persona/patient.png" alt="">
+        </div>
+        <div class="o5-band">
+          <div>
+            <span class="o5-tag" style="color:var(--c-care)">요양보호사 · 의료진</span>
+            <h3>기록하는 순간<br>가족에게 닿습니다</h3>
+            <p>케어의 손길이 안부가 됩니다.</p>
+          </div>
+          <img class="o5-av" src="img/persona/care.png" alt="">
+        </div>
+      </div>
+    </article></div>
+  </div>
+
+</div>
+</body>
+</html>

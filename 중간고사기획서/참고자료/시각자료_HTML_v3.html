@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시각자료 참고 요소 v3</title>
+<style>
+:root {
+  --gray-50:  #fafafa;
+  --gray-100: #f4f4f5;
+  --gray-150: #eeeeef;
+  --gray-200: #e4e4e7;
+  --gray-300: #d1d1d6;
+  --gray-400: #a0a0ab;
+  --gray-500: #71717a;
+  --gray-600: #52525b;
+  --gray-700: #3f3f46;
+  --gray-800: #27272a;
+  --gray-900: #18181b;
+  --blue-100: #dbeafe;
+  --blue-200: #bfdbfe;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --green-500: #22c55e;
+  --white: #ffffff;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-full: 999px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, 'Apple SD Gothic Neo', 'Inter', 'Noto Sans KR', sans-serif;
+  background: #f0f0f2;
+  color: var(--gray-900);
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gray-200);
+  display: flex; overflow-x: auto; padding: 0 40px;
+}
+nav a {
+  flex-shrink: 0; padding: 13px 15px;
+  font-size: 11px; font-weight: 500;
+  color: var(--gray-400); text-decoration: none;
+  border-bottom: 2px solid transparent;
+  letter-spacing: .04em; transition: all .15s;
+  white-space: nowrap;
+}
+nav a:hover { color: var(--gray-900); border-bottom-color: var(--gray-900); }
+
+/* ── PAGE ── */
+.page { max-width: 1080px; margin: 0 auto; padding: 60px 40px; display: flex; flex-direction: column; gap: 72px; }
+
+/* ── SECTION META ── */
+.s-eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--gray-400); margin-bottom: 8px;
+}
+.s-num {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--gray-300); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 800; color: var(--gray-600);
+}
+.s-h { font-size: 22px; font-weight: 800; color: var(--gray-900); margin-bottom: 24px; line-height: 1.25; }
+
+/* ── CARD SHELLS ── */
+.card { background: var(--white); border-radius: var(--r-xl); padding: 48px; border: 1px solid var(--gray-150); }
+.card-gray { background: #f1f1f1; border-radius: var(--r-xl); padding: 48px; }
+.card-dark { background: #111115; border-radius: var(--r-xl); overflow: hidden; }
+.card-blue-bg { background: #e8f0f8; border-radius: var(--r-xl); padding: 48px; }
+
+
+/* ══════════════════════════════════════════
+   01 · USER FLOW — faithful to original
+══════════════════════════════════════════ */
+.uf-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+/* 초기 입력 컬럼 */
+.uf-init {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-self: flex-start;
+  padding-top: 6px;
+}
+.uf-pill {
+  border: 1.5px solid var(--gray-300);
+  border-radius: var(--r-full);
+  padding: 9px 22px;
+  font-size: 12px; color: var(--gray-600);
+  white-space: nowrap; background: var(--white); flex-shrink: 0;
+}
+/* 수평 연결선 */
+.uf-hline { width: 32px; height: 1px; background: var(--gray-300); align-self: center; flex-shrink: 0; }
+.uf-hline-sm { width: 18px; height: 1px; background: var(--gray-300); align-self: center; flex-shrink: 0; }
+/* 중앙 수직 점선 + Primary 노드 컬럼 */
+.uf-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+.uf-primary {
+  background: var(--gray-700);
+  color: var(--white);
+  border-radius: var(--r-sm);
+  padding: 10px 22px;
+  font-size: 12px; font-weight: 700;
+  white-space: nowrap; text-align: center;
+  min-width: 88px; flex-shrink: 0;
+}
+.uf-vdash {
+  width: 1px;
+  background: repeating-linear-gradient(to bottom, var(--gray-300) 0, var(--gray-300) 5px, transparent 5px, transparent 11px);
+  flex-shrink: 0;
+}
+/* 오른쪽 브랜치 */
+.uf-branches {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.uf-branch { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
+.uf-row { display: flex; align-items: center; gap: 0; }
+.uf-box {
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--r-sm);
+  padding: 9px 16px;
+  font-size: 12px; color: var(--gray-600);
+  white-space: nowrap; background: var(--white); flex-shrink: 0;
+}
+/* 다이아몬드 */
+.uf-diamond {
+  width: 80px; height: 48px;
+  position: relative; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.uf-diamond::before {
+  content: '';
+  position: absolute; inset: 4px;
+  border: 1.5px solid var(--gray-300);
+  background: var(--white);
+  transform: rotate(45deg);
+}
+.uf-diamond span { position: relative; font-size: 10px; color: var(--gray-600); white-space: nowrap; }
+
+
+/* ══════════════════════════════════════════
+   02 · STATS — fixed icons
+══════════════════════════════════════════ */
+.stats-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 48px; align-items: center; }
+
+/* Badge: green upward trend icon */
+.stats-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #f3f3f3; border-radius: var(--r-full);
+  padding: 5px 14px 5px 10px;
+  font-size: 12px; font-weight: 500; color: var(--gray-700);
+  margin-bottom: 20px;
+}
+.badge-trend {
+  width: 18px; height: 18px;
+  background: #dcfce7;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--green-500); font-weight: 700;
+}
+.stats-h {
+  font-size: 36px; font-weight: 800;
+  letter-spacing: -.025em; line-height: 1.1;
+  color: var(--gray-900); margin-bottom: 16px;
+}
+.stats-p { font-size: 13px; color: var(--gray-400); line-height: 1.7; margin-bottom: 22px; }
+.stats-p strong { color: var(--gray-700); font-weight: 600; }
+.stats-link { font-size: 12px; font-weight: 600; color: var(--green-500); cursor: pointer; }
+.stats-foot { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--gray-100); font-size: 12px; color: var(--gray-400); line-height: 1.7; }
+.stats-foot strong { color: var(--gray-700); }
+.av-stack { display: flex; align-items: center; margin-top: 10px; }
+.av { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--white); margin-left: -6px; flex-shrink: 0; }
+.av:first-child { margin-left: 0; }
+.av1{background:#f87171;}.av2{background:#60a5fa;}.av3{background:#34d399;}.av4{background:#fbbf24;}.av5{background:#c084fc;}
+.av-text { font-size: 11px; color: var(--gray-400); margin-left: 8px; }
+
+.sc-cards { display: flex; flex-direction: column; gap: 10px; }
+.sc {
+  background: #f3f4f6; border-radius: 16px; padding: 24px 26px;
+}
+.sc-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* Stat card icon: green ≡ rectangle */
+.sc-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 500; color: var(--gray-700); margin-bottom: 20px;
+}
+.sc-icon {
+  width: 20px; height: 14px; background: var(--green-500); border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sc-icon::after {
+  content: '';
+  display: block; width: 12px; height: 6px;
+  background: repeating-linear-gradient(
+    to bottom, rgba(255,255,255,0.6) 0, rgba(255,255,255,0.6) 1.5px,
+    transparent 1.5px, transparent 3px
+  );
+}
+.sc-num { font-size: 56px; font-weight: 800; letter-spacing: -.04em; color: var(--gray-900); line-height: 1; margin-bottom: 6px; }
+.sc-num-sm { font-size: 44px; font-weight: 800; letter-spacing: -.04em; color: var(--gray-900); line-height: 1; margin-bottom: 6px; }
+.sc-desc { font-size: 11px; color: var(--gray-400); }
+
+
+/* ══════════════════════════════════════════
+   03 · CONIC — dark split
+══════════════════════════════════════════ */
+.conic-split { display: grid; grid-template-columns: 1fr 1fr; }
+.conic-l { padding: 44px 40px; display: flex; flex-direction: column; gap: 18px; }
+.conic-r { background: #18181e; border-radius: 0 var(--r-xl) var(--r-xl) 0; padding: 40px 36px; display: flex; flex-direction: column; gap: 10px; }
+.c-eye { display: flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 700; letter-spacing: .1em; color: #505058; text-transform: uppercase; }
+.c-lime { width: 8px; height: 8px; border-radius: 50%; background: #c6ff00; }
+.c-desc { font-size: 12px; color: #666; line-height: 1.75; }
+
+.eco-wrap { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+.eco-arrow-ext { font-size: 12px; color: #3a3a3a; }
+.eco-oval {
+  border: 1.5px solid #2a2a32; border-radius: 60px;
+  padding: 18px 22px; display: flex; align-items: center; gap: 14px;
+  background: #161618;
+}
+.eco-n-dark {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: #0c0c0e; border: 1.5px solid #2a2a2a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #aaa; flex-shrink: 0;
+}
+.eco-n-lime {
+  width: 62px; height: 62px; border-radius: 50%;
+  background: #c6ff00; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 900; color: #000; letter-spacing: -.03em; flex-shrink: 0;
+}
+.eco-txt { display: flex; flex-direction: column; gap: 5px; font-size: 9px; color: #444; line-height: 1.35; }
+.eco-platform { font-size: 10px; color: #444; font-weight: 700; letter-spacing: .06em; flex-shrink: 0; }
+.eco-comm { font-size: 9px; color: #333; text-align: center; }
+
+/* chat */
+.ch-r { align-self: flex-end; background: #2a2a32; border-radius: 14px 14px 3px 14px; padding: 10px 14px; font-size: 12px; color: #ddd; max-width: 200px; line-height: 1.55; }
+.ch-l { align-self: flex-start; background: #1e1e26; border-radius: 14px 14px 14px 3px; padding: 10px 14px; font-size: 12px; color: #888; max-width: 200px; line-height: 1.55; }
+.ch-t { font-size: 9px; color: #2e2e38; text-align: right; margin-top: 2px; }
+.ch-emoji { align-self: center; background: #101012; border-radius: 18px; width: 88px; height: 88px; display: flex; align-items: center; justify-content: center; font-size: 42px; box-shadow: 0 8px 28px rgba(0,0,0,.7); }
+.ch-input { display: flex; align-items: center; gap: 10px; background: #1a1a22; border-radius: var(--r-full); padding: 9px 14px; margin-top: 6px; }
+.ch-in-txt { flex: 1; font-size: 12px; color: #555; }
+.ch-in-txt b { color: #ccc; }
+.ch-send { width: 26px; height: 26px; background: #3a3a46; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #aaa; flex-shrink: 0; }
+
+
+/* ══════════════════════════════════════════
+   04 · PERSONA CARDS
+══════════════════════════════════════════ */
+.per-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.per-card { background: #f7f6ff; border-radius: var(--r-xl); padding: 32px; }
+.per-card-b { background: #f0f6ff; }
+.per-top { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.per-av { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+.per-name { font-size: 14px; font-weight: 700; }
+.per-meta { font-size: 11px; color: var(--gray-400); margin-top: 3px; line-height: 1.55; }
+.per-quote {
+  background: var(--white); border-radius: var(--r-md); padding: 16px 18px; margin-bottom: 18px;
+}
+.per-qm { font-size: 22px; color: #7c4dff; line-height: 1; margin-bottom: 6px; font-family: Georgia, serif; }
+.per-qt { font-size: 15px; font-weight: 700; line-height: 1.5; }
+.per-lbl { font-size: 11px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; }
+.per-pain { font-size: 12px; color: var(--gray-500); line-height: 1.75; margin-bottom: 14px; }
+.per-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.per-tag { border: 1.5px solid var(--gray-200); border-radius: var(--r-full); padding: 5px 12px; font-size: 11px; color: var(--gray-500); background: var(--white); }
+
+
+/* ══════════════════════════════════════════
+   05 · INFOGRAPHIC — light gray bg, faithful layout
+══════════════════════════════════════════ */
+.infog-title-line { font-size: 17px; font-weight: 800; text-align: center; color: var(--gray-900); margin-bottom: 48px; letter-spacing: -.01em; }
+.infog-steps { display: flex; flex-direction: column; }
+.infog-step { display: flex; gap: 24px; padding: 36px 0; border-top: 1px solid var(--gray-300); }
+.infog-step:first-child { border-top: none; padding-top: 0; }
+.is-num { font-size: 13px; font-weight: 800; color: var(--gray-900); min-width: 16px; padding-top: 2px; flex-shrink: 0; }
+.is-body { flex: 1; }
+.is-h { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+.is-sub { font-size: 11px; color: var(--gray-400); margin-top: 2px; margin-bottom: 24px; }
+.pr-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pr-circ {
+  width: 80px; height: 80px; border-radius: 50%;
+  border: 1.5px solid var(--gray-700);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--gray-700);
+  text-align: center; line-height: 1.4; padding: 6px; flex-shrink: 0;
+}
+.pr-circ-filled {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--gray-900);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--white);
+  text-align: center; line-height: 1.4; padding: 6px;
+  font-weight: 700; flex-shrink: 0;
+}
+.pr-rect { background: var(--gray-900); border-radius: 3px; padding: 16px 18px; font-size: 11px; color: var(--white); text-align: center; font-weight: 700; line-height: 1.5; flex-shrink: 0; }
+.pr-list { border: 1.5px solid var(--gray-400); border-radius: 3px; padding: 12px 14px; font-size: 11px; color: var(--gray-600); line-height: 2; flex-shrink: 0; }
+.pr-arr { font-size: 13px; color: var(--gray-500); flex-shrink: 0; }
+.pr-darr { font-size: 13px; color: var(--gray-500); flex-shrink: 0; border-top: 1px dashed var(--gray-400); width: 24px; }
+
+/* Venn 3-circle */
+.pr-venn {
+  position: relative; width: 172px; height: 84px; flex-shrink: 0;
+}
+.pr-vc {
+  position: absolute; width: 70px; height: 70px;
+  border-radius: 50%; border: 1.5px solid var(--gray-700);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--gray-700); text-align: center;
+  line-height: 1.3; padding: 4px;
+}
+
+/* Step 3 대형 점선 원 */
+.step3-wrap { display: flex; align-items: center; gap: 12px; }
+.step3-outer {
+  position: relative; width: 170px; height: 130px; flex-shrink: 0;
+}
+.step3-dashed-ring {
+  position: absolute; inset: 0;
+  border: 1.5px dashed var(--gray-400);
+  border-radius: 50%;
+}
+.step3-inner-circ {
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 80px; height: 80px; border-radius: 50%;
+  border: 1.5px solid var(--gray-700);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: var(--gray-700);
+}
+.step3-label {
+  position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; color: var(--gray-500); white-space: nowrap;
+}
+
+/* Brand Experience semicircle */
+.exp-wrap { display: flex; gap: 40px; align-items: flex-start; margin-top: 4px; }
+.exp-semi {
+  position: relative; width: 200px; height: 110px; flex-shrink: 0;
+}
+.exp-ring {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  border: 2px solid; border-bottom: none; border-radius: 50%;
+}
+.exp-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+.exp-leg-item strong { font-size: 11px; color: var(--gray-900); display: block; margin-bottom: 3px; }
+.exp-leg-item span { font-size: 10px; color: var(--gray-400); line-height: 1.75; }
+
+
+/* ══════════════════════════════════════════
+   06 · TARGET PERSONA
+══════════════════════════════════════════ */
+.tgt-hdr { text-align: center; margin-bottom: 36px; }
+.tgt-pill { display: inline-block; border: 2px solid #e6c84a; border-radius: var(--r-full); padding: 7px 22px; font-size: 13px; font-weight: 700; margin-bottom: 14px; }
+.tgt-desc { font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+.tgt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.tgt-card { border: 2px solid var(--gray-200); border-radius: var(--r-xl); padding: 32px; }
+.tgt-card-y { border-color: #e6c84a; }
+.tgt-chip { display: inline-block; background: var(--gray-100); border-radius: var(--r-full); padding: 4px 14px; font-size: 11px; font-weight: 700; color: var(--gray-500); margin-bottom: 20px; }
+.tgt-chip-y { background: #e6c84a; color: #111; }
+.tgt-av { width: 80px; height: 80px; border-radius: 50%; background: #f0ede4; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 12px; }
+.tgt-name { font-size: 12px; color: var(--gray-400); text-align: center; margin-bottom: 16px; }
+.tgt-q { font-size: 17px; font-weight: 900; text-align: center; line-height: 1.4; margin-bottom: 22px; }
+.tgt-lbl { font-size: 11px; font-weight: 700; color: var(--gray-500); margin-bottom: 5px; }
+.tgt-txt { font-size: 12px; color: var(--gray-500); line-height: 1.7; margin-bottom: 14px; }
+.tgt-pts { list-style: none; font-size: 12px; color: var(--gray-500); line-height: 1.9; }
+.tgt-pts li { padding-left: 12px; position: relative; }
+.tgt-pts li::before { content: '·'; position: absolute; left: 0; color: var(--gray-300); }
+.tgt-pts strong { color: var(--gray-700); font-weight: 600; }
+
+
+/* ══════════════════════════════════════════
+   07 · BRAND DIAGRAM — capsule with inner circles
+══════════════════════════════════════════ */
+.brand-corner { font-size: 10px; color: var(--gray-400); text-align: right; margin-bottom: 4px; }
+.brand-hed { font-size: 34px; font-weight: 900; letter-spacing: -.025em; margin-bottom: 6px; }
+.brand-sub-txt { font-size: 12px; color: var(--gray-500); line-height: 1.7; margin-bottom: 48px; }
+
+.brand-main {
+  display: flex; align-items: center; justify-content: center; gap: 0;
+  padding: 20px 0 32px;
+  position: relative;
+}
+/* baseline */
+.brand-main::after {
+  content: '';
+  position: absolute; top: 50%; left: 0; right: 0; height: 1px;
+  background: var(--gray-200);
+  z-index: 0;
+}
+.brand-el { position: relative; z-index: 1; }
+
+/* 왼쪽 원 */
+.bn-circ {
+  width: 132px; height: 132px; border-radius: 50%;
+  border: 1.5px solid var(--gray-300); background: var(--white);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--gray-700);
+  text-align: center; line-height: 1.7; flex-shrink: 0;
+}
+/* 화살표 라인 */
+.bn-line-arrow {
+  display: flex; align-items: center; flex-shrink: 0;
+  position: relative; z-index: 1;
+}
+.bn-line { width: 48px; height: 1px; background: var(--gray-300); }
+.bn-arrowhead {
+  width: 0; height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid var(--gray-300);
+}
+
+/* 캡슐 (tall pill with 3 inner circles) */
+.bn-capsule {
+  border: 1.5px solid var(--gray-300); background: var(--white);
+  border-radius: 80px; padding: 20px 22px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px; flex-shrink: 0;
+}
+.bn-cap-circ {
+  width: 68px; height: 68px; border-radius: 50%;
+  background: #ebebeb;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--gray-600); text-align: center;
+  line-height: 1.35; padding: 4px;
+}
+
+/* 오른쪽 원 */
+.bn-circ-r {
+  width: 132px; height: 132px; border-radius: 50%;
+  border: 1.5px solid var(--gray-300); background: var(--white);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; letter-spacing: .04em; color: var(--gray-700);
+  text-align: center; line-height: 1.6; flex-shrink: 0;
+}
+
+/* 텍스트 결론 */
+.bn-outcome { font-size: 19px; font-weight: 800; color: var(--gray-900); white-space: nowrap; line-height: 1.4; flex-shrink: 0; position: relative; z-index: 1; }
+
+.brand-labels {
+  display: flex; align-items: flex-start;
+  gap: 0; margin-top: 12px; justify-content: center;
+}
+.blab { text-align: center; font-size: 11px; color: var(--gray-400); }
+
+.brand-footer {
+  text-align: right; margin-top: 32px; padding-top: 18px;
+  border-top: 1px solid var(--gray-100);
+  font-size: 13px; font-weight: 700; color: var(--gray-600);
+}
+.brand-footer span { font-size: 22px; font-weight: 900; }
+
+
+/* ══════════════════════════════════════════
+   08 · FINANCE FLOW — with ●connectors & ✓×
+══════════════════════════════════════════ */
+.fin-eye { font-size: 10px; color: var(--gray-400); letter-spacing: .06em; margin-bottom: 6px; }
+.fin-h { font-size: 22px; font-weight: 800; line-height: 1.35; margin-bottom: 36px; }
+.fin-scroll { overflow-x: auto; }
+.fin-canvas { display: inline-flex; flex-direction: column; gap: 0; min-width: 900px; }
+
+/* top row: Splash ●── Join ●── Login ──▶ 금융데이터연동 ──● ↓  */
+.fin-top { display: flex; align-items: center; gap: 0; }
+.fin-box-out {
+  border: 1.5px solid #93c5fd; border-radius: var(--r-sm);
+  padding: 8px 18px; font-size: 12px; color: var(--blue-600);
+  white-space: nowrap; background: var(--white); flex-shrink: 0;
+}
+.fin-box-fill {
+  background: var(--blue-600); border-radius: var(--r-sm);
+  padding: 9px 20px; font-size: 12px; color: var(--white);
+  font-weight: 700; white-space: nowrap; flex-shrink: 0;
+}
+.fin-line { height: 1px; background: #93c5fd; width: 20px; flex-shrink: 0; }
+.fin-line-lg { height: 1px; background: #93c5fd; width: 32px; flex-shrink: 0; }
+.fin-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--blue-600); flex-shrink: 0; }
+.fin-dot-out { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--blue-600); background: var(--white); flex-shrink: 0; }
+.fin-vline { width: 1px; background: #93c5fd; flex-shrink: 0; }
+
+/* 다이아몬드 */
+.fin-diamond {
+  width: 64px; height: 64px; position: relative; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.fin-diamond::before {
+  content: '';
+  position: absolute; inset: 4px;
+  border: 1.5px solid var(--blue-600); background: var(--white);
+  transform: rotate(45deg);
+}
+.fin-diamond-lbl { position: relative; font-size: 10px; color: var(--blue-600); white-space: nowrap; font-weight: 600; }
+/* 분기 마커 */
+.fin-x { font-size: 9px; color: var(--gray-400); }
+.fin-v { font-size: 9px; color: var(--blue-600); font-weight: 700; }
+
+/* 메인 노드 컬럼 */
+.fin-main-col {
+  display: flex; flex-direction: column; gap: 0;
+  align-items: flex-start;
+}
+.fin-node-row { display: flex; align-items: center; gap: 0; }
+.fin-node-spacer { width: 1px; height: 18px; background: #93c5fd; margin-left: 36px; }
+
+
+/* ══════════════════════════════════════════
+   09 · USABILITY TEST
+══════════════════════════════════════════ */
+.ut-h { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+.ut-desc { font-size: 12px; color: var(--gray-500); line-height: 1.7; margin-bottom: 16px; }
+.ut-bar { display: flex; gap: 24px; padding: 12px 0; border-top: 1px solid var(--gray-100); border-bottom: 1px solid var(--gray-100); margin-bottom: 32px; }
+.ut-mi { font-size: 11px; color: var(--gray-400); }
+.ut-mi strong { color: var(--gray-700); font-weight: 600; display: block; margin-bottom: 2px; }
+.ut-sec { padding-left: 18px; border-left: 3px solid var(--blue-500); margin-bottom: 28px; }
+.ut-sh { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.ut-sp { font-size: 12px; color: var(--gray-500); line-height: 1.7; margin-bottom: 12px; }
+.phone-row { display: flex; align-items: flex-end; gap: 10px; margin: 12px 0; }
+.ph {
+  width: 76px; height: 134px; border: 2px solid var(--gray-200);
+  border-radius: 15px; background: var(--white);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ph-in { width: 64px; height: 114px; border-radius: 11px; display: flex; flex-direction: column; gap: 4px; padding: 8px; }
+.ph-bar { height: 5px; border-radius: 3px; }
+.ph-map { flex: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.ph-arrow { font-size: 13px; color: var(--gray-200); align-self: center; }
+.ut-find { background: #eff6ff; border-radius: var(--r-sm); padding: 11px 14px; font-size: 11px; color: #1e40af; line-height: 1.65; display: flex; gap: 7px; }
+.ut-stat-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.ut-stat { background: var(--gray-100); border-radius: var(--r-md); padding: 14px 18px; }
+.ut-sn { font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
+.ut-sl { font-size: 10px; color: var(--gray-400); margin-top: 2px; }
+
+
+/* ══════════════════════════════════════════
+   10 · BACKGROUND + CHART — light blue bg
+══════════════════════════════════════════ */
+.bg-eye { font-size: 12px; font-weight: 700; color: var(--blue-500); margin-bottom: 6px; }
+.bg-h { font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 36px; }
+.bg-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 24px; align-items: start; }
+
+.chart-wrap { background: var(--white); border-radius: var(--r-xl); padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.05); }
+.chart-ttl { font-size: 12px; color: var(--gray-500); text-align: center; margin-bottom: 24px; }
+.bar-area {
+  display: flex; align-items: flex-end; gap: 10px;
+  height: 170px; position: relative;
+  border-bottom: 1px solid var(--gray-200);
+  margin-bottom: 6px;
+}
+.bar-col-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; position: relative; }
+.bar-top-lbl { font-size: 9px; color: var(--gray-500); white-space: nowrap; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 80px; text-align: center; }
+.bar-body-wrap { width: 100%; margin-top: auto; position: relative; }
+.bar-b { width: 100%; border-radius: 4px 4px 0 0; }
+.bar-pct-inside { font-size: 9px; color: var(--white); font-weight: 700; text-align: center; padding-top: 4px; }
+.bar-pct-below { font-size: 9px; color: var(--gray-400); text-align: center; padding-top: 4px; }
+.yr-row { display: flex; gap: 10px; margin-top: 4px; }
+.yr-lbl { flex: 1; text-align: center; font-size: 10px; color: var(--gray-400); }
+.yr-hl { color: var(--blue-600); font-weight: 700; }
+.chart-note { font-size: 9px; color: var(--gray-300); line-height: 1.6; margin-top: 16px; }
+
+.pt-stack { display: flex; flex-direction: column; gap: 12px; }
+.pt-lbl { font-size: 11px; font-weight: 700; color: var(--blue-500); letter-spacing: .04em; margin-bottom: 4px; text-align: center; }
+.pt-card {
+  background: var(--white); border-radius: var(--r-lg); padding: 22px 24px;
+  font-size: 13px; color: var(--gray-700); line-height: 1.7;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+.pt-card strong { color: var(--blue-600); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#s01">01 User Flow</a>
+  <a href="#s02">02 Stats Cards</a>
+  <a href="#s03">03 Stakeholder Map</a>
+  <a href="#s04">04 Persona</a>
+  <a href="#s05">05 Brand Infographic</a>
+  <a href="#s06">06 Target Persona</a>
+  <a href="#s07">07 Brand Diagram</a>
+  <a href="#s08">08 Finance Flow</a>
+  <a href="#s09">09 Usability Test</a>
+  <a href="#s10">10 Background Chart</a>
+</nav>
+
+<div class="page">
+
+<!-- ══════════ 01 USER FLOW ══════════ -->
+<section id="s01">
+  <div class="s-eyebrow"><span class="s-num">01</span>User Flow</div>
+  <div class="s-h">User Flow</div>
+  <div class="card" style="background:#fafafa;">
+    <div class="uf-wrap">
+
+      <!-- 초기 진입 -->
+      <div class="uf-init">
+        <div class="uf-pill">앱 실행</div>
+        <div class="uf-pill">스플래시</div>
+        <div class="uf-pill">사용자 정보 입력</div>
+      </div>
+      <div class="uf-hline"></div>
+
+      <!-- 수직 점선 + Primary 노드 -->
+      <div class="uf-center" style="align-self: stretch;">
+        <div class="uf-primary">홈</div>
+        <div class="uf-vdash" style="height: 220px;"></div>
+        <div class="uf-primary">챌린지</div>
+        <div class="uf-vdash" style="height: 220px;"></div>
+        <div class="uf-primary">마이 페이지</div>
+      </div>
+      <div class="uf-hline"></div>
+
+      <!-- 브랜치 모음 -->
+      <div class="uf-branches">
+
+        <!-- 홈 브랜치 -->
+        <div class="uf-branch">
+          <div class="uf-row">
+            <div class="uf-box">날씨 카드</div>
+          </div>
+          <div class="uf-row">
+            <div class="uf-box">플로깅 스팟 추천</div>
+            <div class="uf-hline-sm"></div>
+            <div class="uf-box">장소 정보</div>
+          </div>
+          <div class="uf-row">
+            <div class="uf-box">플로깅 시작</div>
+            <div class="uf-hline-sm"></div>
+            <div class="uf-box">같이하기</div>
+            <div class="uf-hline-sm"></div>
+            <div class="uf-diamond"><span>매칭 조건 설정</span></div>
+          </div>
+          <div class="uf-row" style="margin-left: 118px;">
+            <div class="uf-box">혼자하기</div>
+          </div>
+          <div class="uf-row" style="margin-top: 4px;">
+            <div class="uf-box">플로깅하기</div>
+            <div class="uf-hline-sm"></div>
+            <div class="uf-box">인증샷 촬영</div>
+            <div class="uf-hline-sm"></div>
+            <div class="uf-box">응원하기</div>
+            <div class="uf-hline-sm"></div>
+            <div class="uf-box">결과 확인</div>
+          </div>
+        </div>
+
+        <!-- 챌린지 브랜치 -->
+        <div class="uf-branch">
+          <div class="uf-row" style="align-items: flex-start;">
+            <div class="uf-box">탐색</div>
+            <div class="uf-hline-sm" style="align-self:center;"></div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div class="uf-row">
+                <div class="uf-box">오늘의 챌린지</div>
+                <div class="uf-hline-sm"></div>
+                <div class="uf-box">상세 보기</div>
+              </div>
+              <div class="uf-box">추천 챌린지</div>
+              <div class="uf-box">이달의 도전</div>
+            </div>
+          </div>
+          <div class="uf-row" style="align-items: flex-start;">
+            <div class="uf-box">진행 중</div>
+            <div class="uf-hline-sm" style="align-self:center;"></div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div class="uf-box">진행 중인 챌린지</div>
+              <div class="uf-box">내가 만든 챌린지</div>
+            </div>
+          </div>
+          <div class="uf-box" style="align-self:flex-start;">뱃지</div>
+        </div>
+
+        <!-- 마이 페이지 브랜치 -->
+        <div class="uf-branch">
+          <div class="uf-box" style="align-self:flex-start;">레벨</div>
+          <div class="uf-row">
+            <div class="uf-box">경로 기록</div>
+            <div class="uf-hline-sm"></div>
+            <div class="uf-box">상세 보기</div>
+          </div>
+          <div class="uf-box" style="align-self:flex-start;">인증 기록</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ 02 STATS ══════════ -->
+<section id="s02">
+  <div class="s-eyebrow"><span class="s-num">02</span>Performance Stats</div>
+  <div class="card">
+    <div class="stats-layout">
+      <div>
+        <div class="stats-badge">
+          <div class="badge-trend">↑</div>
+          Performance stats
+        </div>
+        <div class="stats-h">Proven by leading<br>sales teams</div>
+        <div class="stats-p">Increase lead quality and close deals<br><strong>faster through smarter workflows.</strong></div>
+        <div class="stats-link">Explore the full demo ↗</div>
+        <div class="stats-foot">
+          <strong>All in real time,</strong> capture leads, track performance,<br>and scale winning strategies.
+          <div class="av-stack">
+            <div class="av av1"></div><div class="av av2"></div><div class="av av3"></div><div class="av av4"></div><div class="av av5"></div>
+            <span class="av-text">— rated 4.8/5</span>
+          </div>
+        </div>
+      </div>
+      <div class="sc-cards">
+        <div class="sc">
+          <div class="sc-label"><div class="sc-icon"></div>Higher ROI</div>
+          <div class="sc-num">76%</div>
+          <div class="sc-desc">Trimmed ad spend via segmentation</div>
+        </div>
+        <div class="sc-2col">
+          <div class="sc">
+            <div class="sc-label"><div class="sc-icon"></div>Faster Conversions</div>
+            <div class="sc-num-sm">91%</div>
+            <div class="sc-desc">Removed redundant tools</div>
+          </div>
+          <div class="sc">
+            <div class="sc-label"><div class="sc-icon"></div>Better Efficiency</div>
+            <div class="sc-num-sm">69%</div>
+            <div class="sc-desc">Optimized bidding costs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ 03 STAKEHOLDER ══════════ -->
+<section id="s03">
+  <div class="s-eyebrow"><span class="s-num">03</span>Stakeholders Map &amp; Business Model</div>
+  <div class="card-dark">
+    <div class="conic-split">
+      <div class="conic-l">
+        <div class="c-eye"><div class="c-lime"></div>Stakeholders Map</div>
+        <div class="c-desc">브랜드 제품 키워드를 기반으로 브랜드 스타일의 이모지 생성 서비스를 제공합니다. 사용자가 '떡볶이'를 입력하면 '요기요떡볶이' 스타일 이모지가 자동 생성됩니다.</div>
+
+        <div class="eco-wrap">
+          <span class="eco-arrow-ext">→</span>
+          <div class="eco-oval">
+            <div class="eco-n-dark">USER</div>
+            <div class="eco-txt">
+              <span>User Scheme<br>&amp; Re-use Data</span>
+              <span>Creation<br>&amp; Proposal</span>
+            </div>
+            <div class="eco-n-lime">CONIC.</div>
+            <div class="eco-txt">
+              <span>Distribution<br>Authority</span>
+              <span>Utilization<br>[lock-in]</span>
+            </div>
+          </div>
+          <span class="eco-arrow-ext">→</span>
+          <span class="eco-platform">PLATFORM</span>
+        </div>
+        <div class="eco-comm">Communication Space</div>
+
+        <div class="c-desc">사용자의 스킴과 데이터를 기반으로 생성된 코니모지는 여러 플랫폼에서 유통될 수 있고, 이를 통해 사용자의 표현 방식과 커뮤니케이션 경험을 확장시키는 순환형 생태계입니다.</div>
+      </div>
+      <div class="conic-r">
+        <div class="c-eye"><div class="c-lime"></div>Business Model</div>
+        <div class="ch-r">오늘 말고 다음에 볼까?</div>
+        <div class="ch-t">08:11</div>
+        <div class="ch-l">나 이미 나왔는데....</div>
+        <div class="ch-t" style="text-align:left;">08:11</div>
+        <div class="ch-r">헉...근처에서 자기 좋아하는<br>말차라떼라도 먹고 있을래?</div>
+        <div class="ch-t">08:12</div>
+        <div class="ch-emoji">🍜</div>
+        <div class="ch-input">
+          <span style="font-size:15px;color:#444;">+</span>
+          <div class="ch-in-txt">내가 끝나고 <b>떡볶이</b> 사갈게!! 🟡</div>
+          <div class="ch-send">↑</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ 04 PERSONA ══════════ -->
+<section id="s04">
+  <div class="s-eyebrow"><span class="s-num">04</span>Persona</div>
+  <div class="s-h">Persona</div>
+  <div class="per-grid">
+    <div class="per-card">
+      <div class="per-top">
+        <div class="per-av" style="background:#ede8ff;">🎭</div>
+        <div>
+          <div class="per-name">강나연</div>
+          <div class="per-meta">22세 | 시각디자인학과 3학년</div>
+        </div>
+      </div>
+      <div class="per-quote">
+        <div class="per-qm">"</div>
+        <div class="per-qt">이번 콜라보 제품은 디즈니래요!<br>SNS에서 그러던데요?</div>
+      </div>
+      <div class="per-lbl">Pain point</div>
+      <div class="per-pain">신제품, 콜라보 소식을 정기적으로 챙겨보고 싶다.<br>브랜드 애용하는 사람들과 한 곳에서 소통하고 싶다.</div>
+      <div class="per-tags">
+        <span class="per-tag">단거리 선호</span>
+        <span class="per-tag">음식 비주얼 중요</span>
+        <span class="per-tag">새로운 소식 공유</span>
+        <span class="per-tag">모바일 사용 스킬 높음</span>
+        <span class="per-tag">메뉴 결정 주도적</span>
+      </div>
+    </div>
+    <div class="per-card per-card-b">
+      <div class="per-top">
+        <div class="per-av" style="background:#deeeff;">🤔</div>
+        <div>
+          <div class="per-name">임태오</div>
+          <div class="per-meta">34세 | 무역회사 영업3팀 대리</div>
+        </div>
+      </div>
+      <div class="per-quote">
+        <div class="per-qm">"</div>
+        <div class="per-qt">배달음식, 많이 먹어봤지만<br>디저트 배달은 처음 시켜봐요.<br>그런데.. 뭘 먹어야 하죠?</div>
+      </div>
+      <div class="per-lbl">Pain point</div>
+      <div class="per-pain">브랜드가 너무 많아 어떤 걸 먹어야 할지 모르겠다.<br>검색 기능이 없어서 원하는 정보를 바로 볼 수가 없다.<br>다른 성별, 연령대는 어떤 음식을 먹는지 모르겠다.</div>
+      <div class="per-tags">
+        <span class="per-tag">이동거리 무관</span>
+        <span class="per-tag">음식 맛 중요</span>
+        <span class="per-tag">한가지 음식 종류</span>
+        <span class="per-tag">모바일 사용 스킬 보통</span>
+        <span class="per-tag">메뉴 결정 의존적</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ 05 INFOGRAPHIC ══════════ -->
+<section id="s05">
+  <div class="s-eyebrow"><span class="s-num">05</span>Brand Communication Process</div>
+  <div class="card-gray">
+    <div class="infog-title-line">Brand Communication Process</div>
+    <div class="infog-steps">
+
+      <!-- Step 1 -->
+      <div class="infog-step">
+        <div class="is-num">1</div>
+        <div class="is-body">
+          <div class="is-h">Research &amp; Analysis</div>
+          <div class="is-sub">조사 및 분석</div>
+          <div class="pr-row">
+            <div class="pr-circ">내부 데이터<br>수집</div>
+            <div class="pr-circ">내부 데이터<br>분석</div>
+            <div class="pr-circ">유학 시장의<br>흐름 조사</div>
+            <div class="pr-circ">외부 데이터<br>수집</div>
+            <div class="pr-circ">외부 데이터<br>수집</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="infog-step">
+        <div class="is-num">2</div>
+        <div class="is-body">
+          <div class="is-h">Brand concept</div>
+          <div class="is-sub">브랜드 컨셉</div>
+          <div class="pr-row" style="align-items:center;">
+            <!-- 3-circle venn -->
+            <div class="pr-venn">
+              <div class="pr-vc" style="top:0;left:0;">소비자<br>데이터</div>
+              <div class="pr-vc" style="top:6px;left:50px;background:rgba(241,241,241,.75);">외부<br>데이터</div>
+              <div class="pr-vc" style="top:14px;left:24px;background:rgba(241,241,241,.6);">내부<br>데이터</div>
+            </div>
+            <div class="pr-arr">→</div>
+            <div class="pr-circ-filled">Common<br>Data</div>
+            <!-- dashed arrow to list -->
+            <div style="display:flex;align-items:center;gap:0;flex-shrink:0;">
+              <div style="width:8px;height:1px;background:var(--gray-400);"></div>
+              <div style="width:14px;height:1px;background:var(--gray-400);border-top:1px dashed var(--gray-400);height:0;"></div>
+              <div style="width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:5px solid var(--gray-400);"></div>
+            </div>
+            <div class="pr-list">Story<br>Style<br>Contents<br>Spot</div>
+            <div class="pr-arr">→</div>
+            <div class="pr-rect">Brand<br>Concept</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="infog-step">
+        <div class="is-num">3</div>
+        <div class="is-body">
+          <div class="is-h">Brand Plan</div>
+          <div class="is-sub">브랜드 설계</div>
+          <div class="pr-row" style="align-items:center;">
+            <div class="pr-circ" style="width:64px;height:64px;font-size:11px;">소비자</div>
+            <div class="pr-arr">→</div>
+            <!-- 큰 점선 원 with Contents inside -->
+            <div class="step3-outer">
+              <div class="step3-dashed-ring"></div>
+              <div class="step3-label">Targeting Spot</div>
+              <div class="step3-inner-circ">Contents</div>
+            </div>
+            <div class="pr-arr">→</div>
+            <div style="border:1.5px solid var(--gray-400);border-radius:4px;padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;">
+              <span style="font-size:11px;font-weight:800;color:var(--gray-900);">edm</span>
+              <div class="pr-circ-filled" style="width:52px;height:52px;font-size:10px;">Brand</div>
+              <span style="font-size:9px;color:var(--gray-400);">Brand Journal</span>
+            </div>
+            <div class="pr-arr">←</div>
+            <div class="pr-circ" style="width:52px;height:52px;font-size:10px;">Story</div>
+            <div class="pr-circ" style="width:52px;height:52px;font-size:10px;margin-left:-6px;">Style</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="infog-step">
+        <div class="is-num">4</div>
+        <div class="is-body">
+          <div class="is-h">Brand Experience</div>
+          <div class="is-sub">브랜드 경험</div>
+          <div class="exp-wrap">
+            <!-- 반원 동심원 -->
+            <div class="exp-semi">
+              <!-- ring 4 (largest) -->
+              <div class="exp-ring" style="width:180px;height:90px;border-color:var(--gray-800);bottom:0;left:50%;transform:translateX(-50%);"></div>
+              <!-- ring 3 -->
+              <div class="exp-ring" style="width:134px;height:67px;border-color:var(--gray-500);bottom:0;left:50%;transform:translateX(-50%);"></div>
+              <!-- ring 2 -->
+              <div class="exp-ring" style="width:90px;height:45px;border-color:var(--gray-400);bottom:0;left:50%;transform:translateX(-50%);"></div>
+              <!-- ring 1 (filled) -->
+              <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:46px;height:23px;background:var(--gray-900);border-radius:23px 23px 0 0;display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:9px;color:var(--white);font-weight:800;">1</span>
+              </div>
+              <!-- labels -->
+              <span style="position:absolute;top:22px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--gray-500);">2</span>
+              <span style="position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--gray-500);">3</span>
+              <span style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--gray-500);">4</span>
+              <span style="position:absolute;top:-4px;left:4px;font-size:8px;color:var(--gray-400);">Flexibility</span>
+              <span style="position:absolute;top:-4px;right:0;font-size:8px;color:var(--gray-400);">Brand Identity</span>
+              <span style="position:absolute;bottom:0;right:2px;font-size:8px;color:var(--gray-400);">Brandmark</span>
+            </div>
+            <div class="exp-legend">
+              <div class="exp-leg-item"><strong>1. Core</strong><span>Brandmark<br>Wordmark<br>Signature<br>Basic identity guide manual</span></div>
+              <div class="exp-leg-item"><strong>2. Supporting</strong><span>Stationery<br>Printed materia<br>Interior Guide<br>Infographics</span></div>
+              <div class="exp-leg-item"><strong>3. Platform</strong><span>Website<br>SNS<br>Blog<br>Mobile</span></div>
+              <div class="exp-leg-item"><strong>4. Action</strong><span>Campaign<br>Promotion<br>Event</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ 06 TARGET PERSONA ══════════ -->
+<section id="s06">
+  <div class="s-eyebrow"><span class="s-num">06</span>Target &amp; Persona</div>
+  <div class="card">
+    <div class="tgt-hdr">
+      <div class="tgt-pill">Target &amp; Persona</div>
+      <div class="tgt-desc">일손이 부족할 때 단기알바를 빠르게 구하길 원하는 고용주와<br>본인 스케줄에 맞친 단기알바 구직을 원하는 근로자를 타깃으로 선정하였습니다.</div>
+    </div>
+    <div class="tgt-grid">
+      <div class="tgt-card">
+        <div class="tgt-chip">단기알바 구인이 어려운 고용주</div>
+        <div class="tgt-av">👨‍🍳</div>
+        <div class="tgt-name">강어진 / 3년차 차양업자 / 1인 초밥집 사장</div>
+        <div class="tgt-q">"바쁠때만 단기알바를 빠르게 구하고 싶어요!"</div>
+        <div class="tgt-lbl">Situation</div>
+        <div class="tgt-txt">3년째 초밥집을 운영하는 어진씨는 최근 코로나로 인한 재정난으로 매일 장시간 일하는 알바생을 해고했다. 혼자 가게를 운영하다보니 손님이 많이 몰리는 피크타임에 어려움을 느낀다.</div>
+        <div class="tgt-lbl">Pain Point</div>
+        <ul class="tgt-pts">
+          <li>알바생 구하는 과정과 시간이 낭비예요</li>
+          <li>단기 알바생에 대한 검증이 없어 <strong>신뢰가 안 가요</strong></li>
+          <li><strong>정보를 일일이 관리하기 어려워요</strong></li>
+        </ul>
+      </div>
+      <div class="tgt-card tgt-card-y">
+        <div class="tgt-chip tgt-chip-y">단기알바 구직이 어려운 근로자</div>
+        <div class="tgt-av" style="background:#fffbeb;">👩‍🦱</div>
+        <div class="tgt-name">22세 / 대학교 3학년 / 금공강 통학러</div>
+        <div class="tgt-q">"내 스케줄에 맞는 단기알바를 찾고 싶어요!"</div>
+        <div class="tgt-lbl">Situation</div>
+        <div class="tgt-txt">집에서 2시간 거리의 학교까지 통학을 해서 학교에 있는 시간만큼 공강에 알바를 구하려고 한다. 하지만 스케줄에 맞는 단기알바를 찾는건 쉽지 않다.</div>
+        <div class="tgt-lbl">Pain Point</div>
+        <ul class="tgt-pts">
+          <li>스케줄에 맞는 단기알바 탐색에 오랜 시간이 걸려요</li>
+          <li>단기알바의 <strong>경력인증을 받거나 검증이 없어요</strong></li>
+          <li><strong>급금문제</strong>가 생길 시 적합한 방법을 몰라 불안해요</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ 07 BRAND DIAGRAM ══════════ -->
+<section id="s07">
+  <div class="s-eyebrow"><span class="s-num">07</span>Brand Diagram</div>
+  <div class="card">
+    <div class="brand-corner">Smart Beauty for the Smart Consumer, 9wishes.</div>
+    <div class="brand-hed">BRAND</div>
+    <div class="brand-sub-txt">똑똑한 소비자를 위한 스마트 뷰티 나인위시스<br>기술력을 바탕으로 착한 성분은 물론, 기능과 품질까지 갖춘 똑똑한 화장품</div>
+
+    <div class="brand-main">
+      <!-- 왼쪽 원 -->
+      <div class="brand-el">
+        <div class="bn-circ">TECHNOLOGY<br>EFFECT<br>QUALITY</div>
+        <div style="text-align:center;font-size:11px;color:var(--gray-400);margin-top:10px;">똑똑한 소비자</div>
+      </div>
+
+      <!-- 화살표 -->
+      <div class="brand-el">
+        <div class="bn-line-arrow">
+          <div class="bn-line"></div>
+          <div class="bn-arrowhead"></div>
+        </div>
+      </div>
+
+      <!-- 캡슐 (단일 tall pill with 3 inner circles) -->
+      <div class="brand-el">
+        <div class="bn-capsule">
+          <div class="bn-cap-circ">안심 성분</div>
+          <div class="bn-cap-circ">확실한 효과</div>
+          <div class="bn-cap-circ">클린 뷰티</div>
+        </div>
+      </div>
+
+      <!-- 화살표 -->
+      <div class="brand-el">
+        <div class="bn-line-arrow">
+          <div class="bn-line"></div>
+          <div class="bn-arrowhead"></div>
+        </div>
+      </div>
+
+      <!-- 오른쪽 원 -->
+      <div class="brand-el">
+        <div class="bn-circ-r">SMART<br>&amp;<br>INNOVATE</div>
+        <div style="text-align:center;font-size:11px;color:var(--gray-400);margin-top:10px;">똑똑한 화장품</div>
+      </div>
+
+      <!-- 화살표 -->
+      <div class="brand-el">
+        <div class="bn-line-arrow">
+          <div class="bn-line"></div>
+          <div class="bn-arrowhead"></div>
+        </div>
+      </div>
+
+      <!-- 결론 텍스트 -->
+      <div class="brand-el bn-outcome">스마트 뷰티로<br>답을 찾다!</div>
+    </div>
+
+    <div class="brand-footer"><span>9</span>wishes | 나인위시스</div>
+  </div>
+</section>
+
+
+<!-- ══════════ 08 FINANCE FLOW ══════════ -->
+<section id="s08">
+  <div class="s-eyebrow"><span class="s-num">08</span>Finance User Flow</div>
+  <div class="card">
+    <div class="fin-eye">structure</div>
+    <div class="fin-h">3가지 솔루션을 바탕으로<br>기획한 User flow</div>
+
+    <div class="fin-scroll">
+      <div class="fin-canvas">
+
+        <!-- 진입 상단 행 -->
+        <div class="fin-top">
+          <div class="fin-box-out">Splash</div>
+          <div class="fin-dot" style="margin:0 5px;"></div>
+          <div class="fin-line"></div>
+          <div class="fin-box-out">Join</div>
+          <div class="fin-dot" style="margin:0 5px;"></div>
+          <div class="fin-line"></div>
+          <div class="fin-box-out">Login</div>
+          <div class="fin-line-lg"></div>
+          <div class="fin-box-out">금융 데이터 연동</div>
+
+          <!-- 수직 하강 후 홈화면 -->
+          <div style="display:flex;flex-direction:column;align-items:flex-start;gap:0;margin-left:0;">
+            <div style="display:flex;align-items:center;gap:0;">
+              <div class="fin-line" style="width:12px;"></div>
+              <div class="fin-dot" style="margin:0;"></div>
+              <!-- 수직으로 내려가서 홈화면으로 -->
+            </div>
+
+            <!-- 홈화면 행 -->
+            <div style="display:flex;align-items:center;margin-left:12px;">
+              <div style="width:1px;height:24px;background:#93c5fd;"></div>
+            </div>
+
+            <div class="fin-main-col" style="margin-left:0;">
+
+              <!-- 홈화면 + 진행중? + 분기 -->
+              <div class="fin-node-row">
+                <div style="margin-left:4px;">
+                  <div class="fin-box-fill">홈화면</div>
+                </div>
+                <div class="fin-dot" style="margin:0 6px;"></div>
+                <div class="fin-line-lg"></div>
+                <div class="fin-diamond"><span class="fin-diamond-lbl">진행 중?</span></div>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-left:10px;">
+                  <div style="display:flex;align-items:center;gap:4px;">
+                    <span class="fin-x">✕</span>
+                    <div class="fin-line" style="width:10px;"></div>
+                    <div class="fin-box-out">1:1 배틀 참여</div>
+                  </div>
+                  <div class="fin-box-out" style="margin-left:24px;">그룹 배틀 참여</div>
+                  <div class="fin-box-out" style="margin-left:24px;">소비 추이 점검</div>
+                  <div style="display:flex;align-items:center;gap:4px;">
+                    <span class="fin-v">✓</span>
+                    <div class="fin-line" style="width:10px;"></div>
+                    <div class="fin-box-out">배틀 현황</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fin-node-spacer"></div>
+
+              <!-- 분석 -->
+              <div class="fin-node-row">
+                <div style="margin-left:4px;"><div class="fin-box-fill">분석</div></div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">내 자산</div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">소비 내역</div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">카테고리 소비</div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">소비 큐레이팅</div>
+              </div>
+
+              <div class="fin-node-spacer"></div>
+
+              <!-- 추천 -->
+              <div class="fin-node-row">
+                <div style="margin-left:4px;"><div class="fin-box-fill">추천</div></div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">생활 TIP</div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">상품 추천</div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">부업 추천</div>
+              </div>
+
+              <div class="fin-node-spacer"></div>
+
+              <!-- 마이페이지 -->
+              <div class="fin-node-row">
+                <div style="margin-left:4px;"><div class="fin-box-fill">마이페이지</div></div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">개인정보</div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">대결전적</div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">계좌/카드관리</div>
+                <div class="fin-line"></div>
+                <div class="fin-box-out">기타</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ 09 USABILITY TEST ══════════ -->
+<section id="s09">
+  <div class="s-eyebrow"><span class="s-num">09</span>Usability Test</div>
+  <div class="card">
+    <div class="ut-h">Usability Test</div>
+    <div class="ut-desc">UT를 통해 사용성을 검증하고, 친구와 함께하는 경험 전반을 개선했어요</div>
+    <div class="ut-bar">
+      <div class="ut-mi"><strong>총 참여 인원</strong>6명</div>
+      <div class="ut-mi"><strong>테스트 일정</strong>2025.01–07</div>
+      <div class="ut-mi"><strong>Tool</strong>Maze, Figma 프로토타입</div>
+    </div>
+
+    <div class="ut-sec">
+      <div class="ut-sh">개선 1. 지도 탐색</div>
+      <div class="ut-sp">자극 받고 무준위 달릴 수 있도록, 지도 상에서 달릴 경로를 선택하는 기능을 개선했어요</div>
+      <div class="phone-row">
+        <div class="ph"><div class="ph-in" style="background:#f0eeff;"><div class="ph-bar" style="background:#a080e0;"></div><div class="ph-map" style="background:#d0c8ff;">🗺️</div><div class="ph-bar" style="background:#a080e0;"></div></div></div>
+        <div class="ph-arrow">→</div>
+        <div class="ph"><div class="ph-in" style="background:#e8f8f0;"><div class="ph-bar" style="background:#5cb88a;"></div><div class="ph-map" style="background:#b8e8d0;">📍</div><div class="ph-bar" style="background:#5cb88a;"></div></div></div>
+      </div>
+      <div class="ut-find">💡 지도 기반 경로 선택 UX 개선으로 사용자가 원하는 위치를 직관적으로 선택할 수 있게 되었습니다.</div>
+    </div>
+
+    <div class="ut-sec">
+      <div class="ut-sh">개선 2. 친구 위치 표현</div>
+      <div class="ut-sp">앱방향 소중이 이 사도록 '에우기' 알림의 위치와 표현을 다음과 같이 개선했어요</div>
+      <div class="phone-row">
+        <div class="ph"><div class="ph-in" style="background:#fff0f0;"><div class="ph-bar" style="background:#f09090;"></div><div class="ph-map" style="background:#ffd8d8;">🏃</div><div class="ph-bar" style="background:#f09090;"></div></div></div>
+        <div class="ph-arrow">→</div>
+        <div class="ph"><div class="ph-in" style="background:#e8f0ff;"><div class="ph-bar" style="background:#6090e8;"></div><div class="ph-map" style="background:#c0d4f8;">👥</div><div class="ph-bar" style="background:#6090e8;"></div></div></div>
+      </div>
+      <div class="ut-find">💡 친구 위치 알림을 상단 고정 배너로 변경하여 달리기 중에도 놓치지 않도록 개선했습니다.</div>
+    </div>
+
+    <div class="ut-sec">
+      <div class="ut-sh">개선 3. 러닝 기록 비교</div>
+      <div class="ut-sp">러닝 도중 기록을 비교하고 보다 즐기며 누적도록 수정했어요</div>
+      <div class="ut-stat-row">
+        <div class="ut-stat"><div class="ut-sn">5.07km</div><div class="ut-sl">총 거리</div></div>
+        <div class="ut-stat"><div class="ut-sn">00:30:47</div><div class="ut-sl">진행 시간</div></div>
+        <div class="ut-stat"><div class="ut-sn">132bpm</div><div class="ut-sl">평균 심박수</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ 10 BACKGROUND + CHART ══════════ -->
+<section id="s10">
+  <div class="s-eyebrow"><span class="s-num">10</span>Background &amp; Data Chart</div>
+  <!-- 연한 블루 배경 -->
+  <div class="card-blue-bg">
+    <div class="bg-eye">Background</div>
+    <div class="bg-h">노후된 건물과 주택을 철거하고<br>새롭게 건설하는 '도시 정비 사업'</div>
+
+    <div class="bg-grid">
+      <!-- 차트 (흰 카드) -->
+      <div class="chart-wrap">
+        <div class="chart-ttl">연도별 전국 재개발·재건축 아파트 분양 물량 및 비중</div>
+        <div class="bar-area">
+          <!-- 2019 -->
+          <div class="bar-col-wrap">
+            <div class="bar-top-lbl">101,794 가구</div>
+            <div class="bar-body-wrap" style="height:72%;">
+              <div class="bar-b" style="height:100%;background:#c8d5e5;"></div>
+              <div class="bar-pct-below">36.6%</div>
+            </div>
+          </div>
+          <!-- 2020 -->
+          <div class="bar-col-wrap">
+            <div class="bar-top-lbl">104,154 가구</div>
+            <div class="bar-body-wrap" style="height:74%;">
+              <div class="bar-b" style="height:100%;background:#c8d5e5;"></div>
+              <div class="bar-pct-below">35.6%</div>
+            </div>
+          </div>
+          <!-- 2021 -->
+          <div class="bar-col-wrap">
+            <div class="bar-top-lbl">58,020 가구</div>
+            <div class="bar-body-wrap" style="height:41%;">
+              <div class="bar-b" style="height:100%;background:#c8d5e5;"></div>
+              <div class="bar-pct-below">18.5%</div>
+            </div>
+          </div>
+          <!-- 2022 -->
+          <div class="bar-col-wrap">
+            <div class="bar-top-lbl">74,867 가구</div>
+            <div class="bar-body-wrap" style="height:53%;">
+              <div class="bar-b" style="height:100%;background:#c8d5e5;"></div>
+              <div class="bar-pct-below">23.6%</div>
+            </div>
+          </div>
+          <!-- 2023 highlight -->
+          <div class="bar-col-wrap">
+            <div class="bar-top-lbl" style="color:var(--blue-600);font-weight:700;">128,553 가구</div>
+            <div class="bar-body-wrap" style="height:91%;">
+              <div class="bar-b" style="height:100%;background:#93c5fd;border:1.5px dashed var(--blue-600);border-bottom:none;"></div>
+              <div class="bar-pct-below" style="color:var(--blue-600);font-weight:700;">47.5%</div>
+            </div>
+          </div>
+          <!-- SVG line overlay -->
+          <svg style="position:absolute;inset:0;pointer-events:none;width:100%;height:100%;" viewBox="0 0 500 170" preserveAspectRatio="none">
+            <polyline points="50,122 150,119 250,163 350,148 450,28" fill="none" stroke="var(--blue-600)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle cx="50"  cy="122" r="5" fill="var(--blue-600)"/>
+            <circle cx="150" cy="119" r="5" fill="var(--blue-600)"/>
+            <circle cx="250" cy="163" r="5" fill="var(--blue-600)"/>
+            <circle cx="350" cy="148" r="5" fill="var(--blue-600)"/>
+            <circle cx="450" cy="28"  r="5" fill="var(--blue-600)"/>
+          </svg>
+        </div>
+
+        <div class="yr-row">
+          <div class="yr-lbl">2019</div>
+          <div class="yr-lbl">2020</div>
+          <div class="yr-lbl">2021</div>
+          <div class="yr-lbl">2022</div>
+          <div class="yr-lbl yr-hl">2023</div>
+        </div>
+        <div class="chart-note">주1 : 2023.02.14 조사, 2022년까지는 실적, 2023년은 예정 물량 포함 | 주2 : 전체 분양 물량 중 재개발·재건축 분양 물량 비중<br>자료 : 부동사R 114 REPS(Real Estate Power Solution)</div>
+      </div>
+
+      <!-- Point 카드 (흰 카드) -->
+      <div class="pt-stack">
+        <div class="pt-lbl">Point</div>
+        <div class="pt-card">
+          2023년 기준 전국 주택 공급 물량 중<br>
+          <strong>47.5%</strong>가 재개발, 재건축을 통해 공급
+        </div>
+        <div class="pt-card">
+          평균 사업기간 약 <strong>15년</strong>이 소요되며<br>
+          조합원들의 동의를 기반으로 진행되는 사업
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /page -->
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 · 타이포그래피 & 컬러 시스템</title>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+
+<style>
+  :root{
+    /* ── 브랜드 · 3-Role (디자인 시스템 정확 일치) ── */
+    --blue:#2C7AFC; --green:#22C55E; --orange:#FB923C;
+    --yellow:#F5D310; --red:#E32B25;
+    /* ── 서피스 ── */
+    --canvas:#F0F4F8; --surface:#FFFFFF; --muted:#FAFAFA;
+    /* ── 그레이 스케일 ── */
+    --g100:#F4F4F5; --g200:#E5E5EA; --g300:#D4D4D8;
+    --g400:#9E9E9E; --g500:#8E8E93; --g700:#3F3F46;
+    --g900:#1C1C1E;
+    /* ── 텍스트 ── */
+    --ink:#1C1C1E; --ink-2:#3F3F46; --mute:#8E8E93; --mute-2:#9E9E9E;
+    --line:#E5E5EA; --line-soft:#F4F4F5;
+    --font:'Pretendard Variable','Pretendard','Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    --shadow:0 4px 12px rgba(0,0,0,.06), 0 0 0 1px rgba(0,0,0,.03);
+    --shadow-lift:0 18px 48px rgba(15,30,55,.10), 0 0 0 1px rgba(0,0,0,.03);
+    --radius:18px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scrollbar-width:none;-ms-overflow-style:none}
+  html::-webkit-scrollbar{display:none}
+  body{
+    font-family:var(--font);background:var(--canvas);color:var(--ink);
+    line-height:1.7;-webkit-font-smoothing:antialiased;
+    font-feature-settings:'tnum' 0;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:clamp(40px,7vw,96px) clamp(20px,5vw,56px) 120px}
+
+  /* ─────────── Page head ─────────── */
+  .doc-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--blue);margin-bottom:22px;
+  }
+  .doc-eyebrow::before{content:'';width:22px;height:1.5px;background:var(--blue);border-radius:2px}
+  .doc-title{
+    font-size:clamp(34px,5.2vw,58px);font-weight:700;letter-spacing:-.035em;
+    line-height:1.08;color:var(--ink);margin-bottom:22px;
+  }
+  .doc-lead{
+    font-size:clamp(15px,1.6vw,18px);font-weight:400;color:var(--ink-2);
+    line-height:1.78;max-width:620px;
+  }
+  .doc-lead b{font-weight:600;color:var(--ink)}
+  .doc-meta{
+    display:flex;flex-wrap:wrap;gap:10px;margin-top:30px;
+  }
+  .doc-chip{
+    font-size:12px;font-weight:500;color:var(--ink-2);
+    padding:7px 14px;background:var(--surface);border-radius:999px;
+    box-shadow:var(--shadow);display:inline-flex;align-items:center;gap:7px;
+  }
+  .doc-chip i{width:9px;height:9px;border-radius:3px;display:inline-block}
+
+  /* ─────────── Section frame ─────────── */
+  .sec{margin-top:clamp(64px,9vw,118px)}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:38px;flex-wrap:wrap}
+  .sec-num{
+    font-family:var(--mono);font-size:13px;font-weight:600;color:var(--blue);
+    letter-spacing:.04em;
+  }
+  .sec-title{font-size:clamp(24px,3vw,32px);font-weight:700;letter-spacing:-.028em;color:var(--ink)}
+  .sec-desc{font-size:14px;color:var(--mute);margin-left:auto;max-width:360px;text-align:right;line-height:1.6}
+  @media(max-width:680px){.sec-desc{text-align:left;margin-left:0;width:100%}}
+
+  /* ═══════════ TYPOGRAPHY ═══════════ */
+  .type-grid{display:grid;grid-template-columns:300px 1fr;gap:28px;align-items:start}
+  @media(max-width:880px){.type-grid{grid-template-columns:1fr}}
+
+  /* specimen card */
+  .specimen{
+    background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-lift);
+    padding:38px 34px;position:sticky;top:32px;overflow:hidden;
+  }
+  .specimen-tag{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+  .specimen-aa{
+    font-size:clamp(140px,20vw,190px);font-weight:700;letter-spacing:-.04em;
+    line-height:.86;color:var(--ink);margin:6px 0 4px;
+  }
+  .specimen-aa b{color:var(--blue);font-weight:700}
+  .specimen-name{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-top:18px}
+  .specimen-sub{font-size:13px;color:var(--mute);margin-top:4px;line-height:1.6}
+  .specimen-glyphs{
+    display:flex;gap:10px;margin-top:24px;padding-top:22px;border-top:1px solid var(--line-soft);
+    font-size:13px;color:var(--ink-2);flex-wrap:wrap;
+  }
+  .specimen-glyphs span{font-weight:500}
+
+  /* weight ladder */
+  .weights{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .wrow{
+    display:grid;grid-template-columns:148px 1fr;gap:28px;align-items:center;
+    padding:26px 32px;
+  }
+  .wrow + .wrow{border-top:1px solid var(--line-soft)}
+  .wrow:hover{background:var(--muted)}
+  .wmeta-w{font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+  .wmeta-w span{color:var(--mute);font-weight:500;font-family:var(--mono);font-size:13px;margin-left:2px}
+  .wmeta-role{font-size:12.5px;font-weight:500;color:var(--blue);margin-top:6px;line-height:1.45}
+  .wmeta-use{font-size:11.5px;color:var(--mute);margin-top:5px;line-height:1.5}
+  .wsample{font-size:clamp(22px,2.6vw,30px);letter-spacing:-.02em;color:var(--ink);line-height:1.2}
+  .wsample .num{color:var(--mute-2);margin-left:6px;letter-spacing:.02em}
+  .w400{font-weight:400}.w500{font-weight:500}.w600{font-weight:600}.w700{font-weight:700}
+  @media(max-width:560px){
+    .wrow{grid-template-columns:1fr;gap:14px;padding:22px 22px}
+    .specimen{position:static}
+  }
+
+  /* type scale ladder */
+  .scale{
+    margin-top:28px;background:var(--surface);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:34px 34px 12px;
+  }
+  .scale-cap{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:22px}
+  .srow{display:flex;align-items:baseline;gap:20px;padding:13px 0;border-bottom:1px solid var(--line-soft)}
+  .srow:last-child{border-bottom:none}
+  .stext{flex:1;color:var(--ink);letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sspec{font-family:var(--mono);font-size:12px;color:var(--mute);white-space:nowrap}
+  .sname{font-size:12px;font-weight:600;color:var(--blue);width:96px;flex-shrink:0}
+  @media(max-width:560px){.sname{display:none}}
+
+  /* ═══════════ COLOR ═══════════ */
+  /* hero roles */
+  .roles{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:18px}
+  @media(max-width:880px){.roles{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.roles{grid-template-columns:1fr}}
+  .role{
+    border-radius:var(--radius);padding:26px 24px 24px;min-height:208px;
+    display:flex;flex-direction:column;box-shadow:var(--shadow-lift);
+    color:#fff;position:relative;overflow:hidden;
+  }
+  .role--guardian{background:var(--blue)}
+  .role--care{background:var(--green)}
+  .role--patient{background:var(--orange)}
+  .role-tag{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.82}
+  .role-name{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
+  .role-hex{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.02em;margin-top:auto;opacity:.95}
+  .role-use{font-size:12.5px;line-height:1.6;opacity:.9;margin-top:10px;font-weight:400}
+  .role-tints{display:flex;gap:6px;margin-top:16px}
+  .role-tints i{flex:1;height:8px;border-radius:3px;display:block}
+
+  /* support row: accent + surface + alarm */
+  .support{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:18px}
+  @media(max-width:880px){.support{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.support{grid-template-columns:1fr}}
+  .sup{
+    border-radius:var(--radius);padding:22px 22px 20px;min-height:150px;
+    display:flex;flex-direction:column;box-shadow:var(--shadow);
+  }
+  .sup--accent{background:var(--yellow);color:#3A2E00}
+  .sup--alarm{background:var(--red);color:#fff}
+  .sup--surface{background:var(--canvas);color:var(--ink);box-shadow:var(--shadow),inset 0 0 0 1px var(--g200)}
+  .sup--card{background:var(--surface);color:var(--ink)}
+  .sup-tag{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.7}
+  .sup-name{font-size:16px;font-weight:700;letter-spacing:-.015em;margin-top:5px}
+  .sup-hex{font-family:var(--mono);font-size:12.5px;font-weight:600;margin-top:auto;opacity:.92}
+  .sup-use{font-size:11.5px;line-height:1.5;margin-top:8px;opacity:.82;font-weight:400}
+
+  /* neutral ladder */
+  .neutral{margin-top:40px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px 30px 18px}
+  .neutral-cap{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:20px}
+  .swatches{display:grid;grid-template-columns:repeat(8,1fr);gap:12px}
+  @media(max-width:760px){.swatches{grid-template-columns:repeat(4,1fr)}}
+  @media(max-width:420px){.swatches{grid-template-columns:repeat(2,1fr)}}
+  .sw{display:flex;flex-direction:column;gap:9px}
+  .sw-chip{height:74px;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+  .sw-label{font-size:12px;font-weight:600;color:var(--ink);letter-spacing:-.01em}
+  .sw-hex{font-family:var(--mono);font-size:10.5px;color:var(--mute)}
+  .sw-role{font-size:10.5px;color:var(--mute-2);margin-top:-3px}
+
+  /* application preview */
+  .apply{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.apply{grid-template-columns:1fr}}
+  .apply-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 26px 24px}
+  .apply-cap{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:18px}
+  .demo-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;margin:0 8px 8px 0}
+  .demo-badge--ok{background:rgba(34,197,94,.12);color:#177a3e}
+  .demo-badge--info{background:rgba(44,122,252,.10);color:var(--blue)}
+  .demo-badge--warn{background:rgba(245,211,16,.18);color:#7a6700}
+  .demo-badge--alarm{background:rgba(227,43,37,.10);color:var(--red)}
+  .demo-btn{display:block;width:100%;text-align:center;padding:14px;border-radius:14px;font-size:15px;font-weight:600;color:#fff;background:var(--blue);margin-top:4px;letter-spacing:-.01em}
+  .demo-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-soft)}
+  .demo-row:last-child{border-bottom:none}
+  .demo-ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .demo-ic--g{background:rgba(44,122,252,.10);color:var(--blue)}
+  .demo-ic--c{background:rgba(34,197,94,.12);color:#177a3e}
+  .demo-ic--p{background:rgba(251,146,60,.14);color:#c25e12}
+  .demo-rt{font-size:14px;font-weight:500;color:var(--ink)}
+  .demo-rs{font-size:12px;color:var(--mute)}
+  .demo-num{margin-left:auto;font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.02em}
+  .demo-num small{font-size:12px;font-weight:500;color:var(--mute);margin-left:2px}
+
+  /* footer note */
+  .foot{margin-top:80px;padding-top:28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+  .foot-l{font-size:13px;color:var(--mute)}
+  .foot-r{font-size:12px;color:var(--mute-2);font-family:var(--mono)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ════════ HEAD ════════ -->
+  <header>
+    <div class="doc-eyebrow">Style Guide · 비주얼 디자인</div>
+    <h1 class="doc-title">타이포그래피 &amp; 컬러 시스템</h1>
+    <p class="doc-lead">
+      <b>Pretendard Variable</b>을 본문·제목 공통 서체로 사용해 시각 언어의 일관성을 확보합니다.
+      보호자·케어팀·환자, 세 역할을 <b>3-Role 컬러</b>로 구분해 앱 전반의 톤을 결정합니다.
+    </p>
+    <div class="doc-meta">
+      <span class="doc-chip"><i style="background:var(--blue)"></i>보호자 #2C7AFC</span>
+      <span class="doc-chip"><i style="background:var(--green)"></i>케어팀 #22C55E</span>
+      <span class="doc-chip"><i style="background:var(--orange)"></i>환자 #FB923C</span>
+      <span class="doc-chip"><i style="background:var(--yellow)"></i>포인트 #F5D310</span>
+      <span class="doc-chip"><i style="background:var(--canvas);box-shadow:inset 0 0 0 1px var(--g200)"></i>배경 #F0F4F8</span>
+    </div>
+  </header>
+
+  <!-- ════════ 01 TYPOGRAPHY ════════ -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">서체 · Pretendard Variable</h2>
+      <p class="sec-desc">한글·라틴·숫자를 한 가족체로. 굵기 4단계만으로 위계를 만듭니다.</p>
+    </div>
+
+    <div class="type-grid">
+      <!-- specimen -->
+      <div class="specimen">
+        <div class="specimen-tag">Primary Typeface</div>
+        <div class="specimen-aa">A<b>a</b></div>
+        <div class="specimen-name">Pretendard Variable</div>
+        <div class="specimen-sub">한글·라틴·숫자 한 가족체<br>中文은 Noto Sans SC 자동 폴백</div>
+        <div class="specimen-glyphs">
+          <span class="w400">가</span><span class="w500">나</span>
+          <span class="w600">다</span><span class="w700">라</span>
+          <span class="w400">Aa</span><span class="w600">Bb</span><span class="w700">012</span>
+        </div>
+      </div>
+
+      <!-- weight ladder -->
+      <div class="weights">
+        <div class="wrow">
+          <div class="wmeta">
+            <div class="wmeta-w">Regular<span> · 400</span></div>
+            <div class="wmeta-role">본문 · 설명 텍스트</div>
+            <div class="wmeta-use">카드 내부 보조 설명, Caption, 리스트 부가 정보</div>
+          </div>
+          <div class="wsample w400">가나다라마바사<span class="num">0 1 2 3 4 5</span></div>
+        </div>
+        <div class="wrow">
+          <div class="wmeta">
+            <div class="wmeta-w">Medium<span> · 500</span></div>
+            <div class="wmeta-role">탭바 라벨 · 리스트 제목</div>
+            <div class="wmeta-use">행 제목(Row title), 입력 필드 라벨, 본문 강조</div>
+          </div>
+          <div class="wsample w500">가나다라마바사<span class="num">0 1 2 3 4 5</span></div>
+        </div>
+        <div class="wrow">
+          <div class="wmeta">
+            <div class="wmeta-w">SemiBold<span> · 600</span></div>
+            <div class="wmeta-role">섹션 타이틀 · 버튼 · 뱃지</div>
+            <div class="wmeta-use">Headline, 카드 제목, Primary 버튼, 상태 뱃지</div>
+          </div>
+          <div class="wsample w600">가나다라마바사<span class="num">0 1 2 3 4 5</span></div>
+        </div>
+        <div class="wrow">
+          <div class="wmeta">
+            <div class="wmeta-w">Bold<span> · 700</span></div>
+            <div class="wmeta-role">페이지 타이틀 · 핵심 지표</div>
+            <div class="wmeta-use">Display(32), 페이지 대제목, 수치 강조(BPM·%)</div>
+          </div>
+          <div class="wsample w700">가나다라마바사<span class="num">0 1 2 3 4 5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- type scale -->
+    <div class="scale">
+      <div class="scale-cap">Type Scale · 본문 16 기준</div>
+      <div class="srow"><span class="sname">Display</span><span class="stext w700" style="font-size:32px">오늘도 안녕하세요</span><span class="sspec">32 / 700 / -.03em</span></div>
+      <div class="srow"><span class="sname">Title</span><span class="stext w700" style="font-size:24px">하루 한 줄 안부</span><span class="sspec">24 / 700 / -.025em</span></div>
+      <div class="srow"><span class="sname">Headline</span><span class="stext w600" style="font-size:20px">오늘의 복약 일정</span><span class="sspec">20 / 600 / -.02em</span></div>
+      <div class="srow"><span class="sname">Subhead</span><span class="stext w600" style="font-size:17px">케어팀이 함께 보고 있어요</span><span class="sspec">17 / 600 / -.015em</span></div>
+      <div class="srow"><span class="sname">Body</span><span class="stext w400" style="font-size:16px">멀리 있어도 매일의 상태를 한눈에 확인합니다.</span><span class="sspec">16 / 400 / -.01em</span></div>
+      <div class="srow"><span class="sname">Label</span><span class="stext w500" style="font-size:13px">복약 완료</span><span class="sspec">13 / 500 / 0</span></div>
+      <div class="srow"><span class="sname">Caption</span><span class="stext w400" style="font-size:12px;color:var(--mute)">오전 8:00 · 자동 기록</span><span class="sspec">12 / 400 / 0</span></div>
+    </div>
+  </section>
+
+  <!-- ════════ 02 COLOR ════════ -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">컬러 팔레트 · 3-Role</h2>
+      <p class="sec-desc">역할별 Primary가 앱 전반의 톤을 결정합니다. 포인트·뉴트럴은 모든 역할 공통.</p>
+    </div>
+
+    <!-- hero roles -->
+    <div class="roles">
+      <div class="role role--guardian">
+        <span class="role-tag">Role · Guardian</span>
+        <span class="role-name">보호자 블루</span>
+        <span class="role-use">멀리 있는 가족에게 약속하는 안심·신뢰의 톤. 로고·CTA·핵심 액션의 기준 메인 컬러.</span>
+        <div class="role-tints">
+          <i style="background:color-mix(in srgb,var(--blue) 55%,#fff)"></i>
+          <i style="background:color-mix(in srgb,var(--blue) 78%,#fff)"></i>
+          <i style="background:var(--blue)"></i>
+          <i style="background:color-mix(in srgb,var(--blue) 80%,#000)"></i>
+        </div>
+        <span class="role-hex">#2C7AFC</span>
+      </div>
+      <div class="role role--care">
+        <span class="role-tag">Role · Care Team</span>
+        <span class="role-name">케어 그린</span>
+        <span class="role-use">케어팀(의료진·요양보호사) 공통 임상 톤. 완료·정상·안전 신호의 시각 기준.</span>
+        <div class="role-tints">
+          <i style="background:color-mix(in srgb,var(--green) 50%,#fff)"></i>
+          <i style="background:color-mix(in srgb,var(--green) 75%,#fff)"></i>
+          <i style="background:var(--green)"></i>
+          <i style="background:color-mix(in srgb,var(--green) 82%,#000)"></i>
+        </div>
+        <span class="role-hex">#22C55E</span>
+      </div>
+      <div class="role role--patient">
+        <span class="role-tag">Role · Patient</span>
+        <span class="role-name">환자 오렌지</span>
+        <span class="role-use">따뜻하지만 부담 없는 액센트. 큰 글자·넓은 터치의 환자 시점 톤.</span>
+        <div class="role-tints">
+          <i style="background:color-mix(in srgb,var(--orange) 50%,#fff)"></i>
+          <i style="background:color-mix(in srgb,var(--orange) 75%,#fff)"></i>
+          <i style="background:var(--orange)"></i>
+          <i style="background:color-mix(in srgb,var(--orange) 82%,#000)"></i>
+        </div>
+        <span class="role-hex">#FB923C</span>
+      </div>
+    </div>
+
+    <!-- support colors -->
+    <div class="support">
+      <div class="sup sup--accent">
+        <span class="sup-tag">Accent · Point</span>
+        <span class="sup-name">선샤인 옐로우</span>
+        <span class="sup-use">하이라이트·강조 포인트. 면이 아닌 점으로만.</span>
+        <span class="sup-hex">#F5D310</span>
+      </div>
+      <div class="sup sup--alarm">
+        <span class="sup-tag">Semantic · Alarm</span>
+        <span class="sup-name">알람 레드</span>
+        <span class="sup-use">SOS·위급·오류 한정. 일상 톤에는 미사용.</span>
+        <span class="sup-hex">#E32B25</span>
+      </div>
+      <div class="sup sup--surface">
+        <span class="sup-tag">Surface · Canvas</span>
+        <span class="sup-name">앱 배경</span>
+        <span class="sup-use">블루그레이 캔버스. 모든 화면의 바탕.</span>
+        <span class="sup-hex">#F0F4F8</span>
+      </div>
+      <div class="sup sup--card">
+        <span class="sup-tag">Surface · Card</span>
+        <span class="sup-name">카드 표면</span>
+        <span class="sup-use">정보 카드·시트 기본. 그림자로 띄움.</span>
+        <span class="sup-hex">#FFFFFF</span>
+      </div>
+    </div>
+
+    <!-- neutral ladder -->
+    <div class="neutral">
+      <div class="neutral-cap">Neutral · 텍스트 &amp; 라인 스케일</div>
+      <div class="swatches">
+        <div class="sw"><div class="sw-chip" style="background:#1C1C1E"></div><div class="sw-label">Gray 900</div><div class="sw-hex">#1C1C1E</div><div class="sw-role">본문 텍스트</div></div>
+        <div class="sw"><div class="sw-chip" style="background:#3F3F46"></div><div class="sw-label">Gray 700</div><div class="sw-hex">#3F3F46</div><div class="sw-role">강조 본문</div></div>
+        <div class="sw"><div class="sw-chip" style="background:#8E8E93"></div><div class="sw-label">Gray 500</div><div class="sw-hex">#8E8E93</div><div class="sw-role">보조 텍스트</div></div>
+        <div class="sw"><div class="sw-chip" style="background:#9E9E9E"></div><div class="sw-label">Gray 400</div><div class="sw-hex">#9E9E9E</div><div class="sw-role">3차 텍스트</div></div>
+        <div class="sw"><div class="sw-chip" style="background:#E5E5EA"></div><div class="sw-label">Gray 200</div><div class="sw-hex">#E5E5EA</div><div class="sw-role">보더·디바이더</div></div>
+        <div class="sw"><div class="sw-chip" style="background:#F4F4F5"></div><div class="sw-label">Gray 100</div><div class="sw-hex">#F4F4F5</div><div class="sw-role">소프트 라인</div></div>
+        <div class="sw"><div class="sw-chip" style="background:#FAFAFA"></div><div class="sw-label">Gray 50</div><div class="sw-hex">#FAFAFA</div><div class="sw-role">낮은 강조 카드</div></div>
+        <div class="sw"><div class="sw-chip" style="background:#FFFFFF"></div><div class="sw-label">White</div><div class="sw-hex">#FFFFFF</div><div class="sw-role">표면</div></div>
+      </div>
+    </div>
+
+    <!-- application -->
+    <div class="apply">
+      <div class="apply-card">
+        <div class="apply-cap">상태 뱃지 · 버튼</div>
+        <span class="demo-badge demo-badge--ok"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>복약 완료</span>
+        <span class="demo-badge demo-badge--info"><iconify-icon icon="fluent:info-24-filled"></iconify-icon>케어팀 확인</span>
+        <span class="demo-badge demo-badge--warn"><iconify-icon icon="fluent:star-24-filled"></iconify-icon>오늘의 포인트</span>
+        <span class="demo-badge demo-badge--alarm"><iconify-icon icon="fluent:alert-urgent-24-filled"></iconify-icon>SOS</span>
+        <a class="demo-btn" href="#" onclick="return false">안부 보내기</a>
+      </div>
+      <div class="apply-card">
+        <div class="apply-cap">역할별 리스트 · 지표</div>
+        <div class="demo-row">
+          <div class="demo-ic demo-ic--g"><iconify-icon icon="fluent:heart-pulse-24-regular"></iconify-icon></div>
+          <div><div class="demo-rt">안심지수</div><div class="demo-rs">보호자 · 오늘 종합</div></div>
+          <div class="demo-num">92<small>점</small></div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-ic demo-ic--c"><iconify-icon icon="fluent:pulse-24-regular"></iconify-icon></div>
+          <div><div class="demo-rt">심박수</div><div class="demo-rs">케어팀 · 정상 범위</div></div>
+          <div class="demo-num">72<small>BPM</small></div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-ic demo-ic--p"><iconify-icon icon="fluent:pill-24-regular"></iconify-icon></div>
+          <div><div class="demo-rt">복약률</div><div class="demo-rs">환자 · 이번 주</div></div>
+          <div class="demo-num">98<small>%</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span class="foot-l">하루안부 디자인 시스템 · SoT: 07_디자인/tokens/tokens.css</span>
+    <span class="foot-r">Typography &amp; Color · v8</span>
+  </footer>
+
+</div>
+</body>
+</html>

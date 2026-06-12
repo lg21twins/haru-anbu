@@ -143,16 +143,13 @@
       display: grid;
       grid-template-columns: 44px 54px 1fr auto auto;
       gap: 10px; align-items: center;
-      padding: 13px 16px 13px 13px;
+      padding: 13px 16px;
       min-height: 56px;
       text-decoration: none; color: inherit;
       cursor: pointer;
       transition: background .12s;
-      /* 외부 roster 표준(When I Work/7shifts): 좌측 3px shift-type bar */
-      border-left: 3px solid var(--shift-bar, transparent);
+      /* 근무 구분은 좌측 컬러 레일이 아닌 .sd-chip(칩)으로만 표시 */
     }
-    .sch-day:has(.sd-chip:not(.off):not(.n)) { --shift-bar: var(--accent-strong); }
-    .sch-day:has(.sd-chip.n)                { --shift-bar: var(--shift-night); }
     /* 휴무 row: 시각적 후퇴 (60-72% opacity) — 일하는 날 시각 우선순위 강화 */
     .sch-day:has(.sd-chip.off) { opacity: .68; }
     /* 작은 화면(<=360px): 환자 아바타 줄을 다음 줄로, count chip으로 축약 */

@@ -23,3 +23,24 @@ package-lock.json
 **/_backup_homes_*/
 **/_backup_*/
 .vercel
+
+# 에디터/OS 설정 정크
+.vscode/
+**/.vscode/
+
+# 아카이브 대용량(디스크엔 보관, git 추적 제외)
+_archive/**/_대용량_git제외/
+
+# 백업/임시/압축 산출물
+*.bak
+*.bak_*
+*_backup_*
+*_standalone.html
+*_standalone.html.zip
+*.backup-*
+
+# 별도 저장소(팀원 making-of, 자체 .git + node_modules 678MB) — 메인 repo에 추적하지 않음
+/haru-anbu-making-of/
+
+# 루트 대용량 기획서 PDF (동일 바이트본이 _archive/2026-06-08/_대용량_git제외/에 보관됨)
+/하루안부_기획서_v15.pdf
