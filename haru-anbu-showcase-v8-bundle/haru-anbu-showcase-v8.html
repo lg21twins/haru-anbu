@@ -2137,142 +2137,7 @@
     </div>
   </div>
 
-  <!-- ══ REAL FILM — 페르소나(Pain Points) 직후, 스크롤로 풀스크린 확장되는 실사 영상 ══ -->
-  <section id="real-film">
-    <style>
-      #real-film{position:relative;padding:0 0 var(--pad-section)}
-      #real-film .rf-head-wrap{padding:var(--pad-section) var(--gutter) 0;max-width:var(--container);margin:0 auto}
-      #real-film .rf-head{text-align:left;max-width:945px;margin:0}
-      /* 스크롤 무대 — 충분한 스크롤 길이를 줘서 sticky 동안 영상이 자라난다 */
-      #real-film .rf-scroll{position:relative;height:200vh;margin-top:var(--head-gap)}
-      #real-film .rf-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-      /* 무대(영상 박스) — 처음엔 작게, 스크롤하면 100vw/100vh 로 채워진다 */
-      #real-film .rf-stage{position:relative;width:100%;height:100vh;background:#000;overflow:hidden;
-        border-radius:28px;transform:scale(.6);will-change:transform,border-radius;backface-visibility:hidden}
-      #real-film .rf-stage video{width:100%;height:100%;object-fit:contain;display:block}
-      /* 네이티브 컨트롤 바를 부드럽게 페이드(1초 idle 시 숨김) */
-      #real-film .rf-stage video::-webkit-media-controls-panel{transition:opacity .45s ease}
-      #real-film .rf-stage.rf-idle video::-webkit-media-controls-panel{opacity:0}
-      /* 불필요한 네이티브 버튼(풀스크린·오버플로 3점·다운로드) 숨김 */
-      #real-film .rf-stage video::-webkit-media-controls-fullscreen-button,
-      #real-film .rf-stage video::-webkit-media-controls-overflow-button,
-      #real-film .rf-stage video::-webkit-media-controls-download-button{display:none!important}
-      /* 커스텀 풀스크린 해제 버튼 — 상단 탭바(60px)와 겹치지 않게 그 아래로 내림 */
-      #real-film .rf-exit{position:absolute;top:76px;right:18px;z-index:6;width:46px;height:46px;border-radius:999px;border:0;cursor:pointer;
-        background:rgba(17,24,39,.46);color:#fff;display:inline-flex;align-items:center;justify-content:center;
-        opacity:0;pointer-events:none;transition:opacity .45s ease}
-      #real-film .rf-stage.rf-on .rf-exit{opacity:1;pointer-events:auto}
-      #real-film .rf-stage.rf-on.rf-idle .rf-exit{opacity:0;pointer-events:none}
-      #real-film .rf-exit iconify-icon{font-size:24px;line-height:1}
-      #real-film .rf-stage.rf-on.rf-idle{cursor:none}
-      @media (prefers-reduced-motion:reduce){
-        #real-film .rf-scroll{height:auto;margin-top:var(--head-gap)}
-        #real-film .rf-sticky{position:static;height:auto;padding:0 var(--gutter)}
-        #real-film .rf-stage{transform:none;height:auto;aspect-ratio:16/9;border-radius:22px;max-width:var(--container);margin:0 auto}
-        #real-film .rf-stage video{position:absolute;inset:0}
-      }
-    </style>
-    <div class="rf-head-wrap">
-      <div class="sec-head rf-head reveal">
-        <div class="sec-eyebrow">Real Story</div>
-        <h2 class="sec-title">화면 너머,<br><em>진짜 하루의 안부.</em></h2>
-        <p class="sec-sub" style="max-width:945px">목업이 아니라, 실제로 하루안부를 쓰는 사람들의 장면입니다. 멀리 있는 가족과 어르신, 그리고 케어팀이 하나의 흐름 위에서 어떻게 이어지는지를 담았습니다.<span class="m-hide"> 매일의 안부가 어떻게 오가고, 한 사람의 하루가 어떻게 모두에게 닿는지 — 화면 너머의 진짜 순간을 영상 한 편으로 보여드립니다.</span></p>
-      </div>
-    </div>
-    <div class="rf-scroll" id="rfScroll">
-      <div class="rf-sticky">
-        <div class="rf-stage" id="rfStage">
-          <video id="rfVideo" src="video/haru-real.mp4" muted playsinline preload="auto" data-no-glow
-                 controlslist="nofullscreen nodownload noremoteplayback noplaybackrate" disablepictureinpicture></video>
-        </div>
-      </div>
-    </div>
-    <script>
-      (function(){
-        var scrollEl=document.getElementById('rfScroll');
-        var stage=document.getElementById('rfStage');
-        var video=document.getElementById('rfVideo');
-        if(!scrollEl||!stage||!video) return;
-        if(matchMedia('(prefers-reduced-motion:reduce)').matches){
-          video.setAttribute('controls','');   // 모션 줄임: 정적 영상 + 컨트롤만
-          return;
-        }
-        var GROW=0.22;               // 진행도 0~GROW 구간 동안 다 자란다 (조금만 스크롤해도 풀스크린)
-        var smooth=function(t){return t*t*(3-2*t);};   // smoothstep
-        var ticking=false, playing=false;
 
-        // 커스텀 "풀스크린 해제" 버튼 — 클릭 시 다음 섹션으로 빠져나감
-        var exitBtn=document.createElement('button');
-        exitBtn.className='rf-exit';
-        exitBtn.type='button';
-        exitBtn.setAttribute('aria-label','풀스크린 해제');
-        exitBtn.innerHTML='<iconify-icon icon="fluent:full-screen-minimize-24-regular"></iconify-icon>';
-        stage.appendChild(exitBtn);
-        function goNext(){
-          var next=document.getElementById('app-preview');
-          if(!next) return;
-          // 다음 섹션이 화면 맨 위에 박히지 않게 약간 아래에서 부드럽게 시작
-          var y=next.getBoundingClientRect().top+window.scrollY-Math.round(window.innerHeight*0.06);
-          window.scrollTo({top:y,behavior:'smooth'});
-        }
-        // 전체화면 해제 = 다른 섹션으로 이동하지 않고, 영상 무대를 작게 줄이고(=풀스크린 해제) 정지만.
-        // rf-scroll 상단으로 스크롤하면 apply()가 stage 를 scale<1 로 줄이고 g<0.985 라 자동 일시정지된다.
-        function exitFs(){
-          try{ video.pause(); }catch(_){}
-          var y = scrollEl.getBoundingClientRect().top + window.scrollY;
-          window.scrollTo({top: Math.max(0, y - 80), behavior:'smooth'});
-        }
-        exitBtn.addEventListener('click',function(e){ e.stopPropagation(); exitFs(); });
-        // 영상이 끝나면 자동으로 웹(다음 섹션)으로 복귀
-        // 발표(나레이션) 진행 중엔 발표 엔진이 다음 구간으로 넘기므로 여기선 중복 스크롤하지 않음
-        video.addEventListener('ended',function(){ if(window.__haruPresenting && window.__haruPresenting()) return; goNext(); });
-
-        // 풀스크린 재생 중: 마우스 움직이면 네이티브 바·해제버튼 페이드 인,
-        // 1초간 움직임 없으면 부드럽게 페이드 아웃(커서도 숨김).
-        var hideTimer=null;
-        function wake(){
-          if(!playing) return;
-          stage.classList.remove('rf-idle');
-          if(hideTimer) clearTimeout(hideTimer);
-          hideTimer=setTimeout(function(){ stage.classList.add('rf-idle'); },1000);
-        }
-        function resetControls(){ if(hideTimer){ clearTimeout(hideTimer); hideTimer=null; } stage.classList.remove('rf-on','rf-idle'); video.removeAttribute('controls'); }
-        stage.addEventListener('mousemove',wake);
-        function apply(){
-          ticking=false;
-          var vh=window.innerHeight;
-          var r=scrollEl.getBoundingClientRect();
-          var dist=r.height-vh;
-          var p=dist>0 ? Math.min(Math.max(-r.top/dist,0),1) : 0;
-          var g=smooth(Math.min(p/GROW,1));
-          var scale=0.6+0.4*g;
-          stage.style.transform='scale('+scale.toFixed(4)+')';
-          stage.style.borderRadius=(28*(1-g)).toFixed(1)+'px';
-          // 완전히 풀스크린이 됐을 때만 자동재생, 그 전이거나 화면 밖이면 정지
-          var visible=r.bottom>vh*0.15 && r.top<vh*0.85;
-          if(g>=0.985 && visible){
-            if(!playing){
-              // 풀스크린 진입: 소리 켜서 재생 시도(나레이션 시작 클릭 = 사용자 제스처라 허용됨).
-              // 자동재생 정책에 막히면 음소거로 폴백해 영상은 계속 보이게 함.
-              if(video.ended) video.currentTime=0;     // 끝난 뒤 다시 들어오면 처음부터
-              video.muted=false;
-              // 진입 시 컨트롤바를 바로 띄우지 않음 — idle(숨김)로 시작, 마우스 움직일 때만 표시
-              var onPlay=function(){ playing=true; video.setAttribute('controls',''); stage.classList.add('rf-on','rf-idle'); };
-              video.play().then(onPlay).catch(function(){
-                video.muted=true;
-                video.play().then(onPlay).catch(function(){});
-              });
-            }
-          }
-          else if(playing){ video.pause(); playing=false; resetControls(); }
-        }
-        function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(apply); } }
-        addEventListener('scroll',onScroll,{passive:true});
-        addEventListener('resize',onScroll,{passive:true});
-        apply();
-      })();
-    </script>
-  </section>
 
   <!-- ══ APP PREVIEW — Problem 직후 하루안부 미리보기 (Bento · 3 cells, 헤더 없음) ══ -->
   <style>
@@ -5783,8 +5648,6 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     {c:null, s:'#problem', panTo:'.problem-chart-cap'},   // [발표용 음성제거] Shon 직접 설명
     {c:null, s:'#painConvo'},                             // Shon 직접 — "어 그럼, 각 사용자들의 불편한 점을 알아볼까요?" 여기서 멈춤 → Enter로 페르소나
     {c:null, s:'#painConvo', personaAll:true},   // [발표용] 엔터 한 번에 페르소나 말풍선 5개 전체 즉시 표시 · 음성·글로우 없음
-    {c:null, s:'#real-film', videoIntro:true},  // ★ 영상 직전 멈춤 — 영상을 중앙에 크게 띄움(자동재생 직전), Shon 직접 대사 후 Enter로 영상 재생
-    {c:null, s:'#real-film', video:true},       // 실사 영상 — 풀스크린 재생, 끝나면 자동으로 다음(app-preview)
     {c:null, s:'#app-preview', center:true},    // Shon 직접 — 브랜드 벤토 그리드를 화면 정중앙에 두고 멈춤
     {c:null, s:'#direction .container', center:true},
     {c:null, s:'.ds-brand'}, {c:null, s:'.ds-opt-b-grid'}, {c:null, s:'.ds-color-stack'},   // 디자인 — 음성 제거(Shon 직접 설명), 각 블록 멈춤·Enter로 다음 블록 스크롤
@@ -5794,11 +5657,11 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     {c:null, s:'#feature-bridge-visual'},          // 보호자앱 사용 장면 사진 — 음원 없이 여기서 멈춤(직접 발화)
     {c:null, s:'#ff-ai-summary'}, {c:null, s:'#ff-realtime-sync'}, {c:null, s:'#ff-medical-integration'},   // [발표용 음성제거] Shon 직접
     {c:null, s:'#features .feat-hero', top:true},   // Features 히어로 — 음원 없이 여기서 멈춤(직접 발화)
-    {c:'13', s:'#feat-guardian-info', tabDemo:'guardian'}, {c:null, s:'#feat-patient', tabDemo:'patient'}, {c:null, s:'#feat-caregiver', tabDemo:'caregiver'},   // [발표용] 13만 음성, 14·15 Shon 직접
+    {c:null, s:'#feat-guardian-info', tabDemo:'guardian'}, {c:null, s:'#feat-patient', tabDemo:'patient'}, {c:null, s:'#feat-caregiver', tabDemo:'caregiver'},   // [발표용] 전부 Shon 직접
     {c:null, s:'#feat-caregiver', stay:true},   // Shon "외국인 요양보호사도 많잖아요?"
     {c:null, s:'#feat-caregiver', langDemo:true}, {c:null, s:'#feat-medical-app', tabDemo:'medicalApp'}, {c:null, s:'#feat-medical', webDemo:true},   // [발표용 음성제거] Shon 직접 시연
     {c:null, s:'#feat-medical', stay:true},   // Shon "그리고 — 이게 다 모형이 아니에요. 직접 만지면 진짜 열립니다."
-    {c:'20', s:'#moments-gallery', slowScroll:true}, {c:'21', s:'.closing'},
+    {c:null, s:'#moments-gallery', slowScroll:true}, {c:null, s:'.closing'},
   ];
   // 나레이션(셀프 투어) 시퀀스 — clover-n01~n26.mp3 + 페르소나 말풍선(pain) 재사용. ?tour=narr 일 때 사용.
   const STEPS_NARR = [
@@ -5808,7 +5671,6 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     {c:'n05', s:'#painConvo', native:true},                 // 페르소나 도입 (네잎클로버)
     {c:'pain1', s:'#painConvo', native:true, chain:true}, {c:'pain2', s:'#painConvo', native:true, chain:true}, {c:'pain3', s:'#painConvo', native:true, chain:true},
     {c:'pain4', s:'#painConvo', native:true, chain:true}, {c:'pain5', s:'#painConvo', native:true},
-    {c:null, s:'#real-film', video:true},                  // 실사 영상 — 풀스크린 재생 끝나면 자동으로 다음 진행
     {c:'n06', s:'#app-preview', center:true},
     {c:'n07', s:'#direction .container', center:true},
     {c:'n08', s:'.ds-brand'}, {c:'n09', s:'.ds-opt-b-grid'}, {c:'n10', s:'.ds-color-stack'},
@@ -5944,8 +5806,20 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     try { if(window.__haruSyncPublish) window.__haruSyncPublish(step.c); } catch(e){}   // 발표 동기화: 재생 클립을 아이패드로 송신
     audio = new Audio(`발표/audio/clover/clover-${step.c}.mp3?v=${VER}`);
     audio.playbackRate = __autoAdvance ? 1 : 1.2;   // 발표 모드만 1.2배속, 나레이션(루트)은 정상속도
-    // [발표용] 발표 모드에서는 01·13·20·21만 음성 재생, 그 외(페르소나 등)는 음소거 — 말풍선·자동연결 흐름은 유지하고 소리만 제거
-    if(__isPresent && !['01','13','20','21'].includes(step.c)) audio.muted = true;
+    // [발표용] 발표 모드에서는 01만 음성 재생, 그 외는 음소거
+    if(__isPresent && step.c !== '01') audio.muted = true;
+    // clover-01: 5.19초에서 강제 컷
+    if(step.c === '01'){
+      const myAudio01 = audio;
+      const onTime01 = () => {
+        if(myAudio01.currentTime >= 5.19){
+          myAudio01.removeEventListener('timeupdate', onTime01);
+          myAudio01.pause();
+          myAudio01.dispatchEvent(new Event('ended'));
+        }
+      };
+      audio.addEventListener('timeupdate', onTime01);
+    }
     const myAudio = audio;   // 끄기 레이스 대비 — 지역 참조로 안전하게 멈춤
     // 나레이션 모드: 각 클립 끝 0.5초 페이드아웃 (재생 볼륨 램프 — 파일 미변경)
     if(__autoAdvance){
@@ -6044,44 +5918,6 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     if((step.c && /^pain/.test(step.c)) || step.s === '#painConvo'){ window.__painFabActive = true; if(window.__painCancelAuto) window.__painCancelAuto(); else if(window.__painStopAudio) window.__painStopAudio(); }
     else if(window.__aiGlow){ window.__aiGlow.resetPalette(); }   // 페르소나 구간 밖에선 기본 클로버 AI 팔레트로 복귀
     fab.classList.remove('is-playing'); setIcon(PLAY);              // 스크롤 동안은 정지 상태
-    // 영상 직전 멈춤 — 영상 무대를 화면 중앙에 크게 띄우되 자동재생 직전에서 정지(Shon 직접 소개)
-    if(step.videoIntro){
-      const sec = document.getElementById('real-film');           // REAL STORY 제목 섹션이 보이게 멈춤 — 제목 유지하며 영상이 아래에서 살짝 올라오는 위치
-      if(sec){
-        const vh = window.innerHeight, NAV = 76;
-        const absTop = window.scrollY + sec.getBoundingClientRect().top;
-        const target = Math.max(0, absTop - NAV + vh * 0.18);      // 제목 살짝 위로 + 영상 더 보이게(제목은 유지). 양 조절은 0.18
-        const dur = Math.max(1000, Math.min(2000, Math.abs(target - window.scrollY) * 1.1));
-        runScroll(target, dur, easeInOut, () => { if(idx === myIdx) setLabel('Shon'); });
-        return;                                                     // 음원 없음 — 스크롤만 하고 종료
-      }
-    }
-    // 실사 영상 스텝 — 풀스크린 지점으로 스크롤 → 영상 재생 → 끝나면 자동으로 다음 구간
-    if(step.video){
-      const v = document.getElementById('rfVideo');
-      const rf = document.getElementById('rfScroll');
-      if(v && rf){
-        try { v.pause(); v.currentTime = 0; } catch(e){}            // 시작 전 처음으로 — 스크롤 중 자동재생도 0부터, done에서 재시작 안 함(첫부분 깜빡임 방지)
-        const vh = window.innerHeight;
-        const absTop = window.scrollY + rf.getBoundingClientRect().top;
-        const dist = Math.max(0, rf.offsetHeight - vh);
-        const target = absTop + dist * 0.32;                        // 영상이 풀스크린으로 자라는 지점
-        // 영상 전환은 아주 느긋하게 — 스크롤하는 동안 영상이 천천히 풀스크린으로 자라며 자연스럽게 나오도록
-        const vdur = Math.max(3400, Math.min(5200, Math.abs(target - window.scrollY) * 2.0));
-        runScroll(target, vdur, easeInOut, () => {
-          if(idx !== myIdx) return;
-          setLabel('실사 영상');
-          try { if(v.paused){ v.muted = false; v.play().catch(() => { v.muted = true; v.play().catch(()=>{}); }); } } catch(e){}   // 이미 재생 중이면 그대로(재시작 방지)
-          const onEnd = () => {
-            v.removeEventListener('ended', onEnd);
-            // 영상 끝나면 모든 모드에서 자동으로 다음 구간(app-preview)으로 — Enter 두 번 칠 필요 없게
-            if(idx === myIdx) { chainTimer = setTimeout(() => { chainTimer = null; playNext(); }, 600); }
-          };
-          v.addEventListener('ended', onEnd);
-        });
-        return;                                                     // 영상 스텝은 오디오 없음 — 여기서 종료
-      }
-    }
     // 제자리 멈춤(stay) — 직전 음원과 같은 섹션에서 Shon이 말하는 c:null 스텝은 스크롤하지 않는다(상향 스크롤로 탑바가 다시 뜨는 것 방지)
     if(step.stay){ setLabel('Shon'); return; }
     // [발표용] 페르소나 — 엔터 한 번에 말풍선 전체 즉시 표시, 겉 글로우 제거(음성 없음)
