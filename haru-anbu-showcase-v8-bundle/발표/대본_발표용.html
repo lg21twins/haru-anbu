@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하루안부 발표 대본 (발표 모드)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root{ --ink:#1a1a1a; --mute:#6b7280; --line:#e5e7eb; --blue:#2c7afc; --green:#16a34a; --amber:#b45309; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;color:var(--ink);background:#f7f7f5;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px}
+  header{padding-bottom:24px;margin-bottom:24px;box-shadow:0 1px 0 var(--line)}
+  h1{font-size:28px;font-weight:800;letter-spacing:-.02em}
+  .sub{color:var(--mute);font-size:14px;margin-top:8px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;font-size:13px}
+  .tag{display:inline-flex;align-items:center;gap:6px;font-weight:700;padding:3px 10px;border-radius:999px}
+  .t-voice{background:#eef5ff;color:var(--blue)}
+  .t-shon{background:#f0fdf4;color:var(--green)}
+  .t-key{background:#fff7ed;color:var(--amber)}
+  section{margin-top:28px}
+  .step{font-size:13px;font-weight:700;color:var(--mute);letter-spacing:.04em;margin-bottom:10px}
+  .line{display:flex;gap:12px;padding:9px 0}
+  .line + .line{box-shadow:0 -1px 0 var(--line)}
+  .who{flex-shrink:0;width:74px;font-size:12px;font-weight:700;padding-top:3px}
+  .who.voice{color:var(--blue)}
+  .who.shon{color:var(--green)}
+  .who.key{color:var(--amber)}
+  .say{flex:1;font-size:16px;word-break:keep-all}
+  .say b{font-weight:700}
+  .note{font-size:13px;color:var(--mute);background:#fff;border-radius:12px;padding:10px 14px;margin-top:8px}
+  footer{margin-top:48px;padding-top:20px;box-shadow:0 -1px 0 var(--line);font-size:13px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>하루안부 발표 대본</h1>
+    <div class="sub">발표 모드(?tour=present) · 음성은 01·13·20·21만 재생, 나머지는 Shon 직접 발화</div>
+    <div class="legend">
+      <span class="tag t-voice">클로버 음성(자동재생)</span>
+      <span class="tag t-shon">Shon 직접 발화</span>
+      <span class="tag t-key">Enter로 진행</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="step">① 인트로 — Hero</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">안녕하세요. 저희는 '노인과 바다 그리고 네잎클로버' 팀입니다. 오늘 발표는 저희 팀의 한 멤버가 직접 맡습니다. 사람이 아니라 — 에이아이예요.</span></div>
+    <div class="line"><span class="who voice">클로버 01</span><span class="say">안녕하세요. 저는 네잎클로버입니다. 하루안부 안에서 일하는 이 팀의 에이아이예요. 우리가 만든 하루를, 제가 직접 안내하겠습니다.</span></div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">네, 든든한 우리 팀 네잎클로버예요. 저는 옆에서 거들겠습니다. 그럼 시작해 볼까요?</span></div>
+  </section>
+
+  <section>
+    <div class="step">② Overview</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">하루안부. 환자·케어팀·보호자, 흩어진 세 시선을 하루의 안부 한 줄로 잇는 케어 플랫폼입니다. 세 시선을 다섯 화면으로 연결합니다. 왜 필요했는지부터 볼까요?</span></div>
+  </section>
+
+  <section>
+    <div class="step">③ Problem</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">'잘 계십니다… 아마도?' 부모님 안부는 매일 아침 가장 무거운 질문입니다. 전화를 끊고도 따라붙는 그 마음이죠.</span></div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">(고령화 차트) 고령화는 빨라지는데, 가족과 의료진이 닿는 방식은 여전히 전화 한 통에 머물러 있습니다.</span></div>
+  </section>
+
+  <section>
+    <div class="step">④ 페르소나</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">각 사용자의 불편을 한 번에 볼까요?</span></div>
+    <div class="note">Enter 한 번 → 말풍선 5개가 동시에 등장 (음성·글로우 없음)</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">보호자 — "오늘 밥은 잘 드셨는지 모르겠어요." / 요양보호사 — "보호자 전화에 하루 두 시간을 써요." / 어르신 — "자식 걱정시키고 싶지 않아요." / 의료진 — "상태를 매번 따로 기록해요." / 다시 보호자 — "멀리 있어 자주 가보지도 못해요." 같은 하루를 걱정하지만 서로 닿지 못합니다.</span></div>
+  </section>
+
+  <section>
+    <div class="step">⑤ 실사 영상</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">말보다 한 장면으로 보여드릴게요 — 「화면 너머, 진짜 하루의 안부」.</span></div>
+    <div class="note">Enter → 영상 자동재생, 끝나면 자동으로 다음 구간</div>
+  </section>
+
+  <section>
+    <div class="step">⑥ App-preview</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">그래서 하루안부 하나에 다 모았어요. 음성 안부, 복약 알림, 긴급 호출, 활동 리포트까지.</span></div>
+  </section>
+
+  <section>
+    <div class="step">⑦ Direction</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">방향은 하나입니다. 흩어진 세 시선을 한 하루로 잇습니다.</span></div>
+  </section>
+
+  <section>
+    <div class="step">⑧ Design (Enter로 블록 이동)</div>
+    <div class="line"><span class="who shon">로고</span><span class="say">두 곡선은 보호자와 환자, 그 사이를 잇는 케어팀이 한 점에서 만나는 모습이에요.</span></div>
+    <div class="line"><span class="who shon">타이포</span><span class="say">프리텐다드 한 가족, 중국어는 노토 산스 자동 폴백 — 다국어 요양보호사도 또렷하게.</span></div>
+    <div class="line"><span class="who shon">컬러</span><span class="say">보호자 블루, 케어팀 그린, 환자 오렌지 — 누구의 정보인지 색으로 바로.</span></div>
+    <div class="line"><span class="who shon">아이콘</span><span class="say">플루언트 단색 한 벌로 통일했습니다.</span></div>
+    <div class="line"><span class="who shon">UI킷</span><span class="say">이 약속이 그대로 컴포넌트가 됩니다.</span></div>
+  </section>
+
+  <section>
+    <div class="step">⑨ Persona-switch</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">같은 하루가 자리에 따라 달라져요. 보호자는 안심을 받고, 어르신은 버튼 하나로 안부를 전하고, 케어팀은 기록하는 순간 그게 곧 안부가 됩니다.</span></div>
+  </section>
+
+  <section>
+    <div class="step">⑩ Service — 여섯 기능</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">어떤 화면을 열어도 여섯 기능이 함께 작동합니다. 자동 리포트, 안심지수, 새벽 SOS는 평균 삼 분 안에 연결됩니다.</span></div>
+  </section>
+
+  <section>
+    <div class="step">⑪ Flagship — 자신 있는 셋 (Enter로 컷 이동)</div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">특히 자신 있는 셋 — <b>첫째</b> AI 데일리 요약, 매일 아침 어제의 부모님을 한 장으로. <b>둘째</b> 실시간 동기화, 요양보호사의 손짓이 의료진을 거쳐 보호자 화면에 0.5초 만에. <b>셋째</b> 의료 통합, 웹과 모바일이 같은 데이터 위에서. 진짜 작동하는지 직접 볼까요?</span></div>
+  </section>
+
+  <section>
+    <div class="step">⑫ 5앱 라이브</div>
+    <div class="line"><span class="who voice">클로버 13</span><span class="say">먼저 보호자입니다. 매일 아침 어제의 부모님이 한 카드로 도착합니다. 식사·복약·수면까지 정리해 출근길 5초면 다 보시게 합니다.</span></div>
+    <div class="line"><span class="who shon">환자</span><span class="say">어르신 앱은 글자 크게·터치 넓게. 큰 버튼 하나로 5초 안에 도움을.</span></div>
+    <div class="line"><span class="who shon">요양보호사</span><span class="say">출근하자마자 오늘 하루가 한 화면에.</span></div>
+    <div class="line"><span class="who shon">다국어</span><span class="say">한국어로 만든 화면이 모국어로 그대로 동작합니다.</span></div>
+    <div class="line"><span class="who shon">의료진앱</span><span class="say">병동을 걸으며 처치부터 인계까지 한 손으로.</span></div>
+    <div class="line"><span class="who shon">의료진웹</span><span class="say">전체 환자를 한 화면에. 이상 신호를 중요도 순으로 정렬해 드립니다.</span></div>
+    <div class="line"><span class="who key">직접 시연</span><span class="say"><b>"그리고 — 이게 다 모형이 아니에요. 지금 이 자리에서, 직접 만지면 진짜 열립니다."</b> (실제로 탭하며 시연)</span></div>
+  </section>
+
+  <section>
+    <div class="step">⑬ Closing</div>
+    <div class="line"><span class="who voice">클로버 20</span><span class="say">매일 잊지 않고 안부를 묻는 마음. 그 마음을 한 화면에 옮긴 것이, 하루안부입니다.</span></div>
+    <div class="line"><span class="who voice">클로버 21</span><span class="say">오늘 하루도, 안녕하셨습니다.</span></div>
+    <div class="line"><span class="who shon">Shon</span><span class="say">저희 '노인과 바다 그리고 네잎클로버'의 하루안부였습니다. 감사합니다.</span></div>
+  </section>
+
+  <footer>
+    하루안부 발표 대본 v2 · 발표 모드 기준 · 음성 4개(01·13·20·21) 외 전부 Shon 직접 발화 · 페르소나는 Enter 한 번에 전체 표시
+  </footer>
+</div>
+</body>
+</html>
