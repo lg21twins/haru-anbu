@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="ko" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
+  <title>Foundations · 하루안부 디자인 시스템 v3.2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="_preview-shared.css">
+  <script src="_iconify-icon.min.js"></script>
+  <script src="_preview-controls.js" defer></script>
+  <style>
+    /* 로고 — 모든 카드 동일 높이, display 영역도 통일 */
+    .logo-card {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-7) var(--space-6);
+      text-align: center;
+      display: grid;
+      grid-template-rows: 96px auto auto;
+      align-items: center;
+      justify-items: center;
+      gap: var(--space-4);
+      min-height: 220px;
+    }
+    .logo-card .logo-display {
+      width: 100%;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    /* 기본: 높이 기준 fit, 비율 유지 */
+    .logo-card .logo-display img {
+      max-height: 100%;
+      max-width: 100%;
+      height: auto;
+      width: auto;
+      display: block;
+    }
+    /* 심볼 단독·단색 버전 (정사각형) — 80px 통일 */
+    .logo-card--symbol .logo-display img {
+      width: 80px;
+      height: 80px;
+    }
+    /* 워드마크 단독 — 적당히 */
+    .logo-card--wordmark .logo-display img {
+      max-width: 180px;
+      max-height: 48px;
+    }
+    /* 콤비 가로 (기본) — 큰 표시 */
+    .logo-card--combo-h .logo-display img {
+      max-width: 220px;
+      max-height: 72px;
+    }
+    /* 콤비 심플 — 모바일 헤더 사이즈로 작게 (실제 사용처 비례) */
+    .logo-card--combo-simple .logo-display img {
+      max-width: 140px;
+      max-height: 36px;
+    }
+    /* 콤비 세로 — 정사각형에 가까운 비율, 96px 높이 */
+    .logo-card--combo-v .logo-display img {
+      max-height: 96px;
+      max-width: 120px;
+    }
+    .logo-card__name {
+      font-size: var(--text-callout);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-primary);
+    }
+    .logo-card__usage {
+      font-size: var(--font-13);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-normal);
+    }
+    .logo-card--dark { background: var(--brand-blue-500); }
+    .logo-card--dark .logo-card__name { color: var(--color-text-on-accent); }
+    .logo-card--dark .logo-card__usage { color: rgba(255,255,255,0.7); }
+
+    /* 컬러 스와치 */
+    .swatch {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-3);
+      overflow: hidden;
+    }
+    .swatch__color { height: 88px; }
+    .swatch__meta { padding: var(--space-4); }
+    .swatch__name {
+      font-size: var(--font-13);
+      font-weight: var(--weight-semibold);
+    }
+    .swatch__hex {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-13);
+      color: var(--color-text-secondary);
+      margin-top: var(--space-2);
+    }
+    .swatch__token {
+      font-family: var(--font-family-mono);
+      font-size: 10px;
+      color: var(--color-text-tertiary);
+      margin-top: var(--space-2);
+    }
+
+    /* 컬러 사다리 (5 단계 스택) */
+    .scale {
+      display: flex;
+      flex-direction: column;
+      border-radius: var(--radius-3);
+      overflow: hidden;
+      border: 1px solid var(--color-border-subtle);
+    }
+    .scale__step {
+      padding: var(--space-4) var(--space-5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--font-13);
+      font-family: var(--font-family-mono);
+    }
+    .scale__step--dark { color: var(--color-text-on-accent); }
+    .scale__step--light { color: var(--color-text-primary); }
+
+    /* 타이포 행 */
+    .type-row {
+      display: grid;
+      grid-template-columns: 140px 100px 1fr;
+      gap: var(--space-7);
+      padding: var(--space-5) 0;
+      border-bottom: 1px solid var(--color-border-subtle);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row__token {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-13);
+      color: var(--color-text-secondary);
+    }
+    .type-row__spec {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-11);
+      color: var(--color-text-tertiary);
+    }
+    @media (max-width: 720px) {
+      .type-row { grid-template-columns: 1fr; gap: var(--space-2); }
+    }
+
+    /* 간격 행 */
+    .space-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-7);
+      padding: var(--space-3) 0;
+    }
+    .space-row__label {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-13);
+      color: var(--color-text-secondary);
+      min-width: 240px;
+    }
+    .space-row__bar {
+      background: var(--brand-blue-100);
+      border-left: 2px solid var(--brand-blue-500);
+      border-right: 2px solid var(--brand-blue-500);
+      height: 24px;
+    }
+
+    /* 라운드 카드 */
+    .radius-cell {
+      width: 100%;
+      aspect-ratio: 1;
+      background: var(--brand-blue-100);
+      border: 2px solid var(--brand-blue-500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: var(--space-2);
+      font-family: var(--font-family-mono);
+      font-size: var(--font-13);
+      color: var(--brand-blue-700);
+    }
+    .radius-cell__label {
+      font-size: 10px;
+      color: var(--color-text-secondary);
+      max-width: 80%;
+      text-align: center;
+    }
+
+    /* 그림자 시연 */
+    .shadow-cell {
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-card);
+      padding: var(--space-8) var(--space-5);
+      text-align: center;
+      font-family: var(--font-family-mono);
+      font-size: var(--font-13);
+      color: var(--color-text-primary);
+    }
+    .shadow-cell__hint {
+      font-size: var(--font-11);
+      color: var(--color-text-secondary);
+      margin-top: var(--space-3);
+    }
+
+    /* 모션 */
+    .motion-cell {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-7);
+      cursor: pointer;
+    }
+    .motion-cell__token {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-13);
+      color: var(--brand-blue-500);
+      margin-bottom: var(--space-4);
+    }
+    .motion-cell__demo {
+      width: var(--space-8);
+      height: var(--space-8);
+      background: var(--brand-blue-500);
+      border-radius: var(--radius-2);
+      transition-property: transform;
+      transition-timing-function: var(--easing-standard);
+    }
+    .motion-cell:hover .motion-cell__demo {
+      transform: translateX(180px);
+    }
+    .motion-cell__hint {
+      font-size: var(--font-13);
+      color: var(--color-text-secondary);
+      margin-top: var(--space-4);
+    }
+
+    /* 아이콘 갤러리 */
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-5) var(--space-3);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-3);
+      transition: var(--motion-micro);
+    }
+    .icon-cell:hover { border-color: var(--brand-blue-300); }
+    .icon-cell iconify-icon {
+      font-size: var(--size-icon-lg);
+      color: var(--color-text-primary);
+    }
+    .icon-cell img { width: var(--size-icon-lg); height: var(--size-icon-lg); }
+    .icon-cell__label {
+      font-family: var(--font-family-mono);
+      font-size: 10px;
+      color: var(--color-text-secondary);
+      text-align: center;
+      word-break: break-all;
+    }
+
+    /* i18n 샘플 */
+    .lang-sample {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-3);
+      padding: var(--space-6);
+    }
+    .lang-sample__label {
+      font-size: var(--font-13);
+      color: var(--brand-blue-500);
+      font-weight: var(--weight-semibold);
+      margin-bottom: var(--space-3);
+    }
+    .lang-sample__text {
+      font-size: var(--text-body);
+      line-height: var(--leading-relaxed);
+      color: var(--color-text-primary);
+    }
+    .lang-sample__cn { font-family: 'Noto Sans SC', 'Pretendard Variable', sans-serif; }
+
+    /* 접근성 */
+    .a11y-demo {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-7);
+    }
+    .a11y-button {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4) var(--space-6);
+      border-radius: var(--radius-button);
+      background: var(--brand-blue-500);
+      color: var(--color-text-on-accent);
+      border: 0;
+      font: var(--weight-semibold) var(--text-body) var(--font-family-base);
+      cursor: pointer;
+    }
+    .a11y-button:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--brand-blue-100), 0 0 0 5px var(--brand-blue-500);
+    }
+    .touch-target {
+      width: 44px; height: 44px;
+      background: var(--brand-blue-100);
+      border: 2px dashed var(--brand-blue-500);
+      border-radius: var(--radius-2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-11);
+      color: var(--brand-blue-700);
+      font-weight: var(--weight-semibold);
+    }
+    .touch-target--patient { width: 56px; height: 56px; }
+  </style>
+</head>
+<body>
+
+<nav class="pv-nav">
+  <div class="pv-nav__inner">
+    <a href="preview.html" class="pv-nav__brand">
+      <img src="logo/brand-system/01_심볼단독.svg?v=36" alt="">
+      하루안부 DS
+    </a>
+    <div class="pv-nav__links">
+      <a href="preview-foundations.html" class="pv-nav__link pv-nav__link--active">Foundations</a>
+      <a href="preview-components.html" class="pv-nav__link">Components</a>
+      <a href="preview-patterns.html" class="pv-nav__link">Patterns</a>
+      <a href="preview-roles.html" class="pv-nav__link">Roles</a>
+      <a href="preview-errors.html" class="pv-nav__link">Errors</a>
+    </div>
+    <div class="pv-controls">
+      <select class="pv-role-select" data-pv-role aria-label="역할 테마 선택">
+        <option value="guardian">보호자</option>
+        <option value="medical">의료진</option>
+        <option value="patient">환자</option>
+      </select>
+      
+    </div>
+    <div class="pv-nav__version">v3.2.3</div>
+  </div>
+</nav>
+
+<header class="pv-header">
+  <div class="pv-header__eyebrow">01 · FOUNDATIONS</div>
+  <h1 class="pv-header__title">파운데이션</h1>
+  <p class="pv-header__desc">모든 UI 결정의 기반 — 브랜드·로고·컬러·타이포·간격·형태·고도·모션·아이콘·접근성·다국어 + <strong>v3.2 다크모드 · 차트 팔레트 · 매직넘버 · 일러스트</strong></p>
+</header>
+
+<main class="pv-container">
+
+  <!-- 1. 로고 시스템 -->
+  <section class="pv-section" id="logo">
+    <h2 class="pv-section__title">1. 로고 시스템</h2>
+    <p class="pv-section__desc">5종 변형. 모두 <a href="logo/brand-system/">07_디자인/logo/brand-system/</a>에 SVG로 보관.</p>
+
+    <div class="pv-grid pv-grid--3">
+      <div class="logo-card logo-card--symbol">
+        <div class="logo-display"><img src="logo/brand-system/01_심볼단독.svg?v=36" alt="심볼 단독"></div>
+        <div class="logo-card__name">심볼 단독</div>
+        <div class="logo-card__usage">앱 아이콘 · 파비콘 · FAB · AI 진입점</div>
+      </div>
+      <div class="logo-card logo-card--wordmark">
+        <div class="logo-display"><img src="logo/brand-system/02_워드마크단독.svg?v=36" alt="워드마크 단독"></div>
+        <div class="logo-card__name">워드마크 단독</div>
+        <div class="logo-card__usage">헤더 · 푸터 · 텍스트 위주 자리</div>
+      </div>
+      <div class="logo-card logo-card--combo-h">
+        <div class="logo-display"><img src="logo/brand-system/03_콤비네이션_가로.svg?v=36" alt="콤비 가로"></div>
+        <div class="logo-card__name">콤비 — 가로 (기본)</div>
+        <div class="logo-card__usage">일반 헤더 · 명함 · 발표자료 · 광고</div>
+      </div>
+      <div class="logo-card logo-card--combo-simple">
+        <div class="logo-display"><img src="logo/brand-system/06_콤비네이션_심플.svg?v=36" alt="콤비 심플"></div>
+        <div class="logo-card__name">콤비 — 심플 (작은 자리용)</div>
+        <div class="logo-card__usage">모바일 헤더 · 사이드바 상단 · 좁은 자리</div>
+      </div>
+      <div class="logo-card logo-card--combo-v">
+        <div class="logo-display"><img src="logo/brand-system/04_콤비네이션_세로.svg?v=36" alt="콤비 세로"></div>
+        <div class="logo-card__name">콤비 — 세로</div>
+        <div class="logo-card__usage">스플래시 · 온보딩 · 포스터 · 인쇄물</div>
+      </div>
+      <div class="logo-card logo-card--symbol logo-card--dark">
+        <div class="logo-display"><img src="logo/brand-system/05_단색버전.svg?v=36" alt="단색" style="filter: brightness(0) invert(1);"></div>
+        <div class="logo-card__name">단색 버전 (흰색)</div>
+        <div class="logo-card__usage">컬러 배경 위 · 단색 인쇄 · 음각 · 워터마크</div>
+      </div>
+    </div>
+
+    <div class="pv-callout">
+      <strong>최소 크기:</strong> 콤비 가로 24px (모바일 헤더), 32px (웹 헤더). 심볼 단독 16px. 워드마크 단독 18px.<br>
+      <strong>안전 여백:</strong> 심볼 너비의 1/2 이상. <strong>금지:</strong> 회전 · 기울임 · 그라디언트 · 임의 색 변경 · 글래스 카드 안에 넣기.
+    </div>
+  </section>
+
+  <!-- 2. 컬러 -->
+  <section class="pv-section" id="color">
+    <h2 class="pv-section__title">2. 컬러</h2>
+    <p class="pv-section__desc"><code class="pv-code">--color-accent</code> 하나가 anchor. <code class="pv-code">data-role</code>이 이 값을 자동 오버라이드. 화면 코드는 절대 hex 직접 사용 금지.</p>
+
+    <h3 class="pv-subsection__title">역할 컬러 — 액센트 + 사다리</h3>
+    <div class="pv-grid pv-grid--3">
+      <div>
+        <div class="pv-demo__label">data-role="guardian" · 보호자</div>
+        <div class="scale">
+          <div class="scale__step scale__step--light" style="background: #EFF6FF;"><span>50</span><span>#EFF6FF</span></div>
+          <div class="scale__step scale__step--light" style="background: #DBEAFE;"><span>100 · soft</span><span>#DBEAFE</span></div>
+          <div class="scale__step scale__step--light" style="background: #93C5FD;"><span>300</span><span>#93C5FD</span></div>
+          <div class="scale__step scale__step--light" style="background: #5B9BFF;"><span>400</span><span>#5B9BFF</span></div>
+          <div class="scale__step scale__step--dark" style="background: #2C7AFC;"><span><strong>500</strong> · accent</span><span>#2C7AFC</span></div>
+          <div class="scale__step scale__step--dark" style="background: #1E5FD6;"><span>600 · strong</span><span>#1E5FD6</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="pv-demo__label">data-role="medical / nurse / caregiver"</div>
+        <div class="scale">
+          <div class="scale__step scale__step--light" style="background: #F0FDF4;"><span>50</span><span>#F0FDF4</span></div>
+          <div class="scale__step scale__step--light" style="background: var(--color-success-soft);"><span>100 · soft</span><span>#DCFCE7</span></div>
+          <div class="scale__step scale__step--light" style="background: #86EFAC;"><span>300</span><span>#86EFAC</span></div>
+          <div class="scale__step scale__step--dark" style="background: #4ADE80;"><span>400</span><span>#4ADE80</span></div>
+          <div class="scale__step scale__step--dark" style="background: #22C55E;"><span><strong>500</strong> · accent</span><span>#22C55E</span></div>
+          <div class="scale__step scale__step--dark" style="background: #16A34A;"><span>600 · strong</span><span>#16A34A</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="pv-demo__label">data-role="patient"</div>
+        <div class="scale">
+          <div class="scale__step scale__step--light" style="background: var(--brand-orange-50);"><span>50</span><span>#FFF7ED</span></div>
+          <div class="scale__step scale__step--light" style="background: #FFEDD5;"><span>100 · soft</span><span>#FFEDD5</span></div>
+          <div class="scale__step scale__step--light" style="background: #FDBA74;"><span>300</span><span>#FDBA74</span></div>
+          <div class="scale__step scale__step--dark" style="background: #FB923C;"><span>400 · accent</span><span>#FB923C</span></div>
+          <div class="scale__step scale__step--dark" style="background: #F97316;"><span>500</span><span>#F97316</span></div>
+          <div class="scale__step scale__step--dark" style="background: #EA580C;"><span>600 · strong</span><span>#EA580C</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">상태 컬러 (시멘틱)</h3>
+    <div class="pv-grid pv-grid--4">
+      <div class="swatch"><div class="swatch__color" style="background: #16A34A;"></div><div class="swatch__meta"><div class="swatch__name">Success · 정상/완료</div><div class="swatch__hex">#16A34A · soft #DCFCE7</div><div class="swatch__token">--color-success</div></div></div>
+      <div class="swatch"><div class="swatch__color" style="background: #F59E0B;"></div><div class="swatch__meta"><div class="swatch__name">Warning · 주의</div><div class="swatch__hex">#F59E0B · soft #FEF3C7</div><div class="swatch__token">--color-warning</div></div></div>
+      <div class="swatch"><div class="swatch__color" style="background: #E32B25;"></div><div class="swatch__meta"><div class="swatch__name">Danger · 긴급/위험</div><div class="swatch__hex">#E32B25 · soft #FEE2E2</div><div class="swatch__token">--color-danger</div></div></div>
+      <div class="swatch"><div class="swatch__color" style="background: #F5D310;"></div><div class="swatch__meta"><div class="swatch__name">Point · 선샤인 옐로</div><div class="swatch__hex">#F5D310 · 별점/강조 한정</div><div class="swatch__token">--color-point</div></div></div>
+    </div>
+
+    <h3 class="pv-subsection__title">표면 / 텍스트 / 보더</h3>
+    <div class="pv-grid pv-grid--4">
+      <div class="swatch"><div class="swatch__color" style="background: #F0F4F8;"></div><div class="swatch__meta"><div class="swatch__name">Canvas</div><div class="swatch__hex">#F0F4F8</div><div class="swatch__token">--color-bg-canvas</div></div></div>
+      <div class="swatch"><div class="swatch__color" style="background: white; border-bottom: 1px solid #E5E5EA;"></div><div class="swatch__meta"><div class="swatch__name">Surface (단단한 카드)</div><div class="swatch__hex">#FFFFFF</div><div class="swatch__token">--color-bg-surface</div></div></div>
+      <div class="swatch"><div class="swatch__color" style="background: linear-gradient(135deg, #d4e4ff 0%, #f2f6ff 100%);"></div><div class="swatch__meta"><div class="swatch__name">Glass (반투명 카드)</div><div class="swatch__hex">rgba(255,255,255,0.75) + blur(16px)</div><div class="swatch__token">--color-bg-glass</div></div></div>
+      <div class="swatch"><div class="swatch__color" style="background: rgba(0,0,0,0.40);"></div><div class="swatch__meta"><div class="swatch__name">Overlay Dim</div><div class="swatch__hex">rgba(0,0,0,0.40)</div><div class="swatch__token">--color-bg-overlay</div></div></div>
+
+      <div class="swatch"><div class="swatch__color" style="background: #1C1C1E;"></div><div class="swatch__meta"><div class="swatch__name">Ink (본문)</div><div class="swatch__hex">#1C1C1E</div><div class="swatch__token">--color-text-primary</div></div></div>
+      <div class="swatch"><div class="swatch__color" style="background: #8E8E93;"></div><div class="swatch__meta"><div class="swatch__name">Ink Secondary</div><div class="swatch__hex">#8E8E93</div><div class="swatch__token">--color-text-secondary</div></div></div>
+      <div class="swatch"><div class="swatch__color" style="background: #9E9E9E;"></div><div class="swatch__meta"><div class="swatch__name">Ink Tertiary</div><div class="swatch__hex">#9E9E9E</div><div class="swatch__token">--color-text-tertiary</div></div></div>
+      <div class="swatch"><div class="swatch__color" style="background: #E5E5EA;"></div><div class="swatch__meta"><div class="swatch__name">Border Subtle</div><div class="swatch__hex">#E5E5EA</div><div class="swatch__token">--color-border-subtle</div></div></div>
+    </div>
+
+    <h3 class="pv-subsection__title">Clinical 캔버스 (v3.2.13 — 요양보호사·의료진 모바일 공유)</h3>
+    <div class="pv-grid pv-grid--4">
+      <div class="swatch">
+        <div class="swatch__color" style="background: #F4FAF6;"></div>
+        <div class="swatch__meta"><div class="swatch__name">Clinical Canvas</div><div class="swatch__hex">#F4FAF6</div><div class="swatch__token">--clinical-canvas</div></div>
+      </div>
+      <div class="swatch" style="grid-column: span 3;">
+        <div class="swatch__color" style="background: radial-gradient(720px 540px at 50% -10%, rgba(34,197,94,.10), transparent 70%), linear-gradient(180deg, #EAF6EE 0%, #F0F8F3 35%, #F4FAF6 100%); height: 80px;"></div>
+        <div class="swatch__meta"><div class="swatch__name">Clinical BG Image (radial + linear)</div><div class="swatch__token">--clinical-bg-image</div></div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">역할 배경 그라디언트</h3>
+    <div class="pv-grid pv-grid--3">
+      <div style="border-radius: 18px; padding: 32px; min-height: 200px; background: radial-gradient(circle at 50% 0%, rgba(44, 122, 252, 0.14) 0%, transparent 65%), linear-gradient(180deg, #d4e4ff 0%, #e8f0fe 40%, #f2f6ff 70%, #EEF3FB 100%); border: 1px solid var(--color-border-subtle);">
+        <div style="font-size: 11px; color: var(--brand-blue-600); font-weight: 700; margin-bottom: 8px;">GUARDIAN</div>
+        <div style="font-size: 18px; font-weight: 600;">4-stop + radial glow</div>
+        <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 8px;">시그니처 — 보호자만 가지는 분위기</div>
+      </div>
+      <div style="border-radius: 18px; padding: 32px; min-height: 200px; background: linear-gradient(180deg, #DCFCE7 0%, #F0F4F8 120px); border: 1px solid var(--color-border-subtle);">
+        <div style="font-size: 11px; color: var(--brand-green-700); font-weight: 700; margin-bottom: 8px;">MEDICAL / CAREGIVER</div>
+        <div style="font-size: 18px; font-weight: 600;">2-stop fade</div>
+        <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 8px;">상단 120px만 옅게 그린</div>
+      </div>
+      <div style="border-radius: 18px; padding: 32px; min-height: 200px; background: linear-gradient(180deg, #FFEDD5 0%, #F0F4F8 120px); border: 1px solid var(--color-border-subtle);">
+        <div style="font-size: 11px; color: var(--brand-orange-700); font-weight: 700; margin-bottom: 8px;">PATIENT</div>
+        <div style="font-size: 18px; font-weight: 600;">2-stop fade · 웜톤</div>
+        <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 8px;">상단 120px만 옅게 오렌지</div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">히어로 그라디언트 (강조 카드 전용)</h3>
+    <div class="pv-grid pv-grid--3">
+      <div style="border-radius: 24px; padding: 32px; min-height: 140px; background: linear-gradient(135deg, #2C7AFC 0%, #1E5FD6 100%); box-shadow: 0 8px 28px rgba(44,122,252,0.25); color: white;">
+        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 8px;">GUARDIAN HERO</div>
+        <div style="font-size: 18px; font-weight: 600;">일일 리포트</div>
+      </div>
+      <div style="border-radius: 24px; padding: 32px; min-height: 140px; background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%); box-shadow: 0 8px 28px rgba(34,197,94,0.25); color: white;">
+        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 8px;">MEDICAL HERO</div>
+        <div style="font-size: 18px; font-weight: 600;">SOS 알림</div>
+      </div>
+      <div style="border-radius: 24px; padding: 32px; min-height: 140px; background: linear-gradient(135deg, #FB923C 0%, #EA580C 100%); box-shadow: 0 8px 28px rgba(251,146,60,0.25); color: white;">
+        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 8px;">PATIENT HERO</div>
+        <div style="font-size: 18px; font-weight: 600;">가족 사진</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 타이포 -->
+  <section class="pv-section" id="typography">
+    <h2 class="pv-section__title">3. 타이포그래피</h2>
+    <p class="pv-section__desc">Pretendard Variable 단일. 8단계 사다리. 환자(<code class="pv-code">data-role="patient"</code>)는 본문 18px·헤드라인 20px·타이틀 24px로 자동 상향.</p>
+
+    <div class="pv-demo">
+      <div class="type-row">
+        <div class="type-row__token">--text-display</div>
+        <div class="type-row__spec">32 / 600 / 1.2</div>
+        <div style="font-size: 32px; font-weight: 600; line-height: 1.2;">오늘 하루도, 안녕하셨습니다</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__token">--text-title</div>
+        <div class="type-row__spec">22 / 600 / 1.2</div>
+        <div style="font-size: 22px; font-weight: 600; line-height: 1.2;">영자님 잘 지내셨어요</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__token">--text-headline</div>
+        <div class="type-row__spec">17 / 600 / 1.4</div>
+        <div style="font-size: 17px; font-weight: 600; line-height: 1.4;">오전 투약이 완료되었어요</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__token">--text-body</div>
+        <div class="type-row__spec">16 / 400 / 1.4</div>
+        <div style="font-size: 16px; font-weight: 400; line-height: 1.4;">어머님은 오늘 식사를 잘 드셨고, 오후엔 산책 활동에 참여하셨습니다.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__token">--text-body-lg</div>
+        <div class="type-row__spec">18 / 400 / 1.6 · 환자</div>
+        <div style="font-size: 18px; font-weight: 400; line-height: 1.6;">환자 화면 본문은 자동으로 18px · 1.6 행간으로 상향됩니다.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__token">--text-callout</div>
+        <div class="type-row__spec">14 / 400 / 1.4</div>
+        <div style="font-size: 14px; font-weight: 400; line-height: 1.4;">부제목, 인풋 텍스트, 보조 정보</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__token">--text-caption</div>
+        <div class="type-row__spec">13 / 400 / 1.4</div>
+        <div style="font-size: 13px; font-weight: 400; line-height: 1.4; color: #8E8E93;">2026.05.09 · 박간호사</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__token">--text-mini</div>
+        <div class="type-row__spec">11 / 400 / 1.2</div>
+        <div style="font-size: 11px; font-weight: 400; line-height: 1.2;">뱃지 · 마이크로 라벨</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__token">tabbar 라벨 (예외)</div>
+        <div class="type-row__spec">11 / 700 / 1.0</div>
+        <div style="font-size: 11px; font-weight: 700; line-height: 1.0;">홈 · 가이드 · 소통 · 기록 · 마이</div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">굵기 사다리 — 400 / 500 / 600 / 700</h3>
+    <div class="pv-grid pv-grid--4">
+      <div class="pv-demo" style="text-align: center; padding: 24px;"><div style="font-size: 28px; font-weight: 400;">하루안부</div><div style="font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-secondary); margin-top: 8px;">400 · Regular</div></div>
+      <div class="pv-demo" style="text-align: center; padding: 24px;"><div style="font-size: 28px; font-weight: 500;">하루안부</div><div style="font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-secondary); margin-top: 8px;">500 · Medium</div></div>
+      <div class="pv-demo" style="text-align: center; padding: 24px;"><div style="font-size: 28px; font-weight: 600;">하루안부</div><div style="font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-secondary); margin-top: 8px;">600 · SemiBold</div></div>
+      <div class="pv-demo" style="text-align: center; padding: 24px;"><div style="font-size: 28px; font-weight: 700;">하루안부</div><div style="font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-secondary); margin-top: 8px;">700 · Bold</div></div>
+    </div>
+    <div class="pv-callout"><strong>금지:</strong> 300(한글이 글래스 위에서 흐림), 800/900(브랜드 톤은 안정·강조 X). 디스플레이 사이즈에 자간 negative 적용 금지(한글 균형 깨짐).</div>
+  </section>
+
+  <!-- 4. 간격 -->
+  <section class="pv-section" id="space">
+    <h2 class="pv-section__title">4. 간격 — 4px 그리드</h2>
+    <p class="pv-section__desc">모든 간격은 4의 배수. 의도 기반 별칭 권장 — <code class="pv-code">--space-inset-*</code> (내부 패딩) · <code class="pv-code">--space-stack-*</code> (세로 간격) · <code class="pv-code">--space-inline-*</code> (가로 간격).</p>
+
+    <div class="pv-demo">
+      <div class="space-row"><div class="space-row__label">--space-1 (2px) · 인라인 미세조정</div><div class="space-row__bar" style="width: 2px;"></div></div>
+      <div class="space-row"><div class="space-row__label">--space-2 (4px) · stack-tight</div><div class="space-row__bar" style="width: 4px;"></div></div>
+      <div class="space-row"><div class="space-row__label">--space-3 (8px) · inline-default</div><div class="space-row__bar" style="width: 8px;"></div></div>
+      <div class="space-row"><div class="space-row__label">--space-4 (12px) · stack-default</div><div class="space-row__bar" style="width: 12px;"></div></div>
+      <div class="space-row"><div class="space-row__label">--space-5 (16px) page-margin (mobile)</div><div class="space-row__bar" style="width: 16px;"></div></div>
+      <div class="space-row"><div class="space-row__label">--space-6 (20px)</div><div class="space-row__bar" style="width: 20px;"></div></div>
+      <div class="space-row"><div class="space-row__label">--space-7 (24px) · page-margin (web)</div><div class="space-row__bar" style="width: 24px;"></div></div>
+      <div class="space-row"><div class="space-row__label">--space-8 (32px) · section gap</div><div class="space-row__bar" style="width: 32px;"></div></div>
+      <div class="space-row"><div class="space-row__label">--space-9 (40px)</div><div class="space-row__bar" style="width: 40px;"></div></div>
+      <div class="space-row"><div class="space-row__label">--space-10 (48px) · block</div><div class="space-row__bar" style="width: 48px;"></div></div>
+      <div class="space-row"><div class="space-row__label">--space-11 (64px) · hero</div><div class="space-row__bar" style="width: 64px;"></div></div>
+    </div>
+  </section>
+
+  <!-- 5. 형태 -->
+  <section class="pv-section" id="shape">
+    <h2 class="pv-section__title">5. 형태 — Border Radius</h2>
+    <p class="pv-section__desc">사다리 외 값 사용 금지(예: 16px, 20px). <strong>14px가 카드·버튼의 시그니처.</strong></p>
+
+    <div class="pv-grid pv-grid--4">
+      <div><div class="radius-cell" style="border-radius: 0;">radius-0<div class="radius-cell__label">0px · 풀-블리드</div></div></div>
+      <div><div class="radius-cell" style="border-radius: 4px;">radius-1<div class="radius-cell__label">4px · 마이크로 태그</div></div></div>
+      <div><div class="radius-cell" style="border-radius: 8px;">radius-2<div class="radius-cell__label">8px · 인풋 · 칩</div></div></div>
+      <div><div class="radius-cell" style="border-radius: 12px;">radius-3<div class="radius-cell__label">12px · 인라인 카드</div></div></div>
+      <div><div class="radius-cell" style="border-radius: 14px;">radius-4<div class="radius-cell__label">14px · 카드/버튼 기본</div></div></div>
+      <div><div class="radius-cell" style="border-radius: 18px;">radius-5<div class="radius-cell__label">18px · 모달 · glass(예외) 카드</div></div></div>
+      <div><div class="radius-cell" style="border-radius: 24px;">radius-6<div class="radius-cell__label">24px · 히어로</div></div></div>
+      <div><div class="radius-cell" style="border-radius: 28px 28px 0 0;">radius-7<div class="radius-cell__label">28px · 바텀시트 (위 모서리)</div></div></div>
+      <div><div class="radius-cell" style="border-radius: 9999px;">radius-full<div class="radius-cell__label">pill · 탭바 · 뱃지 · FAB</div></div></div>
+    </div>
+  </section>
+
+  <!-- 6. 그림자 / 글래스 -->
+  <section class="pv-section" id="elevation">
+    <h2 class="pv-section__title">6. 고도 — 그림자 + 글래스</h2>
+    <p class="pv-section__desc">모든 그림자는 부드럽다 (rgba 0.06~0.12). 0.20+ 절대 금지. 유일한 강한 그림자는 역할 컬러 25%의 hero 카드.</p>
+
+    <div class="pv-demo--bg pv-demo">
+      <div class="pv-grid pv-grid--4">
+        <div class="shadow-cell" style="box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0 1px rgba(0,0,0,0.04);">
+          --shadow-1
+          <div class="shadow-cell__hint">card 기본</div>
+        </div>
+        <div class="shadow-cell" style="box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.04);">
+          --shadow-2
+          <div class="shadow-cell__hint">중요 카드</div>
+        </div>
+        <div class="shadow-cell" style="box-shadow: 0 8px 28px rgba(0,0,0,0.12), 0 0 1px rgba(0,0,0,0.04);">
+          --shadow-3
+          <div class="shadow-cell__hint">hero · modal</div>
+        </div>
+        <div class="shadow-cell" style="background: rgba(255,255,255,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.55); box-shadow: 0 4px 20px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.35);">
+          --shadow-glass
+          <div class="shadow-cell__hint">탭바 · FAB</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">히어로 컬러 그림자 (역할별)</h3>
+    <div class="pv-grid pv-grid--3">
+      <div class="shadow-cell" style="background: linear-gradient(135deg, #2C7AFC 0%, #1E5FD6 100%); color: white; box-shadow: 0 8px 28px rgba(44,122,252,0.25);">
+        Guardian
+        <div class="shadow-cell__hint" style="color: rgba(255,255,255,0.7)">rgba(44,122,252,0.25)</div>
+      </div>
+      <div class="shadow-cell" style="background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%); color: white; box-shadow: 0 8px 28px rgba(34,197,94,0.25);">
+        Medical
+        <div class="shadow-cell__hint" style="color: rgba(255,255,255,0.7)">rgba(34,197,94,0.25)</div>
+      </div>
+      <div class="shadow-cell" style="background: linear-gradient(135deg, #FB923C 0%, #EA580C 100%); color: white; box-shadow: 0 8px 28px rgba(251,146,60,0.25);">
+        Patient
+        <div class="shadow-cell__hint" style="color: rgba(255,255,255,0.7)">rgba(251,146,60,0.25)</div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">Backdrop Blur 사다리</h3>
+    <div class="pv-grid pv-grid--4">
+      <div class="shadow-cell" style="background: rgba(255,255,255,0.8); backdrop-filter: blur(12px);">blur(12px)<div class="shadow-cell__hint">모바일 헤더</div></div>
+      <div class="shadow-cell" style="background: rgba(255,255,255,0.75); backdrop-filter: blur(16px);">blur(16px)<div class="shadow-cell__hint">glass 카드 (예외 4곳 한정)</div></div>
+      <div class="shadow-cell" style="background: rgba(210,225,250,0.55); backdrop-filter: blur(20px);">blur(20px)<div class="shadow-cell__hint">탭바</div></div>
+      <div class="shadow-cell" style="background: rgba(255,255,255,0.97); backdrop-filter: blur(40px);">blur(40px)<div class="shadow-cell__hint">바텀시트</div></div>
+    </div>
+  </section>
+
+  <!-- 7. 모션 -->
+  <section class="pv-section" id="motion">
+    <h2 class="pv-section__title">7. 모션</h2>
+    <p class="pv-section__desc">호버 정의 안 함 (터치 우선). 활성/Pressed 상태만 정의. <code class="pv-code">prefers-reduced-motion</code> 자동 단축.</p>
+    <p class="pv-section__desc"><strong>아래 카드들에 마우스를 올리면</strong> 각 지속시간으로 박스가 이동합니다.</p>
+
+    <div class="pv-grid pv-grid--3">
+      <div class="motion-cell" style="transition-duration: 150ms;">
+        <div class="motion-cell__token">--motion-micro · 150ms</div>
+        <div class="motion-cell__demo"></div>
+        <div class="motion-cell__hint">버튼 누름 · 토글</div>
+      </div>
+      <div class="motion-cell" style="transition-duration: 250ms;">
+        <div class="motion-cell__token">--motion-transition · 250ms</div>
+        <div class="motion-cell__demo"></div>
+        <div class="motion-cell__hint">카드 펼침 · 탭 전환</div>
+      </div>
+      <div class="motion-cell" style="transition-duration: 350ms;">
+        <div class="motion-cell__token">--motion-enter · 350ms</div>
+        <div class="motion-cell__demo"></div>
+        <div class="motion-cell__hint">모달 등장 · 화면 전환</div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">이징 함수</h3>
+    <div class="pv-grid pv-grid--2">
+      <div class="pv-demo">
+        <div class="pv-demo__label">--easing-standard</div>
+        <code class="pv-code">cubic-bezier(0.2, 0, 0, 1)</code>
+        <p style="font-size: 13px; color: var(--color-text-secondary); margin: 8px 0 0;">기본 — 자연스러운 가속</p>
+      </div>
+      <div class="pv-demo">
+        <div class="pv-demo__label">--easing-emphasize</div>
+        <code class="pv-code">cubic-bezier(0.2, 0, 0, 1.2)</code>
+        <p style="font-size: 13px; color: var(--color-text-secondary); margin: 8px 0 0;">살짝 오버슈트 — 등장 강조</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 아이콘 -->
+  <section class="pv-section" id="icons">
+    <h2 class="pv-section__title">8. 아이콘 — Fluent Filled 단일</h2>
+    <p class="pv-section__desc">Outline 혼용 금지. 활성 상태는 Filled/Outline 토글이 아닌 색만 바꾼다. 이모지 절대 금지. <strong>AI 진입점은 sparkle이 아닌 하루안부 심볼</strong>.</p>
+
+    <div class="pv-grid pv-grid--auto">
+      <div class="icon-cell"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><div class="icon-cell__label">home</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon><div class="icon-cell__label">clipboard-task-list</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon><div class="icon-cell__label">chat</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon><div class="icon-cell__label">document-text</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:person-24-filled"></iconify-icon><div class="icon-cell__label">person</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:alert-24-filled"></iconify-icon><div class="icon-cell__label">alert</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon><div class="icon-cell__label">pill</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:food-24-filled"></iconify-icon><div class="icon-cell__label">food</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon><div class="icon-cell__label">heart-pulse</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:accessibility-24-filled"></iconify-icon><div class="icon-cell__label">accessibility</div></div>
+      <div class="icon-cell" style="border-color: var(--brand-blue-300); background: var(--brand-blue-50);"><img src="logo/brand-system/01_심볼단독.svg?v=36" alt=""><div class="icon-cell__label" style="color: var(--brand-blue-600); font-weight: 600;">하루안부 심볼<br>(AI)</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:send-24-filled"></iconify-icon><div class="icon-cell__label">send</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:siren-24-filled"></iconify-icon><div class="icon-cell__label">siren (SOS)</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:search-24-filled"></iconify-icon><div class="icon-cell__label">search</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:settings-24-filled"></iconify-icon><div class="icon-cell__label">settings</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:dismiss-24-filled"></iconify-icon><div class="icon-cell__label">dismiss</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon><div class="icon-cell__label">chevron-left</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:more-horizontal-24-filled"></iconify-icon><div class="icon-cell__label">more-horizontal</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:calendar-24-filled"></iconify-icon><div class="icon-cell__label">calendar</div></div>
+      <div class="icon-cell"><iconify-icon icon="fluent:image-24-filled"></iconify-icon><div class="icon-cell__label">image</div></div>
+    </div>
+
+    <div class="pv-callout">
+      <strong>크기 매핑:</strong> 탭바·헤더·주요 버튼 24px (<code class="pv-code">-24-filled</code>) · 인라인 리스트 행 20px · 칩·마이크로 뱃지 16px · 히어로·빈상태 28~48px
+    </div>
+  </section>
+
+  <!-- 9. 접근성 -->
+  <section class="pv-section" id="a11y">
+    <h2 class="pv-section__title">9. 접근성</h2>
+    <p class="pv-section__desc">WCAG AA · 터치 타겟 · 포커스 링 · 색 단독 의존 금지.</p>
+
+    <h3 class="pv-subsection__title">포커스 링 — Tab 키로 이동해 보세요</h3>
+    <div class="a11y-demo">
+      <button class="a11y-button">기본 버튼</button>
+      <button class="a11y-button" style="margin-left: 12px;">두번째 버튼</button>
+      <button class="a11y-button" style="margin-left: 12px;">세번째 버튼</button>
+      <p style="margin: 16px 0 0; font-size: 13px; color: var(--color-text-secondary);">포커스 링은 <code class="pv-code">box-shadow: 0 0 0 3px var(--color-accent-soft), 0 0 0 5px var(--color-accent)</code> — 역할 컬러로 자동.</p>
+    </div>
+
+    <h3 class="pv-subsection__title">터치 타겟 사이즈</h3>
+    <div class="a11y-demo" style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+      <div style="text-align: center;">
+        <div class="touch-target">44</div>
+        <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 8px;">기본 (iOS HIG)<br>보호자 · 의료진 · 요양</div>
+      </div>
+      <div style="text-align: center;">
+        <div class="touch-target touch-target--patient">56</div>
+        <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 8px;">환자 (자동 상향)<br><code class="pv-code">data-role="patient"</code></div>
+      </div>
+      <div style="text-align: center;">
+        <div class="touch-target" style="width: 36px; height: 36px;">36</div>
+        <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 8px;">웹 마우스<br><code class="pv-code">data-platform="web"</code></div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">색 + 아이콘 + 텍스트 3중 표현 (SOS 예시)</h3>
+    <div class="a11y-demo">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #E32B25; color: white; border-radius: 14px;">
+        <iconify-icon icon="fluent:siren-24-filled" style="font-size: 28px;"></iconify-icon>
+        <div>
+          <div style="font-weight: 600; font-size: 17px;">긴급 알림</div>
+          <div style="font-size: 13px; opacity: 0.9;">어머님 관련 긴급 알림이 도착했어요</div>
+        </div>
+      </div>
+      <p style="margin: 12px 0 0; font-size: 13px; color: var(--color-text-secondary);">색(빨강) + 아이콘(siren) + 텍스트(긴급 알림) 3중 — 색맹·시각 차이에도 의미 전달.</p>
+    </div>
+  </section>
+
+  <!-- 10. i18n -->
+  <section class="pv-section" id="i18n">
+    <h2 class="pv-section__title">10. 다국어 (i18n)</h2>
+    <p class="pv-section__desc">요양보호사 역할은 외국인 사용자(중국 출신) 비율이 높음. Pretendard는 CJK Han 미커버 → Noto Sans SC 폴백.</p>
+
+    <div class="pv-grid pv-grid--3">
+      <div class="lang-sample">
+        <div class="lang-sample__label">한국어 (Pretendard)</div>
+        <div class="lang-sample__text">오늘 어머님은 식사를 잘 드셨고, 오후엔 산책에 참여하셨습니다.</div>
+      </div>
+      <div class="lang-sample">
+        <div class="lang-sample__label">English (Pretendard Latin)</div>
+        <div class="lang-sample__text">She had a good lunch today and joined the afternoon walk.</div>
+      </div>
+      <div class="lang-sample">
+        <div class="lang-sample__label">中文 简体 (Noto Sans SC)</div>
+        <div class="lang-sample__text lang-sample__cn">奶奶今天午饭吃得很好,下午还参加了散步活动。</div>
+      </div>
+    </div>
+
+    <div class="pv-callout">
+      <strong>폰트 chain (tokens.css):</strong> <code class="pv-code">'Pretendard Variable', 'Pretendard', 'Noto Sans SC', 'Noto Sans', -apple-system, ... sans-serif</code>
+      <br>
+      한·영은 Pretendard, 중국어 글자는 unicode 범위로 자동 Noto Sans SC 선택. 요양보호사앱 5개 HTML만 명시적으로 Noto Sans SC를 다운로드 (~150KB).
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       v3.2 신설 — 차트 / 매직넘버 / 일러스트 / 액션 동사
+       (v3.2.3에서 다크 모드는 봉인 — 라이트 단일 운영)
+       ============================================================ -->
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · 데이터 시각화 팔레트 (§14)</h2>
+    <p class="pv-section__desc">차트 색은 의료/돌봄 데이터를 다루므로 <strong>역할 accent와 독립적</strong>이다. Okabe-Ito 색맹 안전 8단계 + 의미 별칭(positive/attention/critical/baseline/prediction).</p>
+
+    <h3 class="pv-subsection__title">8단계 카테고리 (--chart-1 ~ --chart-8)</h3>
+    <div class="pv-demo">
+      <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-1);"></div><code class="pv-code" style="font-size:10px;">chart-1</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-2);"></div><code class="pv-code" style="font-size:10px;">chart-2</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-3);"></div><code class="pv-code" style="font-size:10px;">chart-3</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-4);"></div><code class="pv-code" style="font-size:10px;">chart-4</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-5);"></div><code class="pv-code" style="font-size:10px;">chart-5</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-6);"></div><code class="pv-code" style="font-size:10px;">chart-6</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-7);"></div><code class="pv-code" style="font-size:10px;">chart-7</code></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2);"><div style="width:48px;height:48px;border-radius:var(--radius-2);background:var(--chart-8);"></div><code class="pv-code" style="font-size:10px;">chart-8</code></div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">의미 별칭 (의료/돌봄 도메인)</h3>
+    <div class="pv-demo">
+      <div style="display:flex;gap:var(--space-5);flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:var(--space-3);"><div style="width:24px;height:24px;border-radius:var(--radius-2);background:var(--chart-positive);"></div><div><div style="font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);">정상</div><code class="pv-code" style="font-size:11px;">--chart-positive</code></div></div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);"><div style="width:24px;height:24px;border-radius:var(--radius-2);background:var(--chart-attention);"></div><div><div style="font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);">주의</div><code class="pv-code" style="font-size:11px;">--chart-attention</code></div></div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);"><div style="width:24px;height:24px;border-radius:var(--radius-2);background:var(--chart-critical);"></div><div><div style="font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);">위험</div><code class="pv-code" style="font-size:11px;">--chart-critical</code></div></div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);"><div style="width:24px;height:24px;border-radius:var(--radius-2);background:var(--chart-baseline);"></div><div><div style="font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);">기준선 (dashed)</div><code class="pv-code" style="font-size:11px;">--chart-baseline</code></div></div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);"><div style="width:24px;height:24px;border-radius:var(--radius-2);background:var(--chart-prediction);"></div><div><div style="font:var(--w-strong) var(--text-callout)/1 var(--font-family-base);">예측 (dashed)</div><code class="pv-code" style="font-size:11px;">--chart-prediction</code></div></div>
+      </div>
+    </div>
+
+    <h3 class="pv-subsection__title">막대 차트 미니 예시 (주간 케어 완료율)</h3>
+    <div class="pv-demo">
+      <svg viewBox="0 0 520 200" style="width:100%;max-width:520px;height:auto;font:var(--text-caption) var(--font-family-base);">
+        <!-- grid -->
+        <line x1="40" y1="40" x2="510" y2="40" stroke="var(--chart-grid)" stroke-width="1"></line>
+        <line x1="40" y1="80" x2="510" y2="80" stroke="var(--chart-grid)" stroke-width="1"></line>
+        <line x1="40" y1="120" x2="510" y2="120" stroke="var(--chart-grid)" stroke-width="1"></line>
+        <line x1="40" y1="160" x2="510" y2="160" stroke="var(--chart-grid)" stroke-width="1"></line>
+        <!-- axis -->
+        <text x="30" y="44" text-anchor="end" fill="var(--chart-axis)">100</text>
+        <text x="30" y="124" text-anchor="end" fill="var(--chart-axis)">50</text>
+        <text x="30" y="164" text-anchor="end" fill="var(--chart-axis)">0</text>
+        <!-- bars -->
+        <rect x="60" y="60" width="50" height="100" rx="4" fill="var(--chart-positive)"></rect>
+        <rect x="130" y="50" width="50" height="110" rx="4" fill="var(--chart-positive)"></rect>
+        <rect x="200" y="80" width="50" height="80" rx="4" fill="var(--chart-attention)"></rect>
+        <rect x="270" y="55" width="50" height="105" rx="4" fill="var(--chart-positive)"></rect>
+        <rect x="340" y="45" width="50" height="115" rx="4" fill="var(--chart-positive)"></rect>
+        <rect x="410" y="100" width="50" height="60" rx="4" fill="var(--chart-critical)"></rect>
+        <rect x="480" y="70" width="20" height="90" rx="4" fill="var(--chart-positive)" opacity="0.4"></rect>
+        <!-- baseline -->
+        <line x1="40" y1="60" x2="510" y2="60" stroke="var(--chart-baseline)" stroke-width="2" stroke-dasharray="6 4"></line>
+        <text x="510" y="56" text-anchor="end" fill="var(--chart-baseline)" font-size="10">목표 90%</text>
+        <!-- x labels -->
+        <text x="85" y="180" text-anchor="middle" fill="var(--chart-axis)">월</text>
+        <text x="155" y="180" text-anchor="middle" fill="var(--chart-axis)">화</text>
+        <text x="225" y="180" text-anchor="middle" fill="var(--chart-axis)">수</text>
+        <text x="295" y="180" text-anchor="middle" fill="var(--chart-axis)">목</text>
+        <text x="365" y="180" text-anchor="middle" fill="var(--chart-axis)">금</text>
+        <text x="435" y="180" text-anchor="middle" fill="var(--chart-axis)">토</text>
+        <text x="490" y="180" text-anchor="middle" fill="var(--chart-axis)">일(예측)</text>
+      </svg>
+      <p style="margin:var(--space-3) 0 0;font:var(--text-caption)/1.5 var(--font-family-base);color:var(--color-text-tertiary);">막대 4px 라운드 · 기준선 dashed · 예측 막대는 opacity 0.4 — 다크 모드에서 자동 채도 조정.</p>
+    </div>
+  </section>
+
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · 매직넘버 명도 사다리 (§3.9, KRDS 차용)</h2>
+    <p class="pv-section__desc">KRDS의 명도 매직넘버(40/50/70/90)를 하루안부 그레이 스케일에 매핑. "본문 = 90 / 보조 = 70 / 보더 = 50 / 배경 = 40" 사다리 외 명도 사용 금지. 다크 모드에서도 동일 의미가 자동 반전.</p>
+
+    <div class="pv-demo">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-5);">
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-10);border:1px solid var(--color-border-subtle);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-10</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">카드, 시트 표면</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-40);border:1px solid var(--color-border-subtle);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-40</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">페이지 배경</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-50);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-50</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">디바이더, 보더</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-70);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-70</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">보조 텍스트</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-90);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-90</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">본문 텍스트 (4.5:1)</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="height:80px;background:var(--neutral-strong);border-radius:var(--radius-2);"></div>
+          <code class="pv-code">--neutral-strong</code>
+          <span style="font:var(--text-caption)/1.4 var(--font-family-base);color:var(--color-text-secondary);">환자 고대비 (7:1)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · 일러스트 시스템 (§15)</h2>
+    <p class="pv-section__desc">마스코트는 "사람과의 만남" 순간에만, 빈 상태·오류·중립 정보는 라인 일러스트. 라인 일러스트는 <strong>2px 단색 스트로크, round cap/join, currentColor 상속</strong>으로 다크 모드 자동 대응.</p>
+
+    <div class="pv-grid pv-grid--3">
+      <div class="pv-demo" style="text-align:center;">
+        <div class="pv-demo__label">EMPTY STATE</div>
+        <svg width="120" height="120" viewBox="0 0 120 120" style="color:var(--color-text-tertiary);margin:0 auto;display:block;">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="30" y="35" width="60" height="50" rx="4"></rect>
+            <path d="M40 50 h40 M40 60 h40 M40 70 h20"></path>
+          </g>
+        </svg>
+        <p style="margin:var(--space-3) 0 0;font:var(--text-callout)/1.5 var(--font-family-base);color:var(--color-text-secondary);">"아직 기록이 없어요"</p>
+      </div>
+      <div class="pv-demo" style="text-align:center;">
+        <div class="pv-demo__label">NETWORK ERROR</div>
+        <svg width="120" height="120" viewBox="0 0 120 120" style="color:var(--color-text-tertiary);margin:0 auto;display:block;">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M40 80 a20 20 0 0 1 40 0"></path>
+            <path d="M30 70 a30 30 0 0 1 60 0"></path>
+            <path d="M20 60 a40 40 0 0 1 80 0"></path>
+            <circle cx="60" cy="85" r="3" fill="currentColor"></circle>
+            <line x1="20" y1="20" x2="100" y2="100" stroke-width="3"></line>
+          </g>
+        </svg>
+        <p style="margin:var(--space-3) 0 0;font:var(--text-callout)/1.5 var(--font-family-base);color:var(--color-text-secondary);">"잠시 연결이 불안정해요"</p>
+      </div>
+      <div class="pv-demo" style="text-align:center;">
+        <div class="pv-demo__label">PERMISSION DENIED</div>
+        <svg width="120" height="120" viewBox="0 0 120 120" style="color:var(--color-text-tertiary);margin:0 auto;display:block;">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="35" y="55" width="50" height="40" rx="4"></rect>
+            <path d="M45 55 v-10 a15 15 0 0 1 30 0 v10"></path>
+            <circle cx="60" cy="75" r="3" fill="currentColor"></circle>
+          </g>
+        </svg>
+        <p style="margin:var(--space-3) 0 0;font:var(--text-callout)/1.5 var(--font-family-base);color:var(--color-text-secondary);">"의료진만 볼 수 있어요"</p>
+      </div>
+    </div>
+
+    <div class="pv-callout">
+      <strong>마스코트 vs 라인 분리</strong> — 마스코트는 환영·완료·축하 순간에만. 빈 상태에 마스코트가 나오면 친근함이 흐트러진다. 두 종류를 한 화면에 동시 사용 금지.
+    </div>
+  </section>
+
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · 액션 동사 매트릭스 (§1.5)</h2>
+    <p class="pv-section__desc">Fluent 2의 Done/Finish/Close/Dismiss 컨벤션을 한국어 톤에 맞춰 표준화. 컨텍스트별로 동사가 고정되어야 사용자가 학습 부담 없이 다음 화면을 예측할 수 있다.</p>
+
+    <div class="pv-demo">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-5);">
+        <div>
+          <div class="pv-demo__label">닫기 계열 (4종)</div>
+          <ul style="margin:0;padding-left:18px;font:var(--text-callout)/1.6 var(--font-family-base);color:var(--color-text-secondary);">
+            <li><strong>닫기</strong> — 정보 보고 닫음 (작업 결과 없음)</li>
+            <li><strong>취소</strong> — 진행 중 입력 버리기</li>
+            <li><strong>확인</strong> — 정보를 봤다고 알림</li>
+            <li><strong>돌아가기</strong> — 한 단계 위 화면</li>
+          </ul>
+        </div>
+        <div>
+          <div class="pv-demo__label">저장·완료 (5종)</div>
+          <ul style="margin:0;padding-left:18px;font:var(--text-callout)/1.6 var(--font-family-base);color:var(--color-text-secondary);">
+            <li><strong>저장</strong> — 다시 편집 가능</li>
+            <li><strong>완료</strong> — 편집 모드 종료</li>
+            <li><strong>확정</strong> — 되돌릴 수 없음</li>
+            <li><strong>전송</strong> — 외부로 보냄</li>
+            <li><strong>제출</strong> — 검증·승인 흐름</li>
+          </ul>
+        </div>
+        <div>
+          <div class="pv-demo__label">부정·위험 (3종)</div>
+          <ul style="margin:0;padding-left:18px;font:var(--text-callout)/1.6 var(--font-family-base);color:var(--color-text-secondary);">
+            <li><strong>삭제</strong> — 영구 삭제 (복구 명시)</li>
+            <li><strong>취소하기</strong> — 예약·약속 취소</li>
+            <li><strong>나가기</strong> — 채팅방 본인만 나감</li>
+          </ul>
+        </div>
+        <div>
+          <div class="pv-demo__label">시작·진행 (3종)</div>
+          <ul style="margin:0;padding-left:18px;font:var(--text-callout)/1.6 var(--font-family-base);color:var(--color-text-secondary);">
+            <li><strong>시작</strong> — 처음 진입</li>
+            <li><strong>계속</strong> — 중단된 흐름 이어서</li>
+            <li><strong>다시 시도</strong> — 실패한 동작 재시도</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-callout pv-callout--green">
+      <strong>동사 + 명사 패턴</strong> — 라벨은 의미 명확하게: "확인" → "메시지 보내기" / "등록" → "환자 등록" / "변경" → "비밀번호 변경" / "신청" → "본인 인증 제출".
+    </div>
+  </section>
+
+</main>
+
+<footer class="pv-footer">
+  하루안부 디자인 시스템 v3.2 · 2026.05.11<br>
+  <a href="preview.html">← 메인</a> · <a href="01_FOUNDATIONS.md">01_FOUNDATIONS.md</a> · <a href="tokens/tokens.css">tokens.css</a>
+</footer>
+
+</body>
+</html>

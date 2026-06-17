@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Edge Glow — 흰 배경 5종</title>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+  <style>
+    :root{
+      /* 키컬러 #2C7AFC 기반 — 흰 배경에서도 보이도록 채도 살린 블루/시안/인디고 */
+      --g-key:    #2C7AFC;   /* 브랜드 키컬러 */
+      --g-deep:   #1E5FD6;   /* 깊은 블루(대비용) */
+      --g-blue:   #5B9BFF;   /* 밝은 블루 */
+      --g-sky:    #93C5FD;   /* 스카이 */
+      --g-cyan:   #38D6F5;   /* 시안 하이라이트 */
+      --g-indigo: #6A7BFF;   /* 인디고(보랏빛) */
+      --ink:      #0A0E1A;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{background:#FFFFFF;color:var(--ink);font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased}
+    body{padding:48px clamp(20px,4vw,64px) 96px}
+
+    .page-head{max-width:760px;margin:0 auto 52px}
+    .page-eyebrow{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--g-key);margin-bottom:16px}
+    .page-title{font-size:clamp(30px,5vw,50px);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin-bottom:18px}
+    .page-sub{font-size:15.5px;line-height:1.7;color:#5b6472;max-width:62ch}
+    .page-sub strong{color:var(--ink);font-weight:600}
+
+    .compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,430px),1fr));gap:clamp(20px,2.4vw,34px);max-width:1320px;margin:0 auto}
+    .variant{display:flex;flex-direction:column;gap:16px}
+
+    /* ─── 화면(디바이스) ─── */
+    .screen{
+      position:relative;aspect-ratio:16 / 10;border-radius:28px;overflow:hidden;
+      background:#FFFFFF;
+      box-shadow:0 1px 2px rgba(10,14,26,.05),0 18px 50px rgba(10,14,26,.10);
+      isolation:isolate;
+    }
+    /* 중앙 콘텐츠 — 원형 오브 없이, 말하는 신호만 미니멀하게 */
+    .screen-center{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+    .wm{font-size:clamp(30px,5vw,46px);font-weight:700;letter-spacing:-.04em;color:var(--ink)}
+    .talk{display:flex;align-items:center;gap:5px;height:22px}
+    .talk span{width:4px;border-radius:2px;background:linear-gradient(var(--g-cyan),var(--g-key));animation:bar 1s ease-in-out infinite}
+    .talk span:nth-child(1){animation-delay:-.9s}
+    .talk span:nth-child(2){animation-delay:-.2s}
+    .talk span:nth-child(3){animation-delay:-.6s}
+    .talk span:nth-child(4){animation-delay:-.35s}
+    .talk span:nth-child(5){animation-delay:-.75s}
+    .talk span:nth-child(6){animation-delay:-.1s}
+    .talk-cap{font-size:13px;font-weight:500;color:#6b7280}
+
+    /* ─── 엣지 글로우 (흰 배경: 가운데 비우면 흰 화면, 가장자리에만 컬러) ─── */
+    .glow{position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;overflow:hidden}
+    .glow::before,.glow::after{content:'';position:absolute}
+
+    /* 공통 엣지 마스크 — 가운데 투명(흰 화면 노출), 가장자리만 글로우 */
+    .glow{
+      -webkit-mask:radial-gradient(122% 122% at 50% 50%, transparent 46%, #000 78%);
+              mask:radial-gradient(122% 122% at 50% 50%, transparent 46%, #000 78%);
+    }
+
+    /* 1) Breathe — 가장자리가 숨쉬듯 강약 (차분한 말하기) */
+    .g1::before{inset:-12%;border-radius:46% 54% 52% 48%;
+      background:conic-gradient(from 210deg,var(--g-cyan),var(--g-blue),var(--g-key),var(--g-indigo),var(--g-key),var(--g-blue),var(--g-sky),var(--g-cyan));
+      filter:blur(30px) saturate(1.3);
+      animation:gSpin 11s linear infinite, gBreathe 2.6s ease-in-out infinite;}
+
+    /* 2) Comet — 밝은 빛이 가장자리를 빠르게 한 바퀴 돌며 말이 흘러감 */
+    .g2::before{inset:-10%;border-radius:50%;
+      background:conic-gradient(from 0deg,var(--g-sky),var(--g-blue),var(--g-key),var(--g-deep),var(--g-key),var(--g-blue),var(--g-sky));
+      filter:blur(30px) saturate(1.2);opacity:.7;}
+    .g2::after{inset:-10%;border-radius:50%;
+      background:conic-gradient(from 0deg,transparent 0%,var(--g-cyan) 8%,#fff 12%,var(--g-cyan) 16%,transparent 26%,transparent 100%);
+      filter:blur(16px) brightness(1.2);mix-blend-mode:screen;
+      animation:gSpin 2.6s linear infinite;}
+
+    /* 3) Liquid — 액체처럼 출렁이며 모서리 반경이 파도침 */
+    .g3::before{inset:-14%;border-radius:46% 54% 52% 48%;
+      background:conic-gradient(from 140deg,var(--g-cyan),var(--g-key),var(--g-indigo),var(--g-blue),var(--g-cyan));
+      filter:blur(32px) saturate(1.25);
+      animation:gSpin 9s linear infinite, gLiquid 4.4s ease-in-out infinite, gTalk 2.2s ease-in-out infinite;}
+
+    /* 4) Twin — 두 컬러 흐름이 반대로 돌며 섞임 (유기적, 가장 살아있는) */
+    .g4::before{inset:-16%;border-radius:48% 52% 55% 45%;
+      background:conic-gradient(from 0deg,var(--g-blue),transparent 30%,var(--g-cyan),transparent 64%,var(--g-indigo),transparent 94%,var(--g-blue));
+      filter:blur(30px) saturate(1.3);
+      animation:gSpin 8s linear infinite, gLiquid 5s ease-in-out infinite;}
+    .g4::after{inset:-16%;border-radius:55% 45% 48% 52%;
+      background:conic-gradient(from 150deg,var(--g-sky),transparent 34%,var(--g-key),transparent 66%,var(--g-cyan),transparent 96%,var(--g-sky));
+      filter:blur(34px);mix-blend-mode:multiply;opacity:.85;
+      animation:gSpinRev 10.5s linear infinite, gTalk 1.9s ease-in-out infinite;}
+
+    /* 5) Syllable — 네 모서리가 음절처럼 번갈아 톡톡 피어남 */
+    .g5::before{inset:-10%;border-radius:50%;
+      background:
+        radial-gradient(42% 42% at 10% 8%, var(--g-cyan), transparent 70%),
+        radial-gradient(44% 44% at 90% 12%, var(--g-key), transparent 70%),
+        radial-gradient(46% 46% at 12% 92%, var(--g-indigo), transparent 72%),
+        radial-gradient(42% 42% at 88% 90%, var(--g-blue), transparent 70%);
+      filter:blur(34px) saturate(1.25);
+      animation:gSyllable 2.4s ease-in-out infinite, gLiquid 6s ease-in-out infinite;}
+
+    /* ─── keyframes ─── */
+    @keyframes gSpin{to{rotate:360deg}}
+    @keyframes gSpinRev{to{rotate:-360deg}}
+    @keyframes bar{0%,100%{height:7px}50%{height:22px}}
+    @keyframes gBreathe{
+      0%,100%{opacity:.7;scale:1}
+      50%{opacity:1;scale:1.06}
+    }
+    /* 액체 파도 — border-radius 모핑 + 비대칭 스케일 */
+    @keyframes gLiquid{
+      0%,100%{border-radius:46% 54% 52% 48%;scale:1 1}
+      25%{border-radius:56% 44% 46% 54%;scale:1.05 .97}
+      50%{border-radius:50% 50% 58% 42%;scale:1.02 1.05}
+      75%{border-radius:44% 56% 48% 52%;scale:1.06 1.0}
+    }
+    /* 말하기 — 불규칙 강약(음절) */
+    @keyframes gTalk{
+      0%{opacity:.72}14%{opacity:1}28%{opacity:.82}42%{opacity:1}
+      55%{opacity:.78}70%{opacity:1}84%{opacity:.85}100%{opacity:.72}
+    }
+    /* 모서리 음절 블룸 */
+    @keyframes gSyllable{
+      0%,100%{opacity:.6;scale:1}
+      20%{opacity:1;scale:1.05}
+      45%{opacity:.7;scale:1.0}
+      65%{opacity:1;scale:1.07}
+      85%{opacity:.75;scale:1.01}
+    }
+    @media (prefers-reduced-motion:reduce){.glow::before,.glow::after,.talk span{animation:none!important}}
+
+    /* ─── 라벨/버튼 ─── */
+    .v-meta{padding:0 4px}
+    .v-name{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:5px}
+    .v-key{font-size:11px;font-weight:700;letter-spacing:.06em;color:#fff;background:var(--g-key);border-radius:6px;padding:3px 8px}
+    .v-desc{font-size:13px;line-height:1.6;color:#6b7280}
+    .v-btn{margin-top:12px;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--g-key);background:#fff;border:1px solid #e3e8f0;border-radius:999px;padding:9px 16px;cursor:pointer;transition:background .15s,border-color .15s}
+    .v-btn:hover{background:#F3F7FF;border-color:var(--g-blue)}
+    .v-btn iconify-icon{font-size:15px}
+
+    /* ─── 풀스크린(디바이스 맞춤) ─── */
+    .fs{position:fixed;inset:0;z-index:9999;background:#fff;display:none;align-items:center;justify-content:center}
+    .fs.open{display:flex}
+    .fs-inner{position:relative;z-index:3;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px}
+    .fs-wm{font-size:clamp(64px,12vw,150px);font-weight:700;letter-spacing:-.05em;line-height:.9;color:var(--ink)}
+    .fs-talk{display:flex;align-items:center;gap:6px;height:30px}
+    .fs-talk span{width:5px;border-radius:3px;background:linear-gradient(var(--g-cyan),var(--g-key));animation:bar 1s ease-in-out infinite}
+    .fs-talk span:nth-child(1){animation-delay:-.9s}.fs-talk span:nth-child(2){animation-delay:-.2s}
+    .fs-talk span:nth-child(3){animation-delay:-.6s}.fs-talk span:nth-child(4){animation-delay:-.35s}
+    .fs-talk span:nth-child(5){animation-delay:-.75s}.fs-talk span:nth-child(6){animation-delay:-.1s}
+    .fs-close{position:fixed;top:22px;right:22px;z-index:5;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid #e3e8f0;color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 20px rgba(10,14,26,.12)}
+    .fs-close iconify-icon{font-size:22px}
+    .fs-name{position:fixed;top:26px;left:26px;z-index:5;font-size:13px;font-weight:600;letter-spacing:.06em;color:#6b7280}
+  </style>
+</head>
+<body>
+  <header class="page-head">
+    <div class="page-eyebrow">AI Voice · White Edge Glow</div>
+    <h1 class="page-title">AI가 말할 때, 화면 가장자리가<br>그라디언트로 살아 일렁입니다.</h1>
+    <p class="page-sub">원형 오브 없이 <strong>화면 가장자리 자체</strong>가 키컬러(#2C7AFC) 그라디언트로 출렁이는 5가지.
+      흰 배경 위, 디바이스 화면에 꽉 차게 적용됩니다. <strong>풀스크린으로 보기</strong>로 실제 크기 확인 가능합니다.</p>
+  </header>
+
+  <main class="compare-grid">
+    <!-- 1 -->
+    <div class="variant">
+      <div class="screen"><div class="glow g1"></div>
+        <div class="screen-center"><div class="wm">하루안부</div><div class="talk"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="talk-cap">말하는 중…</div></div></div>
+      <div class="v-meta"><div class="v-name"><span class="v-key">1</span> Breathe</div>
+        <div class="v-desc">가장자리가 숨쉬듯 강약. 차분하고 안정적인 말하기 — 정통 Apple Intelligence 톤.</div>
+        <button class="v-btn" data-g="g1" data-name="1 · Breathe"><iconify-icon icon="fluent:full-screen-maximize-24-regular"></iconify-icon> 풀스크린으로 보기</button></div>
+    </div>
+    <!-- 2 -->
+    <div class="variant">
+      <div class="screen"><div class="glow g2"></div>
+        <div class="screen-center"><div class="wm">하루안부</div><div class="talk"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="talk-cap">말하는 중…</div></div></div>
+      <div class="v-meta"><div class="v-name"><span class="v-key">2</span> Comet</div>
+        <div class="v-desc">밝은 빛이 가장자리를 빠르게 한 바퀴 돌며 말이 흘러감. 역동적이고 테크한 느낌.</div>
+        <button class="v-btn" data-g="g2" data-name="2 · Comet"><iconify-icon icon="fluent:full-screen-maximize-24-regular"></iconify-icon> 풀스크린으로 보기</button></div>
+    </div>
+    <!-- 3 -->
+    <div class="variant">
+      <div class="screen"><div class="glow g3"></div>
+        <div class="screen-center"><div class="wm">하루안부</div><div class="talk"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="talk-cap">말하는 중…</div></div></div>
+      <div class="v-meta"><div class="v-name"><span class="v-key">3</span> Liquid</div>
+        <div class="v-desc">액체처럼 출렁이며 모서리가 파도침 + 음절 강약. 가장 "파도 일렁임"에 충실.</div>
+        <button class="v-btn" data-g="g3" data-name="3 · Liquid"><iconify-icon icon="fluent:full-screen-maximize-24-regular"></iconify-icon> 풀스크린으로 보기</button></div>
+    </div>
+    <!-- 4 -->
+    <div class="variant">
+      <div class="screen"><div class="glow g4"></div>
+        <div class="screen-center"><div class="wm">하루안부</div><div class="talk"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="talk-cap">말하는 중…</div></div></div>
+      <div class="v-meta"><div class="v-name"><span class="v-key">4</span> Twin Flow</div>
+        <div class="v-desc">두 컬러 흐름이 반대로 돌며 섞임. 가장 유기적이고 "AI가 생각·발화하는" 느낌.</div>
+        <button class="v-btn" data-g="g4" data-name="4 · Twin Flow"><iconify-icon icon="fluent:full-screen-maximize-24-regular"></iconify-icon> 풀스크린으로 보기</button></div>
+    </div>
+    <!-- 5 -->
+    <div class="variant">
+      <div class="screen"><div class="glow g5"></div>
+        <div class="screen-center"><div class="wm">하루안부</div><div class="talk"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="talk-cap">말하는 중…</div></div></div>
+      <div class="v-meta"><div class="v-name"><span class="v-key">5</span> Syllable</div>
+        <div class="v-desc">네 모서리가 음절처럼 번갈아 톡톡 피어남. 발화 리듬이 가장 또렷하게 보임.</div>
+        <button class="v-btn" data-g="g5" data-name="5 · Syllable"><iconify-icon icon="fluent:full-screen-maximize-24-regular"></iconify-icon> 풀스크린으로 보기</button></div>
+    </div>
+  </main>
+
+  <!-- 풀스크린 -->
+  <div class="fs" id="fs">
+    <div class="glow" id="fsGlow"></div>
+    <div class="fs-name" id="fsName"></div>
+    <button class="fs-close" id="fsClose" aria-label="닫기"><iconify-icon icon="fluent:dismiss-24-regular"></iconify-icon></button>
+    <div class="fs-inner"><div class="fs-wm">하루안부.</div><div class="fs-talk"><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+  </div>
+
+  <script>
+    const fs=document.getElementById('fs'),fsGlow=document.getElementById('fsGlow'),fsName=document.getElementById('fsName');
+    document.querySelectorAll('.v-btn').forEach(b=>b.addEventListener('click',()=>{
+      fsGlow.className='glow '+b.dataset.g; fsName.textContent=b.dataset.name; fs.classList.add('open');
+    }));
+    const close=()=>fs.classList.remove('open');
+    document.getElementById('fsClose').addEventListener('click',close);
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+    fs.addEventListener('click',e=>{if(e.target===fs||e.target.classList.contains('glow'))close()});
+  </script>
+</body>
+</html>

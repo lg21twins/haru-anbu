@@ -13,14 +13,13 @@
   <link rel="apple-touch-icon" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
 
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
 
   <style>
     body {
-      background:
-        radial-gradient(ellipse at 20% 0%, var(--brand-blue-100) 0%, transparent 55%),
-        radial-gradient(ellipse at 100% 100%, var(--brand-orange-100) 0%, transparent 50%),
-        var(--color-bg-canvas);
+      background: var(--color-bg-canvas);
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
@@ -147,8 +146,8 @@
       box-shadow: var(--shadow-2);
     }
     .btn-kakao {
-      background: #FEE500;
-      color: #1A1A1A;
+      background: var(--brand-kakao-yellow);
+      color: var(--brand-kakao-text);
     }
     .btn-link {
       background: transparent;
@@ -180,7 +179,16 @@
       color: var(--color-text-tertiary);
       text-align: center;
     }
-    .fineprint a { color: var(--color-text-secondary); text-decoration: underline; }
+    .fineprint button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: var(--color-text-secondary);
+      font: inherit;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -188,7 +196,7 @@
   <!-- 히어로 -->
   <div class="hero">
     <div class="logo-wrap" aria-hidden="true">
-      <img src="../07_디자인/logo/brand-system/01_심볼단독.svg" alt="">
+      <img src="../07_디자인/logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
     </div>
     <h1 class="wordmark">하루<em>안부</em></h1>
     <p class="tagline">
@@ -239,7 +247,7 @@
     <button class="btn-link" type="button">이미 계정이 있어요 · 로그인</button>
 
     <p class="fineprint">
-      시작하면 <a href="#">이용약관</a>과 <a href="#">개인정보처리방침</a>에 동의하는 것으로 간주돼요.
+      시작하면 <button type="button">이용약관</button>과 <button type="button">개인정보처리방침</button>에 동의하는 것으로 간주돼요.
     </p>
   </div>
 

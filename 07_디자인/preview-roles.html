@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="ko" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
+  <title>Roles Side-by-Side · 하루안부 디자인 시스템 v3.2</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="_preview-shared.css">
+  <script src="_iconify-icon.min.js"></script>
+  <script src="_preview-controls.js" defer></script>
+  <style>
+    /* 3열 비교 그리드 */
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+
+    .role-col {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--color-border-subtle);
+      background: white;
+    }
+    .role-col__head {
+      padding: 16px;
+      color: white;
+      font-weight: 600;
+    }
+    .role-col__head--guardian { background: linear-gradient(135deg, var(--brand-blue-500) 0%, var(--brand-blue-600) 100%); }
+    .role-col__head--medical { background: linear-gradient(135deg, var(--brand-green-500) 0%, var(--brand-green-600) 100%); }
+    .role-col__head--patient { background: linear-gradient(135deg, var(--brand-orange-400) 0%, var(--brand-orange-600) 100%); }
+    .role-col__head__role { font-size: 11px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; font-family: var(--font-family-mono); font-weight: normal; }
+    .role-col__head__name { font-size: 18px; }
+    .role-col__head__hex { font-size: 12px; opacity: 0.85; margin-top: 4px; font-family: var(--font-family-mono); }
+    .role-col__body { padding: 20px; }
+
+    /* 데모 박스 */
+    .demo-box {
+      padding: 20px;
+      border-radius: 14px;
+      min-height: 140px;
+    }
+    .demo-box--guardian-bg {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(44, 122, 252, 0.14) 0%, transparent 65%),
+        linear-gradient(180deg, #d4e4ff 0%, #e8f0fe 40%, #f2f6ff 70%, #EEF3FB 100%);
+    }
+    .demo-box--medical-bg { background: linear-gradient(180deg, var(--brand-green-100) 0%, var(--color-bg-canvas) 120px); }
+    .demo-box--patient-bg { background: linear-gradient(180deg, var(--brand-orange-100) 0%, var(--color-bg-canvas) 120px); }
+
+    /* 버튼 */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: 0 var(--space-6);
+      border-radius: var(--radius-button);
+      font: var(--weight-semibold) var(--text-headline)/1 var(--font-family-base);
+      border: 0;
+      cursor: pointer;
+      color: var(--color-text-on-accent);
+      height: var(--size-button-default);
+    }
+    /* btn — semantic accent (해당 카드의 data-role 컨텍스트에서 자동 변환).
+       사용 시 카드 자체에 data-role을 두면 됨. 데모 편의를 위해 modifier 유지. */
+    .btn--guardian,
+    .btn--medical { background: var(--color-accent); }
+    .btn--patient {
+      background: var(--color-accent);
+      height: var(--size-button-large);
+      font-size: var(--text-body-lg);
+      padding: 0 var(--space-7);
+    }
+
+    /* 카드 — v3.1 flat first */
+    .demo-card {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-1);
+    }
+    /* demo-card h4 — semantic accent (부모 demo-box의 data-role 컨텍스트) */
+    .demo-card h4 { color: var(--color-accent); }
+
+    /* 탭바 (mini) — v3.1 모든 역할 동일 surface, active 아이콘만 role accent */
+    .mini-tabbar {
+      height: var(--size-button-default);
+      background: var(--tabbar-bg);
+      backdrop-filter: blur(var(--blur-tab));
+      border: var(--tabbar-border);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-1);
+      display: flex;
+      padding: 0 var(--space-3);
+      align-items: center;
+      gap: var(--space-2);
+    }
+    /* tinted 변형은 v3.1에서 제거됨 — 모든 역할이 위 .mini-tabbar 기본을 공유 */
+    .mini-tabbar--guardian,
+    .mini-tabbar--medical,
+    .mini-tabbar--patient { background: var(--tabbar-bg); border: var(--tabbar-border); }
+    .mini-tab {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(28, 28, 30, 0.45);
+      background: transparent;
+      border: 0;
+    }
+    .mini-tab iconify-icon { font-size: var(--size-icon-sm); }
+    /* mini-tab active — semantic accent */
+    .mini-tab--active { color: var(--color-accent); }
+
+    /* 미니 디바이스 */
+    .mini-device {
+      background: var(--color-bg-surface);
+      border: 6px solid var(--palette-gray-900);
+      border-radius: var(--radius-7);
+      overflow: hidden;
+      position: relative;
+    }
+    .mini-device__screen {
+      height: 480px;
+      position: relative;
+      padding: var(--space-5) var(--space-4) 80px;
+      overflow: hidden;
+    }
+    /* g-guardian-live.html 홈 화면 톤 — cream base + 중앙 AI 오브 */
+    .mini-device__screen--guardian {
+      background:
+        radial-gradient(circle at 50% 30%, rgba(70, 168, 255, 0.32) 0%, rgba(27, 231, 234, 0.18) 30%, transparent 60%),
+        #fafaf6;
+    }
+    .mini-device__screen--medical { background: linear-gradient(180deg, var(--brand-green-100) 0%, var(--color-bg-canvas) 120px); }
+    .mini-device__screen--patient { background: linear-gradient(180deg, var(--brand-orange-100) 0%, var(--color-bg-canvas) 120px); }
+
+    /* mini info card — v3.1 flat first */
+    .mini-c {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-4);
+      margin-bottom: var(--space-3);
+      box-shadow: var(--shadow-1);
+    }
+    .mini-hero {
+      color: var(--color-text-on-accent);
+      border-radius: var(--radius-card-lg);
+      padding: var(--space-5);
+      margin-bottom: var(--space-3);
+    }
+    /* mini-hero — semantic accent + accent-rgb shadow */
+    .mini-hero { background: linear-gradient(135deg, var(--color-accent), var(--color-accent-strong)); box-shadow: 0 4px 16px rgba(var(--color-accent-rgb), 0.25); }
+
+    .mini-tabbar-pos {
+      position: absolute;
+      left: 12px; right: 12px; bottom: 12px;
+    }
+
+    /* 글자 크기 비교 */
+    .type-compare {
+      padding: 16px;
+      border-radius: 14px;
+      background: white;
+      border: 1px solid var(--color-border-subtle);
+      margin-bottom: 12px;
+    }
+    .type-compare__role {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      font-family: var(--font-family-mono);
+      margin-bottom: 6px;
+    }
+    .type-compare__sample {
+      line-height: 1.4;
+      color: var(--color-text-primary);
+    }
+    .tc-guardian { font-size: 16px; line-height: 1.4; }
+    .tc-medical { font-size: 16px; line-height: 1.4; }
+    .tc-patient { font-size: 18px; line-height: 1.6; }
+
+    /* pv-callout--green/orange는 _preview-shared.css에 이미 정의됨 (덮어쓰기 안 함) */
+
+    /* 사양 행 */
+    .spec-row {
+      display: grid;
+      grid-template-columns: 200px repeat(3, 1fr);
+      gap: 16px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--color-border-subtle);
+      font-size: 14px;
+    }
+    .spec-row:last-child { border: 0; }
+    .spec-row__label { color: var(--color-text-secondary); font-weight: 500; }
+    .spec-row__cell {
+      font-family: var(--font-family-mono);
+      font-size: 13px;
+    }
+    .spec-row--guardian-bg { color: var(--brand-blue-600); }
+    .spec-row--medical-bg { color: var(--brand-green-700); }
+    .spec-row--patient-bg { color: var(--brand-orange-700); }
+    .spec-row--header {
+      background: var(--color-bg-canvas);
+      font-weight: 600;
+      color: var(--color-text-primary);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-family: var(--font-family-base);
+    }
+    @media (max-width: 768px) {
+      .spec-row { grid-template-columns: 1fr; }
+    }
+
+    /* 역할 리스트 — 데스크톱 3열, 모바일 세로 스택 */
+    .role-row {
+      display: grid;
+      grid-template-columns: 24px minmax(160px, 220px) minmax(0, 1fr);
+      gap: var(--space-4);
+      padding: var(--space-5);
+      border-bottom: 1px solid var(--color-border-subtle);
+      align-items: center;
+    }
+    .role-row:last-child { border-bottom: 0; }
+    .role-row__dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .role-row__dot--guardian { background: var(--brand-blue-500); }
+    .role-row__dot--medical  { background: var(--brand-green-500); }
+    .role-row__dot--patient  { background: var(--brand-orange-400); }
+    .role-row__name { font-weight: var(--weight-semibold); font-size: var(--text-headline); }
+    .role-row__meta { font-family: var(--font-family-mono); font-size: var(--font-11); color: var(--color-text-tertiary); margin-top: 2px; }
+    .role-row__desc { font-size: var(--text-callout); color: var(--color-text-secondary); line-height: var(--leading-relaxed); }
+    @media (max-width: 640px) {
+      .role-row {
+        grid-template-columns: 24px 1fr;
+        row-gap: var(--space-3);
+      }
+      .role-row__dot { align-self: start; margin-top: 6px; }
+      .role-row__desc {
+        grid-column: 1 / -1;
+        margin-top: var(--space-2);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="pv-nav">
+  <div class="pv-nav__inner">
+    <a href="preview.html" class="pv-nav__brand">
+      <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
+      하루안부 DS
+    </a>
+    <div class="pv-nav__links">
+      <a href="preview-foundations.html" class="pv-nav__link">Foundations</a>
+      <a href="preview-components.html" class="pv-nav__link">Components</a>
+      <a href="preview-patterns.html" class="pv-nav__link">Patterns</a>
+      <a href="preview-roles.html" class="pv-nav__link pv-nav__link--active">Roles</a>
+      <a href="preview-errors.html" class="pv-nav__link">Errors</a>
+    </div>
+    <div class="pv-controls">
+      <select class="pv-role-select" data-pv-role aria-label="역할 테마 선택">
+        <option value="guardian">보호자</option>
+        <option value="medical">의료진</option>
+        <option value="patient">환자</option>
+      </select>
+      
+    </div>
+    <div class="pv-nav__version">v3.2.3</div>
+  </div>
+</nav>
+
+<header class="pv-header">
+  <div class="pv-header__eyebrow">04 · ROLES SIDE-BY-SIDE</div>
+  <h1 class="pv-header__title">역할 비교</h1>
+  <p class="pv-header__desc"><strong>구조는 동일, 접근성만 환자에서 상향</strong>. 보호자·의료진·환자가 시각적으로 다른 앱이 아니라 같은 제품군이어야 한다 — <code>data-role</code>은 큰 면을 칠하지 않고 버튼·활성 탭·작은 배지·포커스 링에만 액센트로 작용한다.</p>
+</header>
+
+<main class="pv-container">
+
+  <!-- 1. 역할 — 차분한 표 (큰 컬러 카드 제거) -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">1. 세 가지 역할 (액센트 한정)</h2>
+    <p class="pv-section__desc">큰 카드 색을 칠하지 않는다 — 액센트는 보조 신호일 뿐.</p>
+
+    <div style="background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-card); overflow: hidden;">
+      <div class="role-row">
+        <span class="role-row__dot role-row__dot--guardian"></span>
+        <div>
+          <div class="role-row__name">보호자</div>
+          <div class="role-row__meta">data-role="guardian" · #2C7AFC</div>
+        </div>
+        <div class="role-row__desc"><strong>안심 확인</strong>: 가족의 하루 상태를 매일 10초 안에 확인. <strong>v11 보호자앱</strong> 모바일 PWA.</div>
+      </div>
+      <div class="role-row">
+        <span class="role-row__dot role-row__dot--medical"></span>
+        <div>
+          <div class="role-row__name">의료진</div>
+          <div class="role-row__meta">data-role="medical / doctor / nurse" · #22C55E</div>
+        </div>
+        <div class="role-row__desc"><strong>위험 판단</strong>: 위험 환자와 다음 업무를 즉시 판단. <strong>v10 의료진웹</strong> 데스크톱 + <strong>v15 의료진앱</strong> 모바일. dense pattern.</div>
+      </div>
+      <div class="role-row">
+        <span class="role-row__dot role-row__dot--medical"></span>
+        <div>
+          <div class="role-row__name">요양보호사</div>
+          <div class="role-row__meta">data-role="caregiver" · #22C55E</div>
+        </div>
+        <div class="role-row__desc"><strong>현장 기록</strong>: 한 손 조작 + 체크리스트 + 누락 방지. <strong>v11 요양보호사앱</strong>. 의료진과 같은 그린 액센트지만 큰 터치(48px) · 다국어(중) 지원.</div>
+      </div>
+      <div class="role-row">
+        <span class="role-row__dot role-row__dot--patient"></span>
+        <div>
+          <div class="role-row__name">환자</div>
+          <div class="role-row__meta">data-role="patient" · #FB923C</div>
+        </div>
+        <div class="role-row__desc"><strong>지금 할 일</strong>: 큰 버튼으로 가족 연결 + 도움 요청. <strong>v12 환자앱</strong> 태블릿 거치형. <strong>접근성 자동 상향</strong> (본문 18px · 터치 56px · 행 64px).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 사양 비교 표 -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">2. 사양 비교 — 자동 조정</h2>
+    <p class="pv-section__desc">화면 코드는 토큰만 본다. 아래는 <code class="pv-code">data-role</code>이 어떤 값을 자동 오버라이드하는지 보여준다.</p>
+
+    <div style="background: white; border: 1px solid var(--color-border-subtle); border-radius: 14px; overflow: hidden;">
+      <div class="spec-row spec-row--header">
+        <div class="spec-row__label">토큰</div>
+        <div>보호자</div>
+        <div>의료진 / 요양</div>
+        <div>환자</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-row__label">--color-accent</div>
+        <div class="spec-row__cell spec-row--guardian-bg">#2C7AFC</div>
+        <div class="spec-row__cell spec-row--medical-bg">#22C55E</div>
+        <div class="spec-row__cell spec-row--patient-bg">#FB923C</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-row__label">--color-accent-soft</div>
+        <div class="spec-row__cell spec-row--guardian-bg">#DBEAFE</div>
+        <div class="spec-row__cell spec-row--medical-bg">#DCFCE7</div>
+        <div class="spec-row__cell spec-row--patient-bg">#FFEDD5</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-row__label">--color-accent-strong</div>
+        <div class="spec-row__cell spec-row--guardian-bg">#1E5FD6</div>
+        <div class="spec-row__cell spec-row--medical-bg">#16A34A</div>
+        <div class="spec-row__cell spec-row--patient-bg">#EA580C</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-row__label">--text-body</div>
+        <div class="spec-row__cell">16px</div>
+        <div class="spec-row__cell">16px</div>
+        <div class="spec-row__cell spec-row--patient-bg" style="font-weight: 600;">18px (환자 자동 상향)</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-row__label">--text-headline</div>
+        <div class="spec-row__cell">17px</div>
+        <div class="spec-row__cell">17px</div>
+        <div class="spec-row__cell spec-row--patient-bg" style="font-weight: 600;">20px (환자 자동 상향)</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-row__label">--size-touch-target</div>
+        <div class="spec-row__cell">44px</div>
+        <div class="spec-row__cell">44px (모바일)<br>36px (웹)</div>
+        <div class="spec-row__cell spec-row--patient-bg" style="font-weight: 600;">56px (환자 자동 상향)</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-row__label">--size-button-default</div>
+        <div class="spec-row__cell">48px</div>
+        <div class="spec-row__cell">48px</div>
+        <div class="spec-row__cell spec-row--patient-bg" style="font-weight: 600;">56px (환자 자동 상향)</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-row__label">--size-row</div>
+        <div class="spec-row__cell">56px</div>
+        <div class="spec-row__cell">56px</div>
+        <div class="spec-row__cell spec-row--patient-bg" style="font-weight: 600;">64px (환자 자동 상향)</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-row__label">배경 그라디언트</div>
+        <div class="spec-row__cell spec-row--guardian-bg">4-stop + radial glow</div>
+        <div class="spec-row__cell spec-row--medical-bg">2-stop fade (그린)</div>
+        <div class="spec-row__cell spec-row--patient-bg">2-stop fade (오렌지)</div>
+      </div>
+    </div>
+
+    <div class="pv-callout pv-callout--orange">
+      <strong>환자 자동 상향:</strong> <code class="pv-code">data-role="patient"</code> 한 줄로 본문 +2px, 행 +8px, 터치 +12px. 컴포넌트 코드는 분기 없이 토큰만 본다.
+    </div>
+  </section>
+
+  <!-- 3. 같은 버튼, 다른 색 -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">3. 같은 버튼 — 색 + 환자 접근성 스케일 변화</h2>
+
+    <div class="compare">
+      <div class="demo-box demo-box--guardian-bg" data-role="guardian">
+        <div style="font-size: 11px; color: var(--brand-blue-600); font-weight: 700; margin-bottom: 12px; text-transform: uppercase;">보호자</div>
+        <button class="btn btn--guardian"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon>확인</button>
+        <div style="margin-top: 12px; font-size: 12px; color: var(--color-text-secondary);">48px · 17px / 600</div>
+      </div>
+      <div class="demo-box demo-box--medical-bg" data-role="medical">
+        <div style="font-size: 11px; color: var(--brand-green-700); font-weight: 700; margin-bottom: 12px; text-transform: uppercase;">의료진</div>
+        <button class="btn btn--medical"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon>확인</button>
+        <div style="margin-top: 12px; font-size: 12px; color: var(--color-text-secondary);">48px · 17px / 600</div>
+      </div>
+      <div class="demo-box demo-box--patient-bg" data-role="patient">
+        <div style="font-size: 11px; color: var(--brand-orange-700); font-weight: 700; margin-bottom: 12px; text-transform: uppercase;">환자</div>
+        <button class="btn btn--patient"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon>확인</button>
+        <div style="margin-top: 12px; font-size: 12px; color: var(--color-text-secondary);"><strong>56px · 18px / 600</strong> (자동 상향)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 같은 카드 -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">4. 같은 flat 카드 — 역할별 액센트만 다름</h2>
+
+    <div class="compare">
+      <div class="demo-box demo-box--guardian-bg" data-role="guardian">
+        <div class="demo-card demo-card--guardian">
+          <h4 style="margin: 0 0 8px;">일일 리포트</h4>
+          <p style="margin: 0; font-size: 13px; color: var(--color-text-secondary);">투약 1/3 · 맥박 72 BPM · 수면 7h 32m</p>
+          <button class="btn btn--guardian" style="margin-top: 12px; height: 36px; padding: 0 14px; font-size: 13px;">전체 보기</button>
+        </div>
+      </div>
+      <div class="demo-box demo-box--medical-bg" data-role="medical">
+        <div class="demo-card demo-card--medical">
+          <h4 style="margin: 0 0 8px;">오늘의 환자</h4>
+          <p style="margin: 0; font-size: 13px; color: var(--color-text-secondary);">42명 · 미완료 7</p>
+          <button class="btn btn--medical" style="margin-top: 12px; height: 36px; padding: 0 14px; font-size: 13px;">자세히</button>
+        </div>
+      </div>
+      <div class="demo-box demo-box--patient-bg" data-role="patient">
+        <div class="demo-card demo-card--patient" style="padding: 18px;">
+          <h4 style="margin: 0 0 8px; font-size: 18px;">가족 사진</h4>
+          <p style="margin: 0; font-size: 14px; color: var(--color-text-secondary);">새 사진이 도착했어요</p>
+          <button class="btn btn--patient" style="margin-top: 12px; height: 48px; padding: 0 18px; font-size: 16px;">자세히</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 같은 탭바 -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">5. 같은 플로팅 필 탭바 — 배경 동일, active만 role accent (v3.1)</h2>
+    <p class="pv-section__desc">탭바 배경은 모든 역할에서 동일한 흰색 반투명. 역할별 surface tint는 v3.1에서 제거됐다. 활성 아이콘과 라벨만 role accent로 변한다.</p>
+
+    <div class="compare">
+      <div class="demo-box demo-box--guardian-bg" data-role="guardian">
+        <div style="font-size: var(--font-11); color: var(--brand-blue-600); font-weight: var(--weight-bold); margin-bottom: var(--space-4); text-transform: uppercase;">보호자</div>
+        <nav class="mini-tabbar mini-tabbar--guardian">
+          <button class="mini-tab mini-tab--active mini-tab--guardian-active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:book-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:folder-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></button>
+        </nav>
+        <div style="margin-top: var(--space-3); font-size: var(--font-11); color: var(--color-text-tertiary); font-family: var(--font-family-mono);">--tabbar-bg · active = brand-blue-500</div>
+      </div>
+      <div class="demo-box demo-box--medical-bg" data-role="medical">
+        <div style="font-size: var(--font-11); color: var(--brand-green-700); font-weight: var(--weight-bold); margin-bottom: var(--space-4); text-transform: uppercase;">의료진 / 요양</div>
+        <nav class="mini-tabbar mini-tabbar--medical">
+          <button class="mini-tab mini-tab--active mini-tab--medical-active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></button>
+        </nav>
+        <div style="margin-top: var(--space-3); font-size: var(--font-11); color: var(--color-text-tertiary); font-family: var(--font-family-mono);">--tabbar-bg · active = brand-green-600</div>
+      </div>
+      <div class="demo-box demo-box--patient-bg" data-role="patient">
+        <div style="font-size: var(--font-11); color: var(--brand-orange-700); font-weight: var(--weight-bold); margin-bottom: var(--space-4); text-transform: uppercase;">환자</div>
+        <nav class="mini-tabbar mini-tabbar--patient">
+          <button class="mini-tab mini-tab--active mini-tab--patient-active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:image-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></button>
+          <button class="mini-tab"><iconify-icon icon="fluent:hand-wave-24-filled"></iconify-icon></button>
+        </nav>
+        <div style="margin-top: var(--space-3); font-size: var(--font-11); color: var(--color-text-tertiary); font-family: var(--font-family-mono);">--tabbar-bg · active = brand-orange-600</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 본문 글자 비교 -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">6. 본문 글자 — 환자만 자동 상향</h2>
+    <p class="pv-section__desc">같은 <code class="pv-code">--text-body</code> 토큰이 보호자·의료진에서는 16px / 1.4, 환자에서는 18px / 1.6으로 자동 변환.</p>
+
+    <div class="compare">
+      <div>
+        <div class="type-compare">
+          <div class="type-compare__role">data-role="guardian" / "medical"</div>
+          <div class="type-compare__sample tc-guardian">어머님은 오늘 식사를 잘 드셨고, 오후엔 산책 활동에 참여하셨습니다.</div>
+          <div style="margin-top: 8px; font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-tertiary);">16px / 1.4</div>
+        </div>
+      </div>
+      <div>
+        <div class="type-compare">
+          <div class="type-compare__role">data-role="medical"</div>
+          <div class="type-compare__sample tc-medical">환자는 오전 케어 정상, 점심 식사 2/3 섭취, 오후 산책 30분 참여.</div>
+          <div style="margin-top: 8px; font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-tertiary);">16px / 1.4</div>
+        </div>
+      </div>
+      <div>
+        <div class="type-compare" style="background: var(--brand-orange-50); border-color: var(--brand-orange-400);">
+          <div class="type-compare__role" style="color: var(--brand-orange-700);">data-role="patient" — 자동 상향</div>
+          <div class="type-compare__sample tc-patient">오늘은 가족 사진이 새로 도착했어요. 식사도 잘 하셨고, 산책도 다녀오셨습니다.</div>
+          <div style="margin-top: 8px; font-family: var(--font-family-mono); font-size: 11px; color: var(--brand-orange-700);"><strong>18px / 1.6</strong> · 시각 + 행간 모두 상향</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 미니 홈 화면 비교 -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">7. 미니 홈 화면 — 한눈에 비교</h2>
+
+    <div class="compare">
+      <!-- Guardian -->
+      <div>
+        <div style="text-align: center; font-size: 13px; font-weight: 600; color: var(--brand-blue-600); margin-bottom: 12px; text-transform: uppercase;">보호자</div>
+        <div class="mini-device">
+          <div class="mini-device__screen mini-device__screen--guardian" data-role="guardian">
+            <!-- 인트로 카피 (홈 진입 직후 AI 오브 위) -->
+            <div style="text-align: center; padding-top: 56px; margin-bottom: 14px;">
+              <div style="font-size: 11px; color: rgba(28,28,30,0.55); font-weight: 500;">지욱님,</div>
+              <div style="font-size: 14px; font-weight: 700; line-height: 1.3; color: #1C1C1E; margin-top: 4px;">영자님은 오늘<br><span style="color: var(--brand-blue-500);">잘 지내셨어요</span></div>
+            </div>
+
+            <!-- 모먼트 카드 — 간호사가 남긴 사진 + 코멘트 -->
+            <div class="mini-c" style="padding: 8px; margin-bottom: 8px; display: flex; gap: 8px; align-items: center;">
+              <div style="width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, #FDE68A, #F59E0B); flex-shrink: 0;"></div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: 10px; line-height: 1.35; color: var(--color-text-primary);">"오전 산책 때 햇빛이 좋아서 한참 머무르셨어요"</div>
+                <div style="font-size: 9px; color: var(--color-text-tertiary); margin-top: 2px;">김서연 간호사 · 10:24</div>
+              </div>
+            </div>
+
+            <!-- 일일 리포트 위젯: 투약 + 맥박 -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div class="mini-c" style="padding: 10px; margin: 0;">
+                <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--color-text-secondary); margin-bottom: 2px;">
+                  <iconify-icon icon="fluent:pill-24-filled" style="color: #6EE7B7; font-size: 12px;"></iconify-icon>투약
+                </div>
+                <div style="font-size: 18px; font-weight: 800; letter-spacing: -0.5px;">33<span style="font-size: 10px; opacity: 0.4;">%</span></div>
+                <div style="font-size: 9px; color: var(--color-text-tertiary);">1/3 · 다음 18:00</div>
+              </div>
+              <div class="mini-c" style="padding: 10px; margin: 0;">
+                <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--color-text-secondary); margin-bottom: 2px;">
+                  <iconify-icon icon="fluent:pulse-24-filled" style="color: var(--color-danger); font-size: 12px;"></iconify-icon>맥박
+                </div>
+                <div style="font-size: 18px; font-weight: 800; letter-spacing: -0.5px;">72<span style="font-size: 10px; opacity: 0.4;"> BPM</span></div>
+                <div style="font-size: 9px; color: var(--color-text-tertiary);">평균 근처 ±74</div>
+              </div>
+            </div>
+
+            <!-- AI 인사이트 (홈 하단) -->
+            <div class="mini-c" style="border-color: rgba(44,122,252,0.20); padding: 10px;">
+              <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
+                <iconify-icon icon="fluent:sleep-24-filled" style="font-size: 12px; color: var(--brand-blue-500);"></iconify-icon>
+                <span style="font-size: 10px; color: var(--brand-blue-500); font-weight: 600;">AI 인사이트</span>
+              </div>
+              <div style="font-size: 10px; line-height: 1.35; color: var(--color-text-primary);">수면 패턴이 안정적이에요 (이번 주 평균 7.5시간)</div>
+            </div>
+
+            <div class="mini-tabbar-pos">
+              <nav class="mini-tabbar mini-tabbar--guardian">
+                <button class="mini-tab mini-tab--active mini-tab--guardian-active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:book-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:folder-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Caregiver -->
+      <div>
+        <div style="text-align: center; font-size: 13px; font-weight: 600; color: var(--brand-green-700); margin-bottom: 12px; text-transform: uppercase;">요양보호사 (현장)</div>
+        <div class="mini-device">
+          <div class="mini-device__screen mini-device__screen--medical" data-role="medical">
+            <div class="mini-hero mini-hero--medical">
+              <div style="font-size: 10px; opacity: 0.85; margin-bottom: 4px;">담당 환자 5명</div>
+              <div style="font-size: 16px; font-weight: 600;">근무 중 — 오후 1시 30분</div>
+            </div>
+            <div class="mini-c">
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--color-success-soft); color: var(--brand-green-600); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 11px;">김</div>
+                <div style="flex: 1; font-size: 12px; font-weight: 600;">김순자 · 201호</div>
+                <span style="background: var(--color-success-soft); color: var(--brand-green-700); font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 9999px;">정상</span>
+              </div>
+            </div>
+            <div class="mini-c">
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--color-warning-soft); color: var(--palette-amber-700); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 11px;">박</div>
+                <div style="flex: 1; font-size: 12px; font-weight: 600;">박미영 · 203호</div>
+                <span style="background: var(--color-warning-soft); color: var(--palette-amber-700); font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 9999px;">주의</span>
+              </div>
+            </div>
+            <div class="mini-c">
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--color-success-soft); color: var(--brand-green-600); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 11px;">이</div>
+                <div style="flex: 1; font-size: 12px; font-weight: 600;">이영희 · 205호</div>
+                <span style="background: var(--color-success-soft); color: var(--brand-green-700); font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 9999px;">정상</span>
+              </div>
+            </div>
+            <div class="mini-tabbar-pos">
+              <nav class="mini-tabbar mini-tabbar--medical">
+                <button class="mini-tab mini-tab--active mini-tab--medical-active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Patient -->
+      <div>
+        <div style="text-align: center; font-size: 13px; font-weight: 600; color: var(--brand-orange-700); margin-bottom: 12px; text-transform: uppercase;">환자 (자동 상향)</div>
+        <div class="mini-device">
+          <div class="mini-device__screen mini-device__screen--patient" data-role="patient">
+            <div class="mini-hero mini-hero--patient">
+              <div style="font-size: 11px; opacity: 0.85; margin-bottom: 4px;">오늘의 한마디</div>
+              <div style="font-size: 17px; font-weight: 600; line-height: 1.5;">아드님이 사진을 보내셨어요</div>
+            </div>
+            <div class="mini-c" style="padding: 16px;">
+              <div style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 6px;">새 사진 3장</div>
+              <div style="display: flex; gap: 6px;">
+                <div style="flex: 1; aspect-ratio: 1; background: linear-gradient(135deg, #FFEDD5, #FB923C); border-radius: 8px;"></div>
+                <div style="flex: 1; aspect-ratio: 1; background: linear-gradient(135deg, #DBEAFE, #2C7AFC); border-radius: 8px;"></div>
+                <div style="flex: 1; aspect-ratio: 1; background: linear-gradient(135deg, #DCFCE7, #22C55E); border-radius: 8px;"></div>
+              </div>
+            </div>
+            <button style="width: 100%; height: 56px; background: linear-gradient(135deg, #FB923C, #EA580C); color: white; border: 0; border-radius: 14px; font: 600 16px var(--font-family-base); display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(251,146,60,0.25);">
+              <iconify-icon icon="fluent:hand-wave-24-filled" style="font-size: 22px;"></iconify-icon>도움이 필요해요
+            </button>
+            <div class="mini-tabbar-pos">
+              <nav class="mini-tabbar mini-tabbar--patient">
+                <button class="mini-tab mini-tab--active mini-tab--patient-active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:image-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></button>
+                <button class="mini-tab"><iconify-icon icon="fluent:hand-wave-24-filled"></iconify-icon></button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-callout">
+      <strong>주목:</strong> 모든 컴포넌트의 마크업은 동일하다. 환자 디바이스의 카드·버튼이 더 크게 보이는 것은 토큰이 자동 상향되기 때문 — 화면 코드는 단 한 줄도 분기하지 않는다.
+    </div>
+  </section>
+
+  <!-- 8. 같은 SOS 다른 액센트 -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">8. 같은 SOS Banner — 색은 모두 위험 빨강</h2>
+    <p class="pv-section__desc">SOS는 역할 무관 항상 <code class="pv-code">--color-danger</code> 빨강. 긴급 상황은 모든 사용자에게 동일한 시각 신호.</p>
+
+    <div class="compare">
+      <div class="demo-box demo-box--guardian-bg" data-role="guardian">
+        <div style="font-size: 11px; color: var(--brand-blue-600); font-weight: 700; margin-bottom: 12px; text-transform: uppercase;">보호자 화면 SOS</div>
+        <div style="background: var(--color-danger); color: var(--color-text-on-dark); border-radius: 14px; padding: 12px; display: flex; gap: 10px; align-items: center;">
+          <iconify-icon icon="fluent:siren-24-filled" style="font-size: 24px;"></iconify-icon>
+          <div style="flex: 1; font-size: 13px; font-weight: 600;">긴급 — 어머님 낙상</div>
+        </div>
+      </div>
+      <div class="demo-box demo-box--medical-bg" data-role="medical">
+        <div style="font-size: 11px; color: var(--brand-green-700); font-weight: 700; margin-bottom: 12px; text-transform: uppercase;">의료진 화면 SOS</div>
+        <div style="background: var(--color-danger); color: var(--color-text-on-dark); border-radius: 14px; padding: 12px; display: flex; gap: 10px; align-items: center;">
+          <iconify-icon icon="fluent:siren-24-filled" style="font-size: 24px;"></iconify-icon>
+          <div style="flex: 1; font-size: 13px; font-weight: 600;">SOS — 205호 이영희</div>
+        </div>
+      </div>
+      <div class="demo-box demo-box--patient-bg" data-role="patient">
+        <div style="font-size: 11px; color: var(--brand-orange-700); font-weight: 700; margin-bottom: 12px; text-transform: uppercase;">환자 화면 (도움 요청)</div>
+        <div style="background: var(--color-danger); color: var(--color-text-on-dark); border-radius: 14px; padding: 14px; display: flex; gap: 10px; align-items: center;">
+          <iconify-icon icon="fluent:hand-wave-24-filled" style="font-size: 28px;"></iconify-icon>
+          <div style="flex: 1; font-size: 15px; font-weight: 600;">간호사를 부르고 있어요</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pv-footer">
+  하루안부 디자인 시스템 v3.2 · 2026.05.11<br>
+  <a href="preview.html">← 메인</a> · <a href="01_FOUNDATIONS.md">01_FOUNDATIONS</a> · <a href="02_COMPONENTS.md">02_COMPONENTS</a> · <a href="03_PATTERNS.md">03_PATTERNS</a>
+</footer>
+
+</body>
+</html>

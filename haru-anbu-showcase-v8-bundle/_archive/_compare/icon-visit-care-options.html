@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>방문 케어 아이콘 옵션</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:#F0F4F8;color:#0A0E1A;padding:80px 40px;letter-spacing:-.01em}
+  .wrap{max-width:1100px;margin:0 auto}
+  h1{font-size:32px;font-weight:800;letter-spacing:-.03em;margin-bottom:8px}
+  p.lead{color:#6B7280;margin-bottom:48px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .opt{background:#fff;border-radius:18px;padding:36px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:transform .15s}
+  .opt:hover{transform:translateY(-2px)}
+  .opt.current{outline:2px solid #FB923C;outline-offset:-2px;position:relative}
+  .opt.current::before{content:'CURRENT';position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;letter-spacing:.16em;color:#FB923C;background:rgba(251,146,60,.1);padding:3px 8px;border-radius:100px}
+  .opt iconify-icon{font-size:56px;color:#0A0E1A}
+  .opt-num{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:600;color:#9CA3AF;letter-spacing:.14em}
+  .opt-name{font-size:14px;font-weight:600}
+  .opt-id{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;color:#9CA3AF;text-align:center;word-break:break-all;line-height:1.5}
+  .opt-vibe{font-size:11px;color:#6B7280;text-align:center;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>방문 케어 아이콘 — 6개 대안</h1>
+  <p class="lead">현재 `home-heart`(집+하트) 말고 어울리는 후보들. 케어팀이 환자 집에 직접 가는 행위를 표현하는 톤들.</p>
+
+  <div class="grid">
+
+    <div class="opt current">
+      <span class="opt-num">00 · 현재</span>
+      <iconify-icon icon="fluent:home-heart-24-regular"></iconify-icon>
+      <div class="opt-name">방문 케어</div>
+      <div class="opt-id">fluent:home-heart-24-regular</div>
+      <div class="opt-vibe">집+하트. 따뜻하지만 다소 흔함</div>
+    </div>
+
+    <div class="opt">
+      <span class="opt-num">A</span>
+      <iconify-icon icon="fluent:hand-open-heart-24-regular"></iconify-icon>
+      <div class="opt-name">방문 케어</div>
+      <div class="opt-id">fluent:hand-open-heart-24-regular</div>
+      <div class="opt-vibe">손바닥 위 하트. 돌봄·전달의 행위</div>
+    </div>
+
+    <div class="opt">
+      <span class="opt-num">B</span>
+      <iconify-icon icon="fluent:person-walking-24-regular"></iconify-icon>
+      <div class="opt-name">방문 케어</div>
+      <div class="opt-id">fluent:person-walking-24-regular</div>
+      <div class="opt-vibe">사람이 걸어가는 모습. 실제 "방문" 동사</div>
+    </div>
+
+    <div class="opt">
+      <span class="opt-num">C</span>
+      <iconify-icon icon="fluent:home-person-24-regular"></iconify-icon>
+      <div class="opt-name">방문 케어</div>
+      <div class="opt-id">fluent:home-person-24-regular</div>
+      <div class="opt-vibe">집+사람. 집에 사람이 있다는 명료한 시각</div>
+    </div>
+
+    <div class="opt">
+      <span class="opt-num">D</span>
+      <iconify-icon icon="fluent:vehicle-car-24-regular"></iconify-icon>
+      <div class="opt-name">방문 케어</div>
+      <div class="opt-id">fluent:vehicle-car-24-regular</div>
+      <div class="opt-vibe">자동차. 출장/이동 케어 — 매우 직설적</div>
+    </div>
+
+    <div class="opt">
+      <span class="opt-num">E</span>
+      <iconify-icon icon="fluent:building-home-24-regular"></iconify-icon>
+      <div class="opt-name">방문 케어</div>
+      <div class="opt-id">fluent:building-home-24-regular</div>
+      <div class="opt-vibe">단순 집. 미니멀, 다른 아이콘과 위계 잡힘</div>
+    </div>
+
+    <div class="opt">
+      <span class="opt-num">F</span>
+      <iconify-icon icon="fluent:hand-wave-ltr-24-regular"></iconify-icon>
+      <div class="opt-name">방문 케어</div>
+      <div class="opt-id">fluent:hand-wave-ltr-24-regular</div>
+      <div class="opt-vibe">손 인사. "안녕하세요"하며 방문하는 느낌</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

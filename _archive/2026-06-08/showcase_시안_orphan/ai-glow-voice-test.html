@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 음성 글로우 — 재생 테스트</title>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+  <style>
+    :root{
+      --g-key:#2C7AFC; --g-deep:#1E5FD6; --g-blue:#5B9BFF; --g-sky:#93C5FD; --g-cyan:#38D6F5; --g-teal:#00D6EB;
+      --g-bg:#FFFFFF; --ink:#0A0E1A;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{background:var(--g-bg);color:var(--ink);font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+
+    .stage{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px}
+    .wm{font-size:clamp(56px,11vw,140px);font-weight:700;letter-spacing:-.05em;line-height:.9;color:var(--ink)}
+
+    /* 상태 영역 */
+    .status{display:flex;flex-direction:column;align-items:center;gap:16px;min-height:96px;justify-content:center}
+    .cap{font-size:clamp(15px,1.6vw,18px);font-weight:500;color:#5b6472;text-align:center;max-width:32ch;transition:opacity .4s ease}
+
+    /* 파형 (말할 때만) */
+    .wave-bars{display:flex;align-items:center;gap:6px;height:30px;opacity:0;transition:opacity .4s ease}
+    .speaking .wave-bars{opacity:1}
+    .wave-bars span{width:5px;border-radius:3px;background:linear-gradient(var(--g-cyan),var(--g-key));height:8px}
+    .speaking .wave-bars span{animation:bar 1s ease-in-out infinite}
+    .wave-bars span:nth-child(1){animation-delay:-.9s}.wave-bars span:nth-child(2){animation-delay:-.2s}
+    .wave-bars span:nth-child(3){animation-delay:-.6s}.wave-bars span:nth-child(4){animation-delay:-.35s}
+    .wave-bars span:nth-child(5){animation-delay:-.75s}.wave-bars span:nth-child(6){animation-delay:-.1s}
+    .wave-bars span:nth-child(7){animation-delay:-.5s}
+
+    /* 시작 버튼 */
+    .play-btn{display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:600;color:#fff;background:var(--g-key);border:none;border-radius:999px;padding:14px 26px;cursor:pointer;box-shadow:0 8px 24px rgba(44,122,252,.3);transition:transform .15s ease,box-shadow .15s ease}
+    .play-btn:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(44,122,252,.36)}
+    .play-btn iconify-icon{font-size:19px}
+    .speaking .play-btn{display:none}
+
+    .hint{position:fixed;bottom:26px;left:0;right:0;text-align:center;font-size:12.5px;color:#9aa3af}
+
+    /* ─── 엣지 글로우 (말할 때만 표시) — Wave 차분 버전 ─── */
+    .glow{
+      position:fixed;inset:0;z-index:5;pointer-events:none;overflow:hidden;mix-blend-mode:multiply;
+      opacity:0;transform:scale(1.05);transform-origin:center;
+      transition:opacity .7s ease, transform .9s cubic-bezier(.22,1,.36,1);
+      --amp:14px;--dur:1.8s;--thick:32px;--len:170px;--blur:16px;
+    }
+    /* 등장: 가장자리에서 부드럽게 차오르며 페이드인 / 퇴장: 바깥으로 옅어지며 사라짐 */
+    .speaking .glow{opacity:1;transform:scale(1)}
+
+    .edge{position:absolute}
+    .edge--top   {top:0;left:0;right:0;height:0}
+    .edge--bottom{bottom:0;left:0;right:0;height:0}
+    .edge--left  {left:0;top:0;bottom:0;width:0}
+    .edge--right {right:0;top:0;bottom:0;width:0}
+    .edge span{
+      --i:0;--p:0;--af:1;--df:1;--dl:0;--a:calc(var(--amp) * var(--af));   /* af=랜덤 진폭 · df=랜덤 주기배율 · dl=랜덤 위상 */
+      position:absolute;
+      background:radial-gradient(closest-side at center, currentColor, currentColor 28%, transparent 100%);
+      filter:blur(var(--blur));
+      animation:var(--dur) ease-in-out infinite;
+      animation-duration:calc(var(--dur) * var(--df));
+      animation-delay:calc(var(--dur) * var(--dl) * -1);
+      will-change:transform,opacity;
+    }
+    .edge--top span,.edge--bottom span{width:var(--len);height:var(--thick);margin:calc(var(--thick)/-2) calc(var(--len)/-2);left:calc(var(--p)*100%);top:0}
+    .edge--left span,.edge--right span{width:var(--thick);height:var(--len);margin:calc(var(--len)/-2) calc(var(--thick)/-2);top:calc(var(--p)*100%);left:0}
+    .edge--top span{animation-name:bobT}.edge--bottom span{animation-name:bobB}
+    .edge--left span{animation-name:bobL}.edge--right span{animation-name:bobR}
+
+    /* 코너 — 둥근 글로우로 두 변을 자연스럽게 잇기 */
+    .glow .corner{
+      position:absolute;--af:1;--csz:calc(var(--thick)*1.7);
+      width:var(--csz);height:var(--csz);margin:calc(var(--csz)/-2);border-radius:50%;
+      background:radial-gradient(closest-side at center,currentColor,currentColor 20%,transparent 100%);
+      filter:blur(calc(var(--blur) + 2px));
+      animation:cornerPulse var(--dur) ease-in-out infinite;
+      will-change:transform,opacity;
+    }
+
+    @keyframes bobT{0%,100%{transform:translateY(calc(var(--a)*-.12)) scaleY(.9);opacity:.85}50%{transform:translateY(var(--a)) scaleY(1.08);opacity:1}}
+    @keyframes bobB{0%,100%{transform:translateY(calc(var(--a)*.12)) scaleY(.9);opacity:.85}50%{transform:translateY(calc(var(--a)*-1)) scaleY(1.08);opacity:1}}
+    @keyframes bobL{0%,100%{transform:translateX(calc(var(--a)*-.12)) scaleX(.9);opacity:.85}50%{transform:translateX(var(--a)) scaleX(1.08);opacity:1}}
+    @keyframes bobR{0%,100%{transform:translateX(calc(var(--a)*.12)) scaleX(.9);opacity:.85}50%{transform:translateX(calc(var(--a)*-1)) scaleX(1.08);opacity:1}}
+    @keyframes bar{0%,100%{height:8px}50%{height:26px}}
+    @keyframes cornerPulse{0%,100%{transform:scale(.82);opacity:.7}50%{transform:scale(calc(1 + var(--af,1)*.16));opacity:1}}
+    @media (prefers-reduced-motion:reduce){.edge span,.corner,.wave-bars span{animation:none!important}}
+  </style>
+</head>
+<body>
+  <!-- 글로우 (말할 때만 보임) -->
+  <div class="glow"><i class="edge edge--top"></i><i class="edge edge--right"></i><i class="edge edge--bottom"></i><i class="edge edge--left"></i></div>
+
+  <div class="stage">
+    <div class="wm">하루안부.</div>
+    <div class="status">
+      <div class="wave-bars"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="cap" id="cap">버튼을 누르면 하루안부가 말을 겁니다.</div>
+      <button class="play-btn" id="playBtn"><iconify-icon icon="fluent:mic-24-filled"></iconify-icon> 말 걸기</button>
+    </div>
+  </div>
+
+  <div class="hint">음성 재생 중에만 화면 가장자리 글로우가 나타납니다 · 스페이스바로도 시작</div>
+
+  <audio id="voice" src="발표/audio/clover/clover-01.mp3" preload="auto"></audio>
+
+  <script>
+    // 글로우 물방울 채우기 + 변 따라 색 보간
+    const STOPS=[[0,214,235],[91,155,255],[0,214,235],[44,122,252],[0,214,235],[147,197,253],[0,214,235]];
+    const colorAt=t=>{const s=t*(STOPS.length-1),i=Math.min(Math.floor(s),STOPS.length-2),f=s-i,a=STOPS[i],b=STOPS[i+1];
+      return `rgb(${Math.round(a[0]+(b[0]-a[0])*f)},${Math.round(a[1]+(b[1]-a[1])*f)},${Math.round(a[2]+(b[2]-a[2])*f)})`;};
+    // 매끄러운 노이즈 — 사인 몇 개를 합성해서 이웃끼리 부드럽게 이어지는 랜덤 곡선
+    function noiseFn(){
+      const c=[]; for(let i=0;i<3;i++) c.push([0.5+Math.random()*1.0,Math.random()*6.283,Math.random()]);
+      const tot=c.reduce((s,x)=>s+x[2],0)||1;
+      return t=>{let v=0;c.forEach(x=>v+=x[2]*(0.5+0.5*Math.sin(t*6.283*x[0]+x[1])));return v/tot;};
+    }
+    document.querySelectorAll('.glow .edge').forEach(edge=>{
+      const vert=edge.classList.contains('edge--left')||edge.classList.contains('edge--right');
+      const n=vert?16:26;
+      const an=noiseFn(), pn=noiseFn(), dn=noiseFn();   // 진폭·위상·주기용 각각의 부드러운 노이즈
+      for(let k=0;k<n;k++){const sp=document.createElement('span');const p=n>1?k/(n-1):.5;
+        sp.style.setProperty('--i',k);sp.style.setProperty('--p',p);
+        sp.style.setProperty('--af',(0.4+an(p)*1.3).toFixed(2));   /* 부드러운 랜덤 높낮이 */
+        sp.style.setProperty('--df',(0.88+dn(p)*0.3).toFixed(2));  /* 완만한 주기 변화 */
+        sp.style.setProperty('--dl',(pn(p)).toFixed(2));           /* 이웃끼리 이어지는 위상 */
+        sp.style.color=colorAt(p);edge.appendChild(sp);}
+    });
+    // 코너 4곳에 둥근 글로우 (각자 랜덤 타이밍)
+    const glowEl=document.querySelector('.glow');
+    [['0','0'],['100%','0'],['0','100%'],['100%','100%']].forEach(([x,y])=>{
+      const c=document.createElement('span');c.className='corner';
+      c.style.left=x;c.style.top=y;
+      c.style.setProperty('--af',(0.3+Math.random()*1.5).toFixed(2));
+      c.style.animationDelay=(-Math.random()*1.8).toFixed(2)+'s';
+      c.style.color=colorAt(0.3+Math.random()*0.4);
+      glowEl.appendChild(c);
+    });
+
+    const voice=document.getElementById('voice'), cap=document.getElementById('cap'), btn=document.getElementById('playBtn');
+    function start(){ voice.currentTime=0; voice.play().catch(()=>{}); }
+    voice.addEventListener('play', ()=>{ document.body.classList.add('speaking'); cap.textContent='하루안부가 답하고 있어요…'; });
+    voice.addEventListener('ended',()=>{ document.body.classList.remove('speaking'); cap.textContent='다시 누르면 또 말합니다.'; });
+    voice.addEventListener('pause',()=>{ if(!voice.ended){document.body.classList.remove('speaking');} });
+    btn.addEventListener('click', start);
+    document.addEventListener('keydown', e=>{ if(e.code==='Space'){ e.preventDefault(); start(); } });
+  </script>
+</body>
+</html>

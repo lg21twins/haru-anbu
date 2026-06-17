@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 · 인스타 카드뉴스 (4:5) · 15장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+  :root{
+    --blue:#2C7AFC; --blue-strong:#1E5FD6; --blue-soft:#DBEAFE;
+    --ink:#1C1C1E; --sub:#8E8E93; --line:#E9EDF2;
+    --paper:#F0F4F8; --surface:#FFFFFF; --muted:#FAFAFA; --mint:#34D399;
+    --font:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
+    --card-w:1080px; --card-h:1350px; --pad:104px;
+    --shadow:0 24px 60px -28px rgba(28,40,64,.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font);background:#5b6472;color:var(--ink);
+    -webkit-font-smoothing:antialiased;padding:96px 0 56px;line-height:1.6}
+
+  /* ===== 보기 모드 ===== */
+  /* 기본 = 한눈에(그리드 썸네일) */
+  .deck{display:grid;grid-template-columns:repeat(auto-fill,340px);gap:30px 26px;
+    justify-content:center;align-items:start;padding:0 40px}
+  .thumb{width:340px;height:425px;position:relative;border-radius:14px;overflow:hidden;
+    box-shadow:0 18px 44px -20px rgba(0,0,0,.55);background:#fff;cursor:zoom-in}
+  .thumb .card{transform:scale(.31481);transform-origin:top left;position:absolute;top:0;left:0;
+    box-shadow:none;flex-shrink:0}
+
+  /* 실제 크기 모드 */
+  body.full .deck{display:flex;flex-direction:column;align-items:center;gap:44px;padding:0}
+  body.full .thumb{width:var(--card-w);height:var(--card-h);border-radius:0;cursor:default;
+    box-shadow:0 30px 80px -30px rgba(0,0,0,.55)}
+  body.full .thumb .card{transform:none;position:static}
+
+  /* 툴바 */
+  .toolbar{position:fixed;top:0;left:0;right:0;height:64px;z-index:50;
+    display:flex;align-items:center;justify-content:center;gap:18px;
+    background:rgba(20,24,32,.92);backdrop-filter:blur(8px);color:#fff}
+  .toolbar .title{font-size:15px;font-weight:600;letter-spacing:.02em;opacity:.85}
+  .toolbar button{font-family:var(--font);font-size:14px;font-weight:700;color:#fff;
+    background:rgba(255,255,255,.14);padding:10px 20px;border-radius:999px;transition:background .15s}
+  .toolbar button:hover{background:rgba(255,255,255,.28)}
+  .toolbar button.on{background:var(--blue)}
+
+  /* ---------- CARD SHELL ---------- */
+  .card{width:var(--card-w);height:var(--card-h);position:relative;overflow:hidden;
+    background:var(--surface);padding:var(--pad);display:flex;flex-direction:column;
+    box-shadow:0 30px 80px -30px rgba(0,0,0,.55)}
+  .card.paper{background:var(--paper)}
+  .card.ink{background:var(--ink);color:#fff}
+  .card.brand{background:var(--blue);color:#fff}
+
+  .c-top{display:flex;justify-content:space-between;align-items:center}
+  .eyebrow{font-size:24px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue)}
+  .card.ink .eyebrow,.card.brand .eyebrow{color:rgba(255,255,255,.72)}
+  .pagenum{font-size:23px;font-weight:600;letter-spacing:.04em;color:var(--sub)}
+  .card.ink .pagenum,.card.brand .pagenum{color:rgba(255,255,255,.6)}
+
+  .c-body{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .c-foot{display:flex;align-items:center;gap:13px;font-size:23px;font-weight:700;color:var(--ink)}
+  .card.ink .c-foot,.card.brand .c-foot{color:#fff}
+  .c-foot .dot{width:15px;height:15px;border-radius:50%;background:var(--blue);display:inline-block}
+  .card.ink .c-foot .dot,.card.brand .c-foot .dot{background:#fff}
+  .c-foot .muted{color:var(--sub);font-weight:500;margin-left:auto;font-size:21px}
+  .card.ink .c-foot .muted,.card.brand .c-foot .muted{color:rgba(255,255,255,.55)}
+
+  /* ---------- TYPE ---------- */
+  h1.headline{font-weight:800;letter-spacing:-.03em;line-height:1.12}
+  .em{color:var(--blue)}
+  .card.ink .em,.card.brand .em{color:#fff;opacity:.95;text-decoration:underline;text-decoration-thickness:4px;text-underline-offset:10px}
+  .lead{color:var(--sub);font-weight:500;letter-spacing:-.01em}
+  .card.ink .lead,.card.brand .lead{color:rgba(255,255,255,.82)}
+
+  /* ---------- COVER ---------- */
+  .cover-wordmark{font-size:128px;font-weight:800;letter-spacing:-.04em}
+  .cover-sub{font-size:34px;font-weight:500;line-height:1.55;margin-top:40px;color:rgba(255,255,255,.9);max-width:760px}
+  .cover-badge{display:inline-flex;align-items:center;gap:12px;font-size:24px;font-weight:600;
+    letter-spacing:.04em;background:rgba(255,255,255,.16);padding:16px 26px;border-radius:999px}
+
+  /* ---------- ROLE PILLS ---------- */
+  .roles{display:flex;gap:14px;flex-wrap:wrap;margin-top:46px}
+  .pill{font-size:25px;font-weight:600;padding:16px 30px;border-radius:999px;background:var(--muted);color:var(--ink)}
+  .pill.key{background:var(--blue);color:#fff}
+  .pill.soft{background:var(--blue-soft);color:var(--blue-strong)}
+
+  /* ---------- STAT GRID ---------- */
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:54px}
+  .stat{background:var(--surface);border-radius:28px;padding:46px 44px;box-shadow:var(--shadow)}
+  .card.paper .stat{background:#fff}
+  .stat .num{font-size:74px;font-weight:800;letter-spacing:-.03em;color:var(--blue);line-height:1}
+  .stat .lbl{font-size:25px;font-weight:600;color:var(--ink);margin-top:18px}
+  .stat .cap{font-size:21px;color:var(--sub);margin-top:8px;font-weight:500}
+  .stat.wide{grid-column:1 / -1}
+
+  /* ---------- VOICES ---------- */
+  .voices{display:flex;flex-direction:column;gap:22px;margin-top:50px}
+  .voice{display:flex;align-items:center;gap:24px;background:var(--muted);border-radius:24px;padding:32px 36px}
+  .voice .who{font-size:21px;font-weight:700;color:var(--blue);min-width:160px}
+  .voice .say{font-size:29px;font-weight:600;color:var(--ink);letter-spacing:-.01em}
+
+  /* ---------- FEATURE LIST ---------- */
+  .feat-list{display:flex;flex-direction:column;gap:30px;margin-top:54px}
+  .feat{display:flex;gap:30px;align-items:flex-start}
+  .feat .ic{width:84px;height:84px;border-radius:24px;background:var(--blue-soft);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .feat .ic iconify-icon{font-size:46px;color:var(--blue-strong)}
+  .feat .tag{font-size:19px;font-weight:700;letter-spacing:.14em;color:var(--blue);text-transform:uppercase}
+  .feat .ttl{font-size:36px;font-weight:800;letter-spacing:-.02em;color:var(--ink);margin-top:4px}
+  .feat .desc{font-size:24px;font-weight:500;color:var(--sub);margin-top:10px;line-height:1.5}
+
+  /* ---------- APP CARDS ---------- */
+  .apps{display:flex;flex-direction:column;gap:26px;margin-top:48px}
+  .app{background:var(--muted);border-radius:28px;padding:42px 44px}
+  .card.paper .app{background:#fff;box-shadow:var(--shadow)}
+  .app .meta{font-size:21px;font-weight:700;letter-spacing:.04em;color:var(--blue)}
+  .app .ttl{font-size:38px;font-weight:800;letter-spacing:-.02em;color:var(--ink);margin-top:8px;line-height:1.2}
+  .app .desc{font-size:24px;font-weight:500;color:var(--sub);margin-top:14px;line-height:1.5}
+
+  /* ---------- DESIGN TOKENS ---------- */
+  .swatches{display:flex;gap:22px;margin-top:50px;flex-wrap:wrap}
+  .sw{display:flex;flex-direction:column;gap:16px}
+  .sw .chip{width:150px;height:150px;border-radius:30px;box-shadow:var(--shadow)}
+  .sw .name{font-size:21px;font-weight:700;color:var(--ink)}
+  .sw .hex{font-size:19px;color:var(--sub);font-weight:500}
+  .type-spec{margin-top:58px}
+  .type-spec .big{font-size:96px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+  .type-spec .meta{font-size:24px;color:var(--sub);font-weight:500;margin-top:10px}
+
+  /* ---------- PERSONA TRIPLE ---------- */
+  .triple{display:grid;grid-template-columns:1fr;gap:24px;margin-top:50px}
+  .tri{background:var(--muted);border-radius:26px;padding:44px 46px;display:flex;align-items:center;gap:30px}
+  .tri .n{font-size:40px;font-weight:800;color:var(--blue);min-width:62px}
+  .tri .t{font-size:38px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+  .tri .u{color:var(--blue)}
+
+  /* ---------- PEOPLE ---------- */
+  .people{display:flex;gap:18px;margin-top:46px}
+  .person{background:rgba(255,255,255,.1);border-radius:22px;padding:30px 38px;font-size:30px;font-weight:700}
+
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <span class="title">하루안부 · 인스타 카드뉴스 · 4:5 · 15장</span>
+  <button id="btn-grid" class="on">한눈에 보기</button>
+  <button id="btn-full">실제 크기</button>
+</div>
+<div class="deck">
+
+  <!-- 01 COVER -->
+  <section class="card brand">
+    <div class="c-top"><span class="eyebrow">AI Care Communication Platform</span><span class="pagenum">01 / 15</span></div>
+    <div class="c-body">
+      <span class="cover-badge"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon>환자 · 케어팀 · 보호자</span>
+      <div class="cover-wordmark" style="margin-top:40px">하루안부.</div>
+      <p class="cover-sub">흩어진 세 시선을<br>하루의 안부 한 줄로 잇는 케어 플랫폼.</p>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">Service Showcase</span></div>
+  </section>
+
+  <!-- 02 OVERVIEW -->
+  <section class="card">
+    <div class="c-top"><span class="eyebrow">Overview</span><span class="pagenum">02 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:78px">세 시선을 잇는<br><span class="em">케어 커뮤니케이션</span><br>플랫폼.</h1>
+      <p class="lead" style="font-size:32px;margin-top:42px;line-height:1.6">요양 현장의 세 시선을 다섯 개의 화면으로 연결합니다. 한 번의 기록이 역할에 맞는 사람에게 정확히 전달됩니다.</p>
+      <div class="roles">
+        <span class="pill key">환자</span><span class="pill key">케어팀</span><span class="pill key">보호자</span>
+        <span class="pill soft">긴급 SOS</span><span class="pill soft">복약 확인</span><span class="pill soft">일상 안부</span><span class="pill soft">방문 케어</span>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">02</span></div>
+  </section>
+
+  <!-- 03 PROBLEM · 감정 -->
+  <section class="card paper">
+    <div class="c-top"><span class="eyebrow">Problem</span><span class="pagenum">03 / 15</span></div>
+    <div class="c-body">
+      <p class="lead" style="font-size:36px;font-weight:600;color:var(--ink)">잘 계십니다. <span style="color:var(--sub)">아마도?</span></p>
+      <h1 class="headline" style="font-size:74px;margin-top:34px">부모님 안부는,<br>매일 아침 가장<br><span class="em">무거운 질문</span>입니다.</h1>
+      <p class="lead" style="font-size:31px;margin-top:42px;line-height:1.6">세 사람의 하루는 서로 다른 언어로 흩어집니다.<br>전화 한 통으로는, 그 누구도 진짜로 안심할 수 없습니다.</p>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">03</span></div>
+  </section>
+
+  <!-- 04 PROBLEM · 데이터 -->
+  <section class="card">
+    <div class="c-top"><span class="eyebrow">Why Now</span><span class="pagenum">04 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:60px">돌봄 수요는 폭발하는데,<br>연결 방식은 여전히<br><span class="em">전화 한 통</span>입니다.</h1>
+      <div class="stats">
+        <div class="stat"><div class="num">24<span style="font-size:38px">년</span></div><div class="lbl">초고령사회 도달 속도</div><div class="cap">프랑스 154년 · 미국 88년 · 한국 24년</div></div>
+        <div class="stat"><div class="num">214<span style="font-size:38px">만</span></div><div class="lbl">65세 이상 1인 가구</div><div class="cap">홀로 사는 어르신</div></div>
+        <div class="stat wide"><div class="num">OECD 1위</div><div class="lbl">노인 빈곤율</div><div class="cap">출처 · 통계청 2024 · OECD</div></div>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">04</span></div>
+  </section>
+
+  <!-- 05 PROBLEM · 목소리 -->
+  <section class="card paper">
+    <div class="c-top"><span class="eyebrow">Pain Points</span><span class="pagenum">05 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:64px">그렇다면 왜,<br>모두가 여전히<br><span class="em">불안할까요?</span></h1>
+      <div class="voices">
+        <div class="voice"><span class="who">보호자</span><span class="say">오늘 밥은 잘 드셨는지 모르겠어요.</span></div>
+        <div class="voice"><span class="who">요양보호사</span><span class="say">보호자 전화에 하루 두 시간을 써요.</span></div>
+        <div class="voice"><span class="who">환자</span><span class="say">자식들 걱정시키고 싶지 않아요.</span></div>
+        <div class="voice"><span class="who">의료진</span><span class="say">어르신 상태를 매번 따로 기록해요.</span></div>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">05</span></div>
+  </section>
+
+  <!-- 06 DIRECTION -->
+  <section class="card brand">
+    <div class="c-top"><span class="eyebrow">Direction</span><span class="pagenum">06 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:80px">흩어진 세 시선을<br><span class="em">한 하루</span>로<br>잇습니다.</h1>
+      <p class="cover-sub" style="margin-top:46px;max-width:800px">세 시선은 같은 사람을 바라보지만, 서로 다른 언어로 말합니다. 하루안부는 그 간극을 하루 한 줄로 닫습니다. 어제의 흐름이 오늘 아침의 안심으로 이어지게.</p>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">06</span></div>
+  </section>
+
+  <!-- 07 DESIGN -->
+  <section class="card">
+    <div class="c-top"><span class="eyebrow">Design System</span><span class="pagenum">07 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:66px">기능 이전에,<br><span class="em">안심이 보이는</span> 형태.</h1>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#2C7AFC"></div><div class="name">Brand Blue</div><div class="hex">#2C7AFC</div></div>
+        <div class="sw"><div class="chip" style="background:#1C1C1E"></div><div class="name">Ink</div><div class="hex">#1C1C1E</div></div>
+        <div class="sw"><div class="chip" style="background:#F0F4F8"></div><div class="name">Paper</div><div class="hex">#F0F4F8</div></div>
+        <div class="sw"><div class="chip" style="background:#34D399"></div><div class="name">Mint</div><div class="hex">#34D399</div></div>
+      </div>
+      <div class="type-spec">
+        <div class="big">하루안부 Aa</div>
+        <div class="meta">Pretendard · 한 화면, 한 메시지 · Fluent 단색 아이콘</div>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">07</span></div>
+  </section>
+
+  <!-- 08 PERSONA · 세 시선 -->
+  <section class="card paper">
+    <div class="c-top"><span class="eyebrow">Three Perspectives</span><span class="pagenum">08 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:58px">한 번의 기록이,<br>세 사람에게 닿습니다.</h1>
+      <div class="triple">
+        <div class="tri"><span class="n">01</span><span class="t">멀리 있어도<br>매일 <span class="u">안부</span>를 받습니다</span></div>
+        <div class="tri"><span class="n">02</span><span class="t">버튼 하나로<br>오늘도 <span class="u">잘 지낸다</span>고</span></div>
+        <div class="tri"><span class="n">03</span><span class="t">기록하는 순간<br>가족에게 <span class="u">닿습니다</span></span></div>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">08</span></div>
+  </section>
+
+  <!-- 09 SERVICE FEATURES ① -->
+  <section class="card">
+    <div class="c-top"><span class="eyebrow">Service Features · 1</span><span class="pagenum">09 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:54px">서비스를 가로지르는<br><span class="em">여섯 가지 핵심 기능.</span></h1>
+      <div class="feat-list">
+        <div class="feat"><div class="ic"><iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon></div>
+          <div><div class="tag">Safety</div><div class="ttl">AI 안심지수</div><div class="desc">식사·복약·수면·활동을 AI가 0~100점으로 응축. 5초 안에 어제를 판단합니다.</div></div></div>
+        <div class="feat"><div class="ic"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></div>
+          <div><div class="tag">Report</div><div class="ttl">자동 일일 리포트</div><div class="desc">하루의 케어 기록을 매일 아침 보호자 카드로 자동 변환·발송.</div></div></div>
+        <div class="feat"><div class="ic"><iconify-icon icon="fluent:alert-urgent-24-filled"></iconify-icon></div>
+          <div><div class="tag">Emergency</div><div class="ttl">새벽 SOS 3분 응답</div><div class="desc">SOS부터 요양보호사·의료진·보호자 알림까지 평균 3분 안에 자동 연결.</div></div></div>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">09</span></div>
+  </section>
+
+  <!-- 10 SERVICE FEATURES ② -->
+  <section class="card">
+    <div class="c-top"><span class="eyebrow">Service Features · 2</span><span class="pagenum">10 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:54px">같은 데이터를,<br><span class="em">각자의 언어로.</span></h1>
+      <div class="feat-list">
+        <div class="feat"><div class="ic"><iconify-icon icon="fluent:pulse-24-filled"></iconify-icon></div>
+          <div><div class="tag">Prevention</div><div class="ttl">이상 패턴 감지</div><div class="desc">평소와 다른 신호를 AI가 사전에 잡아 케어팀에 선제 알림. 예방형 케어로.</div></div></div>
+        <div class="feat"><div class="ic"><iconify-icon icon="fluent:people-team-24-filled"></iconify-icon></div>
+          <div><div class="tag">Handover</div><div class="ttl">세 시선 통합 인계</div><div class="desc">같은 데이터가 환자·케어팀·보호자에게 각자의 언어로 닿습니다.</div></div></div>
+        <div class="feat"><div class="ic"><iconify-icon icon="fluent:mic-24-filled"></iconify-icon></div>
+          <div><div class="tag">Voice</div><div class="ttl">음성 인계 자동 정리</div><div class="desc">요양보호사의 말 인계를 AI가 핵심 사항으로 자동 정리. 손이 묶이지 않게.</div></div></div>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">10</span></div>
+  </section>
+
+  <!-- 11 FLAGSHIP -->
+  <section class="card paper">
+    <div class="c-top"><span class="eyebrow">Flagship</span><span class="pagenum">11 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:56px">매일, 어제의 부모님이<br><span class="em">한 카드로 응축됩니다.</span></h1>
+      <div class="apps">
+        <div class="app"><div class="meta">AI Daily Summary · 보호자</div><div class="ttl">AI가 매일, 어제의 부모님을 정리합니다.</div><div class="desc">수면·식사·복약·기분이 한 카드로. 출근길 5초면 어제가 보입니다.</div></div>
+        <div class="app"><div class="meta">Realtime Sync · 케어팀 → 보호자</div><div class="ttl">기록하는 순간, 가족에게 닿습니다.</div><div class="desc">체크리스트를 누르는 손짓이 보호자 화면의 한 카드로 실시간 연결.</div></div>
+        <div class="app"><div class="meta">Medical Integration · 웹 + 모바일</div><div class="ttl">데스크에서도, 회진 중에도.</div><div class="desc">전체 환자 뷰와 회진 중 SOS·바이탈이 같은 데이터 위에서 작동.</div></div>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">11</span></div>
+  </section>
+
+  <!-- 12 APPS ①②③ -->
+  <section class="card">
+    <div class="c-top"><span class="eyebrow">Five Apps · 1</span><span class="pagenum">12 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:54px">이제 한 화면씩,<br><span class="em">직접 만져봅니다.</span></h1>
+      <div class="apps">
+        <div class="app"><div class="meta">보호자 · Mobile</div><div class="ttl">매일 아침, 먼저 전해집니다.</div><div class="desc">전날 케어 데이터를 한 카드로. 출근길 5초면 어제의 부모님을 봅니다.</div></div>
+        <div class="app"><div class="meta">환자 · Tablet</div><div class="ttl">설명 없이도, 첫날부터 씁니다.</div><div class="desc">화면 3개, 글자는 크게, 터치는 넓게. 누구나 5초 안에 SOS.</div></div>
+        <div class="app"><div class="meta">요양보호사 · Mobile</div><div class="ttl">오늘 하루, 한 화면에 펼쳐집니다.</div><div class="desc">진행률·다음 케어·우선 환자까지 한 화면에. 모국어 전환도 지원.</div></div>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">12</span></div>
+  </section>
+
+  <!-- 13 APPS ④⑤ -->
+  <section class="card">
+    <div class="c-top"><span class="eyebrow">Five Apps · 2</span><span class="pagenum">13 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:54px">데스크에서도,<br><span class="em">회진 중에도.</span></h1>
+      <div class="apps">
+        <div class="app"><div class="meta">의료진 앱 · Mobile</div><div class="ttl">병동을 걸으면서,<br>처치부터 인계까지.</div><div class="desc">회진 중 폰으로 받는 SOS·바이탈, 손 안에서 즉시 처치와 인계로.</div></div>
+        <div class="app"><div class="meta">의료진 웹 · PC</div><div class="ttl">전체 환자를<br>한 화면에.</div><div class="desc">데스크의 한 화면이 병동의 흐름을 받아냅니다. 행정 시간을 줄여 현장 시간을 늘립니다.</div></div>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">13</span></div>
+  </section>
+
+  <!-- 14 MOMENTS -->
+  <section class="card paper">
+    <div class="c-top"><span class="eyebrow">Gallery</span><span class="pagenum">14 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:80px">화면 밖의<br><span class="em">하루안부.</span></h1>
+      <p class="lead" style="font-size:33px;margin-top:46px;line-height:1.6">보호자와 환자, 그리고 곁을 지키는 케어팀.<br>하루안부가 닿는 자리에 남는 표정들입니다.</p>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">14</span></div>
+  </section>
+
+  <!-- 15 CLOSING -->
+  <section class="card ink">
+    <div class="c-top"><span class="eyebrow">Epilogue</span><span class="pagenum">15 / 15</span></div>
+    <div class="c-body">
+      <h1 class="headline" style="font-size:80px">오늘 하루도,<br><span class="em">안녕하셨습니다.</span></h1>
+      <p class="cover-sub" style="margin-top:44px;max-width:820px;color:rgba(255,255,255,.82)">매일 잊지 않고 안부를 묻는 마음, 그 마음을 한 화면 위로 옮겨 적은 것이 곧 하루안부입니다.</p>
+      <div class="people">
+        <span class="person">김지욱</span><span class="person">손예찬</span><span class="person">고해은</span>
+      </div>
+    </div>
+    <div class="c-foot"><span class="dot"></span>하루안부<span class="muted">© 2026 · 졸업 프로젝트</span></div>
+  </section>
+
+</div>
+<script>
+  // 각 카드를 .thumb 래퍼로 감싸 그리드 썸네일로 축소
+  document.querySelectorAll('.deck > .card').forEach(card=>{
+    const w=document.createElement('div'); w.className='thumb';
+    card.parentNode.insertBefore(w,card); w.appendChild(card);
+  });
+  const bG=document.getElementById('btn-grid'), bF=document.getElementById('btn-full');
+  function setMode(full){
+    document.body.classList.toggle('full',full);
+    bF.classList.toggle('on',full); bG.classList.toggle('on',!full);
+    if(!full) window.scrollTo(0,0);
+  }
+  bG.onclick=()=>setMode(false);
+  bF.onclick=()=>setMode(true);
+  // 썸네일 클릭 시 해당 카드만 실제 크기로
+  document.querySelectorAll('.thumb').forEach(t=>{
+    t.addEventListener('click',()=>{
+      if(document.body.classList.contains('full'))return;
+      setMode(true); t.scrollIntoView({block:'start'});
+    });
+  });
+</script>
+</body>
+</html>

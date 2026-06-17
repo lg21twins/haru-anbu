@@ -1,6 +1,14 @@
-<svg viewBox="0 0 600 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- 하루안부 워드마크 단독 — 네비게이션 바, 좁은 공간 -->
-  <g id="wordmark">
-    <text x="16" y="88" font-family="'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-weight="800" font-size="72" fill="#2C7AFC" letter-spacing="-2">하루안부</text>
-  </g>
+<svg viewBox="0 0 140 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="하루안부">
+  <title>하루안부 — 워드마크 단독</title>
+  <!-- v3.3 · 2026.05.10 · viewBox 타이트화 + text-anchor=middle 중앙 정렬
+       네비게이션 바, 좁은 공간, 텍스트 위주 자리 -->
+  <text
+    x="70"
+    y="36"
+    text-anchor="middle"
+    font-family="'Pretendard Variable', 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif"
+    font-weight="700"
+    font-size="32"
+    fill="#2C7AFC"
+    letter-spacing="-0.04em">하루안부</text>
 </svg>

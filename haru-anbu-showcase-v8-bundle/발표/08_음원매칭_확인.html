@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>음원 매칭 확인 — 재추출 11개</title>
+<style>
+  :root{ --blue:#2C7AFC; --ink:#1A1D23; --mute:#8A9099; --line:#ECEEF1; --paper:#F7F8FA; --ok:#0A7D3C; --okbg:#E6F6EC; --miss:#C0392B; --missbg:#FDEDEC; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;background:#fff;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 24px 120px}
+  h1{font-size:23px;font-weight:700;letter-spacing:-.02em}
+  .sub{font-size:14px;color:var(--mute);margin-top:8px}
+  .hint{font-size:13px;color:var(--ink);margin-top:16px;padding:12px 16px;background:var(--paper);border-radius:10px}
+  .hint b{color:var(--blue)}
+  .card{border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-top:16px}
+  .card.miss{border-color:#F5C6C0;background:var(--missbg)}
+  .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .file{font-size:15px;font-weight:700;font-feature-settings:"tnum" 1}
+  .badge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px}
+  .badge.ok{color:var(--ok);background:var(--okbg)}
+  .badge.miss{color:var(--miss);background:#fff;border:1px solid #F5C6C0}
+  .sec{font-size:12px;color:var(--mute)}
+  audio{height:34px;margin-left:auto}
+  .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:10px 0 3px}
+  .stt{font-size:14px;color:var(--ink);padding:8px 12px;background:var(--paper);border-radius:8px;word-break:keep-all}
+  .tgt{font-size:14px;color:var(--ink-2,#3A4049);word-break:keep-all}
+  .missmsg{font-size:14px;color:var(--miss);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>음원 매칭 확인 — 재추출 11개</h1>
+  <p class="sub">다운로드한 파일을 STT로 읽어 대본과 매칭한 결과입니다. 각 줄의 ▶로 직접 들어보고 맞는지 확인하세요.</p>
+  <div class="hint">
+    <b>STT 인식</b> = 다운로드된 음원을 실제로 읽은 내용 · <b>대본</b> = 발표뷰에 들어갈 텍스트.<br>
+    둘이 같은 내용이면 매칭 OK. ▶ 재생이 그 대사면 맞습니다. <b style="color:var(--miss)">clover-14(환자)는 빠져서 다시 뽑아야 해요.</b>
+  </div>
+  <div id="list"></div>
+</div>
+<script>
+// [clover ID, file(없으면 null), 섹션, STT인식, 대본]
+const ROWS = [
+ ["08t","clv_01","Design · ② Typography","서체도 한 가족입니다. 프리텐다드로 한글, 라틴, 숫자를 쓰고 중국어는 노토산스로 자동 폴백되어 다국어 요양보호사도 또렷하게 읽습니다.","글자체도 한 가족입니다. 프리텐다드로 한글·라틴·숫자를 쓰고, 중국어는 노토 산스로 자동 폴백돼 다국어 요양보호사도 또렷하게 읽습니다."],
+ ["09i","clv_02","Design · ④ Iconography","아이콘도 한 벌로 통일했습니다. 플루언트 단색 아이콘으로 안심 지수부터 복약과 에스에스까지 같은 결로 그렸습니다.","아이콘도 한 벌로 통일했습니다. 플루언트 단색 아이콘으로, 안심지수부터 복약과 에스오에스까지 같은 결로 그렸습니다."],
+ ["09u","clv_03","Design · ⑤ UI Kit","그리고 이 약속들이 실제 컴포넌트가 됩니다. 하루안부 속 모든 탭을 같은 규칙 위에 쌓았습니다.","그리고 이 약속들이, 실제 컴포넌트가 됩니다. 보호자앱의 모든 탭을, 같은 규칙 위에 쌓았습니다."],
+ ["12a","clv_04","Flagship · 컷1 AI Daily Summary","첫째, 에이아이 일일 리포트. 매일 아침 어제의 부모님을 제가 한 장으로 정리해 보호자에게 전합니다.","첫째, 에이아이 데일리 요약. 매일 아침, 어제의 부모님을 제가 한 장으로 정리해 보호자에게 전합니다."],
+ ["12b","clv_05","Flagship · 컷2 Realtime Sync","둘째, 실시간 동기화입니다. 요양보호사가 체크리스트를 누르는 그 손짓이 의료진의 확인을 거쳐 보호자 화면에 한 카드로 닿습니다. 전화 한 통, 메모 한 줄 없이도 어제의 부모님이 보이고 세 시점이 같은 데이터 위에서 실시간으로 만납니다.","둘째, 실시간 동기화입니다. 요양보호사가 체크리스트를 누르는 그 손짓이, 의료진의 확인을 거쳐 보호자 화면의 한 카드로 닿습니다. 전화 한 통, 메모 한 줄 없이도 어제의 부모님이 보이고 — 세 시점이 같은 데이터 위에서, 영 점 오 초 만에 실시간으로 만납니다."],
+ ["12c","clv_06","Flagship · 컷3 Medical Integration","셋째, 의료 통합 데스크의 웹과 회진의 모바일이 같은 데이터 하나 위에서 만납니다.","셋째, 의료 통합. 데스크의 웹과 회진의 모바일이, 같은 데이터 하나 위에서 만납니다."],
+ ["13","clv_07","5앱 · ① 보호자","먼저 보호자입니다. 매일 아침 어제의 부모님이 한 카드로 도착합니다. 식사, 복약, 수면까지 제가 정리해 출근길 오초면 다 볼 수 있게 합니다.","먼저 보호자입니다. 매일 아침, 어제의 부모님이 한 카드로 도착합니다. 식사·복약·수면까지 제가 정리해, 출근길 오 초면 다 보시게 합니다."],
+ ["14","clover-14","5앱 · ② 환자","다음은 어르신입니다. 글자는 크게, 터치는 넓게. 복잡한 메뉴 없이 큰 버튼 하나로 누구나 도움을 청합니다.","다음은 어르신입니다. 글자는 크게, 터치는 넓게. 복잡한 메뉴 없이, 큰 버튼 하나로 누구나 오 초 안에 도움을 청합니다."],
+ ["15","clv_08","5앱 · ③ 요양보호사","이번엔 요양보호사입니다. 출근하자마자 오늘 하루가 한 화면에 펼쳐집니다. 근무 진행률부터 다음 케어까지 남은 시간, 그리고 가장 먼저 봐야할 어르신까지 따로 찾을 필요 없이 위에서부터 차례로 보입니다.","이번엔 요양보호사입니다. 출근하자마자, 오늘 하루가 한 화면에 펼쳐집니다. 근무 진행률부터 다음 케어까지 남은 시간, 가장 먼저 봐야 할 어르신까지 — 따로 찾을 필요 없이 위에서부터 차례로 보입니다."],
+ ["17","clv_09","5앱 · ④ 의료진 앱","네 번째는 의료진 앱입니다. 병동을 걸으면서 처치부터 인계까지 기록이 한손으로 가능하게 합니다.","네 번째는 의료진 앱입니다. 병동을 걸으면서, 처치부터 인계까지 — 기록은 한 손으로. 에스오에스엔 이 초 안에 위치와 바이탈이 잡힙니다."],
+ ["18","clv_10","5앱 · ⑤ 의료진 웹","마지막은 의료진 웹입니다. 전체 환자를 한 화면에 제가 이상 신호를 중요도 순으로 정렬하여 봐야할 환자를 맨 위에 올려 드립니다.","마지막은 의료진 웹입니다. 전체 환자를 한 화면에. 제가 이상 신호를 중요도 순으로 정렬해, 봐야 할 환자를 맨 위에 올려 드립니다."],
+];
+const list=document.getElementById('list');
+ROWS.forEach(([id,file,sec,stt,tgt])=>{
+  const c=document.createElement('div'); c.className='card'+(file?'':' miss');
+  let player = file
+    ? `<audio controls preload="none" src="audio/clover/clover-${id}.mp3"></audio>`
+    : `<span class="badge miss">다시 뽑기</span>`;
+  c.innerHTML =
+    `<div class="top"><span class="file">clover-${id}.mp3</span>`+
+    `<span class="badge ${file?'ok':'miss'}">${file?'매칭 OK':'파일 없음'}</span>`+
+    `<span class="sec">${sec}</span>${player}</div>`+
+    (file
+      ? `<div class="lbl">STT 인식 (실제 음원)</div><div class="stt">${stt}</div>`+
+        `<div class="lbl">대본</div><div class="tgt">${tgt}</div>`
+      : `<div class="missmsg">이 대사는 다운로드 폴더에 없어요. 아래 대본으로 다시 뽑아 clover-14.mp3로 저장하세요.</div>`+
+        `<div class="lbl">대본</div><div class="tgt">${tgt}</div>`);
+  list.appendChild(c);
+});
+</script>
+</body>
+</html>

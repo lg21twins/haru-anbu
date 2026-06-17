@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>하루안부 — 사용자 플로우차트</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <style>
+    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2c7afc;
+      --navy: #111318;
+      --slate: #64748b;
+      --rule: #e4e4e4;
+    }
+    body {
+      font-family: "Pretendard Variable", Pretendard, sans-serif;
+      background: #dadde0;
+      padding: 24px;
+    }
+
+    /* ── v12 기획서 슬라이드 구조 ── */
+    .slide-outer {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 24px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .slide {
+      width: 1920px;
+      max-height: 1080px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      transform-origin: top left;
+      display: block;
+      padding: 80px 88px 60px;
+    }
+
+    /* ── Top bar (v12 그대로) ── */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 16px;
+      margin-bottom: 48px;
+    }
+    .top-bar-section {
+      font-size: 14px; font-weight: 600; color: #161616;
+      width: 197px; flex-shrink: 0;
+    }
+    .top-bar-sub {
+      font-size: 14px; font-weight: 400; color: #b3b3b3;
+      flex: 1; padding-left: 24px;
+    }
+    .top-bar-badge {
+      font-size: 12px; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .badge-patient  { background: #FFF1EB; color: #c2410c; border: 1px solid #fecaca; }
+    .badge-guardian { background: #EEF4FF; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .badge-care     { background: #F0FDF4; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-nurse    { background: #F5F3FF; color: #6d28d9; border: 1px solid #ddd6fe; }
+    .badge-onboard  { background: #FEFCE8; color: #a16207; border: 1px solid #fde68a; }
+    .badge-cross    { background: #FDF4FF; color: #7e22ce; border: 1px solid #e9d5ff; }
+
+    /* ── 슬라이드 제목 ── */
+    .slide-title {
+      font-size: 36px; font-weight: 700; color: var(--navy);
+      letter-spacing: -0.8px; margin-bottom: 8px;
+    }
+    .slide-desc {
+      font-size: 18px; font-weight: 400; color: var(--slate);
+      margin-bottom: 40px; line-height: 1.6;
+    }
+
+    /* ── 변경 노트 ── */
+    .change-note {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #f0fdf4; border: 1px solid #86efac;
+      border-left: 4px solid #22c55e;
+      border-radius: 8px; padding: 10px 16px;
+      font-size: 14px; color: #15803d;
+      margin-bottom: 36px;
+    }
+
+    /* ── Mermaid 컨테이너 ── */
+    .chart-wrap {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 32px 28px;
+      overflow-x: auto;
+    }
+    .mermaid {
+      font-family: "Pretendard Variable", Pretendard, sans-serif !important;
+    }
+
+    /* ── 페이지 번호 ── */
+    .pg {
+      margin-top: 24px;
+      text-align: right;
+      font-size: 14px; color: #b3b3b3;
+    }
+    .pg b { color: #161616; font-weight: 600; }
+
+    /* ── 범례 ── */
+    .legend {
+      display: flex; gap: 24px; flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; color: #64748b;
+    }
+    .lg-box {
+      width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0;
+    }
+    .lg-diamond {
+      width: 14px; height: 14px; transform: rotate(45deg); flex-shrink: 0;
+    }
+    .lg-pill {
+      width: 20px; height: 12px; border-radius: 20px; flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 1 — 온보딩 공통 진입 플로우
+═══════════════════════════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+    <div class="top-bar">
+      <div class="top-bar-section">UX 플로우차트</div>
+      <div class="top-bar-sub">온보딩 · 공통 진입 플로우 (v13)</div>
+      <span class="top-bar-badge badge-onboard">🚪 온보딩</span>
+    </div>
+
+    <h2 class="slide-title">온보딩 — 역할 선택 & 로그인</h2>
+    <p class="slide-desc">앱 최초 실행 시 역할을 선택하고, 소셜/이메일 인증 후 각 앱으로 분기되는 공통 흐름</p>
+
+    <div class="legend">
+      <div class="legend-item"><div class="lg-pill" style="background:#dbeafe;border:1px solid #93c5fd"></div>시작 / 종료</div>
+      <div class="legend-item"><div class="lg-box" style="background:#f0f9ff;border:1px solid #7dd3fc"></div>화면 (Process)</div>
+      <div class="legend-item"><div class="lg-diamond" style="background:#fef9c3;border:1px solid #fbbf24"></div>분기 (Decision)</div>
+      <div class="legend-item"><div class="lg-box" style="background:#dcfce7;border:1px solid #4ade80"></div>완료 / 성공</div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"background":"#f8fafc","primaryColor":"#EEF4FF","primaryTextColor":"#111318","primaryBorderColor":"#2C7AFC","lineColor":"#94A3B8","secondaryColor":"#F0FDF4","tertiaryColor":"#FFF7ED","fontSize":"13px","fontFamily":"Pretendard Variable, Pretendard, sans-serif"}}}%%
+flowchart LR
+  classDef startEnd fill:#dbeafe,stroke:#2c7afc,color:#1e3a8a,font-weight:700
+  classDef process  fill:#f0f9ff,stroke:#7dd3fc,color:#0369a1
+  classDef decision fill:#fef9c3,stroke:#fbbf24,color:#78350f,font-weight:600
+  classDef success  fill:#dcfce7,stroke:#4ade80,color:#14532d,font-weight:700
+  classDef role_g   fill:#eff6ff,stroke:#60a5fa,color:#1e40af
+  classDef role_p   fill:#fff7ed,stroke:#fb923c,color:#9a3412
+  classDef role_c   fill:#f0fdf4,stroke:#4ade80,color:#166534
+
+  OB_S(["앱 실행"]):::startEnd --> OB01["OB01 · 웰컴\n역할 선택 화면"]:::process
+
+  OB01 --> DEC_AUTH{"인증 방식"}:::decision
+  DEC_AUTH -->|"카카오로 시작 Click"| KAKAO["카카오 로그인"]:::process
+  DEC_AUTH -->|"이메일 Click"| EMAIL["이메일 · 비밀번호 입력"]:::process
+  DEC_AUTH -->|"이미 계정 있어요 Click"| LOGIN["로그인 화면"]:::process
+
+  OB01 --> DEC_R{"역할 선택\n(role-card)"}:::decision
+  DEC_R -->|"보호자 Select"| OB_G["보호자 소개\nob05-g-intro"]:::role_g
+  DEC_R -->|"환자·가족 Select"| OB_P["환자 소개\nob05-p-intro"]:::role_p
+  DEC_R -->|"요양보호사 Select"| OB_C["요양보호사 소개\nob05-n-intro"]:::role_c
+
+  KAKAO & EMAIL --> OB_AGREE["OB06 · 약관 동의\n이용약관 · 개인정보처리방침"]:::process
+  OB_G & OB_P & OB_C --> OB_AGREE
+
+  OB_AGREE --> OB_PROFILE["OB07 · 프로필 설정\n이름 · 사진 · 관계"]:::process
+  OB_PROFILE --> DEC_DEST{"역할 분기"}:::decision
+  DEC_DEST -->|"보호자"| END_G(["보호자 앱 진입\n→ g-guardian-live"]):::success
+  DEC_DEST -->|"환자"| END_P(["환자 앱 진입\n→ p01-today"]):::success
+  DEC_DEST -->|"요양보호사"| END_C(["요양보호사 앱 진입\n→ c01-today"]):::success
+  LOGIN --> DEC_DEST
+      </div>
+    </div>
+    <div class="pg"><b>1</b> / 8</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 2 — 환자 앱 플로우 (v12)
+═══════════════════════════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+    <div class="top-bar">
+      <div class="top-bar-section">UX 플로우차트</div>
+      <div class="top-bar-sub">환자 앱 · Patient App (v12) — 태블릿 / 모바일</div>
+      <span class="top-bar-badge badge-patient">👴 환자</span>
+    </div>
+
+    <h2 class="slide-title">환자 앱 — 홈 · 소통 · 도움</h2>
+    <p class="slide-desc">초고령자 대상 4탭 구조 · 큰 버튼 · 긴급 SOS 자동 카운트다운 (5초)</p>
+
+    <div class="chart-wrap">
+      <div class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"background":"#f8fafc","primaryColor":"#fff7ed","primaryTextColor":"#111318","primaryBorderColor":"#fb923c","lineColor":"#94A3B8","fontSize":"13px","fontFamily":"Pretendard Variable, Pretendard, sans-serif"}}}%%
+flowchart LR
+  classDef startEnd fill:#dbeafe,stroke:#2c7afc,color:#1e3a8a,font-weight:700
+  classDef process  fill:#fff7ed,stroke:#fb923c,color:#7c2d12
+  classDef decision fill:#fef9c3,stroke:#fbbf24,color:#78350f,font-weight:600
+  classDef emergency fill:#fee2e2,stroke:#f87171,color:#7f1d1d,font-weight:700
+  classDef comm     fill:#f3e8ff,stroke:#c084fc,color:#581c87
+  classDef success  fill:#dcfce7,stroke:#4ade80,color:#14532d
+
+  P_S(["앱 진입"]):::startEnd --> P01["P01 · 오늘 홈\nAI 안부 · 빠른 실행"]:::process
+
+  subgraph HOME_TODO["  홈 & 일정  "]
+    P01
+    P02["P02 · 오늘의 할 일\n타임라인 체크리스트"]:::process
+    P10["P10 · 복약 완료\n약 확인 · 가족 알림"]:::success
+  end
+
+  subgraph COMM["  가족 소통  "]
+    P03["P03 · 누구와 통화?\n가족 선택"]:::comm
+    DEC_ONLINE{"접속 중?"}:::decision
+    P05["P05 · 말벗 AI 대화\n음성 입력"]:::comm
+    P06["P06 · 사진 크게 보기\n캐러셀"]:::comm
+    P07["P07 · 가족 메시지\n1:1 채팅"]:::comm
+    P_VMSG(["음성 메시지 전송"]):::success
+  end
+
+  subgraph SOS["  도움 & 긴급  "]
+    P08["P08 · 도움 요청\n8가지 버튼"]:::emergency
+    DEC_SOS{"긴급 요청?"}:::decision
+    P08_OK(["일반 요청 전송 완료"]):::success
+    P09["P09 · 긴급 SOS\n5초 카운트다운"]:::emergency
+    DEC_CNL{"취소 여부"}:::decision
+    P_119(["119 자동 연결\n+ 가족 위치 공유"]):::emergency
+  end
+
+  P01 -->|"할일 탭 Click"| P02
+  P01 -->|"가족 탭 Click"| P03
+  P01 -->|"도움 탭 Click"| P08
+  P01 -->|"먹었어요 Click"| P10
+  P02 -->|"약 완료 Tap"| P10
+  P02 -->|"홈 탭 Click"| P01
+  P10 -->|"오늘 홈으로 Click"| P01
+
+  P03 --> DEC_ONLINE
+  DEC_ONLINE -->|"접속 중"| P05
+  DEC_ONLINE -->|"자리 비움"| P_VMSG
+  P03 -->|"메시지 보기 Click"| P07
+  P05 -->|"대화 마치기 Click"| P01
+  P07 -->|"사진 크게 보기 Click"| P06
+  P07 -->|"음성으로 답장 Click"| P05
+  P06 -->|"답장하기 Click"| P07
+  P06 -->|"전화하기 Click"| P03
+
+  P08 --> DEC_SOS
+  DEC_SOS -->|"일반 요청"| P08_OK
+  DEC_SOS -->|"아파요 (긴급)"| P09
+  P09 --> DEC_CNL
+  DEC_CNL -->|"실수예요 취소 Click"| P01
+  DEC_CNL -->|"5초 경과 or 119 Click"| P_119
+  P09 -->|"가족에게만 연락 Click"| P03
+      </div>
+    </div>
+    <div class="pg"><b>2</b> / 8</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 3-1 — 보호자 앱 Part 1 : 5탭 네비게이션 & 홈
+═══════════════════════════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+    <div class="top-bar">
+      <div class="top-bar-section">UX 플로우차트</div>
+      <div class="top-bar-sub">보호자 앱 · Guardian App (v11) — Part 1 / 2 · 5탭 네비게이션 & 홈</div>
+      <span class="top-bar-badge badge-guardian">💼 보호자</span>
+    </div>
+
+    <h2 class="slide-title">보호자 앱 (1/2) — AI 홈 · 가이드 · 리포트</h2>
+    <p class="slide-desc">AI 인트로 → 홈 전환 구조 · 5탭 네비게이션 · 알림 · AI 리포트 분기</p>
+
+    <div class="chart-wrap">
+      <div class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"background":"#f8fafc","primaryColor":"#eff6ff","primaryTextColor":"#111318","primaryBorderColor":"#2c7afc","lineColor":"#94A3B8","fontSize":"13px","fontFamily":"Pretendard Variable, Pretendard, sans-serif"}}}%%
+flowchart LR
+  classDef startEnd fill:#dbeafe,stroke:#2c7afc,color:#1e3a8a,font-weight:700
+  classDef process  fill:#eff6ff,stroke:#93c5fd,color:#1e3a8a
+  classDef decision fill:#fef9c3,stroke:#fbbf24,color:#78350f,font-weight:600
+  classDef emergency fill:#fee2e2,stroke:#f87171,color:#7f1d1d,font-weight:700
+  classDef comm     fill:#f3e8ff,stroke:#c084fc,color:#581c87
+  classDef success  fill:#dcfce7,stroke:#4ade80,color:#14532d
+  classDef ai       fill:#f0f9ff,stroke:#38bdf8,color:#0c4a6e
+
+  G_S(["앱 진입"]):::startEnd --> G_LIVE["g-guardian-live\nAI 인트로 → 홈 대시보드"]:::process
+
+  subgraph GUARD_NAV["  5탭 네비게이션  "]
+    T_HOME["탭: 홈"] --> G_LIVE
+    T_GUIDE["탭: 가이드"] --> G_GUIDE["g02-ai-guide\nAI 케어 가이드"]:::ai
+    T_CHAT["탭: 소통"] --> G_SOTONG["g03-sotong\n소통 인박스"]:::comm
+    T_REC["탭: 기록"] --> G_RECORDS["g05-records\n기록 보기"]:::process
+    T_MY["탭: 마이"] --> G_MYPAGE["g05-mypage\n마이페이지"]:::process
+  end
+
+  G_LIVE -->|"알림 아이콘 Click"| G_ALERT["g06-alert\n긴급 알림"]:::emergency
+  G_LIVE -->|"리포트 버튼 Click"| G_REPORT["g02-ai-report\nAI 케어 리포트"]:::ai
+  G_LIVE -->|"프로필 아이콘 Click"| G_MYPAGE
+
+  G_ALERT -->|"상태 확인 Click"| G_LIVE
+  G_ALERT -->|"간호사 문의 Click"| G_CHAT_NURSE["g03-chat-nurse\n간호사 채팅"]:::comm
+
+  G_REPORT -->|"담당자 문의 Click"| G_CHAT["g03-chat\n채팅 목록"]:::comm
+  G_REPORT -->|"AI 질문 Click"| G_CHAT_AI["g03-chat-ai\nAI 채팅"]:::ai
+  G_REPORT -->|"간호사 채팅 Click"| G_CHAT_NURSE
+  G_GUIDE -->|"AI로 더 물어보기 Click"| G_CHAT_AI
+
+  G_SOTONG["g03-sotong\n소통 인박스"]:::comm
+  G_MYPAGE["g05-mypage\n마이페이지"]:::process
+  G_RECORDS["g05-records\n기록 보기"]:::process
+      </div>
+    </div>
+    <div class="pg"><b>3</b> / 8</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 3-2 — 보호자 앱 Part 2 : 소통 허브 & 결제
+═══════════════════════════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+    <div class="top-bar">
+      <div class="top-bar-section">UX 플로우차트</div>
+      <div class="top-bar-sub">보호자 앱 · Guardian App (v11) — Part 2 / 2 · 소통 허브 & 결제</div>
+      <span class="top-bar-badge badge-guardian">💼 보호자</span>
+    </div>
+
+    <h2 class="slide-title">보호자 앱 (2/2) — 소통 · 마이 · 결제</h2>
+    <p class="slide-desc">소통 채팅 허브 · 마이페이지 · 결제 단계 전 약관 동의 분기 추가 반영</p>
+
+    <div class="change-note">
+      📌 기획 수정 반영 — <strong>결제(g08-billing) 「납부하기」 클릭 시 약관 동의 이력 분기 추가</strong>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"background":"#f8fafc","primaryColor":"#eff6ff","primaryTextColor":"#111318","primaryBorderColor":"#2c7afc","lineColor":"#94A3B8","fontSize":"13px","fontFamily":"Pretendard Variable, Pretendard, sans-serif"}}}%%
+flowchart LR
+  classDef startEnd fill:#dbeafe,stroke:#2c7afc,color:#1e3a8a,font-weight:700
+  classDef process  fill:#eff6ff,stroke:#93c5fd,color:#1e3a8a
+  classDef decision fill:#fef9c3,stroke:#fbbf24,color:#78350f,font-weight:600
+  classDef comm     fill:#f3e8ff,stroke:#c084fc,color:#581c87
+  classDef success  fill:#dcfce7,stroke:#4ade80,color:#14532d
+  classDef billing  fill:#fff7ed,stroke:#fb923c,color:#7c2d12
+  classDef ai       fill:#f0f9ff,stroke:#38bdf8,color:#0c4a6e
+
+  G_SOTONG["g03-sotong\n소통 인박스"]:::comm
+  G_MYPAGE["g05-mypage\n마이페이지"]:::process
+
+  G_SOTONG -->|"간호사 Click"| G_CHAT_NURSE["g03-chat-nurse\n간호사 채팅"]:::comm
+  G_SOTONG -->|"환자 Click"| G_CHAT_PATIENT["g03-chat-patient\n환자 채팅"]:::comm
+  G_SOTONG -->|"가족 Click"| G_CHAT_FAMILY["g03-chat-family\n가족 그룹"]:::comm
+  G_SOTONG -->|"AI FAB Click"| G_CHAT_AI["g03-chat-ai\nAI 채팅"]:::ai
+
+  G_MYPAGE -->|"기록 Click"| G_RECORDS["g05-records\n기록 보기"]:::process
+  G_MYPAGE -->|"설정 Click"| G_SETTINGS["g07-settings\n알림 설정"]:::process
+
+  subgraph BILLING_FLOW["  💳 결제 플로우 (기획 수정 반영)  "]
+    G_BILL["g08-billing\n결제 · 청구"]:::billing
+    DEC_TERMS{"약관 동의\n이력 있음?"}:::decision
+    G_TERMS["약관 동의 화면"]:::billing
+    G_PAY(["납부 처리 완료"]):::success
+    G_BILL -->|"납부하기 Click"| DEC_TERMS
+    DEC_TERMS -->|"✅ 이미 동의"| G_PAY
+    DEC_TERMS -->|"❌ 미동의"| G_TERMS
+    G_TERMS -->|"동의 완료 Click"| G_PAY
+  end
+
+  G_MYPAGE -->|"결제 메뉴 Click"| G_BILL
+  G_RECORDS -->|"청구서 Click"| G_BILL
+      </div>
+    </div>
+    <div class="pg"><b>4</b> / 8</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 4-1 — 요양보호사 앱 Part 1 : 오늘 탭 & 케어기록
+═══════════════════════════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+    <div class="top-bar">
+      <div class="top-bar-section">UX 플로우차트</div>
+      <div class="top-bar-sub">요양보호사 앱 · Caregiver App (v11) — Part 1 / 2 · 오늘 탭 & 케어기록</div>
+      <span class="top-bar-badge badge-care">🧑‍🦺 요양보호사</span>
+    </div>
+
+    <h2 class="slide-title">요양보호사 앱 (1/2) — 출퇴근 · ADL 케어기록</h2>
+    <p class="slide-desc">GPS 출퇴근 기록 → 수급자별 5단계 ADL 케어 체크리스트 완료 흐름</p>
+
+    <div class="chart-wrap">
+      <div class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"background":"#f8fafc","primaryColor":"#f0fdf4","primaryTextColor":"#111318","primaryBorderColor":"#22c55e","lineColor":"#94A3B8","fontSize":"13px","fontFamily":"Pretendard Variable, Pretendard, sans-serif"}}}%%
+flowchart LR
+  classDef startEnd fill:#dbeafe,stroke:#2c7afc,color:#1e3a8a,font-weight:700
+  classDef process  fill:#f0fdf4,stroke:#4ade80,color:#14532d
+  classDef decision fill:#fef9c3,stroke:#fbbf24,color:#78350f,font-weight:600
+  classDef success  fill:#dcfce7,stroke:#86efac,color:#14532d,font-weight:600
+  classDef adl      fill:#ecfdf5,stroke:#6ee7b7,color:#064e3b
+
+  C_S(["앱 진입"]):::startEnd --> C01["C01 · 오늘\n출퇴근 + 담당 수급자 목록"]:::process
+
+  subgraph TODAY["  📋 오늘 탭  "]
+    C01
+    DEC_SHIFT{"출근 상태"}:::decision
+    C_CHECKIN["출근하기\nGPS + 시간 자동 기록"]:::success
+    C_CHECKOUT["퇴근하기\n서비스 종료 기록"]:::process
+    C01 -->|"출근하기 Tap"| DEC_SHIFT
+    DEC_SHIFT -->|"미출근"| C_CHECKIN
+    DEC_SHIFT -->|"근무 중"| C_CHECKOUT
+    C_CHECKIN -->|"수급자 카드 Tap"| C02
+  end
+
+  subgraph CHECKLIST["  ✏️ 케어기록 탭  "]
+    C02["C02 · 케어 기록\n수급자별 ADL 체크리스트"]:::process
+    DEC_PT{"수급자 선택"}:::decision
+    C02_VITAL["Step 1 · 바이탈\n혈압 · 체온 · 맥박"]:::adl
+    C02_MEAL["Step 2 · 식사\n식사량% · 수분 섭취"]:::adl
+    C02_MED["Step 3 · 투약\n약 목록 체크"]:::adl
+    C02_HYGIENE["Step 4 · 위생\n구강 · 세수 · 목욕"]:::adl
+    C02_ACT["Step 5 · 활동\n보행 · 체위 변경"]:::adl
+    C02_DONE(["케어 기록 완료\n보호자 자동 공유"]):::success
+    C02 --> DEC_PT
+    DEC_PT -->|"수급자 A Tap"| C02_VITAL
+    C02_VITAL -->|"다음 Step"| C02_MEAL
+    C02_MEAL -->|"다음 Step"| C02_MED
+    C02_MED -->|"다음 Step"| C02_HYGIENE
+    C02_HYGIENE -->|"다음 Step"| C02_ACT
+    C02_ACT -->|"저장 · 완료 Click"| C02_DONE
+  end
+
+  C01 -->|"탭바: 기록 Click"| C02
+  C02 -->|"탭바: 홈 Click"| C01
+      </div>
+    </div>
+    <div class="pg"><b>5</b> / 8</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 4-2 — 요양보호사 앱 Part 2 : 소통 · 마이 · SOS
+═══════════════════════════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+    <div class="top-bar">
+      <div class="top-bar-section">UX 플로우차트</div>
+      <div class="top-bar-sub">요양보호사 앱 · Caregiver App (v11) — Part 2 / 2 · 소통 · 마이 · SOS</div>
+      <span class="top-bar-badge badge-care">🧑‍🦺 요양보호사</span>
+    </div>
+
+    <h2 class="slide-title">요양보호사 앱 (2/2) — 소통 · 마이 · SOS 긴급</h2>
+    <p class="slide-desc">인수인계 · 보호자/간호사 채팅 · 주간 일정 · SOS 플로팅 버튼 (모든 화면 고정)</p>
+
+    <div class="chart-wrap">
+      <div class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"background":"#f8fafc","primaryColor":"#f0fdf4","primaryTextColor":"#111318","primaryBorderColor":"#22c55e","lineColor":"#94A3B8","fontSize":"13px","fontFamily":"Pretendard Variable, Pretendard, sans-serif"}}}%%
+flowchart LR
+  classDef startEnd fill:#dbeafe,stroke:#2c7afc,color:#1e3a8a,font-weight:700
+  classDef process  fill:#f0fdf4,stroke:#4ade80,color:#14532d
+  classDef decision fill:#fef9c3,stroke:#fbbf24,color:#78350f,font-weight:600
+  classDef emergency fill:#fee2e2,stroke:#f87171,color:#7f1d1d,font-weight:700
+  classDef comm     fill:#f3e8ff,stroke:#c084fc,color:#581c87
+  classDef success  fill:#dcfce7,stroke:#86efac,color:#14532d,font-weight:600
+
+  C01["C01 · 오늘 탭"]:::process
+  C_CHECKOUT["퇴근하기\n서비스 종료 기록"]:::process
+
+  subgraph SOTONG["  💬 소통 탭  "]
+    C03["C03 · 소통\n인수인계 + 채팅"]:::comm
+    C03_HAND["인수인계 확인\n야간→주간 항목"]:::comm
+    C03_GUARD["보호자 채팅\n오늘 케어 요약 공유"]:::comm
+    C03_NURSE["간호사 채팅"]:::comm
+    C03_AI["AI 케어 가이드"]:::comm
+    C03 -->|"인수인계 항목 Tap"| C03_HAND
+    C03 -->|"보호자 메시지 Click"| C03_GUARD
+    C03 -->|"간호사 메시지 Click"| C03_NURSE
+    C03 -->|"AI 채팅 Click"| C03_AI
+  end
+
+  subgraph MYPAGE["  👤 마이 탭  "]
+    C04["C04 · 마이페이지\n프로필 · 진행 현황"]:::process
+    C04_SCH["C04-schedule · 주간 일정\n달력 + 수급자 배정"]:::process
+    C04 -->|"일정 카드 Click"| C04_SCH
+    C04 -->|"서비스 제공기록지 Click"| C04_PDF(["PDF 자동 생성\n급여 청구 서식"]):::success
+  end
+
+  subgraph SOS_BLOCK["  🆘 SOS 플로팅 (모든 화면)  "]
+    SOS_FAB["SOS 플로팅 버튼"]:::emergency
+    DEC_SOS{"상황 유형 선택"}:::decision
+    SOS_SEND(["보호자 + 센터\n30초 내 푸시 발송"]):::emergency
+    P_119(["📞 119 연결"]):::emergency
+    SOS_FAB --> DEC_SOS
+    DEC_SOS -->|"낙상 · 의식저하\n호흡곤란 · 기타"| SOS_SEND
+    SOS_SEND -->|"119 연결 Click"| P_119
+  end
+
+  C01 -->|"탭바: 소통 Click"| C03
+  C01 -->|"탭바: 마이 Click"| C04
+  C03 -->|"탭바: 홈 Click"| C01
+  C_CHECKOUT -->|"케어 요약 공유"| C03_GUARD
+      </div>
+    </div>
+    <div class="pg"><b>6</b> / 8</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 5 — 의료진 웹 플로우 (v10)
+═══════════════════════════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+    <div class="top-bar">
+      <div class="top-bar-section">UX 플로우차트</div>
+      <div class="top-bar-sub">의료진 웹 · Medical Staff Web (v10) — PC 사이드바 대시보드</div>
+      <span class="top-bar-badge badge-nurse">👩‍⚕️ 의료진</span>
+    </div>
+
+    <h2 class="slide-title">의료진 웹 — 대시보드 · 환자 관리 · 인수인계</h2>
+    <p class="slide-desc">PC 웹 기반 사이드바 네비게이션 · data-role="medical" · 케어 그린 컬러 시스템</p>
+
+    <div class="chart-wrap">
+      <div class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"background":"#f8fafc","primaryColor":"#f5f3ff","primaryTextColor":"#111318","primaryBorderColor":"#7c3aed","lineColor":"#94A3B8","fontSize":"13px","fontFamily":"Pretendard Variable, Pretendard, sans-serif"}}}%%
+flowchart LR
+  classDef startEnd fill:#dbeafe,stroke:#2c7afc,color:#1e3a8a,font-weight:700
+  classDef process  fill:#f5f3ff,stroke:#a78bfa,color:#3b0764
+  classDef decision fill:#fef9c3,stroke:#fbbf24,color:#78350f,font-weight:600
+  classDef emergency fill:#fee2e2,stroke:#f87171,color:#7f1d1d,font-weight:700
+  classDef comm     fill:#f3e8ff,stroke:#c084fc,color:#581c87
+  classDef success  fill:#dcfce7,stroke:#4ade80,color:#14532d
+  classDef dashboard fill:#e0f2fe,stroke:#38bdf8,color:#0c4a6e
+
+  N_S(["웹 접속 · 로그인"]):::startEnd --> N_DASH["대시보드\n케어 현황 개요 · 바이탈 모니터링"]:::dashboard
+
+  subgraph SIDEBAR["  🖥️ 사이드바 네비게이션  "]
+    S_DASH["대시보드"] --> N_DASH
+    S_PT["환자 목록"] --> N_PT["환자 목록\n25명 · 층별 · 상태 필터"]:::process
+    S_MED["처방 관리"] --> N_MED["처방 · 투약 관리\n처방전 입력 · 이력"]:::process
+    S_SOS["SOS 대응"] --> N_SOS["SOS 대응\n긴급 알림 수신 · 대응"]:::emergency
+    S_CHAT["채팅"] --> N_CHAT["채팅\n보호자 · 요양보호사"]:::comm
+    S_SCH["일정"] --> N_SCH["일정 관리\n검진 · 회진 · 처치"]:::process
+    S_HAND["인수인계"] --> N_HAND["인수인계\n교대 인계 메모"]:::process
+    S_TIME["타임라인"] --> N_TIME["타임라인\n전체 케어 이벤트"]:::process
+  end
+
+  N_DASH -->|"환자 카드 Click"| N_PT_DETAIL["환자 상세\n바이탈 · 케어 기록 · 처방"]:::process
+  N_DASH -->|"SOS 알림 Click"| N_SOS
+  N_DASH -->|"미완료 항목 Click"| N_CHECKLIST["케어 체크리스트\n완료 처리"]:::process
+
+  N_PT -->|"탭: 전체 · 관찰 · 안정 Tap"| DEC_PT_FILTER{"환자 상태\n필터"}:::decision
+  DEC_PT_FILTER -->|"관찰 필요"| N_PT_WARN["관찰 환자 목록\n이상 값 표시"]:::emergency
+  DEC_PT_FILTER -->|"안정"| N_PT_STABLE["안정 환자 목록"]:::process
+  N_PT -->|"환자 행 Click"| N_PT_DETAIL
+
+  N_SOS -->|"대응 완료 Click"| N_SOS_DONE(["SOS 종료 · 타임라인 기록"]):::success
+  N_SOS -->|"119 신고 Click"| P_119(["📞 119 연결"]):::emergency
+
+  N_HAND -->|"인계 작성 · 저장"| N_HAND_DONE(["인수인계 완료\n다음 교대자 수신"]):::success
+      </div>
+    </div>
+    <div class="pg"><b>7</b> / 8</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 6 — 크로스플랫폼 연결 플로우
+═══════════════════════════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+    <div class="top-bar">
+      <div class="top-bar-section">UX 플로우차트</div>
+      <div class="top-bar-sub">크로스플랫폼 연결 — 4개 앱 간 실시간 이벤트 흐름</div>
+      <span class="top-bar-badge badge-cross">🔗 크로스플랫폼</span>
+    </div>
+
+    <h2 class="slide-title">4개 앱 연결 — 케어 이벤트 실시간 동기화</h2>
+    <p class="slide-desc">환자 · 보호자 · 요양보호사 · 의료진이 하루안부 플랫폼을 통해 연결되는 핵심 이벤트 흐름</p>
+
+    <div class="chart-wrap">
+      <div class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"background":"#f8fafc","primaryColor":"#fdf4ff","primaryTextColor":"#111318","primaryBorderColor":"#a855f7","lineColor":"#94A3B8","fontSize":"13px","fontFamily":"Pretendard Variable, Pretendard, sans-serif"}}}%%
+flowchart LR
+  classDef patient  fill:#fff7ed,stroke:#fb923c,color:#7c2d12,font-weight:700
+  classDef guardian fill:#eff6ff,stroke:#60a5fa,color:#1e40af,font-weight:700
+  classDef care     fill:#f0fdf4,stroke:#22c55e,color:#14532d,font-weight:700
+  classDef nurse    fill:#f5f3ff,stroke:#a78bfa,color:#3b0764,font-weight:700
+  classDef event    fill:#f8fafc,stroke:#cbd5e1,color:#475569
+  classDef emergency fill:#fee2e2,stroke:#f87171,color:#7f1d1d,font-weight:700
+
+  PA["📱 환자 앱\n(p01-today)"]:::patient
+  GA["💼 보호자 앱\n(g-guardian-live)"]:::guardian
+  CA["🧑‍🦺 요양보호사 앱\n(c01-today)"]:::care
+  NA["👩‍⚕️ 의료진 웹\n(대시보드)"]:::nurse
+
+  subgraph E1["  💊 복약 완료  "]
+    EV1A["환자: 먹었어요 Tap\n(P10 복약완료)"]:::event
+    EV1B["보호자: 알림 수신\n(g06-alert)"]:::event
+    EV1C["의료진: 투약 기록 자동 갱신"]:::event
+  end
+
+  subgraph E2["  🆘 SOS 긴급  "]
+    EV2A["환자: SOS 발동\n(P09 카운트다운)"]:::emergency
+    EV2C["요양보호사: SOS FAB\n상황 유형 선택"]:::emergency
+    EV2B["보호자 + 의료진 + 요양보호사\n30초 내 푸시 알림"]:::emergency
+    EV2D(["119 자동 연결"]):::emergency
+  end
+
+  subgraph E3["  ✏️ 케어 기록  "]
+    EV3A["요양보호사: ADL 기록 완료\n(c02-checklist)"]:::event
+    EV3B["보호자: 케어 현황 실시간 갱신\n(g-guardian-live 위젯)"]:::event
+    EV3C["의료진: 기록 대시보드 반영"]:::event
+  end
+
+  subgraph E4["  🤖 AI 리포트  "]
+    EV4A["하루 케어 데이터 수집\n(복약·식사·활동·바이탈)"]:::event
+    EV4B["보호자: AI 케어 리포트 생성\n(g02-ai-report)"]:::event
+    EV4C["환자: 홈 AI 안부 카드 갱신\n(P01-today)"]:::event
+  end
+
+  subgraph E5["  💬 소통  "]
+    EV5A["요양보호사: 오늘 케어 요약 공유\n(c03 → 보호자 채팅)"]:::event
+    EV5B["보호자: g03-chat-nurse 수신"]:::event
+    EV5C["의료진: 인수인계 메모 수신\n(n06-handoff)"]:::event
+  end
+
+  PA -->|"복약 완료"| EV1A --> EV1B --> GA
+  EV1A --> EV1C --> NA
+
+  PA -->|"SOS 발동"| EV2A --> EV2B
+  CA -->|"SOS FAB"| EV2C --> EV2B
+  EV2B --> GA
+  EV2B --> NA
+  EV2B --> EV2D
+
+  CA -->|"ADL 기록 저장"| EV3A --> EV3B --> GA
+  EV3A --> EV3C --> NA
+
+  NA -->|"AI 데이터 집계"| EV4A --> EV4B --> GA
+  EV4A --> EV4C --> PA
+
+  CA -->|"케어 요약 공유"| EV5A --> EV5B --> GA
+  EV5A --> EV5C --> NA
+      </div>
+    </div>
+    <div class="pg"><b>8</b> / 8</div>
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    securityLevel: 'loose',
+    flowchart: {
+      useMaxWidth: true,
+      htmlLabels: true,
+      curve: 'basis',
+      rankSpacing: 70,
+      nodeSpacing: 45,
+      padding: 16,
+    },
+    themeVariables: {
+      fontFamily: '"Pretendard Variable", Pretendard, sans-serif',
+      fontSize: '13px',
+    }
+  });
+
+  /* 슬라이드 스케일 (v12 기획서와 동일한 방식) */
+  function scaleSlides() {
+    document.querySelectorAll('.slide-outer').forEach(outer => {
+      const slide = outer.querySelector('.slide');
+      if (!slide) return;
+      const scale = outer.clientWidth / slide.scrollWidth;
+      slide.style.transform = `scale(${scale})`;
+      outer.style.height = (slide.clientHeight * scale) + 'px';
+    });
+  }
+  window.addEventListener('resize', scaleSlides);
+  window.addEventListener('load', () => setTimeout(scaleSlides, 400));
+  document.addEventListener('DOMContentLoaded', () => setTimeout(scaleSlides, 800));
+</script>
+</body>
+</html>

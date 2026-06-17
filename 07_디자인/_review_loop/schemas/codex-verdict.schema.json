@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Codex Verdict",
+  "type": "object",
+  "required": ["actor", "step", "round", "verdict"],
+  "additionalProperties": false,
+  "properties": {
+    "actor": { "const": "codex" },
+    "step": { "enum": ["review", "final"] },
+    "round": { "type": "integer", "minimum": 1 },
+    "verdict": {
+      "enum": ["PASS", "PASS_WITH_NOTES", "FAIL", "ESCALATED"]
+    },
+    "must_fix": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["issue"],
+        "additionalProperties": false,
+        "properties": {
+          "file": { "type": "string" },
+          "line": { "type": "integer", "minimum": 0 },
+          "issue": { "type": "string", "minLength": 1 }
+        }
+      },
+      "default": []
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["issue"],
+        "additionalProperties": false,
+        "properties": {
+          "file": { "type": "string" },
+          "issue": { "type": "string", "minLength": 1 }
+        }
+      },
+      "default": []
+    },
+    "kept_well": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "files_inspected": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "scope_violations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "remaining_issues": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "reason_for_escalation": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "verdict": { "const": "FAIL" } }, "required": ["verdict"] },
+      "then": {
+        "properties": { "must_fix": { "type": "array", "minItems": 1 } },
+        "required": ["must_fix"]
+      }
+    },
+    {
+      "if": { "properties": { "verdict": { "const": "ESCALATED" } }, "required": ["verdict"] },
+      "then": { "required": ["reason_for_escalation"] }
+    }
+  ]
+}

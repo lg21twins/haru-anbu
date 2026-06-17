@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시각자료 참고 요소</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    background: #f5f5f5;
+    color: #1a1a1a;
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+  }
+
+  /* ── 공통 섹션 헤더 ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 32px;
+  }
+  .section-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 48px;
+  }
+
+  /* ────────────────────────────────────────
+     1. User Flow (두런두런 스타일)
+  ──────────────────────────────────────── */
+  .flow-container {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .flow-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .flow-primary {
+    background: #444;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 100px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .flow-connector-v {
+    width: 1px;
+    background: #ddd;
+    margin: 0 auto;
+    flex-shrink: 0;
+  }
+  .flow-connector-h {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+  }
+  .flow-line {
+    width: 32px;
+    height: 1px;
+    background: #bbb;
+    flex-shrink: 0;
+  }
+  .flow-line-dashed {
+    width: 1px;
+    min-height: 32px;
+    background: repeating-linear-gradient(to bottom, #bbb 0, #bbb 4px, transparent 4px, transparent 8px);
+    margin: 0 auto;
+    flex-shrink: 0;
+  }
+  .flow-box {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 12px;
+    color: #444;
+    white-space: nowrap;
+    background: #fff;
+  }
+  .flow-box-pill {
+    border: 1px solid #ccc;
+    border-radius: 24px;
+    padding: 9px 20px;
+    font-size: 12px;
+    color: #444;
+    white-space: nowrap;
+    background: #fff;
+  }
+  .flow-diamond {
+    width: 80px;
+    height: 50px;
+    background: #fff;
+    border: 1px solid #ccc;
+    transform: rotate(45deg) scale(0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .flow-diamond-inner {
+    transform: rotate(-45deg) scale(1.43);
+    font-size: 11px;
+    color: #444;
+    white-space: nowrap;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .flow-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-start;
+  }
+  .flow-col-center {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+  }
+  .flow-items-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* ────────────────────────────────────────
+     2. 성과 통계 카드 (Branding 핀)
+  ──────────────────────────────────────── */
+  .stats-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .stats-left {}
+  .stats-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 16px;
+  }
+  .stats-badge-dot {
+    width: 8px; height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+  }
+  .stats-heading {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #111;
+    margin-bottom: 16px;
+  }
+  .stats-desc {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .stats-desc strong { color: #333; }
+  .stats-cta {
+    font-size: 13px;
+    color: #22c55e;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .stats-bottom-text {
+    margin-top: 40px;
+    font-size: 12px;
+    color: #888;
+    line-height: 1.6;
+  }
+  .stats-bottom-text strong { color: #333; font-weight: 600; }
+  .stats-avatars {
+    display: flex;
+    align-items: center;
+    gap: -4px;
+    margin-top: 12px;
+  }
+  .avatar-circle {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: #ddd;
+    border: 2px solid #fff;
+    margin-left: -6px;
+  }
+  .avatar-circle:first-child { margin-left: 0; }
+  .avatar-circle:nth-child(1) { background: #f87171; }
+  .avatar-circle:nth-child(2) { background: #60a5fa; }
+  .avatar-circle:nth-child(3) { background: #34d399; }
+  .avatar-circle:nth-child(4) { background: #fbbf24; }
+  .avatar-circle:nth-child(5) { background: #a78bfa; }
+  .stats-rating { font-size: 12px; color: #555; margin-left: 10px; }
+  .stats-right {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .stat-card-main {
+    background: #f3f4f6;
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .stat-card-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .stat-card-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .stat-card-icon {
+    width: 16px; height: 12px;
+    background: #22c55e;
+    border-radius: 2px;
+  }
+  .stat-card-number {
+    font-size: 52px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-card-number-sm {
+    font-size: 40px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-card-sub {
+    font-size: 12px;
+    color: #666;
+  }
+
+  /* ────────────────────────────────────────
+     3. 스테이크홀더 맵 (Conic)
+  ──────────────────────────────────────── */
+  .conic-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    background: #111;
+    border-radius: 16px;
+    padding: 48px;
+    color: #fff;
+  }
+  .conic-left {}
+  .conic-section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: #aaa;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .conic-dot { width: 8px; height: 8px; background: #c6ff00; border-radius: 50%; }
+  .conic-ecosystem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 32px 0;
+  }
+  .conic-oval {
+    border: 1.5px solid #555;
+    border-radius: 60px;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+  }
+  .conic-node-black {
+    width: 60px; height: 60px;
+    background: #000;
+    border: 2px solid #444;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #fff;
+    font-weight: 700;
+  }
+  .conic-node-green {
+    width: 80px; height: 80px;
+    background: #c6ff00;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #000;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .conic-arrow {
+    font-size: 16px;
+    color: #666;
+    margin: 0 4px;
+  }
+  .conic-platform {
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-left: 8px;
+    font-weight: 700;
+  }
+  .conic-desc {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.7;
+    margin-top: 24px;
+  }
+  .conic-right {}
+  .conic-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    background: #1a1a1a;
+    border-radius: 12px;
+  }
+  .chat-bubble-right {
+    align-self: flex-end;
+    background: #333;
+    border-radius: 16px 16px 4px 16px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #fff;
+    max-width: 200px;
+  }
+  .chat-bubble-left {
+    align-self: flex-start;
+    background: #2a2a2a;
+    border-radius: 16px 16px 16px 4px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #ccc;
+    max-width: 200px;
+  }
+  .chat-time {
+    font-size: 10px;
+    color: #555;
+    text-align: right;
+    margin-top: 4px;
+  }
+  .chat-emoji-card {
+    align-self: center;
+    background: #111;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    font-size: 48px;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .chat-input-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #222;
+    border-radius: 32px;
+    padding: 10px 16px;
+    margin-top: 8px;
+  }
+  .chat-input-text { font-size: 12px; color: #888; flex: 1; }
+  .chat-send-btn {
+    width: 28px; height: 28px;
+    background: #555;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #fff;
+  }
+
+  /* ────────────────────────────────────────
+     4. 페르소나 카드 (Happyorder)
+  ──────────────────────────────────────── */
+  .persona-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .persona-card {
+    background: #f8f8fc;
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .persona-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .persona-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: #e8e0ff;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+  }
+  .persona-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4px;
+  }
+  .persona-meta {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.5;
+  }
+  .persona-quote {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .persona-quote::before {
+    content: '"';
+    font-size: 28px;
+    color: #7c4dff;
+    line-height: 1;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .persona-section-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 8px;
+  }
+  .persona-pain {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .persona-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .persona-tag {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 11px;
+    color: #555;
+    background: #fff;
+  }
+
+  /* ────────────────────────────────────────
+     5. 브랜드 커뮤니케이션 프로세스 (Infographic)
+  ──────────────────────────────────────── */
+  .infographic-section {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .infographic-step {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+  }
+  .step-number {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    min-width: 20px;
+    flex-shrink: 0;
+  }
+  .step-content { flex: 1; }
+  .step-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 2px;
+  }
+  .step-sub {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 20px;
+  }
+  .step-divider {
+    height: 1px;
+    background: #e5e5e5;
+    margin: 24px 0;
+  }
+  .circles-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .process-circle {
+    width: 80px; height: 80px;
+    border: 1.5px solid #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #333;
+    text-align: center;
+    padding: 4px;
+    line-height: 1.4;
+  }
+  .process-circle-filled {
+    width: 80px; height: 80px;
+    background: #111;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #fff;
+    text-align: center;
+    padding: 4px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .process-rect-filled {
+    background: #111;
+    border-radius: 4px;
+    padding: 16px 20px;
+    font-size: 11px;
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+  }
+  .process-list {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 11px;
+    color: #444;
+    line-height: 1.8;
+  }
+  .arrow-right {
+    font-size: 16px;
+    color: #888;
+  }
+  .venn-container {
+    position: relative;
+    width: 180px;
+    height: 80px;
+    flex-shrink: 0;
+  }
+  .venn-circle {
+    position: absolute;
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    border: 1.5px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #333;
+    text-align: center;
+    padding: 4px;
+    line-height: 1.3;
+  }
+  .venn-1 { top: 0; left: 0; }
+  .venn-2 { top: 0; left: 40px; }
+  .venn-3 { top: 0; left: 80px; }
+  .semicircle-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0;
+    padding: 16px 0;
+    position: relative;
+  }
+  .arc-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid #333;
+    clip-path: polygon(0% 50%, 100% 50%, 100% 100%, 0% 100%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+  }
+
+  /* ────────────────────────────────────────
+     6. 타깃 & 페르소나 2컬럼 (Kylie Lee)
+  ──────────────────────────────────────── */
+  .target-persona-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .target-badge {
+    display: inline-block;
+    border: 1.5px solid #e6c84a;
+    border-radius: 24px;
+    padding: 6px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 16px;
+  }
+  .target-desc {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.7;
+  }
+  .target-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .target-card {
+    border-radius: 16px;
+    padding: 32px;
+    border: 1.5px solid #e5e5e5;
+  }
+  .target-card-yellow { border-color: #e6c84a; }
+  .target-card-label {
+    display: inline-block;
+    background: #f5f5f5;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  .target-card-label-yellow {
+    background: #e6c84a;
+    color: #111;
+  }
+  .target-card-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: #f0ede6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin: 0 auto 16px;
+  }
+  .target-card-name {
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .target-card-quote {
+    font-size: 18px;
+    font-weight: 900;
+    color: #111;
+    text-align: center;
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+  .target-card-section { font-size: 12px; font-weight: 700; color: #555; margin-bottom: 6px; }
+  .target-card-text { font-size: 12px; color: #777; line-height: 1.7; margin-bottom: 16px; }
+  .target-card-points {
+    list-style: none;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.9;
+  }
+  .target-card-points li::before { content: "- "; }
+
+  /* ────────────────────────────────────────
+     7. 브랜드 서클 다이어그램 (PPT 핀)
+  ──────────────────────────────────────── */
+  .brand-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 32px 0;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .brand-circle-node {
+    width: 120px; height: 120px;
+    border: 1.5px solid #bbb;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #444;
+    text-align: center;
+    line-height: 1.5;
+    flex-shrink: 0;
+  }
+  .brand-pill-node {
+    border: 1.5px solid #bbb;
+    border-radius: 60px;
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .brand-pill-item {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #555;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .brand-circle-green {
+    width: 120px; height: 120px;
+    border: 1.5px solid #bbb;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: #333;
+    text-align: center;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+  .brand-flow-arrow {
+    width: 40px;
+    height: 1px;
+    background: #999;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .brand-flow-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0; top: -4px;
+    border: 5px solid transparent;
+    border-left-color: #999;
+  }
+  .brand-text-node {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+    white-space: nowrap;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+  .brand-sub-labels {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    justify-content: center;
+    margin-top: 16px;
+  }
+  .brand-sub-label {
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+  }
+
+  /* ────────────────────────────────────────
+     8. 금융 유저 플로우 (Salty Finance)
+  ──────────────────────────────────────── */
+  .finance-flow {
+    overflow-x: auto;
+    padding: 16px 0;
+  }
+  .finance-flow-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 900px;
+  }
+  .finance-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .f-box-outline {
+    border: 1.5px solid #90c0ff;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 12px;
+    color: #1a73e8;
+    white-space: nowrap;
+    background: #fff;
+    flex-shrink: 0;
+  }
+  .f-box-filled {
+    background: #1a73e8;
+    border-radius: 8px;
+    padding: 9px 22px;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .f-diamond {
+    width: 56px; height: 56px;
+    background: #fff;
+    border: 1.5px solid #1a73e8;
+    transform: rotate(45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .f-diamond-label {
+    transform: rotate(-45deg);
+    font-size: 10px;
+    color: #1a73e8;
+    white-space: nowrap;
+  }
+  .f-line {
+    height: 1px;
+    background: #90c0ff;
+    flex: 1;
+    min-width: 16px;
+    max-width: 40px;
+    flex-shrink: 0;
+  }
+  .f-dot {
+    width: 8px; height: 8px;
+    border: 1.5px solid #1a73e8;
+    border-radius: 50%;
+    background: #fff;
+    flex-shrink: 0;
+  }
+  .f-dot-filled {
+    width: 8px; height: 8px;
+    background: #1a73e8;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .f-items-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* ────────────────────────────────────────
+     9. 사용성 테스트 (두런두런)
+  ──────────────────────────────────────── */
+  .ut-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .ut-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1a2e;
+  }
+  .ut-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .ut-meta-item {
+    font-size: 11px;
+    color: #888;
+  }
+  .ut-meta-item strong { color: #333; }
+  .ut-section {
+    border-left: 3px solid #3b82f6;
+    padding-left: 16px;
+    margin-bottom: 32px;
+  }
+  .ut-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 8px;
+  }
+  .ut-section-desc {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .ut-screens {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    margin-top: 16px;
+  }
+  .phone-mockup {
+    width: 80px;
+    height: 140px;
+    border: 2px solid #ddd;
+    border-radius: 14px;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .phone-screen-content {
+    width: 68px; height: 120px;
+    background: #eaf0ff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 6px;
+  }
+  .phone-screen-bar {
+    height: 6px;
+    background: #c0d0ff;
+    border-radius: 3px;
+  }
+  .phone-screen-bar.dark { background: #7090e0; }
+  .phone-screen-map {
+    flex: 1;
+    background: #d0e8f0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .ut-finding {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 16px;
+    background: #f0f7ff;
+    border-radius: 10px;
+    margin-top: 12px;
+  }
+  .ut-finding-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .ut-finding-text { font-size: 12px; color: #333; line-height: 1.6; }
+
+  /* ────────────────────────────────────────
+     10. 배경 + 차트 (포트폴리오)
+  ──────────────────────────────────────── */
+  .bg-chart-layout {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .chart-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .chart-title {
+    font-size: 13px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    height: 160px;
+    padding-bottom: 32px;
+    position: relative;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+  }
+  .bar-label-top {
+    font-size: 10px;
+    color: #666;
+    white-space: nowrap;
+  }
+  .bar {
+    width: 100%;
+    max-width: 36px;
+    background: #d5dce8;
+    border-radius: 4px 4px 0 0;
+  }
+  .bar.highlight { background: #90b4e0; }
+  .bar-year {
+    font-size: 10px;
+    color: #888;
+    margin-top: 4px;
+    position: absolute;
+    bottom: 8px;
+  }
+  .bar-years-row {
+    display: flex;
+    gap: 16px;
+    padding: 0 0;
+    margin-top: 8px;
+  }
+  .bar-year-label {
+    flex: 1;
+    text-align: center;
+    font-size: 10px;
+    color: #888;
+  }
+  .bar-percent-overlay {
+    font-size: 9px;
+    color: #666;
+    margin-bottom: 2px;
+  }
+  .point-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .point-card {
+    background: #f0f5ff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+  .point-card strong { color: #1a73e8; font-weight: 700; }
+  .point-card-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1a73e8;
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+  1. User Flow
+══════════════════════════════════════= -->
+<div class="section-card">
+  <div class="section-label">시각자료 01 — User Flow</div>
+  <div class="section-title">User Flow</div>
+
+  <div class="flow-container">
+
+    <!-- 홈 그룹 -->
+    <div class="flow-group">
+      <div class="flow-col-center" style="width:100px; flex-shrink:0;">
+        <div class="flow-box-pill">앱 실행</div>
+        <div class="flow-line-dashed" style="min-height:16px;"></div>
+        <div class="flow-box-pill">스플래시</div>
+        <div class="flow-line-dashed" style="min-height:16px;"></div>
+        <div class="flow-box-pill">사용자 정보 입력</div>
+      </div>
+      <div style="display:flex; align-items:center; align-self:flex-start; margin-top: 14px;">
+        <div class="flow-line" style="width:24px;"></div>
+        <div class="flow-primary">홈</div>
+        <div class="flow-line" style="width:24px;"></div>
+      </div>
+      <div class="flow-col" style="gap: 8px; align-self:flex-start; margin-top:8px;">
+        <div class="flow-row"><div class="flow-box">날씨 카드</div></div>
+        <div class="flow-row" style="align-items:flex-start;">
+          <div class="flow-box">플로깅 스팟 추천</div>
+          <div class="flow-line" style="width:16px;"></div>
+          <div class="flow-box">장소 정보</div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-box">플로깅 시작</div>
+          <div class="flow-line" style="width:16px;"></div>
+          <div class="flow-box">같이하기</div>
+          <div class="flow-line" style="width:16px;"></div>
+          <div class="flow-box" style="background:#f9f2e3; border-color:#e6c84a;">매칭 조건 설정</div>
+        </div>
+        <div style="padding-left: 128px;">
+          <div class="flow-box">혼자하기</div>
+        </div>
+        <div class="flow-row" style="margin-top:8px;">
+          <div class="flow-box">플로깅하기</div>
+          <div class="flow-line" style="width:12px;"></div>
+          <div class="flow-box">인증샷 촬영</div>
+          <div class="flow-line" style="width:12px;"></div>
+          <div class="flow-box">응원하기</div>
+          <div class="flow-line" style="width:12px;"></div>
+          <div class="flow-box">결과 확인</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 챌린지 그룹 -->
+    <div class="flow-group">
+      <div style="display:flex; align-items:center; align-self:flex-start; margin-top:8px; margin-left: 100px;">
+        <div class="flow-primary">챌린지</div>
+        <div class="flow-line" style="width:24px;"></div>
+      </div>
+      <div class="flow-col" style="gap: 8px; align-self:flex-start; margin-top:8px;">
+        <div class="flow-row" style="align-items:flex-start;">
+          <div class="flow-box">탐색</div>
+          <div class="flow-line" style="width:16px;"></div>
+          <div class="flow-items-col">
+            <div class="flow-box">오늘의 챌린지</div>
+            <div class="flow-box">추천 챌린지</div>
+            <div class="flow-box">이달의 도전</div>
+          </div>
+          <div class="flow-line" style="width:16px;"></div>
+          <div style="align-self:center;"><div class="flow-box">상세 보기</div></div>
+        </div>
+        <div class="flow-row" style="align-items:flex-start; margin-top:8px;">
+          <div class="flow-box">진행 중</div>
+          <div class="flow-line" style="width:16px;"></div>
+          <div class="flow-items-col">
+            <div class="flow-box">진행 중인 챌린지</div>
+            <div class="flow-box">내가 만든 챌린지</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;"><div class="flow-box">뱃지</div></div>
+      </div>
+    </div>
+
+    <!-- 마이 페이지 그룹 -->
+    <div class="flow-group">
+      <div style="display:flex; align-items:center; align-self:flex-start; margin-top:8px; margin-left: 100px;">
+        <div class="flow-primary">마이 페이지</div>
+        <div class="flow-line" style="width:24px;"></div>
+      </div>
+      <div class="flow-col" style="gap: 8px; align-self:flex-start; margin-top:8px;">
+        <div class="flow-box">레벨</div>
+        <div class="flow-row">
+          <div class="flow-box">경로 기록</div>
+          <div class="flow-line" style="width:16px;"></div>
+          <div class="flow-box">상세 보기</div>
+        </div>
+        <div class="flow-box">인증 기록</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+  2. 성과 통계 카드
+══════════════════════════════════════= -->
+<div class="section-card">
+  <div class="section-label">시각자료 02 — Performance Stats</div>
+
+  <div class="stats-layout">
+    <div class="stats-left">
+      <div class="stats-badge">
+        <div class="stats-badge-dot"></div>
+        Performance stats
+      </div>
+      <div class="stats-heading">Proven by leading<br>sales teams</div>
+      <div class="stats-desc">
+        Increase lead quality and close deals<br>
+        <strong>faster through smarter workflows.</strong>
+      </div>
+      <div class="stats-cta">Explore the full demo ↗</div>
+      <div class="stats-bottom-text">
+        <strong>All in real time,</strong> capture leads, track<br>performance, and scale winning strategies.
+        <div class="stats-avatars" style="margin-top:12px; display:flex; align-items:center;">
+          <div class="avatar-circle"></div>
+          <div class="avatar-circle"></div>
+          <div class="avatar-circle"></div>
+          <div class="avatar-circle"></div>
+          <div class="avatar-circle"></div>
+          <span class="stats-rating">— rated 4.8/5</span>
+        </div>
+      </div>
+    </div>
+    <div class="stats-right">
+      <div class="stat-card-main">
+        <div class="stat-card-label">
+          <div class="stat-card-icon"></div>
+          Higher ROI
+        </div>
+        <div class="stat-card-number">76%</div>
+        <div class="stat-card-sub">Trimmed ad spend via segmentation</div>
+      </div>
+      <div class="stat-card-row">
+        <div class="stat-card-main">
+          <div class="stat-card-label">
+            <div class="stat-card-icon"></div>
+            Faster Conversions
+          </div>
+          <div class="stat-card-number-sm">91%</div>
+          <div class="stat-card-sub">Removed redundant tools</div>
+        </div>
+        <div class="stat-card-main">
+          <div class="stat-card-label">
+            <div class="stat-card-icon"></div>
+            Better Efficiency
+          </div>
+          <div class="stat-card-number-sm">69%</div>
+          <div class="stat-card-sub">Optimized bidding costs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+  3. 스테이크홀더 맵 + 비즈니스 모델
+══════════════════════════════════════= -->
+<div>
+  <div class="section-label" style="margin-bottom:8px;">시각자료 03 — Stakeholders Map & Business Model</div>
+  <div class="conic-layout">
+    <!-- 왼쪽: Stakeholders Map -->
+    <div class="conic-left">
+      <div class="conic-section-label">
+        <div class="conic-dot"></div>
+        Stakeholders Map
+      </div>
+      <div style="font-size:11px; color:#777; line-height:1.7;">
+        브랜드 제품 키워드를 기반으로 브랜드 스타일의 이모지 생성 서비스를
+        제공합니다. 사용자가 '떡볶이'를 입력하면 '요기요떡볶이' 스타일 이모지가
+        자동 생성됩니다.
+      </div>
+
+      <!-- Ecosystem oval -->
+      <div style="margin: 28px 0; display:flex; align-items:center; gap:8px;">
+        <div style="font-size:11px; color:#777; text-align:center; min-width:48px;">→</div>
+        <div class="conic-oval">
+          <div class="conic-node-black">USER</div>
+          <div style="display:flex; flex-direction:column; gap:4px; font-size:9px; color:#777; text-align:center;">
+            <span>User Scheme<br>& Re-use Data</span>
+            <span>Creation<br>& Proposal</span>
+          </div>
+          <div class="conic-node-green">CONIC.</div>
+          <div style="display:flex; flex-direction:column; gap:4px; font-size:9px; color:#777; text-align:center;">
+            <span>Distribution<br>Authority</span>
+            <span>Utilization<br>[lock-in]</span>
+          </div>
+        </div>
+        <div class="conic-platform">→ PLATFORM</div>
+      </div>
+      <div style="font-size:10px; color:#666; text-align:center; margin-bottom: 16px;">Communication Space</div>
+      <div class="conic-desc">
+        사용자의 스킴과 데이터를 기반으로 생성된 코니모지는 여러 플랫폼에서 유통될 수 있고,
+        이를 통해 사용자의 표현 방식과 커뮤니케이션 경험을 확장시키는 순환형 생태계입니다.
+      </div>
+    </div>
+
+    <!-- 오른쪽: Business Model + Chat -->
+    <div class="conic-right">
+      <div class="conic-section-label">
+        <div class="conic-dot"></div>
+        Business Model
+      </div>
+      <div class="conic-chat">
+        <div>
+          <div class="chat-bubble-right">오늘 말고 다음에 볼까?</div>
+          <div class="chat-time">08:11</div>
+        </div>
+        <div>
+          <div class="chat-bubble-left">나 이미 나왔는데....</div>
+          <div class="chat-time">08:11</div>
+        </div>
+        <div>
+          <div class="chat-bubble-right">헉...근처에서 자기 좋아하는<br>말차라떼라도 먹고 있을래?</div>
+          <div class="chat-time">08:12</div>
+        </div>
+        <div class="chat-emoji-card">🍜</div>
+        <div class="chat-input-bar">
+          <span style="font-size:16px; color:#555;">+</span>
+          <div class="chat-input-text">내가 끝나고 <strong style="color:#fff;">떡볶이</strong> 사갈게!!  🟡</div>
+          <div class="chat-send-btn">↑</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+  4. 페르소나 카드
+══════════════════════════════════════= -->
+<div class="section-card">
+  <div class="section-label">시각자료 04 — Persona Cards</div>
+  <div class="section-title">Persona</div>
+
+  <div class="persona-grid">
+    <div class="persona-card">
+      <div class="persona-top">
+        <div class="persona-avatar">🎭</div>
+        <div>
+          <div class="persona-name">강나연</div>
+          <div class="persona-meta">22세<br>시각디자인학과 3학년</div>
+        </div>
+      </div>
+      <div class="persona-quote">
+        이번 콜라보 제품은 디즈니래요!<br>SNS에서 그러던데요?
+      </div>
+      <div class="persona-section-label">Pain point</div>
+      <div class="persona-pain">
+        신제품, 콜라보 소식을 정기적으로 챙겨보고 싶다.<br>
+        브랜드 애용하는 사람들과 한 곳에서 소통하고 싶다.
+      </div>
+      <div class="persona-tags">
+        <span class="persona-tag">단거리 선호</span>
+        <span class="persona-tag">음식 비주얼 중요</span>
+        <span class="persona-tag">새로운 소식 공유</span>
+        <span class="persona-tag">모바일 사용 스킬 높음</span>
+        <span class="persona-tag">메뉴 결정 주도적</span>
+      </div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-top">
+        <div class="persona-avatar" style="background:#e0eff5;">🤔</div>
+        <div>
+          <div class="persona-name">임태오</div>
+          <div class="persona-meta">34세<br>무역회사 영업3팀 대리</div>
+        </div>
+      </div>
+      <div class="persona-quote">
+        배달음식, 많이 먹어봤지만<br>디저트 배달은 처음 시켜봐요.<br>그런데.. 뭘 먹어야 하죠?
+      </div>
+      <div class="persona-section-label">Pain point</div>
+      <div class="persona-pain">
+        브랜드가 너무 많아 어떤 걸 먹어야 할지 모르겠다.<br>
+        검색 기능이 없어서 원하는 정보를 바로 볼 수가 없다.<br>
+        다른 성별, 연령대는 어떤 음식을 먹는지 모르겠다.
+      </div>
+      <div class="persona-tags">
+        <span class="persona-tag">이동거리 무관</span>
+        <span class="persona-tag">음식 맛 중요</span>
+        <span class="persona-tag">한가지 음식 종류</span>
+        <span class="persona-tag">모바일 사용 스킬 보통</span>
+        <span class="persona-tag">메뉴 결정 의존적</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+  5. 브랜드 커뮤니케이션 프로세스
+══════════════════════════════════════= -->
+<div class="section-card">
+  <div class="section-label">시각자료 05 — Brand Communication Process</div>
+  <div class="section-title" style="text-align:center; margin-bottom:40px;">Brand Communication Process</div>
+
+  <div class="infographic-section">
+    <!-- Step 1 -->
+    <div class="infographic-step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <div class="step-title">Research &amp; Analysis</div>
+        <div class="step-sub">조사 및 분석</div>
+        <div class="circles-row">
+          <div class="process-circle">내부 데이터<br>수집</div>
+          <div class="process-circle">내부 데이터<br>분석</div>
+          <div class="process-circle">유학 시장의<br>흐름 조사</div>
+          <div class="process-circle">외부 데이터<br>수집</div>
+          <div class="process-circle">외부 데이터<br>수집</div>
+        </div>
+      </div>
+    </div>
+    <div class="step-divider"></div>
+
+    <!-- Step 2 -->
+    <div class="infographic-step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <div class="step-title">Brand concept</div>
+        <div class="step-sub">브랜드 컨셉</div>
+        <div class="circles-row" style="align-items:center;">
+          <!-- Venn diagram -->
+          <div style="position:relative; width:180px; height:90px; flex-shrink:0;">
+            <div class="process-circle" style="position:absolute; top:0; left:0; width:72px; height:72px;">소비자<br>데이터</div>
+            <div class="process-circle" style="position:absolute; top:0; left:36px; width:72px; height:72px; background:rgba(255,255,255,0.7);">외부<br>데이터</div>
+            <div class="process-circle" style="position:absolute; top:18px; left:18px; width:72px; height:72px; background:rgba(255,255,255,0.5);">내부<br>데이터</div>
+          </div>
+          <div class="arrow-right">→</div>
+          <div class="process-circle-filled">Common<br>Data</div>
+          <div class="arrow-right">→</div>
+          <div class="process-list">Story<br>Style<br>Contents<br>Spot</div>
+          <div class="arrow-right">→</div>
+          <div class="process-rect-filled">Brand<br>Concept</div>
+        </div>
+      </div>
+    </div>
+    <div class="step-divider"></div>
+
+    <!-- Step 3 -->
+    <div class="infographic-step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <div class="step-title">Brand Plan</div>
+        <div class="step-sub">브랜드 설계</div>
+        <div class="circles-row" style="align-items:center;">
+          <div class="process-circle">소비자</div>
+          <div class="arrow-right">→</div>
+          <div style="position:relative; flex-shrink:0;">
+            <div class="process-circle" style="width:90px; height:90px;">
+              <span style="font-size:9px; color:#888; position:absolute; top:8px; left:50%; transform:translateX(-50%); white-space:nowrap;">Targeting Spot</span>
+              Contents
+            </div>
+          </div>
+          <div class="arrow-right">→</div>
+          <div style="border: 1.5px solid #333; border-radius: 4px; padding: 12px 16px; display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <span style="font-size:11px; font-weight:700; color:#111;">edm</span>
+            <div class="process-circle-filled" style="width:64px; height:64px; font-size:11px;">Brand</div>
+            <span style="font-size:10px; color:#666;">Brand Journal</span>
+          </div>
+          <div class="arrow-right">←</div>
+          <div class="process-circle" style="width:64px; height:64px;">Story</div>
+          <div class="process-circle" style="width:64px; height:64px; margin-left:-8px;">Style</div>
+        </div>
+      </div>
+    </div>
+    <div class="step-divider"></div>
+
+    <!-- Step 4 -->
+    <div class="infographic-step">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <div class="step-title">Brand Experience</div>
+        <div class="step-sub">브랜드 경험</div>
+        <div style="display:flex; gap:32px; align-items:flex-start; margin-top:16px;">
+          <!-- 반원 차트 -->
+          <div style="position:relative; width:200px; height:110px; flex-shrink:0;">
+            <div style="position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:180px; height:90px; border: 2px solid #333; border-bottom:none; border-radius:90px 90px 0 0; display:flex; align-items:center; justify-content:center;">
+              <div style="position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:130px; height:65px; border: 2px solid #888; border-bottom:none; border-radius:65px 65px 0 0;"></div>
+              <div style="position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:86px; height:43px; border: 2px solid #aaa; border-bottom:none; border-radius:43px 43px 0 0;"></div>
+              <div style="position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:44px; height:22px; background:#111; border-radius:22px 22px 0 0;"></div>
+              <span style="position:absolute; bottom:5px; font-size:9px; color:#fff; font-weight:700; z-index:1;">1</span>
+              <span style="position:absolute; top:24px; font-size:9px; color:#555;">2</span>
+              <span style="position:absolute; top:8px; font-size:9px; color:#555;">3</span>
+              <span style="position:absolute; top:-4px; font-size:9px; color:#555;">4</span>
+            </div>
+            <span style="position:absolute; top:-4px; left:4px; font-size:9px; color:#888;">Flexibility</span>
+            <span style="position:absolute; top:-4px; right:0; font-size:9px; color:#888;">Brand Identity</span>
+            <span style="position:absolute; bottom:0px; right:4px; font-size:9px; color:#888;">Brandmark</span>
+          </div>
+          <!-- 범례 -->
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px 32px; font-size:11px;">
+            <div><strong style="display:block; margin-bottom:4px;">1. Core</strong><span style="color:#888; line-height:1.7;">Brandmark<br>Wordmark<br>Signature<br>Basic identity guide manual</span></div>
+            <div><strong style="display:block; margin-bottom:4px;">2. Supporting</strong><span style="color:#888; line-height:1.7;">Stationery<br>Printed materia<br>Interior Guide<br>Infographics</span></div>
+            <div><strong style="display:block; margin-bottom:4px;">3. Platform</strong><span style="color:#888; line-height:1.7;">Website<br>SNS<br>Blog<br>Mobile</span></div>
+            <div><strong style="display:block; margin-bottom:4px;">4. Action</strong><span style="color:#888; line-height:1.7;">Campaign<br>Promotion<br>Event</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+  6. 타깃 & 페르소나 2컬럼
+══════════════════════════════════════= -->
+<div class="section-card">
+  <div class="section-label">시각자료 06 — Target &amp; Persona</div>
+  <div class="target-persona-header">
+    <div class="target-badge">Target &amp; Persona</div>
+    <div class="target-desc">
+      일손이 부족할 때 단기알바를 빠르게 구하길 원하는 고용주와<br>
+      본인 스케줄에 맞친 단기알바 구직을 원하는 근로자를 타깃으로 선정하였습니다.
+    </div>
+  </div>
+  <div class="target-grid">
+    <div class="target-card">
+      <div class="target-card-label">단기알바 구인이 어려운 고용주</div>
+      <div class="target-card-avatar">👨‍🍳</div>
+      <div class="target-card-name">강어진 / 3년차 차양업자 / 1인 초밥집 사장</div>
+      <div class="target-card-quote">"바쁠때만 단기알바를 빠르게 구하고 싶어요!"</div>
+      <div class="target-card-section">Situation</div>
+      <div class="target-card-text">
+        3년째 초밥집을 운영하는 어진씨는 최근 코로나로 인한 재정난으로 매일 장시간 일하는 알바생을 해고했다. 하지만, 혼자 가게를 운영하다보니 손님이 많이 몰리는 피크타임에 배달까지 해결하는데 어려움을 느낀다.
+      </div>
+      <div class="target-card-section">Pain Point</div>
+      <ul class="target-card-points">
+        <li>앱과 인터넷 비트파티에 알바생 구하는 과정과 시간은 낭비예요</li>
+        <li>단기 알바생에 대한 검증이 없어 <strong>신뢰가 안가요</strong></li>
+        <li>일용직 알바생들의 계약서등과 같은 <strong>정보를 일일이 관리하기 어려워요</strong></li>
+      </ul>
+    </div>
+    <div class="target-card target-card-yellow">
+      <div class="target-card-label target-card-label-yellow">단기알바 구직이 어려운 근로자</div>
+      <div class="target-card-avatar" style="background:#fff8e0;">👩‍🦱</div>
+      <div class="target-card-name">22세 / 대학교 3학년 / 금공강 통학러</div>
+      <div class="target-card-quote">"내 스케줄에 맞는 단기알바를 찾고 싶어요!"</div>
+      <div class="target-card-section">Situation</div>
+      <div class="target-card-text">
+        남정원씨는 집에서 2시간 거리의 학교까지 통학을 해서 학교에 있는 시간만큼 공강에 알바를 구하려고 한다. 하지만 스케줄에 맞는 단기알바를 찾는건 쉽지 않다.
+      </div>
+      <div class="target-card-section">Pain Point</div>
+      <ul class="target-card-points">
+        <li>스케줄과 시간에 맞는 단기알바를 탐색하는데 오랜시간이 걸려요</li>
+        <li>단기알바의 <strong>경력인증을 받거나 검증이 없어요</strong></li>
+        <li><strong>급금문제</strong>가 생길 시 적합한 방법을 몰라 <strong>불안해요</strong></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+  7. 브랜드 서클 다이어그램
+══════════════════════════════════════= -->
+<div class="section-card">
+  <div class="section-label">시각자료 07 — Brand Diagram</div>
+  <div style="font-size:10px; color:#aaa; text-align:right; margin-top:-4px; margin-bottom:16px;">Smart Beauty for the Smart Consumer, 9wishes.</div>
+  <div style="font-size:28px; font-weight:900; color:#111; margin-bottom:4px;">BRAND</div>
+  <div style="font-size:12px; color:#666; margin-bottom:32px;">
+    똑똑한 소비자를 위한 스마트 뷰티 나인위시스<br>
+    기술력을 바탕으로 착한 성분은 물론, 기능과 품질까지 갖춘 똑똑한 화장품
+  </div>
+
+  <div class="brand-flow">
+    <div class="brand-circle-node">
+      TECHNOLOGY<br>EFFECT<br>QUALITY
+    </div>
+    <div class="brand-flow-arrow"></div>
+
+    <div class="brand-pill-node">
+      <div class="brand-pill-item">안심 성분</div>
+      <div class="brand-pill-item">확실한 효과</div>
+      <div class="brand-pill-item">클린 뷰티</div>
+    </div>
+    <div class="brand-flow-arrow"></div>
+
+    <div class="brand-circle-green">
+      SMART<br>&amp;<br>INNOVATE
+    </div>
+    <div class="brand-flow-arrow"></div>
+
+    <div class="brand-text-node">스마트 뷰티로<br>답을 찾다!</div>
+  </div>
+
+  <div style="display:flex; justify-content:space-around; margin-top:16px;">
+    <div style="text-align:center; font-size:11px; color:#888;">똑똑한 소비자</div>
+    <div style="text-align:center; font-size:11px; color:#888; width:120px;"></div>
+    <div style="text-align:center; font-size:11px; color:#888;">똑똑한 화장품</div>
+    <div style="text-align:center; font-size:11px; color:#888;"></div>
+  </div>
+
+  <div style="text-align:right; margin-top:32px; font-size:14px; font-weight:700; color:#333; border-top:1px solid #eee; padding-top:16px;">
+    <span style="font-size:20px; font-weight:900;">9</span>wishes | 나인위시스
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+  8. 금융 유저 플로우 (블루 스타일)
+══════════════════════════════════════= -->
+<div class="section-card">
+  <div class="section-label">시각자료 08 — Finance User Flow</div>
+  <div style="font-size:11px; color:#aaa; margin-bottom:8px;">structure</div>
+  <div class="section-title">3가지 솔루션을 바탕으로<br>기획한 User flow</div>
+
+  <div class="finance-flow">
+    <div class="finance-flow-inner">
+
+      <!-- Top row: Splash → Join → Login → 금융데이터 → 홈화면 -->
+      <div class="finance-row">
+        <div class="f-box-outline">Splash</div>
+        <div class="f-dot-filled" style="margin:0 4px;"></div>
+        <div class="f-line"></div>
+        <div class="f-box-outline">Join</div>
+        <div class="f-dot-filled" style="margin:0 4px;"></div>
+        <div class="f-line"></div>
+        <div class="f-box-outline">Login</div>
+        <div class="f-line"></div>
+        <div class="f-box-outline">금융 데이터 연동</div>
+        <div class="f-line"></div>
+
+        <!-- 홈화면 열 -->
+        <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+          <div style="height:24px; width:1px; background:#90c0ff;"></div>
+          <div class="f-box-filled">홈화면</div>
+          <div style="height:24px; width:1px; background:#90c0ff;"></div>
+          <div class="f-box-filled" style="margin-top:48px;">분석</div>
+          <div style="height:24px; width:1px; background:#90c0ff;"></div>
+          <div class="f-box-filled" style="margin-top:24px;">추천</div>
+          <div style="height:24px; width:1px; background:#90c0ff;"></div>
+          <div class="f-box-filled" style="margin-top:24px;">마이페이지</div>
+        </div>
+
+        <div class="f-line"></div>
+
+        <!-- 진행중? 다이아몬드 + 우측 -->
+        <div style="display:flex; flex-direction:column; align-items:flex-start; gap:8px;">
+          <div class="finance-row" style="align-items:center;">
+            <div class="f-diamond">
+              <span class="f-diamond-label">진행 중?</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-left:8px;">
+              <div class="f-box-outline">1:1 배틀 참여</div>
+              <div class="f-box-outline">그룹 배틀 참여</div>
+              <div class="f-box-outline">소비 추이 점검</div>
+              <div class="f-box-outline">배틀 현황</div>
+            </div>
+          </div>
+
+          <!-- 분석 row -->
+          <div class="finance-row" style="margin-top:16px;">
+            <div class="f-line"></div>
+            <div class="f-box-outline">내자산</div>
+            <div class="f-line"></div>
+            <div class="f-box-outline">소비 내역</div>
+            <div class="f-line"></div>
+            <div class="f-box-outline">카테고리 소비</div>
+            <div class="f-line"></div>
+            <div class="f-box-outline">소비 큐레이팅</div>
+          </div>
+
+          <!-- 추천 row -->
+          <div class="finance-row" style="margin-top:8px;">
+            <div class="f-line"></div>
+            <div class="f-box-outline">생활 TIP</div>
+            <div class="f-line"></div>
+            <div class="f-box-outline">상품 추천</div>
+            <div class="f-line"></div>
+            <div class="f-box-outline">부업 추천</div>
+          </div>
+
+          <!-- 마이페이지 row -->
+          <div class="finance-row" style="margin-top:8px;">
+            <div class="f-line"></div>
+            <div class="f-box-outline">개인정보</div>
+            <div class="f-line"></div>
+            <div class="f-box-outline">대결전적</div>
+            <div class="f-line"></div>
+            <div class="f-box-outline">계좌/카드관리</div>
+            <div class="f-line"></div>
+            <div class="f-box-outline">기타</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+  9. 사용성 테스트 (UT)
+══════════════════════════════════════= -->
+<div class="section-card">
+  <div class="section-label">시각자료 09 — Usability Test</div>
+  <div class="ut-header">
+    <div class="ut-title">Usability Test</div>
+  </div>
+  <div style="font-size:12px; color:#666; margin-bottom:16px;">
+    UT를 통해 사용성을 검증하고, 친구와 함께하는 경험 전반을 개선했어요
+  </div>
+  <div class="ut-meta">
+    <div class="ut-meta-item"><strong>총 참여 인원</strong> 6명</div>
+    <div class="ut-meta-item"><strong>테스트 일정</strong> 2025.01-07</div>
+    <div class="ut-meta-item"><strong>Tool</strong> Maze, Figma 프로토타입</div>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="ut-section">
+    <div class="ut-section-title">개선 1: 지도 탐색</div>
+    <div class="ut-section-desc">
+      자극 받고 무준위 달릴 수 있도록, 지도 상에서 달릴 경로를 선택하는 기능을 개선했어요
+    </div>
+    <div class="ut-screens">
+      <div class="phone-mockup">
+        <div class="phone-screen-content">
+          <div class="phone-screen-bar dark"></div>
+          <div class="phone-screen-map">🗺️</div>
+          <div class="phone-screen-bar"></div>
+        </div>
+      </div>
+      <div style="font-size:16px; color:#ddd; align-self:center;">→</div>
+      <div class="phone-mockup">
+        <div class="phone-screen-content" style="background:#dff0ea;">
+          <div class="phone-screen-bar" style="background:#6bcfa0;"></div>
+          <div class="phone-screen-map" style="background:#b8e8d4;">📍</div>
+          <div class="phone-screen-bar" style="background:#6bcfa0;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ut-finding">
+      <div class="ut-finding-icon">💡</div>
+      <div class="ut-finding-text">지도 기반 경로 선택 UX 개선으로 사용자가 원하는 위치를 직관적으로 선택할 수 있게 되었습니다.</div>
+    </div>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="ut-section">
+    <div class="ut-section-title">개선 2: 친구 달리기 위치</div>
+    <div class="ut-section-desc">
+      앱방향 소중이 이 사도록 '에우기' 알림의 위치와 표현을 다음과 같이 개선했어요
+    </div>
+    <div class="ut-screens">
+      <div class="phone-mockup">
+        <div class="phone-screen-content" style="background:#fce8e8;">
+          <div class="phone-screen-bar" style="background:#f0a0a0;"></div>
+          <div class="phone-screen-map" style="background:#fad0d0;">🏃</div>
+          <div class="phone-screen-bar" style="background:#f0a0a0;"></div>
+        </div>
+      </div>
+      <div style="font-size:16px; color:#ddd; align-self:center;">→</div>
+      <div class="phone-mockup">
+        <div class="phone-screen-content" style="background:#e8f0fe;">
+          <div class="phone-screen-bar" style="background:#7090e0;"></div>
+          <div class="phone-screen-map" style="background:#c0d4f8;">👥</div>
+          <div class="phone-screen-bar" style="background:#7090e0;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ut-finding">
+      <div class="ut-finding-icon">💡</div>
+      <div class="ut-finding-text">친구 위치 알림 UI를 상단 고정 배너로 변경하여 달리기 중에도 놓치지 않도록 개선했습니다.</div>
+    </div>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="ut-section">
+    <div class="ut-section-title">개선 3: 러닝 기록</div>
+    <div class="ut-section-desc">
+      러닝 도중 기록을 비교하고 보다 즐기며 누적도록 수정했어요
+    </div>
+    <div style="display:flex; gap:16px; margin-top:16px; flex-wrap:wrap;">
+      <div style="background:#f5f5f5; border-radius:12px; padding:16px 20px; font-size:12px; color:#333;">
+        <div style="font-size:22px; font-weight:800; color:#1a1a2e; margin-bottom:4px;">5.07km</div>
+        <div style="color:#888; font-size:11px;">총 거리</div>
+      </div>
+      <div style="background:#f5f5f5; border-radius:12px; padding:16px 20px; font-size:12px; color:#333;">
+        <div style="font-size:22px; font-weight:800; color:#1a1a2e; margin-bottom:4px;">00:30:47</div>
+        <div style="color:#888; font-size:11px;">진행 시간</div>
+      </div>
+      <div style="background:#f5f5f5; border-radius:12px; padding:16px 20px; font-size:12px; color:#333;">
+        <div style="font-size:22px; font-weight:800; color:#1a1a2e; margin-bottom:4px;">132bpm</div>
+        <div style="color:#888; font-size:11px;">평균 심박수</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+  10. 배경 + 데이터 차트
+══════════════════════════════════════= -->
+<div class="section-card">
+  <div class="section-label">시각자료 10 — Background &amp; Data Chart</div>
+  <div style="font-size:11px; color:#1a73e8; font-weight:600; margin-bottom:8px;">Background</div>
+  <div class="section-title">노후된 건물과 주택을 철거하고<br>새롭게 건설하는 '도시 정비 사업'</div>
+
+  <div class="bg-chart-layout">
+    <!-- 차트 카드 -->
+    <div class="chart-card">
+      <div class="chart-title">연도별 전국 재개발·재건축 아파트 분양 물량 및 비중</div>
+      <div style="display:flex; align-items:flex-end; gap:16px; height:180px; padding-bottom:8px; border-bottom:1px solid #e5e5e5; margin-bottom:8px; position:relative;">
+        <!-- 2019 -->
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%;">
+          <div style="font-size:9px; color:#888;">101,794 가구</div>
+          <div style="flex:1; display:flex; align-items:flex-end; width:100%;">
+            <div style="width:100%; background:#d0d8e4; border-radius:4px 4px 0 0; height:72%;"></div>
+          </div>
+          <div style="font-size:9px; color:#aaa;">36.6%</div>
+        </div>
+        <!-- 2020 -->
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%;">
+          <div style="font-size:9px; color:#888;">104,154 가구</div>
+          <div style="flex:1; display:flex; align-items:flex-end; width:100%;">
+            <div style="width:100%; background:#d0d8e4; border-radius:4px 4px 0 0; height:74%;"></div>
+          </div>
+          <div style="font-size:9px; color:#aaa;">35.6%</div>
+        </div>
+        <!-- 2021 -->
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%;">
+          <div style="font-size:9px; color:#888;">58,020 가구</div>
+          <div style="flex:1; display:flex; align-items:flex-end; width:100%;">
+            <div style="width:100%; background:#d0d8e4; border-radius:4px 4px 0 0; height:41%;"></div>
+          </div>
+          <div style="font-size:9px; color:#aaa;">18.5%</div>
+        </div>
+        <!-- 2022 -->
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%;">
+          <div style="font-size:9px; color:#888;">74,867 가구</div>
+          <div style="flex:1; display:flex; align-items:flex-end; width:100%;">
+            <div style="width:100%; background:#d0d8e4; border-radius:4px 4px 0 0; height:53%;"></div>
+          </div>
+          <div style="font-size:9px; color:#aaa;">23.6%</div>
+        </div>
+        <!-- 2023 (highlight) -->
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; position:relative;">
+          <div style="font-size:9px; color:#1a73e8; font-weight:700; white-space:nowrap;">128,553 가구</div>
+          <div style="flex:1; display:flex; align-items:flex-end; width:100%;">
+            <div style="width:100%; background:#90b8e8; border-radius:4px 4px 0 0; height:91%; border:1.5px dashed #1a73e8; border-bottom:none;"></div>
+          </div>
+          <div style="font-size:9px; color:#1a73e8; font-weight:700;">47.5%</div>
+        </div>
+        <!-- 라인 그래프 오버레이 (SVG) -->
+        <svg style="position:absolute; bottom:28px; left:0; width:100%; height:calc(100% - 36px); pointer-events:none;" viewBox="0 0 300 140" preserveAspectRatio="none">
+          <polyline points="30,60 90,58 150,104 210,88 270,20" fill="none" stroke="#1a73e8" stroke-width="2"/>
+          <circle cx="30" cy="60" r="4" fill="#1a73e8"/>
+          <circle cx="90" cy="58" r="4" fill="#1a73e8"/>
+          <circle cx="150" cy="104" r="4" fill="#1a73e8"/>
+          <circle cx="210" cy="88" r="4" fill="#1a73e8"/>
+          <circle cx="270" cy="20" r="4" fill="#1a73e8"/>
+        </svg>
+      </div>
+      <div style="display:flex; justify-content:space-around; margin-top:4px;">
+        <span style="font-size:10px; color:#888;">2019</span>
+        <span style="font-size:10px; color:#888;">2020</span>
+        <span style="font-size:10px; color:#888;">2021</span>
+        <span style="font-size:10px; color:#888;">2022</span>
+        <span style="font-size:10px; color:#1a73e8; font-weight:700;">2023</span>
+      </div>
+      <div style="margin-top:16px; font-size:10px; color:#aaa; line-height:1.6;">
+        주1 : 2023.02.14 조사, 2022년까지는 실적, 2023년은 예정 물량 포함 | 주2 : 전체 분양 물량 중 재개발·재건축 분양 물량 비중<br>
+        자료 : 부동사R 114 REPS(Real Estate Power Solution)
+      </div>
+    </div>
+
+    <!-- 포인트 카드 -->
+    <div class="point-cards">
+      <div style="font-size:14px; font-weight:700; color:#1a73e8; margin-bottom:4px;">Point</div>
+      <div class="point-card">
+        2023년 기준 전국 주택 공급 물량 중<br>
+        <strong>47.5%</strong>가 재개발, 재건축을 통해 공급
+      </div>
+      <div class="point-card">
+        평균 사업기간 약 <strong>15년</strong>이 소요되며<br>
+        조합원들의 동의를 기반으로 진행되는 사업
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

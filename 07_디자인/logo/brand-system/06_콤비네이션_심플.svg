@@ -1,0 +1,21 @@
+<svg viewBox="0 0 140 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="하루안부">
+  <title>하루안부 — 콤비네이션 로고 (심플)</title>
+  <!-- v3.3 · 2026.05.10 · viewBox 타이트화 (좌우 균형 정렬)
+       모바일 헤더 · 사이드바 상단 — 24~48px 높이 -->
+
+  <!-- 심볼 — 32px 높이 -->
+  <g transform="translate(8, 8) scale(0.012)">
+    <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/>
+    <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/>
+  </g>
+
+  <!-- 워드마크 — 심볼 우측 12px -->
+  <text
+    x="52"
+    y="32"
+    font-family="'Pretendard Variable', 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif"
+    font-weight="700"
+    font-size="22"
+    fill="#1C1C1E"
+    letter-spacing="-0.04em">하루안부</text>
+</svg>

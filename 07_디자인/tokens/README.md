@@ -100,13 +100,13 @@ Theme B · data-platform 모바일/웹이 --size-*/--space-page-margin 등을 �
 <html data-role="patient" data-platform="mobile">
 ```
 
-⚠️ 자주 하는 실수: `caregiver`는 컬러 테마는 `medical`(그린)과 같지만 **플랫폼은 mobile**. `data-platform="web"`으로 쓰면 사이드바 레이아웃이 나와 현장 사용에 부적합.
+> NOTE — 자주 하는 실수: `caregiver`는 컬러 테마는 `medical`(그린)과 같지만 **플랫폼은 mobile**. `data-platform="web"`으로 쓰면 사이드바 레이아웃이 나와 현장 사용에 부적합.
 
 ---
 
 ## 4. 토큰 사용 규칙
 
-### ✅ 써도 되는 것 (Layer 2 · 3)
+### DO — 써도 되는 것 (Layer 2 · 3)
 
 ```css
 .card {
@@ -125,21 +125,21 @@ Theme B · data-platform 모바일/웹이 --size-*/--space-page-margin 등을 �
 }
 ```
 
-### ❌ 쓰면 안 되는 것
+### DON'T — 쓰면 안 되는 것
 
 ```css
 /* Layer 1 원시 팔레트 직접 사용 금지 */
-color: var(--brand-blue-500);        /* ❌ — --color-accent 써라 */
-background: var(--palette-gray-50);  /* ❌ — --color-bg-surface-muted 써라 */
+color: var(--brand-blue-500);        /* NO — --color-accent 써라 */
+background: var(--palette-gray-50);  /* NO — --color-bg-surface-muted 써라 */
 
 /* 하드코딩 금지 */
-padding: 16px;                       /* ❌ — var(--space-inset-default) */
-border-radius: 12px;                 /* ❌ — var(--radius-card) */
-color: #111827;                      /* ❌ — var(--color-text-primary) */
+padding: 16px;                       /* NO — var(--space-inset-default) */
+border-radius: 12px;                 /* NO — var(--radius-card) */
+color: #111827;                      /* NO — var(--color-text-primary) */
 
 /* 구 토큰 이름 사용 금지 */
-color: var(--blue);                  /* ❌ (v8 common.css 유물) */
-color: var(--t1);                    /* ❌ (v9 HANDOFF 유물) */
+color: var(--blue);                  /* NO (v8 common.css 유물) */
+color: var(--t1);                    /* NO (v9 HANDOFF 유물) */
 ```
 
 ### 예외 — Layer 1을 직접 쓸 수 있는 경우

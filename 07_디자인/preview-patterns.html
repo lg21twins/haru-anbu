@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="ko" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="logo/brand-system/01_심볼단독.svg">
+  <title>Patterns · 하루안부 디자인 시스템 v3.2</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="_preview-shared.css">
+  <script src="_iconify-icon.min.js"></script>
+  <script src="_preview-controls.js" defer></script>
+  <style>
+    /* 기기 프레임 */
+    .device {
+      max-width: 360px;
+      margin: 0 auto;
+      background: var(--color-bg-surface);
+      border: 8px solid var(--palette-gray-900);
+      border-radius: 36px;
+      overflow: hidden;
+      position: relative;
+    }
+    .device::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 22px;
+      background: var(--palette-gray-900);
+      border-bottom-left-radius: var(--radius-3);
+      border-bottom-right-radius: var(--radius-3);
+      z-index: var(--z-overlay);
+    }
+    .device__screen {
+      height: 720px;
+      position: relative;
+      padding-top: 22px;
+      overflow: hidden;
+    }
+    .device__screen[data-role="guardian"] {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(44, 122, 252, 0.14) 0%, transparent 65%),
+        linear-gradient(180deg, #d4e4ff 0%, #e8f0fe 40%, #f2f6ff 70%, #EEF3FB 100%);
+    }
+    .device__screen[data-role="medical"], .device__screen[data-role="caregiver"] {
+      background: linear-gradient(180deg, var(--brand-green-100) 0%, var(--color-bg-canvas) 120px);
+    }
+    .device__screen[data-role="patient"] {
+      background: linear-gradient(180deg, var(--brand-orange-100) 0%, var(--color-bg-canvas) 120px);
+    }
+    .device__content {
+      padding: 0 var(--space-5) var(--space-12);
+      overflow-y: auto;
+      height: 100%;
+    }
+    .device__content::-webkit-scrollbar { display: none; }
+
+    /* 헤더 */
+    .h-mobile {
+      height: var(--size-header);
+      padding: 0 var(--space-5);
+      backdrop-filter: blur(12px);
+      display: grid;
+      grid-template-columns: var(--size-icon-md) 1fr var(--size-icon-md);
+      align-items: center;
+      gap: var(--space-4);
+      font: var(--weight-semibold) var(--text-headline) var(--font-family-base);
+      margin-bottom: var(--space-5);
+    }
+    .h-mobile__title { text-align: center; }
+    .h-mobile iconify-icon { color: var(--color-text-primary); font-size: var(--size-icon-md); }
+
+    /* 탭바 — v3.1 모든 역할 동일 surface, active 아이콘만 role accent */
+    .tabbar {
+      position: absolute;
+      left: var(--space-5); right: var(--space-5); bottom: var(--space-5);
+      height: var(--size-tab-bar);
+      background: var(--tabbar-bg);
+      backdrop-filter: blur(var(--blur-tab));
+      -webkit-backdrop-filter: blur(var(--blur-tab));
+      border: var(--tabbar-border);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-1);
+      display: flex;
+      padding: 0 var(--space-4);
+    }
+    .tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-1);
+      color: rgba(28, 28, 30, 0.45);
+      font: var(--weight-bold) var(--font-11) var(--font-family-base);
+      background: transparent;
+      border: 0;
+    }
+    .tab iconify-icon { font-size: var(--size-icon-md); }
+    /* tab active — semantic accent (data-role 컨텍스트에서 자동 변환) */
+    .tab.is-active[data-role="guardian"],
+    .tab.is-active[data-role="medical"],
+    .tab.is-active[data-role="caregiver"],
+    .tab.is-active[data-role="patient"] { color: var(--color-accent); }
+
+    /* FAB */
+    .fab-floating {
+      position: absolute;
+      right: var(--space-5);
+      bottom: 80px;
+      width: var(--size-button-large);
+      height: var(--size-button-large);
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      cursor: pointer;
+      z-index: var(--z-raised);
+    }
+    /* FAB — semantic accent (data-role 컨텍스트에서 자동 변환) */
+    .fab-floating[data-role] {
+      background: linear-gradient(135deg, var(--color-accent), var(--color-accent-strong));
+      box-shadow: 0 8px 28px rgba(var(--color-accent-rgb), 0.25);
+    }
+    .fab-floating img { width: var(--size-icon-lg); height: var(--size-icon-lg); filter: brightness(0) invert(1); }
+
+    /* 카드 — v3.1 flat first */
+    .c-default {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-5);
+    }
+    .c-row {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      padding: var(--space-4) var(--space-5);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+    /* OPTIONAL · Glass — AI 리포트/가족 사진 등 한정 */
+    .c-glass {
+      background: var(--color-bg-glass);
+      backdrop-filter: blur(var(--blur-card));
+      -webkit-backdrop-filter: blur(var(--blur-card));
+      border: 1px solid var(--color-border-glass);
+      border-radius: var(--radius-card-lg);
+      box-shadow: var(--shadow-glass);
+      padding: var(--space-5);
+    }
+    .c-hero {
+      color: var(--color-text-on-accent);
+      border-radius: var(--radius-hero);
+      padding: var(--space-6);
+    }
+    /* hero card — semantic accent + accent-rgb shadow (역할별 자동 변환) */
+    .c-hero[data-role] {
+      background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-strong) 100%);
+      box-shadow: 0 8px 28px rgba(var(--color-accent-rgb), 0.25);
+    }
+
+    .stack-12 > * + * { margin-top: var(--space-4); }
+    .stack-16 > * + * { margin-top: var(--space-5); }
+
+    /* 뱃지 */
+    .b { display: inline-flex; align-items: center; height: 22px; padding: 0 var(--space-4); border-radius: var(--radius-pill); font: var(--weight-semibold) var(--font-11) var(--font-family-base); }
+    .b--success { background: var(--color-success-soft); color: var(--brand-green-700); }
+    .b--warning { background: var(--color-warning-soft); color: var(--palette-amber-700); }
+    .b--danger { background: var(--color-danger-soft); color: var(--color-danger); }
+    .b--info { background: var(--color-info-soft); color: var(--color-info); }
+
+    /* 2x2 그리드 카드 */
+    .g-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+    .g-2x2 .c-default { padding: var(--space-5); }
+    .g-2x2 h5 { margin: 0; font-size: var(--font-13); color: var(--color-text-secondary); font-weight: var(--weight-medium); }
+    .g-2x2 .num { font-size: var(--font-22); font-weight: var(--weight-semibold); margin-top: var(--space-2); }
+
+    /* AI 리포트 */
+    .ai-report {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(var(--blur-card));
+      border: 1px solid rgba(var(--color-accent-rgb), 0.20);
+      border-radius: var(--radius-card-lg);
+      padding: var(--space-5);
+    }
+    .ai-report__head {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: var(--font-11);
+      color: var(--color-accent);
+      font-weight: var(--weight-semibold);
+      margin-bottom: var(--space-3);
+    }
+    .ai-report__head img { width: var(--space-5); height: var(--space-5); }
+    .ai-report__title { font-size: var(--text-headline); font-weight: var(--weight-semibold); margin-bottom: var(--space-4); line-height: var(--leading-normal); }
+    .ai-report__sec {
+      padding: var(--space-3) 0;
+      border-top: 1px solid var(--color-border-subtle);
+      display: flex;
+      gap: var(--space-3);
+      font-size: var(--font-13);
+      line-height: 1.5;
+    }
+    .ai-report__sec iconify-icon { color: var(--color-accent); font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+    .ai-report__sec strong { font-weight: var(--weight-semibold); }
+
+    /* SOS */
+    .sos-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      background: var(--color-danger);
+      color: var(--color-text-on-dark);
+      border-radius: var(--radius-card);
+      padding: var(--space-4) var(--space-5);
+    }
+    .sos-row iconify-icon { font-size: var(--size-icon-md); }
+
+    /* Skeleton */
+    .skel {
+      background: linear-gradient(90deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.10) 50%, rgba(0,0,0,0.05) 100%);
+      background-size: 200% 100%;
+      animation: skel 1.5s infinite;
+      border-radius: var(--radius-2);
+    }
+    @keyframes skel {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Empty */
+    .empty {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--color-text-secondary);
+    }
+    .empty iconify-icon { font-size: 40px; color: var(--color-text-tertiary); margin-bottom: 8px; }
+    .empty__title { font-weight: var(--weight-semibold); font-size: var(--font-14); color: var(--color-text-primary); }
+
+    /* Chat */
+    .chat {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      padding: var(--space-5);
+    }
+    .msg { max-width: 80%; padding: var(--space-3) var(--space-5); border-radius: var(--radius-card-lg) var(--radius-card-lg) var(--radius-card-lg) var(--radius-1); font-size: var(--text-callout); line-height: var(--leading-normal); }
+    .msg--them { background: var(--color-bg-surface); color: var(--color-text-primary); border: 1px solid var(--color-border-subtle); align-self: flex-start; }
+    .msg--me { background: var(--brand-blue-500); color: var(--color-text-on-accent); align-self: flex-end; border-radius: var(--radius-card-lg) var(--radius-card-lg) var(--radius-1) var(--radius-card-lg); }
+    .msg--ai {
+      background: var(--color-bg-surface);
+      border: 1px solid rgba(var(--color-accent-rgb), 0.20);
+      align-self: flex-start;
+      display: flex;
+      gap: var(--space-3);
+      align-items: flex-start;
+    }
+    .msg--ai img { width: var(--size-icon-sm); height: var(--size-icon-sm); flex-shrink: 0; margin-top: 2px; }
+
+    /* 알림 위계 */
+    .lvl {
+      padding: var(--space-5);
+      border-radius: var(--radius-card);
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+    }
+    .lvl iconify-icon { font-size: var(--size-icon-md); flex-shrink: 0; margin-top: 2px; }
+    .lvl__title { font-weight: var(--weight-semibold); font-size: var(--font-14); margin-bottom: var(--space-2); }
+    .lvl__hint { font-size: var(--font-13); color: var(--color-text-secondary); margin-top: var(--space-3); font-family: var(--font-family-mono); }
+    .lvl--0 { background: var(--color-bg-canvas); }
+    .lvl--1 { background: var(--color-info-soft); color: var(--brand-blue-900); }
+    .lvl--1 .lvl__hint { color: var(--brand-blue-900); opacity: 0.7; }
+    .lvl--2 { background: var(--color-warning-soft); color: var(--palette-amber-700); }
+    .lvl--2 .lvl__hint { color: var(--palette-amber-700); opacity: 0.7; }
+    .lvl--3 { background: var(--color-danger); color: var(--color-text-on-dark); }
+    .lvl--3 .lvl__hint { color: var(--color-text-on-dark); opacity: 0.7; }
+
+    .pv-section--narrow { max-width: 800px; margin-left: auto; margin-right: auto; }
+
+    /* 데스크톱 2열 — 설명 + 디바이스 */
+    .pattern-split {
+      display: grid;
+      grid-template-columns: 1fr minmax(320px, 380px);
+      gap: var(--space-9);
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .pattern-split { grid-template-columns: 1fr; gap: var(--space-7); }
+      .pattern-split__device { max-width: 380px; margin: 0 auto; }
+    }
+    .pattern-split__rules h3 {
+      font-size: var(--text-callout);
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-secondary);
+      margin: 0 0 var(--space-4);
+    }
+    .pattern-split__rules ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 var(--space-7);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .pattern-split__rules li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      font-size: var(--text-callout);
+      line-height: var(--leading-relaxed);
+      color: var(--color-text-primary);
+    }
+    .pattern-split__rules li iconify-icon {
+      flex-shrink: 0;
+      font-size: var(--size-icon-sm);
+      margin-top: 2px;
+    }
+    .pattern-split__rules li.is-do iconify-icon { color: var(--color-success); }
+    .pattern-split__rules li.is-dont iconify-icon { color: var(--color-danger); }
+
+    /* Applies to — 실제 앱 파일 매핑 */
+    .applies-to {
+      background: var(--color-bg-canvas);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-3);
+      padding: var(--space-5);
+      margin-top: var(--space-5);
+    }
+    .applies-to__label {
+      font-size: var(--font-11);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-3);
+      font-family: var(--font-family-mono);
+    }
+    .applies-to ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .applies-to li {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-13);
+      color: var(--color-text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .applies-to li::before {
+      content: "→";
+      color: var(--color-text-tertiary);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="pv-nav">
+  <div class="pv-nav__inner">
+    <a href="preview.html" class="pv-nav__brand">
+      <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
+      하루안부 DS
+    </a>
+    <div class="pv-nav__links">
+      <a href="preview-foundations.html" class="pv-nav__link">Foundations</a>
+      <a href="preview-components.html" class="pv-nav__link">Components</a>
+      <a href="preview-patterns.html" class="pv-nav__link pv-nav__link--active">Patterns</a>
+      <a href="preview-roles.html" class="pv-nav__link">Roles</a>
+      <a href="preview-errors.html" class="pv-nav__link">Errors</a>
+    </div>
+    <div class="pv-controls">
+      <select class="pv-role-select" data-pv-role aria-label="역할 테마 선택">
+        <option value="guardian">보호자</option>
+        <option value="medical">의료진</option>
+        <option value="patient">환자</option>
+      </select>
+      
+    </div>
+    <div class="pv-nav__version">v3.2.3</div>
+  </div>
+</nav>
+
+<header class="pv-header">
+  <div class="pv-header__eyebrow">03 · PATTERNS</div>
+  <h1 class="pv-header__title">패턴</h1>
+  <p class="pv-header__desc">컴포넌트를 어떻게 조합해서 화면을 만드는지 — 홈 화면·<strong>AI 패턴 5종(v3.2 확장)</strong>·<strong>알림 4채널 매트릭스</strong>·빈 상태·폼 검증·채팅·로딩 등 14개 패턴.</p>
+</header>
+
+<main class="pv-container">
+
+  <!-- P1. 보호자 홈 화면 — AI 오브 + 일일 리포트 시트 (g-guardian-live 기반) -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">P1. 보호자 홈 — "안심을 한눈에"</h2>
+    <p class="pv-section__desc">중앙 AI 오브가 항상 살아있고, 그 위로 일일 리포트 시트가 올라온다. 시트는 1) 호명·인사 → 2) 오늘의 순간(모먼트) → 3) 일일 리포트 위젯 그리드 → 4) AI 인사이트.</p>
+
+    <div class="pattern-split">
+      <div class="pattern-split__rules">
+        <h3>핵심 규칙</h3>
+        <ul>
+          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>AI 오브는 페이지의 hero</strong> — 별도 hero 카드 없이 중앙 radial-gradient 오브가 감정 톤을 잡는다. 배경은 cream(#fafaf6) 솔리드.</span></li>
+          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>호명 → 결론</strong> — "지욱님, / 영자님은 오늘 잘 지내셨어요" 인트로가 시트 위 첫 시선을 잡는다.</span></li>
+          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>모먼트 카드</strong> — 간호사가 남긴 사진 + 한 줄 코멘트가 숫자보다 위에 온다(감정 우선).</span></li>
+          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>2-col 위젯 그리드</strong> — 투약·맥박·기분·식사·수면·활동을 동일한 흰 surface 카드로. 숫자만 크게, 색은 액센트.</span></li>
+          <li class="is-do"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon><span><strong>AI 인사이트</strong> — 시트 하단에 1-2개. 약한 액센트 보더, 카드 좌측에 컨텍스트 아이콘.</span></li>
+          <li class="is-dont"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon><span>위젯 카드에 glass·blur·그라디언트 배경 금지 — 숫자 가독성이 최우선.</span></li>
+          <li class="is-dont"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon><span>탑바 sticky 금지 — 시트가 올라오면서 자연스럽게 가린다.</span></li>
+        </ul>
+
+        <div class="applies-to">
+          <div class="applies-to__label">Applies to</div>
+          <ul>
+            <li>v11_보호자앱/g-guardian-live.html (정식 홈)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pattern-split__device">
+    <div class="device">
+      <div class="device__screen" data-role="guardian" style="background: radial-gradient(circle at 50% 28%, rgba(70, 168, 255, 0.36) 0%, rgba(27, 231, 234, 0.18) 32%, transparent 62%), #fafaf6;">
+        <div class="device__content stack-16" style="padding-top: 56px;">
+
+          <!-- 인트로 호명 + 결론 -->
+          <div style="text-align: center; margin-bottom: 4px;">
+            <div style="font-size: 13px; color: rgba(28,28,30,0.55); font-weight: 500;">지욱님,</div>
+            <div style="font-size: 22px; font-weight: 700; line-height: 1.28; color: #1C1C1E; margin-top: 4px;">영자님은 오늘<br><span style="color: var(--brand-blue-500);">잘 지내셨어요</span></div>
+          </div>
+
+          <!-- 모먼트 카드 — 사진 + 간호사 코멘트 -->
+          <div class="c-default" style="display: flex; gap: 10px; align-items: center; padding: 10px;">
+            <div style="width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(135deg, #FDE68A, #F59E0B); flex-shrink: 0;"></div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 12px; line-height: 1.4; color: var(--color-text-primary);">"오전 산책 때 햇빛이 좋아서 한참 머무르셨어요"</div>
+              <div style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px;">김서연 간호사 · 10:24</div>
+            </div>
+          </div>
+
+          <!-- 일일 리포트 위젯 그리드 -->
+          <div class="g-2x2">
+            <div class="c-default">
+              <h5 style="display: flex; align-items: center; gap: 4px;"><iconify-icon icon="fluent:pill-24-filled" style="color: #6EE7B7; font-size: 14px;"></iconify-icon>투약</h5>
+              <div class="num">33<span style="font-size: 14px; opacity: 0.4;">%</span></div>
+              <div style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px;">1/3 · 다음 18:00</div>
+            </div>
+            <div class="c-default">
+              <h5 style="display: flex; align-items: center; gap: 4px;"><iconify-icon icon="fluent:pulse-24-filled" style="color: var(--color-danger); font-size: 14px;"></iconify-icon>맥박</h5>
+              <div class="num">72<span style="font-size: 13px; opacity: 0.4;"> BPM</span></div>
+              <div style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px;">평균 근처 ±74</div>
+            </div>
+            <div class="c-default">
+              <h5 style="display: flex; align-items: center; gap: 4px;"><iconify-icon icon="fluent:heart-24-filled" style="color: var(--brand-blue-500); font-size: 14px;"></iconify-icon>기분</h5>
+              <div class="num">87<span style="font-size: 13px; opacity: 0.4;">점</span></div>
+              <span class="b b--success" style="margin-top: 6px;">밝음</span>
+            </div>
+            <div class="c-default">
+              <h5 style="display: flex; align-items: center; gap: 4px;"><iconify-icon icon="fluent:food-24-filled" style="color: var(--brand-blue-500); font-size: 14px;"></iconify-icon>식사</h5>
+              <div class="num">90<span style="font-size: 13px; opacity: 0.4;">%</span></div>
+              <div style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px;">오늘 저녁</div>
+            </div>
+          </div>
+
+          <!-- AI 인사이트 -->
+          <div class="ai-report">
+            <div class="ai-report__head">
+              <iconify-icon icon="fluent:sleep-24-filled" style="color: var(--brand-blue-500);"></iconify-icon>
+              AI 인사이트
+            </div>
+            <div class="ai-report__title">"수면 패턴이 안정적이에요. 이번 주 평균 7.5시간으로 개선되었어요."</div>
+            <a href="#" style="font-size: 13px; color: var(--brand-blue-500); font-weight: 600; text-decoration: none;">자세히 보기 →</a>
+          </div>
+
+        </div>
+        <button class="fab-floating" data-role="guardian" aria-label="AI 어시스턴트">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
+        </button>
+        <nav class="tabbar" data-role="guardian">
+          <button class="tab is-active" data-role="guardian"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span>홈</span></button>
+          <button class="tab"><iconify-icon icon="fluent:book-24-filled"></iconify-icon><span>가이드</span></button>
+          <button class="tab"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon><span>소통</span></button>
+          <button class="tab"><iconify-icon icon="fluent:folder-24-filled"></iconify-icon><span>기록</span></button>
+          <button class="tab"><iconify-icon icon="fluent:person-24-filled"></iconify-icon><span>마이</span></button>
+        </nav>
+      </div>
+    </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P2. AI 리포트 카드 (펼친 상태) -->
+  <section class="pv-section pv-section--narrow">
+    <h2 class="pv-section__title">P2. AI 리포트 — 6 섹션 고정 구조</h2>
+    <p class="pv-section__desc">한 줄 요약 → 식사·수분 → 투약 → 활동·컨디션 → 특이사항 → 내일 확인할 점. <strong>이 순서를 바꾸지 않는다.</strong></p>
+
+    <div class="ai-report" style="padding: 24px;">
+      <div class="ai-report__head" style="margin-bottom: 12px;">
+        <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
+        AI 안부 리포트 · 2026.05.09 저녁
+      </div>
+      <div class="ai-report__title" style="margin-bottom: 16px;">"오늘은 식사와 투약 모두 정상적으로 진행되었고, 오후에는 짧은 산책 활동에 참여하셨습니다."</div>
+
+      <div class="ai-report__sec">
+        <iconify-icon icon="fluent:food-24-filled"></iconify-icon>
+        <div><strong>식사와 수분</strong> · 점심 2/3 드심, 저녁 정상. 물 섭취 6컵.</div>
+      </div>
+      <div class="ai-report__sec">
+        <iconify-icon icon="fluent:pill-24-filled"></iconify-icon>
+        <div><strong>투약</strong> · 아침·점심·저녁 3회 모두 정시 복용 완료.</div>
+      </div>
+      <div class="ai-report__sec">
+        <iconify-icon icon="fluent:accessibility-24-filled"></iconify-icon>
+        <div><strong>활동과 컨디션</strong> · 정원 산책 30분. 평소보다 짧은 시간이지만 컨디션은 좋아 보이심.</div>
+      </div>
+      <div class="ai-report__sec">
+        <iconify-icon icon="fluent:info-24-filled"></iconify-icon>
+        <div><strong>특이사항</strong> · 저녁 식후 가벼운 어지러움 호소, 30분 안정 후 회복.</div>
+      </div>
+      <div class="ai-report__sec">
+        <iconify-icon icon="fluent:calendar-24-filled"></iconify-icon>
+        <div><strong>내일 확인할 점</strong> · 오전 컨디션을 한 번 더 살펴볼 예정입니다.</div>
+      </div>
+
+      <div style="margin-top: 16px; padding: 12px; background: var(--color-bg-canvas); border-radius: 10px; font-size: 11px; color: var(--color-text-secondary); line-height: 1.5;">
+        ※ 이 리포트는 케어 기록을 AI가 보호자가 이해할 언어로 정리한 것입니다. <strong>최종 판단은 의료진이 합니다.</strong>
+      </div>
+    </div>
+
+    <div class="applies-to" style="margin-top: var(--space-7);">
+      <div class="applies-to__label">Applies to</div>
+      <ul>
+        <li>v11_보호자앱/g02-ai-report.html</li>
+        <li>v11_보호자앱/g-ai.html</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- P3. 의료진 대시보드 -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">P3. 의료진 대시보드 패턴</h2>
+    <p class="pv-section__desc">사이드바 240px + 본문 max-width 1280px. 상단 4 stat row + 환자 테이블 + SOS 사이드 카드.</p>
+
+    <div class="pv-demo" style="padding: var(--space-7); background: linear-gradient(180deg, var(--brand-green-100) 0%, var(--color-bg-canvas) 120px);">
+      <div class="pv-grid pv-grid--4" style="gap: 12px; margin-bottom: 16px;">
+        <div class="c-default" style="padding: var(--space-5);"><div style="font-size: var(--font-13); color: var(--color-text-secondary);">오늘 케어</div><div style="font-size: var(--font-28); font-weight: var(--weight-semibold); color: var(--color-success);">42</div></div>
+        <div class="c-default" style="padding: var(--space-5);"><div style="font-size: var(--font-13); color: var(--color-text-secondary);">미완료</div><div style="font-size: var(--font-28); font-weight: var(--weight-semibold); color: var(--color-warning);">7</div></div>
+        <div class="c-default" style="padding: var(--space-5);"><div style="font-size: var(--font-13); color: var(--color-text-secondary);">SOS</div><div style="font-size: var(--font-28); font-weight: var(--weight-semibold); color: var(--color-danger);">1</div></div>
+        <div class="c-default" style="padding: var(--space-5);"><div style="font-size: var(--font-13); color: var(--color-text-secondary);">입소율</div><div style="font-size: var(--font-28); font-weight: var(--weight-semibold); color: var(--color-success);">94%</div></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px;">
+        <div class="c-default" style="padding: 0; overflow: hidden;">
+          <div style="padding: 16px; border-bottom: 1px solid var(--color-border-subtle);"><strong style="font-size: 15px;">환자 현황</strong></div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <thead><tr style="background: var(--color-bg-canvas); color: var(--color-text-secondary); text-align: left;"><th style="padding: 8px 16px;">환자</th><th>상태</th><th>마지막 케어</th></tr></thead>
+            <tbody>
+              <tr style="border-top: 1px solid var(--color-border-subtle);"><td style="padding: 10px 16px;">김순자 · 201호</td><td><span class="b b--success">정상</span></td><td>14:40</td></tr>
+              <tr style="border-top: 1px solid var(--color-border-subtle);"><td style="padding: 10px 16px;">박미영 · 203호</td><td><span class="b b--warning">주의</span></td><td>11:20</td></tr>
+              <tr style="border-top: 1px solid var(--color-border-subtle);"><td style="padding: 10px 16px;">이영희 · 205호</td><td><span class="b b--danger">SOS</span></td><td>2분 전</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="c-default" style="border-color: rgba(227, 43, 37, 0.30);">
+          <div style="font-size: 12px; color: var(--color-danger); font-weight: 600; margin-bottom: 8px;">SOS · 즉시 확인</div>
+          <div style="font-weight: 600; font-size: 15px;">이영희 환자 (205호)</div>
+          <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; line-height: 1.5;">낙상 의심 — 박간호사가 현장 도착 중</div>
+          <button style="margin-top: 12px; height: 40px; padding: 0 16px; background: var(--color-danger); color: var(--color-text-on-dark); border: 0; border-radius: var(--radius-card); font-weight: var(--weight-semibold); font-size: var(--text-callout); cursor: pointer;">현장 통화</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="applies-to" style="margin-top: var(--space-7);">
+      <div class="applies-to__label">Applies to</div>
+      <ul>
+        <li>v10_의료진웹/ (데스크톱 dense pattern)</li>
+        <li>v15_의료진앱/d01-home.html (모바일 위험 환자 큐)</li>
+        <li>v15_의료진앱/d-sos.html (SOS 즉시 대응)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- P6. 알림 위계 -->
+  <section class="pv-section pv-section--narrow">
+    <h2 class="pv-section__title">P4. 경보 위계 — 4단계</h2>
+    <p class="pv-section__desc">위험도가 높을수록 더 침입적인 채널로. 한 화면에 단계 3은 1개만 — 동시 노출 시 긴급도 희석.</p>
+
+    <div class="stack-12" style="display: flex; flex-direction: column; gap: 12px;">
+      <div class="lvl lvl--0">
+        <iconify-icon icon="fluent:checkmark-circle-24-filled" style="color: var(--color-success);"></iconify-icon>
+        <div style="flex: 1;">
+          <div class="lvl__title">단계 0 · 정상</div>
+          <div style="font-size: 13px;">일반 케어 완료. 전용 알림 없이 카드 안에 success 뱃지만.</div>
+          <div class="lvl__hint">트리거: 일반 케어 완료 · 채널: 화면 안만</div>
+        </div>
+      </div>
+      <div class="lvl lvl--1">
+        <iconify-icon icon="fluent:info-24-filled"></iconify-icon>
+        <div style="flex: 1;">
+          <div class="lvl__title">단계 1 · 정보</div>
+          <div style="font-size: 13px;">AI 리포트 발송, 메시지 도착, 새 댓글.</div>
+          <div class="lvl__hint">트리거: 일상 변화 · 채널: 푸시 + 인앱 토스트</div>
+        </div>
+      </div>
+      <div class="lvl lvl--2">
+        <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+        <div style="flex: 1;">
+          <div class="lvl__title">단계 2 · 주의</div>
+          <div style="font-size: 13px;">미완료 케어, 늦은 투약, 컨디션 변화.</div>
+          <div class="lvl__hint">트리거: 일상 이탈 · 채널: 푸시 + 홈 card-alert--warning</div>
+        </div>
+      </div>
+      <div class="lvl lvl--3">
+        <iconify-icon icon="fluent:siren-24-filled"></iconify-icon>
+        <div style="flex: 1;">
+          <div class="lvl__title">단계 3 · 긴급</div>
+          <div style="font-size: 13px;">SOS · 의식 저하 · 119 호출.</div>
+          <div class="lvl__hint">트리거: 즉시 대응 필요 · 채널: 푸시 + 인앱 SOS Banner (닫기 없음) + SMS</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="applies-to" style="margin-top: var(--space-7);">
+      <div class="applies-to__label">Applies to (전 앱 공통)</div>
+      <ul>
+        <li>v11_보호자앱/g06-alert.html</li>
+        <li>v15_의료진앱/d-sos.html</li>
+        <li>v11_요양보호사앱 — SOS FAB 전반</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- P5. 빈 상태 -->
+  <section class="pv-section pv-section--narrow">
+    <h2 class="pv-section__title">P5. 빈 상태 (Empty State)</h2>
+    <p class="pv-section__desc">"데이터 없음" 같은 시스템 메시지 금지. 사람이 사람에게 말하는 톤.</p>
+
+    <div class="pv-grid pv-grid--2">
+      <div class="pv-demo">
+        <div class="empty">
+          <iconify-icon icon="fluent:document-text-24-filled"></iconify-icon>
+          <div class="empty__title">아직 오늘의 기록이 없어요</div>
+          <div style="font-size: 13px; margin-top: 4px;">간호사가 첫 기록을 남기면 여기에 표시됩니다</div>
+        </div>
+      </div>
+      <div class="pv-demo">
+        <div class="empty">
+          <iconify-icon icon="fluent:search-24-filled"></iconify-icon>
+          <div class="empty__title">검색 결과가 없어요</div>
+          <div style="font-size: 13px; margin-top: 4px;">검색어를 다시 확인해보세요</div>
+        </div>
+      </div>
+      <div class="pv-demo">
+        <div class="empty">
+          <iconify-icon icon="fluent:wifi-warning-24-filled"></iconify-icon>
+          <div class="empty__title">잠시 연결이 불안정해요</div>
+          <div style="font-size: 13px; margin-top: 4px;">다시 시도해주세요</div>
+          <button style="margin-top: 12px; height: 36px; padding: 0 14px; background: var(--brand-blue-500); color: white; border: 0; border-radius: 8px; font-weight: 600; font-size: 13px;">다시 시도</button>
+        </div>
+      </div>
+      <div class="pv-demo">
+        <div class="empty">
+          <iconify-icon icon="fluent:lock-closed-24-filled"></iconify-icon>
+          <div class="empty__title">이 정보는 의료진만 볼 수 있어요</div>
+          <div style="font-size: 13px; margin-top: 4px;">보호자님께 공유 요청을 보낼 수 있습니다</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="applies-to" style="margin-top: var(--space-7);">
+      <div class="applies-to__label">Applies to (전 앱 공통)</div>
+      <ul>
+        <li>v11_보호자앱/g05-records.html — 기록 없을 때</li>
+        <li>v15_의료진앱/d03-inbox.html — 새 알림 없을 때</li>
+        <li>v12_환자앱 — 새 메시지 없을 때</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- P8. 폼 검증 -->
+  <section class="pv-section pv-section--narrow">
+    <h2 class="pv-section__title">P6. 폼 검증</h2>
+    <p class="pv-section__desc">타이핑 중에는 검증하지 않는다. 블러 시·제출 시 검증.</p>
+
+    <div class="pv-demo">
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <div>
+          <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 6px;">정상 상태</label>
+          <input style="width: 100%; height: 48px; padding: 0 16px; background: var(--color-bg-canvas); border: 1px solid var(--color-border-subtle); border-radius: 8px; font: 14px var(--font-family-base);" value="박서영" placeholder="이름">
+          <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 6px;">담당 의료진 이름을 입력하세요</div>
+        </div>
+        <div>
+          <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 6px;">포커스 상태</label>
+          <input style="width: 100%; height: var(--size-input); padding: 0 var(--space-5); background: var(--color-bg-canvas); border: 1px solid var(--color-accent); border-radius: var(--radius-control); box-shadow: 0 0 0 3px var(--color-accent-soft); font: var(--text-callout) var(--font-family-base); outline: none;" value="010-1234-5678" placeholder="전화번호">
+          <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 6px;">긴급 알림이 이 번호로 전송됩니다</div>
+        </div>
+        <div>
+          <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 6px;">에러 상태</label>
+          <input style="width: 100%; height: 48px; padding: 0 16px; background: var(--color-bg-canvas); border: 1px solid var(--color-danger); border-radius: 8px; font: 14px var(--font-family-base);" value="abc@" placeholder="이메일">
+          <div style="font-size: var(--text-caption); color: var(--color-danger); margin-top: var(--space-2); display: flex; align-items: center; gap: var(--space-2);"><iconify-icon icon="fluent:error-circle-24-filled" style="font-size: 16px;"></iconify-icon>올바른 이메일 형식이 아니에요</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="applies-to" style="margin-top: var(--space-7);">
+      <div class="applies-to__label">Applies to (전 앱 폼)</div>
+      <ul>
+        <li>v13_온보딩 — 역할 선택 후 정보 입력</li>
+        <li>v11_보호자앱/g07-settings.html — 알림 설정</li>
+        <li>v11_요양보호사앱/c02-checklist.html — 메모 입력</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- P10. 로딩 스켈레톤 -->
+  <section class="pv-section pv-section--narrow">
+    <h2 class="pv-section__title">P7. 로딩 스켈레톤</h2>
+    <p class="pv-section__desc">스피너보다 스켈레톤 우선. 실제 카드 형태로 자리를 미리 잡아 layout shift 방지. 짧은 작업(&lt;300ms)은 아무것도 표시하지 않는다.</p>
+
+    <div class="pv-demo--bg pv-demo">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="c-default" style="padding: 16px;">
+          <div class="skel" style="height: 20px; width: 140px; margin-bottom: 12px;"></div>
+          <div class="skel" style="height: 14px; width: 100%; margin-bottom: 6px;"></div>
+          <div class="skel" style="height: 14px; width: 80%;"></div>
+        </div>
+        <div class="c-default" style="padding: 16px;">
+          <div class="skel" style="height: 20px; width: 100px; margin-bottom: 12px;"></div>
+          <div class="skel" style="height: 14px; width: 90%; margin-bottom: 6px;"></div>
+          <div class="skel" style="height: 14px; width: 60%;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P11. 채팅 -->
+  <section class="pv-section pv-section--narrow">
+    <h2 class="pv-section__title">P8. 채팅 / 메시지</h2>
+    <p class="pv-section__desc">메시지 버블 좌하 꼬리(상대) / 우하 꼬리(나). AI 메시지는 좌측에 하루안부 심볼 + accent 보더.</p>
+
+    <div class="pv-demo" style="padding: 0;">
+      <div class="chat">
+        <div class="msg msg--them">안녕하세요, 어머님 컨디션이 어떠셨나요?</div>
+        <div class="msg msg--me">오늘은 평소보다 식사를 잘 하셨어요!</div>
+        <div class="msg msg--ai">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true">
+          <div>오늘 어머님은 점심 식사를 평소보다 많이 드셨고(2/3), 산책에 참여하셨어요. 컨디션이 좋아 보이세요.</div>
+        </div>
+        <div class="msg msg--me">감사합니다. 내일 면회 가능할까요?</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--color-border-subtle);">
+        <input style="flex: 1; height: 40px; padding: 0 16px; background: var(--color-bg-canvas); border: 0; border-radius: 9999px; font: 14px var(--font-family-base); outline: none;" placeholder="메시지 입력...">
+        <button style="width: 40px; height: 40px; border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-accent-on); border: 0; display: flex; align-items: center; justify-content: center;"><iconify-icon icon="fluent:send-24-filled" style="font-size: 20px;"></iconify-icon></button>
+      </div>
+    </div>
+
+    <div class="applies-to" style="margin-top: var(--space-7);">
+      <div class="applies-to__label">Applies to (소통 / 채팅)</div>
+      <ul>
+        <li>v11_보호자앱/g03-chat-family.html · g03-chat-nurse.html · g03-chat-ai.html</li>
+        <li>v11_요양보호사앱/c03-sotong.html</li>
+        <li>v15_의료진앱/d03-inbox.html</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- P12. 온보딩 -->
+  <section class="pv-section pv-section--narrow">
+    <h2 class="pv-section__title">P9. 온보딩 — 3슬라이드 + 역할 선택</h2>
+    <p class="pv-section__desc">소개 → 가치 → 역할 선택. 역할 선택 후 즉시 해당 역할의 그라디언트로 350ms fade 트랜지션.</p>
+
+    <div class="device" style="margin-bottom: 24px;">
+      <div class="device__screen" data-role="guardian" style="height: 600px;">
+        <div style="padding: 80px 32px 32px; text-align: center;">
+          <img src="logo/brand-system/01_심볼단독.svg" style="width: 56px; height: 56px; margin-bottom: 24px;">
+          <h2 style="font-size: 28px; font-weight: 700; margin: 0 0 12px; line-height: 1.3;">어떤 분이세요?</h2>
+          <p style="font-size: 15px; color: var(--color-text-secondary); margin: 0 0 32px;">역할에 맞는 화면으로 시작합니다</p>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <button style="height: var(--size-button-large); background: var(--brand-blue-500); color: var(--color-text-on-accent); border: 0; border-radius: var(--radius-button); font: var(--weight-semibold) var(--font-16) var(--font-family-base); display: flex; align-items: center; justify-content: center; gap: var(--space-3); box-shadow: 0 8px 28px rgba(44,122,252,0.25);">
+              <iconify-icon icon="fluent:home-24-filled"></iconify-icon>보호자
+            </button>
+            <button style="height: 56px; background: white; color: var(--color-text-primary); border: 1px solid var(--color-border-subtle); border-radius: 14px; font: 600 16px var(--font-family-base); display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <iconify-icon icon="fluent:heart-pulse-24-filled" style="color: var(--brand-green-600);"></iconify-icon>의료진
+            </button>
+            <button style="height: 56px; background: white; color: var(--color-text-primary); border: 1px solid var(--color-border-subtle); border-radius: 14px; font: 600 16px var(--font-family-base); display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <iconify-icon icon="fluent:hand-wave-24-filled" style="color: var(--brand-green-600);"></iconify-icon>요양보호사
+            </button>
+            <button style="height: 56px; background: white; color: var(--color-text-primary); border: 1px solid var(--color-border-subtle); border-radius: 14px; font: 600 16px var(--font-family-base); display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <iconify-icon icon="fluent:person-24-filled" style="color: var(--brand-orange-400);"></iconify-icon>환자
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="applies-to" style="margin-top: var(--space-7);">
+      <div class="applies-to__label">Applies to</div>
+      <ul>
+        <li>v13_온보딩/index.html — 역할 선택 후 350ms fade로 해당 그라디언트 전환</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- P13. 적응형 -->
+  <section class="pv-section pv-section--narrow">
+    <h2 class="pv-section__title">P10. 적응형 레이아웃</h2>
+    <p class="pv-section__desc">모바일 앱은 PWA-first. 데스크톱에서 띄우면 phone 폭(~414px)으로 중앙 정렬.</p>
+
+    <div class="pv-demo">
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle); color: var(--color-text-secondary); font-size: 13px; text-align: left;">
+            <th style="padding: 12px 8px;">너비</th>
+            <th>레이아웃</th>
+            <th>적용 앱</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;">≤ 414px (Phone)</td><td>단일 컬럼, 탭바 16px 인셋</td><td>보호자 · 환자 · 요양 · 온보딩</td></tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;">415–767px (Phablet)</td><td>단일 컬럼, 일부 카드 2컬럼</td><td>모바일 앱</td></tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;">768–1023px (Tablet)</td><td>중앙 정렬 + 양 거터, 사이드바 축소</td><td>의료진 웹 + 모바일</td></tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;">1024–1279px (Small Desktop)</td><td>사이드바 240px, 본문 가변 ≤ 1280px</td><td>의료진 웹</td></tr>
+          <tr><td style="padding: 12px 8px;">≥ 1280px (Desktop)</td><td>본문 1280px 고정, 여백 자동</td><td>의료진 웹</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="applies-to" style="margin-top: var(--space-7);">
+      <div class="applies-to__label">Applies to (전 앱)</div>
+      <ul>
+        <li>v10_의료진웹 · v15_의료진앱 — 두 표면 동일 토큰</li>
+        <li>v11_보호자앱 · v11_요양보호사앱 · v12_환자앱 · v13_온보딩 — PWA-first</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       v3.2 신설 · P3 AI 패턴 5종 + P6 알림 4채널 매트릭스
+       ============================================================ -->
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · AI 패턴 5종 (P3 확장)</h2>
+    <p class="pv-section__desc">기존 P3는 'AI 리포트' 한 종류였으나, v3.2부터 하루안부의 모든 AI 상호작용을 5종 패턴으로 표준화. KT Seamless Flow의 AI 5종을 돌봄·환자·의료진 도메인에 맞춰 재정의.</p>
+
+    <div class="pv-demo">
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle); color: var(--color-text-secondary); font-size: 13px; text-align: left;">
+            <th style="padding: 12px 8px;">#</th>
+            <th>패턴</th>
+            <th>사용처</th>
+            <th>핵심 컴포넌트</th>
+            <th>음성 우선</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;"><strong>P3A</strong></td><td><strong>대화형 질의응답</strong></td><td>보호자 챗, 가족 채팅</td><td>H1 · H2 · H4</td><td>—</td></tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;"><strong>P3B</strong></td><td><strong>음성 입력</strong></td><td>환자 도우미, 요양 핸즈프리</td><td>H1(mic) · H2</td><td>환자 · 요양보호사</td></tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;"><strong>P3C</strong></td><td><strong>사진·파일 분석</strong></td><td>요양 메모 사진, 의료진 차트</td><td>H1(첨부) · H2(인용)</td><td>—</td></tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);"><td style="padding: 12px 8px;"><strong>P3D</strong></td><td><strong>AI 리포트 (장문 요약)</strong></td><td>보호자 일간/주간 리포트</td><td>H2 hero · timeline</td><td>—</td></tr>
+          <tr><td style="padding: 12px 8px;"><strong>P3E</strong></td><td><strong>인라인 제안</strong></td><td>요양 메모, 보호자 답장</td><td>H3 Inline Suggestion</td><td>(환자 제외)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="pv-subsection__title">P3A. 대화형 질의응답 (보호자 챗 미니 시뮬레이션)</h3>
+    <div class="pv-demo" style="background: var(--color-bg-canvas);">
+      <div style="max-width: 380px; display: flex; flex-direction: column; gap: var(--space-4);">
+        <!-- AI 응답 -->
+        <article style="background:var(--ai-surface);border:var(--ai-border);border-radius:var(--ai-radius);padding:var(--ai-padding);box-shadow:var(--shadow-1);">
+          <header style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-3);">
+            <div style="display:flex;align-items:center;gap:var(--space-3);font:var(--w-strong) var(--text-caption)/1 var(--font-family-base);color:var(--color-text-secondary);">
+              <img src="logo/brand-system/01_심볼단독.svg" alt="" style="width:20px;height:20px;">
+              <span>하루안부 AI</span>
+            </div>
+            <span style="font:var(--w-strong) var(--text-mini)/1 var(--font-family-base);padding:var(--space-1) var(--space-3);border-radius:var(--radius-pill);background:var(--color-bg-surface-muted);color:var(--color-text-secondary);">AI 생성</span>
+          </header>
+          <div style="font:var(--text-callout)/1.5 var(--font-family-base);color:var(--color-text-primary);">오늘 어머님 식사 잘 드셨고, 오후 산책도 20분 하셨어요. 평소 패턴 그대로예요.</div>
+        </article>
+        <!-- 사용자 메시지 -->
+        <div style="align-self:flex-end;background:var(--color-accent);color:var(--color-accent-on);padding:var(--space-3) var(--space-5);border-radius:18px 18px 4px 18px;font:var(--text-callout)/1.4 var(--font-family-base);max-width:80%;">처방 변경 좀 해주세요</div>
+        <!-- 거절 카드 -->
+        <aside role="status" style="display:flex;align-items:flex-start;gap:var(--space-3);background:var(--ai-refuse-bg);border:var(--ai-refuse-border);border-radius:var(--ai-radius);padding:var(--ai-padding);color:var(--color-text-secondary);">
+          <iconify-icon icon="fluent:info-24-filled" style="flex-shrink:0;font-size:20px;color:var(--color-text-tertiary);margin-top:2px;"></iconify-icon>
+          <div>
+            <div style="font:var(--w-strong) var(--text-callout)/1.3 var(--font-family-base);color:var(--color-text-primary);margin-bottom:var(--space-1);">이 질문은 의료진께 문의해 주세요</div>
+            <p style="margin:0;font:var(--text-caption)/1.5 var(--font-family-base);">처방 변경은 답변하지 않아요.</p>
+            <a href="#" style="display:inline-block;margin-top:var(--space-3);color:var(--color-accent);font:var(--w-strong) var(--text-caption)/1 var(--font-family-base);text-decoration:none;">담당 간호사에게 메시지 →</a>
+          </div>
+        </aside>
+        <!-- 입력 -->
+        <form style="display:flex;align-items:center;gap:var(--space-2);min-height:44px;padding:var(--space-2) var(--space-4);background:var(--ai-surface);border:var(--ai-border);border-radius:var(--radius-pill);box-shadow:var(--shadow-1);margin-top:var(--space-3);">
+          <img src="logo/brand-system/01_심볼단독.svg" alt="" style="width:18px;height:18px;flex-shrink:0;">
+          <input style="flex:1;border:0;background:transparent;font:var(--text-caption) var(--font-family-base);outline:none;color:var(--color-text-primary);" placeholder="궁금한 점을 적어보세요">
+          <button type="button" aria-label="음성" style="width:30px;height:30px;border-radius:var(--radius-pill);background:transparent;border:0;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;"><iconify-icon icon="fluent:mic-24-filled" style="font-size:18px;"></iconify-icon></button>
+          <button type="submit" aria-label="전송" style="width:30px;height:30px;border-radius:var(--radius-pill);background:var(--color-accent);color:var(--color-accent-on);border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;"><iconify-icon icon="fluent:send-24-filled" style="font-size:18px;"></iconify-icon></button>
+        </form>
+      </div>
+    </div>
+
+    <div class="pv-callout">
+      <strong>P3 전체 5종 공통 규칙</strong> — 진입점·응답 마크는 <strong>하루안부 심볼 1종</strong> / AI 표면은 역할 무관 중립 / 의료 응답 마지막은 "최종 판단은 의료진이 합니다" 면책 / 응답 본문 line-height 1.6 / 진단·처방 변경 제안 금지 / 친근 ~요체.
+    </div>
+  </section>
+
+
+  <section class="pv-section">
+    <h2 class="pv-section__title">v3.2 · 알림 4단계 × 4채널 매트릭스 (P6 통합)</h2>
+    <p class="pv-section__desc">KRDS + Fluent 2 + 서비스개선안 §6.1 통합. 위험도가 높을수록 더 침입적인 채널이 발동. 단계 3 응답 시 모든 채널 즉시 중단.</p>
+
+    <div class="pv-demo">
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle); color: var(--color-text-secondary); font-size: 12px; text-align: left;">
+            <th style="padding: 10px 8px;">단계</th>
+            <th>트리거</th>
+            <th>인앱 카드</th>
+            <th>토스트</th>
+            <th>푸시</th>
+            <th>SMS/이메일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);">
+            <td style="padding: 10px 8px;"><span class="pv-badge pv-badge--success">0 정상</span></td>
+            <td>일반 케어 완료</td><td>success 뱃지</td><td>—</td><td>—</td><td>—</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);">
+            <td style="padding: 10px 8px;"><span class="pv-badge pv-badge--info">1 정보</span></td>
+            <td>AI 리포트, 메시지</td><td>info card (선택)</td><td>1회 2.5초</td><td>1회 (사용자 설정)</td><td>—</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--color-border-subtle);">
+            <td style="padding: 10px 8px;"><span class="pv-badge pv-badge--warning">2 주의</span></td>
+            <td>미완료 케어, 늦은 투약</td><td>warning card (홈 상단)</td><td>1회</td><td>1회 (필수)</td><td>—</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 8px;"><span class="pv-badge pv-badge--danger">3 긴급</span></td>
+            <td>SOS, 의식 저하</td><td><strong>sos-banner</strong> (최상단·닫기없음)</td><td>—</td><td><strong>5분 간격 반복</strong></td><td><strong>30초 미응답 시</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="pv-subsection__title">알림 설정 UI (사용자 통제)</h3>
+    <div class="pv-demo" style="background: var(--color-bg-canvas);">
+      <div style="max-width: 400px; background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-card); overflow: hidden;">
+        <div style="padding: var(--space-5); border-bottom: 1px solid var(--color-border-subtle); font: var(--w-strong) var(--text-headline)/1 var(--font-family-base);">알림 설정</div>
+        <div style="padding: var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font: var(--w-strong) var(--text-callout)/1.2 var(--font-family-base);">정보 알림</div>
+            <div style="font: var(--text-caption)/1.4 var(--font-family-base); color: var(--color-text-secondary); margin-top: 2px;">AI 리포트, 메시지 — 끄기 가능</div>
+          </div>
+          <div style="width: 44px; height: 26px; background: var(--color-accent); border-radius: var(--radius-pill); position: relative;"><div style="position:absolute;top:2px;right:2px;width:22px;height:22px;background:white;border-radius:50%;"></div></div>
+        </div>
+        <div style="padding: var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font: var(--w-strong) var(--text-callout)/1.2 var(--font-family-base);">주의 알림</div>
+            <div style="font: var(--text-caption)/1.4 var(--font-family-base); color: var(--color-text-secondary); margin-top: 2px;">미완료 케어 — 끄기 가능 (권장 ON)</div>
+          </div>
+          <div style="width: 44px; height: 26px; background: var(--color-accent); border-radius: var(--radius-pill); position: relative;"><div style="position:absolute;top:2px;right:2px;width:22px;height:22px;background:white;border-radius:50%;"></div></div>
+        </div>
+        <div style="padding: var(--space-5); display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font: var(--w-strong) var(--text-callout)/1.2 var(--font-family-base);">긴급 알림</div>
+            <div style="font: var(--text-caption)/1.4 var(--font-family-base); color: var(--color-text-secondary); margin-top: 2px;">SOS — 환자 안전 직결, 잠금</div>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:var(--space-2);height:26px;padding:0 var(--space-3);background:var(--color-danger-soft);color:var(--color-danger);border-radius:var(--radius-pill);font:var(--w-strong) var(--text-mini)/1 var(--font-family-base);"><iconify-icon icon="fluent:lock-closed-24-filled" style="font-size:14px;"></iconify-icon>ON · 잠금</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-callout pv-callout--orange">
+      <strong>5중 표현</strong> — 단계 3 알림은 빨강 + 사이렌 아이콘 + "긴급" 텍스트 + 푸시 사운드 + 진동 패턴 5중. 시각만 의존 금지. iOS Critical Alerts / Android Full-Screen Intent는 단계 3 한정으로 신청.
+    </div>
+  </section>
+
+</main>
+
+<footer class="pv-footer">
+  하루안부 디자인 시스템 v3.2 · 2026.05.11<br>
+  <a href="preview.html">← 메인</a> · <a href="03_PATTERNS.md">03_PATTERNS.md</a> · <a href="tokens/tokens.css">tokens.css</a>
+</footer>
+
+</body>
+</html>

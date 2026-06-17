@@ -1,53 +1,73 @@
 /* ============================================================
-   하루안부 — Design Tokens & Component Library
-   Based on: Apple Health (main) + Apple Fitness (sub) reference
-   Version: 1.0 | 2026.04.02
+   하루안부 — v11 보호자앱 호환 레이어 (compatibility shim)
+   Version: 2.0 | 2026.05.09
+   ------------------------------------------------------------
+   토큰의 진실의 원천(SoT)은 ../07_디자인/tokens/tokens.css 입니다.
+   이 파일은 tokens.css를 import한 뒤,
+   기존 HTML이 사용하는 구 토큰명(--blue, --t1, --guardian 등)을
+   tokens.css 신 토큰에 alias로 매핑합니다.
+   새 화면을 만들 때는 이 파일을 import하지 말고
+   tokens.css만 import할 것.
    ============================================================ */
 
-/* ------------------------------------------------------------
-   0. CDN Imports
-   ------------------------------------------------------------ */
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
-@font-face { font-family: 'Pretendard Variable'; font-display: swap; src: local('Pretendard Variable'); }
+/* SoT — tokens.css를 먼저 import */
+@import url('../07_디자인/tokens/tokens.css');
 
 /* ------------------------------------------------------------
-   1. DESIGN TOKENS
+   1. LEGACY ALIAS — 구 토큰 → 신 토큰
    ------------------------------------------------------------ */
 :root {
-  /* --- Colors (컬러 시스템 v2.0 — v4 톤 반영) --- */
-  --guardian: #2C7AFC;
-  --guardian-light: #D9F0F7;
-  --nurse: #059669;
-  --nurse-light: #D1FAE5;
-  --patient: #FB923C;
-  --patient-light: #FFEDD5;
-  --patient-dark: #EA580C;
+  /* --- Colors (legacy alias) --- */
+  --guardian:        var(--brand-blue-500);
+  --guardian-light:  var(--brand-blue-100);
+  --guardian-dark:   var(--brand-blue-600);
+  --nurse:           var(--brand-green-500);
+  --nurse-light:     var(--brand-green-100);
+  --nurse-dark:      var(--brand-green-700);
+  --medical:         var(--brand-green-500);
+  --medical-light:   var(--brand-green-100);
+  --medical-dark:    var(--brand-green-700);
+  --patient:         var(--brand-orange-400);
+  --patient-light:   var(--brand-orange-100);
+  --patient-dark:    var(--brand-orange-600);
+
+  --blue:    var(--brand-blue-500);
+  --blue-l:  var(--brand-blue-400);
+  --blue-d:  var(--brand-blue-600);
+  --green:   var(--brand-green-400);
+  --green-d: var(--color-success);
+  --amber:   var(--color-warning);
+  --red:     var(--color-danger);
 
   /* Point & Accent */
-  --accent: #F5D310;
-  --accent-light: #FDF8DC;
+  --accent:        var(--color-point);
+  --accent-light:  var(--brand-yellow-50);
 
   /* Semantic */
-  --success: #059669;
-  --warning: #F59E0B;
-  --critical: #DC2626;
-  --info: #0891B2;
+  --success:   var(--color-success);
+  --warning:   var(--color-warning);
+  --critical:  var(--color-danger);
+  --info:      var(--color-info);
 
   /* Status backgrounds */
-  --bg-success: #D1FAE5;
-  --bg-warning: #FEF3C7;
-  --bg-critical: #FEE2E2;
-  --bg-info: #D9F0F7;
+  --bg-success:   var(--color-success-soft);
+  --bg-warning:   var(--color-warning-soft);
+  --bg-critical:  var(--color-danger-soft);
+  --bg-info:      var(--color-info-soft);
 
   /* Background & Surface */
-  --bg: #F0F4F8;
-  --surface: #FFFFFF;
-  --divider: #E5E5EA;
+  --bg:        var(--color-bg-canvas);
+  --surface:   var(--color-bg-surface);
+  --glass:     var(--color-bg-glass);
+  --divider:   var(--color-border-subtle);
 
   /* Text */
-  --text-primary: #1C1C1E;
-  --text-secondary: #8E8E93;
-  --text-tertiary: #9E9E9E;
+  --text-primary:    var(--color-text-primary);
+  --text-secondary:  var(--color-text-secondary);
+  --text-tertiary:   var(--color-text-tertiary);
+  --t1:              var(--color-text-primary);
+  --t2:              var(--color-text-secondary);
+  --t3:              var(--color-text-tertiary);
 
   /* --- Typography (Apple Health scale + Pretendard) --- */
   --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, 'Helvetica Neue', sans-serif;
@@ -127,17 +147,17 @@
 [data-role="guardian"] {
   --primary: var(--guardian);
   --primary-light: var(--guardian-light);
-  --bg-gradient: linear-gradient(180deg, #D9F0F7 0%, #F0F4F8 120px);
+  --bg-gradient: var(--color-bg-canvas);
 }
 [data-role="nurse"] {
   --primary: var(--nurse);
   --primary-light: var(--nurse-light);
-  --bg-gradient: linear-gradient(180deg, #D1FAE5 0%, #F0F4F8 120px);
+  --bg-gradient: var(--color-bg-canvas);
 }
 [data-role="patient"] {
   --primary: var(--patient);
   --primary-light: var(--patient-light);
-  --bg-gradient: linear-gradient(180deg, #FFEDD5 0%, #F0F4F8 120px);
+  --bg-gradient: var(--color-bg-canvas);
 }
 
 
@@ -207,7 +227,7 @@ a.btn-link {
   background: var(--bg);
   border-radius: 48px;
   overflow: hidden;
-  box-shadow: 0 0 0 4px #1a1a1a, 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 4px var(--palette-gray-900), 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 /* Dynamic Island */
@@ -219,7 +239,7 @@ a.btn-link {
   transform: translateX(-50%);
   width: 126px;
   height: 36px;
-  background: #1a1a1a;
+  background: var(--palette-gray-900);
   border-radius: 20px;
   z-index: var(--z-sticky);
 }
@@ -373,7 +393,7 @@ a.btn-link {
 
 .btn-primary {
   background: var(--primary);
-  color: #FFFFFF;
+  color: white;
 }
 
 .btn-secondary {
@@ -383,7 +403,7 @@ a.btn-link {
 
 .btn-destructive {
   background: var(--critical);
-  color: #FFFFFF;
+  color: white;
 }
 
 .btn-ghost {
@@ -480,19 +500,19 @@ a.btn-link {
 }
 
 .card-alert--info {
-  background: #E8F0FE;
+  background: var(--brand-blue-100);
 }
 
 .card-alert--success {
-  background: #E8F8ED;
+  background: var(--brand-green-100);
 }
 
 .card-alert--warning {
-  background: #FFF3E0;
+  background: var(--palette-amber-100);
 }
 
 .card-alert--critical {
-  background: #FFEBEE;
+  background: var(--palette-red-100);
 }
 
 
@@ -561,26 +581,26 @@ a.btn-link {
 /* ------------------------------------------------------------
    8. NAVIGATION — Tab Bar (Apple Health pattern)
    ------------------------------------------------------------ */
+/* v3.2.5: 보호자 홈 탭바 스펙으로 통일 — 옅은 블루 글라스 + 64px + max 398 */
 .tabbar {
   position: fixed;
-  bottom: calc(max(env(safe-area-inset-bottom, 0px), 20px) + 12px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
   left: 50%; transform: translateX(-50%);
-  width: calc(100% - 80px); max-width: 320px;
-  height: 68px;
+  width: calc(100% - 32px); max-width: 398px;
+  height: 64px;
   padding: 0 10px;
   display: flex;
   align-items: stretch;
   justify-content: space-around;
   gap: 0;
   border-radius: 999px;
-  border-top: none;
-  background: #ffffff;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border: 0.5px solid rgba(0,0,0,0.07);
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255,255,255,.55);
   box-shadow:
-    0 2px 12px rgba(0,0,0,0.10),
-    0 0.5px 2px rgba(0,0,0,0.06);
+    0 6px 22px rgba(0,0,0,.06),
+    inset 0 1px 0 rgba(255,255,255,.4);
   z-index: 40;
 }
 
@@ -603,9 +623,9 @@ a.btn-link {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* v3.2.5: 보호자 홈 active 색과 통일 — accent blue */
 .tab.active {
-  background: rgba(255,255,255,0.22);
-  color: #0891B2;
+  color: var(--color-accent);
 }
 
 .tab-icon {
@@ -613,8 +633,9 @@ a.btn-link {
   align-items: center;
 }
 
+/* v3.2.5: 보호자 탭바는 아이콘만. 라벨 숨김 */
 .tab-label {
-  line-height: 1;
+  display: none;
 }
 
 /* Patient tab bar — larger touch targets */
@@ -714,22 +735,22 @@ a.btn-link {
 }
 
 .badge--success {
-  background: #E8F8ED;
+  background: var(--brand-green-100);
   color: var(--success);
 }
 
 .badge--warning {
-  background: #FFF3E0;
-  color: #E65100;
+  background: var(--palette-amber-100);
+  color: var(--brand-orange-700);
 }
 
 .badge--critical {
-  background: #FFEBEE;
+  background: var(--palette-red-100);
   color: var(--critical);
 }
 
 .badge--info {
-  background: #E8F0FE;
+  background: var(--brand-blue-100);
   color: var(--info);
 }
 
@@ -757,7 +778,7 @@ a.btn-link {
 .chip.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: #FFFFFF;
+  color: white;
 }
 
 
@@ -835,7 +856,7 @@ a.btn-link {
 .checkbox.checked {
   background: var(--primary);
   border-color: var(--primary);
-  color: #FFFFFF;
+  color: white;
   font-size: 12px;
 }
 
@@ -968,7 +989,7 @@ a.btn-link {
 .progress-bar-fill {
   height: 100%;
   border-radius: var(--radius-full);
-  background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 70%, white));
+  background: var(--primary);
   transition: width var(--transition-slow);
 }
 
@@ -1093,7 +1114,7 @@ a.btn-link {
 .bubble.outgoing {
   align-self: flex-end;
   background: var(--primary);
-  color: #FFFFFF;
+  color: white;
   border-bottom-right-radius: var(--radius-xs);
 }
 
@@ -1279,4 +1300,22 @@ input:focus-visible,
   border-radius: 99px;
   z-index: 9999;
   pointer-events: none;
+}
+
+/* ============================================================
+   Bottom Scrim — 탭바 뒤 페이드 마스크 (배경/탭바 분리감)
+   ============================================================ */
+.bottom-scrim{
+  position:fixed;left:0;right:0;bottom:0;height:108px;z-index:39;pointer-events:none;
+  background:rgba(240,244,248,1);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 55%);
+          mask-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 55%);
+  transition:opacity .4s cubic-bezier(.32,.72,0,1);
+}
+.bottom-scrim.hide{opacity:0}
+body.chat-mode .bottom-scrim{opacity:0;pointer-events:none}
+@media (prefers-reduced-transparency: reduce){
+  .bottom-scrim{backdrop-filter:none;-webkit-backdrop-filter:none}
 }

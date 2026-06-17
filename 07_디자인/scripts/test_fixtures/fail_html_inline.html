@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<head><title>fixture</title></head>
+<body>
+<!-- FAIL 케이스 모음 -->
+<div style="color:#FF0000">inline hex 위반</div>
+<div style="padding:8px">inline padding 위반 (CSS var setter 아님)</div>
+<style>
+  :root { --bar-w: 50%; }
+  .x { color: #1234AB; }       /* FAIL: style 블록 안 hex */
+  .y { --local: #ABCDEF; }     /* FAIL: 화면 로컬 토큰 정의 (allowed_local_token_patterns 아님) */
+</style>
+<svg width="20" height="20" viewBox="0 0 24 24"><path d="M0 0z"/></svg>
+<!-- 위 SVG: 작은 fluent 대체 가능 — iconify-icon 외 사용 위반 -->
+
+<!-- PASS 케이스 -->
+<div style="--bar-w:75%">CSS var setter inline은 허용</div>
+<style>
+  :root { --bar-w: 50%; }       /* PASS: 변수 setter 정의는 hex 없음 */
+</style>
+<iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+<svg class="shift-ring__svg" width="44" height="44"><circle r="20"/></svg>
+<!-- 위 SVG: BRAND_KEYWORDS 'shift-ring' 매칭 → 허용 -->
+</body>
+</html>

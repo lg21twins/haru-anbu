@@ -1,0 +1,15 @@
+{
+  "cleanUrls": false,
+  "rewrites": [
+    { "source": "/making_of_pre", "destination": "https://haru-anbu-making-of-pre.vercel.app/making_of_pre" },
+    { "source": "/making_of_pre/:path*", "destination": "https://haru-anbu-making-of-pre.vercel.app/making_of_pre/:path*" },
+    { "source": "/making_of", "destination": "https://haru-anbu-making-of-five.vercel.app/making_of" },
+    { "source": "/making_of/:path*", "destination": "https://haru-anbu-making-of-five.vercel.app/making_of/:path*" },
+    { "source": "/", "destination": "/haru-anbu-showcase-v8-bundle/haru-anbu-showcase-v8.html" },
+    { "source": "/Mockup-templates/:path*", "destination": "/haru-anbu-showcase-v8-bundle/Mockup-templates/:path*" },
+    { "source": "/img/:path*", "destination": "/haru-anbu-showcase-v8-bundle/img/:path*" },
+    { "source": "/video/:path*", "destination": "/haru-anbu-showcase-v8-bundle/video/:path*" },
+    { "source": "/발표/:path*", "destination": "/haru-anbu-showcase-v8-bundle/발표/:path*" },
+    { "source": "/%EB%B0%9C%ED%91%9C/:path*", "destination": "/haru-anbu-showcase-v8-bundle/%EB%B0%9C%ED%91%9C/:path*" }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "target": "app-folder",
+  "description": "임의 앱 폴더 감사 (audit v0.2). hex 검사는 HTML/CSS/JS 분리, 토큰 정의는 tokens.css에서만 허용.",
+
+  "include_extensions": [".html", ".css", ".md", ".js"],
+
+  "exclude": [
+    "_archive/",
+    "_history/",
+    "node_modules/",
+    "mockup/",
+    "references/",
+    "review-assets/"
+  ],
+
+  "allowed_token_definition_files": [
+    "07_디자인/tokens/tokens.css"
+  ],
+
+  "allowed_local_token_patterns": [
+    "--bar-w",
+    "--bar-h",
+    "--bar-op",
+    "--mp",
+    "--ww",
+    "--score-color",
+    "--trend-color",
+    "--bar-bg",
+    "--gauge-color",
+    "--ring-color",
+    "--ink",
+    "--ink-2",
+    "--ink-3",
+    "--ink-4",
+    "--ink-5",
+    "--bg"
+  ],
+
+  "js_hex_allowed_files": [
+    "v10_의료진웹/의료진_대시보드_v9.5.html"
+  ],
+
+  "rules": {
+    "max_inline_style": 0,
+    "max_direct_hex_in_body": 0,
+    "max_emoji": 0,
+    "forbidden_classes": ["col__hex"]
+  }
+}

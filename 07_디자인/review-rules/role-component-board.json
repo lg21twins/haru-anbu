@@ -1,0 +1,72 @@
+{
+  "target": "role-component-board",
+  "description": "모바일 3종(보호자/요양보호사/의료진모바일) 컴포넌트 보드의 구조·일관성 검사 (audit v0.2)",
+
+  "files": [
+    "07_디자인/role-component-board.html"
+  ],
+
+  "link_check": {
+    "file": "07_디자인/preview.html",
+    "must_contain": [
+      "role-component-board.html"
+    ]
+  },
+
+  "exclude": [
+    "_archive/",
+    "*.svg",
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.webp",
+    "manifest.json"
+  ],
+
+  "allowed_token_definition_files": [
+    "07_디자인/tokens/tokens.css"
+  ],
+
+  "allowed_local_token_patterns": [
+    "--bar-w",
+    "--bar-h",
+    "--bar-op",
+    "--mp",
+    "--ww",
+    "--score-color",
+    "--trend-color",
+    "--bar-bg"
+  ],
+
+  "js_hex_allowed_files": [],
+
+  "rules": {
+    "structure": {
+      "sections": 12,
+      "role_columns_total": 36,
+      "guardian_columns": 12,
+      "caregiver_columns": 12,
+      "medical_columns": 12
+    },
+    "forbidden": {
+      "inline_style_count": 0,
+      "direct_hex_in_body_count": 0,
+      "emoji_count": 0,
+      "forbidden_classes": ["col__hex"]
+    },
+    "icon_policy": {
+      "allowed_tag": "iconify-icon",
+      "allow_inline_svg_in_logo": true
+    },
+    "tokens_import": {
+      "must_link_stylesheet": "tokens/tokens.css"
+    },
+    "version_match": {
+      "patterns": [
+        "pv-nav__version",
+        "pv-header__title"
+      ],
+      "expected_substring": "v0.2"
+    }
+  }
+}

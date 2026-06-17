@@ -1,0 +1,10 @@
+.git
+07_디자인/references
+07_디자인/_archive
+07_디자인/mockup
+_archive
+**/_archive
+making-of*
+**/making-of*
+node_modules
+.DS_Store

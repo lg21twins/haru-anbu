@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Edge Glow — Talking</title>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+  <style>
+    :root{
+      /* 키컬러 #2C7AFC 기반 + 한 톤 밝은 블루/시안/인디고 (레퍼런스 톤) */
+      --g-key:    #2C7AFC;   /* 브랜드 키컬러 */
+      --g-blue:   #5B9BFF;   /* 밝은 블루 */
+      --g-sky:    #93C5FD;   /* 스카이 */
+      --g-cyan:   #6FE0FF;   /* 시안 하이라이트 */
+      --g-indigo: #6A7BFF;   /* 인디고(우측 보랏빛) */
+      --g-bg:     #05070E;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      background:var(--g-bg);
+      color:#fff;font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;
+      -webkit-font-smoothing:antialiased;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
+    }
+
+    /* ─── 무대(전체 화면) ─── */
+    .stage{position:fixed;inset:0;overflow:hidden;background:var(--g-bg)}
+
+    /* ─── 엣지 글로우 ───
+       conic 컬러휠을 blur 처리하고, 가운데를 비우는 radial 마스크로
+       가장자리에만 균일한 밴드가 남게 함. 안쪽으로 부드럽게 페이드(레퍼런스 룩). */
+    .glow{
+      position:absolute;inset:0;z-index:1;pointer-events:none;
+      -webkit-mask:radial-gradient(118% 118% at 50% 50%, transparent 40%, #000 72%);
+              mask:radial-gradient(118% 118% at 50% 50%, transparent 40%, #000 72%);
+    }
+    /* 메인 컬러 링 — 천천히 돌며 파도처럼 일렁임 */
+    .glow::before{
+      content:'';position:absolute;inset:-12%;border-radius:46% 54% 52% 48%;
+      background:conic-gradient(from 210deg at 50% 50%,
+        var(--g-cyan), var(--g-blue), var(--g-key), var(--g-indigo),
+        var(--g-key), var(--g-blue), var(--g-sky), var(--g-cyan));
+      filter:blur(34px) saturate(1.25) brightness(1.08);
+      animation:gSpin 9s linear infinite, gWave 4.6s ease-in-out infinite, gTalk 2.3s ease-in-out infinite;
+    }
+    /* 하이라이트 링 — 더 밝고 가늘게, 빠르게 돌며 "말하는" 반짝임을 더함 */
+    .glow::after{
+      content:'';position:absolute;inset:-8%;border-radius:52% 48% 46% 54%;
+      background:conic-gradient(from 30deg at 50% 50%,
+        transparent, var(--g-cyan) 12%, transparent 30%,
+        transparent 60%, var(--g-sky) 74%, transparent 92%);
+      filter:blur(20px) brightness(1.3);
+      mix-blend-mode:screen;
+      animation:gSpinRev 5.5s linear infinite, gTalkFast 1.5s ease-in-out infinite;
+    }
+
+    /* ─── 중앙 콘텐츠 ─── */
+    .center{position:relative;z-index:3;text-align:center;display:flex;flex-direction:column;align-items:center;gap:26px;padding:24px}
+    .eyebrow{font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+    .title{font-size:clamp(76px,13vw,168px);font-weight:700;letter-spacing:-.05em;line-height:.9;color:#fff}
+
+    /* 음성 오브 + 캡션 (말하는 중) */
+    .voice{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:8px}
+    .orb{position:relative;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.22)}
+    .orb iconify-icon{font-size:28px;color:#fff;position:relative;z-index:2}
+    .orb::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:1.5px solid var(--g-cyan);opacity:.55;animation:orbRing 2.3s ease-out infinite}
+    .cap{font-size:15px;font-weight:500;color:rgba(255,255,255,.82);letter-spacing:.01em}
+
+    /* 음성 파형(말하는 느낌 보강) */
+    .wave-bars{display:flex;align-items:center;gap:5px;height:26px}
+    .wave-bars span{width:4px;border-radius:2px;background:linear-gradient(var(--g-cyan),var(--g-key));animation:bar 1s ease-in-out infinite}
+    .wave-bars span:nth-child(1){animation-delay:-.9s}
+    .wave-bars span:nth-child(2){animation-delay:-.2s}
+    .wave-bars span:nth-child(3){animation-delay:-.6s}
+    .wave-bars span:nth-child(4){animation-delay:-.35s}
+    .wave-bars span:nth-child(5){animation-delay:-.75s}
+    .wave-bars span:nth-child(6){animation-delay:-.1s}
+    .wave-bars span:nth-child(7){animation-delay:-.5s}
+
+    /* ─── 애니메이션 ─── */
+    @keyframes gSpin{to{rotate:360deg}}
+    @keyframes gSpinRev{to{rotate:-360deg}}
+    /* 파도 — 액체 블롭 모핑 + 밀물/썰물 스케일 */
+    @keyframes gWave{
+      0%,100%{border-radius:46% 54% 52% 48%;scale:1 1}
+      25%{border-radius:56% 44% 46% 54%;scale:1.06 .97}
+      50%{border-radius:50% 50% 58% 42%;scale:1.02 1.05}
+      75%{border-radius:44% 56% 48% 52%;scale:1.07 1.0}
+    }
+    /* 말하기(메인) — 불규칙한 강약으로 음절처럼 밝기/두께가 출렁 */
+    @keyframes gTalk{
+      0%{opacity:.72;scale:1}
+      14%{opacity:1;scale:1.05}
+      28%{opacity:.84;scale:1.01}
+      42%{opacity:1;scale:1.08}
+      55%{opacity:.78;scale:1.0}
+      70%{opacity:1;scale:1.06}
+      84%{opacity:.86;scale:1.02}
+      100%{opacity:.72;scale:1}
+    }
+    /* 말하기(하이라이트) — 더 빠르고 톡톡 튀는 반짝임 */
+    @keyframes gTalkFast{
+      0%,100%{opacity:.5}
+      20%{opacity:1}
+      40%{opacity:.6}
+      60%{opacity:.95}
+      80%{opacity:.55}
+    }
+    @keyframes orbRing{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.7);opacity:0}}
+    @keyframes bar{0%,100%{height:8px}50%{height:24px}}
+
+    @media (prefers-reduced-motion:reduce){
+      .glow::before,.glow::after,.orb::before,.wave-bars span{animation:none !important}
+    }
+
+    /* 돌아가기 */
+    .back{position:fixed;top:22px;left:22px;z-index:5;display:inline-flex;align-items:center;gap:7px;
+      font-size:13px;font-weight:600;color:rgba(255,255,255,.72);text-decoration:none;
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:8px 14px}
+    .back iconify-icon{font-size:15px}
+  </style>
+</head>
+<body>
+  <a class="back" href="ai-glow-compare.html"><iconify-icon icon="fluent:arrow-left-24-regular"></iconify-icon> 옵션 비교로</a>
+
+  <div class="stage">
+    <div class="glow"></div>
+    <div class="center">
+      <div class="eyebrow">AI Care Platform</div>
+      <div class="title">하루안부.</div>
+      <div class="voice">
+        <div class="orb"><iconify-icon icon="fluent:mic-24-filled"></iconify-icon></div>
+        <div class="wave-bars"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="cap">네, 어머니 오늘 점심 잘 드셨어요.</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

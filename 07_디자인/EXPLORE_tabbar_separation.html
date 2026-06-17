@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>탭바 — 배경과의 분리 탐색 (5종 + 현재)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard+Variable:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="module" src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+  :root{
+    --bg-page:#F5F6F8;
+    --ink-1:#0F1B2D;
+    --ink-2:#3A4A66;
+    --ink-3:#7A879B;
+    --line:rgba(15,27,45,.08);
+    --brand-blue-500:#1565C0;
+    --brand-blue-100:#DDEBFA;
+    --brand-blue-50:#EEF5FD;
+    --canvas:#FFFFFF;
+    --accent:#1565C0;
+    --font:'Pretendard Variable','Pretendard',-apple-system,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+  html,body{background:var(--bg-page);color:var(--ink-1);font-family:var(--font)}
+  body{padding:48px 24px 96px}
+  .page-head{max-width:1280px;margin:0 auto 32px}
+  .page-head h1{font-size:28px;font-weight:700;letter-spacing:-.02em}
+  .page-head p{margin-top:8px;color:var(--ink-2);font-size:15px;line-height:1.6;max-width:760px}
+  .legend{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+  .legend span{font-size:12px;color:var(--ink-2);padding:5px 10px;background:#fff;border:1px solid var(--line);border-radius:999px}
+
+  .grid{
+    max-width:1280px;margin:0 auto;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:32px 28px;
+  }
+  @media (max-width:1080px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:720px){.grid{grid-template-columns:1fr}}
+
+  .card{display:flex;flex-direction:column;gap:14px}
+  .card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  .card-title{font-size:15px;font-weight:600;color:var(--ink-1)}
+  .card-tag{font-size:11px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
+  .card-note{font-size:13px;color:var(--ink-2);line-height:1.55}
+  .ref{font-size:12px;color:var(--ink-3)}
+
+  /* iPhone-ish frame, scaled compact */
+  .phone{
+    position:relative;width:100%;aspect-ratio: 390/780;
+    border-radius:42px;overflow:hidden;
+    background:linear-gradient(180deg,#DDEBFA 0%, #F4F8FE 36%, #FFFFFF 78%);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.6) inset,
+      0 0 0 1px rgba(15,27,45,.08),
+      0 20px 50px -20px rgba(15,27,45,.18);
+  }
+  .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:96px;height:26px;background:#0F1B2D;border-radius:999px;z-index:6}
+  .status{position:absolute;top:14px;left:24px;right:24px;display:flex;justify-content:space-between;font-size:11px;color:var(--ink-1);font-weight:600;z-index:5;letter-spacing:.02em}
+  .status .right{display:flex;gap:6px;align-items:center}
+
+  /* fake content */
+  .content{position:absolute;inset:42px 16px 0 16px;display:flex;flex-direction:column;gap:10px}
+  .greet{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-top:6px}
+  .greet small{display:block;font-size:12px;font-weight:500;color:var(--ink-2);margin-top:2px}
+  .kpi{
+    margin-top:6px;background:#fff;border-radius:18px;padding:14px;
+    box-shadow:0 1px 0 rgba(15,27,45,.04), 0 6px 18px -10px rgba(15,27,45,.18);
+    display:flex;gap:10px;align-items:center
+  }
+  .kpi .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FFD08A,#FF9E63)}
+  .kpi .meta{flex:1}
+  .kpi .meta b{font-size:13px}
+  .kpi .meta p{font-size:11px;color:var(--ink-2);margin-top:2px}
+  .kpi .badge{font-size:11px;color:#127a3a;background:#E2F6E8;padding:4px 8px;border-radius:999px;font-weight:600}
+
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px}
+  .tile{background:#fff;border-radius:14px;padding:12px;min-height:74px;box-shadow:0 1px 0 rgba(15,27,45,.04), 0 4px 14px -8px rgba(15,27,45,.12)}
+  .tile h4{font-size:11px;color:var(--ink-2);font-weight:500;display:flex;align-items:center;gap:6px}
+  .tile .val{font-size:18px;font-weight:700;margin-top:6px}
+  .tile .val em{font-size:11px;color:var(--ink-3);font-style:normal;font-weight:500;margin-left:3px}
+
+  .list{margin-top:6px;background:#fff;border-radius:18px;padding:6px;box-shadow:0 1px 0 rgba(15,27,45,.04), 0 6px 18px -10px rgba(15,27,45,.18)}
+  .li{display:flex;align-items:center;gap:10px;padding:10px 10px;border-bottom:1px solid rgba(15,27,45,.05)}
+  .li:last-child{border-bottom:0}
+  .li .ico{width:30px;height:30px;border-radius:9px;background:#EEF5FD;color:#1565C0;display:grid;place-items:center}
+  .li .tx{flex:1;font-size:12px;font-weight:500}
+  .li .tx p{font-size:10.5px;color:var(--ink-3);margin-top:1px;font-weight:400}
+  .li .time{font-size:10.5px;color:var(--ink-3)}
+
+  /* ===== TAB BAR — shared base ===== */
+  .tabwrap{position:absolute;left:0;right:0;bottom:0;height:130px;pointer-events:none}
+  .tab-base{
+    position:absolute;left:50%;transform:translateX(-50%);
+    width:calc(100% - 32px);max-width:330px;height:60px;
+    display:flex;align-items:center;justify-content:space-around;padding:0 10px;
+    pointer-events:auto;
+  }
+  .ti{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;color:rgba(15,27,45,.42);text-decoration:none;font-size:10.5px;font-weight:500}
+  .ti iconify-icon{font-size:22px}
+  .ti.active{color:var(--accent)}
+  .ti.active iconify-icon{color:var(--accent)}
+  .label{font-size:10px;letter-spacing:.01em}
+
+  /* ----- 0. CURRENT (현재) ----- */
+  .v-current .tab-base{
+    bottom:18px;border-radius:999px;background:rgba(255,255,255,.85);
+    backdrop-filter:blur(20px) saturate(140%);
+    -webkit-backdrop-filter:blur(20px) saturate(140%);
+    border:1px solid rgba(255,255,255,.55);
+    box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
+  }
+
+  /* ----- 1. DEEP FLOAT — 짙은 그림자 (Calm/Play) ----- */
+  .v-shadow .tab-base{
+    bottom:20px;border-radius:999px;background:#fff;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.9) inset,
+      0 2px 6px rgba(15,27,45,.06),
+      0 18px 28px -8px rgba(15,27,45,.18),
+      0 32px 56px -20px rgba(15,27,45,.22);
+  }
+
+  /* ----- 2. SCRIM FADE — 위쪽 그라데이션 마스크 (TIDE) ----- */
+  .v-scrim .tabwrap::before{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:130px;pointer-events:none;
+    background:linear-gradient(180deg, rgba(245,246,248,0) 0%, rgba(245,246,248,.55) 45%, rgba(245,246,248,.95) 100%);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 60%);
+            mask-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 60%);
+  }
+  .v-scrim .tab-base{
+    bottom:18px;border-radius:999px;background:rgba(255,255,255,.78);
+    backdrop-filter:blur(22px) saturate(160%);
+    -webkit-backdrop-filter:blur(22px) saturate(160%);
+    box-shadow:0 8px 24px rgba(15,27,45,.10);
+  }
+
+  /* ----- 3. RAISED ACTIVE — active 탭만 위로 돌출 (Alan) ----- */
+  .v-raised .tab-base{
+    bottom:20px;border-radius:999px;background:#fff;
+    box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 8px 22px rgba(15,27,45,.10), 0 20px 36px -16px rgba(15,27,45,.16);
+  }
+  .v-raised .ti.active{
+    position:relative;color:#fff;
+  }
+  .v-raised .ti.active::before{
+    content:"";position:absolute;top:-22px;left:50%;transform:translateX(-50%);
+    width:54px;height:54px;border-radius:50%;background:var(--accent);
+    box-shadow:0 10px 22px -6px rgba(21,101,192,.55), 0 1px 0 rgba(255,255,255,.5) inset;
+    z-index:0;
+  }
+  .v-raised .ti.active iconify-icon{position:relative;z-index:1;color:#fff;transform:translateY(-22px);font-size:24px}
+  .v-raised .ti.active .label{position:relative;z-index:1;color:var(--accent);transform:translateY(-18px);font-weight:600}
+
+  /* ----- 4. PILL + FAB — 콤팩트 바 + 보조 원형 (Glass) ----- */
+  .v-fab .tab-base{
+    bottom:20px;left:auto;right:18px;transform:none;
+    width:auto;max-width:none;padding:0 14px;border-radius:999px;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(20px) saturate(150%);
+    -webkit-backdrop-filter:blur(20px) saturate(150%);
+    border:1px solid rgba(255,255,255,.6);
+    box-shadow:0 12px 26px -10px rgba(15,27,45,.20);
+  }
+  .v-fab .tab-base .ti{flex:0 0 auto;min-width:44px}
+  .v-fab .tab-base .ti .label{display:none}
+  .v-fab .fab{
+    position:absolute;left:18px;bottom:20px;width:60px;height:60px;border-radius:50%;
+    background:var(--accent);color:#fff;display:grid;place-items:center;
+    box-shadow:0 12px 26px -8px rgba(21,101,192,.55), 0 1px 0 rgba(255,255,255,.4) inset;
+    pointer-events:auto;border:none;cursor:pointer;
+  }
+  .v-fab .fab iconify-icon{font-size:24px}
+
+  /* ----- 5. ANCHORED PLATE — 하단 정착(고정판) (Pillowtalk/iOS native) ----- */
+  .v-plate .tabwrap{height:96px}
+  .v-plate .tab-base{
+    bottom:0;left:0;right:0;transform:none;width:100%;max-width:none;
+    height:84px;padding:8px 16px 22px;border-radius:24px 24px 0 0;
+    background:#fff;
+    box-shadow:
+      0 -1px 0 rgba(15,27,45,.06),
+      0 -10px 24px -16px rgba(15,27,45,.18);
+  }
+  .v-plate .ti{gap:3px}
+  .v-plate .ti.active{position:relative}
+  .v-plate .ti.active::after{
+    content:"";position:absolute;top:-8px;width:24px;height:3px;border-radius:2px;background:var(--accent)
+  }
+
+  /* tag rows */
+  .meta-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chip{font-size:11px;color:var(--ink-2);padding:3px 8px;border:1px solid var(--line);border-radius:999px;background:#fff}
+  .chip.k{color:#1565C0;border-color:#CFE2F8;background:#F2F8FE}
+</style>
+</head>
+<body>
+
+<header class="page-head">
+  <h1>탭바 — 배경과의 분리 탐색</h1>
+  <p>현재 탭바는 옅은 글래스(blur 20, white 85%) + 살짝 그림자 패턴이라 같은 채도의 카드/배경 위에서는 평면처럼 읽혀. Mobbin에서 분리감이 강한 6개 앱(Calm · TIDE · Play · Alan · Glass · pillowtalk)을 레퍼런스로 5가지 방향으로 우리 보호자홈 컨텍스트에 맞춰 시각화했어. 동일한 화면(보호자 홈) 위에 탭바만 교체.</p>
+  <div class="legend">
+    <span>SoT: <code>v11_보호자앱/common.css</code> · <code>.tabbar</code></span>
+    <span>현재 사양: pill / blur20 / shadow .06 / 64px</span>
+    <span>iconify-icon (fluent:*)</span>
+  </div>
+</header>
+
+<section class="grid">
+
+  <!-- 0 현재 -->
+  <article class="card">
+    <div class="card-head"><div class="card-title">0. 현재 (Current)</div><div class="card-tag">baseline</div></div>
+    <div class="phone v-current">
+      <div class="notch"></div>
+      <div class="status"><span>9:41</span><span class="right">●●● 5G ▮</span></div>
+      <div class="content">
+        <div class="greet">안녕하세요, 지웅님<small>오늘 어머니 상태가 평소보다 좋아요</small></div>
+        <div class="kpi"><div class="avatar"></div><div class="meta"><b>김복순 어머니 · 82</b><p>3시간 전 활력징후 정상</p></div><span class="badge">안정</span></div>
+        <div class="row">
+          <div class="tile"><h4><iconify-icon icon="fluent:heart-pulse-24-regular"></iconify-icon> 심박</h4><div class="val">78<em>bpm</em></div></div>
+          <div class="tile"><h4><iconify-icon icon="fluent:sleep-24-regular"></iconify-icon> 수면</h4><div class="val">7h 20<em>m</em></div></div>
+        </div>
+        <div class="list">
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:pill-24-regular"></iconify-icon></div><div class="tx">아침 약 복용<p>오전 8:30 — 간병인 확인</p></div><span class="time">완료</span></div>
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:walk-24-regular"></iconify-icon></div><div class="tx">산책 15분<p>가족 채팅에 사진 공유됨</p></div><span class="time">2h</span></div>
+        </div>
+      </div>
+      <div class="tabwrap">
+        <div class="tab-base">
+          <a class="ti active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="label">홈</span></a>
+          <a class="ti"><iconify-icon icon="fluent:chat-24-regular"></iconify-icon><span class="label">대화</span></a>
+          <a class="ti"><iconify-icon icon="fluent:document-text-24-regular"></iconify-icon><span class="label">기록</span></a>
+          <a class="ti"><iconify-icon icon="fluent:person-24-regular"></iconify-icon><span class="label">마이</span></a>
+        </div>
+      </div>
+    </div>
+    <p class="card-note">옅은 글라스 + 미세 그림자. 같은 톤의 배경 위에서 분리감이 약함. <span class="ref">참고: 우리 앱 baseline</span></p>
+  </article>
+
+  <!-- 1 -->
+  <article class="card">
+    <div class="card-head"><div class="card-title">1. Deep Float — 짙은 다단 그림자</div><div class="card-tag">옵션 A</div></div>
+    <div class="phone v-shadow">
+      <div class="notch"></div>
+      <div class="status"><span>9:41</span><span class="right">●●● 5G ▮</span></div>
+      <div class="content">
+        <div class="greet">안녕하세요, 지웅님<small>오늘 어머니 상태가 평소보다 좋아요</small></div>
+        <div class="kpi"><div class="avatar"></div><div class="meta"><b>김복순 어머니 · 82</b><p>3시간 전 활력징후 정상</p></div><span class="badge">안정</span></div>
+        <div class="row">
+          <div class="tile"><h4><iconify-icon icon="fluent:heart-pulse-24-regular"></iconify-icon> 심박</h4><div class="val">78<em>bpm</em></div></div>
+          <div class="tile"><h4><iconify-icon icon="fluent:sleep-24-regular"></iconify-icon> 수면</h4><div class="val">7h 20<em>m</em></div></div>
+        </div>
+        <div class="list">
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:pill-24-regular"></iconify-icon></div><div class="tx">아침 약 복용<p>오전 8:30 — 간병인 확인</p></div><span class="time">완료</span></div>
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:walk-24-regular"></iconify-icon></div><div class="tx">산책 15분<p>가족 채팅에 사진 공유됨</p></div><span class="time">2h</span></div>
+        </div>
+      </div>
+      <div class="tabwrap">
+        <div class="tab-base">
+          <a class="ti active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="label">홈</span></a>
+          <a class="ti"><iconify-icon icon="fluent:chat-24-regular"></iconify-icon><span class="label">대화</span></a>
+          <a class="ti"><iconify-icon icon="fluent:document-text-24-regular"></iconify-icon><span class="label">기록</span></a>
+          <a class="ti"><iconify-icon icon="fluent:person-24-regular"></iconify-icon><span class="label">마이</span></a>
+        </div>
+      </div>
+    </div>
+    <p class="card-note">불투명 흰 바 + 길고 부드러운 다단 그림자(-y 18 / -y 32). 글라스 효과는 빼고 "물리적으로 떠 있는" 인상을 만든다. <span class="ref">참고: Calm · Play</span></p>
+    <div class="meta-row"><span class="chip k">opaque #FFF</span><span class="chip">box-shadow ×2</span><span class="chip">depth +</span></div>
+  </article>
+
+  <!-- 2 -->
+  <article class="card">
+    <div class="card-head"><div class="card-title">2. Scrim Fade — 페이드 마스크</div><div class="card-tag">옵션 B</div></div>
+    <div class="phone v-scrim">
+      <div class="notch"></div>
+      <div class="status"><span>9:41</span><span class="right">●●● 5G ▮</span></div>
+      <div class="content">
+        <div class="greet">안녕하세요, 지웅님<small>오늘 어머니 상태가 평소보다 좋아요</small></div>
+        <div class="kpi"><div class="avatar"></div><div class="meta"><b>김복순 어머니 · 82</b><p>3시간 전 활력징후 정상</p></div><span class="badge">안정</span></div>
+        <div class="row">
+          <div class="tile"><h4><iconify-icon icon="fluent:heart-pulse-24-regular"></iconify-icon> 심박</h4><div class="val">78<em>bpm</em></div></div>
+          <div class="tile"><h4><iconify-icon icon="fluent:sleep-24-regular"></iconify-icon> 수면</h4><div class="val">7h 20<em>m</em></div></div>
+        </div>
+        <div class="list">
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:pill-24-regular"></iconify-icon></div><div class="tx">아침 약 복용<p>오전 8:30 — 간병인 확인</p></div><span class="time">완료</span></div>
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:walk-24-regular"></iconify-icon></div><div class="tx">산책 15분<p>가족 채팅에 사진 공유됨</p></div><span class="time">2h</span></div>
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:water-24-regular"></iconify-icon></div><div class="tx">수분 섭취 알림<p>1잔 남음 — 16:00</p></div><span class="time">곧</span></div>
+        </div>
+      </div>
+      <div class="tabwrap">
+        <div class="tab-base">
+          <a class="ti active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="label">홈</span></a>
+          <a class="ti"><iconify-icon icon="fluent:chat-24-regular"></iconify-icon><span class="label">대화</span></a>
+          <a class="ti"><iconify-icon icon="fluent:document-text-24-regular"></iconify-icon><span class="label">기록</span></a>
+          <a class="ti"><iconify-icon icon="fluent:person-24-regular"></iconify-icon><span class="label">마이</span></a>
+        </div>
+      </div>
+    </div>
+    <p class="card-note">탭바 위쪽에 그라데이션 + 살짝 블러 마스크를 깔아 컨텐츠가 바 뒤로 "녹아 들어가는" 느낌. 스크롤 시 콘텐츠 가림 없이 분리 신호가 가장 강하다. <span class="ref">참고: TIDE</span></p>
+    <div class="meta-row"><span class="chip k">scrim 130px</span><span class="chip">blur 6px</span><span class="chip">glass bar</span></div>
+  </article>
+
+  <!-- 3 -->
+  <article class="card">
+    <div class="card-head"><div class="card-title">3. Raised Active — active 탭 돌출</div><div class="card-tag">옵션 C</div></div>
+    <div class="phone v-raised">
+      <div class="notch"></div>
+      <div class="status"><span>9:41</span><span class="right">●●● 5G ▮</span></div>
+      <div class="content">
+        <div class="greet">안녕하세요, 지웅님<small>오늘 어머니 상태가 평소보다 좋아요</small></div>
+        <div class="kpi"><div class="avatar"></div><div class="meta"><b>김복순 어머니 · 82</b><p>3시간 전 활력징후 정상</p></div><span class="badge">안정</span></div>
+        <div class="row">
+          <div class="tile"><h4><iconify-icon icon="fluent:heart-pulse-24-regular"></iconify-icon> 심박</h4><div class="val">78<em>bpm</em></div></div>
+          <div class="tile"><h4><iconify-icon icon="fluent:sleep-24-regular"></iconify-icon> 수면</h4><div class="val">7h 20<em>m</em></div></div>
+        </div>
+        <div class="list">
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:pill-24-regular"></iconify-icon></div><div class="tx">아침 약 복용<p>오전 8:30 — 간병인 확인</p></div><span class="time">완료</span></div>
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:walk-24-regular"></iconify-icon></div><div class="tx">산책 15분<p>가족 채팅에 사진 공유됨</p></div><span class="time">2h</span></div>
+        </div>
+      </div>
+      <div class="tabwrap">
+        <div class="tab-base">
+          <a class="ti active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="label">홈</span></a>
+          <a class="ti"><iconify-icon icon="fluent:chat-24-regular"></iconify-icon><span class="label">대화</span></a>
+          <a class="ti"><iconify-icon icon="fluent:document-text-24-regular"></iconify-icon><span class="label">기록</span></a>
+          <a class="ti"><iconify-icon icon="fluent:person-24-regular"></iconify-icon><span class="label">마이</span></a>
+        </div>
+      </div>
+    </div>
+    <p class="card-note">active 항목만 위로 솟은 원형 버블로 빠져나와 바 자체에 깊이 인덱스가 생긴다. 현재 위치를 강하게 알려주고 동시에 바닥에서 분리되어 보임. <span class="ref">참고: Alan</span></p>
+    <div class="meta-row"><span class="chip k">active bubble</span><span class="chip">−22px Y</span><span class="chip">brand blue</span></div>
+  </article>
+
+  <!-- 4 -->
+  <article class="card">
+    <div class="card-head"><div class="card-title">4. Pill + FAB — 콤팩트 바 + 보조 원형</div><div class="card-tag">옵션 D</div></div>
+    <div class="phone v-fab">
+      <div class="notch"></div>
+      <div class="status"><span>9:41</span><span class="right">●●● 5G ▮</span></div>
+      <div class="content">
+        <div class="greet">안녕하세요, 지웅님<small>오늘 어머니 상태가 평소보다 좋아요</small></div>
+        <div class="kpi"><div class="avatar"></div><div class="meta"><b>김복순 어머니 · 82</b><p>3시간 전 활력징후 정상</p></div><span class="badge">안정</span></div>
+        <div class="row">
+          <div class="tile"><h4><iconify-icon icon="fluent:heart-pulse-24-regular"></iconify-icon> 심박</h4><div class="val">78<em>bpm</em></div></div>
+          <div class="tile"><h4><iconify-icon icon="fluent:sleep-24-regular"></iconify-icon> 수면</h4><div class="val">7h 20<em>m</em></div></div>
+        </div>
+        <div class="list">
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:pill-24-regular"></iconify-icon></div><div class="tx">아침 약 복용<p>오전 8:30 — 간병인 확인</p></div><span class="time">완료</span></div>
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:walk-24-regular"></iconify-icon></div><div class="tx">산책 15분<p>가족 채팅에 사진 공유됨</p></div><span class="time">2h</span></div>
+        </div>
+      </div>
+      <div class="tabwrap">
+        <button class="fab" aria-label="긴급호출"><iconify-icon icon="fluent:alert-urgent-24-filled"></iconify-icon></button>
+        <div class="tab-base">
+          <a class="ti active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></a>
+          <a class="ti"><iconify-icon icon="fluent:chat-24-regular"></iconify-icon></a>
+          <a class="ti"><iconify-icon icon="fluent:document-text-24-regular"></iconify-icon></a>
+          <a class="ti"><iconify-icon icon="fluent:person-24-regular"></iconify-icon></a>
+        </div>
+      </div>
+    </div>
+    <p class="card-note">탭바를 우측으로 줄이고 좌측에 brand 컬러 FAB(SOS/긴급호출 등). 두 개의 떠 있는 객체가 서로의 분리감을 보강하면서 하루안부의 핵심 액션을 항상 노출. <span class="ref">참고: Glass · pillowtalk(액션 원)</span></p>
+    <div class="meta-row"><span class="chip k">primary FAB</span><span class="chip">icon-only pill</span><span class="chip">긴급호출 슬롯</span></div>
+  </article>
+
+  <!-- 5 -->
+  <article class="card">
+    <div class="card-head"><div class="card-title">5. Anchored Plate — 하단 정착 카드</div><div class="card-tag">옵션 E</div></div>
+    <div class="phone v-plate">
+      <div class="notch"></div>
+      <div class="status"><span>9:41</span><span class="right">●●● 5G ▮</span></div>
+      <div class="content">
+        <div class="greet">안녕하세요, 지웅님<small>오늘 어머니 상태가 평소보다 좋아요</small></div>
+        <div class="kpi"><div class="avatar"></div><div class="meta"><b>김복순 어머니 · 82</b><p>3시간 전 활력징후 정상</p></div><span class="badge">안정</span></div>
+        <div class="row">
+          <div class="tile"><h4><iconify-icon icon="fluent:heart-pulse-24-regular"></iconify-icon> 심박</h4><div class="val">78<em>bpm</em></div></div>
+          <div class="tile"><h4><iconify-icon icon="fluent:sleep-24-regular"></iconify-icon> 수면</h4><div class="val">7h 20<em>m</em></div></div>
+        </div>
+        <div class="list">
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:pill-24-regular"></iconify-icon></div><div class="tx">아침 약 복용<p>오전 8:30 — 간병인 확인</p></div><span class="time">완료</span></div>
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:walk-24-regular"></iconify-icon></div><div class="tx">산책 15분<p>가족 채팅에 사진 공유됨</p></div><span class="time">2h</span></div>
+          <div class="li"><div class="ico"><iconify-icon icon="fluent:water-24-regular"></iconify-icon></div><div class="tx">수분 섭취 알림<p>1잔 남음 — 16:00</p></div><span class="time">곧</span></div>
+        </div>
+      </div>
+      <div class="tabwrap">
+        <div class="tab-base">
+          <a class="ti active"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="label">홈</span></a>
+          <a class="ti"><iconify-icon icon="fluent:chat-24-regular"></iconify-icon><span class="label">대화</span></a>
+          <a class="ti"><iconify-icon icon="fluent:document-text-24-regular"></iconify-icon><span class="label">기록</span></a>
+          <a class="ti"><iconify-icon icon="fluent:person-24-regular"></iconify-icon><span class="label">마이</span></a>
+        </div>
+      </div>
+    </div>
+    <p class="card-note">하단 전체 폭으로 정착하되 위쪽만 24px 라운드 + 위쪽으로 향한 미세 그림자. 떠 있지 않지만 "별개의 평면(아래층)" 처럼 위계가 명확. 라벨이 보여 시니어 보호자에게 가독성 ↑. <span class="ref">참고: pillowtalk · iOS 네이티브</span></p>
+    <div class="meta-row"><span class="chip k">radius 24 top</span><span class="chip">full width</span><span class="chip">label on</span></div>
+  </article>
+
+</section>
+
+<section style="max-width:1280px;margin:48px auto 0;padding:24px;background:#fff;border:1px solid var(--line);border-radius:18px">
+  <h3 style="font-size:16px;font-weight:600;margin-bottom:10px">의사결정 메모</h3>
+  <ul style="color:var(--ink-2);font-size:14px;line-height:1.7;padding-left:18px">
+    <li><b>가장 안전하게 분리감만 강화</b>: <b>1. Deep Float</b> — 마크업 변경 없이 box-shadow만 교체.</li>
+    <li><b>스크롤 가독성까지 챙김</b>: <b>2. Scrim Fade</b> — 탭바 뒤 콘텐츠가 자연스럽게 흐려져 가장 "iOS같다".</li>
+    <li><b>위치성 표현 강화</b>: <b>3. Raised Active</b> — 현재 위치를 강하게 보여줘야 한다면 이게 최적.</li>
+    <li><b>긴급호출(SOS) 같은 글로벌 액션이 필요</b>하면: <b>4. Pill + FAB</b> — 보호자앱 컨텍스트와 잘 맞음.</li>
+    <li><b>시니어 대상 v12 환자앱·v11 요양보호사앱</b>: <b>5. Anchored Plate</b> — 라벨 표시가 가능해 인지부담이 낮음.</li>
+  </ul>
+  <p style="color:var(--ink-3);font-size:12px;margin-top:14px">규칙 준수: 이모지 없음 · iconify-icon 사용 · border/stroke 위계 배제 · 단색 버튼.</p>
+</section>
+
+</body>
+</html>

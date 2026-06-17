@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI Kit 적용 — 실측 비율 · 풀폭</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;background:#F7F8FA;color:#1C1C1E;-webkit-font-smoothing:antialiased;line-height:1.6}
+  .wrap{max-width:1360px;margin:0 auto;padding:56px clamp(20px,4vw,40px) 120px}
+  .page-eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#2C7AFC;margin-bottom:12px}
+  .page-title{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-1px}
+  .page-sub{font-size:14px;color:#8E8E93;margin-top:12px;max-width:720px}
+  .note{display:flex;gap:10px;align-items:flex-start;background:#fff;border-radius:14px;padding:14px 16px;margin-top:22px;box-shadow:0 1px 3px rgba(0,0,0,.05);font-size:13px;color:#5A5A60;max-width:760px}
+  .note iconify-icon{font-size:18px;color:#2C7AFC;flex-shrink:0;margin-top:1px}
+  .note b{color:#1C1C1E}
+
+  /* ── 실측 비율 · 풀폭 메이슨리 ── */
+  .uik{--t1:var(--color-text-primary);--t2:var(--color-text-secondary);--t3:var(--color-text-tertiary);
+    --blue:var(--brand-blue-500);--blue-d:var(--brand-blue-600);--blue-soft:#DBEAFE;
+    --green-d:var(--brand-green-600);--amber:var(--palette-amber-500);--mint:#34D399;--teal:#14B8A6}
+  .gallery{display:flex;gap:18px;align-items:flex-start;margin-top:32px}
+  .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:18px}
+  @media(max-width:1000px){.gallery{flex-wrap:wrap}.col{flex:1 1 calc(50% - 9px)}}
+  @media(max-width:560px){.col{flex:1 1 100%}}
+  .cell{margin:0}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+  .uik-w{position:relative;background:#fff;border-radius:20px;padding:16px;overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04);display:flex;flex-direction:column;min-width:0}
+  .uik-w.sq{aspect-ratio:1/1}      /* ← 실측 정사각 유지 */
+  .uik-w-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+  .uik-w-title{font-size:16px;font-weight:800;color:var(--t1);display:flex;align-items:center;gap:6px;letter-spacing:-.3px}
+  .uik-w-title iconify-icon{font-size:18px}
+  .uik-w-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .uik-badge-gray{color:var(--t2);background:rgba(0,0,0,.05)}
+  .uik-display{font-size:34px;font-weight:800;letter-spacing:-1.5px;line-height:1;color:var(--t1)}
+  .uik-display span{font-size:17px;font-weight:600;opacity:.4}
+  .uik-meta{font-size:12px;color:var(--t3);margin-top:6px}
+  .uik-meta-sm{font-size:11px;color:var(--t3);margin-top:2px}
+  .uik-pill{padding:0}
+  .uik-pill .uik-pill-body{padding:14px;position:relative;z-index:1}
+  .uik-pill-wave{position:absolute;left:0;bottom:0;width:100%;height:44%;color:var(--mint);z-index:0}
+  .uik-pill-wave svg{width:100%;height:100%;display:block}
+  .uik-row-base{display:flex;align-items:baseline;gap:8px;line-height:1}
+  .uik-num-26{font-size:24px;font-weight:800;letter-spacing:-1px;color:var(--t1)}
+  .uik-num-26 span{font-size:12px;font-weight:500;color:var(--t3)}
+  .uik-num-side{font-size:10.5px;color:var(--t3);font-weight:600}
+  .uik-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0 5px;font-size:8.5px;color:var(--t3);font-weight:700;text-align:center}
+  .uik-dots{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:auto}
+  .uik-dots i{aspect-ratio:1;border-radius:50%;background:var(--blue)}
+  .uik-pulse-main{margin-top:auto}
+  .uik-pulse-num{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
+  .uik-pulse-num .n{font-size:52px;font-weight:800;letter-spacing:-2.5px;line-height:.88;color:var(--t1)}
+  .uik-pulse-num .u{font-size:14px;font-weight:700;color:var(--t3);letter-spacing:.3px}
+  .uik-pulse-sub{font-size:11px;color:var(--t3);font-weight:500}
+  .uik-hyg-row{display:flex;align-items:center;gap:8px;padding:6px 0}
+  .uik-hyg-box{width:18px;height:18px;border-radius:5px;background:var(--teal);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+  .uik-hyg-box iconify-icon{font-size:12px}
+  .uik-hyg-box.empty{background:transparent;border:2px solid rgba(0,0,0,.1)}
+  .uik-hyg-t{font-size:12px;font-weight:600;flex:1;color:var(--t1)}
+  .uik-hyg-time{font-size:10px;color:var(--t3)}
+  .uik-sleep-bars{display:flex;align-items:flex-end;gap:4px;height:96px;margin-top:14px}
+  .uik-sleep-bars i{flex:1;border-radius:4px;min-height:4px;background:var(--blue)}
+  .uik-sleep-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--t3);font-weight:600}
+  .uik-insight{flex-direction:row;align-items:center;gap:14px}
+  .uik-insight-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(245,158,11,.12)}
+  .uik-insight-icon iconify-icon{font-size:20px;color:var(--amber)}
+  .uik-insight-body{flex:1;min-width:0}
+  .uik-insight-title{font-size:15px;font-weight:700;margin-bottom:3px;color:var(--t1)}
+  .uik-insight-desc{font-size:13px;color:var(--t2);line-height:1.45}
+  .uik-insight-cta{font-size:12px;font-weight:700;color:var(--blue);margin-top:6px}
+  .uik-moment{padding:0}
+  .uik-moment-photo{height:170px;background:#F3E9DC center/cover no-repeat;position:relative}
+  .uik-moment-photo::after{content:'';position:absolute;inset:auto 0 0 0;height:34%;background:rgba(0,0,0,.14)}
+  .uik-moment-body{padding:14px 18px 16px}
+  .uik-moment-quote{font-size:14px;font-weight:600;line-height:1.5;letter-spacing:-.3px;color:var(--t1);margin-bottom:6px}
+  .uik-moment-meta{font-size:11.5px;color:var(--t3)}
+  .uik-aibar{flex-direction:row;align-items:center;gap:16px}
+  .uik-ring{position:relative;width:84px;height:84px;flex-shrink:0}
+  .uik-ring svg{width:84px;height:84px;display:block}
+  .uik-ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:var(--blue);letter-spacing:-1px}
+  .uik-aibar-body{flex:1;min-width:0}
+  .uik-aibar-label{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+  .uik-aibar-head{font-size:14px;font-weight:700;line-height:1.35;color:var(--t1);margin-bottom:2px}
+  .uik-aibar-sub{font-size:12.5px;color:var(--t2);line-height:1.4}
+  .uik-chat{background:#EEF2F7;gap:10px}
+  .uik-msg{display:flex;flex-direction:column;gap:4px;max-width:90%}
+  .uik-msg.in{align-self:flex-start}
+  .uik-msg.out{align-self:flex-end;align-items:flex-end}
+  .uik-msg-sender{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:5px;padding-left:2px}
+  .uik-sender-ico{width:16px;height:16px;border-radius:50%;background:var(--blue);display:inline-flex;align-items:center;justify-content:center}
+  .uik-sender-ico svg{width:9px;height:9px}
+  .uik-bubble{padding:10px 14px;font-size:13.5px;line-height:1.5}
+  .uik-msg.in .uik-bubble{background:#fff;border-radius:16px 16px 16px 4px;box-shadow:0 2px 8px rgba(0,0,0,.04);color:var(--t1)}
+  .uik-msg.out .uik-bubble{background:var(--blue);color:#fff;border-radius:16px 16px 4px 16px}
+  .uik-msg-time{font-size:10px;color:var(--t3);padding:0 2px}
+  .uik-conv{flex-direction:row;align-items:center;gap:12px}
+  .uik-av{width:44px;height:44px;border-radius:50%;flex-shrink:0;position:relative;overflow:hidden;background:var(--blue)}
+  .uik-av img{width:100%;height:100%;object-fit:cover;object-position:center top}
+  .uik-av.online::after{content:'';position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;background:var(--green-d);border:2.5px solid #fff}
+  .uik-conv-body{flex:1;min-width:0}
+  .uik-conv-name-row{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+  .uik-conv-name{font-size:14px;font-weight:700;white-space:nowrap;color:var(--t1)}
+  .uik-conv-tag{height:16px;padding:0 7px;border-radius:999px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;background:rgba(34,197,94,.14);color:var(--green-d)}
+  .uik-conv-preview{font-size:12.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .uik-conv-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+  .uik-conv-time{font-size:11px;color:var(--t3);font-weight:500}
+  .uik-conv-unread{background:var(--blue);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:1px 7px;min-width:20px;text-align:center;line-height:18px}
+  .uik-tl{position:relative;padding-left:24px}
+  .uik-tl::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;border-radius:2px;background:rgba(44,122,252,.18)}
+  .uik-tl-month{font-size:11px;font-weight:700;color:var(--t2);letter-spacing:.4px;margin:0 0 10px 2px}
+  .uik-tl-item{position:relative;background:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04)}
+  .uik-tl-item::before{content:'';position:absolute;left:-20px;top:18px;width:10px;height:10px;border-radius:50%;background:#fff;border:2.5px solid var(--blue);box-shadow:0 0 0 2.5px #EFF6FF}
+  .uik-tl-item.danger::before{border-color:#FF3B30}
+  .uik-tl-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .uik-tl-ico{width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:#EFF6FF;color:var(--blue);flex-shrink:0}
+  .uik-tl-item.danger .uik-tl-ico{background:rgba(255,59,48,.10);color:#FF3B30}
+  .uik-tl-ico iconify-icon{font-size:16px}
+  .uik-tl-tag{height:16px;padding:0 7px;border-radius:999px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;background:rgba(255,59,48,.12);color:#A51B16}
+  .uik-tl-date{margin-left:auto;font-size:11px;color:var(--t3)}
+  .uik-tl-title{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--t1)}
+  .uik-tl-desc{font-size:12.5px;color:var(--t2);line-height:1.45}
+  .uik-profile{flex-direction:row;align-items:center;gap:12px}
+  .uik-profile-av{width:60px;height:60px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--blue-soft)}
+  .uik-profile-av img{width:100%;height:100%;object-fit:cover;object-position:center top}
+  .uik-profile-body{flex:1;min-width:0}
+  .uik-profile-name{font-size:19px;font-weight:700;color:var(--t1)}
+  .uik-profile-sub{font-size:12.5px;color:var(--t2);margin-top:2px}
+  .uik-pills{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .uik-pill-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:999px;background:#F2F2F7;font-size:11px;font-weight:700;color:var(--t2)}
+  .uik-pill-tag iconify-icon{font-size:12px}
+  .uik-pill-tag.accent{background:var(--blue-soft);color:var(--blue)}
+  .uik-med-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .uik-med-ico{width:40px;height:40px;border-radius:12px;background:var(--blue-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .uik-med-ico iconify-icon{font-size:20px;color:var(--blue)}
+  .uik-med-name{font-size:17px;font-weight:700;color:var(--t1)}
+  .uik-med-type{font-size:12.5px;color:var(--t2)}
+  .uik-med-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 0;border-top:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06)}
+  .uik-med-label{font-size:11px;color:var(--t3)}
+  .uik-med-value{font-size:13.5px;font-weight:600;color:var(--t1);margin-top:2px}
+  .uik-med-warn{margin-top:12px}
+  .uik-med-warn-head{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#B45309;margin-bottom:8px}
+  .uik-med-warn-head iconify-icon{font-size:16px}
+  .uik-med-warn-list{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--t2);line-height:1.4}
+  .uik-med-warn-list li{display:flex;gap:8px;list-style:none}
+  .uik-med-warn-list li::before{content:'';flex-shrink:0;width:4px;height:4px;border-radius:50%;background:var(--amber);margin-top:7px}
+  .uik-text-blue{color:var(--blue)}.uik-text-mint{color:var(--mint)}.uik-text-teal{color:var(--teal)}.uik-text-danger{color:#FF3B30}.uik-text-t2{color:var(--t2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="page-eyebrow">Design System · Bento UI Kit</div>
+  <h1 class="page-title">UI Kit — 실측 비율 · 풀폭 정리</h1>
+  <p class="page-sub">실제 앱 비율 그대로: 정사각 위젯은 정사각, 풀폭 카드는 제 높이. 좌우 4열을 꽉 채우되, 열별 카드 높이 합을 맞춰 상단·바닥이 거의 정렬되도록 배치했습니다.</p>
+  <div class="note"><iconify-icon icon="fluent:info-24-filled"></iconify-icon><div><b>왜 메이슨리인가:</b> 칸을 격자에 딱 맞추는 스냅 벤또는 정사각 위젯을 가로로 늘려 비율이 깨집니다. 실측 비율을 지키려면 카드마다 높이가 달라지므로 — 좌우 꽉 채운 벽돌쌓기가 정답입니다.</div></div>
+
+  <div class="gallery uik" data-role="guardian">
+
+    <div class="col">
+    <!-- 처방 -->
+    <div class="cell"><div class="uik-w">
+      <div class="uik-med-head"><span class="uik-med-ico"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon></span><div><div class="uik-med-name">아모디핀 5mg</div><div class="uik-med-type">혈압약</div></div></div>
+      <div class="uik-med-grid"><div><div class="uik-med-label">복용 시간</div><div class="uik-med-value">아침 식후</div></div><div><div class="uik-med-label">용량</div><div class="uik-med-value">1정</div></div><div><div class="uik-med-label">처방일</div><div class="uik-med-value">2026.03.15</div></div><div><div class="uik-med-label">담당의</div><div class="uik-med-value">이상훈 원장</div></div></div>
+      <div class="uik-med-warn"><div class="uik-med-warn-head"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon>보호자가 알아야 할 것</div><ul class="uik-med-warn-list"><li>자몽 주스와 함께 복용 금지 — 약물 농도 상승</li><li>어지러움·두통 지속 시 담당 간호사에게 연락</li></ul></div>
+    </div></div>
+
+    <!-- 홈 · 오늘의 순간 -->
+    <div class="cell"><div class="uik-w uik-moment">
+      <div class="uik-moment-photo" style="background-image:url('../v11_보호자앱/mockup.png')"></div>
+      <div class="uik-moment-body"><div class="uik-moment-quote">"오전 산책 때 햇빛이 좋아서 한참 머무르셨어요. 기분이 정말 좋아 보이셨어요."</div><div class="uik-moment-meta">김서연 간호사 · 10:24</div></div>
+    </div></div>
+    </div>
+
+    <div class="col">
+    <!-- 홈 · 수면 -->
+    <div class="cell"><div class="uik-w">
+      <div class="uik-w-head"><div class="uik-w-title"><iconify-icon icon="fluent:weather-moon-24-filled" class="uik-text-blue"></iconify-icon>수면</div></div>
+      <div class="uik-display">7<span>시간 </span>32<span>분</span></div>
+      <div class="uik-meta">지난 밤 · 깨심 1회</div>
+      <div class="uik-sleep-bars"><i style="height:16px;background:#BFDBFE"></i><i style="height:30px;background:#93C5FD"></i><i style="height:50px;background:#60A5FA"></i><i style="height:76px;background:#3B82F6"></i><i style="height:92px;background:#1D4ED8"></i><i style="height:86px;background:#1D4ED8"></i><i style="height:64px;background:#3B82F6"></i><i style="height:42px;background:#60A5FA"></i><i style="height:26px;background:#93C5FD"></i><i style="height:36px;background:#60A5FA"></i><i style="height:62px;background:#3B82F6"></i><i style="height:84px;background:#1D4ED8"></i><i style="height:78px;background:#1D4ED8"></i><i style="height:54px;background:#3B82F6"></i><i style="height:34px;background:#60A5FA"></i><i style="height:22px;background:#93C5FD"></i><i style="height:16px;background:#BFDBFE"></i><i style="height:11px;background:#BFDBFE"></i></div>
+      <div class="uik-sleep-labels"><span>22시</span><span>00시</span><span>02시</span><span>04시</span><span>06시</span><span>08시</span></div>
+    </div></div>
+
+    <!-- 리포트 · AI 케어 분석(링) -->
+    <div class="cell"><div class="uik-w uik-aibar">
+      <div class="uik-ring"><svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="rgba(0,0,0,.06)" stroke-width="7"/><circle cx="42" cy="42" r="36" fill="none" stroke="#2C7AFC" stroke-width="7" stroke-linecap="round" stroke-dasharray="170 226" transform="rotate(-90 42 42)"/></svg><div class="uik-ring-num">75</div></div>
+      <div class="uik-aibar-body"><div class="uik-aibar-label">AI 케어 분석</div><div class="uik-aibar-head">투약 3회 완료, 식사 양호</div><div class="uik-aibar-sub">점심 섭취량 소폭 감소 — 경과 관찰</div></div>
+    </div></div>
+
+    <!-- 소통 · 대화 행 -->
+    <div class="cell"><div class="uik-w uik-conv">
+      <div class="uik-av online"><img src="../v11_보호자앱/img/간호사.png" alt=""></div>
+      <div class="uik-conv-body"><div class="uik-conv-name-row"><span class="uik-conv-name">김서연 간호사</span><span class="uik-conv-tag">근무 중</span></div><div class="uik-conv-preview">저녁 투약도 완료했습니다. 오늘 하루 컨디션…</div></div>
+      <div class="uik-conv-meta"><span class="uik-conv-time">오후 6:05</span><span class="uik-conv-unread">4</span></div>
+    </div></div>
+    </div>
+
+    <div class="col">
+    <!-- 홈 · 맥박 + 위생 (정사각 페어) -->
+    <div class="cell"><div class="pair">
+      <div class="uik-w sq">
+        <div class="uik-w-head"><div class="uik-w-title"><iconify-icon icon="fluent:pulse-24-filled" class="uik-text-danger"></iconify-icon>맥박</div></div>
+        <div class="uik-pulse-main"><div class="uik-pulse-num"><span class="n">72</span><span class="u">BPM</span></div><div class="uik-pulse-sub">평균 근처</div></div>
+      </div>
+      <div class="uik-w sq">
+        <div class="uik-w-head"><div class="uik-w-title"><iconify-icon icon="fluent:drop-24-filled" class="uik-text-teal"></iconify-icon>위생</div></div>
+        <div class="uik-hyg-row"><span class="uik-hyg-box"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span><span class="uik-hyg-t">세면</span><span class="uik-hyg-time">07:30</span></div>
+        <div class="uik-hyg-row"><span class="uik-hyg-box"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span><span class="uik-hyg-t">구강</span><span class="uik-hyg-time">07:40</span></div>
+        <div class="uik-hyg-row"><span class="uik-hyg-box empty"></span><span class="uik-hyg-t">목욕</span><span class="uik-hyg-time">예정</span></div>
+      </div>
+    </div></div>
+
+    <!-- 채팅 -->
+    <div class="cell"><div class="uik-w uik-chat">
+      <div class="uik-msg in"><span class="uik-msg-sender"><span class="uik-sender-ico"><svg viewBox="0 0 2526 2526" fill="#fff"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg></span>하루 AI</span><div class="uik-bubble">안녕하세요 민지님, 어머니 케어 질문이라면 뭐든 도와드릴게요.</div></div>
+      <div class="uik-msg out"><div class="uik-bubble">점심 식사량이 줄어든 것 같아 걱정돼요.</div></div>
+    </div></div>
+
+    <!-- 마이 · 프로필 -->
+    <div class="cell"><div class="uik-w uik-profile">
+      <div class="uik-profile-av"><img src="../v11_보호자앱/img/보호자.png" alt=""></div>
+      <div class="uik-profile-body"><div class="uik-profile-name">박민지</div><div class="uik-profile-sub">어머님(박영자) 담당</div><div class="uik-pills"><span class="uik-pill-tag"><iconify-icon icon="fluent:building-24-filled"></iconify-icon>302호</span><span class="uik-pill-tag accent"><iconify-icon icon="fluent:star-24-filled"></iconify-icon>프리미엄</span></div></div>
+    </div></div>
+    </div>
+
+    <div class="col">
+    <!-- 홈 · 투약 + 기분 (정사각 페어) -->
+    <div class="cell"><div class="pair">
+      <div class="uik-w uik-pill sq">
+        <div class="uik-pill-wave"><svg viewBox="0 0 190 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0,30 C40,10 80,10 120,26 C150,38 175,32 190,24 L190,100 L0,100 Z" fill="currentColor" fill-opacity=".9"/><path d="M0,42 C45,24 85,26 125,40 C155,50 175,46 190,40 L190,100 L0,100 Z" fill="currentColor" fill-opacity=".42"/></svg></div>
+        <div class="uik-pill-body"><div class="uik-w-head"><div class="uik-w-title"><iconify-icon icon="fluent:pill-24-filled" class="uik-text-mint"></iconify-icon>투약</div></div><div class="uik-display">33<span>%</span></div><div class="uik-meta">1/3 완료</div></div>
+      </div>
+      <div class="uik-w sq">
+        <div class="uik-w-head"><div class="uik-w-title"><iconify-icon icon="fluent:heart-24-filled" class="uik-text-blue"></iconify-icon>기분</div></div>
+        <div class="uik-row-base"><div class="uik-num-26">87<span>점</span></div><div class="uik-num-side">주 71</div></div>
+        <div class="uik-dow"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span></div>
+        <div class="uik-dots"><i style="background:#BFDBFE"></i><i style="background:#93C5FD"></i><i style="background:#60A5FA"></i><i style="background:#93C5FD"></i><i style="background:#BFDBFE"></i><i style="background:#DBEAFE"></i><i style="background:#DBEAFE"></i><i style="background:#60A5FA"></i><i style="background:#3B82F6"></i><i style="background:#2C7AFC"></i><i style="background:#2C7AFC"></i><i style="background:#3B82F6"></i><i style="background:#93C5FD"></i><i style="background:#BFDBFE"></i></div>
+      </div>
+    </div></div>
+
+    <!-- 홈 · AI 인사이트 -->
+    <div class="cell"><div class="uik-w uik-insight">
+      <div class="uik-insight-icon"><iconify-icon icon="fluent:food-24-filled"></iconify-icon></div>
+      <div class="uik-insight-body"><div class="uik-insight-title">점심 식사량이 줄었어요</div><div class="uik-insight-desc">최근 3일간 점심 섭취율이 평균 65%로 감소했어요.</div><div class="uik-insight-cta">AI에게 물어보기 →</div></div>
+    </div></div>
+
+    <!-- 타임라인 -->
+    <div class="cell"><div class="uik-tl">
+      <div class="uik-tl-month">2026년 3월</div>
+      <div class="uik-tl-item danger"><div class="uik-tl-head"><span class="uik-tl-ico"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></span><span class="uik-tl-tag">긴급</span><span class="uik-tl-date">3월 28일</span></div><div class="uik-tl-title">낙상 사고 발생</div><div class="uik-tl-desc">화장실 이동 중 미끄러짐. X-ray 결과 골절 없음. 보행 보조기 사용 권장.</div></div>
+    </div></div>
+    </div>
+
+  </div>
+
+  <p class="page-sub" style="margin-top:40px">이게 실측 비율을 지키는 풀폭 정리입니다. 현재 쇼케이스도 이 방식이에요. 이대로 갈지, 아니면 정사각 위젯을 더 모아 묶을지(클러스터) 등 조정 원하시면 말씀해 주세요.</p>
+</div>
+</body>
+</html>

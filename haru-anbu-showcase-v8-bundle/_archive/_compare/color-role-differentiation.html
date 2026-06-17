@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Color Card · Role Differentiation · 5 Options</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:#F0F4F8;color:#0A0E1A;letter-spacing:-.01em;line-height:1.5;padding:60px 40px}
+  .wrap{max-width:1280px;margin:0 auto}
+  .page-head{margin-bottom:60px;text-align:center}
+  .page-head h1{font-size:42px;font-weight:800;letter-spacing:-.03em;margin-bottom:12px}
+  .page-head p{color:#6B7280;font-size:15px}
+  .opt{background:#fff;border-radius:24px;padding:56px 48px;margin-bottom:32px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+  .opt-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+  .opt-num{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:600;color:#2C7AFC;letter-spacing:.18em;background:rgba(44,122,252,.08);padding:5px 12px;border-radius:100px}
+  .opt-name{font-size:22px;font-weight:700;letter-spacing:-.02em}
+  .opt-desc{font-size:13px;color:#6B7280;line-height:1.7;margin-bottom:36px;max-width:780px}
+  .opt-ref{display:inline-block;font-size:11px;color:#9CA3AF;font-family:'JetBrains Mono',ui-monospace,monospace;background:#F5F7FB;padding:3px 8px;border-radius:6px;margin-left:8px}
+
+  /* ───── Option 1 · Persona Voice Card ───── */
+  .p1-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .p1-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .p1-sw{padding:32px 28px;color:#fff;position:relative;min-height:180px;display:flex;flex-direction:column;justify-content:space-between}
+  .p1-avatar{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;color:#fff}
+  .p1-avatar iconify-icon{font-size:24px}
+  .p1-sw-meta{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+  .p1-tag{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+  .p1-hex{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;font-weight:600;color:rgba(255,255,255,.95)}
+  .p1-quote{padding:22px 28px 18px;background:#fff;font-size:15px;font-weight:500;color:#0A0E1A;line-height:1.5;border-left:0}
+  .p1-quote::before{content:'\201C';font-family:Georgia,serif;font-size:24px;color:#9CA3AF;margin-right:4px;line-height:0;position:relative;top:6px}
+  .p1-meta{padding:0 28px 26px}
+  .p1-name{font-size:16px;font-weight:700;margin-bottom:4px}
+  .p1-use{font-size:12px;color:#6B7280;line-height:1.55}
+
+  /* ───── Option 2 · Asymmetric Hero ───── */
+  .p2-grid{display:grid;grid-template-columns:1.7fr 1fr;grid-template-rows:1fr 1fr;gap:20px;min-height:480px}
+  .p2-hero{grid-row:span 2;background:#2C7AFC;border-radius:24px;padding:40px 36px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+  .p2-hero-bg{position:absolute;right:-40px;bottom:-40px;font-size:240px;color:rgba(255,255,255,.08)}
+  .p2-hero-top{display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
+  .p2-hero .p1-tag{color:rgba(255,255,255,.78)}
+  .p2-hero-name{font-size:36px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+  .p2-hero-bottom{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1}
+  .p2-hero-hex{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:24px;font-weight:700}
+  .p2-hero-use{font-size:14px;line-height:1.55;color:rgba(255,255,255,.85);max-width:340px}
+  .p2-side{border-radius:20px;padding:24px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+  .p2-side-name{font-size:20px;font-weight:700;letter-spacing:-.02em}
+  .p2-side-hex{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;font-weight:600;color:rgba(255,255,255,.85)}
+  .p2-side-use{font-size:11px;line-height:1.5;color:rgba(255,255,255,.78);margin-top:6px}
+
+  /* ───── Option 3 · Watermark Iconography ───── */
+  .p3-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .p3-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .p3-sw{aspect-ratio:1.15;padding:28px;color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+  .p3-watermark{position:absolute;right:-30px;bottom:-30px;font-size:200px;color:rgba(255,255,255,.18);line-height:1}
+  .p3-top,.p3-bottom{position:relative;z-index:1}
+  .p3-hex{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:22px;font-weight:700;letter-spacing:-.01em}
+  .p3-meta{padding:22px 26px 26px}
+
+  /* ───── Option 4 · Role-Applied UI Snippet ───── */
+  .p4-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .p4-card{background:#fff;border-radius:20px;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,.04);display:flex;flex-direction:column;gap:18px}
+  .p4-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .p4-head-left{display:flex;align-items:center;gap:12px}
+  .p4-dot{width:32px;height:32px;border-radius:10px;flex-shrink:0}
+  .p4-name-block{display:flex;flex-direction:column;gap:2px}
+  .p4-tag{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#9CA3AF}
+  .p4-name{font-size:16px;font-weight:700}
+  .p4-hex{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:600;color:#9CA3AF;align-self:flex-start}
+  .p4-use{font-size:13px;color:#6B7280;line-height:1.6}
+  /* Guardian: notification card UI */
+  .p4-demo-notif{background:#F0F6FF;border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px}
+  .p4-demo-notif-icon{width:36px;height:36px;border-radius:50%;background:#2C7AFC;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+  .p4-demo-notif-text{flex:1}
+  .p4-demo-notif-t{font-size:13px;font-weight:600;color:#0A0E1A}
+  .p4-demo-notif-s{font-size:11px;color:#6B7280;margin-top:1px}
+  /* Care: clinical chip+bar UI */
+  .p4-demo-clin{background:#F0FDF4;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+  .p4-demo-row{display:flex;justify-content:space-between;align-items:center}
+  .p4-demo-label{font-size:11px;font-weight:600;color:#15803D;text-transform:uppercase;letter-spacing:.06em}
+  .p4-demo-val{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;font-weight:700;color:#22C55E}
+  .p4-demo-bar{height:6px;background:#DCFCE7;border-radius:100px;overflow:hidden}
+  .p4-demo-bar-in{height:100%;width:78%;background:#22C55E;border-radius:100px}
+  /* Patient: big touch button UI */
+  .p4-demo-btn{background:#FB923C;color:#fff;padding:18px 20px;border-radius:16px;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px}
+  .p4-demo-btn iconify-icon{font-size:22px}
+
+  /* ───── Option 5 · Personality Stack (different shapes) ───── */
+  .p5-stack{display:flex;flex-direction:column;gap:28px}
+  .p5-row{display:grid;gap:24px;align-items:center}
+  .p5-row.guardian{grid-template-columns:280px 1fr}
+  .p5-row.care{grid-template-columns:1fr 380px}
+  .p5-row.patient{grid-template-columns:200px 1fr}
+  .p5-sw{border-radius:24px;padding:28px;color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+  .p5-sw.guardian{background:#2C7AFC;aspect-ratio:.78;border-radius:30px}
+  .p5-sw.care{background:#22C55E;aspect-ratio:2.3;border-radius:20px;order:2}
+  .p5-sw.patient{background:#FB923C;aspect-ratio:1;border-radius:50%;padding:28px;align-items:center;justify-content:center;text-align:center;gap:6px}
+  .p5-sw .p1-tag{color:rgba(255,255,255,.85)}
+  .p5-sw-name{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+  .p5-sw.care .p5-sw-name{font-size:28px}
+  .p5-sw-hex{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:14px;font-weight:600;color:rgba(255,255,255,.9)}
+  .p5-mid{display:flex;flex-direction:column;gap:8px}
+  .p5-mid-name{font-size:22px;font-weight:700;letter-spacing:-.02em}
+  .p5-mid-name.care{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:16px;letter-spacing:0}
+  .p5-mid-use{font-size:14px;color:#6B7280;line-height:1.6}
+  .p5-mid.patient .p5-mid-name{font-size:26px}
+
+  @media (max-width:980px){
+    .p1-grid,.p3-grid,.p4-grid{grid-template-columns:1fr}
+    .p2-grid{grid-template-columns:1fr;grid-template-rows:auto}
+    .p2-hero{grid-row:auto}
+    .p5-row{grid-template-columns:1fr !important}
+    .p5-sw.care{order:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="page-head">
+    <h1>Color Card · Role Differentiation</h1>
+    <p>각 역할이 단순 색상이 아닌 <strong>고유한 성격</strong>으로 느껴지게 — Mobbin(User Interviews · TheyDo · Dovetail · mymind) 패턴 기반</p>
+  </div>
+
+  <!-- ═══ 1 · Persona Voice Card ═══ -->
+  <div class="opt">
+    <div class="opt-head">
+      <span class="opt-num">01</span>
+      <span class="opt-name">Persona Voice Card<span class="opt-ref">User Interviews · TheyDo</span></span>
+    </div>
+    <p class="opt-desc">색상 카드에 <strong>역할 아바타(아이콘 디스크) + 실제 음성/대사</strong>를 더한다. "이 역할이 누구이고 무슨 말을 하는지"가 보임. 색만으로 구분하지 않고 페르소나 보이스로 차별화.</p>
+    <div class="p1-grid">
+      <div class="p1-card">
+        <div class="p1-sw" style="background:#2C7AFC">
+          <div class="p1-avatar"><iconify-icon icon="fluent:home-person-24-filled"></iconify-icon></div>
+          <div class="p1-sw-meta">
+            <span class="p1-tag">Guardian · 보호자</span>
+            <span class="p1-hex">#2C7AFC</span>
+          </div>
+        </div>
+        <div class="p1-quote">오늘 어머니 잘 계시죠?</div>
+        <div class="p1-meta">
+          <div class="p1-name">보호자 블루</div>
+          <div class="p1-use">멀리 있는 가족에게 안심·신뢰의 톤.</div>
+        </div>
+      </div>
+      <div class="p1-card">
+        <div class="p1-sw" style="background:#22C55E">
+          <div class="p1-avatar"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></div>
+          <div class="p1-sw-meta">
+            <span class="p1-tag">Care · 케어팀</span>
+            <span class="p1-hex">#22C55E</span>
+          </div>
+        </div>
+        <div class="p1-quote">처치 완료, 안정 상태.</div>
+        <div class="p1-meta">
+          <div class="p1-name">케어 그린</div>
+          <div class="p1-use">의료진과 요양보호사의 임상 톤.</div>
+        </div>
+      </div>
+      <div class="p1-card">
+        <div class="p1-sw" style="background:#FB923C">
+          <div class="p1-avatar"><iconify-icon icon="fluent:emoji-24-filled"></iconify-icon></div>
+          <div class="p1-sw-meta">
+            <span class="p1-tag">Patient · 환자</span>
+            <span class="p1-hex">#FB923C</span>
+          </div>
+        </div>
+        <div class="p1-quote">오늘은 기분이 좋아요.</div>
+        <div class="p1-meta">
+          <div class="p1-name">환자 오렌지</div>
+          <div class="p1-use">따뜻한 캔버스 위 부담 없는 액센트.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 2 · Asymmetric Hero ═══ -->
+  <div class="opt">
+    <div class="opt-head">
+      <span class="opt-num">02</span>
+      <span class="opt-name">Asymmetric Hero<span class="opt-ref">Plus-X · Pentagram</span></span>
+    </div>
+    <p class="opt-desc">3개 컬러를 <strong>동등하게</strong> 보여주지 않는다. Guardian = 메인 브랜드 → 큰 hero 카드, Care + Patient = 보조 → 작은 side. 크기 차이로 "역할 위계와 컨텍스트가 다르다"는 메시지.</p>
+    <div class="p2-grid">
+      <div class="p2-hero">
+        <iconify-icon class="p2-hero-bg" icon="fluent:home-person-24-filled"></iconify-icon>
+        <div class="p2-hero-top">
+          <span class="p1-tag">Guardian · 보호자</span>
+          <div class="p2-hero-name">보호자<br>블루</div>
+        </div>
+        <div class="p2-hero-bottom">
+          <span class="p2-hero-hex">#2C7AFC</span>
+          <span class="p2-hero-use">멀리 있는 가족에게 안심·신뢰의 톤.<br>하루안부의 메인 브랜드 컬러.</span>
+        </div>
+      </div>
+      <div class="p2-side" style="background:#22C55E">
+        <span class="p1-tag">Care · 케어팀</span>
+        <div>
+          <div class="p2-side-name">케어 그린</div>
+          <span class="p2-side-hex">#22C55E</span>
+          <p class="p2-side-use">의료진·요양보호사<br>임상 톤.</p>
+        </div>
+      </div>
+      <div class="p2-side" style="background:#FB923C">
+        <span class="p1-tag">Patient · 환자</span>
+        <div>
+          <div class="p2-side-name">환자 오렌지</div>
+          <span class="p2-side-hex">#FB923C</span>
+          <p class="p2-side-use">따뜻한 캔버스 위<br>부담 없는 액센트.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 3 · Watermark Iconography ═══ -->
+  <div class="opt">
+    <div class="opt-head">
+      <span class="opt-num">03</span>
+      <span class="opt-name">Watermark Iconography<span class="opt-ref">현대카드 브랜드 가이드</span></span>
+    </div>
+    <p class="opt-desc">컬러 블록 안에 <strong>역할별 대형 워터마크 아이콘</strong>을 깔아둔다. Guardian = 집+사람, Care = 맥박, Patient = 햇살/감정. 색 + 아이콘 이중 신호 → 색맹·작은 화면에서도 식별.</p>
+    <div class="p3-grid">
+      <div class="p3-card">
+        <div class="p3-sw" style="background:#2C7AFC">
+          <iconify-icon class="p3-watermark" icon="fluent:home-person-24-filled"></iconify-icon>
+          <div class="p3-top"><span class="p1-tag">Guardian · 보호자</span></div>
+          <div class="p3-bottom"><div class="p3-hex">#2C7AFC</div></div>
+        </div>
+        <div class="p3-meta">
+          <div class="p1-name">보호자 블루</div>
+          <div class="p1-use">멀리 있는 가족에게 안심·신뢰의 톤.</div>
+        </div>
+      </div>
+      <div class="p3-card">
+        <div class="p3-sw" style="background:#22C55E">
+          <iconify-icon class="p3-watermark" icon="fluent:heart-pulse-24-filled"></iconify-icon>
+          <div class="p3-top"><span class="p1-tag">Care · 케어팀</span></div>
+          <div class="p3-bottom"><div class="p3-hex">#22C55E</div></div>
+        </div>
+        <div class="p3-meta">
+          <div class="p1-name">케어 그린</div>
+          <div class="p1-use">의료진과 요양보호사의 임상 톤.</div>
+        </div>
+      </div>
+      <div class="p3-card">
+        <div class="p3-sw" style="background:#FB923C">
+          <iconify-icon class="p3-watermark" icon="fluent:weather-sunny-24-filled"></iconify-icon>
+          <div class="p3-top"><span class="p1-tag">Patient · 환자</span></div>
+          <div class="p3-bottom"><div class="p3-hex">#FB923C</div></div>
+        </div>
+        <div class="p3-meta">
+          <div class="p1-name">환자 오렌지</div>
+          <div class="p1-use">따뜻한 캔버스 위 부담 없는 액센트.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 4 · Role-Applied UI Snippet ═══ -->
+  <div class="opt">
+    <div class="opt-head">
+      <span class="opt-num">04</span>
+      <span class="opt-name">Role-Applied UI Snippet<span class="opt-ref">Vercel · Linear Design</span></span>
+    </div>
+    <p class="opt-desc">색을 추상 스왓치가 아니라 <strong>각 역할의 실제 UI 단편</strong>으로 보여준다. Guardian = 알림 카드, Care = 임상 차트 바, Patient = 큰 터치 버튼. "이 색이 어떻게 쓰이는지"가 곧 역할 차이.</p>
+    <div class="p4-grid">
+      <div class="p4-card">
+        <div class="p4-head">
+          <div class="p4-head-left">
+            <div class="p4-dot" style="background:#2C7AFC"></div>
+            <div class="p4-name-block"><span class="p4-tag">Guardian · 보호자</span><span class="p4-name">보호자 블루</span></div>
+          </div>
+          <span class="p4-hex">#2C7AFC</span>
+        </div>
+        <p class="p4-use">멀리 있는 가족에게 안심·신뢰의 톤.</p>
+        <div class="p4-demo-notif">
+          <div class="p4-demo-notif-icon"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></div>
+          <div class="p4-demo-notif-text">
+            <div class="p4-demo-notif-t">오늘 안심지수 92</div>
+            <div class="p4-demo-notif-s">어머니, 평소처럼 안정적이에요.</div>
+          </div>
+        </div>
+      </div>
+      <div class="p4-card">
+        <div class="p4-head">
+          <div class="p4-head-left">
+            <div class="p4-dot" style="background:#22C55E"></div>
+            <div class="p4-name-block"><span class="p4-tag">Care · 케어팀</span><span class="p4-name">케어 그린</span></div>
+          </div>
+          <span class="p4-hex">#22C55E</span>
+        </div>
+        <p class="p4-use">의료진과 요양보호사의 임상 톤.</p>
+        <div class="p4-demo-clin">
+          <div class="p4-demo-row">
+            <span class="p4-demo-label">처치 완료율</span>
+            <span class="p4-demo-val">78%</span>
+          </div>
+          <div class="p4-demo-bar"><div class="p4-demo-bar-in"></div></div>
+          <div class="p4-demo-row" style="font-size:11px;color:#15803D;font-weight:600">14 / 18건 · 305호</div>
+        </div>
+      </div>
+      <div class="p4-card">
+        <div class="p4-head">
+          <div class="p4-head-left">
+            <div class="p4-dot" style="background:#FB923C"></div>
+            <div class="p4-name-block"><span class="p4-tag">Patient · 환자</span><span class="p4-name">환자 오렌지</span></div>
+          </div>
+          <span class="p4-hex">#FB923C</span>
+        </div>
+        <p class="p4-use">따뜻한 캔버스 위 부담 없는 액센트.</p>
+        <div class="p4-demo-btn">
+          <iconify-icon icon="fluent:emoji-24-filled"></iconify-icon>
+          오늘 기분 좋아요
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 5 · Personality Stack ═══ -->
+  <div class="opt">
+    <div class="opt-head">
+      <span class="opt-num">05</span>
+      <span class="opt-name">Personality Stack<span class="opt-ref">Stripe Press · MOMA</span></span>
+    </div>
+    <p class="opt-desc">각 역할이 <strong>고유한 모양과 타이포 인격</strong>을 갖는다. Guardian = 세로 카드(안정·기다림), Care = 가로 와이드 + 모노 폰트(임상·정확), Patient = 원형(따뜻함·완결). 디자인 자체가 역할 인격.</p>
+    <div class="p5-stack">
+      <div class="p5-row guardian">
+        <div class="p5-sw guardian">
+          <span class="p1-tag">Guardian · 보호자</span>
+          <div>
+            <div class="p5-sw-name">보호자<br>블루</div>
+            <span class="p5-sw-hex" style="margin-top:8px;display:inline-block">#2C7AFC</span>
+          </div>
+        </div>
+        <div class="p5-mid">
+          <span class="p4-tag">세로 · 안정의 형태</span>
+          <div class="p5-mid-name">멀리 있는 가족에게 안심·신뢰의 톤</div>
+          <div class="p5-mid-use">보호자는 "기다림"의 시점. 세로로 긴 카드와 부드러운 라운드는 안정감과 신뢰의 메타포.</div>
+        </div>
+      </div>
+      <div class="p5-row care">
+        <div class="p5-mid">
+          <span class="p4-tag">가로 · 임상의 정밀</span>
+          <div class="p5-mid-name care">CARE_GREEN <span style="color:#22C55E">#22C55E</span></div>
+          <div class="p5-mid-use">케어팀은 "기록과 정확성"의 시점. 가로 와이드 카드와 모노 타입은 데이터·임상의 인격.</div>
+        </div>
+        <div class="p5-sw care">
+          <span class="p1-tag">Care · 케어팀</span>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px">
+            <div class="p5-sw-name">케어 그린</div>
+            <span class="p5-sw-hex">#22C55E</span>
+          </div>
+        </div>
+      </div>
+      <div class="p5-row patient">
+        <div class="p5-sw patient">
+          <span class="p1-tag">Patient · 환자</span>
+          <div class="p5-sw-name">환자<br>오렌지</div>
+          <span class="p5-sw-hex">#FB923C</span>
+        </div>
+        <div class="p5-mid patient">
+          <span class="p4-tag">원 · 따뜻함의 완결</span>
+          <div class="p5-mid-name">따뜻한 캔버스 위 부담 없는 액센트</div>
+          <div class="p5-mid-use">환자는 "지금 이 순간"의 시점. 원형 카드는 시작도 끝도 없는 따뜻함, 햇살의 인격.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

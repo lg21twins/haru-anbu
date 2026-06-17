@@ -5,9 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>하루안부 — 의료진 대시보드 v9.5</title>
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
-  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+  <script src="../07_디자인/_app-theme.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+    /* 앱과 톤 통일 — 인터랙티브 요소 누름 피드백 (v3.2.4 모션 토큰 차용) */
+    .icon-btn, .sos-btn, .ph-btn, .ph-all, .card-action, .nav-link, .greet-pill,
+    .ph-item, .al-item, button:not(:disabled), [role="button"] {
+      transition: transform var(--motion-micro, .12s) var(--easing-standard, cubic-bezier(.2,0,0,1)),
+                  background .12s, color .12s, box-shadow .12s, border-color .12s, opacity .12s;
+    }
+    .icon-btn:active, .sos-btn:active, .ph-btn:active, .ph-all:active,
+    .card-action:active, button:not(:disabled):active, [role="button"]:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
 
     :root {
       /* ─────────────────────────────────────────────────────────
@@ -16,36 +32,44 @@
          v9.5 화면에서 기존에 쓰던 --ink-*/--accent 등 별칭 이름은 호환을 위해 유지.
          ───────────────────────────────────────────────────────── */
 
-      /* 무채색 — 의료진 웹 고유 웜 그레이 톤 (tokens.css 팔레트와 톤 차이 있어 유지) */
-      --ink:    #111111;
+      /* 무채색 — 의료진 웹 고유 웜 그레이 톤 (tokens.css 팔레트와 톤 차이 있어 직접 정의).
+         과거 `--surface: var(--surface)` 자기참조는 invalid 처리되어 실제 값으로 복원. */
+      --ink:    #1A1612;       /* 웜 다크 (사이드바 bg) — 코멘트의 "웜 그레이 톤" 의도 반영 */
       --ink-2:  #2A2A2A;
       --ink-3:  #555555;
       --ink-4:  #888888;
       --ink-5:  #AAAAAA;
-      --ink-6:  #D8D7D4;
-      --surface:#F5F4F2;
+      --ink-6:  #D8D5D0;       /* 옅은 warm border */
+      --ink-7:  #BBB7B0;       /* 더 진한 warm border */
+      --surface:        #FFFFFF;      /* 카드 기본 배경 */
+      --surface-warm:   #FAF8F5;      /* 카드/패널 웜 톤 */
+      --surface-soft:   #F4F1ED;      /* 보조 카드 */
+      --surface-tint:   #EFECE7;      /* hover/divider */
+      --surface-tint-2: #E6E2DD;      /* 변형 */
+      --surface-tint-3: #D8D3CC;      /* 더 진한 분리선 */
+      --border-warm:    rgba(0,0,0,.07);
       --bg:     #EEEDEA;
       --white:  var(--palette-white);
 
       /* 포인트 — 케어 그린 (data-role=medical → --color-accent = --brand-green-500) */
       --accent:        var(--color-accent);
       --accent-strong: var(--color-accent-strong);
-      --accent-bg:     rgba(34,197,94,.08);
-      --accent-b:      rgba(34,197,94,.22);
+      --accent-bg:     rgba(var(--brand-green-500-rgb), .08);
+      --accent-b:      rgba(var(--brand-green-500-rgb), .22);
 
       /* 위험 — 긴급 상황만 */
       --danger:    var(--palette-red-500);
-      --danger-bg: rgba(239,68,68,.07);
-      --danger-b:  rgba(239,68,68,.22);
+      --danger-bg: rgba(var(--color-danger-rgb), .07);
+      --danger-b:  rgba(var(--color-danger-rgb), .22);
 
       /* 주의 */
       --warn:    var(--palette-amber-500);
-      --warn-bg: rgba(245,158,11,.07);
-      --warn-b:  rgba(245,158,11,.24);
+      --warn-bg: rgba(var(--color-warning-rgb), .07);
+      --warn-b:  rgba(var(--color-warning-rgb), .24);
 
       /* 카드 */
       --card-bg:  var(--palette-white);
-      --card-br:  1px solid #E8E7E3;
+      --card-br:  1px solid var(--border-warm);
       --card-sh:  0 1px 3px rgba(0,0,0,.04), 0 4px 14px rgba(0,0,0,.05);
       --card-rad: 12px;
 
@@ -65,7 +89,7 @@
     /* ── SIDEBAR ── */
     .sidebar {
       position: fixed; left:0; top:0; bottom:0; width:232px;
-      background: #131313;
+      background: var(--ink);
       display: flex; flex-direction: column;
       z-index: 100;
     }
@@ -78,14 +102,14 @@
     .logo-mark { display:flex; align-items:center; gap:10px; }
 
     .logo-icon {
-      width: 34px; height: 34px;
-      background: var(--accent);
-      border-radius: 10px;
+      width: 36px; height: 36px;
       display: flex; align-items:center; justify-content:center; flex-shrink:0;
+      color: white;
     }
+    .logo-icon svg { width: 100%; height: 100%; display: block; }
 
-    .logo-name { font-size:15px; font-weight:800; color:#fff; letter-spacing:-.4px; }
-    .logo-sub  { font-size:10px; color:#3D3D3D; margin-top:1px; }
+    .logo-name { font-size:15px; font-weight:700; color:white; letter-spacing:-.4px; }
+    .logo-sub  { font-size:10px; color:var(--ink-2); margin-top:1px; }
 
     .sidebar-facility {
       margin: 10px 12px 4px;
@@ -98,14 +122,14 @@
 
     .facility-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: #4ADE80; flex-shrink:0;
+      background: var(--brand-green-400); flex-shrink:0;
     }
 
-    .facility-name { font-size:12px; color:#777; font-weight:500; }
+    .facility-name { font-size:12px; color:var(--ink-4); font-weight:500; }
 
     .nav-section-label {
       padding: 14px 16px 4px;
-      font-size: 10px; color: #3A3A3A;
+      font-size: 10px; color: var(--ink-2);
       text-transform: uppercase; letter-spacing: .8px; font-weight: 700;
     }
 
@@ -117,29 +141,29 @@
     .nav-link {
       display: flex; align-items:center; gap:10px;
       padding: 9px 12px; border-radius: 9px;
-      color: #5A5A5A; text-decoration: none;
+      color: var(--ink-3); text-decoration: none;
       font-size: 13px; font-weight: 500;
       cursor: pointer; transition: background .12s, color .12s;
       user-select: none;
     }
 
-    .nav-link:hover:not(.active) { background: rgba(255,255,255,.04); color: #999; }
+    .nav-link:hover:not(.active) { background: rgba(255,255,255,.04); color: var(--ink-5); }
 
     .nav-link.active {
       background: var(--accent);
-      color: #fff; font-weight: 700;
+      color: white; font-weight: 700;
     }
 
-    .nav-icon { width:16px; height:16px; flex-shrink:0; opacity:.55; }
+    .nav-icon { width:16px; height:16px; font-size:16px; flex-shrink:0; opacity:.55; }
     .nav-link.active .nav-icon { opacity:1; }
 
     .nav-badge {
       margin-left: auto;
-      background: var(--danger); color: #fff;
+      background: var(--danger); color: white;
       font-size: 10px; font-weight: 700;
       padding: 1px 7px; border-radius: 999px;
     }
-    .nav-badge.muted { background: rgba(255,255,255,.08); color: #5A5A5A; }
+    .nav-badge.muted { background: rgba(255,255,255,.08); color: var(--ink-3); }
 
     .sidebar-user {
       padding: 12px 16px;
@@ -149,14 +173,14 @@
 
     .user-avatar {
       width: 32px; height: 32px; border-radius: 50%;
-      background: #14532D;
+      background: var(--brand-green-900);
       display: flex; align-items:center; justify-content:center;
       font-size: 12px; font-weight: 700; color: rgba(134,239,172,.9);
       flex-shrink: 0;
     }
 
-    .user-name { font-size:13px; font-weight:700; color:#E8E8E8; }
-    .user-role { font-size:11px; color:#4A4A4A; margin-top:1px; }
+    .user-name { font-size:13px; font-weight:700; color:var(--palette-gray-200); }
+    .user-role { font-size:11px; color:var(--ink-3); margin-top:1px; }
 
     /* ── MAIN WRAPPER ── */
     .main-wrapper {
@@ -168,8 +192,8 @@
     /* ── TOPBAR ── */
     .topbar {
       position: sticky; top:0; z-index:50;
-      background: #FFFFFF;
-      border-bottom: 1px solid #E8E7E3;
+      background: white;
+      border-bottom: 1px solid var(--border-warm);
       height: 56px;
       padding: 0 24px;
       display: flex; align-items:center; gap:12px;
@@ -203,32 +227,18 @@
     }
 
     .search-input:focus {
-      border-color: rgba(34,197,94,.35);
-      box-shadow: 0 0 0 3px rgba(34,197,94,.08);
+      border-color: rgba(var(--brand-green-500-rgb), .35);
+      box-shadow: 0 0 0 3px rgba(var(--brand-green-500-rgb), .08);
     }
 
     .topbar-actions { display:flex; align-items:center; gap:6px; }
 
-    .icon-btn {
-      width: 34px; height: 34px; border-radius: 999px;
-      display: flex; align-items:center; justify-content:center;
-      background: var(--surface);
-      border: 1px solid var(--ink-6);
-      cursor: pointer; color: var(--ink-3); position:relative;
-    }
-
     .icon-btn svg { width:16px; height:16px; }
-
-    .notif-dot {
-      position: absolute; top:7px; right:7px;
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--danger); border: 1.5px solid #fff;
-    }
 
     .sos-btn {
       display: flex; align-items:center; gap:6px;
       padding: 7px 16px;
-      background: var(--danger); color: #fff;
+      background: var(--danger); color: white;
       border: none; border-radius: 999px;
       font-size: 12px; font-weight: 700;
       cursor: pointer; font-family: var(--font);
@@ -256,24 +266,24 @@
       display: inline-flex; align-items: center; gap: 6px;
       padding: 6px 11px 6px 9px;
       background: var(--white);
-      border: 1px solid #ECEAE6; border-radius: 999px;
+      border: 1px solid var(--surface-tint-2); border-radius: 999px;
       font-size: 11.5px; color: var(--ink-2);
     }
     .greet-pill iconify-icon {
       font-size: 13px; color: var(--ink-4);
     }
     .greet-pill .greet-pill-val {
-      font-weight: 800; color: var(--ink); letter-spacing: -.2px;
+      font-weight: 700; color: var(--ink); letter-spacing: -.2px;
     }
     .greet-pill .greet-pill-unit {
       font-size: 10.5px; font-weight: 600; color: var(--ink-4); margin-left: -2px;
     }
     .greet-pill.urgent {
-      background: #FFF8F7; border-color: #FECACA; color: var(--danger);
+      background: var(--palette-red-50); border-color: var(--palette-red-300); color: var(--danger);
     }
     .greet-pill.urgent iconify-icon,
     .greet-pill.urgent .greet-pill-val { color: var(--danger); }
-    .greet-pill.urgent .greet-pill-unit { color: #E11D48; }
+    .greet-pill.urgent .greet-pill-unit { color: var(--color-danger); }
 
     /* ── 오늘 우선 순위 히어로 (Now & Next) ── */
     .priority-hero {
@@ -287,7 +297,7 @@
     .ph-head {
       display: flex; align-items: center; justify-content: space-between;
       padding: 16px 20px 14px;
-      border-bottom: 1px solid #F0EFEB;
+      border-bottom: 1px solid var(--surface-soft);
     }
     .ph-title-wrap { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
     .ph-pills { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-left: 4px; }
@@ -298,7 +308,7 @@
       display: inline-flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .ph-title { font-size: 15px; font-weight: 800; color: var(--ink); letter-spacing: -.2px; }
+    .ph-title { font-size: 15px; font-weight: 700; color: var(--ink); letter-spacing: -.2px; }
     .ph-sub { font-size: 12px; color: var(--ink-4); margin-top: 2px; }
     .ph-sub .ph-sub-em { color: var(--danger); font-weight: 700; }
     .ph-all {
@@ -314,13 +324,13 @@
       grid-template-columns: 68px 1fr 92px 78px;
       gap: 16px; align-items: center;
       padding: 14px 20px;
-      border-bottom: 1px solid #F5F4F2;
+      border-bottom: 1px solid var(--surface);
       transition: background .1s;
     }
     .ph-item:last-child { border-bottom: none; }
-    .ph-item:hover { background: #FAFAF8; }
+    .ph-item:hover { background: var(--surface-warm); }
     .ph-time {
-      font-size: 15px; font-weight: 800; color: var(--ink);
+      font-size: 15px; font-weight: 700; color: var(--ink);
       letter-spacing: -.3px; font-variant-numeric: tabular-nums;
     }
     .ph-item.urgent .ph-time { color: var(--danger); }
@@ -337,7 +347,7 @@
     }
     .ph-tag.urgent { color: var(--danger); background: var(--danger-bg); border: 1px solid var(--danger-b); }
     .ph-tag.warn { color: var(--warn); background: var(--warn-bg); border: 1px solid var(--warn-b); }
-    .ph-tag.muted { color: var(--ink-4); background: #F5F4F2; border: 1px solid #E8E7E3; }
+    .ph-tag.muted { color: var(--ink-4); background: var(--surface); border: 1px solid var(--border-warm); }
     .ph-btn {
       padding: 7px 14px; border-radius: 999px;
       font-size: 11.5px; font-weight: 700;
@@ -346,7 +356,7 @@
       white-space: nowrap; justify-self: end;
     }
     .ph-btn:hover { background: var(--surface); }
-    .ph-btn.em { background: var(--danger); color: #fff; border-color: var(--danger); }
+    .ph-btn.em { background: var(--danger); color: white; border-color: var(--danger); }
 
     /* ── KPI CARDS ── */
     .kpi-row {
@@ -396,15 +406,15 @@
       font-size: 10.5px; font-weight: 700; white-space: nowrap;
       padding: 3px 8px 3px 7px; border-radius: 999px;
       color: var(--ink-4); background: var(--surface);
-      border: 1px solid #E6E4DF; flex-shrink: 0;
+      border: 1px solid var(--surface-tint-3); flex-shrink: 0;
     }
     .kpi-chip iconify-icon { font-size: 10px; }
-    .kpi-chip.up   { color: var(--accent); background: var(--accent-bg); border-color: #C9DFD4; }
-    .kpi-chip.down { color: var(--danger); background: var(--danger-bg); border-color: #F4C7C1; }
+    .kpi-chip.up   { color: var(--accent); background: var(--accent-bg); border-color: var(--brand-green-200); }
+    .kpi-chip.down { color: var(--danger); background: var(--danger-bg); border-color: var(--palette-red-300); }
     .kpi-chip.flat { color: var(--ink-4); }
 
     .kpi-value {
-      font-size: 48px; font-weight: 800;
+      font-size: 48px; font-weight: 700;
       color: var(--ink); letter-spacing: -2px; line-height: 1;
       display: flex; align-items: baseline; gap: 5px;
     }
@@ -423,11 +433,12 @@
 
     .kpi-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
     .kpi-dot.accent { background: var(--accent); }
+    .kpi-dot.warn { background: var(--warn); }
     .kpi-dot.danger { background: var(--danger); }
     .kpi-dot.neutral { background: var(--ink-5); }
 
     .kpi-bar {
-      height: 3px; background: #ECEAE6;
+      height: 3px; background: var(--surface-tint-2);
       border-radius: 3px; margin-top: 14px; overflow:hidden;
     }
     .kpi-fill { height:100%; border-radius:3px; background: var(--accent); }
@@ -459,7 +470,7 @@
       display: inline-flex; align-items: center; gap: 5px;
       font-size: 11px; font-weight: 600; color: var(--ink-2);
       padding: 4px 9px; border-radius: 999px;
-      background: var(--surface); border: 1px solid #E6E4DF;
+      background: var(--surface); border: 1px solid var(--surface-tint-3);
     }
     .kpi-name-chip-room {
       font-size: 10.5px; color: var(--ink-4); font-weight: 500;
@@ -482,7 +493,7 @@
 
     .card-head {
       padding: 16px 20px 14px;
-      border-bottom: 1px solid #F1F0EC;
+      border-bottom: 1px solid var(--surface-soft);
       display: flex; align-items:center; justify-content:space-between;
     }
 
@@ -539,14 +550,14 @@
     }
 
     .tl-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink:0; z-index:1; }
-    .tl-dot.done    { background: #C8C7C4; }
+    .tl-dot.done    { background: var(--ink-6); }
     .tl-dot.current { background: var(--accent); box-shadow: 0 0 0 3px rgba(14,138,116,.20); width:11px; height:11px; margin-top:-1px; }
     .tl-dot.next    { background: var(--bg); border: 2px solid var(--ink-6); }
     .tl-dot.alert   { background: var(--danger); }
 
     .tl-line {
       width: 1px; flex: 1; min-height: 10px;
-      background: #E8E7E3; margin-top: 5px;
+      background: var(--border-warm); margin-top: 5px;
     }
     .tl-item:last-child .tl-line { opacity:0; }
 
@@ -577,7 +588,7 @@
       font-size: 10px; font-weight: 700; flex-shrink:0;
     }
     .tl-tag.done  { background: var(--surface); color: var(--ink-5); border: 1px solid var(--ink-6); }
-    .tl-tag.now   { background: var(--accent); color: #fff; }
+    .tl-tag.now   { background: var(--accent); color: white; }
     .tl-tag.next  { background: var(--surface); color: var(--ink-4); border: 1px solid var(--ink-6); }
     .tl-tag.warn  { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-b); }
 
@@ -591,11 +602,11 @@
       padding: 13px 14px;
       border-radius: 10px;
       background: var(--white);
-      border: 1px solid #EAE9E5;
+      border: 1px solid var(--surface-tint);
       cursor: pointer;
       transition: background .1s;
     }
-    .al-item:hover { background: #FAFAF8; }
+    .al-item:hover { background: var(--surface-warm); }
 
     .al-item.critical { background: var(--danger-bg); border-color: var(--danger-b); }
     .al-item.caution  { background: var(--warn-bg); border-color: var(--warn-b); }
@@ -618,13 +629,13 @@
       cursor: pointer; font-family: var(--font); white-space: nowrap;
     }
     .al-btn:hover { background: var(--surface); }
-    .al-btn.crit { background: var(--danger); color: #fff; border-color: var(--danger); }
+    .al-btn.crit { background: var(--danger); color: white; border-color: var(--danger); }
     .al-btn.norm { background: var(--white); color: var(--ink-3); }
 
     /* ── AI PANEL (공용: Handover 탭 · Copilot 사이드에서 재사용) ── */
     .ai-panel-head {
       padding: 16px 20px 14px;
-      border-bottom: 1px solid #F1F0EC;
+      border-bottom: 1px solid var(--surface-soft);
       display: flex; align-items:center; justify-content:space-between;
     }
 
@@ -653,8 +664,8 @@
     /* ── COMM PANEL ── */
     .comm-panel {
       position: fixed; right:0; top:0; bottom:0; width:300px;
-      background: #FFFFFF;
-      border-left: 1px solid #E8E7E3;
+      background: white;
+      border-left: 1px solid var(--border-warm);
       display: flex; flex-direction:column;
       z-index: 100;
       overflow: hidden;
@@ -662,7 +673,7 @@
 
     .cp-header {
       padding: 14px 16px 12px;
-      border-bottom: 1px solid #EAE9E5;
+      border-bottom: 1px solid var(--surface-tint);
     }
 
     .cp-header-row {
@@ -674,12 +685,12 @@
 
     .focus-btn {
       font-size: 11px; padding: 5px 13px;
-      border-radius: 999px; border: 1.5px solid #FDBA74;
-      background: #FFF7ED; color: #EA580C;
+      border-radius: 999px; border: 1.5px solid var(--brand-orange-300);
+      background: var(--brand-orange-50); color: var(--brand-orange-600);
       cursor: pointer; font-family: var(--font); font-weight: 700;
       transition: all .15s;
     }
-    .focus-btn:hover { background: #FFEDD5; }
+    .focus-btn:hover { background: var(--brand-orange-100); }
 
     .focus-btn.on { background: var(--danger-bg); border-color: var(--danger-b); color: var(--danger); font-weight: 700; }
 
@@ -696,7 +707,7 @@
     }
 
     .cp-tab.active {
-      background: #fff; color: var(--ink); font-weight: 700;
+      background: white; color: var(--ink); font-weight: 700;
       box-shadow: 0 1px 4px rgba(0,0,0,.10);
     }
 
@@ -709,29 +720,29 @@
       font-size: 10px; color: var(--ink-5);
       font-weight: 700; text-transform: uppercase; letter-spacing: .7px;
       background: var(--surface);
-      border-top: 1px solid #EAE9E5; border-bottom: 1px solid #EAE9E5;
+      border-top: 1px solid var(--surface-tint); border-bottom: 1px solid var(--surface-tint);
       position: sticky; top:0; z-index:1;
     }
     .cp-body > .ch-label:first-child { border-top:none; }
 
     .chat-row {
       padding: 10px 16px; display:flex; gap:10px;
-      cursor: pointer; border-bottom: 1px solid #F2F1EE;
+      cursor: pointer; border-bottom: 1px solid var(--surface-soft);
     }
-    .chat-row:hover { background: #FAFAF8; }
+    .chat-row:hover { background: var(--surface-warm); }
 
     .chat-av {
       width: 36px; height: 36px; border-radius: 50%;
       display: flex; align-items:center; justify-content:center;
-      font-size: 12px; font-weight: 800; flex-shrink:0;
-      background: #E8E7E3; color: var(--ink-2);
+      font-size: 12px; font-weight: 700; flex-shrink:0;
+      background: var(--border-warm); color: var(--ink-2);
       position: relative;
     }
 
     .st-dot {
       position: absolute; bottom:1px; right:1px;
       width: 8px; height: 8px; border-radius: 50%;
-      border: 1.5px solid #fff;
+      border: 1.5px solid white;
     }
     .st-dot.online { background: var(--accent); }
     .st-dot.away   { background: var(--warn); }
@@ -757,7 +768,7 @@
 
     .unread-pill {
       display: inline-flex; align-items:center; justify-content:center;
-      background: var(--accent); color: #fff;
+      background: var(--accent); color: white;
       font-size: 10px; font-weight: 700;
       padding: 1px 6px; border-radius: 999px; flex-shrink:0;
     }
@@ -765,8 +776,8 @@
     /* 소통 패널 최상단 고정 (집중 모드 버튼 포함) */
     .ai-feed {
       padding: 13px 14px 14px;
-      border-bottom: 1px solid #EAE9E5;
-      background: #FAFAF7;              /* AI 존 — 미묘한 페이퍼톤 */
+      border-bottom: 1px solid var(--surface-tint);
+      background: var(--surface-warm);              /* AI 존 — 미묘한 페이퍼톤 */
       flex-shrink: 0;
     }
 
@@ -786,7 +797,7 @@
       font-size: 9px; font-weight: 700; color: var(--ink-4);
       letter-spacing: .12em;
       padding: 2px 5px; border-radius: 3px;
-      background: var(--white); border: 1px solid #E6E4DF;
+      background: var(--white); border: 1px solid var(--surface-tint-3);
     }
     .ai-feed-count {
       font-size: 11px; font-weight: 600; color: var(--ink-4);
@@ -796,7 +807,7 @@
     /* AI 피드 아이템 — 배지 + 환자 + 내용 + 시간 구조 */
     .af-item {
       padding: 10px 11px 11px;
-      border: 1px solid #ECEAE6;
+      border: 1px solid var(--surface-tint-2);
       border-radius: 10px;
       background: var(--white);
       margin-bottom: 6px;
@@ -804,11 +815,11 @@
       transition: border-color .1s, background .1s;
     }
     .af-item:last-child { margin-bottom: 0; }
-    .af-item:hover { background: #FAFAF8; border-color: #D8D5CE; }
+    .af-item:hover { background: var(--surface-warm); border-color: var(--ink-7); }
     .af-item.urgent {
-      background: #FFF8F7; border-color: #FECACA;
+      background: var(--palette-red-50); border-color: var(--palette-red-300);
     }
-    .af-item.urgent:hover { background: #FEE4E2; }
+    .af-item.urgent:hover { background: var(--palette-red-100); }
 
     .af-head {
       display: flex; align-items: center; justify-content: space-between;
@@ -819,7 +830,7 @@
       font-size: 10px; font-weight: 700;
       padding: 2px 8px 2px 7px; border-radius: 999px;
       color: var(--ink-3); background: var(--surface);
-      border: 1px solid #E6E4DF;
+      border: 1px solid var(--surface-tint-3);
       letter-spacing: .1px;
     }
     .af-badge::before {
@@ -827,7 +838,7 @@
       background: var(--ink-5);
     }
     .af-badge.urgent {
-      color: var(--danger); background: var(--white); border-color: #FECACA;
+      color: var(--danger); background: var(--white); border-color: var(--palette-red-300);
     }
     .af-badge.urgent::before { background: var(--danger); }
 
@@ -854,7 +865,7 @@
 
     .cp-ctx-bar {
       padding: 8px 16px; background: var(--surface);
-      border-bottom: 1px solid #EAE9E5;
+      border-bottom: 1px solid var(--surface-tint);
       font-size: 11px; font-weight: 600; color: var(--ink-4);
       display: flex; align-items: center; gap: 6px;
     }
@@ -863,12 +874,14 @@
     /* ── AI 요약 뷰 ── */
     .cp-ai-intro {
       display: flex; align-items: center; gap: 10px;
-      padding: 14px 16px 12px; border-bottom: 1px solid #EAE9E5;
+      padding: 14px 16px 12px; border-bottom: 1px solid var(--surface-tint);
     }
     .cp-ai-icon {
-      width: 34px; height: 34px; border-radius: 10px;
-      background: #111; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      color: var(--accent);
     }
+    .cp-ai-icon svg { width: 100%; height: 100%; display: block; }
     .cp-ai-title { font-size: 12.5px; font-weight: 700; color: var(--ink); }
     .cp-ai-sub   { font-size: 10px; color: var(--ink-5); margin-top: 1px; }
 
@@ -889,16 +902,17 @@
       cursor: pointer; font-family: var(--font); transition: all .12s;
     }
     .cp-ai-act:hover { border-color: var(--ink-4); color: var(--ink-2); }
-    .cp-ai-act.em { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .cp-ai-act.em { background: var(--accent); border-color: var(--accent); color: white; }
     .cp-ai-act.em:hover { opacity: .85; }
     .cp-ai-act.done { background: var(--surface); color: var(--ink-5); border-color: var(--ink-6); pointer-events: none; }
 
     .cp-ai-ask-wrap {
-      padding: 10px 12px 12px; border-top: 1px solid #EAE9E5; margin-top: 2px;
+      padding: 10px 12px 12px; border-top: 1px solid var(--surface-tint); margin-top: 2px;
     }
     .cp-ai-ask-label { font-size: 10px; font-weight: 700; color: var(--ink-5); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 7px; }
     .cp-ai-ask-row { display: flex; gap: 6px; align-items: center; background: var(--surface); border-radius: 999px; padding: 6px 6px 6px 13px; border: 1px solid var(--ink-6); }
     .cp-ai-ask-input { flex: 1; border: none; background: transparent; font-size: 12px; font-family: var(--font); color: var(--ink); outline: none; }
+.cp-ai-ask-input:focus-visible{box-shadow:0 0 0 2px var(--color-accent), 0 0 0 4px rgba(var(--brand-green-500-rgb), .22);border-radius:8px;}
     .cp-ai-answer {
       margin-top: 10px; padding: 11px 13px; border-radius: 10px;
       background: var(--surface); border: 1px solid var(--ink-6);
@@ -922,7 +936,7 @@
       to   { opacity: 1; transform: translateX(0); }
     }
 
-    .cp-input-wrap { padding: 10px 16px; border-top: 1px solid #EAE9E5; }
+    .cp-input-wrap { padding: 10px 16px; border-top: 1px solid var(--surface-tint); }
 
     .cp-input-row {
       display: flex; gap:8px;
@@ -935,6 +949,7 @@
       flex:1; border:none; background:transparent; outline:none;
       font-size: 13px; font-family: var(--font); color: var(--ink-2);
     }
+.cp-input:focus-visible{box-shadow:0 0 0 2px var(--color-accent), 0 0 0 4px rgba(var(--brand-green-500-rgb), .22);border-radius:8px;}
     .cp-input::placeholder { color: var(--ink-5); }
 
     .send-btn {
@@ -942,12 +957,12 @@
       background: var(--ink); border: none; cursor: pointer;
       display: flex; align-items:center; justify-content:center; flex-shrink:0;
     }
-    .send-btn svg { width: 12px; height: 12px; color: #fff; }
+    .send-btn svg { width: 12px; height: 12px; color: white; }
 
     /* ── 대화 상세 뷰 ── */
     .cp-convo {
       position: absolute; inset: 0;
-      background: #fff; display: flex; flex-direction: column;
+      background: white; display: flex; flex-direction: column;
       transform: translateX(100%); transition: transform .22s ease;
       z-index: 10;
     }
@@ -955,7 +970,7 @@
 
     .cp-convo-header {
       display: flex; align-items: center; gap: 10px;
-      padding: 13px 14px; border-bottom: 1px solid #EAE9E5;
+      padding: 13px 14px; border-bottom: 1px solid var(--surface-tint);
       flex-shrink: 0;
     }
     .cp-back-btn {
@@ -967,9 +982,9 @@
     .cp-back-btn svg { width: 14px; height: 14px; }
     .cp-convo-av {
       width: 34px; height: 34px; border-radius: 50%;
-      background: #E8E7E3; color: var(--ink-2);
+      background: var(--border-warm); color: var(--ink-2);
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 800; flex-shrink: 0; position: relative;
+      font-size: 12px; font-weight: 700; flex-shrink: 0; position: relative;
     }
     .cp-convo-info { flex: 1; min-width: 0; }
     .cp-convo-name { font-size: 13px; font-weight: 700; color: var(--ink); }
@@ -987,16 +1002,16 @@
 
     .cp-msg-av {
       width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-      background: #E8E7E3; color: var(--ink-3);
+      background: var(--border-warm); color: var(--ink-3);
       display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 800;
+      font-size: 10px; font-weight: 700;
     }
-    .cp-msg.me .cp-msg-av { background: var(--accent); color: #fff; }
+    .cp-msg.me .cp-msg-av { background: var(--accent); color: white; }
 
     .cp-msg-bubble {
       max-width: 200px; padding: 9px 12px; border-radius: 14px;
       font-size: 12.5px; line-height: 1.55; color: var(--ink);
-      background: var(--surface); border: 1px solid #ECEAE6;
+      background: var(--surface); border: 1px solid var(--surface-tint-2);
     }
     .cp-msg.me .cp-msg-bubble {
       background: var(--accent-strong); color: var(--white); border-color: var(--accent-strong);
@@ -1008,7 +1023,7 @@
       font-weight: 600; margin: 4px 0;
     }
 
-    .cp-convo-input-wrap { padding: 10px 12px; border-top: 1px solid #EAE9E5; flex-shrink: 0; }
+    .cp-convo-input-wrap { padding: 10px 12px; border-top: 1px solid var(--surface-tint); flex-shrink: 0; }
     .cp-convo-input-row {
       display: flex; gap: 7px; align-items: center;
       background: var(--surface); border-radius: 999px;
@@ -1018,6 +1033,7 @@
       flex: 1; border: none; background: transparent; outline: none;
       font-size: 12.5px; font-family: var(--font); color: var(--ink);
     }
+.cp-convo-input:focus-visible{box-shadow:0 0 0 2px var(--color-accent), 0 0 0 4px rgba(var(--brand-green-500-rgb), .22);border-radius:8px;}
     .cp-convo-input::placeholder { color: var(--ink-5); }
 
     /* ── PAGE SYSTEM ── */
@@ -1032,15 +1048,15 @@
     }
     .med-cols {
       padding-top: 11px; padding-bottom: 11px;
-      border-bottom: 1px solid #F0EFEB;
-      background: #FAFAF8;
+      border-bottom: 1px solid var(--surface-soft);
+      background: var(--surface-warm);
     }
     .med-row {
       padding-top: 13px; padding-bottom: 13px;
-      border-bottom: 1px solid #F5F4F2;
+      border-bottom: 1px solid var(--surface);
       cursor: pointer; transition: background .1s;
     }
-    .med-row:hover { background: #FAFAF8; }
+    .med-row:hover { background: var(--surface-warm); }
     .med-row:last-child { border-bottom: none; }
     .med-row.skip { opacity: .5; }
 
@@ -1050,9 +1066,9 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 15px;
     }
-    .med-pill-icon.oral  { background: rgba(34,197,94,.10); }
+    .med-pill-icon.oral  { background: rgba(var(--brand-green-500-rgb), .10); }
     .med-pill-icon.iv    { background: rgba(99,102,241,.10); }
-    .med-pill-icon.ext   { background: rgba(245,158,11,.10); }
+    .med-pill-icon.ext   { background: rgba(var(--color-warning-rgb), .10); }
     .med-name { font-size: 13px; font-weight: 700; color: var(--ink); line-height: 1.25; }
     .med-generic { font-size: 11px; color: var(--ink-4); margin-top: 1px; }
 
@@ -1095,9 +1111,9 @@
     .med-tl-leg-chip {
       width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0;
     }
-    .med-tl-leg-chip.done   { background: #ECFDF5; border: 1px solid #BBF7D0; }
+    .med-tl-leg-chip.done   { background: var(--brand-green-50); border: 1px solid var(--brand-green-200); }
     .med-tl-leg-chip.miss   { background: var(--danger); }
-    .med-tl-leg-chip.refuse { background: #FFFBEB; border: 1px solid #FDE68A; }
+    .med-tl-leg-chip.refuse { background: var(--palette-amber-50); border: 1px solid var(--palette-amber-300); }
     .med-tl-leg-chip.plan   { background: var(--surface); border: 1px dashed var(--ink-6); }
 
     .med-tl-grid {
@@ -1112,6 +1128,7 @@
     }
     .med-tl-axis-tick {
       position: absolute; top: 0; bottom: 0;
+      left: var(--mp, 0%);
       border-left: 1px dashed rgba(0,0,0,.06);
       font-size: 10px; color: var(--ink-4); padding-left: 3px;
       transform: translateX(-0.5px);
@@ -1127,7 +1144,7 @@
     .med-tl-pt {
       display: flex; align-items: center; gap: 9px;
       padding: 8px 0;
-      border-bottom: 1px solid #F4F3EF;
+      border-bottom: 1px solid var(--surface);
     }
     .med-tl-pt:last-child { border-bottom: none; }
     .med-tl-pt-info { min-width: 0; }
@@ -1139,18 +1156,12 @@
       font-size: 10.5px; color: var(--ink-4); margin-top: 1px;
     }
 
-    /* 트랙 (하나의 환자 행) */
+    /* 트랙 (하나의 환자 행) — 26px 블록이 stack-2/3 (±11px)로 쌓일 때
+       정상 수용 위해 56px (= 26 + 22*2 margin). 40px이면 stack-3이 다음 행 침범. */
     .med-tl-track {
-      position: relative; height: 40px;
+      position: relative; height: 56px;
       padding: 8px 0;
-      border-bottom: 1px solid #F4F3EF;
-      background-image: repeating-linear-gradient(
-        to right,
-        transparent 0,
-        transparent calc(100% / 16 - 1px),
-        rgba(0,0,0,.04) calc(100% / 16 - 1px),
-        rgba(0,0,0,.04) calc(100% / 16)
-      );
+      border-bottom: 1px solid var(--surface);
     }
     .med-tl-track:last-child { border-bottom: none; }
 
@@ -1171,16 +1182,16 @@
       z-index: 5;
     }
     .med-tl-block.done {
-      background: #ECFDF5; color: var(--accent-strong);
-      border: 1px solid #BBF7D0;
+      background: var(--brand-green-50); color: var(--accent-strong);
+      border: 1px solid var(--brand-green-200);
     }
     .med-tl-block.miss   {
       background: var(--danger); color: var(--white);
       animation: medTlPulse 1.8s ease-in-out infinite;
     }
     .med-tl-block.refuse {
-      background: #FFFBEB; color: #B45309;
-      border: 1px solid #FDE68A;
+      background: var(--palette-amber-50); color: var(--palette-amber-700);
+      border: 1px solid var(--palette-amber-300);
     }
     .med-tl-block.plan {
       background: var(--surface);
@@ -1192,11 +1203,11 @@
       flex-shrink: 0;
     }
     .med-tl-block.done .med-tl-block-dot   { background: var(--accent-strong); }
-    .med-tl-block.refuse .med-tl-block-dot { background: #D97706; }
+    .med-tl-block.refuse .med-tl-block-dot { background: var(--palette-amber-600); }
     .med-tl-block.plan .med-tl-block-dot   { background: var(--ink-5); }
     @keyframes medTlPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,.35); }
-      50%      { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(var(--color-danger-rgb), .35); }
+      50%      { box-shadow: 0 0 0 6px rgba(var(--color-danger-rgb), 0); }
     }
 
     /* 겹칠 때 오프셋 */
@@ -1206,6 +1217,7 @@
     /* 지금 라인 — 얇은 수직선만, 라벨은 첫 행에만 */
     .med-tl-now {
       position: absolute; top: 0; bottom: 0;
+      left: var(--mp, 50%);
       width: 1px; background: var(--danger);
       z-index: 3; pointer-events: none;
       opacity: .55;
@@ -1228,7 +1240,7 @@
 
     .med-tl-footer {
       display: flex; align-items: center; justify-content: space-between;
-      margin-top: 14px; padding-top: 12px; border-top: 1px solid #F0EFEB;
+      margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--surface-soft);
       font-size: 11px; color: var(--ink-4);
     }
     .med-tl-stat {
@@ -1239,9 +1251,9 @@
     /* ── CHECKLIST ── */
     .cl-group-head {
       padding: 8px 20px 7px;
-      background: #FAFAF8;
-      border-bottom: 1px solid #F0EFEB;
-      border-top: 1px solid #F0EFEB;
+      background: var(--surface-warm);
+      border-bottom: 1px solid var(--surface-soft);
+      border-top: 1px solid var(--surface-soft);
       display: flex; align-items: center; gap: 10px;
     }
     .cl-group-head:first-child { border-top: none; }
@@ -1264,15 +1276,15 @@
     }
     .cl-cols {
       padding-top: 11px; padding-bottom: 11px;
-      border-bottom: 1px solid #F0EFEB;
-      background: #FAFAF8;
+      border-bottom: 1px solid var(--surface-soft);
+      background: var(--surface-warm);
     }
     .cl-row {
       padding-top: 12px; padding-bottom: 12px;
-      border-bottom: 1px solid #F5F4F2;
+      border-bottom: 1px solid var(--surface);
       cursor: pointer; transition: background .1s;
     }
-    .cl-row:hover { background: #FAFAF8; }
+    .cl-row:hover { background: var(--surface-warm); }
     .cl-row:last-child { border-bottom: none; }
     .cl-row.done { opacity: .65; }
 
@@ -1288,7 +1300,7 @@
     .cl-check.checked::after {
       content: '';
       width: 5px; height: 9px;
-      border-right: 2px solid #fff; border-bottom: 2px solid #fff;
+      border-right: 2px solid white; border-bottom: 2px solid white;
       transform: rotate(45deg) translateY(-1px);
     }
 
@@ -1310,7 +1322,7 @@
     .pt-add-btn {
       display: flex; align-items: center; gap: 6px;
       padding: 9px 18px; border-radius: 999px;
-      background: var(--accent); color: #fff;
+      background: var(--accent); color: white;
       border: none; font-size: 13px; font-weight: 700;
       cursor: pointer; font-family: var(--font); flex-shrink: 0;
     }
@@ -1326,7 +1338,7 @@
     }
     .pt-hero-title {
       display: flex; align-items: center; gap: 10px;
-      font-size: 15px; font-weight: 800; color: var(--ink);
+      font-size: 15px; font-weight: 700; color: var(--ink);
       letter-spacing: -.3px;
     }
     .pt-hero-title iconify-icon { font-size: 20px; color: var(--ink-3); }
@@ -1352,14 +1364,14 @@
     }
     .pt-hero-stats {
       display: flex; flex-direction: column; gap: 14px;
-      padding-right: 22px; border-right: 1px solid #F0EFEB;
+      padding-right: 22px; border-right: 1px solid var(--surface-soft);
     }
     .pt-hero-stat { display: flex; flex-direction: column; gap: 2px; }
     .pt-hero-stat .lbl {
       font-size: 11px; font-weight: 700; color: var(--ink-3); letter-spacing: -.1px;
     }
     .pt-hero-stat .val {
-      font-size: 22px; font-weight: 800; color: var(--ink);
+      font-size: 22px; font-weight: 700; color: var(--ink);
       line-height: 1; letter-spacing: -.5px;
       font-variant-numeric: tabular-nums;
     }
@@ -1376,7 +1388,7 @@
       display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
     }
     .pt-room {
-      background: var(--white); border: 1px solid #E8E7E3;
+      background: var(--white); border: 1px solid var(--border-warm);
       border-radius: 10px; padding: 8px 10px 9px;
       cursor: pointer; transition: transform .1s, border-color .1s, background .1s;
       position: relative;
@@ -1385,7 +1397,7 @@
     .pt-room.has-urgent { border-color: var(--danger-b); background: var(--danger-bg); }
     .pt-room.has-urgent:hover { border-color: var(--danger); }
     .pt-room-no {
-      font-size: 10.5px; font-weight: 800; color: var(--ink);
+      font-size: 10.5px; font-weight: 700; color: var(--ink);
       font-variant-numeric: tabular-nums; letter-spacing: 0;
     }
     .pt-room-beds { display: flex; gap: 5px; margin: 6px 0 5px; }
@@ -1406,7 +1418,7 @@
 
     /* 오늘의 환자 quick-switch Row (Knowledge 레퍼런스) */
     .pt-qs {
-      background: var(--white); border: 1px solid #ECEAE6;
+      background: var(--white); border: 1px solid var(--surface-tint-2);
       border-radius: 12px; padding: 12px 14px;
       margin-bottom: 14px;
     }
@@ -1430,7 +1442,7 @@
       padding-bottom: 2px;
     }
     .pt-qs-track::-webkit-scrollbar { height: 4px; }
-    .pt-qs-track::-webkit-scrollbar-thumb { background: #E6E4DF; border-radius: 4px; }
+    .pt-qs-track::-webkit-scrollbar-thumb { background: var(--surface-tint-3); border-radius: 4px; }
     .pt-qs-item {
       flex-shrink: 0; width: 64px;
       display: flex; flex-direction: column; align-items: center; gap: 4px;
@@ -1438,11 +1450,11 @@
       padding: 4px 2px; border-radius: 8px;
       transition: background .12s;
     }
-    .pt-qs-item:hover { background: #FAFAF8; }
+    .pt-qs-item:hover { background: var(--surface-warm); }
     .pt-qs-av {
       position: relative;
       width: 44px; height: 44px; border-radius: 50%;
-      background: #E8E7E3; color: var(--ink-2);
+      background: var(--border-warm); color: var(--ink-2);
       display: flex; align-items: center; justify-content: center;
       font-size: 14px; font-weight: 700;
       border: 2px solid transparent;
@@ -1455,7 +1467,7 @@
       width: 10px; height: 10px; border-radius: 50%;
       background: var(--danger); border: 2px solid var(--white);
     }
-    .pt-qs-item.mon .pt-qs-av { border-color: #D8D5CE; }
+    .pt-qs-item.mon .pt-qs-av { border-color: var(--ink-7); }
     .pt-qs-room {
       font-size: 9.5px; font-weight: 700; color: var(--ink-4);
       letter-spacing: -.2px;
@@ -1475,7 +1487,7 @@
       cursor: pointer; align-self: center;
       transition: background .12s, border-color .12s;
     }
-    .pt-qs-more:hover { background: #FAFAF8; border-color: var(--ink-4); color: var(--ink-2); }
+    .pt-qs-more:hover { background: var(--surface-warm); border-color: var(--ink-4); color: var(--ink-2); }
 
     .pt-filter-bar {
       display: flex; align-items: center; justify-content: space-between;
@@ -1493,7 +1505,7 @@
       font-size: 12px; font-weight: 500; color: var(--ink-4);
       cursor: pointer; white-space: nowrap;
     }
-    .pt-tab.active { background: var(--ink); color: #fff; font-weight: 700; }
+    .pt-tab.active { background: var(--ink); color: white; font-weight: 700; }
     .pt-tab-count {
       font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 999px;
     }
@@ -1527,8 +1539,8 @@
 
     .pt-cols {
       padding-top: 11px; padding-bottom: 11px;
-      border-bottom: 1px solid #F0EFEB;
-      background: #FAFAF8;
+      border-bottom: 1px solid var(--surface-soft);
+      background: var(--surface-warm);
     }
     .pt-col-label {
       font-size: 10.5px; font-weight: 700; color: var(--ink-5);
@@ -1538,10 +1550,10 @@
 
     .pt-row {
       padding-top: 13px; padding-bottom: 13px;
-      border-bottom: 1px solid #F5F4F2;
+      border-bottom: 1px solid var(--surface);
       cursor: pointer; transition: background .1s;
     }
-    .pt-row:hover { background: #FAFAF8; }
+    .pt-row:hover { background: var(--surface-warm); }
     .pt-row:last-child { border-bottom: none; }
 
     .pt-info { display: flex; align-items: center; gap: 11px; min-width: 0; }
@@ -1549,11 +1561,17 @@
     .pt-av {
       width: 36px; height: 36px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 800; flex-shrink: 0;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
     }
-    .pt-av.dg, .pt-av.wn, .pt-av.sf, .pt-av.nt { background: #E8E7E3; color: var(--ink-2); }
+    .pt-av.dg, .pt-av.wn, .pt-av.sf, .pt-av.nt { background: var(--border-warm); color: var(--ink-2); }
 
-    .pt-room { font-size: 10px; font-weight: 700; color: var(--ink-5); letter-spacing: .2px; }
+    /* 환자 행 안의 호실 라벨 — 상단 .pt-room(개요 박스)과 클래스명 충돌이라 명시적으로 리셋 */
+    .pt-row .pt-room {
+      background: transparent; border: none; padding: 0; border-radius: 0;
+      cursor: default; transform: none;
+      font-size: 10.5px; font-weight: 600; color: var(--ink-4);
+      letter-spacing: .2px; line-height: 1.2;
+    }
     .pt-name-text { font-size: 13px; font-weight: 700; color: var(--ink); line-height: 1.25; }
     .pt-meta { font-size: 11px; color: var(--ink-4); margin-top: 1px; }
 
@@ -1566,7 +1584,7 @@
       letter-spacing: .1px; white-space: nowrap; line-height: 1.3;
     }
     .pt-risk.high { color: var(--danger); background: var(--danger-bg); border: 1px solid var(--danger-b); }
-    .pt-risk.mid { color: var(--ink-3); background: #F5F4F2; border: 1px solid #E8E7E3; }
+    .pt-risk.mid { color: var(--ink-3); background: var(--surface); border: 1px solid var(--border-warm); }
 
     .pt-badge {
       display: inline-flex; align-items: center; gap: 5px;
@@ -1576,13 +1594,15 @@
     .pt-badge.dg { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-b); }
     .pt-badge.wn { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-b); }
     .pt-badge.sf { background: var(--white); color: var(--ink-2); border: 1px solid var(--ink-6); }
+    .pt-badge.upcoming { background: var(--surface); color: var(--ink-4); border: 1px solid var(--ink-6); }
     .pt-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
     .pt-badge.sf .pt-badge-dot { background: var(--accent); }
+    .pt-badge.upcoming .pt-badge-dot { background: var(--ink-5); }
 
     .pt-progress { display: flex; align-items: center; gap: 9px; }
     .pt-pct { font-size: 12px; font-weight: 700; color: var(--ink-2); min-width: 30px; }
     .pt-pct.low { color: var(--danger); }
-    .pt-pbar { flex: 1; height: 4px; background: #ECEAE6; border-radius: 4px; overflow: hidden; }
+    .pt-pbar { flex: 1; height: 4px; background: var(--surface-tint-2); border-radius: 4px; overflow: hidden; }
     .pt-pfill { height: 100%; border-radius: 4px; background: var(--accent); }
     .pt-pfill.low { background: var(--danger); }
     .pt-pfill.mid { background: var(--warn); }
@@ -1601,14 +1621,14 @@
       color: var(--ink-3); cursor: pointer; font-family: var(--font); white-space: nowrap;
     }
     .pt-act:hover { background: var(--surface); }
-    .pt-act.em { background: var(--danger); color: #fff; border-color: var(--danger); }
+    .pt-act.em { background: var(--danger); color: white; border-color: var(--danger); }
 
     .pt-more {
       padding: 14px 20px; text-align: center;
       font-size: 12px; color: var(--ink-4); font-weight: 600;
       cursor: pointer;
     }
-    .pt-more:hover { background: #FAFAF8; color: var(--ink-3); }
+    .pt-more:hover { background: var(--surface-warm); color: var(--ink-3); }
 
     /* ── SCHEDULE ── */
     .week-strip {
@@ -1625,8 +1645,8 @@
     .week-day.today { background: var(--ink); border-color: var(--ink); }
     .week-day-name { font-size: 10px; font-weight: 700; color: var(--ink-5); text-transform: uppercase; letter-spacing: .3px; }
     .week-day.today .week-day-name { color: rgba(255,255,255,.55); }
-    .week-day-num  { font-size: 18px; font-weight: 800; color: var(--ink); margin-top: 3px; }
-    .week-day.today .week-day-num  { color: #fff; }
+    .week-day-num  { font-size: 18px; font-weight: 700; color: var(--ink); margin-top: 3px; }
+    .week-day.today .week-day-num  { color: white; }
     .week-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-top: 5px; }
     .week-dot.none { background: transparent; }
     .week-day.today .week-dot { background: rgba(255,255,255,.5); }
@@ -1645,7 +1665,7 @@
       cursor: pointer; font-family: var(--font); transition: all .15s;
     }
     .sch-nf-btn:hover { border-color: var(--ink-4); color: var(--ink-3); }
-    .sch-nf-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .sch-nf-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
     .sch-nf-btn.me.active { background: var(--accent); border-color: var(--accent); }
 
     /* Calendar wrap */
@@ -1655,12 +1675,12 @@
     }
     .sch-cal-legend {
       display: flex; align-items: center; gap: 16px;
-      padding: 12px 20px; border-bottom: 1px solid #F0EFEB;
+      padding: 12px 20px; border-bottom: 1px solid var(--surface-soft);
     }
     .sch-cal-legend-title { font-size: 12px; font-weight: 700; color: var(--ink); flex: 1; }
     .sch-cal-dow-row {
       display: grid; grid-template-columns: repeat(7, 1fr);
-      border-bottom: 1px solid #EDECE8; background: #FAFAF8;
+      border-bottom: 1px solid var(--border-warm); background: var(--surface-warm);
     }
     .sch-cal-dow {
       padding: 9px 0; text-align: center;
@@ -1670,19 +1690,19 @@
     .sch-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
     .sch-cal-cell {
       min-height: 104px; padding: 8px 6px;
-      border-right: 1px solid #F5F4F2; border-bottom: 1px solid #F5F4F2;
+      border-right: 1px solid var(--surface); border-bottom: 1px solid var(--surface);
     }
     .sch-cal-cell:nth-child(7n) { border-right: none; }
-    .sch-cal-cell.empty { background: #FAFAF9; }
-    .sch-cal-cell.today-cell { background: rgba(34,197,94,.03); }
-    .sch-cal-cell.wknd-bg { background: #FAFAF9; }
+    .sch-cal-cell.empty { background: var(--surface-warm); }
+    .sch-cal-cell.today-cell { background: rgba(var(--brand-green-500-rgb), .03); }
+    .sch-cal-cell.wknd-bg { background: var(--surface-warm); }
     .sch-cal-day-num {
       font-size: 11px; font-weight: 700; color: var(--ink-4);
       margin-bottom: 5px; display: inline-block;
     }
     .sch-cal-cell.today-cell .sch-cal-day-num {
       width: 20px; height: 20px; border-radius: 50%; text-align: center; line-height: 20px;
-      background: var(--accent); color: #fff; font-size: 10px;
+      background: var(--accent); color: white; font-size: 10px;
     }
     .sch-cal-cell.wknd-bg .sch-cal-day-num { color: var(--ink-6); }
     /* Summary (전체 mode) */
@@ -1703,7 +1723,7 @@
     .sch-cal-cell.solo .sb { font-size: 12px; padding: 4px 12px; }
 
     /* Shift badges */
-    .sb { display: inline-block; font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 4px; line-height: 1.5; letter-spacing: .3px; }
+    .sb { display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 4px; line-height: 1.5; letter-spacing: .3px; }
     .sb-d  { background: var(--accent-bg); color: var(--accent-strong); }
     .sb-e  { background: var(--warn-bg);   color: var(--palette-amber-700); }
     .sb-n  { background: var(--surface);   color: var(--ink-3); }
@@ -1715,14 +1735,14 @@
       grid-template-columns: 200px 1fr 96px 110px 96px;
       gap: 12px; align-items: start; padding: 0 20px;
     }
-    .ho-cols { padding-top: 11px; padding-bottom: 11px; border-bottom: 1px solid #F0EFEB; background: #FAFAF8; align-items: center; }
-    .ho-row  { padding-top: 16px; padding-bottom: 16px; border-bottom: 1px solid #F5F4F2; cursor: pointer; transition: background .1s; }
-    .ho-row:hover { background: #FAFAF8; }
+    .ho-cols { padding-top: 11px; padding-bottom: 11px; border-bottom: 1px solid var(--surface-soft); background: var(--surface-warm); align-items: center; }
+    .ho-row  { padding-top: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--surface); cursor: pointer; transition: background .1s; }
+    .ho-row:hover { background: var(--surface-warm); }
     .ho-row:last-child { border-bottom: none; }
     .ho-sbar { display: flex; flex-direction: column; gap: 6px; }
     .ho-line { display: flex; gap: 8px; align-items: flex-start; }
     .ho-lbl {
-      font-size: 9px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase;
+      font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
       padding: 2px 6px; border-radius: 4px; flex-shrink: 0; margin-top: 2px;
     }
     .ho-lbl.s, .ho-lbl.a, .ho-lbl.r { background: var(--surface); color: var(--ink-4); }
@@ -1748,7 +1768,7 @@
     .ho-ai-item strong { color: var(--ink-2); font-weight: 700; }
     .ho-gen-btn {
       display: flex; align-items: center; gap: 8px;
-      padding: 10px 20px; background: var(--accent); color: #fff;
+      padding: 10px 20px; background: var(--accent); color: white;
       border: none; border-radius: 999px; font-size: 13px; font-weight: 700;
       cursor: pointer; font-family: var(--font); width: fit-content;
     }
@@ -1759,17 +1779,17 @@
       grid-template-columns: 200px 1fr 110px 110px 90px 144px;
       gap: 12px; align-items: center; padding: 0 20px;
     }
-    .rec-cols { padding-top: 11px; padding-bottom: 11px; border-bottom: 1px solid #F0EFEB; background: #FAFAF8; }
-    .rec-row  { padding-top: 13px; padding-bottom: 13px; border-bottom: 1px solid #F5F4F2; cursor: pointer; transition: background .1s; }
-    .rec-row:hover  { background: #FAFAF8; }
+    .rec-cols { padding-top: 11px; padding-bottom: 11px; border-bottom: 1px solid var(--surface-soft); background: var(--surface-warm); }
+    .rec-row  { padding-top: 13px; padding-bottom: 13px; border-bottom: 1px solid var(--surface); cursor: pointer; transition: background .1s; }
+    .rec-row:hover  { background: var(--surface-warm); }
     .rec-row:last-child { border-bottom: none; }
     .rec-type {
       display: inline-flex; align-items: center; gap: 5px;
       font-size: 10.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px;
     }
-    .rec-type.nurse  { background: rgba(99,102,241,.08); color: #4F46E5; border: 1px solid rgba(99,102,241,.2); }
+    .rec-type.nurse  { background: rgba(99,102,241,.08); color: var(--avatar-manager); border: 1px solid rgba(99,102,241,.2); }
     .rec-type.pay    { background: var(--accent-bg); color: var(--accent-strong); border: 1px solid var(--accent-b); }
-    .rec-type.vital  { background: rgba(59,130,246,.08); color: #2563EB; border: 1px solid rgba(59,130,246,.2); }
+    .rec-type.vital  { background: rgba(var(--brand-blue-500-rgb), .08); color: var(--brand-blue-500); border: 1px solid rgba(var(--brand-blue-500-rgb), .2); }
     .rec-type.inc    { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-b); }
     .rec-title { font-size: 13px; font-weight: 600; color: var(--ink); }
     .rec-sub   { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
@@ -1801,7 +1821,7 @@
       font-size: 22px;
     }
     .rec-alert-title {
-      font-size: 14px; font-weight: 800; color: var(--ink);
+      font-size: 14px; font-weight: 700; color: var(--ink);
       letter-spacing: -.2px;
     }
     .rec-alert-law { color: var(--danger); }
@@ -1810,18 +1830,18 @@
       margin-top: 3px; line-height: 1.4;
     }
     .rec-alert-time {
-      color: var(--danger); font-weight: 800;
+      color: var(--danger); font-weight: 700;
       font-variant-numeric: tabular-nums;
     }
     .rec-alert-countdown {
       display: flex; flex-direction: column; align-items: center;
       padding: 6px 14px;
-      border-left: 1px solid #EEEDE9;
-      border-right: 1px solid #EEEDE9;
+      border-left: 1px solid var(--surface-soft);
+      border-right: 1px solid var(--surface-soft);
       min-width: 88px;
     }
     .rec-alert-countdown-val {
-      font-size: 20px; font-weight: 800; color: var(--danger);
+      font-size: 20px; font-weight: 700; color: var(--danger);
       letter-spacing: -.5px;
       font-variant-numeric: tabular-nums; line-height: 1;
     }
@@ -1832,7 +1852,7 @@
     }
     .rec-alert-btn {
       padding: 10px 18px; border-radius: 999px;
-      background: var(--danger); color: #fff;
+      background: var(--danger); color: white;
       font-weight: 700; font-size: 12px;
       border: 1px solid var(--danger); cursor: pointer;
       font-family: var(--font); white-space: nowrap;
@@ -1850,7 +1870,7 @@
     }
     .rec-tlh-title {
       display: flex; align-items: center; gap: 10px;
-      font-size: 15px; font-weight: 800; color: var(--ink);
+      font-size: 15px; font-weight: 700; color: var(--ink);
       letter-spacing: -.3px;
     }
     .rec-tlh-title iconify-icon { font-size: 20px; color: var(--ink-3); }
@@ -1867,7 +1887,7 @@
       font-size: 12px; color: var(--ink-3); font-weight: 600;
     }
     .rec-tlh-stat b {
-      font-size: 16px; color: var(--ink); font-weight: 800;
+      font-size: 16px; color: var(--ink); font-weight: 700;
       font-variant-numeric: tabular-nums; letter-spacing: -.3px;
     }
     .rec-tlh-stat.alert b { color: var(--danger); }
@@ -1876,7 +1896,7 @@
     .rec-tl { position: relative; padding: 26px 4px 0; }
     .rec-tl-bar {
       position: relative; height: 56px;
-      background: #F8F7F4; border: 1px solid #E8E7E3; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border-warm); border-radius: 10px;
       overflow: visible;
     }
     .rec-tl-half {
@@ -1890,7 +1910,7 @@
     .rec-tl-half.future { left: 50%; width: 50%; background: var(--white); }
     .rec-tl-half.future::before {
       content: ''; position: absolute; top: 0; bottom: 0; left: 0;
-      width: 1px; background: #E8E7E3;
+      width: 1px; background: var(--border-warm);
     }
 
     /* 이벤트/마감 마커 */
@@ -1925,7 +1945,7 @@
       font-size: 10px; font-weight: 700; color: var(--ink-2);
       white-space: nowrap; letter-spacing: -.1px;
       background: var(--white); padding: 1px 5px;
-      border: 1px solid #E8E7E3; border-radius: 4px;
+      border: 1px solid var(--border-warm); border-radius: 4px;
     }
     .rec-tl-mk.urgent .rec-tl-mk-lbl { color: var(--danger); border-color: var(--danger-b); }
     .rec-tl-mk-sub {
@@ -1950,7 +1970,7 @@
     .rec-tl-now-lbl {
       position: absolute; top: -30px; left: 50%;
       transform: translateX(-50%);
-      font-size: 10.5px; font-weight: 800; color: var(--ink);
+      font-size: 10.5px; font-weight: 700; color: var(--ink);
       white-space: nowrap; letter-spacing: 0;
       font-variant-numeric: tabular-nums;
       background: var(--ink); color: var(--white);
@@ -2006,7 +2026,7 @@
       border-radius: 50%;
       background: conic-gradient(
         var(--gauge-color, var(--accent)) calc(var(--p, 0) * 1%),
-        #EFEEEA 0
+        var(--surface-soft) 0
       );
       display: flex; align-items: center; justify-content: center;
     }
@@ -2016,7 +2036,7 @@
     }
     .rec-gauge-val {
       position: relative; z-index: 1;
-      font-size: 15px; font-weight: 800; color: var(--ink);
+      font-size: 15px; font-weight: 700; color: var(--ink);
       letter-spacing: -.3px;
     }
     .rec-gauge-val .pct { font-size: 10px; color: var(--ink-4); font-weight: 600; margin-left: 1px; }
@@ -2033,14 +2053,14 @@
     /* 실사 준비 게이지 링 바닥 색 (카테고리별) */
     .rec-gauge-cell[data-type="nurse"]  { --gauge-color: #6366F1; }
     .rec-gauge-cell[data-type="pay"]    { --gauge-color: var(--accent); }
-    .rec-gauge-cell[data-type="vital"]  { --gauge-color: #3B82F6; }
+    .rec-gauge-cell[data-type="vital"]  { --gauge-color: var(--brand-blue-500); }
     .rec-gauge-cell[data-type="inc"]    { --gauge-color: var(--danger); }
 
     /* 게이지 아래: 미작성 항목 컴팩트 리스트 */
     .rec-hero-missing {
       margin-top: 16px;
       padding-top: 14px;
-      border-top: 1px dashed #E6E4DF;
+      border-top: 1px dashed var(--surface-tint-3);
     }
     .rec-hero-missing-head {
       display: flex; align-items: baseline; justify-content: space-between;
@@ -2053,7 +2073,7 @@
     .rec-hero-missing-head-label .rhm-count {
       font-size: 10.5px; font-weight: 700; color: var(--danger);
       padding: 2px 7px; border-radius: 999px;
-      background: #FEE4E2; border: 1px solid #FECACA;
+      background: var(--palette-red-100); border: 1px solid var(--palette-red-300);
     }
     .rec-hero-missing-head-meta {
       font-size: 10.5px; color: var(--ink-4); font-weight: 500;
@@ -2065,15 +2085,15 @@
       display: flex; align-items: center; gap: 10px;
       padding: 8px 10px;
       background: var(--white);
-      border: 1px solid #ECEAE6; border-radius: 8px;
+      border: 1px solid var(--surface-tint-2); border-radius: 8px;
       cursor: pointer;
       transition: border-color .1s, background .1s;
     }
-    .rec-hero-missing-item:hover { background: #FAFAF8; border-color: #D8D5CE; }
+    .rec-hero-missing-item:hover { background: var(--surface-warm); border-color: var(--ink-7); }
     .rec-hero-missing-item.urgent {
-      border-color: #FECACA; background: #FFF8F7;
+      border-color: var(--palette-red-300); background: var(--palette-red-50);
     }
-    .rec-hero-missing-item.urgent:hover { background: #FEE4E2; }
+    .rec-hero-missing-item.urgent:hover { background: var(--palette-red-100); }
     .rhm-ic {
       width: 26px; height: 26px; border-radius: 7px;
       display: flex; align-items: center; justify-content: center;
@@ -2100,11 +2120,11 @@
       font-size: 10px; font-weight: 700;
       padding: 3px 8px; border-radius: 999px;
       color: var(--ink-3); background: var(--surface);
-      border: 1px solid #E6E4DF;
+      border: 1px solid var(--surface-tint-3);
       flex-shrink: 0;
     }
     .rhm-pill.urgent {
-      color: var(--danger); background: var(--white); border-color: #FECACA;
+      color: var(--danger); background: var(--white); border-color: var(--palette-red-300);
     }
 
     /* AI 큐 */
@@ -2121,11 +2141,11 @@
     .rec-aiq-item {
       display: flex; align-items: center; gap: 10px;
       padding: 8px 10px;
-      border: 1px solid #ECEAE6; border-radius: 8px;
+      border: 1px solid var(--surface-tint-2); border-radius: 8px;
       background: var(--white);
       transition: background .1s, border-color .1s;
     }
-    .rec-aiq-item:hover { background: #FAFAF8; border-color: var(--accent-b); }
+    .rec-aiq-item:hover { background: var(--surface-warm); border-color: var(--accent-b); }
     .rec-aiq-icon {
       width: 28px; height: 28px; border-radius: 7px;
       display: flex; align-items: center; justify-content: center;
@@ -2173,7 +2193,7 @@
     }
     .ho-hero-title {
       display: flex; align-items: center; gap: 10px;
-      font-size: 15px; font-weight: 800; color: var(--ink);
+      font-size: 15px; font-weight: 700; color: var(--ink);
       letter-spacing: -.3px;
     }
     .ho-hero-title iconify-icon { font-size: 20px; color: var(--ink-3); }
@@ -2189,7 +2209,7 @@
     }
     .ho-hero-countdown-lbl { font-size: 11px; font-weight: 700; color: var(--danger); letter-spacing: .1px; }
     .ho-hero-countdown-val {
-      font-size: 14px; font-weight: 800; color: var(--danger);
+      font-size: 14px; font-weight: 700; color: var(--danger);
       font-variant-numeric: tabular-nums; letter-spacing: -.2px;
     }
 
@@ -2197,7 +2217,7 @@
     .ho-tl { position: relative; padding: 0 4px; margin-bottom: 24px; }
     .ho-tl-bar {
       position: relative; height: 52px;
-      background: #F5F4F2; border: 1px solid #E8E7E3; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border-warm); border-radius: 10px;
       overflow: visible;
     }
     .ho-tl-shift {
@@ -2205,14 +2225,14 @@
       padding: 8px 14px;
       display: flex; flex-direction: column; justify-content: center;
     }
-    .ho-tl-shift + .ho-tl-shift { border-left: 1px solid #E8E7E3; }
+    .ho-tl-shift + .ho-tl-shift { border-left: 1px solid var(--border-warm); }
     .ho-tl-shift.active { background: var(--white); }
     .ho-tl-shift.active::after {
       content: ''; position: absolute; left: 0; right: 0; bottom: -1px;
       height: 2px; background: var(--ink);
     }
     .ho-tl-shift-lbl {
-      font-size: 11px; font-weight: 800; color: var(--ink);
+      font-size: 11px; font-weight: 700; color: var(--ink);
       letter-spacing: -.2px; line-height: 1.2;
     }
     .ho-tl-shift.night .ho-tl-shift-lbl { color: var(--ink-3); }
@@ -2220,7 +2240,7 @@
       font-size: 10.5px; font-weight: 600; color: var(--ink-3);
       margin-top: 3px; letter-spacing: -.1px;
     }
-    .ho-tl-shift-stat b { color: var(--ink); font-weight: 800; }
+    .ho-tl-shift-stat b { color: var(--ink); font-weight: 700; }
     .ho-tl-shift-stat b.alert { color: var(--danger); }
 
     /* 현재 시각 마커 */
@@ -2237,7 +2257,7 @@
     .ho-tl-now-lbl {
       position: absolute; top: -28px; left: 50%;
       transform: translateX(-50%);
-      font-size: 10.5px; font-weight: 800; color: var(--danger);
+      font-size: 10.5px; font-weight: 700; color: var(--danger);
       white-space: nowrap; letter-spacing: 0;
       font-variant-numeric: tabular-nums;
     }
@@ -2268,10 +2288,10 @@
     /* 하단 스탯 스트립 */
     .ho-hero-stats {
       display: grid; grid-template-columns: repeat(4, 1fr);
-      padding-top: 16px; border-top: 1px solid #F0EFEB;
+      padding-top: 16px; border-top: 1px solid var(--surface-soft);
     }
     .ho-hero-stat {
-      padding: 0 16px; border-right: 1px solid #F0EFEB;
+      padding: 0 16px; border-right: 1px solid var(--surface-soft);
       display: flex; flex-direction: column; gap: 4px;
     }
     .ho-hero-stat:first-child { padding-left: 2px; }
@@ -2281,7 +2301,7 @@
       letter-spacing: -.1px;
     }
     .ho-hero-stat-val {
-      font-size: 22px; font-weight: 800; color: var(--ink);
+      font-size: 22px; font-weight: 700; color: var(--ink);
       line-height: 1; letter-spacing: -.5px;
       font-variant-numeric: tabular-nums;
     }
@@ -2311,7 +2331,7 @@
       margin-bottom: 14px;
     }
     .ho-tm-title {
-      font-size: 14px; font-weight: 800; color: var(--ink); letter-spacing: -.3px;
+      font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -.3px;
       display: flex; align-items: center; gap: 8px;
     }
     .ho-tm-title iconify-icon { font-size: 18px; color: var(--ink-3); }
@@ -2320,7 +2340,7 @@
       font-size: 11px; color: var(--ink-4);
       display: flex; align-items: center; gap: 8px;
     }
-    .ho-tm-sub b { color: var(--danger); font-weight: 800; }
+    .ho-tm-sub b { color: var(--danger); font-weight: 700; }
 
     .ho-tm-grid {
       display: grid;
@@ -2330,7 +2350,7 @@
     .ho-tm-block {
       position: relative;
       background: var(--white);
-      border: 1px solid #ECEAE6;
+      border: 1px solid var(--surface-tint-2);
       border-radius: 10px;
       padding: 13px 14px 11px 14px;
       overflow: hidden;
@@ -2338,9 +2358,9 @@
       cursor: pointer;
       display: flex; flex-direction: column;
     }
-    .ho-tm-block:hover { border-color: #D8D5CE; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+    .ho-tm-block:hover { border-color: var(--ink-7); box-shadow: 0 2px 8px rgba(0,0,0,.05); }
     .ho-tm-block.low {
-      background: #FAFAF8;
+      background: var(--surface-warm);
       grid-column: span 1;
       padding: 10px 14px;
     }
@@ -2358,18 +2378,18 @@
       letter-spacing: .3px; flex-shrink: 0;
     }
     .ho-tm-name {
-      font-size: 14.5px; font-weight: 800; color: var(--ink); letter-spacing: -.3px;
+      font-size: 14.5px; font-weight: 700; color: var(--ink); letter-spacing: -.3px;
       white-space: nowrap;
     }
     .ho-tm-name .age { font-size: 10.5px; font-weight: 500; color: var(--ink-4); margin-left: 3px; }
 
     .ho-tm-badge {
-      font-size: 10px; font-weight: 800;
+      font-size: 10px; font-weight: 700;
       padding: 2px 7px; border-radius: 4px;
       letter-spacing: -.1px;
       flex-shrink: 0;
     }
-    .ho-tm-badge.urgent { background: #FEE4E2; color: var(--danger); }
+    .ho-tm-badge.urgent { background: var(--palette-red-100); color: var(--danger); }
     .ho-tm-badge.high   { background: var(--surface); color: var(--ink-2); border: 1px solid var(--ink-6); }
     .ho-tm-badge.mid    { background: var(--surface); color: var(--ink-3); border: 1px solid var(--ink-6); }
     .ho-tm-badge.done {
@@ -2388,12 +2408,12 @@
     .ho-tm-lbl {
       flex-shrink: 0;
       width: 13px; height: 13px; border-radius: 3px;
-      font-size: 8.5px; font-weight: 800;
+      font-size: 8.5px; font-weight: 700;
       color: var(--white);
       display: flex; align-items: center; justify-content: center;
       margin-top: 2px;
     }
-    .ho-tm-lbl.s { background: #94928B; }
+    .ho-tm-lbl.s { background: var(--ink-4); }
     .ho-tm-lbl.a { background: var(--danger); }
     .ho-tm-lbl.r { background: var(--ink-3); }
     .ho-tm-txt {
@@ -2405,7 +2425,7 @@
     /* Footer */
     .ho-tm-foot {
       display: flex; align-items: center; justify-content: space-between;
-      padding-top: 9px; border-top: 1px solid #F1F0EC;
+      padding-top: 9px; border-top: 1px solid var(--surface-soft);
       font-size: 10.5px;
     }
     .ho-tm-meta { color: var(--ink-4); font-weight: 600; }
@@ -2444,7 +2464,7 @@
       margin-bottom: 14px;
     }
     .cl-viz-title {
-      font-size: 14px; font-weight: 800; color: var(--ink); letter-spacing: -.3px;
+      font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -.3px;
       display: flex; align-items: center; gap: 8px;
     }
     .cl-viz-title iconify-icon { font-size: 18px; color: var(--ink-3); }
@@ -2458,13 +2478,13 @@
       gap: 10px;
       padding-bottom: 18px;
       margin-bottom: 16px;
-      border-bottom: 1px solid #F0EFEB;
+      border-bottom: 1px solid var(--surface-soft);
     }
     .cl-don-cell {
       display: flex; align-items: center; gap: 12px;
       padding: 10px 12px;
       background: var(--surface);
-      border: 1px solid #EFEEEA;
+      border: 1px solid var(--surface-soft);
       border-radius: 10px;
       transition: background .12s;
       cursor: pointer;
@@ -2472,7 +2492,7 @@
     .cl-don-cell:hover { background: var(--white); }
     .cl-don-ring {
       position: relative; width: 58px; height: 58px; border-radius: 50%;
-      background: conic-gradient(var(--ring-color, var(--accent)) calc(var(--p, 0) * 1%), #E6E4DE 0);
+      background: conic-gradient(var(--ring-color, var(--accent)) calc(var(--p, 0) * 1%), var(--ink-7) 0);
       flex-shrink: 0;
     }
     .cl-don-ring::after {
@@ -2483,19 +2503,19 @@
     .cl-don-val {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 800; color: var(--ink);
+      font-size: 14px; font-weight: 700; color: var(--ink);
       z-index: 1; letter-spacing: -.5px;
     }
     .cl-don-val .pct { font-size: 9px; color: var(--ink-4); font-weight: 600; margin-left: 1px; }
     .cl-don-info { min-width: 0; }
     .cl-don-name {
-      font-size: 12px; font-weight: 800; color: var(--ink); letter-spacing: -.3px;
+      font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -.3px;
       display: flex; align-items: center; gap: 4px;
     }
     .cl-don-name iconify-icon { font-size: 13px; color: var(--ink-3); }
     .cl-don-frac { font-size: 10.5px; color: var(--ink-4); margin-top: 2px; font-weight: 600; }
     .cl-don-alert { font-size: 10px; color: var(--danger); font-weight: 700; margin-top: 1px; }
-    .cl-don-cell[data-cat="vital"] { --ring-color: #3B82F6; }
+    .cl-don-cell[data-cat="vital"] { --ring-color: var(--brand-blue-500); }
     .cl-don-cell[data-cat="med"]   { --ring-color: var(--accent-strong); }
     .cl-don-cell[data-cat="food"]  { --ring-color: var(--warn); }
     .cl-don-cell[data-cat="care"]  { --ring-color: #A78BFA; }
@@ -2506,25 +2526,25 @@
       margin-bottom: 8px;
     }
     .cl-tl-label {
-      font-size: 12px; font-weight: 800; color: var(--ink); letter-spacing: -.2px;
+      font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -.2px;
     }
     .cl-tl-stats {
       font-size: 10.5px; color: var(--ink-4); font-weight: 600;
       display: flex; gap: 12px;
     }
-    .cl-tl-stats b { font-weight: 800; letter-spacing: -.2px; }
+    .cl-tl-stats b { font-weight: 700; letter-spacing: -.2px; }
     .cl-tl-stats .done-t { color: var(--accent-strong); }
     .cl-tl-stats .miss-t { color: var(--danger); }
     .cl-tl-stats .late-t { color: var(--warn); }
 
     .cl-tl-axis {
       position: relative; height: 30px;
-      background: #F5F3EE; border-radius: 7px;
+      background: var(--surface); border-radius: 7px;
       margin-top: 4px;
     }
     .cl-tl-axis-fill {
       position: absolute; left: 0; top: 0; bottom: 0;
-      background: linear-gradient(90deg, rgba(22,163,74,.18), rgba(22,163,74,.32));
+      background: rgba(22,163,74,.25);
       border-radius: 7px 0 0 7px;
     }
     .cl-tl-tick {
@@ -2545,7 +2565,7 @@
     .cl-tl-now-pin {
       position: absolute; top: -22px; left: 50%;
       transform: translateX(-50%);
-      font-size: 9.5px; font-weight: 800; color: var(--white);
+      font-size: 9.5px; font-weight: 700; color: var(--white);
       background: var(--danger); padding: 2px 6px; border-radius: 4px;
       white-space: nowrap;
     }
@@ -2557,6 +2577,8 @@
     .cl-tl-evt.r2 { top: 40px !important; }
     .cl-tl-evt {
       position: absolute; top: 0;
+      left: var(--mp, 0%);
+      width: var(--ww, auto);
       height: 32px; min-width: 28px;
       border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
@@ -2585,16 +2607,16 @@
     }
     .my-avatar {
       width: 64px; height: 64px; border-radius: 50%;
-      background: var(--ink-7); color: #fff;
+      background: var(--ink-7); color: white;
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px; font-weight: 800; flex-shrink: 0;
+      font-size: 22px; font-weight: 700; flex-shrink: 0;
       overflow: hidden; position: relative;
     }
     .my-avatar img {
       width: 100%; height: 100%;
       object-fit: cover; display: block;
     }
-    .my-name      { font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; }
+    .my-name      { font-size: 20px; font-weight: 700; color: var(--ink); letter-spacing: -.5px; }
     .my-role-line { font-size: 13px; color: var(--ink-3); margin-top: 5px; }
     .my-chips     { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
     .my-chip {
@@ -2613,13 +2635,13 @@
       box-shadow: var(--card-sh); overflow: hidden; margin-bottom: 10px;
     }
     .my-section-head {
-      padding: 14px 20px; border-bottom: 1px solid #F1F0EC;
+      padding: 14px 20px; border-bottom: 1px solid var(--surface-soft);
       display: flex; align-items: center; justify-content: space-between;
     }
     .my-section-title { font-size: 13px; font-weight: 700; color: var(--ink); }
     .my-row {
       display: flex; align-items: center; padding: 13px 20px;
-      border-bottom: 1px solid #F5F4F2; gap: 14px;
+      border-bottom: 1px solid var(--surface); gap: 14px;
     }
     .my-row:last-child { border-bottom: none; }
     .my-row-icon {
@@ -2636,7 +2658,7 @@
     }
     .my-toggle::after {
       content: ''; position: absolute; top: 3px; right: 3px;
-      width: 16px; height: 16px; border-radius: 50%; background: #fff;
+      width: 16px; height: 16px; border-radius: 50%; background: white;
     }
     .my-toggle.off { background: var(--ink-6); }
     .my-toggle.off::after { right: auto; left: 3px; }
@@ -2668,6 +2690,845 @@
     .chart-legend-dot.warn   { background: var(--warn); }
     .chart-legend-dot.danger { background: var(--danger); }
     .chart-legend-dot.muted  { background: var(--ink-5); }
+
+    /* ── 환자 빠른 메모 (Side Panel) ──
+       기획서 §5.3.1 우측 패널 슬롯에 세컨더리 레이어로 슬라이드 인.
+       기획서 §6 "이중 기록 부담" 해소용 — 정식 간호기록지/인수인계와 별도 라이트 메모. */
+    .pt-act.memo { display: inline-flex; align-items: center; gap: 4px; }
+    .pt-act.memo iconify-icon { font-size: 13px; }
+
+    .memo-panel {
+      position: fixed; top: 0; right: 0;
+      width: 360px; height: 100vh;
+      background: white;
+      border-left: 1px solid var(--ink-6);
+      box-shadow: -8px 0 24px rgba(0,0,0,0.06);
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform .25s ease;
+      z-index: 90;
+    }
+    .memo-panel.is-open { transform: translateX(0); }
+
+    .memo-panel__header {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--surface);
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 10px;
+    }
+    .memo-panel__title { display: flex; flex-direction: column; gap: 2px; }
+    .memo-panel__title-main { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .memo-panel__title-sub  { font-size: 11px; font-weight: 500; color: var(--ink-4); }
+    .memo-panel__close {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; border: none; cursor: pointer;
+      color: var(--ink-4); flex-shrink: 0;
+    }
+    .memo-panel__close:hover { background: var(--surface); color: var(--ink); }
+
+    .memo-panel__body {
+      flex: 1; overflow-y: auto;
+      padding: 16px 18px 20px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    .memo-input-area textarea {
+      width: 100%; min-height: 92px;
+      padding: 10px 12px;
+      border: 1px solid var(--ink-6);
+      border-radius: 8px;
+      font: inherit; font-size: 12.5px; line-height: 1.5;
+      color: var(--ink); resize: vertical;
+      background: white;
+      box-sizing: border-box;
+    }
+    .memo-input-area textarea:focus {
+      outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+    .memo-flags {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      margin-top: 8px;
+    }
+    .memo-flag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11.5px; color: var(--ink-3); cursor: pointer;
+    }
+    .memo-flag input { accent-color: var(--accent); margin: 0; }
+    .memo-input-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 10px; gap: 8px;
+    }
+    .memo-input-hint {
+      font-size: 10.5px; color: var(--ink-5);
+    }
+    .memo-save {
+      padding: 7px 16px; border-radius: 999px;
+      font-size: 11.5px; font-weight: 700;
+      background: var(--accent); color: white; border: 1px solid var(--accent);
+      cursor: pointer; font-family: var(--font);
+    }
+    .memo-save:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
+    .memo-save:disabled { background: var(--ink-6); border-color: var(--ink-6); cursor: not-allowed; }
+
+    .memo-section-title {
+      font-size: 10.5px; font-weight: 700; color: var(--ink-5);
+      text-transform: uppercase; letter-spacing: .4px;
+    }
+    .memo-list { display: flex; flex-direction: column; gap: 8px; margin-top: -8px; }
+    .memo-empty {
+      font-size: 12px; color: var(--ink-5);
+      padding: 18px 12px; text-align: center;
+      border: 1px dashed var(--ink-6); border-radius: 8px;
+    }
+    .memo-card {
+      padding: 10px 12px;
+      background: var(--surface-warm); border: 1px solid var(--surface);
+      border-radius: 8px;
+    }
+    .memo-card.is-handover { border-color: var(--warn-b); background: var(--warn-bg); }
+    .memo-card__meta {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 10.5px; color: var(--ink-4); margin-bottom: 5px;
+      gap: 6px;
+    }
+    .memo-card__tags { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+    .memo-card__tag {
+      font-size: 9.5px; font-weight: 700;
+      padding: 2px 6px; border-radius: 4px;
+      color: white; letter-spacing: .2px;
+      display: inline-flex; align-items: center; gap: 3px;
+    }
+    .memo-card__tag.handover { background: var(--warn); }
+    .memo-card__tag.family   { background: var(--accent); }
+    .memo-card__tag iconify-icon { font-size: 10px; }
+    .memo-card__text {
+      font-size: 12.5px; color: var(--ink-2); line-height: 1.5;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .memo-card__delete {
+      background: transparent; border: none; cursor: pointer;
+      color: var(--ink-5); font-size: 10.5px; padding: 4px 0 0;
+      font-family: var(--font);
+    }
+    .memo-card__delete:hover { color: var(--danger); }
+
+    /* ── 메모 카운트 배지 (행 버튼) ── */
+    .pt-act.memo .memo-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 16px; height: 14px; padding: 0 4px;
+      border-radius: 999px;
+      font-size: 9.5px; font-weight: 700; line-height: 1;
+      background: var(--accent); color: white;
+      margin-left: 2px;
+    }
+    .pt-act.memo .memo-count.has-handover {
+      background: var(--warn);
+    }
+
+    /* ── 인수인계 — 수기 메모 인계 풀 ── */
+    .ho-manual-wrap {
+      margin-top: 20px;
+      background: white;
+      border: 1px solid var(--ink-6);
+      border-radius: 12px;
+      padding: 18px 20px 20px;
+    }
+    .ho-manual-head {
+      display: flex; flex-direction: column; gap: 4px;
+      margin-bottom: 14px;
+    }
+    .ho-manual-title {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13.5px; font-weight: 700; color: var(--ink);
+    }
+    .ho-manual-title iconify-icon { color: var(--ink-3); font-size: 16px; }
+    .ho-manual-title .sub {
+      font-size: 11px; font-weight: 600; color: var(--ink-4);
+      padding: 2px 8px; border-radius: 999px;
+      background: var(--surface); margin-left: 4px;
+    }
+    .ho-manual-sub { font-size: 11.5px; color: var(--ink-4); }
+    .ho-manual-list { display: flex; flex-direction: column; gap: 8px; }
+    .ho-manual-empty {
+      font-size: 12px; color: var(--ink-5);
+      padding: 24px 12px; text-align: center;
+      border: 1px dashed var(--ink-6); border-radius: 8px;
+    }
+    .ho-manual-item {
+      display: grid; grid-template-columns: 130px 1fr auto;
+      align-items: start; gap: 14px;
+      padding: 12px 14px;
+      background: var(--surface-warm);
+      border: 1px solid var(--surface);
+      border-radius: 8px;
+    }
+    .ho-manual-patient { display: flex; flex-direction: column; gap: 2px; }
+    .ho-manual-patient .name { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+    .ho-manual-patient .room { font-size: 10.5px; color: var(--ink-4); }
+    .ho-manual-text {
+      font-size: 12.5px; color: var(--ink-2); line-height: 1.5;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .ho-manual-text .ts {
+      display: block; font-size: 10.5px; color: var(--ink-5);
+      margin-top: 4px;
+    }
+    .ho-manual-actions { display: flex; gap: 4px; }
+    .ho-manual-open {
+      padding: 5px 10px; border-radius: 999px;
+      font-size: 10.5px; font-weight: 600;
+      border: 1px solid var(--ink-6); background: white; color: var(--ink-3);
+      cursor: pointer; font-family: var(--font); white-space: nowrap;
+    }
+    .ho-manual-open:hover { background: var(--surface); color: var(--ink); }
+
+    /* ============================================================
+       Tabular numerals — 숫자가 mono처럼 같은 폭으로 정렬
+       (Pretendard OpenType feature 활성화. 자모는 영향 없음, 숫자만 균일폭)
+       ============================================================ */
+    body, .kpi-value, .kpi-denom,
+    .ph-time, .tl-time-col, .tl-time,
+    .greet-pill-val, .greet-pill-unit,
+    .page-date, .search-input,
+    table, td, th, input, .mono-num {
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: 'tnum' 1;
+    }
+
+    /* ============================================================
+       Borderless pass — 외곽선 제거 + 표면대비/그림자/soft 칠로 위계
+       (Hairline divider: border-top/border-bottom는 유지 — 표 행 구분용)
+       ============================================================ */
+    :root {
+      --bg: var(--surface-tint);                  /* 페이지 배경 한 톤 진하게 (카드 흰색 대비 강화) */
+      --card-br: 0;                   /* 카드 외곽선 제거 */
+      --card-sh: 0 1px 2px rgba(0,0,0,.035), 0 6px 18px rgba(0,0,0,.055);
+    }
+
+    /* 카드·컨테이너 외곽선 일괄 제거 */
+    .priority-hero, .kpi, .card,
+    .tl-now-strip, .al-item,
+    .sidebar-facility {
+      border: 0 !important;
+    }
+    .priority-hero, .kpi, .card { box-shadow: var(--card-sh); }
+
+    /* 알림 피드 카드 — surface 톤으로 분리 */
+    .al-item { background: var(--surface); }
+    .al-item:hover { background: var(--surface-soft); }
+
+    /* 검색·인풋·페이지 데이트 — 외곽선 제거, surface 칠로만 표현 */
+    .search-input, .page-date {
+      border: 0 !important;
+      background: var(--surface);
+    }
+    .search-input:focus {
+      box-shadow: 0 0 0 3px rgba(var(--brand-green-500-rgb), .12);
+    }
+
+    /* 아이콘 버튼·일반 pill 버튼 — surface 칠 (외곽선 없음) */
+    .icon-btn, .ph-all, .ph-btn, .card-action,
+    .ho-manual-open {
+      border: 0 !important;
+      background: var(--surface);
+    }
+    .icon-btn:hover, .ph-all:hover, .ph-btn:hover,
+    .card-action:hover, .ho-manual-open:hover { background: var(--surface-tint-3); }
+
+    /* 칩(chip) 류 — 외곽선 제거, soft 배경만 */
+    .greet-pill, .kpi-chip, .kpi-name-chip,
+    .tl-tag, .ph-tag,
+    .kpi-chip.up, .kpi-chip.down {
+      border: 0 !important;
+    }
+    .greet-pill { background: var(--surface); }
+    .greet-pill.urgent { background: var(--danger-bg); }
+    .kpi-chip { background: var(--surface); }
+    .kpi-chip.up   { background: var(--accent-bg); }
+    .kpi-chip.down { background: var(--danger-bg); }
+    .kpi-name-chip { background: var(--surface); }
+    .ph-tag.muted  { background: var(--surface-soft); }
+    .tl-tag.done, .tl-tag.next { background: var(--surface); }
+
+    /* SOS 버튼은 강조 컬러 솔리드 — 외곽선 0 */
+    .sos-btn { border: 0 !important; }
+
+    /* 의료 타임라인 상태 블록 — 외곽선 제거, soft bg만 */
+    .med-tl-block.done, .med-tl-block.miss, .med-tl-block.refuse, .med-tl-block.plan {
+      border: 0 !important;
+    }
+
+    /* 권고/긴급 배너·카운트다운·작은 액션 칩 — 외곽선 제거 */
+    .rec-alert-banner, .ho-hero-countdown,
+    .pt-qs-row-btn, .pt-qs-card-btn,
+    .rec-action-btn, .rec-dismiss-btn,
+    .qa-pill, .qa-pill-em,
+    .ho-meds-action {
+      border: 0 !important;
+    }
+
+    /* 점선 박스(empty/placeholder) — 점선도 stroke의 일종이라 제거, surface 칠로 대체 */
+    .memo-empty, .ho-manual-empty,
+    [style*="dashed"] {
+      border: 0 !important;
+      background: var(--surface);
+    }
+
+    /* 나머지 카드·칩·버튼 류 (페이지별 컴포넌트) — 외곽선 일괄 제거 */
+    .al-time, .cp-tabs, .cp-tabs .cp-tab,
+    .af-item, .af-badge, .af-meta-pill,
+    .cp-ai-act, .cp-ai-search, .cp-ai-input,
+    .pt-tag, .pt-sort-btn, .pt-card, .pt-act,
+    .week-day, .sch-nf-btn,
+    .qa-pill, .qa-pill-em,
+    .my-chip, .my-chip-btn, .my-edit-btn, .my-stat-tag,
+    .ho-tm-block, .ho-info-item, .ho-manual-wrap, .ho-manual-item,
+    .rec-aiq-item, .rec-aiq-tag,
+    .room-tag, .room-pill,
+    .ho-meds-action, .ho-meds-item,
+    .cp-list-item, .cp-list-pill,
+    /* 추가 — 페이지별 잔존 컴포넌트 */
+    .al-btn, .med-route,
+    .rec-alert-btn, .rec-tl-mk-lbl,
+    .rec-hero-missing-item, .rhm-pill,
+    .rec-aiq-gen-btn, .ho-tm-action, .cl-don-cell,
+    /* AI 사이드 패널 (스크린샷의 카드들) */
+    .ai-badge, .ai-badge.urgent, .ai-badge.caution, .ai-badge.info,
+    .cp-ai-item, .cp-ai-item.urgent, .cp-ai-item.warn,
+    .cp-ai-act, .cp-ai-act.em, .cp-ai-act.done,
+    .cp-ai-ask-row, .cp-ai-answer,
+    .cp-input-row,
+    /* 환자·기록·일정 페이지 잔존 */
+    .ph-tag, .ph-tag.urgent, .ph-tag.warn, .ph-tag.muted,
+    .tl-tag, .tl-tag.done, .tl-tag.now, .tl-tag.next, .tl-tag.warn,
+    .tl-item,
+    .ho-pri, .ho-tm-badge,
+    .med-tl-leg-chip,
+    .pt-tab, .pt-bed, .pt-badge, .pt-risk, .pt-hero-legend,
+    .rec-type,
+    .sidebar-facility {
+      border: 0 !important;
+    }
+
+    /* AI 사이드 패널 — 배지: 카드 위에서 capsule이 떠 보이게 흰 바탕 + soft shadow
+       한글(Pretendard)은 line-height:1로 inline-flex 중앙정렬 시
+       글자가 캡슐 위쪽으로 뜨는 경향. line-height를 캡슐 높이와 동일하게
+       매칭해 baseline을 캡슐 가운데로 강제. */
+    .ai-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: white !important;
+      box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.04);
+      height: 22px;
+      padding: 0 10px;
+      line-height: 22px;          /* height와 동일 — 한글 시각 중앙 정렬 */
+      vertical-align: middle;
+      box-sizing: border-box;
+      margin-bottom: 0;           /* 기존 margin-bottom:10px 제거 — 헤더 flex 정렬 깨짐 방지 */
+    }
+    .cp-ai-item-head { align-items: center; }   /* 명시적으로 행 중앙정렬 보장 */
+    .cp-ai-item-pt { line-height: 1.3; }
+    .ai-badge.urgent  { color: var(--danger); }
+    .ai-badge.caution { color: var(--warn); }
+    .ai-badge.info    { color: var(--ink-3); }
+
+    /* AI 액션 버튼 — 외곽선 대신 그림자, 한글 텍스트 중앙 정렬 (line-height=height) */
+    .cp-ai-act {
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 28px;
+      padding: 0 14px;
+      line-height: 28px;            /* height와 동일 — 한글 baseline 가운데 */
+      background: white;
+      color: var(--ink-2);
+      box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.05);
+      box-sizing: border-box;
+    }
+    .cp-ai-act:hover {
+      background: var(--surface-warm);
+      color: var(--ink);
+      box-shadow: 0 2px 4px rgba(0,0,0,.07), 0 4px 10px rgba(0,0,0,.07);
+    }
+    .cp-ai-act.em {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 1px 2px rgba(var(--brand-green-500-rgb), .25), 0 4px 12px rgba(var(--brand-green-500-rgb), .22);
+    }
+    .cp-ai-act.em:hover {
+      background: var(--accent-strong);
+      box-shadow: 0 2px 4px rgba(var(--brand-green-500-rgb), .28), 0 6px 16px rgba(var(--brand-green-500-rgb), .28);
+    }
+    .cp-ai-act.done {
+      background: var(--surface);
+      color: var(--ink-5);
+      box-shadow: none;
+    }
+
+    /* AI 질문 입력 / 하단 대화 입력 — 외곽선 대신 inset shadow로 capsule */
+    .cp-ai-ask-row, .cp-input-row {
+      background: white;
+      box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.05);
+    }
+    .cp-ai-ask-row:focus-within {
+      box-shadow: 0 0 0 3px rgba(var(--brand-green-500-rgb), .14), 0 2px 8px rgba(0,0,0,.05);
+    }
+
+    /* 타임라인 미래 노드(.tl-dot.next) — border 대신 점 색으로 표현 */
+    .tl-dot.next { background: var(--ink-6) !important; }
+
+    /* ============================================================
+       Live indicator 강화 — halo + pulse
+       (NASA today_timeline_c 패턴 차용: 현재 진행 중 상태를 한 눈에)
+       ============================================================ */
+    .tl-dot.current {
+      width: 12px !important; height: 12px !important;
+      box-shadow:
+        0 0 0 4px rgba(var(--brand-green-500-rgb), .18),
+        0 0 0 8px rgba(var(--brand-green-500-rgb), .08) !important;
+      animation: liveHalo 1.8s ease-in-out infinite;
+    }
+    @keyframes liveHalo {
+      0%, 100% {
+        box-shadow: 0 0 0 4px rgba(var(--brand-green-500-rgb), .18), 0 0 0 8px rgba(var(--brand-green-500-rgb), .08);
+      }
+      50% {
+        box-shadow: 0 0 0 5px rgba(var(--brand-green-500-rgb), .22), 0 0 0 11px rgba(var(--brand-green-500-rgb), .04);
+      }
+    }
+    .tl-live-dot {
+      box-shadow: 0 0 0 3px rgba(var(--brand-green-500-rgb), .18);
+    }
+
+    /* "지금 진행 중" 타임라인 행 — 좌측에 액센트 인디케이터 띠 */
+    .tl-item.is-current .tl-body-col {
+      box-shadow: inset 3px 0 0 var(--accent),
+                  0 1px 3px rgba(0,0,0,.04),
+                  0 4px 12px rgba(var(--brand-green-500-rgb), .06) !important;
+    }
+
+    /* ============================================================
+       포커스 링 — 토큰 기반 통일 (접근성 + 일관성)
+       ============================================================ */
+    :focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(var(--brand-green-500-rgb), .30) !important;
+    }
+    .icon-btn:focus-visible, .sos-btn:focus-visible,
+    .ph-btn:focus-visible, .ph-all:focus-visible,
+    .cp-ai-act:focus-visible {
+      box-shadow:
+        0 0 0 3px rgba(var(--brand-green-500-rgb), .30),
+        0 1px 2px rgba(0,0,0,.06),
+        0 2px 6px rgba(0,0,0,.05) !important;
+    }
+
+    /* ============================================================
+       Mono 숫자 강조 — 큰 KPI 값과 시간만 약간 더 또렷하게
+       (폰트 교체 없음, Pretendard 그대로. tnum + letter-spacing 보정)
+       ============================================================ */
+    .kpi-value, .ph-time, .tl-time-col {
+      font-feature-settings: 'tnum' 1, 'ss01' 1;   /* tabular + stylistic alt */
+      letter-spacing: -0.5px;
+    }
+    .kpi.hero .kpi-value { letter-spacing: -1.5px; }   /* 큰 숫자는 더 타이트 */
+
+    /* ============================================================
+       SIDEBAR — 원래 다크 톤 복원 (var(--ink) near-black)
+       액티브만 브랜드 그린 pill로 정체성 유지
+       ============================================================ */
+    .sidebar {
+      background: #1A1612 !important;   /* DEBUG: 리터럴로 강제 (var(--ink) 평가 의심) */
+      border-right: 0 !important;
+      width: 220px !important;
+    }
+    .main-wrapper { margin-left: 220px !important; }
+
+    .sidebar-logo {
+      border-bottom: 1px solid rgba(255,255,255,.06) !important;
+      padding: 18px 16px 14px !important;
+    }
+    .logo-icon { color: white !important; }
+    .logo-name { color: white !important; font-size: 14.5px !important; }
+    .logo-sub  { color: rgba(255,255,255,.30) !important; }
+
+    .sidebar-facility {
+      background: rgba(255,255,255,.04) !important;
+      box-shadow: none !important;
+      border: 0 !important;
+      margin: 12px 12px 8px !important;
+    }
+    .facility-name { color: rgba(255,255,255,.55) !important; }
+    .facility-dot {
+      background: var(--brand-green-400) !important;
+      box-shadow: 0 0 0 2px rgba(74,222,128,.25);
+    }
+
+    .nav-section-label {
+      color: rgba(255,255,255,.28) !important;
+      font-size: 10px !important;
+      letter-spacing: 1.4px !important;
+      padding: 16px 16px 6px !important;
+    }
+
+    .nav-link {
+      color: rgba(255,255,255,.55) !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+    }
+    .nav-link:hover:not(.active) {
+      background: rgba(255,255,255,.05) !important;
+      color: rgba(255,255,255,.85) !important;
+    }
+    .nav-link.active {
+      background: var(--brand-green-500) !important;    /* 브랜드 그린 솔리드 pill */
+      color: white !important;
+      font-weight: 700 !important;
+      box-shadow: 0 1px 2px rgba(var(--brand-green-500-rgb), .30), 0 4px 14px rgba(var(--brand-green-500-rgb), .30);
+    }
+    .nav-icon { opacity: 0.55 !important; color: currentColor !important; }
+    .nav-link.active .nav-icon { opacity: 1 !important; }
+
+    .nav-badge.muted {
+      background: rgba(255,255,255,.08) !important;
+      color: rgba(255,255,255,.55) !important;
+    }
+    .nav-link.active .nav-badge.muted {
+      background: rgba(255,255,255,.22) !important;
+      color: white !important;
+    }
+
+    .sidebar-user {
+      border-top: 1px solid rgba(255,255,255,.06) !important;
+      padding: 14px 16px !important;
+    }
+    .user-avatar {
+      background: var(--brand-green-900) !important;
+      color: rgba(134,239,172,.9) !important;
+    }
+    .user-name { color: var(--palette-gray-200) !important; }
+    .user-role { color: rgba(255,255,255,.35) !important; }
+
+    /* ============================================================
+       KPI CARD — Fresha 패턴: 라벨↑ 숫자↓ 진행바 (수직 흐름)
+       숫자 사이즈 약간 줄여 라벨과의 위계 정돈
+       ============================================================ */
+    .kpi {
+      padding: 16px 18px 18px !important;
+    }
+    .kpi-value {
+      font-size: 38px !important;          /* 48 → 38 (Fresha 톤) */
+      letter-spacing: -1.2px !important;
+    }
+    .kpi-denom {
+      font-size: 14px !important;
+      letter-spacing: -.2px !important;
+    }
+    .kpi.hero .kpi-value {
+      font-size: 44px !important;          /* 56 → 44 */
+      letter-spacing: -1.6px !important;
+    }
+    .kpi.hero .kpi-denom { font-size: 16px !important; }
+
+    /* KPI 우상단 아이콘 배지 — 진행바와 동일 색으로 시각 연결 (Fresha) */
+    .kpi-badge {
+      width: 28px !important; height: 28px !important;
+      border-radius: 50% !important;
+      box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    }
+
+    /* KPI 진행바 — 카드 하단에 시그너처 라인. pip 5분할 유지 */
+    .kpi .kpi-bar { margin-top: 14px !important; }
+
+    /* ============================================================
+       PRIORITY HERO — 행 정돈 (Heidi 톤)
+       행 높이 유지하되 호버 톤 부드럽게, 시간 컬럼 강조
+       ============================================================ */
+    .ph-item:hover { background: rgba(var(--brand-green-500-rgb), .025) !important; }
+    .ph-time { font-size: 14px !important; }
+    .ph-time .ph-time-suffix { font-size: 10px; color: var(--ink-4); }
+
+    /* TOPBAR — 사이드바 라이트화에 맞춰 topbar 그림자 한 단계 강화 */
+    .topbar {
+      box-shadow: 0 1px 3px rgba(0,0,0,.03);
+    }
+
+    /* ============================================================
+       Mono 폰트 부분 도입 (옵션 B)
+       JetBrains Mono — 시간·바이탈·환자번호·카운트다운에만 적용.
+       한글은 그대로 Pretendard로 폴백 (font-family chain 활용)
+       ============================================================ */
+    :root {
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular,
+                   Menlo, Monaco, Consolas, monospace;
+    }
+
+    /* 큰 KPI 수치 (혈압·환자 수·완료율 등) */
+    .kpi-value, .kpi-denom,
+    .kpi.hero .kpi-value, .kpi.hero .kpi-denom {
+      font-family: var(--font-mono), var(--font);
+      font-feature-settings: 'tnum' 1, 'zero' 1;   /* slashed zero — 0/O 구분 */
+    }
+
+    /* 시간 표시 (타임라인·우선순위·페이지 데이트) */
+    .ph-time, .tl-time-col, .tl-time, .tl-name,
+    .page-date,
+    .tl-now-strip {
+      font-family: var(--font-mono), var(--font);
+      font-feature-settings: 'tnum' 1, 'zero' 1;
+    }
+    /* tl-name은 한글이 섞이니까 다시 Pretendard로 (위 규칙 취소) */
+    .tl-name { font-family: var(--font) !important; }
+    .tl-now-strip { font-family: var(--font) !important; }
+    /* 단, tl-now-strip 안의 시간 텍스트만 mono로 — 시간이 들어가는 경우 별도 span 권장 */
+
+    /* greeting pill 의 숫자 값 (3명 주의 등) */
+    .greet-pill-val, .greet-pill-unit {
+      font-family: var(--font-mono), var(--font);
+      font-feature-settings: 'tnum' 1, 'zero' 1;
+    }
+
+    /* eyebrow 라벨 (NASA #3 적용분) — mono로 변환해 "측정 라벨" 톤 */
+    .priority-hero::before,
+    .cp-ai-intro::before,
+    .tl-now-strip::after {
+      font-family: var(--font-mono), var(--font) !important;
+    }
+
+    /* AI 사이드 패널 - 시간/메타 라벨에 mono 적용 */
+    .cp-ai-sub { font-family: var(--font-mono), var(--font); font-feature-settings: 'tnum' 1; }
+
+    /* 차트 축 라벨 등 Chart.js 캔버스는 별도 — JS에서 처리됨 */
+
+    /* Mono 폰트는 영문 폭 좁음 — 한글 섞인 컴포넌트는 명시 폴백 */
+    .ph-meta, .kpi-name-chip, .greet-pill,
+    .cp-ai-item-pt, .cp-ai-item-body {
+      font-family: var(--font) !important;
+    }
+    .kpi-name-chip-room {
+      font-family: var(--font-mono), var(--font);   /* 방번호만 mono */
+      font-feature-settings: 'tnum' 1;
+    }
+
+    /* ============================================================
+       Timeline connector — 완료/예정 차별화 (NASA #5 차용)
+       :has()로 dot 상태별 connector 스타일 분기
+       ============================================================ */
+    /* 기본: 완료/현재 → 실선 */
+    .tl-line { background: rgba(28,28,30,.12); }
+    /* 예정(.next) → 점선 (CSS border로 표현. 기존 background line 숨김) */
+    .tl-item:has(.tl-dot.next) .tl-line {
+      background: transparent !important;
+      border-left: 1.5px dashed rgba(28,28,30,.20);
+      width: 0 !important;
+    }
+    /* 알림 발생 행 → 액센트 컬러 line */
+    .tl-item:has(.tl-dot.alert) .tl-line {
+      background: rgba(var(--color-danger-rgb), .30) !important;
+    }
+
+    /* ============================================================
+       Eyebrow 라벨 — 주요 카드에 uppercase 컨텍스트 마커
+       (NASA #3 차용. mono 폰트 없이 letter-spacing + 색으로 톤 구현)
+       ============================================================ */
+    .priority-hero { position: relative; }
+    .priority-hero::before {
+      content: 'TODAY · 오늘의 우선순위';
+      display: block;
+      padding: 12px 20px 0;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-feature-settings: 'tnum' 1;
+    }
+    .priority-hero .ph-head { padding-top: 6px; }   /* 헤더 패딩 보정 */
+
+    /* AI 사이드 패널 — eyebrow 추가 */
+    .cp-ai-intro { position: relative; }
+    .cp-ai-intro::before {
+      content: 'AI · 실시간 권고';
+      display: block;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-feature-settings: 'tnum' 1;
+    }
+
+    /* 알림 피드 카드 — eyebrow */
+    .card .card-title { position: relative; }
+
+    /* ============================================================
+       섹션 헤더 right meta — "LIVE / 갱신 중" 인디케이터
+       타임라인·알림 카드의 .card-head 우측에 미세한 상태 표시
+       ============================================================ */
+    .tl-now-strip { position: relative; }
+    .tl-now-strip::after {
+      content: 'LIVE';
+      margin-left: auto;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      color: var(--accent);
+      padding: 2px 7px;
+      background: var(--accent-bg);
+      border-radius: 3px;
+      font-feature-settings: 'tnum' 1;
+    }
+
+    /* ============================================================
+       KPI 진행 표시 — pip 시각화 (NASA #4 차용)
+       기존 .kpi-bar(연속 막대) 위에 5분할 pip 오버레이.
+       모든 KPI 자동 적용 — fill 비율은 기존 .kpi-fill width 그대로 따라감.
+       ============================================================ */
+    .kpi-bar {
+      height: 4px !important;
+      background: rgba(28,28,30,.06) !important;
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px !important;
+    }
+    .kpi-fill { border-radius: 4px !important; }
+    /* 5분할 split line — 칸 구분 (배경 위에 흰 세로선 4개) */
+    .kpi-bar::after { content: none; }
+
+    /* ============================================================
+       스트로크 → 그림자 일괄 치환
+       (border 제거된 캡슐/버튼/배지에 soft drop-shadow로 위계 부여)
+       ============================================================ */
+
+    /* 작은 칩·태그·배지 — 미세 그림자 (가벼운 부유감) */
+    .greet-pill, .kpi-chip, .kpi-name-chip,
+    .ph-tag, .tl-tag,
+    .pt-badge, .pt-risk, .pt-bed, .pt-hero-legend,
+    .rhm-pill, .med-tl-leg-chip,
+    .af-badge, .my-stat-tag, .ho-tm-badge,
+    .room-tag, .room-pill, .rec-aiq-tag,
+    .rec-type, .ho-pri {
+      box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 2px 4px rgba(0,0,0,.04);
+    }
+
+    /* 버튼(보조/secondary) — 흰 바탕에 가볍게 떠 보이게 */
+    .icon-btn, .ph-btn, .ph-all, .card-action,
+    .pt-act, .pt-sort-btn, .pt-tab,
+    .week-day, .sch-nf-btn,
+    .al-btn, .my-chip, .my-chip-btn, .my-edit-btn,
+    .rec-alert-btn, .rec-aiq-gen-btn,
+    .ho-tm-action, .ho-meds-action, .ho-manual-open,
+    .cl-don-cell, .rec-tl-mk-lbl {
+      background: white;
+      box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.05);
+    }
+    .icon-btn:hover, .ph-btn:hover, .ph-all:hover,
+    .card-action:hover, .pt-act:hover, .pt-sort-btn:hover,
+    .week-day:hover, .sch-nf-btn:hover, .al-btn:hover,
+    .my-edit-btn:hover, .ho-manual-open:hover {
+      background: var(--surface-warm);
+      box-shadow: 0 2px 4px rgba(0,0,0,.07), 0 4px 10px rgba(0,0,0,.07);
+    }
+
+    /* 강조 버튼(.em / danger) — 컬러 그림자 (브랜드 톤 유지) */
+    .sos-btn,
+    .ph-btn.em, .rec-alert-btn.em {
+      box-shadow: 0 1px 2px rgba(var(--color-danger-rgb), .22), 0 4px 14px rgba(var(--color-danger-rgb), .22);
+    }
+    .sos-btn:hover { box-shadow: 0 2px 4px rgba(var(--color-danger-rgb), .26), 0 6px 18px rgba(var(--color-danger-rgb), .26); }
+
+    /* 페이지 데이트/검색창 — soft 그림자 */
+    .search-input, .page-date {
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    .search-input:focus {
+      box-shadow: 0 0 0 3px rgba(var(--brand-green-500-rgb), .14), 0 1px 2px rgba(0,0,0,.04);
+    }
+
+    /* 컬러 칩(긴급/주의/완료) — soft bg에 컬러드롭 그림자 */
+    .ph-tag.urgent, .tl-tag.warn {
+      box-shadow: 0 1px 2px rgba(var(--color-danger-rgb), .12), 0 2px 4px rgba(var(--color-danger-rgb), .10);
+    }
+    .ph-tag.warn {
+      box-shadow: 0 1px 2px rgba(var(--color-warning-rgb), .12), 0 2px 4px rgba(var(--color-warning-rgb), .10);
+    }
+    .tl-tag.now {
+      box-shadow: 0 1px 2px rgba(var(--brand-green-500-rgb), .20), 0 2px 6px rgba(var(--brand-green-500-rgb), .18);
+    }
+
+    /* AI 사이드 패널 카드(.cp-ai-item) — soft bg 위에 그림자로 단 하나의 카드처럼 */
+    .cp-ai-item {
+      box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.05);
+    }
+    .cp-ai-item.urgent {
+      box-shadow: 0 1px 2px rgba(var(--color-danger-rgb), .10), 0 4px 14px rgba(var(--color-danger-rgb), .10);
+    }
+    .cp-ai-item.warn {
+      box-shadow: 0 1px 2px rgba(var(--color-warning-rgb), .10), 0 4px 14px rgba(var(--color-warning-rgb), .10);
+    }
+
+    /* 상태 링(.st-dot) — 흰 ring은 유지, 단 surface 위에서도 자연스럽게 */
+    /* .st-dot은 1.5px solid white → 그대로 유지 (배지 분리 핵심) */
+    /* 흰 배경에 흰 박스가 겹쳐 안 보이는 경우 surface 톤으로 분리 */
+    .af-item, .ho-tm-block, .rec-aiq-item, .cp-ai-search,
+    .cp-list-item, .ho-manual-wrap, .ho-info-item {
+      background: var(--surface);
+    }
+    .af-item:hover, .ho-tm-block:hover,
+    .rec-aiq-item:hover, .cp-list-item:hover { background: var(--surface-soft); }
+
+    /* 입력 컨트롤은 외곽선 유지 — 단 톤만 부드럽게 (form affordance) */
+    .memo-input-area textarea {
+      border: 1px solid transparent !important;
+      background: var(--surface);
+    }
+    .memo-input-area textarea:focus {
+      border-color: rgba(var(--brand-green-500-rgb), .35) !important;
+      box-shadow: 0 0 0 3px rgba(var(--brand-green-500-rgb), .10);
+    }
+
+    /* Inline 대체 (audit 정책: inline 0 — 단순 값은 utility/변수로) */
+    .v10-mr-1            { margin-right: 4px; }
+    .v10-mb-3            { margin-bottom: 18px; }
+    .v10-h-120           { height: 120px; }
+    .v10-text-meta-11    { font-size: 11px; color: var(--ink-4); }
+    .v10-text-danger-bold{ color: var(--danger); font-weight: 600; }
+    .v10-text-ink-2      { color: var(--ink-2); }
+    .v10-text-warn       { color: var(--warn); }
+    .v10-text-ink-4      { color: var(--ink-4); }
+    .v10-text-danger-plain { color: var(--danger); }
+    .v10-opacity-65      { opacity: .65; }
+    .v10-text-meta-ink5  { font-size: 11px; color: var(--ink-5); }
+    .v10-text-accent-bold{ font-size: 11px; color: var(--accent-strong); font-weight: 600; }
+    .v10-h-148    { height: 148px; }
+    .v10-text-danger-14 { color: var(--danger); font-size: 14px; }
+    .v10-text-ink-4-plain { color: var(--ink-4); }
+    .v10-text-ink-5 { color: var(--ink-5); }
+    .v10-row-gap-8 { display: flex; align-items: center; gap: 8px; }
+    .v10-fs-12-bold-ink2 { font-size: 12px; font-weight: 700; color: var(--ink-2); }
+    .v10-pill-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-b); }
+    .v10-fs-12 { font-size: 12px; }
+    .v10-flex-1-min { flex: 1; min-width: 0; }
+    .v10-mb-16 { margin-bottom: 16px; }
+    .v10-cursor { cursor: pointer; }
+    .v10-cursor-default-ink5 { cursor: default; color: var(--ink-5); }
+    .v10-dim-40 { opacity: .4; pointer-events: none; }
+    .v10-dot-marker { position: static; width: 8px; height: 8px; margin-left: auto; flex-shrink: 0; }
+    .v10-empty-state { padding: 40px 16px; text-align: center; color: var(--ink-5); font-size: 12px; }
+    .v10-text-bold-meta { font-size: 11px; color: var(--ink-5); font-weight: 600; }
+    .v10-fs-16-ink6 { font-size: 16px; color: var(--ink-6); }
+    .v10-spinner-inline {
+      width: 13px; height: 13px; display: inline-block;
+      border: 2px solid rgba(255,255,255,.3); border-top-color: white;
+      border-radius: 50%; animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .v10-memo-input {
+      border: 1px solid var(--ink-6); border-radius: 8px;
+      padding: 4px 9px; font-size: 11px; font-family: var(--font);
+      outline: none; width: 100%;
+    }
+.v10-memo-input:focus-visible{box-shadow:0 0 0 2px var(--color-accent), 0 0 0 4px rgba(var(--brand-green-500-rgb), .22);border-radius:8px;}
+    .v10-memo-saved-tag { font-size: 11px; color: var(--ink-5); }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script>if(typeof Chart!=='undefined'){Chart.defaults.animation=false;}</script>
@@ -2678,10 +3539,12 @@
 <aside class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-mark">
-      <div class="logo-icon">
-        <svg width="20" height="20" viewBox="0 0 2526 2526" fill="white">
-          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
-          <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+      <div class="logo-icon" aria-label="하루안부">
+        <svg viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <g transform="translate(50, 50) scale(0.163)">
+            <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+            <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z"/>
+          </g>
         </svg>
       </div>
       <div>
@@ -2701,70 +3564,53 @@
   <ul class="nav-list">
     <li class="nav-item">
       <a class="nav-link active" data-page="dashboard" onclick="showPage('dashboard')">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-        </svg>
+        <iconify-icon class="nav-icon" icon="fluent:home-24-filled"></iconify-icon>
         대시보드
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-page="patients" onclick="showPage('patients')">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-        </svg>
+        <iconify-icon class="nav-icon" icon="fluent:people-24-filled"></iconify-icon>
         환자 관리
         <span class="nav-badge muted">25</span>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-page="meds" onclick="showPage('meds')">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
-        </svg>
+        <iconify-icon class="nav-icon" icon="fluent:pill-24-filled"></iconify-icon>
         투약 관리 (eMAR)
         <span class="nav-badge">2</span>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-page="checklist" onclick="showPage('checklist')">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
-          <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
-        </svg>
+        <iconify-icon class="nav-icon" icon="fluent:clipboard-text-24-filled"></iconify-icon>
         케어 체크리스트
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-page="handover" onclick="showPage('handover')">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M8 5a1 1 0 100 2h5.586l-1.293 1.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L13.586 5H8zM12 15a1 1 0 100-2H6.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L6.414 15H12z" clip-rule="evenodd"/>
-        </svg>
+        <iconify-icon class="nav-icon" icon="fluent:arrow-swap-24-filled"></iconify-icon>
         인수인계
         <span class="nav-badge">3</span>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-page="schedule" onclick="showPage('schedule')">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-        </svg>
+        <iconify-icon class="nav-icon" icon="fluent:calendar-24-filled"></iconify-icon>
         스케줄
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-page="records" onclick="showPage('records')">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
-        </svg>
+        <iconify-icon class="nav-icon" icon="fluent:folder-24-filled"></iconify-icon>
         기록·보고서
         <span class="nav-badge muted">3</span>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-page="mypage" onclick="showPage('mypage')">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
-        </svg>
+        <iconify-icon class="nav-icon" icon="fluent:person-24-filled"></iconify-icon>
         마이페이지
       </a>
     </li>
@@ -2791,24 +3637,18 @@
     </div>
 
     <div class="search-wrap">
-      <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
-      </svg>
-      <input class="search-input" type="text" placeholder="환자명, 약품명, 기록 검색..." oninput="searchPts(this.value)">
+      <iconify-icon class="search-icon" icon="fluent:search-16-filled"></iconify-icon>
+      <input class="search-input" type="text"  placeholder="환자명, 약품명, 기록 검색..." aria-label="환자명, 약품명, 기록 검색..." oninput="searchPts(this.value)">
     </div>
 
     <div class="topbar-actions">
       <button class="icon-btn" title="알림">
-        <svg viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
-        </svg>
+        <iconify-icon icon="fluent:alert-16-filled"></iconify-icon>
         <span class="notif-dot"></span>
       </button>
 
       <button class="sos-btn">
-        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-        </svg>
+        <iconify-icon icon="fluent:question-circle-12-filled"></iconify-icon>
         SOS 발신
       </button>
     </div>
@@ -2919,7 +3759,7 @@
         </div>
         <div class="kpi-value"><span>68</span><span class="kpi-denom">%</span></div>
         <div class="kpi-sub"><span class="kpi-dot accent"></span>2병동 · 17 / 25명 완료</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:68%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:68%"></div></div>
       </div>
 
       <div class="kpi">
@@ -2934,7 +3774,7 @@
         </div>
         <div class="kpi-value"><span>12</span><span class="kpi-denom">/ 22</span></div>
         <div class="kpi-sub"><span class="kpi-dot danger"></span>2병동 · 미투여 2건 · 예정 8건</div>
-        <div class="kpi-bar"><div class="kpi-fill mid" style="width:55%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill mid" style="--bar-w:55%"></div></div>
       </div>
 
       <div class="kpi hero">
@@ -2976,13 +3816,13 @@
           <span>케어 완료율 추이</span>
           <span class="chart-label">최근 7일</span>
         </div>
-        <div style="height:148px"><canvas id="chartTrend" role="img" aria-label="최근 7일 케어 완료율 추이 차트"></canvas></div>
+        <div class="v10-h-148"><canvas id="chartTrend" role="img" aria-label="최근 7일 케어 완료율 추이 차트"></canvas></div>
       </div>
 
       <!-- 카드 2: 환자 상태 분포 -->
       <div class="card chart-card">
         <div class="chart-card-head"><span>환자 상태</span></div>
-        <div style="height:120px"><canvas id="chartPatient" role="img" aria-label="환자 상태 분포 도넛 차트"></canvas></div>
+        <div class="v10-h-120"><canvas id="chartPatient" role="img" aria-label="환자 상태 분포 도넛 차트"></canvas></div>
         <div class="chart-legend">
           <div class="chart-legend-item"><div class="chart-legend-dot ok"></div>안정 20</div>
           <div class="chart-legend-item"><div class="chart-legend-dot warn"></div>모니터링 2</div>
@@ -2993,7 +3833,7 @@
       <!-- 카드 3: 투약 현황 -->
       <div class="card chart-card">
         <div class="chart-card-head"><span>투약 현황</span></div>
-        <div style="height:120px"><canvas id="chartMed" role="img" aria-label="투약 현황 도넛 차트"></canvas></div>
+        <div class="v10-h-120"><canvas id="chartMed" role="img" aria-label="투약 현황 도넛 차트"></canvas></div>
         <div class="chart-legend">
           <div class="chart-legend-item"><div class="chart-legend-dot ok"></div>완료 12</div>
           <div class="chart-legend-item"><div class="chart-legend-dot muted"></div>대기 8</div>
@@ -3176,7 +4016,7 @@
         <p>2병동 · 담당 환자 25명 · 마지막 업데이트 10:24</p>
       </div>
       <button class="pt-add-btn">
-        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
         신규 환자
       </button>
     </div>
@@ -3250,7 +4090,7 @@
           <div class="pt-room" title="305호 최미경(모니터링)·장호근(안정)">
             <div class="pt-room-no">305</div>
             <div class="pt-room-beds"><span class="pt-bed mon"></span><span class="pt-bed stable"></span></div>
-            <div class="pt-room-tag" style="color:var(--ink-2)">최미경 모니터</div>
+            <div class="pt-room-tag v10-text-ink-2">최미경 모니터</div>
           </div>
           <!-- 306 송정호 + 1 안정 -->
           <div class="pt-room is-stable" title="306호 송정호·김도현 안정">
@@ -3262,7 +4102,7 @@
           <div class="pt-room" title="307호 오병석(모니터링)·공실">
             <div class="pt-room-no">307</div>
             <div class="pt-room-beds"><span class="pt-bed mon"></span><span class="pt-bed empty"></span></div>
-            <div class="pt-room-tag" style="color:var(--ink-2)">오병석 모니터</div>
+            <div class="pt-room-tag v10-text-ink-2">오병석 모니터</div>
           </div>
           <!-- 308 조민정 + 1 -->
           <div class="pt-room is-stable" title="308호 조민정·황미자 안정">
@@ -3378,7 +4218,7 @@
         <div class="pt-tab" onclick="ptTab(this)">안정 <span class="pt-tab-count">20</span></div>
       </div>
       <button class="pt-sort-btn">
-        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"/></svg>
+        <iconify-icon icon="fluent:list-12-filled"></iconify-icon>
         정렬: 호실순
       </button>
     </div>
@@ -3412,7 +4252,7 @@
         <div class="pt-note dg">혈압 180/110 이상 감지</div>
         <div class="pt-progress">
           <span class="pt-pct low">45%</span>
-          <div class="pt-pbar"><div class="pt-pfill low" style="width:45%"></div></div>
+          <div class="pt-pbar"><div class="pt-pfill low" style="--bar-w:45%"></div></div>
         </div>
         <div class="pt-vital">10분 전</div>
         <div class="pt-actions">
@@ -3439,7 +4279,7 @@
         <div class="pt-note wn">식사량 3일 연속 30% 미만</div>
         <div class="pt-progress">
           <span class="pt-pct low">52%</span>
-          <div class="pt-pbar"><div class="pt-pfill low" style="width:52%"></div></div>
+          <div class="pt-pbar"><div class="pt-pfill low" style="--bar-w:52%"></div></div>
         </div>
         <div class="pt-vital">1시간 전</div>
         <div class="pt-actions">
@@ -3466,7 +4306,7 @@
         <div class="pt-note dg">오전 투약 거부 — 재시도 필요</div>
         <div class="pt-progress">
           <span class="pt-pct low">38%</span>
-          <div class="pt-pbar"><div class="pt-pfill low" style="width:38%"></div></div>
+          <div class="pt-pbar"><div class="pt-pfill low" style="--bar-w:38%"></div></div>
         </div>
         <div class="pt-vital">2시간 전</div>
         <div class="pt-actions">
@@ -3492,7 +4332,7 @@
         <div class="pt-note">수면 패턴 변화 관찰 중</div>
         <div class="pt-progress">
           <span class="pt-pct">68%</span>
-          <div class="pt-pbar"><div class="pt-pfill mid" style="width:68%"></div></div>
+          <div class="pt-pbar"><div class="pt-pfill mid" style="--bar-w:68%"></div></div>
         </div>
         <div class="pt-vital">2시간 전</div>
         <div class="pt-actions">
@@ -3518,7 +4358,7 @@
         <div class="pt-note">식욕 감소 추이 모니터링</div>
         <div class="pt-progress">
           <span class="pt-pct">62%</span>
-          <div class="pt-pbar"><div class="pt-pfill mid" style="width:62%"></div></div>
+          <div class="pt-pbar"><div class="pt-pfill mid" style="--bar-w:62%"></div></div>
         </div>
         <div class="pt-vital">3시간 전</div>
         <div class="pt-actions">
@@ -3541,7 +4381,7 @@
         <div class="pt-note">아침 식사 80% 섭취</div>
         <div class="pt-progress">
           <span class="pt-pct">88%</span>
-          <div class="pt-pbar"><div class="pt-pfill" style="width:88%"></div></div>
+          <div class="pt-pbar"><div class="pt-pfill" style="--bar-w:88%"></div></div>
         </div>
         <div class="pt-vital">30분 전</div>
         <div class="pt-actions">
@@ -3567,7 +4407,7 @@
         <div class="pt-note">14:00 재활 치료 예정</div>
         <div class="pt-progress">
           <span class="pt-pct">75%</span>
-          <div class="pt-pbar"><div class="pt-pfill" style="width:75%"></div></div>
+          <div class="pt-pbar"><div class="pt-pfill" style="--bar-w:75%"></div></div>
         </div>
         <div class="pt-vital">1시간 전</div>
         <div class="pt-actions">
@@ -3590,7 +4430,7 @@
         <div class="pt-note">전반적 상태 양호</div>
         <div class="pt-progress">
           <span class="pt-pct">92%</span>
-          <div class="pt-pbar"><div class="pt-pfill" style="width:92%"></div></div>
+          <div class="pt-pbar"><div class="pt-pfill" style="--bar-w:92%"></div></div>
         </div>
         <div class="pt-vital">45분 전</div>
         <div class="pt-actions">
@@ -3613,7 +4453,7 @@
         <div class="pt-note">전반적 상태 양호</div>
         <div class="pt-progress">
           <span class="pt-pct">80%</span>
-          <div class="pt-pbar"><div class="pt-pfill" style="width:80%"></div></div>
+          <div class="pt-pbar"><div class="pt-pfill" style="--bar-w:80%"></div></div>
         </div>
         <div class="pt-vital">1시간 전</div>
         <div class="pt-actions">
@@ -3636,7 +4476,7 @@
         <div class="pt-note">이번 주 케어 완료율 최고</div>
         <div class="pt-progress">
           <span class="pt-pct">95%</span>
-          <div class="pt-pbar"><div class="pt-pfill" style="width:95%"></div></div>
+          <div class="pt-pbar"><div class="pt-pfill" style="--bar-w:95%"></div></div>
         </div>
         <div class="pt-vital">20분 전</div>
         <div class="pt-actions">
@@ -3660,35 +4500,35 @@
         <p>2병동 · 오늘 총 22건 · 마지막 업데이트 10:24</p>
       </div>
       <button class="pt-add-btn">
-        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
         투약 기록
       </button>
     </div>
 
-    <div class="kpi-row equal" style="margin-bottom:18px;">
+    <div class="kpi-row equal v10-mb-3">
       <div class="kpi">
         <div class="kpi-label">투약 완료</div>
         <div class="kpi-value"><span>12</span><span class="kpi-denom">건</span></div>
         <div class="kpi-sub"><span class="kpi-dot accent"></span>오늘 전체 22건 중</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:55%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:55%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">미투여</div>
         <div class="kpi-value alert"><span>2</span><span class="kpi-denom">건</span></div>
         <div class="kpi-sub"><span class="kpi-dot danger"></span>즉시 확인 필요</div>
-        <div class="kpi-bar"><div class="kpi-fill low" style="width:9%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill low" style="--bar-w:9%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">거부</div>
         <div class="kpi-value"><span>2</span><span class="kpi-denom">건</span></div>
-        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>재시도 또는 보고 필요</div>
-        <div class="kpi-bar"><div class="kpi-fill mid" style="width:9%"></div></div>
+        <div class="kpi-sub"><span class="kpi-dot warn"></span>재시도 또는 보고 필요</div>
+        <div class="kpi-bar"><div class="kpi-fill mid" style="--bar-w:9%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">예정</div>
         <div class="kpi-value"><span>8</span><span class="kpi-denom">건</span></div>
         <div class="kpi-sub"><span class="kpi-dot neutral"></span>오늘 남은 투약</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:36%; opacity:.35"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:36%;--bar-op:.35"></div></div>
       </div>
     </div>
 
@@ -3712,15 +4552,15 @@
         <!-- 빈 라벨 셀 + 시간축 -->
         <div></div>
         <div class="med-tl-axis">
-          <div class="med-tl-axis-tick hour-6"  style="left:0%">06</div>
-          <div class="med-tl-axis-tick hour-8"  style="left:12.5%">08</div>
-          <div class="med-tl-axis-tick hour-10" style="left:25%">10</div>
-          <div class="med-tl-axis-tick hour-12" style="left:37.5%">12</div>
-          <div class="med-tl-axis-tick hour-14" style="left:50%">14</div>
-          <div class="med-tl-axis-tick hour-16" style="left:62.5%">16</div>
-          <div class="med-tl-axis-tick hour-18" style="left:75%">18</div>
-          <div class="med-tl-axis-tick hour-20" style="left:87.5%">20</div>
-          <div class="med-tl-axis-tick hour-22" style="left:100%">22</div>
+          <div class="med-tl-axis-tick hour-6"  style="--mp:0%">06</div>
+          <div class="med-tl-axis-tick hour-8"  style="--mp:12.5%">08</div>
+          <div class="med-tl-axis-tick hour-10" style="--mp:25%">10</div>
+          <div class="med-tl-axis-tick hour-12" style="--mp:37.5%">12</div>
+          <div class="med-tl-axis-tick hour-14" style="--mp:50%">14</div>
+          <div class="med-tl-axis-tick hour-16" style="--mp:62.5%">16</div>
+          <div class="med-tl-axis-tick hour-18" style="--mp:75%">18</div>
+          <div class="med-tl-axis-tick hour-20" style="--mp:87.5%">20</div>
+          <div class="med-tl-axis-tick hour-22" style="--mp:100%">22</div>
         </div>
 
         <!-- 박영수 (301호) -->
@@ -3732,14 +4572,14 @@
           </div>
         </div>
         <div class="med-tl-track">
-          <div class="med-tl-now first-row" style="left:27.5%"></div>
-          <div class="med-tl-block miss stack-2" style="left:18.75%" title="09:00 암로디핀 5mg · 미투여">
+          <div class="med-tl-now first-row" style="--mp:27.5%"></div>
+          <div class="med-tl-block miss stack-2" style="--mp:18.75%" title="09:00 암로디핀 5mg · 미투여">
             <span class="med-tl-block-dot"></span>암로디핀
           </div>
-          <div class="med-tl-block miss stack-3" style="left:18.75%" title="09:00 푸로세미드 20mg · 미투여">
+          <div class="med-tl-block miss stack-3" style="--mp:18.75%" title="09:00 푸로세미드 20mg · 미투여">
             <span class="med-tl-block-dot"></span>푸로세미드
           </div>
-          <div class="med-tl-block plan" style="left:68.75%" title="17:00 비소프롤롤 5mg · 예정">
+          <div class="med-tl-block plan" style="--mp:68.75%" title="17:00 비소프롤롤 5mg · 예정">
             <span class="med-tl-block-dot"></span>비소프롤롤
           </div>
         </div>
@@ -3753,11 +4593,11 @@
           </div>
         </div>
         <div class="med-tl-track">
-          <div class="med-tl-now" style="left:27.5%"></div>
-          <div class="med-tl-block done" style="left:12.5%" title="08:00 메트포르민 500mg · 완료(08:12)">
+          <div class="med-tl-now" style="--mp:27.5%"></div>
+          <div class="med-tl-block done" style="--mp:12.5%" title="08:00 메트포르민 500mg · 완료(08:12)">
             <span class="med-tl-block-dot"></span>메트포르민
           </div>
-          <div class="med-tl-block plan" style="left:68.75%" title="17:00 메트포르민 500mg · 예정">
+          <div class="med-tl-block plan" style="--mp:68.75%" title="17:00 메트포르민 500mg · 예정">
             <span class="med-tl-block-dot"></span>메트포르민
           </div>
         </div>
@@ -3771,14 +4611,14 @@
           </div>
         </div>
         <div class="med-tl-track">
-          <div class="med-tl-now" style="left:27.5%"></div>
-          <div class="med-tl-block refuse stack-2" style="left:18.75%" title="09:00 트라마돌 37.5mg · 거부">
+          <div class="med-tl-now" style="--mp:27.5%"></div>
+          <div class="med-tl-block refuse stack-2" style="--mp:18.75%" title="09:00 트라마돌 37.5mg · 거부">
             <span class="med-tl-block-dot"></span>트라마돌
           </div>
-          <div class="med-tl-block refuse stack-3" style="left:18.75%" title="09:00 리시노프릴 10mg · 거부">
+          <div class="med-tl-block refuse stack-3" style="--mp:18.75%" title="09:00 리시노프릴 10mg · 거부">
             <span class="med-tl-block-dot"></span>리시노프릴
           </div>
-          <div class="med-tl-block plan" style="left:93.75%" title="21:00 트라마돌 37.5mg · 예정">
+          <div class="med-tl-block plan" style="--mp:93.75%" title="21:00 트라마돌 37.5mg · 예정">
             <span class="med-tl-block-dot"></span>트라마돌
           </div>
         </div>
@@ -3792,11 +4632,11 @@
           </div>
         </div>
         <div class="med-tl-track">
-          <div class="med-tl-now" style="left:27.5%"></div>
-          <div class="med-tl-block done" style="left:12.5%" title="08:00 아토르바스타틴 10mg · 완료(08:05)">
+          <div class="med-tl-now" style="--mp:27.5%"></div>
+          <div class="med-tl-block done" style="--mp:12.5%" title="08:00 아토르바스타틴 10mg · 완료(08:05)">
             <span class="med-tl-block-dot"></span>아토르바스타틴
           </div>
-          <div class="med-tl-block plan" style="left:68.75%" title="17:00 아토르바스타틴 10mg · 예정">
+          <div class="med-tl-block plan" style="--mp:68.75%" title="17:00 아토르바스타틴 10mg · 예정">
             <span class="med-tl-block-dot"></span>아토르바스타틴
           </div>
         </div>
@@ -3810,11 +4650,11 @@
           </div>
         </div>
         <div class="med-tl-track">
-          <div class="med-tl-now" style="left:27.5%"></div>
-          <div class="med-tl-block plan" style="left:31.25%" title="11:00 아세트아미노펜 500mg · 예정">
+          <div class="med-tl-now" style="--mp:27.5%"></div>
+          <div class="med-tl-block plan" style="--mp:31.25%" title="11:00 아세트아미노펜 500mg · 예정">
             <span class="med-tl-block-dot"></span>아세트아미노펜
           </div>
-          <div class="med-tl-block plan" style="left:68.75%" title="17:00 아세트아미노펜 500mg · 예정">
+          <div class="med-tl-block plan" style="--mp:68.75%" title="17:00 아세트아미노펜 500mg · 예정">
             <span class="med-tl-block-dot"></span>아세트아미노펜
           </div>
         </div>
@@ -3828,14 +4668,14 @@
           </div>
         </div>
         <div class="med-tl-track">
-          <div class="med-tl-now" style="left:27.5%"></div>
-          <div class="med-tl-block done" style="left:12.5%" title="08:00 도네페질 5mg · 완료(08:08)">
+          <div class="med-tl-now" style="--mp:27.5%"></div>
+          <div class="med-tl-block done" style="--mp:12.5%" title="08:00 도네페질 5mg · 완료(08:08)">
             <span class="med-tl-block-dot"></span>도네페질
           </div>
-          <div class="med-tl-block done" style="left:43.75%" title="13:00 멜라토닌 3mg · 완료(13:02)">
+          <div class="med-tl-block done" style="--mp:43.75%" title="13:00 멜라토닌 3mg · 완료(13:02)">
             <span class="med-tl-block-dot"></span>멜라토닌
           </div>
-          <div class="med-tl-block plan" style="left:81.25%" title="19:00 도네페질 5mg · 예정">
+          <div class="med-tl-block plan" style="--mp:81.25%" title="19:00 도네페질 5mg · 예정">
             <span class="med-tl-block-dot"></span>도네페질
           </div>
         </div>
@@ -3843,10 +4683,10 @@
 
       <div class="med-tl-footer">
         <div class="med-tl-stat">
-          <iconify-icon icon="fluent:alert-urgent-16-regular" style="color:var(--danger);font-size:14px;"></iconify-icon>
+          <iconify-icon icon="fluent:alert-urgent-16-regular" class="v10-text-danger-14"></iconify-icon>
           <strong>2건</strong>이 현재 시간 기준 <strong>1시간 24분 지연</strong>입니다
         </div>
-        <div class="med-tl-stat" style="color:var(--ink-4);">
+        <div class="med-tl-stat v10-text-ink-4-plain">
           6명 환자 · 총 16건 표시 · 나머지 6건은 아래 테이블에서 확인
         </div>
       </div>
@@ -3861,7 +4701,7 @@
         <div class="pt-tab" onclick="ptTab(this)">예정 <span class="pt-tab-count">8</span></div>
       </div>
       <button class="pt-sort-btn">
-        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"/></svg>
+        <iconify-icon icon="fluent:list-12-filled"></iconify-icon>
         정렬: 시간순
       </button>
     </div>
@@ -3889,7 +4729,7 @@
           </div>
         </div>
         <div class="med-drug">
-          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div class="med-pill-icon oral"><svg class="spark-line" width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
           <div>
             <div class="med-name">암로디핀</div>
             <div class="med-generic">Amlodipine</div>
@@ -3919,7 +4759,7 @@
           </div>
         </div>
         <div class="med-drug">
-          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div class="med-pill-icon oral"><svg class="spark-line" width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
           <div>
             <div class="med-name">푸로세미드</div>
             <div class="med-generic">Furosemide</div>
@@ -3949,7 +4789,7 @@
           </div>
         </div>
         <div class="med-drug">
-          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div class="med-pill-icon oral"><svg class="spark-line" width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
           <div>
             <div class="med-name">트라마돌</div>
             <div class="med-generic">Tramadol 37.5mg</div>
@@ -3979,7 +4819,7 @@
           </div>
         </div>
         <div class="med-drug">
-          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div class="med-pill-icon oral"><svg class="spark-line" width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
           <div>
             <div class="med-name">리시노프릴</div>
             <div class="med-generic">Lisinopril</div>
@@ -4009,7 +4849,7 @@
           </div>
         </div>
         <div class="med-drug">
-          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div class="med-pill-icon oral"><svg class="spark-line" width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
           <div>
             <div class="med-name">아세트아미노펜</div>
             <div class="med-generic">Acetaminophen</div>
@@ -4021,7 +4861,7 @@
         </div>
         <div class="med-time">11:00</div>
         <div class="med-done-time none">—</div>
-        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
         <div class="med-actions">
           <button class="pt-act">투약</button>
           <button class="pt-act">거부</button>
@@ -4039,7 +4879,7 @@
           </div>
         </div>
         <div class="med-drug">
-          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div class="med-pill-icon oral"><svg class="spark-line" width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
           <div>
             <div class="med-name">메트포르민</div>
             <div class="med-generic">Metformin</div>
@@ -4068,7 +4908,7 @@
           </div>
         </div>
         <div class="med-drug">
-          <div class="med-pill-icon oral"><svg width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
+          <div class="med-pill-icon oral"><svg class="spark-line" width="16" height="8" viewBox="0 0 16 8" fill="none"><rect width="16" height="8" rx="4" fill="currentColor" opacity=".18"/><rect x="7.5" y="1.5" width="1" height="5" rx=".5" fill="currentColor" opacity=".4"/></svg></div>
           <div>
             <div class="med-name">아토르바스타틴</div>
             <div class="med-generic">Atorvastatin</div>
@@ -4101,35 +4941,35 @@
         <p>2병동 · 2026년 4월 18일 · 오전 근무 기준</p>
       </div>
       <button class="pt-add-btn">
-        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
         항목 추가
       </button>
     </div>
 
-    <div class="kpi-row equal" style="margin-bottom:18px;">
+    <div class="kpi-row equal v10-mb-3">
       <div class="kpi">
         <div class="kpi-label">완료</div>
         <div class="kpi-value"><span>14</span><span class="kpi-denom">건</span></div>
         <div class="kpi-sub"><span class="kpi-dot accent"></span>오늘 전체 24건 중</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:58%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:58%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">미완료</div>
         <div class="kpi-value alert"><span>3</span><span class="kpi-denom">건</span></div>
         <div class="kpi-sub"><span class="kpi-dot danger"></span>즉시 처리 필요</div>
-        <div class="kpi-bar"><div class="kpi-fill low" style="width:12%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill low" style="--bar-w:12%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">지연</div>
         <div class="kpi-value"><span>2</span><span class="kpi-denom">건</span></div>
-        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>예정 시간 초과</div>
-        <div class="kpi-bar"><div class="kpi-fill mid" style="width:8%"></div></div>
+        <div class="kpi-sub"><span class="kpi-dot warn"></span>예정 시간 초과</div>
+        <div class="kpi-bar"><div class="kpi-fill mid" style="--bar-w:8%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">예정</div>
         <div class="kpi-value"><span>5</span><span class="kpi-denom">건</span></div>
         <div class="kpi-sub"><span class="kpi-dot neutral"></span>오늘 남은 항목</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:21%; opacity:.35"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:21%;--bar-op:.35"></div></div>
       </div>
     </div>
 
@@ -4172,7 +5012,7 @@
           <div class="cl-don-info">
             <div class="cl-don-name"><iconify-icon icon="fluent:food-20-regular"></iconify-icon>식사</div>
             <div class="cl-don-frac">1 / 2 완료</div>
-            <div class="cl-don-alert" style="color:var(--warn)">김순자 저섭취</div>
+            <div class="cl-don-alert v10-text-warn">김순자 저섭취</div>
           </div>
         </div>
         <div class="cl-don-cell" data-cat="care">
@@ -4182,7 +5022,7 @@
           <div class="cl-don-info">
             <div class="cl-don-name"><iconify-icon icon="fluent:heart-pulse-20-regular"></iconify-icon>처치·위생</div>
             <div class="cl-don-frac">10 / 16 완료</div>
-            <div class="cl-don-alert" style="color:var(--ink-4)">오후 일정 6건</div>
+            <div class="cl-don-alert v10-text-ink-4">오후 일정 6건</div>
           </div>
         </div>
       </div>
@@ -4194,50 +5034,50 @@
           <span><b class="done-t">14</b> 완료</span>
           <span><b class="miss-t">3</b> 미완료</span>
           <span><b class="late-t">2</b> 지연</span>
-          <span><b style="color:var(--ink-4)">5</b> 예정</span>
+          <span><b class="v10-text-ink-4">5</b> 예정</span>
         </div>
       </div>
 
       <!-- 시간 틱 라벨 -->
       <div class="cl-tl-ticks-labels">
-        <span class="cl-tl-tick-label" style="left:0%">06</span>
-        <span class="cl-tl-tick-label" style="left:12.5%">08</span>
-        <span class="cl-tl-tick-label" style="left:25%">10</span>
-        <span class="cl-tl-tick-label" style="left:37.5%">12</span>
-        <span class="cl-tl-tick-label" style="left:50%">14</span>
-        <span class="cl-tl-tick-label" style="left:62.5%">16</span>
-        <span class="cl-tl-tick-label" style="left:75%">18</span>
-        <span class="cl-tl-tick-label" style="left:87.5%">20</span>
-        <span class="cl-tl-tick-label" style="left:100%">22</span>
+        <span class="cl-tl-tick-label" style="--mp:0%">06</span>
+        <span class="cl-tl-tick-label" style="--mp:12.5%">08</span>
+        <span class="cl-tl-tick-label" style="--mp:25%">10</span>
+        <span class="cl-tl-tick-label" style="--mp:37.5%">12</span>
+        <span class="cl-tl-tick-label" style="--mp:50%">14</span>
+        <span class="cl-tl-tick-label" style="--mp:62.5%">16</span>
+        <span class="cl-tl-tick-label" style="--mp:75%">18</span>
+        <span class="cl-tl-tick-label" style="--mp:87.5%">20</span>
+        <span class="cl-tl-tick-label" style="--mp:100%">22</span>
       </div>
 
       <!-- 진행 축 -->
       <div class="cl-tl-axis">
-        <div class="cl-tl-axis-fill" style="width:27.5%"></div>
-        <div class="cl-tl-tick" style="left:12.5%"></div>
-        <div class="cl-tl-tick" style="left:25%"></div>
-        <div class="cl-tl-tick" style="left:37.5%"></div>
-        <div class="cl-tl-tick" style="left:50%"></div>
-        <div class="cl-tl-tick" style="left:62.5%"></div>
-        <div class="cl-tl-tick" style="left:75%"></div>
-        <div class="cl-tl-tick" style="left:87.5%"></div>
-        <div class="cl-tl-now" style="left:27.5%">
+        <div class="cl-tl-axis-fill" style="--bar-w:27.5%"></div>
+        <div class="cl-tl-tick" style="--mp:12.5%"></div>
+        <div class="cl-tl-tick" style="--mp:25%"></div>
+        <div class="cl-tl-tick" style="--mp:37.5%"></div>
+        <div class="cl-tl-tick" style="--mp:50%"></div>
+        <div class="cl-tl-tick" style="--mp:62.5%"></div>
+        <div class="cl-tl-tick" style="--mp:75%"></div>
+        <div class="cl-tl-tick" style="--mp:87.5%"></div>
+        <div class="cl-tl-now" style="--mp:27.5%">
           <span class="cl-tl-now-pin">10:24 · 현재</span>
         </div>
       </div>
 
       <!-- 이벤트 핀 (2단 배치) -->
       <div class="cl-tl-events">
-        <div class="cl-tl-evt done"    style="left:0.5%; width:80px;"  title="06:00 · 아침 투약 전체 완료">06 투약</div>
-        <div class="cl-tl-evt done r2" style="left:11.5%; width:72px;" title="08:00 · 아침 식사 완료">08 식사</div>
-        <div class="cl-tl-evt done"    style="left:15.5%; width:66px;" title="08:30 · 바이탈 완료">08:30 바이탈</div>
-        <div class="cl-tl-evt done r2" style="left:19%; width:62px;"   title="09:00 · 세면/위생 완료">09 위생</div>
-        <div class="cl-tl-evt miss"    style="left:30.5%; width:84px;" title="11:00 · 이철수 투약 재시도 지연">11 투약 재시도</div>
-        <div class="cl-tl-evt miss r2" style="left:38%; width:90px;"   title="12:00 · 박영수 혈압 재측정 지연">12 혈압 재측정</div>
-        <div class="cl-tl-evt up"      style="left:50%; width:88px;"   title="14:00 · 한영희 오후 바이탈">14 오후 바이탈</div>
-        <div class="cl-tl-evt up r2"   style="left:56.25%; width:88px;" title="15:00 · 이철수 오후 투약">15 이철수 투약</div>
-        <div class="cl-tl-evt up"      style="left:75%; width:70px;"   title="18:00 · 저녁 식사">18 저녁</div>
-        <div class="cl-tl-evt up r2"   style="left:94%; width:70px;"   title="22:00 · 저녁 투약">22 마감 투약</div>
+        <div class="cl-tl-evt done"    style="--mp:0.5%;--ww:80px"  title="06:00 · 아침 투약 전체 완료">06 투약</div>
+        <div class="cl-tl-evt done r2" style="--mp:11.5%;--ww:72px" title="08:00 · 아침 식사 완료">08 식사</div>
+        <div class="cl-tl-evt done"    style="--mp:15.5%;--ww:66px" title="08:30 · 바이탈 완료">08:30 바이탈</div>
+        <div class="cl-tl-evt done r2" style="--mp:19%;--ww:62px"   title="09:00 · 세면/위생 완료">09 위생</div>
+        <div class="cl-tl-evt miss"    style="--mp:30.5%;--ww:84px" title="11:00 · 이철수 투약 재시도 지연">11 투약 재시도</div>
+        <div class="cl-tl-evt miss r2" style="--mp:38%;--ww:90px"   title="12:00 · 박영수 혈압 재측정 지연">12 혈압 재측정</div>
+        <div class="cl-tl-evt up"      style="--mp:50%;--ww:88px"   title="14:00 · 한영희 오후 바이탈">14 오후 바이탈</div>
+        <div class="cl-tl-evt up r2"   style="--mp:56.25%;--ww:88px" title="15:00 · 이철수 오후 투약">15 이철수 투약</div>
+        <div class="cl-tl-evt up"      style="--mp:75%;--ww:70px"   title="18:00 · 저녁 식사">18 저녁</div>
+        <div class="cl-tl-evt up r2"   style="--mp:94%;--ww:70px"   title="22:00 · 저녁 투약">22 마감 투약</div>
       </div>
     </div>
 
@@ -4250,7 +5090,7 @@
         <div class="pt-tab" onclick="ptTab(this)">예정 <span class="pt-tab-count">5</span></div>
       </div>
       <button class="pt-sort-btn">
-        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"/></svg>
+        <iconify-icon icon="fluent:list-12-filled"></iconify-icon>
         정렬: 시간순
       </button>
     </div>
@@ -4328,7 +5168,7 @@
         </div>
         <div class="cl-assignee">박보호 요양보호사</div>
         <div class="cl-sched">14:00</div>
-        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
       </div>
 
       <!-- 그룹: 투약 -->
@@ -4393,7 +5233,7 @@
         </div>
         <div class="cl-assignee">김코디 간호사</div>
         <div class="cl-sched">11:00</div>
-        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
       </div>
 
       <!-- 그룹: 식사 -->
@@ -4437,7 +5277,7 @@
         </div>
         <div class="cl-assignee">박보호 요양보호사</div>
         <div class="cl-sched">12:30</div>
-        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
       </div>
 
       <!-- 그룹: 처치·재활 -->
@@ -4483,7 +5323,7 @@
         </div>
         <div class="cl-assignee">박보호 요양보호사</div>
         <div class="cl-sched">14:00</div>
-        <div><span class="pt-badge" style="background:var(--surface);color:var(--ink-4);border:1px solid var(--ink-6)"><span class="pt-badge-dot" style="background:var(--ink-5)"></span>예정</span></div>
+        <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
       </div>
 
     </div><!-- /pt-card -->
@@ -4499,7 +5339,7 @@
         <p>2병동 · 오전 근무 종료 22:00 예정 · 마지막 업데이트 10:24</p>
       </div>
       <button class="pt-add-btn" id="sbar-top-btn" onclick="genSBAR(this)">
-        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+        <iconify-icon icon="fluent:edit-12-filled"></iconify-icon>
         AI SBAR 생성
       </button>
     </div>
@@ -4521,20 +5361,20 @@
       <!-- 타임라인: 주간 06:00-22:00 (66.7%) | 야간 22:00-06:00 (33.3%) -->
       <div class="ho-tl">
         <div class="ho-tl-bar">
-          <div class="ho-tl-shift active" style="left:0; width:66.67%;">
+          <div class="ho-tl-shift active" style="--mp:0%;--ww:66.67%">
             <span class="ho-tl-shift-lbl">주간 06:00 – 22:00 · 진행 중</span>
-            <span class="ho-tl-shift-stat">전달 <b>2</b><span style="color:var(--ink-5)"> / 5</span> · 미전달 <b class="alert">3</b> · 특이 <b>2</b></span>
+            <span class="ho-tl-shift-stat">전달 <b>2</b><span class="v10-text-ink-5"> / 5</span> · 미전달 <b class="alert">3</b> · 특이 <b>2</b></span>
           </div>
-          <div class="ho-tl-shift night" style="left:66.67%; width:33.33%;">
+          <div class="ho-tl-shift night" style="--mp:66.67%;--ww:33.33%">
             <span class="ho-tl-shift-lbl">야간 22:00 – 06:00</span>
             <span class="ho-tl-shift-stat">이철수·야간 12:00·02:00 재측정 예약</span>
           </div>
           <!-- 인계 포인트 22:00 -->
-          <div class="ho-tl-handover" style="left:66.67%;">
+          <div class="ho-tl-handover" style="--mp:66.67%">
             <span class="ho-tl-handover-lbl">22:00 인계</span>
           </div>
           <!-- 현재 시각 10:24 → (10:24-06:00)/24h = 4.4/24 = 18.33% -->
-          <div class="ho-tl-now" style="left:18.33%;">
+          <div class="ho-tl-now" style="--mp:18.33%">
             <span class="ho-tl-now-lbl">지금 10:24</span>
           </div>
         </div>
@@ -4702,7 +5542,7 @@
         <div class="pt-tab" onclick="ptTab(this)">완료 <span class="pt-tab-count">2</span></div>
       </div>
       <button class="pt-sort-btn">
-        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"/></svg>
+        <iconify-icon icon="fluent:list-12-filled"></iconify-icon>
         정렬: 우선순위
       </button>
     </div>
@@ -4814,7 +5654,7 @@
       </div>
 
       <!-- 최미경 · 낮음 · 완료 -->
-      <div class="ho-row" style="opacity:.65">
+      <div class="ho-row v10-opacity-65">
         <div class="pt-info">
           <div class="pt-av sf">최</div>
           <div>
@@ -4841,7 +5681,7 @@
       </div>
 
       <!-- 오병석 · 낮음 · 완료 -->
-      <div class="ho-row" style="opacity:.65">
+      <div class="ho-row v10-opacity-65">
         <div class="pt-info">
           <div class="pt-av sf">오</div>
           <div>
@@ -4869,8 +5709,21 @@
 
     </div><!-- /pt-card -->
 
+    <!-- ══ 수기 메모 인계 (환자 빠른 메모 中 '인수인계' 플래그된 항목 집계) ══ -->
+    <div class="ho-manual-wrap" id="ho-manual-wrap">
+      <div class="ho-manual-head">
+        <div class="ho-manual-title">
+          <iconify-icon icon="fluent:note-multiple-24-regular"></iconify-icon>
+          수기 메모 인계
+          <span class="sub" id="ho-manual-count">0건</span>
+        </div>
+        <div class="ho-manual-sub">의료진이 환자 행에서 작성한 빠른 메모 중 "인수인계" 표시된 항목</div>
+      </div>
+      <div class="ho-manual-list" id="ho-manual-list"></div>
+    </div>
+
     <!-- AI SBAR 패널 -->
-    <div class="ho-ai-panel" id="ho-ai-panel" style="display:none">
+    <div class="ho-ai-panel" id="ho-ai-panel" hidden>
       <div class="ai-panel-head">
         <div class="ai-head-left">
           <div class="ai-head-mark">
@@ -4885,7 +5738,7 @@
           </div>
         </div>
         <button class="ho-gen-btn" id="sbar-regen-btn" onclick="regenSBAR(this)">
-          <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+          <iconify-icon icon="fluent:edit-12-filled"></iconify-icon>
           전체 SBAR 생성
         </button>
       </div>
@@ -4913,19 +5766,19 @@
         <p>2병동 · 2026년 4월 18일 토요일 · 오전 2교대</p>
       </div>
       <button class="pt-add-btn">
-        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
         일정 추가
       </button>
     </div>
 
-    <div class="pt-filter-bar" style="margin-bottom:18px;">
+    <div class="pt-filter-bar v10-mb-3">
       <div class="pt-tabs">
         <div class="pt-tab active" onclick="schView(this,'monthly')">월간</div>
         <div class="pt-tab" onclick="schView(this,'daily')">일간</div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div class="v10-row-gap-8">
         <button class="pt-sort-btn">← 3월</button>
-        <span style="font-size:12px;font-weight:700;color:var(--ink-2)">2026년 4월</span>
+        <span class="v10-fs-12-bold-ink2">2026년 4월</span>
         <button class="pt-sort-btn">5월 →</button>
       </div>
     </div>
@@ -4936,10 +5789,10 @@
       <div class="sch-cal-wrap">
         <div class="sch-cal-legend">
           <span class="sch-cal-legend-title">2병동 간호사 근무표 · 2026년 4월</span>
-          <span style="font-size:11px;color:var(--ink-4)"><span class="sb sb-d">주</span> 07–15</span>
-          <span style="font-size:11px;color:var(--ink-4)"><span class="sb sb-e">오</span> 15–23</span>
-          <span style="font-size:11px;color:var(--ink-4)"><span class="sb sb-n">야</span> 23–07</span>
-          <span style="font-size:11px;color:var(--ink-5)"><span class="sb-off">—</span> 휴무</span>
+          <span class="v10-text-meta-11"><span class="sb sb-d">주</span> 07–15</span>
+          <span class="v10-text-meta-11"><span class="sb sb-e">오</span> 15–23</span>
+          <span class="v10-text-meta-11"><span class="sb sb-n">야</span> 23–07</span>
+          <span class="v10-text-meta-ink5"><span class="sb-off">—</span> 휴무</span>
         </div>
         <div class="sch-cal-dow-row">
           <div class="sch-cal-dow wknd">일</div>
@@ -4996,30 +5849,30 @@
       </div>
     </div>
 
-    <div class="kpi-row equal" style="margin-bottom:18px;">
+    <div class="kpi-row equal v10-mb-3">
       <div class="kpi">
         <div class="kpi-label">완료</div>
         <div class="kpi-value"><span>4</span><span class="kpi-denom">건</span></div>
         <div class="kpi-sub"><span class="kpi-dot accent"></span>오늘 전체 11건 중</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:36%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:36%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">지연</div>
         <div class="kpi-value alert"><span>1</span><span class="kpi-denom">건</span></div>
         <div class="kpi-sub"><span class="kpi-dot danger"></span>투약 미투여 확인</div>
-        <div class="kpi-bar"><div class="kpi-fill low" style="width:9%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill low" style="--bar-w:9%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">진행중</div>
         <div class="kpi-value"><span>1</span><span class="kpi-denom">건</span></div>
-        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--warn)"></span>상처 관리</div>
-        <div class="kpi-bar"><div class="kpi-fill mid" style="width:9%"></div></div>
+        <div class="kpi-sub"><span class="kpi-dot warn"></span>상처 관리</div>
+        <div class="kpi-bar"><div class="kpi-fill mid" style="--bar-w:9%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">예정</div>
         <div class="kpi-value"><span>5</span><span class="kpi-denom">건</span></div>
         <div class="kpi-sub"><span class="kpi-dot neutral"></span>오늘 남은 일정</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:45%; opacity:.35"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:45%;--bar-op:.35"></div></div>
       </div>
     </div>
 
@@ -5066,7 +5919,7 @@
           <div class="tl-time-col">09:00</div>
           <div class="tl-node-col"><div class="tl-dot alert"></div><div class="tl-line"></div></div>
           <div class="tl-body-col">
-            <div class="tl-row"><span class="tl-name done">미투여 확인</span><span class="tl-tag" style="background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-b)">지연</span></div>
+            <div class="tl-row"><span class="tl-name done">미투여 확인</span><span class="tl-tag v10-pill-danger">지연</span></div>
             <div class="tl-desc">303호 이철수 투약 거부 — 재시도 미완료</div>
           </div>
         </div>
@@ -5150,7 +6003,7 @@
         <p>2병동 · 2026년 4월 18일 · 실사 D-7</p>
       </div>
       <button class="pt-add-btn">
-        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
         새 기록
       </button>
     </div>
@@ -5204,21 +6057,21 @@
           <!-- 오늘 08:30 = -1h54m = -1.9h → 50 - 3.96 = 46% -->
           <!-- 오늘 14:00 투약 거부 → 사실 과거? 현재 10:24이니 +3.6h 후. 아직 미래. 정정: 14:00은 어제? 오늘? -->
           <!-- 간단화: 3개 이벤트를 확실히 과거로 배치 -->
-          <div class="rec-tl-mk done" style="left:18%;">
+          <div class="rec-tl-mk done" style="--mp:18%">
             <span class="rec-tl-mk-lbl">바이탈 이상</span>
             <span class="mk-line"></span>
             <span class="mk-dot"></span>
             <span class="mk-line"></span>
             <span class="rec-tl-mk-sub">어제 14:00</span>
           </div>
-          <div class="rec-tl-mk done" style="left:32%;">
+          <div class="rec-tl-mk done" style="--mp:32%">
             <span class="rec-tl-mk-lbl">투약 거부</span>
             <span class="mk-line"></span>
             <span class="mk-dot"></span>
             <span class="mk-line"></span>
             <span class="rec-tl-mk-sub">어제 19:00</span>
           </div>
-          <div class="rec-tl-mk urgent" style="left:40%;">
+          <div class="rec-tl-mk urgent" style="--mp:40%">
             <span class="rec-tl-mk-lbl">혈압 위기</span>
             <span class="mk-line"></span>
             <span class="mk-dot"></span>
@@ -5232,7 +6085,7 @@
           </div>
 
           <!-- 미래 마감 · 22:00 사고보고 24h 마감 = +11.6h → 50 + 24.17 = 74% -->
-          <div class="rec-tl-mk urgent" style="left:74%;">
+          <div class="rec-tl-mk urgent" style="--mp:74%">
             <span class="rec-tl-mk-lbl">사고보고 마감</span>
             <span class="mk-line"></span>
             <span class="mk-dot"></span>
@@ -5240,7 +6093,7 @@
             <span class="rec-tl-mk-sub">오늘 22:00 · 02:18 남음</span>
           </div>
           <!-- +22h 간호·급여 D-7 마감 대신 AI 생성 대기 표기. 내일 10:00 = +23.6h → 50+49 = 99% 끝 -->
-          <div class="rec-tl-mk" style="left:92%;">
+          <div class="rec-tl-mk" style="--mp:92%">
             <span class="rec-tl-mk-lbl">AI 자동생성</span>
             <span class="mk-line"></span>
             <span class="mk-dot"></span>
@@ -5285,7 +6138,7 @@
             <div class="rec-gauge-frac"><span class="done">1</span> 완료</div>
           </div>
           <div class="rec-gauge-cell" data-type="inc" style="--p:0" title="사고보고 0/1 · 긴급">
-            <div class="rec-gauge-ring"><div class="rec-gauge-val" style="color:var(--danger)">0<span class="pct">%</span></div></div>
+            <div class="rec-gauge-ring"><div class="rec-gauge-val v10-text-danger-plain">0<span class="pct">%</span></div></div>
             <div class="rec-gauge-label">사고보고</div>
             <div class="rec-gauge-frac"><span class="miss">1</span> 미작성 · 긴급</div>
           </div>
@@ -5336,7 +6189,7 @@
             AI 자동생성 대기
           </div>
           <span class="rec-aiq-count">
-            <iconify-icon icon="fluent:flash-24-regular" style="font-size:12px"></iconify-icon>
+            <iconify-icon icon="fluent:flash-24-regular" class="v10-fs-12"></iconify-icon>
             5건 대기
           </span>
         </div>
@@ -5400,7 +6253,7 @@
         <div class="pt-tab" onclick="ptTab(this)">사고보고 <span class="pt-tab-count">1</span></div>
       </div>
       <button class="pt-sort-btn">
-        <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"/></svg>
+        <iconify-icon icon="fluent:list-12-filled"></iconify-icon>
         정렬: 최신순
       </button>
     </div>
@@ -5434,7 +6287,7 @@
         <div><span class="rec-ai-tag">AI 생성</span></div>
         <div class="pt-vital">10:30</div>
         <div class="med-actions">
-          <span class="pt-badge sf" style="margin-right:4px"><span class="pt-badge-dot"></span>완료</span>
+          <span class="pt-badge sf v10-mr-1"><span class="pt-badge-dot"></span>완료</span>
           <button class="pt-act">보기</button>
         </div>
       </div>
@@ -5455,9 +6308,9 @@
         </div>
         <div><span class="rec-type inc">사고보고</span></div>
         <div><span class="rec-ai-tag">AI 생성</span></div>
-        <div class="pt-vital" style="color:var(--danger);font-weight:600">미작성</div>
+        <div class="pt-vital v10-text-danger-bold">미작성</div>
         <div class="med-actions">
-          <span class="pt-badge dg" style="margin-right:4px"><span class="pt-badge-dot"></span>미작성</span>
+          <span class="pt-badge dg v10-mr-1"><span class="pt-badge-dot"></span>미작성</span>
           <button class="pt-act em">작성</button>
         </div>
       </div>
@@ -5478,9 +6331,9 @@
         </div>
         <div><span class="rec-type nurse">간호기록</span></div>
         <div><span class="rec-ai-tag">AI 생성</span></div>
-        <div class="pt-vital" style="color:var(--danger);font-weight:600">미작성</div>
+        <div class="pt-vital v10-text-danger-bold">미작성</div>
         <div class="med-actions">
-          <span class="pt-badge dg" style="margin-right:4px"><span class="pt-badge-dot"></span>미작성</span>
+          <span class="pt-badge dg v10-mr-1"><span class="pt-badge-dot"></span>미작성</span>
           <button class="pt-act em">작성</button>
         </div>
       </div>
@@ -5499,10 +6352,10 @@
           <div class="rec-sub">혈압·체온·맥박 전체 기록 · 이상 2건 포함</div>
         </div>
         <div><span class="rec-type vital">바이탈기록</span></div>
-        <div><span style="font-size:11px;color:var(--ink-5)">자동 기록</span></div>
+        <div><span class="v10-text-meta-ink5">자동 기록</span></div>
         <div class="pt-vital">08:45</div>
         <div class="med-actions">
-          <span class="pt-badge sf" style="margin-right:4px"><span class="pt-badge-dot"></span>완료</span>
+          <span class="pt-badge sf v10-mr-1"><span class="pt-badge-dot"></span>완료</span>
           <button class="pt-act">보기</button>
         </div>
       </div>
@@ -5523,9 +6376,9 @@
         </div>
         <div><span class="rec-type pay">급여기록</span></div>
         <div><span class="rec-ai-tag">AI 생성</span></div>
-        <div class="pt-vital" style="color:var(--danger);font-weight:600">미작성</div>
+        <div class="pt-vital v10-text-danger-bold">미작성</div>
         <div class="med-actions">
-          <span class="pt-badge dg" style="margin-right:4px"><span class="pt-badge-dot"></span>미작성</span>
+          <span class="pt-badge dg v10-mr-1"><span class="pt-badge-dot"></span>미작성</span>
           <button class="pt-act em">작성</button>
         </div>
       </div>
@@ -5548,7 +6401,7 @@
         <div><span class="rec-ai-tag">AI 생성</span></div>
         <div class="pt-vital">14:35</div>
         <div class="med-actions">
-          <span class="pt-badge sf" style="margin-right:4px"><span class="pt-badge-dot"></span>완료</span>
+          <span class="pt-badge sf v10-mr-1"><span class="pt-badge-dot"></span>완료</span>
           <button class="pt-act">보기</button>
         </div>
       </div>
@@ -5565,8 +6418,8 @@
 
     <!-- 프로필 카드 -->
     <div class="my-profile-card">
-      <div class="my-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="김코디 프로필 사진" loading="lazy" onerror="this.parentNode.textContent='김';this.parentNode.style.background='var(--ink)';this.parentNode.style.color='#fff';"></div>
-      <div style="flex:1;min-width:0">
+      <div class="my-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="김코디 프로필 사진" loading="lazy" onerror="this.parentNode.textContent='김';this.parentNode.style.background='var(--ink)';this.parentNode.style.color='white';"></div>
+      <div class="v10-flex-1-min">
         <div class="my-name">김코디</div>
         <div class="my-role-line">간호사 · 햇살요양원 2병동 · 사번 NRS-2024-047</div>
         <div class="my-chips">
@@ -5579,30 +6432,30 @@
     </div>
 
     <!-- 이번 달 통계 (KPI 재사용) -->
-    <div class="kpi-row equal" style="margin-bottom:16px;">
+    <div class="kpi-row equal v10-mb-16">
       <div class="kpi">
         <div class="kpi-label">이번 달 근무</div>
         <div class="kpi-value"><span>16</span><span class="kpi-denom">일</span></div>
         <div class="kpi-sub"><span class="kpi-dot accent"></span>총 22 근무일 중</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:73%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:73%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">케어 완료율</div>
         <div class="kpi-value"><span>91</span><span class="kpi-denom">%</span></div>
         <div class="kpi-sub"><span class="kpi-dot accent"></span>이번 달 평균</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:91%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:91%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">투약 완료율</div>
         <div class="kpi-value"><span>96</span><span class="kpi-denom">%</span></div>
         <div class="kpi-sub"><span class="kpi-dot accent"></span>이번 달 평균</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:96%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:96%"></div></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">인수인계 완료율</div>
         <div class="kpi-value"><span>100</span><span class="kpi-denom">%</span></div>
         <div class="kpi-sub"><span class="kpi-dot accent"></span>이번 달 전체</div>
-        <div class="kpi-bar"><div class="kpi-fill" style="width:100%"></div></div>
+        <div class="kpi-bar"><div class="kpi-fill" style="--bar-w:100%"></div></div>
       </div>
     </div>
 
@@ -5613,7 +6466,7 @@
       </div>
       <div class="my-row">
         <div class="my-row-icon">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/></svg>
+          <iconify-icon icon="fluent:alert-16-filled"></iconify-icon>
         </div>
         <div>
           <div class="my-row-label">주의 환자 긴급 알림</div>
@@ -5623,7 +6476,7 @@
       </div>
       <div class="my-row">
         <div class="my-row-icon">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/></svg>
+          <iconify-icon icon="fluent:info-16-filled"></iconify-icon>
         </div>
         <div>
           <div class="my-row-label">투약 시간 알림</div>
@@ -5633,7 +6486,7 @@
       </div>
       <div class="my-row">
         <div class="my-row-icon">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/><path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"/></svg>
+          <iconify-icon icon="fluent:chat-16-filled"></iconify-icon>
         </div>
         <div>
           <div class="my-row-label">보호자 메시지 알림</div>
@@ -5643,7 +6496,7 @@
       </div>
       <div class="my-row">
         <div class="my-row-icon">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+          <iconify-icon icon="fluent:calendar-16-filled"></iconify-icon>
         </div>
         <div>
           <div class="my-row-label">인수인계 리마인더</div>
@@ -5660,7 +6513,7 @@
       </div>
       <div class="my-row">
         <div class="my-row-icon">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+          <iconify-icon icon="fluent:settings-16-filled"></iconify-icon>
         </div>
         <div>
           <div class="my-row-label">언어</div>
@@ -5670,7 +6523,7 @@
       </div>
       <div class="my-row">
         <div class="my-row-icon">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+          <iconify-icon icon="fluent:weather-moon-16-filled"></iconify-icon>
         </div>
         <div>
           <div class="my-row-label">다크 모드</div>
@@ -5680,7 +6533,7 @@
       </div>
       <div class="my-row">
         <div class="my-row-icon">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          <iconify-icon icon="fluent:arrow-upload-16-filled"></iconify-icon>
         </div>
         <div>
           <div class="my-row-label">데이터 백업</div>
@@ -5697,20 +6550,20 @@
       </div>
       <div class="my-row">
         <div class="my-row-icon">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--ink-3)"><path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z" clip-rule="evenodd"/></svg>
+          <iconify-icon icon="fluent:key-16-filled"></iconify-icon>
         </div>
         <div>
           <div class="my-row-label">비밀번호 변경</div>
           <div class="my-row-sub">마지막 변경 90일 전</div>
         </div>
-        <div class="my-row-value" style="color:var(--warn)">변경 권장</div>
+        <div class="my-row-value v10-text-warn">변경 권장</div>
       </div>
-      <div class="my-row" style="cursor:pointer" onclick="">
+      <div class="my-row v10-cursor" onclick="">
         <div class="my-row-icon">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--danger)"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+          <iconify-icon icon="fluent:sign-out-16-filled"></iconify-icon>
         </div>
         <div>
-          <div class="my-row-label" style="color:var(--danger)">로그아웃</div>
+          <div class="my-row-label v10-text-danger-plain">로그아웃</div>
           <div class="my-row-sub">현재 기기에서 로그아웃</div>
         </div>
       </div>
@@ -5768,16 +6621,16 @@
       <span class="cp-title">소통 패널</span>
     </div>
     <div class="cp-tabs">
-      <div class="cp-tab active" onclick="cpTab(this)">전체</div>
+      <div class="cp-tab" onclick="cpTab(this)">전체</div>
       <div class="cp-tab" onclick="cpTab(this)">현재 환자</div>
-      <div class="cp-tab" onclick="cpTab(this)">AI 요약</div>
+      <div class="cp-tab active" onclick="cpTab(this)">AI 요약</div>
     </div>
   </div>
 
   <div class="cp-body">
 
     <!-- ── 전체 뷰 ── -->
-    <div class="cp-view" id="cpv-all">
+    <div class="cp-view" id="cpv-all" hidden>
 
       <div class="ch-label">보호자 채팅</div>
 
@@ -5872,7 +6725,7 @@
     </div><!-- /cpv-all -->
 
     <!-- ── 현재 환자 뷰 ── -->
-    <div class="cp-view" id="cpv-patient" style="display:none">
+    <div class="cp-view" id="cpv-patient" hidden>
       <div class="cp-ctx-bar" id="cp-ctx-bar">
         <span class="cp-ctx-label" id="cp-ctx-label">현재 페이지 기준</span>
       </div>
@@ -5880,12 +6733,14 @@
     </div>
 
     <!-- ── AI 요약 뷰 ── -->
-    <div class="cp-view" id="cpv-ai" style="display:none">
+    <div class="cp-view" id="cpv-ai">
       <div class="cp-ai-intro">
-        <div class="cp-ai-icon">
-          <svg width="18" height="18" viewBox="0 0 2526 2526" fill="white">
-            <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
-            <path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/>
+        <div class="cp-ai-icon" aria-hidden="true">
+          <svg viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(50, 50) scale(0.163)">
+              <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/>
+              <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z"/>
+            </g>
           </svg>
         </div>
         <div>
@@ -5922,12 +6777,12 @@
       <div class="cp-ai-ask-wrap">
         <div class="cp-ai-ask-label">AI에게 질문</div>
         <div class="cp-ai-ask-row">
-          <input class="cp-ai-ask-input" type="text" placeholder="예: 박영수님 최근 바이탈 추이는?" onkeydown="if(event.key==='Enter')cpAiAsk(this)">
+          <input class="cp-ai-ask-input" type="text"  placeholder="예: 박영수님 최근 바이탈 추이는?" aria-label="예: 박영수님 최근 바이탈 추이는?" onkeydown="if(event.key==='Enter')cpAiAsk(this)">
           <button class="send-btn" onclick="cpAiAsk(this.previousElementSibling)">
-            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
+            <iconify-icon icon="fluent:send-16-filled"></iconify-icon>
           </button>
         </div>
-        <div class="cp-ai-answer" id="cp-ai-answer" style="display:none"></div>
+        <div class="cp-ai-answer" id="cp-ai-answer" hidden></div>
       </div>
     </div><!-- /cpv-ai -->
 
@@ -5935,11 +6790,9 @@
 
   <div class="cp-input-wrap" id="cp-main-input-wrap">
     <div class="cp-input-row">
-      <input class="cp-input" type="text" placeholder="대화를 선택하면 답장할 수 있습니다" readonly style="cursor:default;color:var(--ink-5)">
-      <button class="send-btn" style="opacity:.4;pointer-events:none">
-        <svg viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
-        </svg>
+      <input class="cp-input" type="text"  placeholder="대화를 선택하면 답장할 수 있습니다" aria-label="대화를 선택하면 답장할 수 있습니다" readonly class="v10-cursor-default-ink5">
+      <button class="send-btn v10-dim-40">
+        <iconify-icon icon="fluent:send-16-filled"></iconify-icon>
       </button>
     </div>
   </div>
@@ -5948,21 +6801,21 @@
   <div class="cp-convo" id="cp-convo">
     <div class="cp-convo-header">
       <button class="cp-back-btn" onclick="closeConvo()">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        <iconify-icon icon="fluent:dismiss-16-filled"></iconify-icon>
       </button>
       <div class="cp-convo-av" id="convo-av"></div>
       <div class="cp-convo-info">
         <div class="cp-convo-name" id="convo-name"></div>
         <div class="cp-convo-pt" id="convo-pt"></div>
       </div>
-      <div class="st-dot" id="convo-status" style="position:static;width:8px;height:8px;margin-left:auto;flex-shrink:0"></div>
+      <div class="st-dot" id="convo-status" class="v10-dot-marker"></div>
     </div>
     <div class="cp-msg-list" id="cp-msg-list"></div>
     <div class="cp-convo-input-wrap">
       <div class="cp-convo-input-row">
-        <input class="cp-convo-input" id="cp-convo-input" type="text" placeholder="">
+        <input class="cp-convo-input" id="cp-convo-input" type="text" placeholder="메시지 입력" aria-label="대화 메시지 입력">
         <button class="send-btn" onclick="sendConvoMsg()">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
+          <iconify-icon icon="fluent:send-16-filled"></iconify-icon>
         </button>
       </div>
     </div>
@@ -6046,7 +6899,7 @@
     const inner = document.getElementById('cpv-patient-inner');
     if (!inner) return;
     if (!ctx.pts.length) {
-      inner.innerHTML = '<div style="padding:40px 16px;text-align:center;color:var(--ink-5);font-size:12px;">이 페이지와 관련된 메시지가 없습니다.</div>';
+      inner.innerHTML = '<div class="v10-empty-state">이 페이지와 관련된 메시지가 없습니다.</div>';
       return;
     }
     inner.innerHTML = ctx.pts.map(p => `
@@ -6093,7 +6946,7 @@
     }
     const orig = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = '<span class="spin" style="width:13px;height:13px;display:inline-block;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;margin-right:6px;"></span>생성 중...';
+    btn.innerHTML = '<span class="v10-spinner-inline"></span>생성 중...';
     setTimeout(() => {
       btn.innerHTML = orig;
       btn.disabled = false;
@@ -6116,7 +6969,7 @@
     const items = document.querySelectorAll('#ho-ai-panel .ho-ai-item');
     const orig = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = '<span class="spin" style="width:13px;height:13px;display:inline-block;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;margin-right:6px;"></span>재생성 중...';
+    btn.innerHTML = '<span class="v10-spinner-inline"></span>재생성 중...';
     items.forEach(it => { it.style.opacity = '.3'; it.style.transition = 'opacity .2s'; });
     setTimeout(() => {
       btn.innerHTML = orig;
@@ -6136,14 +6989,14 @@
     const item = btn.closest('.cp-ai-item');
     const acts = item.querySelector('.cp-ai-item-actions');
     if (type === 'check') {
-      acts.innerHTML = '<span style="font-size:11px;color:var(--ink-5);font-weight:600;">확인 완료</span>';
+      acts.innerHTML = '<span class="v10-text-bold-meta">확인 완료</span>';
       item.style.opacity = '.55';
     } else if (type === 'notify') {
-      acts.innerHTML = '<span style="font-size:11px;color:var(--accent-strong);font-weight:600;">보호자 알림 발송됨</span>';
+      acts.innerHTML = '<span class="v10-text-accent-bold">보호자 알림 발송됨</span>';
     } else if (type === 'later') {
       item.style.display = 'none';
     } else if (type === 'memo') {
-      acts.innerHTML = '<input style="border:1px solid var(--ink-6);border-radius:8px;padding:4px 9px;font-size:11px;font-family:var(--font);outline:none;width:100%;" placeholder="메모 입력 후 Enter..." onkeydown="if(event.key===\'Enter\'&&this.value){this.closest(\'.cp-ai-item-actions\').innerHTML=\'<span style=&quot;font-size:11px;color:var(--ink-5)&quot;>메모 저장됨</span>\';}">';
+      acts.innerHTML = '<input class="v10-memo-input"  placeholder="메모 입력 후 Enter..." aria-label="메모 입력 후 Enter..." onkeydown="if(event.key===\'Enter\'&&this.value){this.closest(\'.cp-ai-item-actions\').innerHTML=\'<span class=&quot;v10-memo-saved-tag&quot;>메모 저장됨</span>\';}">';
       acts.querySelector('input').focus();
     }
   }
@@ -6154,7 +7007,7 @@
     btn.textContent = '생성 중...';
     setTimeout(() => {
       const acts = btn.closest('.cp-ai-item-actions');
-      if (acts) acts.innerHTML = '<span style="font-size:11px;color:var(--accent-strong);font-weight:600;">3건 초안 생성 완료 — 기록·보고서에서 확인하세요</span>';
+      if (acts) acts.innerHTML = '<span class="v10-text-accent-bold">3건 초안 생성 완료 — 기록·보고서에서 확인하세요</span>';
     }, 1500);
   }
 
@@ -6298,6 +7151,16 @@
     currentConvoId = null;
   }
 
+  // v3.2.4 — 전역 ESC 핸들러: 열려 있는 패널 자동 닫기 (가장 위 레이어부터)
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    // 우선순위: 메모 패널 > 대화 패널 (모달 가장 위 레이어부터 닫음)
+    var memo = document.querySelector('.memo-panel.open, .memo-panel.is-open');
+    if (memo && typeof closeMemoPanel === 'function') { closeMemoPanel(); return; }
+    var convo = document.getElementById('cp-convo');
+    if (convo && convo.classList.contains('open')) { closeConvo(); return; }
+  });
+
   function sendConvoMsg() {
     const input = document.getElementById('cp-convo-input');
     const val = input.value.trim();
@@ -6415,7 +7278,7 @@
         const cfg = shiftCfg[s];
         const badge = cfg
           ? `<span class="${cfg.cls}">${cfg.label}</span><span class="sch-cal-shift-time">${cfg.time}</span>`
-          : `<span class="sb-off" style="font-size:16px;color:var(--ink-6)">—</span>`;
+          : `<span class="sb-off v10-fs-16-ink6">—</span>`;
         entries += `<div class="sch-cal-entry${n.me ? ' me' : ''}" data-nurse="${n.name}">${badge}</div>`;
       }
 
@@ -6457,9 +7320,11 @@
       return v || fallback;
     }
     var colorAccent   = tokenColor('--color-accent',   '#22C55E');
-    var colorAccentBg = 'rgba(34,197,94,0.08)'; // accent의 rgba 변형 (alpha)
+    // Canvas는 CSS 변수 못 읽으므로 토큰의 RGB 채널을 직접 읽어 합성
+    var brandGreenRgb = tokenColor('--brand-green-500-rgb', '34, 197, 94');
+    var colorAccentBg = 'rgba(' + brandGreenRgb + ', 0.08)';
     var colorWarning  = tokenColor('--color-warning',  '#F59E0B');
-    var colorDanger   = tokenColor('--color-danger',   '#EF4444');
+    var colorDanger   = tokenColor('--color-danger',   '#FF3B30');
     var colorMuted    = tokenColor('--ink-5',          '#AAAAAA');
     var gridColor     = 'rgba(0,0,0,0.05)';
     var textColor     = tokenColor('--ink-4',          '#888888');
@@ -6573,6 +7438,285 @@
   }
 
   document.addEventListener('DOMContentLoaded', buildCharts);
+})();
+</script>
+
+<!-- ══════════ 환자 빠른 메모 사이드 패널 ══════════ -->
+<aside class="memo-panel" id="memo-panel" role="region" aria-label="환자 빠른 메모" aria-hidden="true">
+  <header class="memo-panel__header">
+    <div class="memo-panel__title">
+      <span class="memo-panel__title-main" id="memo-panel-name">환자 메모</span>
+      <span class="memo-panel__title-sub" id="memo-panel-room"></span>
+    </div>
+    <button class="memo-panel__close" type="button" onclick="closeMemoPanel()" aria-label="패널 닫기">
+      <iconify-icon icon="fluent:dismiss-24-filled"></iconify-icon>
+    </button>
+  </header>
+  <div class="memo-panel__body">
+    <div class="memo-input-area">
+      <textarea id="memo-input" rows="4"  placeholder="환자에 대한 빠른 메모를 입력하세요. (예: 14시 측정 시 안색 다소 창백, 식사량 평소보다 적음)" aria-label="환자에 대한 빠른 메모를 입력하세요. (예: 14시 측정 시 안색 다소 창백, 식사량 평소보다 적음)"></textarea>
+      <div class="memo-flags">
+        <label class="memo-flag" title="인수인계 SBAR로 승격 표시 — 기획서 §5.3.2 메뉴 5 연계">
+          <input type="checkbox" id="memo-handover">
+          <span>인수인계 메모</span>
+        </label>
+        <label class="memo-flag" title="보호자 앱 일일 리포트에 노출 — 보호자에게도 보임">
+          <input type="checkbox" id="memo-share-family">
+          <span>보호자 공유</span>
+        </label>
+      </div>
+      <div class="memo-input-row">
+        <span class="memo-input-hint" id="memo-input-hint"></span>
+        <button class="memo-save" type="button" onclick="saveMemo()">저장</button>
+      </div>
+    </div>
+    <div class="memo-section-title">이전 메모</div>
+    <div class="memo-list" id="memo-list"></div>
+  </div>
+</aside>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'haru-patient-memos-v1';
+  let currentPatientId = null;
+
+  function loadAll() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch(e) { return {}; }
+  }
+  function saveAll(all) { localStorage.setItem(STORAGE_KEY, JSON.stringify(all)); }
+  function loadFor(id) { return loadAll()[id] || []; }
+  function setFor(id, list) { const all = loadAll(); all[id] = list; saveAll(all); }
+
+  function fmt(ts) {
+    const d = new Date(ts);
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    const hh = String(d.getHours()).padStart(2,'0');
+    const mm = String(d.getMinutes()).padStart(2,'0');
+    return `${d.getFullYear()}.${m}.${day} ${hh}:${mm}`;
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderList() {
+    const list = loadFor(currentPatientId).slice().sort((a,b) => b.ts - a.ts);
+    const root = document.getElementById('memo-list');
+    if (!list.length) {
+      root.innerHTML = '<div class="memo-empty">아직 작성된 메모가 없습니다.</div>';
+      return;
+    }
+    root.innerHTML = list.map(m => {
+      const tags = [];
+      if (m.handover) tags.push('<span class="memo-card__tag handover"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>인수인계</span>');
+      if (m.shareWithFamily) tags.push('<span class="memo-card__tag family"><iconify-icon icon="fluent:people-24-filled"></iconify-icon>보호자 공유</span>');
+      return `
+      <div class="memo-card ${m.handover ? 'is-handover' : ''}">
+        <div class="memo-card__meta">
+          <span>${fmt(m.ts)}</span>
+          <span class="memo-card__tags">${tags.join('')}</span>
+        </div>
+        <div class="memo-card__text">${esc(m.text)}</div>
+        <button class="memo-card__delete" type="button" data-ts="${m.ts}">삭제</button>
+      </div>`;
+    }).join('');
+    root.querySelectorAll('.memo-card__delete').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ts = Number(btn.dataset.ts);
+        setFor(currentPatientId, loadFor(currentPatientId).filter(x => x.ts !== ts));
+        renderList();
+        if (window.refreshMemoBadges) window.refreshMemoBadges();
+        if (window.renderHandoverPool) window.renderHandoverPool();
+      });
+    });
+  }
+
+  window.openMemoPanel = function(name, room) {
+    currentPatientId = `${room}-${name}`;
+    document.getElementById('memo-panel-name').textContent = `${name} 메모`;
+    document.getElementById('memo-panel-room').textContent = room || '';
+    document.getElementById('memo-input').value = '';
+    document.getElementById('memo-handover').checked = false;
+    document.getElementById('memo-share-family').checked = false;
+    renderList();
+    const panel = document.getElementById('memo-panel');
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    setTimeout(() => document.getElementById('memo-input').focus(), 220);
+  };
+
+  window.closeMemoPanel = function() {
+    const panel = document.getElementById('memo-panel');
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+  };
+
+  window.saveMemo = function() {
+    const ta = document.getElementById('memo-input');
+    const text = ta.value.trim();
+    if (!text || !currentPatientId) return;
+    const handover = document.getElementById('memo-handover').checked;
+    const shareWithFamily = document.getElementById('memo-share-family').checked;
+    const [room, ...nameParts] = currentPatientId.split('-');
+    const list = loadFor(currentPatientId);
+    list.push({
+      ts: Date.now(),
+      text,
+      handover,
+      shareWithFamily,
+      patientName: nameParts.join('-'),
+      patientRoom: room
+    });
+    setFor(currentPatientId, list);
+    ta.value = '';
+    document.getElementById('memo-handover').checked = false;
+    document.getElementById('memo-share-family').checked = false;
+    renderList();
+    refreshMemoBadges();
+    renderHandoverPool();
+  };
+
+  function makeMemoButton(name, room) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'pt-act memo';
+    btn.dataset.memoName = name;
+    btn.dataset.memoRoom = room;
+    btn.innerHTML = '<iconify-icon icon="fluent:note-24-regular"></iconify-icon>메모<span class="memo-count" hidden>0</span>';
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.openMemoPanel(name, room);
+    });
+    return btn;
+  }
+
+  // 알림 카드 첫 줄 예: "301호 박영수 (남 · 82세)" → { room: "301호", name: "박영수" }
+  function parseAlertPatient(text) {
+    const m = String(text || '').match(/^\s*(\d+\s*호)\s+([^\s(]+)/);
+    if (!m) return null;
+    return { room: m[1].replace(/\s+/g, ''), name: m[2].trim() };
+  }
+
+  function injectMemoButtons() {
+    // 1) 환자 관리 페이지 — 환자 행
+    document.querySelectorAll('.pt-row').forEach(row => {
+      const actions = row.querySelector('.pt-actions');
+      if (!actions || actions.querySelector('.pt-act.memo')) return;
+      const name = row.querySelector('.pt-name-text')?.textContent?.trim() || '';
+      const room = row.querySelector('.pt-room')?.textContent?.trim() || '';
+      if (!name) return;
+      actions.appendChild(makeMemoButton(name, room));
+    });
+
+    // 2) 대시보드 — 주의 환자 알림 카드 (.al-item)
+    document.querySelectorAll('.al-item').forEach(item => {
+      if (item.querySelector('.pt-act.memo')) return;
+      const patientText = item.querySelector('.al-patient')?.textContent || '';
+      const parsed = parseAlertPatient(patientText);
+      if (!parsed) return;
+      // 기존 액션 버튼(.al-btn)이 있으면 그 옆에, 없으면 al-body 끝에 컴팩트한 컨테이너로 부착
+      let host = item.querySelector('.al-actions');
+      if (!host) {
+        host = document.createElement('div');
+        host.className = 'al-actions';
+        host.style.cssText = 'display:flex;gap:6px;align-items:center;margin-left:auto;';
+        item.appendChild(host);
+      }
+      host.appendChild(makeMemoButton(parsed.name, parsed.room));
+    });
+  }
+
+  function refreshMemoBadges() {
+    const all = loadAll();
+    document.querySelectorAll('.pt-act.memo').forEach(btn => {
+      const id = `${btn.dataset.memoRoom}-${btn.dataset.memoName}`;
+      const list = all[id] || [];
+      const badge = btn.querySelector('.memo-count');
+      if (!badge) return;
+      if (!list.length) {
+        badge.hidden = true;
+        badge.textContent = '0';
+        badge.classList.remove('has-handover');
+        return;
+      }
+      badge.hidden = false;
+      badge.textContent = String(list.length);
+      const hasHandover = list.some(m => m.handover);
+      badge.classList.toggle('has-handover', hasHandover);
+    });
+  }
+
+  function collectHandoverMemos() {
+    const all = loadAll();
+    const out = [];
+    Object.entries(all).forEach(([id, list]) => {
+      list.forEach(m => {
+        if (m.handover) {
+          const [room, ...nameParts] = id.split('-');
+          out.push({
+            ts: m.ts,
+            text: m.text,
+            shareWithFamily: m.shareWithFamily,
+            patientName: m.patientName || nameParts.join('-'),
+            patientRoom: m.patientRoom || room
+          });
+        }
+      });
+    });
+    return out.sort((a, b) => b.ts - a.ts);
+  }
+
+  function renderHandoverPool() {
+    const list = collectHandoverMemos();
+    const root = document.getElementById('ho-manual-list');
+    const count = document.getElementById('ho-manual-count');
+    if (!root) return;
+    if (count) count.textContent = `${list.length}건`;
+    if (!list.length) {
+      root.innerHTML = '<div class="ho-manual-empty">아직 인수인계로 표시된 수기 메모가 없습니다.</div>';
+      return;
+    }
+    root.innerHTML = list.map(m => `
+      <div class="ho-manual-item">
+        <div class="ho-manual-patient">
+          <span class="name">${esc(m.patientName)}</span>
+          <span class="room">${esc(m.patientRoom || '')}</span>
+        </div>
+        <div class="ho-manual-text">${esc(m.text)}<span class="ts">${fmt(m.ts)}${m.shareWithFamily ? ' · 보호자 공유' : ''}</span></div>
+        <div class="ho-manual-actions">
+          <button class="ho-manual-open" type="button" data-name="${esc(m.patientName)}" data-room="${esc(m.patientRoom || '')}">메모 열기</button>
+        </div>
+      </div>
+    `).join('');
+    root.querySelectorAll('.ho-manual-open').forEach(btn => {
+      btn.addEventListener('click', () => window.openMemoPanel(btn.dataset.name, btn.dataset.room));
+    });
+  }
+
+  // saveMemo가 외부에서 호출하는 헬퍼들을 전역으로 노출
+  window.refreshMemoBadges = refreshMemoBadges;
+  window.renderHandoverPool = renderHandoverPool;
+
+  // showPage('handover')로 진입 시 풀 갱신 (기존 showPage 함수를 래핑)
+  const originalShowPage = window.showPage;
+  if (typeof originalShowPage === 'function') {
+    window.showPage = function(id) {
+      originalShowPage(id);
+      if (id === 'handover') renderHandoverPool();
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    injectMemoButtons();
+    refreshMemoBadges();
+    renderHandoverPool();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const panel = document.getElementById('memo-panel');
+    if (panel && panel.classList.contains('is-open')) window.closeMemoPanel();
+  });
 })();
 </script>
 
