@@ -5812,7 +5812,7 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     if(step.c === '01'){
       const myAudio01 = audio;
       const onTime01 = () => {
-        if(myAudio01.currentTime >= 5.19){
+        if(myAudio01.currentTime >= 5.33){
           myAudio01.removeEventListener('timeupdate', onTime01);
           myAudio01.pause();
           myAudio01.dispatchEvent(new Event('ended'));
