@@ -35,9 +35,15 @@ _archive/**/_대용량_git제외/
 *.bak
 *.bak_*
 *_backup_*
+*_백업_*
 *_standalone.html
 *_standalone.html.zip
 *.backup-*
+
+# 저장소 안에 만든 전체 백업·v2 사본은 추적·배포 금지(휴지통/외부 보관)
+/HaruAnbu_백업_*/
+/하루안부v2/
+/하루안부v2_*/
 
 # 별도 저장소(팀원 making-of, 자체 .git + node_modules 678MB) — 메인 repo에 추적하지 않음
 /haru-anbu-making-of/
