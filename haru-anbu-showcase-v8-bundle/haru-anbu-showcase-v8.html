@@ -2141,8 +2141,6 @@
     </div>
   </div>
 
-
-
   <!-- ══ APP PREVIEW — Problem 직후 하루안부 미리보기 (Bento · 3 cells, 헤더 없음) ══ -->
   <style>
     .preview-section{padding:clamp(8px,1.2vw,20px) clamp(8px,1vw,16px)}
@@ -4212,7 +4210,7 @@ function buildAIPanel(containerEl) {
   containerEl.innerHTML = `
     <div class="ai-header"><div class="ai-dot-pulse"></div><span class="ai-header-label">AI 분석 중</span></div>
     <div class="ai-lines" id="ai-lines-box" style="flex:1;display:flex;flex-direction:column;gap:0;position:relative"></div>
-    <div class="ai-footer">Claude API · 실시간 분석</div>
+    <div class="ai-footer">AI · 실시간 분석</div>
   `;
   const box = containerEl.querySelector('#ai-lines-box');
   AI_STEPS.forEach(step => {
