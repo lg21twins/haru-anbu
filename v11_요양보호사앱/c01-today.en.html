@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
   <link rel="stylesheet" href="../07_디자인/system/home.css">
   <link rel="stylesheet" href="caregiver.css">
+  <!-- 공통 셸(헤더/로고/아이콘버튼) 단일 소스 — 인라인 복붙 대체 -->
+  <link rel="stylesheet" href="../07_디자인/system/shell.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <script defer src="caregiver.js"></script>
   <style>
@@ -52,23 +54,7 @@
       position: relative; padding-bottom: calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 32px);
     }
 
-    .header {
-      position: static;
-      padding: calc(var(--safe-t) + 6px) var(--page-pad) 0;
-      background: transparent;
-    }
-    .logo { display: inline-flex; align-items: center; text-decoration: none; color: inherit; padding: 4px; margin: -4px; }
-    .icon-btn {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(255,255,255,.55);
-      border: .5px solid rgba(255,255,255,.55);
-      backdrop-filter: blur(12px) saturate(140%);
-      -webkit-backdrop-filter: blur(12px) saturate(140%);
-      display: inline-flex; align-items: center; justify-content: center;
-      cursor: pointer; text-decoration: none;
-      box-shadow: 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06);
-      position: relative; transition: transform .1s;
-    }
+    /* 헤더 셸(header/logo/icon-btn) → 공유 shell.css */
 
     .shift {
       margin: 12px var(--page-pad) 0;
@@ -476,11 +462,11 @@
         </a>
         <div class="top-actions">
           <a href="c03-sotong.en.html#alerts" class="icon-btn" aria-label="3 alerts · Messages">
-            <iconify-icon icon="fluent:alert-24-filled"></iconify-icon>
+            <iconify-icon icon="mingcute:notification-fill"></iconify-icon>
             <span class="notif-dot"></span>
           </a>
           <a href="c04-mypage.en.html" class="icon-btn" aria-label="My page">
-            <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+            <iconify-icon icon="mingcute:user-3-fill"></iconify-icon>
           </a>
         </div>
       </div>
@@ -507,18 +493,18 @@
           <span class="hero-time">10:15</span>
           <span class="hero-next">Next in <b>46 min</b></span>
           <button class="hero-more" onclick="openHeroMenu()" aria-label="More">
-            <iconify-icon icon="fluent:more-horizontal-24-filled"></iconify-icon>
+            <iconify-icon icon="mingcute:more-1-fill"></iconify-icon>
           </button>
         </div>
         <h2 class="hero-title"><b>Ms. Park</b> · Blood pressure check</h2>
         <p class="hero-sub">Floor 2 · Room A-3</p>
         <span class="hero-ok-pill">
-          <iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>
+          <iconify-icon icon="mingcute:check-circle-fill"></iconify-icon>
           <b>Ready to measure</b> · 2 hrs since 08:00 BP medication
         </span>
         <div class="hero-actions">
           <button class="btn btn-primary" onclick="location.href='c02-checklist.en.html'">
-            <iconify-icon icon="fluent:pen-24-filled"></iconify-icon>Start recording
+            <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>Start recording
           </button>
         </div>
       </article>
@@ -534,7 +520,7 @@
           <div class="handover-preview">
             <b>Ms. Park</b> one sleep disturbance overnight · <span class="warn">Ms. Lee cough symptoms — check this morning</span> · Ms. Choi redness on hip — maintain 2h repositioning
           </div>
-          <span class="handover-toggle" aria-label="Expand"><iconify-icon icon="fluent:chevron-down-24-filled"></iconify-icon></span>
+          <span class="handover-toggle" aria-label="Expand"><iconify-icon icon="material-symbols:expand-more-rounded"></iconify-icon></span>
         </div>
         <div class="handover-full">
           <div class="handover-items">
@@ -581,7 +567,7 @@
               Now · <b>BP check</b> · 10:15
             </div>
           </div>
-          <iconify-icon icon="fluent:chevron-right-24-filled" class="rs-chev"></iconify-icon>
+          <iconify-icon icon="material-symbols:chevron-right-rounded" class="rs-chev"></iconify-icon>
         </a>
         <a class="roster-row" href="c02-checklist.en.html?pt=choi">
           <span class="rs-av">C</span>
@@ -599,7 +585,7 @@
               <b>Repositioning</b> · 11:00
             </div>
           </div>
-          <iconify-icon icon="fluent:chevron-right-24-filled" class="rs-chev"></iconify-icon>
+          <iconify-icon icon="material-symbols:chevron-right-rounded" class="rs-chev"></iconify-icon>
         </a>
         <a class="roster-row" href="c02-checklist.en.html?pt=kim">
           <span class="rs-av">K</span>
@@ -617,7 +603,7 @@
               <b>Medication</b> · 11:00
             </div>
           </div>
-          <iconify-icon icon="fluent:chevron-right-24-filled" class="rs-chev"></iconify-icon>
+          <iconify-icon icon="material-symbols:chevron-right-rounded" class="rs-chev"></iconify-icon>
         </a>
         <a class="roster-row warn" href="c02-checklist.en.html?pt=lee">
           <span class="rs-av warn">L</span>
@@ -632,24 +618,24 @@
               </span>
             </div>
             <div class="rs-next">
-              <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+              <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
               Temp recheck pending · <b>Low-grade fever</b>
             </div>
           </div>
-          <iconify-icon icon="fluent:chevron-right-24-filled" class="rs-chev"></iconify-icon>
+          <iconify-icon icon="material-symbols:chevron-right-rounded" class="rs-chev"></iconify-icon>
         </a>
       </div>
     </div>
 
     <section class="obs-card" onclick="openObsDetail()" aria-label="Ms. Lee low-grade fever observation details" role="button" tabindex="0">
       <div class="obs-head">
-        <span class="obs-ic"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></span>
+        <span class="obs-ic"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></span>
         <div class="obs-title">
           <div class="obs-name"><b>Ms. Lee</b> · Low-grade fever observation</div>
           <div class="obs-meta">Floor 2 · Room B-2 · Last check 06:40</div>
         </div>
         <button class="obs-call-mini" onclick="event.stopPropagation();callNurse('Ms. Lee fever')" aria-label="Call nurse">
-          <iconify-icon icon="fluent:call-24-filled"></iconify-icon>Call
+          <iconify-icon icon="mingcute:phone-fill"></iconify-icon>Call
         </button>
       </div>
       <div class="obs-vitals">
@@ -674,19 +660,19 @@
   <div class="bottom-bar">
     <nav class="tabbar" aria-label="Caregiver app tab bar">
       <a href="c01-today.en.html" class="tab active" aria-current="page" aria-label="Today">
-        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:home-1-fill"></iconify-icon>
         <span class="tab-label">Today</span>
       </a>
       <a href="c02-checklist.en.html" class="tab" aria-label="Records">
-        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         <span class="tab-label">Records</span>
       </a>
       <a href="c03-sotong.en.html" class="tab" aria-label="Messages">
-        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>
         <span class="tab-label">Messages</span>
       </a>
       <a href="c04-mypage.en.html" class="tab" aria-label="My">
-        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:user-3-fill"></iconify-icon>
         <span class="tab-label">My</span>
       </a>
     </nav>
@@ -696,7 +682,7 @@
           <circle cx="30" cy="30" r="27"/>
         </svg>
       </span>
-      <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+      <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
     </button>
   </div>
 
@@ -726,7 +712,7 @@
       HaruCG.openSheet(
         '<div class="cg-sheet__head">' +
           '<div class="cg-sheet__ico cg-sheet__ico--warn">' +
-            '<iconify-icon icon="fluent:warning-24-filled"></iconify-icon>' +
+            '<iconify-icon icon="mingcute:warning-fill"></iconify-icon>' +
           '</div>' +
           '<div>' +
             '<div class="cg-sheet__ttl">Ms. Lee · Low-grade fever</div>' +
@@ -735,21 +721,21 @@
         '</div>' +
         '<div class="cg-sheet__body">' +
           '<div class="cg-row">' +
-            '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="fluent:temperature-24-filled"></iconify-icon></span>' +
+            '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="ph:thermometer-fill"></iconify-icon></span>' +
             '<div class="cg-row__body">' +
               '<div class="cg-row__t">Temp 37.4°C · 4 measurements</div>' +
               '<div class="cg-row__d">06:00 36.9 → 06:20 37.1 → 06:40 37.4 (rising trend)</div>' +
             '</div>' +
           '</div>' +
           '<div class="cg-row">' +
-            '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="fluent:pulse-24-filled"></iconify-icon></span>' +
+            '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="mingcute:heartbeat-fill"></iconify-icon></span>' +
             '<div class="cg-row__body">' +
               '<div class="cg-row__t">Cough 3× · AM</div>' +
               '<div class="cg-row__d">Dry cough. No phlegm sound</div>' +
             '</div>' +
           '</div>' +
           '<div class="cg-row">' +
-            '<span class="cg-row__ico"><iconify-icon icon="fluent:lightbulb-24-filled"></iconify-icon></span>' +
+            '<span class="cg-row__ico"><iconify-icon icon="mingcute:bulb-fill"></iconify-icon></span>' +
             '<div class="cg-row__body">' +
               '<div class="cg-row__t">Next action</div>' +
               '<div class="cg-row__d">Recheck temp at 10:30 · Call nurse if ≥ 38°C</div>' +
@@ -757,8 +743,8 @@
           '</div>' +
         '</div>' +
         '<div class="cg-sheet__cta">' +
-          '<button class="btn sheet-btn--warn" onclick="HaruCG.closeSheet();callNurse(\'Fever observation\')"><iconify-icon icon="fluent:call-24-filled"></iconify-icon>Call nurse</button>' +
-          '<button class="btn btn-primary sheet-btn--primary" onclick="HaruCG.closeSheet();location.href=\'c02-checklist.en.html?pt=lee\'"><iconify-icon icon="fluent:pen-24-filled"></iconify-icon>Start record</button>' +
+          '<button class="btn sheet-btn--warn" onclick="HaruCG.closeSheet();callNurse(\'Fever observation\')"><iconify-icon icon="mingcute:phone-fill"></iconify-icon>Call nurse</button>' +
+          '<button class="btn btn-primary sheet-btn--primary" onclick="HaruCG.closeSheet();location.href=\'c02-checklist.en.html?pt=lee\'"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>Start record</button>' +
         '</div>',
         { variant: 'warn' }
       );
@@ -772,7 +758,7 @@
       document.getElementById('sheetContent').innerHTML = `
         <div class="sheet-head">
           <div class="sheet-ico sheet-ico--accent">
-            <iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon>
+            <iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon>
           </div>
           <div>
             <div class="sheet-ttl">Ms. Park · Blood pressure check</div>
@@ -780,21 +766,21 @@
           </div>
         </div>
         <button class="sheet-row sheet-row--btn" onclick="toast('Ms. Park · BP check marked complete');closeSheet()">
-          <span class="sheet-row-ico sheet-row-ico--accent"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span>
+          <span class="sheet-row-ico sheet-row-ico--accent"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           <span class="sheet-row-text">
             <span class="sheet-row-label">Mark complete</span>
             <span class="sheet-row-val">Skip measurement, mark as done</span>
           </span>
         </button>
         <button class="sheet-row sheet-row--btn" onclick="toast('Postponed to 10:30');closeSheet()">
-          <span class="sheet-row-ico sheet-row-ico--neutral"><iconify-icon icon="fluent:clock-24-filled"></iconify-icon></span>
+          <span class="sheet-row-ico sheet-row-ico--neutral"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon></span>
           <span class="sheet-row-text">
             <span class="sheet-row-label">Postpone to 10:30</span>
             <span class="sheet-row-val">Move to next measurement slot</span>
           </span>
         </button>
         <button class="sheet-row sheet-row--btn" onclick="toast('Ms. Park · Details');closeSheet()">
-          <span class="sheet-row-ico sheet-row-ico--neutral"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></span>
+          <span class="sheet-row-ico sheet-row-ico--neutral"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon></span>
           <span class="sheet-row-text">
             <span class="sheet-row-label">Patient details</span>
             <span class="sheet-row-val">Medication · Meals · Records</span>

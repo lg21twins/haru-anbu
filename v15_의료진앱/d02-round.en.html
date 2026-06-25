@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en" data-role="medical" data-platform="mobile" class="has-c01-bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#DCFCE7">
+  <title>Haru Anbu · Medical Staff · Rounds</title>
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="./_shared.css?v=20260525p">
+  <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <style>
+    /* :root 별칭은 _shared.css 에서 정의 */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+    /* v3.2.12+: clinical 캔버스 (v11 요양보호사앱과 동일 — var(--clinical-canvas) 토큰 참조) */
+    html{height:100%;background:var(--clinical-canvas);font-size:16px;}
+    body{
+      height:100%;color:var(--t1);overflow-x:hidden;
+      font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
+      background:transparent;
+    }
+    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background: var(--clinical-bg-image);}
+    .app{
+      max-width:430px;margin:0 auto;min-height:100%;position:relative;
+      /* v3.2.9: 하단 탭바와 judge 버튼 겹침 방지 — 안전 여백 증량 (40 → 80) */
+      padding-bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 80px);
+    }
+
+    /* ===== HEADER (v15 통일 — grid 44·1fr·44 / h-eyebrow + h-name) ===== */
+    .header{
+      padding:calc(var(--safe-t) + 14px) var(--page-pad) 8px;
+      position:relative;z-index:5;
+    }
+    .h-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
+    .top-nav .icon-btn{grid-column:3;justify-self:end;}
+
+    /* ===== PROGRESS — v3.2.7 슬림 strip: 카드 래퍼 제거, 헤더 직속
+       위계는 타이포·여백으로만 (rule: no bg color rails). */
+    .progress{
+      margin-top:18px;display:flex;align-items:center;gap:12px;
+    }
+    .progress-bar{flex:1;height:4px;border-radius:999px;background:rgba(0,0,0,.06);overflow:hidden;}
+    .progress-fill{
+      height:100%;width:var(--bar-w, 0%);
+      background:var(--accent-strong);
+      border-radius:999px;transition:width .35s var(--easing-emphasize);
+    }
+    .progress-text{
+      font-size:13px;font-weight:600;color:var(--t2);
+      font-variant-numeric:tabular-nums;display:inline-flex;align-items:baseline;gap:5px;
+    }
+    .progress-text b{color:var(--t1);font-weight:700;font-size:14px;}
+    .prog-tag{
+      font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0;
+    }
+
+    /* ===== ROUND CARDS — v3.2.8: 2개 카드로 분리 (Review / Input)
+       그림자 또렷하게, 내부 divider 가시성 확보 */
+    .stage{padding:4px var(--page-pad) 0;position:relative;z-index:1;}
+    .deck{position:relative;display:flex;flex-direction:column;gap:12px;}
+    .card{
+      background:var(--palette-white);border-radius:var(--radius-card-lg);
+      box-shadow:var(--cg-card-shadow);
+      overflow:hidden;
+      transition:transform .35s var(--easing-emphasize), opacity .25s;
+    }
+    .card.swipe-out-left{transform:translateX(-120%) rotate(-6deg);opacity:0;}
+    .card.swipe-out-right{transform:translateX(120%) rotate(6deg);opacity:0;}
+
+    /* 환자 헤더 — 1행 압축 (avatar | name+age+pos pill / meta) */
+    .card-head{
+      padding:16px 18px;display:flex;align-items:center;gap:14px;
+    }
+    .card-ava{
+      width:48px;height:48px;border-radius:50%;flex-shrink:0;
+      background:var(--accent-soft);color:var(--accent-strong);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:18px;font-weight:700;letter-spacing:-.4px;
+    }
+    .card-id{flex:1;min-width:0;line-height:1.25;}
+    .card-name-row{
+      display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
+    }
+    .card-name{font-size:19px;font-weight:700;color:var(--t1);letter-spacing:-.5px;}
+    .card-age{font-size:12.5px;font-weight:500;color:var(--t3);}
+    /* v3.2.8: 9/15 인라인 pill (스택 컬럼 제거) */
+    .card-pos{
+      margin-left:auto;flex-shrink:0;
+      font-size:12px;font-weight:600;color:var(--accent-strong);
+      background:var(--accent-soft);
+      padding:3px 9px;border-radius:999px;
+      font-variant-numeric:tabular-nums;letter-spacing:-.1px;
+    }
+    .card-pos b{font-weight:700;font-size:13px;}
+    .card-meta{
+      font-size:12.5px;font-weight:500;color:var(--t3);margin-top:3px;
+      display:flex;align-items:center;gap:6px;
+    }
+    .card-meta iconify-icon{font-size:13px;color:var(--t3);}
+    .card-meta-dot{color:rgba(0,0,0,.18);}
+
+    /* === ZONE 1 · 지난 라운드 — v3.2.8
+       visible hairline + tight grid + 명확한 last-note 타이틀 */
+    .summary{
+      padding:18px 18px 16px;
+    }
+    .summary-ttl{
+      font-size:11px;font-weight:700;color:var(--t3);
+      letter-spacing:.2px;margin-bottom:12px;
+      display:flex;align-items:center;gap:6px;
+    }
+    .summary-ttl iconify-icon{font-size:13px;}
+    .summary-grid{
+      display:grid;grid-template-columns:1fr 1fr;
+      column-gap:18px;row-gap:12px;
+      margin-bottom:14px;
+    }
+    .vital{
+      line-height:1.2;
+    }
+    .vital-label{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.1px;}
+    .vital-val{
+      font-size:21px;font-weight:700;color:var(--t1);
+      font-variant-numeric:tabular-nums;margin-top:5px;
+      display:flex;align-items:baseline;gap:3px;letter-spacing:-.5px;
+    }
+    .vital-val small{font-size:11.5px;font-weight:500;color:var(--t3);}
+    .vital.warn .vital-val{color:var(--palette-amber-700);}
+    .vital.danger .vital-val{color:var(--palette-red-700);}
+    .vital-trend{font-size:11px;font-weight:500;color:var(--t2);margin-top:3px;}
+    .vital-trend.up{color:var(--palette-red-600);}
+    .vital-trend.down{color:var(--accent-strong);}
+
+    /* 지난 메모 — 명시적 타이틀 + 톤 변화 */
+    .last-note{
+      padding-top:14px;margin-top:4px;
+      font-size:13.5px;font-weight:500;color:var(--t2);line-height:1.55;
+    }
+    .last-note-ttl{
+      font-size:11px;font-weight:700;color:var(--t3);
+      letter-spacing:.2px;margin-bottom:6px;
+    }
+    .last-note-meta{font-size:11px;font-weight:500;color:var(--t3);margin-top:8px;}
+
+    /* === ZONE 2 · 지금 기록 — v3.2.8: 별도 카드 (card--input) */
+    .card--input{
+      box-shadow:var(--cg-card-shadow);
+    }
+    .input-zone{
+      padding:16px 18px 18px;
+    }
+    .input-ttl{
+      font-size:12px;font-weight:700;color:var(--accent-strong);
+      letter-spacing:.2px;margin-bottom:14px;
+      display:flex;align-items:center;gap:6px;
+    }
+    .input-ttl::before{
+      content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);
+      box-shadow:0 0 0 0 rgba(var(--brand-green-500-rgb), .5);animation: haru-pulse 2s ease-in-out infinite;
+    }
+
+    .voice{
+      width:100%;display:flex;align-items:center;gap:14px;
+      padding:16px;background:var(--accent-soft);
+      border:0;border-radius:16px;
+      cursor:pointer;font-family:inherit;text-align:left;
+      transition:transform .12s;
+    }
+    .voice:active{transform:scale(.99);}
+    .voice.recording{
+      background:rgba(var(--color-danger-rgb), .08);
+    }
+    .voice-mic{
+      width:48px;height:48px;border-radius:50%;flex-shrink:0;
+      background:var(--accent);color:var(--palette-white);display:inline-flex;align-items:center;justify-content:center;
+    }
+    .voice.recording .voice-mic{
+      background:var(--danger);
+      animation:rec 1.2s infinite;
+    }
+    @keyframes rec{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+    .voice-mic iconify-icon{font-size:24px;}
+    .voice-text{flex:1;min-width:0;line-height:1.3;}
+    .voice-main{font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.3px;}
+    .voice-sub{font-size:12.5px;font-weight:500;color:var(--t2);margin-top:4px;}
+
+    .stt-preview{
+      margin:14px 0 0;padding:16px 18px;background:var(--clinical-surface);
+      border-radius:14px;font-size:14px;font-weight:500;color:var(--t1);line-height:1.65;
+      display:none;
+    }
+    .stt-preview.show{display:block;}
+    .stt-tag{
+      display:inline-block;font-size:11px;font-weight:700;
+      padding:2px 7px;border-radius:5px;
+      background:var(--accent);color:var(--palette-white);margin-right:6px;
+      vertical-align:1px;letter-spacing:.2px;
+    }
+    .stt-foot{margin-top:10px;font-size:12px;color:var(--t3);font-weight:600;}
+
+    .aux{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+    .aux-btn{
+      display:flex;align-items:center;justify-content:center;gap:6px;
+      height:46px;background:var(--clinical-surface-muted);border:0;border-radius:12px;
+      font-size:13.5px;font-weight:600;color:var(--t1);
+      cursor:pointer;font-family:inherit;
+    }
+    .aux-btn iconify-icon{font-size:17px;color:var(--accent-strong);}
+
+    /* 4단계 토글 */
+    .judge-ttl{
+      font-size:11px;font-weight:700;color:var(--t3);
+      letter-spacing:.2px;margin:20px 0 10px;
+      display:flex;align-items:center;gap:6px;
+    }
+    .judge-ttl iconify-icon{font-size:13px;color:var(--accent-strong);}
+    .judge{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+    .judge-btn{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+      height:54px;background:var(--clinical-surface-muted);border:1.5px solid transparent;
+      border-radius:12px;font-family:inherit;cursor:pointer;
+      transition:all .15s;
+    }
+    .judge-btn .judge-dot{width:12px;height:12px;border-radius:50%;}
+    .judge-btn .judge-label{font-size:13px;font-weight:600;color:var(--t1);}
+    .judge-btn[data-level="ok"] .judge-dot{background:var(--accent);}
+    .judge-btn[data-level="watch"] .judge-dot{background:var(--brand-yellow-400);}
+    .judge-btn[data-level="warn"] .judge-dot{background:var(--warn);}
+    .judge-btn[data-level="danger"] .judge-dot{background:var(--danger);}
+    .judge-btn.selected[data-level="ok"]{border-color:var(--accent);background:var(--accent-soft);}
+    .judge-btn.selected[data-level="watch"]{border-color:var(--brand-yellow-400);background:var(--brand-yellow-50);}
+    .judge-btn.selected[data-level="warn"]{border-color:var(--warn);background:var(--warn-soft);}
+    .judge-btn.selected[data-level="danger"]{border-color:var(--danger);background:var(--danger-soft);}
+
+    /* 저장 힌트 — v3.2.7: 카드 외부 별도 컨테이너 X. 슬림 caption 톤. */
+    .saved-hint{
+      margin:10px 4px 0;
+      display:flex;align-items:center;gap:8px;
+      position:relative;z-index:1;
+    }
+    .saved-hint iconify-icon{font-size:14px;color:var(--accent-strong);flex-shrink:0;}
+    .saved-text{font-size:12px;font-weight:500;color:var(--t3);line-height:1.4;}
+    .saved-text b{color:var(--t2);font-weight:600;}
+    .saved-text b{color:var(--t1);}
+
+    /* SWIPE BAR — v3.2.7: 3분할 동일 높이/라운드/그림자.
+       primary 만 색으로 위계 표시, secondary 2개는 동일 톤 (시각 무게 균일) */
+    .swipe-bar{
+      display:grid;grid-template-columns:auto auto 1fr;gap:8px;
+      margin:14px 0 4px;position:relative;z-index:1;
+    }
+    .swipe-prev, .swipe-skip, .swipe-next{
+      height:50px;display:flex;align-items:center;justify-content:center;gap:6px;
+      border:0;border-radius:14px;font-family:inherit;font-size:13.5px;font-weight:700;
+      letter-spacing:-.2px;cursor:pointer;padding:0 16px;
+      box-shadow:0 1px 2px rgba(0,0,0,.04);
+      transition:transform .12s;
+    }
+    .swipe-prev:active, .swipe-skip:active, .swipe-next:active{transform:scale(.98);}
+    .swipe-prev, .swipe-skip{background:var(--palette-white);color:var(--t2);}
+    .swipe-prev iconify-icon, .swipe-skip iconify-icon{font-size:16px;}
+    .swipe-skip{color:var(--palette-amber-700);}
+    .swipe-next{
+      background:var(--accent);color:var(--palette-white);font-size:14.5px;
+      box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .22);
+    }
+    .swipe-next iconify-icon{font-size:18px;}
+
+    /* === PATIENT LIST SHEET === */
+    .overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.4);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      display:none;align-items:flex-end;justify-content:center;z-index:200;
+    }
+    .overlay.show{display:flex;}
+    .sheet{
+      background:var(--palette-white);border-radius:28px 28px 0 0;
+      padding:18px 18px calc(28px + env(safe-area-inset-bottom,0px));
+      width:100%;max-width:430px;max-height:80vh;overflow-y:auto;
+    }
+    .sheet-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
+
+    .pl-list{display:flex;flex-direction:column;}
+    .pl-item{
+      padding:12px 6px;display:flex;align-items:center;gap:12px;
+      border-bottom:1px solid rgba(0,0,0,.05);cursor:pointer;
+      background:transparent;border-left:0;border-right:0;border-top:0;width:100%;
+      font-family:inherit;text-align:left;
+    }
+    .pl-item:last-child{border-bottom:0;}
+    .pl-status{
+      width:24px;flex-shrink:0;
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:13px;font-weight:600;color:var(--t3);
+    }
+    .pl-status.done{color:var(--accent-strong);}
+    .pl-status.current{color:var(--accent-strong);font-weight:700;}
+    .pl-status.pending{color:var(--t3);}
+    .pl-status.skipped{color:var(--palette-amber-700);}
+    .pl-status iconify-icon{font-size:16px;}
+    .pl-meta{flex:1;min-width:0;line-height:1.25;}
+    .pl-name{font-size:14.5px;font-weight:600;color:var(--t1);}
+    .pl-name.current{color:var(--accent-strong);}
+    .pl-name.pending{color:var(--t2);}
+    .pl-room{font-size:12px;font-weight:500;color:var(--t3);margin-top:2px;}
+    .pl-tag{
+      flex-shrink:0;font-size:10px;font-weight:600;padding:3px 8px;border-radius:999px;
+      background:var(--danger-soft);color:var(--palette-red-700);
+    }
+    .pl-tag.warn{background:var(--warn-soft);color:var(--palette-amber-700);}
+
+    /* === INTRO STATE — 몇차 라운드/이어서/새로 시작 === */
+    .intro{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;
+      margin:6px 0 0;position:relative;z-index:1;
+    }
+    .intro-card{
+      background:var(--palette-white);border-radius:24px;padding:24px;
+      box-shadow:var(--cg-card-shadow);
+      margin-bottom:14px;
+    }
+    .intro-eyebrow{
+      font-size:11px;font-weight:600;color:var(--accent-strong);
+      letter-spacing:.4px;text-transform:uppercase;margin-bottom:8px;
+    }
+    .intro-ttl{
+      font-size:22px;font-weight:700;color:var(--t1);letter-spacing:-.5px;
+      line-height:1.3;margin-bottom:6px;
+    }
+    .intro-sub{font-size:14px;font-weight:500;color:var(--t2);line-height:1.5;}
+
+    .intro-progress{
+      margin-top:20px;padding:18px;background:var(--clinical-surface);border-radius:18px;
+    }
+    .intro-prog-row{
+      display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;
+    }
+    .intro-prog-label{font-size:12px;font-weight:600;color:var(--t2);}
+    .intro-prog-val{font-size:13px;font-weight:600;color:var(--accent-strong);font-variant-numeric:tabular-nums;}
+    .intro-prog-bar{height:8px;border-radius:999px;background:rgba(0,0,0,.06);overflow:hidden;}
+    .intro-prog-fill{
+      height:100%;width:var(--bar-w, 0%);background:var(--accent-strong);
+      border-radius:999px;
+    }
+    .intro-prog-foot{
+      margin-top:10px;display:flex;align-items:center;gap:6px;
+      font-size:12px;font-weight:500;color:var(--t3);
+    }
+    .intro-prog-foot iconify-icon{font-size:14px;}
+
+    .intro-next{
+      margin-top:18px;padding:16px;background:var(--accent-soft);border-radius:14px;
+      display:flex;align-items:center;gap:12px;
+    }
+    .intro-next-ava{
+      width:42px;height:42px;border-radius:50%;flex-shrink:0;
+      background:var(--palette-white);color:var(--accent-strong);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:16px;font-weight:600;
+    }
+    .intro-next-meta{flex:1;min-width:0;line-height:1.3;}
+    .intro-next-label{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.3px;text-transform:uppercase;}
+    .intro-next-name{font-size:15px;font-weight:600;color:var(--t1);margin-top:3px;}
+    .intro-next-room{font-size:12px;font-weight:500;color:var(--t3);margin-top:1px;}
+
+    .intro-cta{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+    .intro-btn-primary{
+      width:100%;padding:18px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
+      background:var(--accent);color:var(--palette-white);
+      font-size:16px;font-weight:700;letter-spacing:-.3px;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      box-shadow:0 3px 10px rgba(var(--brand-green-500-rgb), .22);
+      transition:transform .12s;
+    }
+    .intro-btn-primary:active{transform:scale(.99);}
+    .intro-btn-primary iconify-icon{font-size:20px;}
+    .intro-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .intro-btn-secondary{
+      padding:14px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
+      background:var(--palette-white);color:var(--t2);
+      font-size:13px;font-weight:600;
+      display:inline-flex;align-items:center;justify-content:center;gap:6px;
+      box-shadow:var(--cg-card-shadow);
+    }
+    .intro-btn-secondary iconify-icon{font-size:16px;color:var(--t2);}
+
+    .intro-history{
+      background:var(--palette-white);border-radius:18px;padding:18px;
+      box-shadow:var(--cg-card-shadow);
+    }
+    .intro-hist-ttl{
+      font-size:11px;font-weight:600;color:var(--t3);
+      letter-spacing:.4px;text-transform:uppercase;margin-bottom:12px;
+    }
+    .intro-hist-row{
+      display:flex;align-items:center;gap:12px;padding:8px 0;
+      border-bottom:1px dashed rgba(0,0,0,.05);
+    }
+    .intro-hist-row:last-child{border-bottom:0;}
+    .intro-hist-num{
+      width:28px;height:28px;border-radius:8px;flex-shrink:0;
+      background:var(--accent-soft);color:var(--accent-strong);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:12px;font-weight:700;
+    }
+    .intro-hist-meta{flex:1;min-width:0;line-height:1.25;}
+    .intro-hist-label{font-size:13px;font-weight:600;color:var(--t1);}
+    .intro-hist-time{font-size:11px;font-weight:500;color:var(--t3);margin-top:1px;}
+    .intro-hist-stat{
+      flex-shrink:0;font-size:11px;font-weight:600;color:var(--accent-strong);
+      font-variant-numeric:tabular-nums;
+    }
+
+    /* === COMPLETION STATE === */
+    .complete{
+      margin:32px 0 0;padding:32px 24px;
+      background:var(--palette-white);border-radius:24px;text-align:center;
+      box-shadow:0 8px 28px rgba(0,0,0,.06);
+      position:relative;z-index:1;
+    }
+    .complete-ico{
+      width:72px;height:72px;border-radius:50%;
+      background:var(--accent-strong);
+      color:var(--palette-white);display:inline-flex;align-items:center;justify-content:center;
+      box-shadow:0 3px 10px rgba(var(--brand-green-500-rgb), .22);
+      margin-bottom:20px;
+    }
+    .complete-ico iconify-icon{font-size:36px;}
+    .complete-ttl{font-size:22px;font-weight:700;color:var(--t1);letter-spacing:-.5px;margin-bottom:8px;}
+    .complete-sub{font-size:14px;font-weight:500;color:var(--t2);line-height:1.5;margin-bottom:24px;}
+    .complete-stats{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+      margin-bottom:24px;padding:16px;background:var(--clinical-surface);border-radius:16px;
+    }
+    .complete-stat-val{font-size:22px;font-weight:700;color:var(--accent-strong);font-variant-numeric:tabular-nums;letter-spacing:-.5px;}
+    .complete-stat-label{font-size:11px;font-weight:500;color:var(--t3);margin-top:4px;}
+    .complete-cta{
+      display:flex;gap:8px;
+    }
+    .complete-cta a, .complete-cta button{
+      flex:1;padding:14px;border-radius:14px;border:0;cursor:pointer;
+      font-family:inherit;font-size:14px;font-weight:700;
+      display:inline-flex;align-items:center;justify-content:center;gap:6px;
+      text-decoration:none;
+    }
+    .complete-cta .secondary{background:var(--clinical-surface-muted);color:var(--t1);}
+    .complete-cta .primary{background:var(--accent);color:var(--palette-white);box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .22);}
+    .complete-cta iconify-icon{font-size:16px;}
+
+    /* TAB BAR · v3.2.5: 세 앱 탭바 위치 통일 — env(safe-bottom) + 12px (d01 기준) */
+    .tab-wrap{
+      position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);
+      left:50%;transform:translateX(-50%);
+      display:flex;align-items:center;gap:10px;
+      width:calc(100% - 32px);max-width:398px;z-index:40;
+    }
+    /* v3.2.5: 탭바 — 보호자 스타일 통일 (글라스 + 아이콘 26px, 라벨 숨김) */
+    .tabbar{
+      flex:1;min-width:0;height:var(--tab-h);
+      background:rgba(255,255,255,.85);
+      backdrop-filter:blur(20px) saturate(140%);
+      -webkit-backdrop-filter:blur(20px) saturate(140%);
+      border:1px solid rgba(255,255,255,.55);
+      border-radius:999px;
+      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
+      display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;
+    }
+    .tab iconify-icon{font-size:26px;}
+    .tab-label{display:none;}
+    .tab.active{color:var(--accent-strong);}
+    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(var(--brand-green-500-rgb), .28));}
+    .sos{
+      position:relative;width:var(--tab-h);height:var(--tab-h);flex-shrink:0;border-radius:50%;
+      background:var(--color-danger);border:0;
+      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
+      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+    }
+    .sos iconify-icon{font-size:26px;color:var(--palette-white);}
+    .toast{
+      position:fixed;left:50%;bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 18px);
+      transform:translateX(-50%) translateY(20px);
+      background:rgba(28,28,30,.92);color:var(--palette-white);font-size:14px;font-weight:600;
+      padding:11px 20px;border-radius:999px;
+      opacity:0;transition:.25s;pointer-events:none;z-index:300;white-space:nowrap;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+    /* ===== JUDGE ACTION SHEET ===== */
+    .ja-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.5);
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      display:none;align-items:flex-end;justify-content:center;z-index:400;
+    }
+    .ja-overlay.show{display:flex;}
+    .ja-sheet{
+      background:var(--palette-white);color:var(--t1);
+      width:100%;max-width:430px;
+      border-radius:24px 24px 0 0;
+      padding:14px 20px calc(24px + env(safe-area-inset-bottom,0px));
+      box-shadow:0 -8px 28px rgba(0,0,0,.2);
+      animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both;
+    }
+    @keyframes haru-fade-in-up {from{transform:translateY(8px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+    .ja-handle{width:40px;height:4px;background:rgba(0,0,0,.15);border-radius:2px;margin:0 auto 14px;}
+    .ja-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+    .ja-ico{
+      width:44px;height:44px;border-radius:12px;flex-shrink:0;
+      display:inline-flex;align-items:center;justify-content:center;font-size:24px;
+    }
+    .ja-ico.warn{background:var(--warn-soft);color:var(--palette-amber-700);}
+    .ja-ico.danger{background:var(--danger-soft);color:var(--danger);}
+    .ja-eyebrow{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;}
+    .ja-eyebrow.warn{color:var(--palette-amber-700);}
+    .ja-eyebrow.danger{color:var(--palette-red-700);}
+    .ja-ttl{font-size:18px;font-weight:700;color:var(--t1);letter-spacing:-.4px;line-height:1.3;margin-top:3px;}
+    .ja-sub{font-size:13px;font-weight:500;color:var(--t2);line-height:1.5;margin-bottom:14px;}
+    .ja-options{display:flex;flex-direction:column;gap:8px;}
+    .ja-opt{
+      display:flex;align-items:center;gap:14px;
+      padding:14px 16px;background:var(--clinical-surface);
+      border:1px solid var(--palette-gray-200);
+      border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;width:100%;
+      color:var(--t1);
+    }
+    .ja-opt:active{transform:scale(.99);}
+    .ja-opt iconify-icon{font-size:22px;color:var(--t2);flex-shrink:0;}
+    .ja-opt.danger iconify-icon{color:var(--danger);}
+    .ja-opt-ttl{font-size:14.5px;font-weight:700;color:var(--t1);}
+    .ja-opt-sub{font-size:12px;font-weight:500;color:var(--t3);margin-top:2px;}
+    .ja-cancel{
+      width:100%;margin-top:10px;padding:14px;
+      background:transparent;border:0;cursor:pointer;font-family:inherit;
+      font-size:13.5px;font-weight:600;color:var(--t3);
+    }
+
+    /* Inline 대체 */
+    .pt-row-bar > span { width: var(--bar-w, 0%); }
+    .mt-3 { margin-top: 14px; }
+    .alert-banner--warn { background: var(--warn-soft); color: var(--palette-amber-700); }
+    .text-amber-warn    { color: var(--palette-amber-700); }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="ai-orb-bg" aria-hidden="true"><div class="ai-orb"></div></div>
+  <div class="app">
+
+    <header class="header">
+      <div class="top-nav">
+        <span class="h-left" aria-hidden="true"></span>
+        <div class="title-block">
+          <div class="h-eyebrow" id="hEyebrow">Rounds Mode</div>
+          <div class="h-name" id="hName">Round 2</div>
+        </div>
+        <button class="icon-btn" onclick="openList()" aria-label="Patient list"><iconify-icon icon="mingcute:clipboard-fill"></iconify-icon></button>
+      </div>
+      <div class="progress" id="progBar">
+        <div class="progress-bar"><div class="progress-fill" id="progFill" style="--bar-w:53%"></div></div>
+        <div class="progress-text"><span class="prog-tag">Done</span><b id="progNum">8</b>/15</div>
+      </div>
+    </header>
+
+    <main class="stage" id="stage">
+
+      <!-- ============ INTRO 상태 (기본 진입) ============ -->
+      <section class="intro" id="intro">
+        <div class="intro-card">
+          <div class="intro-eyebrow">Day shift · 14:30</div>
+          <h2 class="intro-ttl">Round 2 in progress</h2>
+          <p class="intro-sub">8 patients recorded · 7 remaining. Continue from here?</p>
+
+          <div class="intro-progress">
+            <div class="intro-prog-row">
+              <span class="intro-prog-label">Progress</span>
+              <span class="intro-prog-val">8 / 15</span>
+            </div>
+            <div class="intro-prog-bar"><div class="intro-prog-fill" style="--bar-w:53%"></div></div>
+            <div class="intro-prog-foot">
+              <iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon>Started 13:30 · about 1 hr elapsed
+            </div>
+          </div>
+
+          <div class="intro-next">
+            <span class="intro-next-ava">P</span>
+            <div class="intro-next-meta">
+              <div class="intro-next-label">Next patient</div>
+              <div class="intro-next-name">Yeong-ja Park · 9th</div>
+              <div class="intro-next-room">2F Rm A-3 · Hypertension · Early dementia</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="intro-cta">
+          <button class="intro-btn-primary" onclick="startRound('resume')">
+            <iconify-icon icon="mingcute:play-fill"></iconify-icon>Continue (from 9th)
+          </button>
+          <div class="intro-btn-row">
+            <button class="intro-btn-secondary" onclick="openList()">
+              <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>View patient list
+            </button>
+            <button class="intro-btn-secondary" onclick="startRound('restart')">
+              <iconify-icon icon="mingcute:refresh-2-fill"></iconify-icon>Start over
+            </button>
+          </div>
+        </div>
+
+        <div class="intro-history mt-3">
+          <div class="intro-hist-ttl">Today's rounds history</div>
+          <div class="intro-hist-row">
+            <span class="intro-hist-num">1</span>
+            <div class="intro-hist-meta">
+              <div class="intro-hist-label">Round 1 · Morning</div>
+              <div class="intro-hist-time">09:00–10:30</div>
+            </div>
+            <span class="intro-hist-stat">15/15 done</span>
+          </div>
+          <div class="intro-hist-row">
+            <span class="intro-hist-num alert-banner--warn">2</span>
+            <div class="intro-hist-meta">
+              <div class="intro-hist-label">Round 2 · Afternoon</div>
+              <div class="intro-hist-time">Started 13:30 · in progress</div>
+            </div>
+            <span class="intro-hist-stat text-amber-warn">8/15</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ACTIVE 상태 (라운드 시작 후) ============ -->
+      <div class="round-active" id="active" hidden>
+
+      <!-- v3.2.6: swipe-bar 를 진행률 바 ↔ 환자 카드 사이로 이동.
+           이전/건너뛰기/저장하고 다음을 카드 상단에 두어 thumb-zone 친화. -->
+      <div class="swipe-bar">
+        <button class="swipe-prev" onclick="swipe('prev')" aria-label="Previous patient">
+          <iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon>Prev
+        </button>
+        <button class="swipe-skip" onclick="swipe('skip')" aria-label="Skip (asleep, absent, etc.)">
+          <iconify-icon icon="mingcute:refresh-2-fill"></iconify-icon>Skip
+        </button>
+        <button class="swipe-next" onclick="swipe('next')">
+          Save and next<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>
+        </button>
+      </div>
+
+      <div class="deck" id="deck">
+        <!-- 카드 1: 환자 + 지난 라운드 (REVIEW) -->
+        <article class="card" id="card">
+
+          <div class="card-head">
+            <span class="card-ava" id="cAva">P</span>
+            <div class="card-id">
+              <div class="card-name-row">
+                <span class="card-name" id="cName">Yeong-ja Park</span>
+                <span class="card-age" id="cAge">78 · F</span>
+                <span class="card-pos"><b id="posCur">9</b>/15</span>
+              </div>
+              <div class="card-meta">
+                <iconify-icon icon="mingcute:location-fill"></iconify-icon><span id="cRoom">2F Rm A-3</span>
+                <span class="card-meta-dot">·</span>
+                <span id="cDx">Hypertension · Early dementia</span>
+              </div>
+            </div>
+          </div>
+
+          <section class="summary">
+            <div class="summary-ttl"><iconify-icon icon="material-symbols:history-rounded"></iconify-icon>Last round · <span id="sumTime">11:30</span></div>
+            <div class="summary-grid" id="sumGrid"></div>
+            <div class="last-note" id="sumNote"></div>
+          </section>
+        </article>
+
+        <!-- 카드 2: 지금 기록 (INPUT) -->
+        <article class="card card--input">
+          <section class="input-zone">
+            <div class="input-ttl">Record now</div>
+
+            <button class="voice" id="voiceBtn" onclick="toggleVoice()">
+              <span class="voice-mic"><iconify-icon icon="ph:microphone-fill" id="voiceIco"></iconify-icon></span>
+              <div class="voice-text">
+                <div class="voice-main" id="voiceMain">Record everything by voice</div>
+                <div class="voice-sub" id="voiceSub">Vitals, pain, observations in one take</div>
+              </div>
+            </button>
+
+            <div class="stt-preview" id="sttPreview">
+              <span class="stt-tag">Vitals</span>BP 132/82, Pulse 78<br>
+              <span class="stt-tag">Pain</span>VAS 3 (down 1 from yesterday)<br>
+              <span class="stt-tag">Observation</span>Walks unassisted, meals good<br>
+              <span class="stt-tag">Plan</span>Pain reassessment this afternoon
+              <div class="stt-foot">AI auto-sorted into 4 categories</div>
+            </div>
+
+            <div class="aux">
+              <button class="aux-btn" onclick="toast('Open camera');"><iconify-icon icon="material-symbols:photo-camera-rounded"></iconify-icon>Photo</button>
+              <button class="aux-btn" onclick="toast('Quick note');"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>Note</button>
+            </div>
+
+            <div class="judge-ttl"><iconify-icon icon="material-symbols:health-and-safety-rounded"></iconify-icon>AI risk signal · Clinician review</div>
+            <div class="judge">
+              <button class="judge-btn selected" data-level="ok" onclick="selectJudge(this)">
+                <span class="judge-dot"></span><span class="judge-label">Normal</span>
+              </button>
+              <button class="judge-btn" data-level="watch" onclick="selectJudge(this)">
+                <span class="judge-dot"></span><span class="judge-label">Monitor</span>
+              </button>
+              <button class="judge-btn" data-level="warn" onclick="selectJudge(this)">
+                <span class="judge-dot"></span><span class="judge-label">Caution</span>
+              </button>
+              <button class="judge-btn" data-level="danger" onclick="selectJudge(this)">
+                <span class="judge-dot"></span><span class="judge-label">Critical</span>
+              </button>
+            </div>
+          </section>
+        </article>
+      </div>
+
+      <div class="saved-hint">
+        <iconify-icon icon="mingcute:check-circle-fill"></iconify-icon>
+        <div class="saved-text">Records save to all 3 at once: <b>chart, checklist, and handover</b>.</div>
+      </div>
+      </div><!-- /.round-active -->
+    </main>
+  </div>
+
+  <!-- ============ PATIENT LIST SHEET ============ -->
+  <div class="overlay" id="ov" onclick="if(event.target===this)closeList();">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-head">
+        <div class="sheet-eyebrow">Today's rounds</div>
+        <div class="sheet-ttl">15 assigned patients</div>
+        <div class="sheet-sub">Tap to jump straight to that patient</div>
+      </div>
+      <div class="pl-list" id="plList"></div>
+    </div>
+  </div>
+
+  <div class="tab-wrap">
+    <nav class="tabbar" role="tablist">
+      <a href="d01-home.html" class="tab" aria-label="Now"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon><span class="tab-label">Now</span></a>
+      <a href="d02-round.html" class="tab active" aria-label="Rounds"><iconify-icon icon="material-symbols:bed-rounded"></iconify-icon><span class="tab-label">Rounds</span></a>
+      <a href="d03-inbox.html" class="tab" aria-label="Communication"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon><span class="tab-label">Comms</span></a>
+      <a href="d04-handover.html" class="tab" aria-label="Handover"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon><span class="tab-label">Handover</span></a>
+    </nav>
+    <a href="d-sos.html" class="sos" aria-label="SOS emergency"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></a>
+  </div>
+
+  <!-- ============ JUDGE ACTION SHEET ============ -->
+  <div class="ja-overlay" id="jaOverlay" onclick="if(event.target===this)closeJudgeSheet();">
+    <div class="ja-sheet" role="dialog" aria-labelledby="jaTitle">
+      <div class="ja-handle"></div>
+      <div class="ja-head">
+        <span class="ja-ico" id="jaIco"><iconify-icon id="jaIcoIcon" icon="mingcute:warning-fill"></iconify-icon></span>
+        <div>
+          <div class="ja-eyebrow" id="jaEyebrow">Caution</div>
+          <div class="ja-ttl" id="jaTitle">Choose the next action</div>
+        </div>
+      </div>
+      <div class="ja-sub" id="jaSub">The record is saved. What follow-up should we take?</div>
+      <div class="ja-options" id="jaOptions"></div>
+      <button class="ja-cancel" onclick="closeJudgeSheet()">Save record only · Close</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script>
+    function toast(msg){
+      const el=document.getElementById('toast');
+      el.textContent=msg;el.classList.add('show');
+      clearTimeout(window.__t);window.__t=setTimeout(()=>el.classList.remove('show'),1800);
+    }
+    /* === 데모용 15명 (8명 done, 9번째 current, 6명 pending) === */
+    const ROUND_TOTAL=15;
+    const ROUND_DONE_COUNT=8;
+    /* v3.2.9: 환자별 지난 라운드 데이터. vitals = [bp, temp, pain, meal].
+       각 항목 {val, unit, trend, tone? 'up'|'down', cellTone? 'warn'|'danger'} */
+    const patients=[
+      {name:'Bok-rye Kim',age:80,sex:'F',room:'2F Rm A-1',dx:'Hypertension',risk:null,
+        last:{time:'11:00', vitals:[
+          {label:'BP',val:'128/76',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.5',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Pain (VAS)',val:'1',unit:'/10',trend:'Mild'},
+          {label:'Meals',val:'3/3',unit:'',trend:'Full intake'}
+        ], note:'Morning walk 30 min, good. Takes meds on schedule.', noteBy:'Ji-hyeon Park, Nurse · 11:02 · Note'}},
+      {name:'Sun-yeong Park',age:76,sex:'F',room:'2F Rm A-2',dx:'Diabetes',risk:null,
+        last:{time:'11:05', vitals:[
+          {label:'Glucose (fasting)',val:'118',unit:'mg/dL',trend:'Stable'},
+          {label:'Temp',val:'36.6',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Pain (VAS)',val:'0',unit:'/10',trend:'None'},
+          {label:'Meals',val:'3/3',unit:'',trend:'Full intake'}
+        ], note:'Following diabetic diet well. Check post-meal glucose.', noteBy:'Ji-hyeon Park, Nurse · 11:08 · Voice input'}},
+      {name:'Mal-ja Song',age:84,sex:'F',room:'2F Rm A-4',dx:'Dementia',risk:null,
+        last:{time:'11:10', vitals:[
+          {label:'BP',val:'132/82',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.4',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Pain (VAS)',val:'0',unit:'/10',trend:'None'},
+          {label:'Meals',val:'2/3',unit:'',trend:'Lunch 1/2 eaten'}
+        ], note:'Morning cognitive assessment good. Enjoyed talking over family photos.', noteBy:'Su-jin Lee, Nurse · 11:12 · Voice input'}},
+      {name:'Yeong-ja Choi',age:79,sex:'F',room:'2F Rm A-6',dx:'Hypertension',risk:null,
+        last:{time:'11:15', vitals:[
+          {label:'BP',val:'135/82',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.7',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Pain (VAS)',val:'2',unit:'/10',trend:'Mild'},
+          {label:'Meals',val:'3/3',unit:'',trend:'Full intake'}
+        ], note:'Reported dizziness on waking, resolved after 30 min.', noteBy:'Ji-hyeon Park, Nurse · 11:17 · Note'}},
+      {name:'Geum-ja Lee',age:82,sex:'F',room:'2F Rm B-1',dx:'Heart failure',risk:'warn',
+        last:{time:'11:20', vitals:[
+          {label:'BP',val:'145/90',unit:'mmHg',trend:'↑ 138 → 145',tone:'up',cellTone:'warn'},
+          {label:'Temp',val:'36.8',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'SpO₂',val:'94',unit:'%',trend:'Borderline',cellTone:'warn'},
+          {label:'Meals',val:'2/3',unit:'',trend:'Lunch 1/2'}
+        ], note:'Faint wheeze on breathing. Monitor SpO₂ trend.', noteBy:'Ji-hyeon Park, Nurse · 11:22 · Voice input'}},
+      {name:'Bok-hee Han',age:78,sex:'F',room:'2F Rm B-3',dx:'COPD',risk:null,
+        last:{time:'11:25', vitals:[
+          {label:'BP',val:'126/78',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.6',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'SpO₂',val:'96',unit:'%',trend:'Normal'},
+          {label:'Meals',val:'3/3',unit:'',trend:'Full intake'}
+        ], note:'Uses inhaler independently, good. Mild cough persists.', noteBy:'Su-jin Lee, Nurse · 11:27 · Voice input'}},
+      {name:'Myeong-ho Jeong',age:75,sex:'M',room:'2F Rm B-4',dx:'Cerebral infarction',risk:null,
+        last:{time:'11:28', vitals:[
+          {label:'BP',val:'130/80',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.5',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Right limb strength',val:'4',unit:'/5',trend:'Maintained'},
+          {label:'Meals',val:'3/3',unit:'',trend:'Self-feeding'}
+        ], note:'Completed 1 rehab session. Right-side gait stable.', noteBy:'Ji-hyeon Park, Nurse · 11:30 · Note'}},
+      {name:'Sun-ja Jang',age:83,sex:'F',room:'2F Rm B-5',dx:'Hypertension',risk:null,
+        last:{time:'11:30', vitals:[
+          {label:'BP',val:'138/85',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.6',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Pain (VAS)',val:'1',unit:'/10',trend:'Mild'},
+          {label:'Meals',val:'3/3',unit:'',trend:'Full intake'}
+        ], note:'Nothing notable. Stable.', noteBy:'Ji-hyeon Park, Nurse · 11:32 · Note'}},
+      {name:'Yeong-ja Park',age:78,sex:'F',room:'2F Rm A-3',dx:'Hypertension · Early dementia',risk:'warn',
+        last:{time:'11:30', vitals:[
+          {label:'BP',val:'130/80',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.7',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Pain (VAS)',val:'4',unit:'/10',trend:'↑ 2 → 4',tone:'up',cellTone:'warn'},
+          {label:'Meals',val:'3/3',unit:'',trend:'Full intake'}
+        ], note:'Reported knee pain around 11am. Can walk unassisted but a walker is recommended. Will share pain pattern with family.', noteBy:'Ji-hyeon Park, Nurse · 11:32 · Voice input'}},
+      {name:'Myeong-ja Choi',age:82,sex:'F',room:'2F Rm B-2',dx:'Diabetes · Hypertension',risk:'danger',
+        last:{time:'11:35', vitals:[
+          {label:'BP',val:'180/110',unit:'mmHg',trend:'↑ 138 → 180',tone:'up',cellTone:'danger'},
+          {label:'Pulse',val:'102',unit:'bpm',trend:'↑ vs usual 78',tone:'up',cellTone:'warn'},
+          {label:'SpO₂',val:'96',unit:'%',trend:'Normal'},
+          {label:'Glucose',val:'168',unit:'mg/dL',trend:'Post-meal borderline',cellTone:'warn'}
+        ], note:'Sharp BP rise. Caregiver Mi-seon Park re-measured 180/108. Notifying attending recommended (AI risk signal).', noteBy:'Mi-seon Park, Caregiver · 11:37 · Photo attached'}},
+      {name:'Soon-ja Kim',age:79,sex:'F',room:'2F Rm A-5',dx:'Mid-stage dementia',risk:'warn',
+        last:{time:'11:40', vitals:[
+          {label:'BP',val:'135/82',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.8',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Behavior',val:'Caution',unit:'',trend:'Wandered once',cellTone:'warn'},
+          {label:'Meals',val:'1/3',unit:'',trend:'Refused breakfast',cellTone:'warn'}
+        ], note:'Wandered once in the morning (ward hallway). Rested after safety secured. Reduced appetite observed.', noteBy:'Su-jin Lee, Nurse · 11:42 · Voice input'}},
+      {name:'Jeong-suk Lee',age:85,sex:'F',room:'3F Rm C-1',dx:'Fall risk',risk:'warn',
+        last:{time:'11:45', vitals:[
+          {label:'BP',val:'128/76',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.5',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Gait',val:'Caution',unit:'',trend:'Walker required',cellTone:'warn'},
+          {label:'Meals',val:'2/3',unit:'',trend:'Lunch 2/3'}
+        ], note:'Needs escort to bathroom. Night anti-fall mat checked.', noteBy:'Ji-hyeon Park, Nurse · 11:47 · Note'}},
+      {name:'Seong-ho Jeong',age:74,sex:'M',room:'3F Rm C-3',dx:'COPD',risk:null,
+        last:{time:'11:50', vitals:[
+          {label:'BP',val:'124/74',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.4',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'SpO₂',val:'95',unit:'%',trend:'Normal'},
+          {label:'Meals',val:'3/3',unit:'',trend:'Full intake'}
+        ], note:'Breathing comfortable after inhaler. Able to walk.', noteBy:'Su-jin Lee, Nurse · 11:52 · Note'}},
+      {name:'Mi-ja Han',age:81,sex:'F',room:'3F Rm D-1',dx:'Hypertension',risk:null,
+        last:{time:'11:55', vitals:[
+          {label:'BP',val:'132/80',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.6',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Pain (VAS)',val:'0',unit:'/10',trend:'None'},
+          {label:'Meals',val:'3/3',unit:'',trend:'Full intake'}
+        ], note:'Stable. Family visit reminder noted.', noteBy:'Ji-hyeon Park, Nurse · 11:57 · Note'}},
+      {name:'Yeong-ho Song',age:77,sex:'M',room:'3F Rm D-2',dx:'Cerebral infarction',risk:null,
+        last:{time:'12:00', vitals:[
+          {label:'BP',val:'126/78',unit:'mmHg',trend:'Stable'},
+          {label:'Temp',val:'36.5',unit:'°C',trend:'Normal',tone:'down'},
+          {label:'Left limb strength',val:'3',unit:'/5',trend:'Rehab ongoing'},
+          {label:'Meals',val:'3/3',unit:'',trend:'Assisted with sides'}
+        ], note:'Completed 1 speech rehab session. Articulation improving.', noteBy:'Su-jin Lee, Nurse · 12:02 · Voice input'}}
+    ];
+    /* status: 'done' | 'current' | 'pending' | 'skipped' */
+    const status=patients.map((_,i)=>i<ROUND_DONE_COUNT?'done':(i===ROUND_DONE_COUNT?'current':'pending'));
+    let idx=ROUND_DONE_COUNT; // 9번째 환자 (0-index 8)
+    let active=false;        // 인트로 상태 vs 활성 라운드
+
+    function startRound(mode){
+      if(mode==='restart'){
+        // 처음부터: 상태 리셋
+        for(let i=0;i<status.length;i++) status[i]=i===0?'current':'pending';
+        idx=0;
+      }
+      active=true;
+      document.getElementById('intro').style.display='none';
+      document.getElementById('active').style.display='block';
+      document.getElementById('hEyebrow').textContent='Rounds Mode · In progress';
+      renderCard();
+    }
+
+    function renderCard(){
+      // 모든 환자 끝났으면 완료 상태
+      if(idx>=patients.length){renderComplete();return;}
+      const p=patients[idx];
+
+      // v3.2.9: 이름/나이 분리 갱신 (직전 카드 분리 작업 중복 출력 버그 수정)
+      document.getElementById('cAva').textContent=p.name[0];
+      document.getElementById('cName').textContent=p.name;
+      document.getElementById('cAge').textContent=`${p.age} · ${p.sex}`;
+      document.getElementById('cRoom').textContent=p.room;
+      document.getElementById('cDx').textContent=p.dx;
+      document.getElementById('hName').textContent=p.name;
+      document.getElementById('posCur').textContent=(idx+1).toString();
+
+      // v3.2.9: 환자별 지난 라운드 데이터 렌더링 (이전엔 Yeong-ja Park 고정값)
+      renderSummary(p);
+
+      const completed=status.filter(s=>s==='done'||s==='skipped').length;
+      const pct=Math.min(100,Math.round((completed)/ROUND_TOTAL*100));
+      document.getElementById('progFill').style.width=pct+'%';
+      document.getElementById('progNum').textContent=completed.toString();
+
+      // v3.2.9: risk 기반 judge 기본 선택
+      const defaultLevel=p.risk==='danger'?'danger':p.risk==='warn'?'watch':'ok';
+      document.querySelectorAll('.judge-btn').forEach(b=>b.classList.remove('selected'));
+      const defBtn=document.querySelector(`.judge-btn[data-level="${defaultLevel}"]`);
+      if(defBtn) defBtn.classList.add('selected');
+
+      document.getElementById('sttPreview').classList.remove('show');
+      document.getElementById('voiceBtn').classList.remove('recording');
+      document.getElementById('voiceIco').setAttribute('icon','ph:microphone-fill');
+      document.getElementById('voiceMain').textContent='Record everything by voice';
+      document.getElementById('voiceSub').textContent='Vitals, pain, observations in one take';
+    }
+
+    function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);}
+
+    function renderSummary(p){
+      const last=p.last;
+      const sumTime=document.getElementById('sumTime');
+      const sumGrid=document.getElementById('sumGrid');
+      const sumNote=document.getElementById('sumNote');
+      if(!last){
+        sumTime.textContent='No record';
+        sumGrid.innerHTML='';
+        sumNote.innerHTML='<div class="last-note-ttl">Last note</div>No record from the previous round.';
+        return;
+      }
+      sumTime.textContent=last.time;
+      sumGrid.innerHTML=last.vitals.map(v=>{
+        const cellCls=v.cellTone?` ${v.cellTone}`:'';
+        const trendCls=v.tone?` ${v.tone}`:'';
+        const unit=v.unit?`<small>${escapeHtml(v.unit)}</small>`:'';
+        return `<div class="vital${cellCls}">
+          <div class="vital-label">${escapeHtml(v.label)}</div>
+          <div class="vital-val">${escapeHtml(v.val)}${unit}</div>
+          <div class="vital-trend${trendCls}">${escapeHtml(v.trend)}</div>
+        </div>`;
+      }).join('');
+      sumNote.innerHTML=`<div class="last-note-ttl">Last note</div>${escapeHtml(last.note)}<div class="last-note-meta">${escapeHtml(last.noteBy)}</div>`;
+    }
+
+    function renderComplete(){
+      const done=status.filter(s=>s==='done').length;
+      const skipped=status.filter(s=>s==='skipped').length;
+      document.querySelector('.stage').innerHTML=`
+        <div class="complete">
+          <div class="complete-ico"><iconify-icon icon="mingcute:check-circle-fill"></iconify-icon></div>
+          <div class="complete-ttl">Round complete</div>
+          <div class="complete-sub">${done} of 15 patients recorded${skipped?' · '+skipped+' to next round':''}</div>
+          <div class="complete-stats">
+            <div><div class="complete-stat-val">${done}</div><div class="complete-stat-label">Done</div></div>
+            <div><div class="complete-stat-val">${skipped}</div><div class="complete-stat-label">Skipped</div></div>
+            <div><div class="complete-stat-val">${ROUND_TOTAL}</div><div class="complete-stat-label">Total</div></div>
+          </div>
+          <div class="complete-cta">
+            <a class="secondary" href="d04-handover.html"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon>View handover</a>
+            <a class="primary" href="d01-home.html"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon>Home</a>
+          </div>
+        </div>`;
+      document.getElementById('hName').textContent='Complete';
+      document.getElementById('progFill').style.width='100%';
+      document.getElementById('progNum').textContent=ROUND_TOTAL;
+    }
+
+    /* v3.2.9: current 는 항상 1명만. 이동 시 기존 current 정리 후 새 current 지정. */
+    function setCurrent(newIdx){
+      for(let i=0;i<status.length;i++){
+        if(status[i]==='current') status[i]='pending';
+      }
+      if(newIdx<patients.length && status[newIdx]==='pending') status[newIdx]='current';
+    }
+
+    function swipe(dir){
+      const card=document.getElementById('card');
+      if(!card){return;}
+      if(dir==='next'){
+        if(status[idx]==='current'||status[idx]==='pending') status[idx]='done';
+        card.classList.add('swipe-out-left');
+        setTimeout(()=>{
+          idx=idx+1;
+          setCurrent(idx);
+          card.classList.remove('swipe-out-left');
+          renderCard();
+          if(idx<patients.length) toast('Saved · Next patient');
+        },280);
+      } else if(dir==='skip'){
+        status[idx]='skipped';
+        card.classList.add('swipe-out-left');
+        setTimeout(()=>{
+          idx=idx+1;
+          setCurrent(idx);
+          card.classList.remove('swipe-out-left');
+          renderCard();
+          if(idx<patients.length) toast('Skipped · Revisit later');
+        },280);
+      } else {
+        if(idx<=0){toast('First patient');return;}
+        card.classList.add('swipe-out-right');
+        setTimeout(()=>{
+          idx=idx-1;
+          setCurrent(idx);
+          card.classList.remove('swipe-out-right');
+          renderCard();
+        },280);
+      }
+    }
+
+    /* === 환자 목록 시트 === */
+    function openList(){
+      const list=document.getElementById('plList');
+      list.innerHTML=patients.map((p,i)=>{
+        const s=status[i];
+        const ico={done:'mingcute:check-fill',current:'mingcute:play-fill',skipped:'mingcute:refresh-2-fill',pending:''}[s];
+        const num=i+1;
+        const tag=p.risk==='danger'?'<span class="pl-tag">Critical</span>':p.risk==='warn'?'<span class="pl-tag warn">Caution</span>':'';
+        return `<button class="pl-item" onclick="jumpTo(${i})">
+          <span class="pl-status ${s}">${ico?`<iconify-icon icon="${ico}"></iconify-icon>`:num}</span>
+          <span class="pl-meta">
+            <span class="pl-name ${s}">${p.name}${s==='current'?' · In progress':''}</span>
+            <span class="pl-room">${p.room} · ${p.dx}</span>
+          </span>
+          ${tag}
+        </button>`;
+      }).join('');
+      document.getElementById('ov').classList.add('show');
+    }
+    function closeList(){document.getElementById('ov').classList.remove('show');}
+    function jumpTo(i){
+      idx=i;
+      setCurrent(i);  /* v3.2.9: 기존 current 정리 (다수 잔존 버그 수정) */
+      closeList();
+      if(!active) startRound('resume');
+      else renderCard();
+      toast('Moved to '+patients[i].name);
+    }
+    let recording=false;
+    function toggleVoice(){
+      const btn=document.getElementById('voiceBtn');
+      const ico=document.getElementById('voiceIco');
+      const main=document.getElementById('voiceMain');
+      const sub=document.getElementById('voiceSub');
+      const preview=document.getElementById('sttPreview');
+      recording=!recording;
+      if(recording){
+        btn.classList.add('recording');
+        ico.setAttribute('icon','mingcute:stop-fill');
+        main.textContent='Recording...';
+        sub.textContent='Go ahead. Tap again to stop';
+        preview.classList.remove('show');
+      } else {
+        btn.classList.remove('recording');
+        ico.setAttribute('icon','mingcute:check-fill');
+        main.textContent='AI analyzing...';
+        sub.textContent='Auto-sorting into 4 categories';
+        setTimeout(()=>{
+          preview.classList.add('show');
+          ico.setAttribute('icon','ph:microphone-fill');
+          main.textContent='Review · Editable';
+          sub.textContent='Tap the mic to record again';
+        },700);
+      }
+    }
+    function selectJudge(el){
+      document.querySelectorAll('.judge-btn').forEach(b=>b.classList.remove('selected'));
+      el.classList.add('selected');
+      const lv=el.dataset.level;
+      if(lv==='ok'){toast('Recorded as Normal');return;}
+      if(lv==='watch'){toast('Recorded as Monitor');return;}
+      openJudgeSheet(lv);
+    }
+    function openJudgeSheet(lv){
+      const cfg = {
+        warn: {
+          tone:'warn',
+          icon:'mingcute:notification-fill',
+          eyebrow:'Caution',
+          title:'Recorded as Caution · Choose a follow-up',
+          sub:'The record is saved. The clinician decides the next action.',
+          options:[
+            {ico:'material-symbols:medical-services-rounded', ttl:'Notify attending', sub:'Send a message to Dr. Sang-hun Lee', act:'doctor'},
+            {ico:'mingcute:document-2-fill', ttl:'Add to handover', sub:'Auto-add to next shift SBAR', act:'handover'},
+            {ico:'material-symbols:timer-rounded', ttl:'Re-measure in 30 min', sub:'Timer set automatically', act:'remeasure'}
+          ]
+        },
+        danger: {
+          tone:'danger',
+          icon:'mingcute:warning-fill',
+          eyebrow:'Critical',
+          title:'Recorded as Critical · Immediate action needed',
+          sub:'The record is saved. Choose the next action based on whether this is an emergency.',
+          options:[
+            {ico:'mingcute:warning-fill', ttl:'Switch to SOS · Emergency response', sub:'Send SOS alert to all staff', act:'sos', danger:true},
+            {ico:'fluent:vehicle-truck-bag-24-filled', ttl:'Consider calling 119', sub:'Prepare to auto-send patient info', act:'emergency', danger:true},
+            {ico:'material-symbols:medical-services-rounded', ttl:'Page attending immediately', sub:'Urgent message to Dr. Sang-hun Lee', act:'doctor'},
+            {ico:'mingcute:document-2-fill', ttl:'Flag as priority handover item', sub:'Pass to next shift with red badge', act:'handover'}
+          ]
+        }
+      };
+      const c = cfg[lv];
+      document.getElementById('jaIco').className = 'ja-ico '+c.tone;
+      document.getElementById('jaIcoIcon').setAttribute('icon', c.icon);
+      const eb = document.getElementById('jaEyebrow');
+      eb.className = 'ja-eyebrow '+c.tone;
+      eb.textContent = c.eyebrow;
+      document.getElementById('jaTitle').textContent = c.title;
+      document.getElementById('jaSub').textContent = c.sub;
+      document.getElementById('jaOptions').innerHTML = c.options.map(o =>
+        `<button class="ja-opt${o.danger?' danger':''}" onclick="judgeAction('${o.act}')">
+          <iconify-icon icon="${o.ico}"></iconify-icon>
+          <div><div class="ja-opt-ttl">${o.ttl}</div><div class="ja-opt-sub">${o.sub}</div></div>
+        </button>`
+      ).join('');
+      document.getElementById('jaOverlay').classList.add('show');
+    }
+    function closeJudgeSheet(){document.getElementById('jaOverlay').classList.remove('show');}
+    function judgeAction(act){
+      const labels = {
+        doctor:'Report sent to attending · Awaiting reply',
+        handover:'Added to next handover',
+        remeasure:'Re-measure reminder set for 30 min',
+        sos:'Switching to SOS screen',
+        emergency:'Preparing 119 connection screen'
+      };
+      toast(labels[act]||'Done');
+      closeJudgeSheet();
+      if(act==='sos') setTimeout(()=>{location.href='d-sos.html';},700);
+      else if(act==='handover') setTimeout(()=>{location.href='d04-handover.html';},700);
+    }
+    let startX=0;
+    const deckEl=document.getElementById('deck');
+    if(deckEl){
+      deckEl.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;},{passive:true});
+      deckEl.addEventListener('touchend',e=>{
+        const dx=e.changedTouches[0].clientX-startX;
+        if(Math.abs(dx)>80) swipe(dx<0?'next':'prev');
+      });
+    }
+
+    /* === 진입 처리: ?action=resume 이면 인트로 건너뛰고 바로 시작 === */
+    const params=new URLSearchParams(location.search);
+    const action=params.get('action');
+    const focus=params.get('focus');
+    if(focus){
+      // ?focus=p3 등 — 특정 환자로 바로 점프
+      const focusIdx=parseInt(focus.replace(/[^0-9]/g,''))-1;
+      if(focusIdx>=0 && focusIdx<patients.length){
+        idx=focusIdx;
+        if(status[idx]==='pending') status[idx]='current';
+        startRound('resume');
+      } else {
+        startRound('resume');
+      }
+    } else if(action==='resume'){
+      startRound('resume');
+    }
+    // 그 외 → 인트로 화면 유지 (기본)
+  </script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
+</body>
+</html>

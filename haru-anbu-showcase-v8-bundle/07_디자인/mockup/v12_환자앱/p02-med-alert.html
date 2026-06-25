@@ -232,24 +232,24 @@
 
     <header class="p-header p-header--nav">
       <a href="p01-today.html" class="p-back" aria-label="뒤로">
-        <iconify-icon icon="fluent:chevron-left-24-filled" width="28" aria-hidden="true"></iconify-icon>
+        <iconify-icon icon="material-symbols:chevron-left-rounded" width="28" aria-hidden="true"></iconify-icon>
         뒤로
       </a>
       <nav class="top-nav" aria-label="주요 메뉴">
         <a class="nav-tab" href="p01-today.html">
-          <iconify-icon icon="fluent:home-24-filled" width="22" aria-hidden="true"></iconify-icon>
+          <iconify-icon icon="mingcute:home-1-fill" width="22" aria-hidden="true"></iconify-icon>
           홈
         </a>
         <a class="nav-tab nav-tab--active" href="p02-med-alert.html" aria-current="page">
-          <iconify-icon icon="fluent:clipboard-bullet-list-ltr-24-filled" width="22" aria-hidden="true"></iconify-icon>
+          <iconify-icon icon="mingcute:clipboard-fill" width="22" aria-hidden="true"></iconify-icon>
           할일
         </a>
         <a class="nav-tab" href="p03-call.html">
-          <iconify-icon icon="fluent:people-24-filled" width="22" aria-hidden="true"></iconify-icon>
+          <iconify-icon icon="material-symbols:family-restroom-rounded" width="22" aria-hidden="true"></iconify-icon>
           가족
         </a>
         <a class="nav-tab" href="p08-help.html">
-          <iconify-icon icon="fluent:hand-wave-24-filled" width="22" aria-hidden="true"></iconify-icon>
+          <iconify-icon icon="ph:hand-waving-fill" width="22" aria-hidden="true"></iconify-icon>
           도움
         </a>
       </nav>
@@ -278,7 +278,7 @@
         <div class="todo-item done" role="listitem">
           <div class="todo-time"><span class="ampm">오전</span>8:00</div>
           <div class="todo-icon">
-            <iconify-icon icon="fluent:checkmark-24-filled" width="20" aria-hidden="true"></iconify-icon>
+            <iconify-icon icon="mingcute:check-fill" width="20" aria-hidden="true"></iconify-icon>
           </div>
           <div class="todo-main">
             <div class="todo-name">아침 식사</div>
@@ -290,7 +290,7 @@
         <div class="todo-item done" role="listitem">
           <div class="todo-time"><span class="ampm">오전</span>8:30</div>
           <div class="todo-icon">
-            <iconify-icon icon="fluent:checkmark-24-filled" width="20" aria-hidden="true"></iconify-icon>
+            <iconify-icon icon="mingcute:check-fill" width="20" aria-hidden="true"></iconify-icon>
           </div>
           <div class="todo-main">
             <div class="todo-name">아침 약</div>
@@ -302,7 +302,7 @@
         <div class="todo-item done" role="listitem">
           <div class="todo-time"><span class="ampm">오전</span>10:00</div>
           <div class="todo-icon">
-            <iconify-icon icon="fluent:checkmark-24-filled" width="20" aria-hidden="true"></iconify-icon>
+            <iconify-icon icon="mingcute:check-fill" width="20" aria-hidden="true"></iconify-icon>
           </div>
           <div class="todo-main">
             <div class="todo-name">혈압 측정</div>
@@ -314,7 +314,7 @@
         <div class="todo-item done" role="listitem">
           <div class="todo-time"><span class="ampm">오후</span>12:00</div>
           <div class="todo-icon">
-            <iconify-icon icon="fluent:checkmark-24-filled" width="20" aria-hidden="true"></iconify-icon>
+            <iconify-icon icon="mingcute:check-fill" width="20" aria-hidden="true"></iconify-icon>
           </div>
           <div class="todo-main">
             <div class="todo-name">점심 식사</div>
@@ -326,7 +326,7 @@
         <div class="todo-item now" role="listitem" aria-current="true">
           <div class="todo-time"><span class="ampm">오후</span>2:30</div>
           <div class="todo-icon">
-            <iconify-icon icon="fluent:pill-24-filled" width="22" aria-hidden="true"></iconify-icon>
+            <iconify-icon icon="mingcute:capsule-fill" width="22" aria-hidden="true"></iconify-icon>
           </div>
           <div class="todo-main">
             <div class="todo-name">점심 약 드시기</div>
@@ -338,7 +338,7 @@
         <div class="todo-item upcoming" role="listitem">
           <div class="todo-time"><span class="ampm">오후</span>4:00</div>
           <div class="todo-icon">
-            <iconify-icon icon="fluent:walking-24-regular" width="22" aria-hidden="true"></iconify-icon>
+            <iconify-icon icon="material-symbols:directions-run-rounded" width="22" aria-hidden="true"></iconify-icon>
           </div>
           <div class="todo-main">
             <div class="todo-name">산책하기</div>
@@ -350,7 +350,7 @@
         <div class="todo-item upcoming" role="listitem">
           <div class="todo-time"><span class="ampm">오후</span>6:00</div>
           <div class="todo-icon">
-            <iconify-icon icon="fluent:food-24-regular" width="22" aria-hidden="true"></iconify-icon>
+            <iconify-icon icon="ph:bowl-food-fill" width="22" aria-hidden="true"></iconify-icon>
           </div>
           <div class="todo-main">
             <div class="todo-name">저녁 식사 · 저녁 약</div>
@@ -363,7 +363,7 @@
 
       <div class="now-action">
         <button type="button" class="btn btn--lg btn--success" id="markNowDone">
-          <iconify-icon icon="fluent:checkmark-circle-24-filled" width="28" aria-hidden="true"></iconify-icon>
+          <iconify-icon icon="mingcute:check-circle-fill" width="28" aria-hidden="true"></iconify-icon>
           점심 약 다 먹었어요
         </button>
       </div>
@@ -384,7 +384,7 @@
         nowRow.setAttribute('aria-current', 'false');
         nowRow.querySelector('.todo-status').textContent = '완료';
         nowRow.querySelector('.todo-icon').innerHTML =
-          '<iconify-icon icon="fluent:checkmark-24-filled" width="20" aria-hidden="true"></iconify-icon>';
+          '<iconify-icon icon="mingcute:check-fill" width="20" aria-hidden="true"></iconify-icon>';
 
         // 진행 바 업데이트
         var fill = document.querySelector('.progress-fill');

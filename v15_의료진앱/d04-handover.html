@@ -22,7 +22,7 @@
     html{height:100%;background:var(--clinical-canvas);font-size:16px;}
     body{
       height:100%;color:var(--t1);overflow-x:hidden;
-      font-family:var(--font-family-base);font-size:18px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
+      font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
       background:transparent;
     }
     .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background: var(--clinical-bg-image);}
@@ -32,7 +32,7 @@
     }
 
     /* HEADER (v15 통일 — grid 44·1fr·44 / h-eyebrow + h-name) */
-    .header{padding:calc(var(--safe-t) + 14px) var(--pad) 8px;position:relative;z-index:5;}
+    .header{padding:calc(var(--safe-t) + 14px) var(--page-pad) 8px;position:relative;z-index:5;}
     .top-nav .icon-btn{grid-column:3;justify-self:end;}
     .h-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
     /* v3.2.5: 헤더 icon-btn 글라스 통일 (d01 홈 스펙) */
@@ -50,7 +50,7 @@
 
     /* COUNTDOWN — 슬림 인포 스트립 */
     .countdown{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 60ms both;
-      margin:0 var(--pad);padding:14px 18px;
+      margin:0 var(--page-pad);padding:14px 18px;
       display:flex;align-items:center;gap:14px;
       background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.9);
       border-radius:16px;
@@ -68,7 +68,7 @@
     .countdown-main{font-size:13px;font-weight:600;color:var(--t1);margin-top:3px;letter-spacing:-.2px;}
 
     /* SECTION */
-    .sec{margin:20px var(--pad) 0;position:relative;z-index:1;}
+    .sec{margin:20px var(--page-pad) 0;position:relative;z-index:1;}
     .sec-head{
       display:flex;align-items:baseline;justify-content:space-between;
       margin-bottom:10px;padding:0 2px;
@@ -260,7 +260,7 @@
 
     /* SEND */
     .send-cta{
-      margin:10px var(--pad) 0;display:grid;grid-template-columns:1fr 2fr;gap:10px;
+      margin:10px var(--page-pad) 0;display:grid;grid-template-columns:1fr 2fr;gap:10px;
       position:relative;z-index:1;
     }
     .send-draft{
@@ -397,7 +397,7 @@
         <div class="title-block">
           <div class="h-name">SBAR</div>
         </div>
-        <button class="icon-btn" aria-label="이력"><iconify-icon icon="fluent:history-24-filled"></iconify-icon></button>
+        <button class="icon-btn" aria-label="이력"><iconify-icon icon="material-symbols:history-rounded"></iconify-icon></button>
       </div>
     </header>
 
@@ -424,7 +424,7 @@
       </div>
       <div class="voice-bar">
         <button class="voice-mic-lg" onclick="toast('녹음 시작 — 60초');" aria-label="음성 메모 녹음">
-          <iconify-icon icon="fluent:mic-24-filled"></iconify-icon>
+          <iconify-icon icon="ph:microphone-fill"></iconify-icon>
         </button>
         <div class="voice-info">
           <div class="voice-info-main">1분 음성 메모 추가</div>
@@ -536,7 +536,7 @@
       </div>
 
       <div class="ai-hint">
-        <iconify-icon icon="fluent:sparkle-24-filled"></iconify-icon>
+        <iconify-icon icon="material-symbols:auto-awesome-rounded"></iconify-icon>
         <div class="ai-hint-text">라운드 중 입력한 음성·메모 7건을 <b>SBAR 4영역으로 자동 분류</b>했어요.</div>
       </div>
     </section>
@@ -550,28 +550,28 @@
       </div>
       <div class="checks">
         <div class="check-row checked" onclick="this.classList.toggle('checked')">
-          <span class="check-box"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span>
+          <span class="check-box"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           <div class="check-text">
             <div class="check-label">낙상 위험 환자 확인</div>
             <div class="check-sub">이정숙 어르신 · 침대 난간 ON</div>
           </div>
         </div>
         <div class="check-row checked" onclick="this.classList.toggle('checked')">
-          <span class="check-box"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span>
+          <span class="check-box"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           <div class="check-text">
             <div class="check-label">복약 미투여 확인</div>
             <div class="check-sub">22/28 완료, 6건 18시 예정</div>
           </div>
         </div>
         <div class="check-row checked" onclick="this.classList.toggle('checked')">
-          <span class="check-box"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span>
+          <span class="check-box"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           <div class="check-text">
             <div class="check-label">통증 호소 환자 인계</div>
             <div class="check-sub">박영자 어르신 (VAS 4 → 3)</div>
           </div>
         </div>
         <div class="check-row" onclick="this.classList.toggle('checked')">
-          <span class="check-box"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span>
+          <span class="check-box"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           <div class="check-text">
             <div class="check-label">배회·폭력 위험 환자</div>
             <div class="check-sub">이정숙 · 야간 활동 증가 관찰 필요</div>
@@ -579,7 +579,7 @@
           <span class="check-cnt">미확인</span>
         </div>
         <div class="check-row" onclick="this.classList.toggle('checked')">
-          <span class="check-box"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span>
+          <span class="check-box"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           <div class="check-text">
             <div class="check-label">가족 통보 완료</div>
             <div class="check-sub">최명자 보호자 통화 OK, 김순자 보호자 미회신</div>
@@ -651,12 +651,12 @@
 
   <div class="tab-wrap">
     <nav class="tabbar" role="tablist">
-      <a href="d01-home.html" class="tab" aria-label="지금"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="tab-label">지금</span></a>
-      <a href="d02-round.html" class="tab" aria-label="회진"><iconify-icon icon="fluent:bed-24-filled"></iconify-icon><span class="tab-label">회진</span></a>
-      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon><span class="tab-label">소통</span></a>
-      <a href="d04-handover.html" class="tab active" aria-label="인수인계"><iconify-icon icon="fluent:document-arrow-right-24-filled"></iconify-icon><span class="tab-label">인계</span></a>
+      <a href="d01-home.html" class="tab" aria-label="지금"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon><span class="tab-label">지금</span></a>
+      <a href="d02-round.html" class="tab" aria-label="회진"><iconify-icon icon="material-symbols:bed-rounded"></iconify-icon><span class="tab-label">회진</span></a>
+      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon><span class="tab-label">소통</span></a>
+      <a href="d04-handover.html" class="tab active" aria-label="인수인계"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon><span class="tab-label">인계</span></a>
     </nav>
-    <a href="d-sos.html" class="sos" aria-label="SOS"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></a>
+    <a href="d-sos.html" class="sos" aria-label="SOS"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></a>
   </div>
 
   <!-- ============ SEND CONFIRMATION SHEET ============ -->
@@ -668,7 +668,7 @@
       <div class="conf-sub">전송 후에도 메모는 계속 추가할 수 있습니다. 위험·미확인 항목은 빨간 배지로 함께 전달됩니다.</div>
 
       <div id="sendWarn" class="conf-warn">
-        <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
         <div class="conf-warn-text">
           <b>미확인 체크리스트 <span id="sendUncheckedCnt">2</span>건</b>
           <div class="conf-warn-list" id="sendUncheckedList">· 배회·폭력 위험 환자<br>· 가족 통보 완료</div>
@@ -684,14 +684,14 @@
 
       <div class="conf-section-ttl">함께 전달되는 항목</div>
       <div class="conf-pill-row">
-        <span class="conf-pill"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon>SBAR 4영역</span>
-        <span class="conf-pill"><iconify-icon icon="fluent:list-24-filled"></iconify-icon>5필수 체크</span>
-        <span class="conf-pill"><iconify-icon icon="fluent:note-edit-24-filled"></iconify-icon>적립 메모 7건</span>
-        <span class="conf-pill warn"><iconify-icon icon="fluent:alert-urgent-24-filled"></iconify-icon>주의 환자 3명</span>
+        <span class="conf-pill"><iconify-icon icon="mingcute:check-fill"></iconify-icon>SBAR 4영역</span>
+        <span class="conf-pill"><iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>5필수 체크</span>
+        <span class="conf-pill"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>적립 메모 7건</span>
+        <span class="conf-pill warn"><iconify-icon icon="mingcute:notification-fill"></iconify-icon>주의 환자 3명</span>
       </div>
 
       <button class="conf-action-primary" onclick="confirmSend()">
-        <iconify-icon icon="fluent:send-24-filled"></iconify-icon>전송하기
+        <iconify-icon icon="material-symbols:send-rounded"></iconify-icon>전송하기
       </button>
       <button class="conf-cancel" onclick="closeSendConfirm()">취소 · 더 확인</button>
     </div>

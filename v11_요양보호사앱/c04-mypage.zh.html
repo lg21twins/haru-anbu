@@ -37,13 +37,14 @@
       --t3: var(--color-text-tertiary);
       --safe-t: env(safe-area-inset-top, 0px);
       --safe-b: max(env(safe-area-inset-bottom, 0px), 20px);
+      --text-body: 18px;
       --tab-h: 64px;
       --tab-bot: 12px;
-      --pad: 20px;
+      --page-pad: 20px;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
     html{height:100%;background:var(--clinical-canvas);font-size:16px;}
-    body{height:100%;color:var(--t1);overflow-x:hidden;font-family:var(--font-family-base);font-size:18px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;} /* v3.2.7: 본문 18px — caregiver 고령 배려 표준 통일 */
+    body{height:100%;color:var(--t1);overflow-x:hidden;font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;} /* v3.2.7: 본문 18px — caregiver 고령 배려 표준 통일 */
     .bg{
       position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
       background: var(--clinical-bg-image);
@@ -78,7 +79,7 @@
     .h-title{flex:1;text-align:center;font-size:17px;font-weight:700;color:var(--t1);letter-spacing:-.3px;}
 
     .profile-hero{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;
-      margin:8px var(--pad) 0;padding:24px;
+      margin:8px var(--page-pad) 0;padding:24px;
       /* v3.2.8: 카드 토큰 (caregiver.css --cg-card-*) — hero는 라운드만 24px로 강조 */
       background:var(--cg-card-bg);border-radius:24px;
       box-shadow:var(--shadow-card-floating);
@@ -127,7 +128,7 @@
     .pf-stat__val .sm{font-size:12px;color:var(--t3);font-weight:600;}
 
     .gps{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 80ms both;
-      margin:16px var(--pad) 0;padding:18px 20px;
+      margin:16px var(--page-pad) 0;padding:18px 20px;
       background:var(--cg-card-bg);border-radius:var(--cg-card-radius);
       display:flex;align-items:center;gap:14px;
       box-shadow:var(--shadow-card-floating);
@@ -152,7 +153,7 @@
       font-size:12px;font-weight:600;border:0;cursor:pointer;font-family:inherit;
     }
 
-    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--pad) 0;position:relative;z-index:1;}
+    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--page-pad) 0;position:relative;z-index:1;}
     .sec-ttl{
       font-size:11px;font-weight:600;color:var(--t3);
       letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px;padding-left:4px;
@@ -205,7 +206,7 @@
     .switch.on::after{left:21px;}
 
     .logout{
-      margin:24px var(--pad) 0;padding:15px;
+      margin:24px var(--page-pad) 0;padding:15px;
       width:calc(100% - 44px);
       background:var(--cg-card-bg);border:0;border-radius:16px;
       box-shadow:var(--cg-card-shadow);
@@ -217,7 +218,7 @@
     }
     .logout iconify-icon{font-size:18px;}
     .ver{
-      margin:18px var(--pad) 0;text-align:center;
+      margin:18px var(--page-pad) 0;text-align:center;
       font-size:12px;font-weight:500;color:var(--t3);
       position:relative;z-index:1;
     }
@@ -245,7 +246,7 @@
           <h1 class="h-name">我的</h1>
         </div>
         <button class="icon-btn" type="button" aria-label="设置" onclick="toast('设置')">
-          <iconify-icon icon="fluent:settings-24-filled"></iconify-icon>
+          <iconify-icon icon="mingcute:settings-3-fill"></iconify-icon>
         </button>
       </div>
     </header>
@@ -257,20 +258,20 @@
           <div class="pf-name">李英洙 老师</div>
           <div class="pf-sub">瑞草银发护理 · 负责 2 楼</div>
           <div class="pf-pills">
-            <span class="pf-pill pf-pill--accent"><iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon>护理员 1 级</span>
-            <span class="pf-pill"><iconify-icon icon="fluent:calendar-24-filled"></iconify-icon>第 4 年</span>
-            <span class="pf-pill"><iconify-icon icon="fluent:building-24-filled"></iconify-icon>2 楼</span>
+            <span class="pf-pill pf-pill--accent"><iconify-icon icon="material-symbols:health-and-safety-rounded"></iconify-icon>护理员 1 级</span>
+            <span class="pf-pill"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon>第 4 年</span>
+            <span class="pf-pill"><iconify-icon icon="mingcute:building-4-fill"></iconify-icon>2 楼</span>
           </div>
         </div>
       </div>
       <div class="pf-stats">
         <div class="pf-stat">
-          <span class="pf-stat__ico"><iconify-icon icon="fluent:people-24-filled"></iconify-icon></span>
+          <span class="pf-stat__ico"><iconify-icon icon="material-symbols:family-restroom-rounded"></iconify-icon></span>
           <div class="pf-stat__meta"><div class="pf-stat__label">负责老人</div></div>
           <div class="pf-stat__val">4<span class="sm"> 位</span></div>
         </div>
         <div class="pf-stat">
-          <span class="pf-stat__ico"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></span>
+          <span class="pf-stat__ico"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon></span>
           <div class="pf-stat__meta">
             <div class="pf-stat__label">本月记录单提交</div>
             <div class="pf-stat__bar"><div class="pf-stat__bar-fill" style="--bar-w:85%"></div></div>
@@ -278,7 +279,7 @@
           <div class="pf-stat__val">17<span class="sm">/20</span></div>
         </div>
         <div class="pf-stat">
-          <span class="pf-stat__ico"><iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon></span>
+          <span class="pf-stat__ico"><iconify-icon icon="material-symbols:health-and-safety-rounded"></iconify-icon></span>
           <div class="pf-stat__meta">
             <div class="pf-stat__label">本年度继续教育</div>
             <div class="pf-stat__bar"><div class="pf-stat__bar-fill" style="--bar-w:75%"></div></div>
@@ -289,7 +290,7 @@
     </section>
 
     <section class="gps">
-      <span class="gps-pulse"><iconify-icon icon="fluent:location-live-24-filled"></iconify-icon></span>
+      <span class="gps-pulse"><iconify-icon icon="mingcute:location-fill"></iconify-icon></span>
       <div class="gps-meta">
         <div class="gps-main">白班工作中 · 已确认机构 GPS</div>
         <div class="gps-sub">07:00 上班 · 剩余 3 小时 12 分</div>
@@ -339,28 +340,28 @@
             <div class="row-label">本周日程</div>
             <div class="row-sub">白班 4 天 · 夜班 1 天 · 休息 2 天</div>
           </div>
-          <span class="row-val">7 天<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">7 天<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('交接备忘 · 准备中');">
           <div class="row-meta">
             <div class="row-label">交接备忘</div>
             <div class="row-sub">语音 · 文字 · 照片</div>
           </div>
-          <span class="row-val"><span class="row-pending">准备中</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">准备中</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('AI 工作指南 · 准备中');">
           <div class="row-meta">
             <div class="row-label">AI 工作指南</div>
             <div class="row-sub">手册 · 规定 · 情境应对</div>
           </div>
-          <span class="row-val"><span class="row-pending">准备中</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">准备中</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('语言设置 · 中文');">
           <div class="row-meta">
             <div class="row-label">语言</div>
             <div class="row-sub">한국어 · 中文 · Tiếng Việt</div>
           </div>
-          <span class="row-val">中文<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">中文<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
@@ -373,21 +374,21 @@
             <div class="row-label">服务提供记录单</div>
             <div class="row-sub">按月自动汇总 · 电子签名</div>
           </div>
-          <span class="row-val"><span class="row-badge">3</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-badge">3</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('上下班记录 15/15');">
           <div class="row-meta">
             <div class="row-label">上下班记录</div>
             <div class="row-sub">GPS · 时间 · 签名记录</div>
           </div>
-          <span class="row-val">15 天<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">15 天<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('资格证 · 继续教育 6/8h');">
           <div class="row-meta">
             <div class="row-label">资格证 · 培训完成</div>
             <div class="row-sub">1 级 · 有效期至 2028.07 · 继续教育 6/8h</div>
           </div>
-          <span class="row-val"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
@@ -397,24 +398,24 @@
       <div class="rows">
         <a class="row" href="#" onclick="event.preventDefault();toast('帮助 · 准备中');">
           <div class="row-meta"><div class="row-label">帮助 · FAQ</div></div>
-          <span class="row-val"><span class="row-pending">准备中</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">准备中</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('客服中心 · 准备中');">
           <div class="row-meta"><div class="row-label">客服中心 · 1:1 咨询</div></div>
-          <span class="row-val"><span class="row-pending">准备中</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">准备中</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('Haru Anbu 护理员 v1.0');">
           <div class="row-meta">
             <div class="row-label">应用信息</div>
             <div class="row-sub">版本 1.0.0 · PWA</div>
           </div>
-          <span class="row-val"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
 
     <button class="logout" onclick="toast('退出登录 · 下次登录需设置 PIN');">
-      <iconify-icon icon="fluent:sign-out-24-filled"></iconify-icon>退出登录
+      <iconify-icon icon="material-symbols:logout-rounded"></iconify-icon>退出登录
     </button>
     <div class="ver">Haru Anbu · 护理员应用 v1.0</div>
 
@@ -423,19 +424,19 @@
   <div class="bottom-bar">
     <nav class="tabbar" aria-label="护理员应用标签栏">
       <a href="c01-today.zh.html" class="tab" aria-label="今日">
-        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:home-1-fill"></iconify-icon>
         <span class="tab-label">今日</span>
       </a>
       <a href="c02-checklist.zh.html" class="tab" aria-label="记录">
-        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         <span class="tab-label">记录</span>
       </a>
       <a href="c03-sotong.zh.html" class="tab" aria-label="沟通">
-        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>
         <span class="tab-label">沟通</span>
       </a>
       <a href="c04-mypage.zh.html" class="tab active" aria-current="page" aria-label="我的">
-        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:user-3-fill"></iconify-icon>
         <span class="tab-label">我的</span>
       </a>
     </nav>
@@ -443,7 +444,7 @@
       <span class="cg-sos__ring" aria-hidden="true">
         <svg class="sos-ring" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
       </span>
-      <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+      <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
     </button>
   </div>
 

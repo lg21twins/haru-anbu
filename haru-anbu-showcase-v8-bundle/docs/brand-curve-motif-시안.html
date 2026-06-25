@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>안부 곡선 모티프 — 시안 v2 (점검용)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --blue:#2C7AFC; --green:#22C55E; --orange:#FB923C;
+    --ink:#1C1C1E; --ink-2:#3F3F46; --mute:#8E8E93; --mute-2:#9E9E9E;
+    --line:#E5E5EA; --line-soft:#F1F1F4; --paper:#F7F8FA; --bg:#FFFFFF;
+    --font:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased}
+
+  .doc-head{max-width:920px;margin:0 auto;padding:72px 32px 28px}
+  .doc-kicker{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+  .doc-title{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin-top:14px}
+  .doc-lead{font-size:16px;color:var(--ink-2);margin-top:16px;max-width:640px}
+  .doc-note{font-size:13px;color:var(--mute);margin-top:12px}
+
+  .specimen{max-width:1040px;margin:0 auto;padding:56px 32px}
+  .specimen + .specimen{border-top:1px solid var(--line-soft)}
+  .spec-eyebrow{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
+  .spec-h{font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:10px}
+  .spec-desc{font-size:15px;color:var(--ink-2);margin-top:12px;max-width:620px}
+  .spec-rule{font-size:13px;color:var(--mute);margin-top:8px;max-width:620px}
+  .spec-stage{margin-top:32px;background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:8px 0}
+  .stage-label{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mute-2);padding:16px 24px 0}
+
+  /* ── 디바이더 ── */
+  .opt-cap{font-size:13px;font-weight:600;color:var(--ink-2);padding:22px 24px 2px}
+  .opt-sub{font-size:12px;color:var(--mute);padding:0 24px}
+  .div-row{display:flex;align-items:center;gap:22px;padding:18px 64px 26px}
+  .div-line{flex:1;height:1px;background:var(--line)}
+  .div-mark{flex:none}
+  .sym{display:block}
+
+  /* ── 섹션 전환 미리보기 ── */
+  .ctx{padding:30px 48px;text-align:center}
+  .ctx-eyebrow{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+  .ctx-title{font-size:clamp(24px,3vw,34px);font-weight:700;letter-spacing:-.03em;line-height:1.18;margin-top:12px}
+  .ctx-body{font-size:15px;color:var(--ink-2);margin:14px auto 0;max-width:480px}
+
+  /* ── 연결선 ── */
+  .connector-stage{padding:24px 24px 10px;text-align:center}
+  .connector-cap{font-size:14px;color:var(--mute);margin:14px auto 0}
+
+  /* ── 워터마크 ── */
+  .watermark-demo{position:relative;padding:104px 48px;text-align:center;overflow:hidden;background:var(--paper);border-radius:14px;margin:0 16px 12px}
+  .watermark-svg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:600px;height:auto;opacity:.05;pointer-events:none}
+  .watermark-demo > *:not(.watermark-svg){position:relative;z-index:1}
+
+  .legend{max-width:1040px;margin:0 auto;padding:8px 32px 88px}
+  .legend-row{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink-2);padding:5px 0}
+  .legend-sw{width:30px;height:4px;border-radius:2px;flex:none}
+</style>
+</head>
+<body>
+
+<header class="doc-head">
+  <div class="doc-kicker">하루안부 · 브랜드 모티프 시안 v2</div>
+  <h1 class="doc-title">안부 곡선 모티프 시스템</h1>
+  <p class="doc-lead">v1이 너무 흐릿했던 점을 고쳤습니다. 풀폭 squiggle 대신, <strong>확실히 그려진 작은 마크 + 깔끔한 헤어라인</strong> 조합으로 “두 곡선이 만나 하나의 안부가 된다”를 또렷이 반복합니다.</p>
+  <p class="doc-note">※ 점검용 별도 파일. 라이브 쇼케이스는 미수정. 그라데이션·이모지·배경레일 없음, 단색 토큰만.</p>
+</header>
+
+<!-- ════════ 모티프 1. 디바이더 ════════ -->
+<section class="specimen">
+  <div class="spec-eyebrow">Motif 01</div>
+  <h2 class="spec-h">안부 곡선 디바이더</h2>
+  <p class="spec-desc">섹션 사이를 헤어라인으로 잇되, 가운데에 브랜드 마크를 또렷이 박습니다. 멀리서도 “하루안부 페이지”임이 읽힙니다.</p>
+  <p class="spec-rule">규칙 준수 — 1px 헤어라인 + 중앙 마크. 색 면·보더 레일 아님.</p>
+
+  <div class="spec-stage">
+    <div class="opt-cap">옵션 A — 헤어라인 + 로고 심볼(블루)</div>
+    <div class="opt-sub">실제 로고 심볼을 그대로 중앙에. 가장 직접적인 브랜드 신호.</div>
+    <div class="div-row">
+      <span class="div-line"></span>
+      <svg class="div-mark sym" width="30" height="30" viewBox="0 0 2526 2526" fill="none" aria-hidden="true">
+        <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="var(--blue)"/>
+        <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="var(--blue)"/>
+      </svg>
+      <span class="div-line"></span>
+    </div>
+
+    <div class="opt-cap">옵션 B — 헤어라인 + 두 곡선 노트(추상 모티프)</div>
+    <div class="opt-sub">두 곡선이 가운데서 맞물리는 작은 노트. 확실히 보이게 굵기·진폭을 키움.</div>
+    <div class="div-row">
+      <span class="div-line"></span>
+      <svg class="div-mark" width="120" height="36" viewBox="0 0 120 36" fill="none" aria-hidden="true">
+        <path d="M8 18 C 40 18 48 6 60 18" stroke="var(--blue)" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M112 18 C 80 18 72 30 60 18" stroke="var(--blue)" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span class="div-line"></span>
+    </div>
+
+    <div class="opt-cap">옵션 C — 헤어라인 + 심볼(뉴트럴, 조용한 섹션용)</div>
+    <div class="opt-sub">강조가 과하지 않게 회색 마크. 같은 시스템, 톤만 낮춤.</div>
+    <div class="div-row">
+      <span class="div-line"></span>
+      <svg class="div-mark sym" width="26" height="26" viewBox="0 0 2526 2526" fill="none" aria-hidden="true">
+        <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#C7CBD2"/>
+        <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#C7CBD2"/>
+      </svg>
+      <span class="div-line"></span>
+    </div>
+  </div>
+
+  <div class="spec-stage" style="margin-top:22px">
+    <span class="stage-label">실제 섹션 전환에 적용한 미리보기 (옵션 A)</span>
+    <div class="ctx">
+      <div class="ctx-eyebrow">Overview</div>
+      <div class="ctx-title">세 시선이 하나의 화면에서 만납니다</div>
+      <p class="ctx-body">보호자·케어팀·환자가 같은 순간을 공유합니다.</p>
+    </div>
+    <div class="div-row">
+      <span class="div-line"></span>
+      <svg class="div-mark sym" width="30" height="30" viewBox="0 0 2526 2526" fill="none" aria-hidden="true">
+        <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="var(--blue)"/>
+        <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="var(--blue)"/>
+      </svg>
+      <span class="div-line"></span>
+    </div>
+    <div class="ctx">
+      <div class="ctx-eyebrow">Problem</div>
+      <div class="ctx-title">오늘 엄마가 밥은 드셨을까</div>
+      <p class="ctx-body">정보 단절이 만드는 매일의 불안.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 모티프 2. 3자의 만남 연결선 ════════ -->
+<section class="specimen">
+  <div class="spec-eyebrow">Motif 02</div>
+  <h2 class="spec-h">3자의 만남 — 연결선</h2>
+  <p class="spec-desc">보호자(블루)·케어팀(그린)·환자(오렌지) 세 가닥이 하나로 모여 → 하나의 안부 심볼이 됩니다. 이번엔 세 선이 한 점에서 부드럽게 합쳐진 뒤 아래로 한 줄기가 되어 로고로 내려갑니다.</p>
+  <p class="spec-rule">규칙 준수 — 색은 ‘선’에만, 배경 색 면 없음.</p>
+
+  <div class="spec-stage">
+    <div class="connector-stage">
+      <svg viewBox="0 0 900 470" fill="none" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;max-width:680px" aria-hidden="true">
+        <!-- 세 가닥: 위 노드 → 수렴점(450,300)으로 같은 방향에서 합류 -->
+        <path d="M180 86 C 300 170 410 235 450 300" stroke="var(--blue)" stroke-width="3" fill="none"/>
+        <path d="M450 78 C 450 165 450 235 450 300" stroke="var(--green)" stroke-width="3" fill="none"/>
+        <path d="M720 86 C 600 170 490 235 450 300" stroke="var(--orange)" stroke-width="3" fill="none"/>
+        <!-- 합쳐진 한 줄기 -->
+        <path d="M450 300 L 450 338" stroke="var(--blue)" stroke-width="3" fill="none"/>
+        <!-- 위 노드 -->
+        <circle cx="180" cy="86" r="5" fill="var(--blue)"/>
+        <circle cx="450" cy="78" r="5" fill="var(--green)"/>
+        <circle cx="720" cy="86" r="5" fill="var(--orange)"/>
+        <!-- 라벨 -->
+        <text x="180" y="62" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="18" font-weight="600" fill="var(--ink)">보호자</text>
+        <text x="450" y="54" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="18" font-weight="600" fill="var(--ink)">케어팀</text>
+        <text x="720" y="62" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="18" font-weight="600" fill="var(--ink)">환자</text>
+        <!-- 수렴 → 로고 심볼 -->
+        <g transform="translate(417 348) scale(0.026)">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="var(--blue)"/>
+          <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="var(--blue)"/>
+        </g>
+        <text x="450" y="452" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="19" font-weight="700" letter-spacing="-.6" fill="var(--ink)">오늘 하루도, 안녕하셨습니다</text>
+      </svg>
+      <p class="connector-cap">세 시선이 하나의 안부로 — 하루안부가 연결하는 중심.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 모티프 3. 배경 라인아트 워터마크 ════════ -->
+<section class="specimen">
+  <div class="spec-eyebrow">Motif 03</div>
+  <h2 class="spec-h">배경 라인아트 워터마크</h2>
+  <p class="spec-desc">로고 심볼을 크게, 5% 불투명도로 섹션 한가운데 깔아 “이 화면은 하루안부의 것”이라는 은은한 서명을 남깁니다. 텍스트 가독성 유지. Closing 섹션 배경에 적합.</p>
+  <p class="spec-rule">규칙 준수 — 단색 5% 불투명도(그라데이션 아님), 콘텐츠 z-index 위.</p>
+
+  <div class="spec-stage">
+    <span class="stage-label">Closing 섹션 배경 적용 미리보기</span>
+    <div class="watermark-demo">
+      <svg class="watermark-svg" viewBox="0 0 2526 2526" fill="none" aria-hidden="true">
+        <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="var(--blue)"/>
+        <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="var(--blue)"/>
+      </svg>
+      <div class="ctx-eyebrow">Closing</div>
+      <div class="ctx-title">오늘 하루도, 안녕하셨습니다</div>
+      <p class="ctx-body">매일의 안심을 전하는 AI 케어 소통 플랫폼, 하루안부.</p>
+    </div>
+  </div>
+</section>
+
+<div class="legend">
+  <div class="legend-row"><span class="legend-sw" style="background:var(--blue)"></span>보호자 블루 · #2C7AFC</div>
+  <div class="legend-row"><span class="legend-sw" style="background:var(--green)"></span>케어 그린(의료진+요양보호사) · #22C55E</div>
+  <div class="legend-row"><span class="legend-sw" style="background:var(--orange)"></span>환자 오렌지 · #FB923C</div>
+</div>
+
+</body>
+</html>

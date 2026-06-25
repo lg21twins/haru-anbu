@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#EFF6FF">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Haru Anbu — Prescription</title>
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css?v=24">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="../07_디자인/system/app.css?v=24">
+  <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <style>
+    .app-shell { max-width: 430px; margin: 0 auto; }
+    /* components.css의 [data-role=guardian] .sec-title(margin-bottom:0)를 이기려면 같은 specificity로 올린다 */
+    [data-role="guardian"] .sec-title { font-size: var(--text-headline); font-weight: var(--weight-bold); margin-bottom: var(--space-7); }
+    /* 약 카드 박스 간 여유 (stack-tight 4px·u-gap-3 8px 대신 20px) */
+    .med-list { gap: var(--space-6); }
+
+    .med-head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); }
+    .med-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: var(--color-accent-soft);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .med-icon iconify-icon { font-size: 20px; color: var(--color-accent); }
+    .med-name { font-size: var(--text-headline); font-weight: var(--weight-bold); }
+    .med-type { font-size: var(--text-caption); color: var(--color-text-secondary); }
+
+    .med-details {
+      display: flex; flex-direction: column;
+      margin: var(--space-4) 0;
+    }
+    .med-row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; }
+    .med-row > iconify-icon { font-size: 18px; color: var(--color-text-tertiary); flex-shrink: 0; }
+    .med-d-label { font-size: var(--text-caption); color: var(--color-text-tertiary); }
+    .med-d-value { font-size: var(--text-callout); font-weight: var(--weight-semibold); color: var(--color-text-primary); margin-left: auto; }
+
+    .med-warn { margin-top: var(--space-4); }
+    .med-warn-head {
+      display: flex; align-items: center; gap: var(--space-2);
+      font-size: var(--text-callout); font-weight: var(--weight-bold);
+      color: var(--palette-amber-700);
+      margin-bottom: var(--space-3);
+    }
+    .med-warn-list {
+      display: flex; flex-direction: column; gap: var(--space-2);
+      font-size: var(--text-caption); color: var(--color-text-secondary);
+      line-height: var(--leading-normal);
+    }
+    .med-warn-list li { display: flex; gap: var(--space-2); }
+    .med-warn-list li::before {
+      content: ''; flex-shrink: 0;
+      width: 4px; height: 4px; border-radius: var(--radius-pill);
+      background: var(--color-warning);
+      margin-top: 7px;
+    }
+
+    .change-log { display: flex; flex-direction: column; gap: var(--space-6); }
+    .change-card { padding: var(--space-5); }
+    .change-text { font-size: var(--text-callout); font-weight: var(--weight-semibold); margin-bottom: 2px; }
+    .change-date { font-size: var(--text-mini); color: var(--color-text-secondary); margin-bottom: var(--space-2); }
+    .change-reason { font-size: var(--text-caption); color: var(--color-text-secondary); line-height: var(--leading-normal); }
+  </style>
+
+  <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn 표준 (2026-05-22 통합) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
+<style>
+  /* === 3앱 공통 헤더 표준 (d01-home 기준, 보호자앱에도 강제) === */
+  [data-platform="mobile"] .header{
+    padding: calc(env(safe-area-inset-top, 0px) + 6px) 20px 0 !important;
+    position: static !important;
+    background: transparent !important;
+  }
+  /* 기본 = 홈 패턴: 로고 + 액션 그룹 (flex space-between) */
+  [data-platform="mobile"] .header .top-nav{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    margin-bottom: 24px !important;
+  }
+  /* 서브 패턴: title-block 있을 때 → grid 3-col (44 / 1fr / 44) */
+  [data-platform="mobile"] .header .top-nav:has(> .title-block){
+    display: grid !important;
+    grid-template-columns: 44px 1fr 44px !important;
+    margin-bottom: 8px !important;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-left{
+    width: 44px; height: 44px;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .title-block{
+    grid-column: 2; text-align: center; line-height: 1.2; min-width: 0;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-name{
+    font: 600 17px/1.2 inherit; color: var(--color-text-primary); letter-spacing: -.3px; text-align: center;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :first-child{
+    grid-column: 1; justify-self: start;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :last-child{
+    grid-column: 3; justify-self: end;
+  }
+  /* logo */
+  [data-platform="mobile"] .header .top-nav > .logo{
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    background: transparent !important;
+    border: 0 !important;
+    padding: 4px !important;
+    margin: -4px !important;
+    cursor: pointer !important;
+  }
+  [data-platform="mobile"] .header .top-nav > .logo svg{ width: 28px !important; height: 28px !important; display: block !important; }
+  /* top-actions 그룹 (홈 페이지) */
+  [data-platform="mobile"] .header .top-actions{
+    display: flex !important; align-items: center !important; gap: 8px !important;
+  }
+  /* icon-btn 글라스 (44×44, blur, shadow) */
+  [data-platform="mobile"] .header .icon-btn{
+    width: 44px !important; height: 44px !important; border-radius: 50% !important;
+    background: rgba(255,255,255,.55) !important;
+    border: .5px solid rgba(255,255,255,.55) !important;
+    backdrop-filter: blur(12px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
+    box-shadow: 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06) !important;
+    display: inline-flex !important; align-items: center !important; justify-content: center !important;
+    cursor: pointer !important; text-decoration: none !important;
+    position: relative !important;
+    transition: transform .1s !important;
+  }
+  [data-platform="mobile"] .header .icon-btn:active{ transform: scale(.93); }
+  [data-platform="mobile"] .header .icon-btn iconify-icon{
+    font-size: 22px !important;
+    color: var(--color-accent-strong) !important;
+  }
+  [data-platform="mobile"] .header .icon-btn .notif-dot,
+  [data-platform="mobile"] .header .notif-dot{
+    position: absolute !important; top: 10px !important; right: 10px !important;
+    width: 8px !important; height: 8px !important; border-radius: 50% !important;
+    background: var(--color-danger) !important;
+    border: 1.5px solid white !important;
+    z-index: 2 !important;
+  }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="header">
+    <div class="top-nav">
+      <a class="icon-btn" href="g05-mypage.html" aria-label="Back"><iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon></a>
+      <div class="title-block">
+        <h1 class="h-name">Prescription</h1>
+      </div>
+      <button class="icon-btn" aria-label="Share"><iconify-icon icon="mingcute:share-2-fill"></iconify-icon></button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="stack-loose u-pt-5">
+
+      <section>
+        <div class="sec-title">Current Medications</div>
+        <div class="stack-tight med-list">
+
+          <article class="card fade-in fade-in--d1">
+            <div class="med-head">
+              <span class="med-icon"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+              <div><div class="med-name">Amlodipine 5mg</div><div class="med-type">Blood pressure</div></div>
+            </div>
+            <div class="med-details">
+              <div class="med-row"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon><span class="med-d-label">Time</span><span class="med-d-value">Morning, after meals</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon><span class="med-d-label">Dose</span><span class="med-d-value">1 tablet</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon><span class="med-d-label">Prescribed</span><span class="med-d-value">2026.03.15</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="med-d-label">Physician</span><span class="med-d-value">Dr. Lee Sang-hun</span></div>
+            </div>
+            <div class="med-warn">
+              <div class="med-warn-head"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> Family notes</div>
+              <ul class="med-warn-list">
+                <li>Do not take with grapefruit juice — risk of elevated drug levels</li>
+                <li>Contact the nurse if dizziness or headache persists</li>
+                <li>Rise slowly from sitting — orthostatic hypotension possible</li>
+              </ul>
+              <a href="g-guardian-live.html?chat=1" class="btn btn--ghost u-mt-3-pl-0"><iconify-icon icon="material-symbols:auto-awesome-rounded"></iconify-icon>Ask AI for more</a>
+            </div>
+          </article>
+
+          <article class="card fade-in fade-in--d2">
+            <div class="med-head">
+              <span class="med-icon"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+              <div><div class="med-name">Metformin 500mg</div><div class="med-type">Diabetes</div></div>
+            </div>
+            <div class="med-details">
+              <div class="med-row"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon><span class="med-d-label">Time</span><span class="med-d-value">Morning &amp; evening, after meals</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon><span class="med-d-label">Dose</span><span class="med-d-value">1 tablet each</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon><span class="med-d-label">Prescribed</span><span class="med-d-value">2026.03.15</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="med-d-label">Physician</span><span class="med-d-value">Dr. Lee Sang-hun</span></div>
+            </div>
+            <div class="med-warn">
+              <div class="med-warn-head"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> Family notes</div>
+              <ul class="med-warn-list">
+                <li>Skipping meals risks hypoglycemia — notify staff if appetite decreases</li>
+                <li>Contact if nausea or stomach pain persists beyond 1 week</li>
+                <li>Side effects intensify with alcohol (caution on outings)</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="card fade-in fade-in--d3">
+            <div class="med-head">
+              <span class="med-icon"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+              <div><div class="med-name">Pancreatin</div><div class="med-type">Digestive enzyme</div></div>
+            </div>
+            <div class="med-details">
+              <div class="med-row"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon><span class="med-d-label">Time</span><span class="med-d-value">Lunch, after meals</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon><span class="med-d-label">Dose</span><span class="med-d-value">1 tablet</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon><span class="med-d-label">Prescribed</span><span class="med-d-value">2026.02.20</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="med-d-label">Physician</span><span class="med-d-value">Dr. Lee Sang-hun</span></div>
+            </div>
+            <div class="med-warn">
+              <div class="med-warn-head"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> Family notes</div>
+              <ul class="med-warn-list">
+                <li>Take within 30 min of finishing the meal — maximises effect</li>
+                <li>Stop immediately and contact staff if allergic reaction occurs (hives, breathing difficulty)</li>
+              </ul>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-title">Change History</div>
+        <div class="change-log">
+          <div class="card change-card">
+            <div class="change-text">Amlodipine dose change: 2.5mg → <strong>5mg</strong></div>
+            <div class="change-date">2026.03.15 · Dr. Lee Sang-hun</div>
+            <div class="change-reason">Recent upward trend in BP readings — avg 138/88; targeting stable range</div>
+          </div>
+          <div class="card change-card">
+            <div class="change-text">Joint supplement (Glucosamine) <strong>added</strong></div>
+            <div class="change-date">2026.02.20 · Dr. Lee Sang-hun</div>
+            <div class="change-reason">Right knee X-ray shows mild osteoarthritis progression — 6-week adjunct therapy</div>
+          </div>
+          <div class="card change-card">
+            <div class="change-text">Initial prescription registered</div>
+            <div class="change-date">2025.09.15 · On admission</div>
+            <div class="change-reason">Management of pre-existing conditions (hypertension, diabetes) initiated</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="bottom-bar">
+    <nav class="tabbar">
+      <a href="g-guardian-live.html" class="tab" aria-label="Home"><span class="tab-icon"><iconify-icon icon="mingcute:home-1-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g02-ai-guide.html" class="tab" aria-label="AI Guide"><span class="tab-icon"><iconify-icon icon="material-symbols:menu-book-rounded" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g03-sotong.html" class="tab" aria-label="Communication"><span class="tab-icon"><iconify-icon icon="material-symbols:chat-rounded" class="text-22"></iconify-icon></span></a>
+      <a href="g05-records.html" class="tab active" aria-label="Records"><span class="tab-icon"><iconify-icon icon="mingcute:folder-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g05-mypage.html" class="tab" aria-label="My page"><span class="tab-icon"><iconify-icon icon="mingcute:user-3-fill" class="u-fs-26"></iconify-icon></span></a>
+    </nav>
+    <a href="g-guardian-live.html?chat=1" class="ai-fab" aria-label="AI assistant">
+      <svg width="22" height="22" viewBox="0 0 2526 2526" fill="var(--brand-blue-500)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
+    </a>
+  </div>
+
+</div>
+  <div class="bottom-scrim" aria-hidden="true"></div>
+</body>
+</html>

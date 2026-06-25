@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en" data-role="medical" data-platform="mobile" class="has-c01-bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#DCFCE7">
+  <title>Haru Anbu · Medical Staff · Communication</title>
+  <meta name="page-name" content="Communication">
+
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="./_shared.css?v=20260525p">
+  <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+    /* v3.2.12+: clinical 캔버스 (v11 요양보호사앱과 동일 — var(--clinical-canvas) 토큰 참조) */
+    html{height:100%;background:var(--clinical-canvas);font-size:16px;}
+    body{
+      height:100%;color:var(--t1);overflow-x:hidden;
+      font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
+      background:transparent;
+    }
+    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background: var(--clinical-bg-image);}
+
+    .app{
+      max-width:430px;margin:0 auto;min-height:100%;position:relative;
+      padding-bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 40px);
+    }
+
+    /* ===== HEADER (v15 통일 — grid 44·1fr·44 / h-eyebrow + h-name) ===== */
+    .header{
+      padding:calc(var(--safe-t) + 6px) var(--page-pad) 0;
+      position:static;
+    }
+    .h-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
+    .top-nav .icon-btn{grid-column:3;justify-self:end;}
+
+    /* ===== STACK (보호자앱 stack-loose 등가) ===== */
+    .stack{
+      position:relative;z-index:1;
+      padding:8px var(--page-pad) 0;
+      display:flex;flex-direction:column;gap:14px;
+    }
+
+    /* ===== 자동응답 인라인 (의료진 고유) ===== */
+    .auto-reply{
+      padding:12px 16px;
+      display:flex;align-items:center;gap:10px;
+      background:var(--palette-white);
+      border-radius:20px;
+      box-shadow:0 1px 2px rgba(0,0,0,.03);
+    }
+    .auto-ico{
+      width:32px;height:32px;border-radius:10px;flex-shrink:0;
+      background:var(--accent-soft);color:var(--accent-strong);
+      display:inline-flex;align-items:center;justify-content:center;
+    }
+    .auto-ico iconify-icon{font-size:17px;}
+    .auto-text{flex:1;min-width:0;line-height:1.3;}
+    .auto-main{font-size:13.5px;font-weight:700;color:var(--t1);letter-spacing:-.2px;}
+    .auto-sub{font-size:12px;font-weight:500;color:var(--t3);margin-top:2px;}
+    .switch{
+      position:relative;width:48px;height:30px;border-radius:999px;
+      background:rgba(0,0,0,.12);cursor:pointer;flex-shrink:0;transition:.2s;border:0;
+    }
+    .switch::after{
+      content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;
+      border-radius:50%;background:var(--palette-white);
+      box-shadow:0 1px 3px rgba(0,0,0,.2);transition:.2s;
+    }
+    .switch.on{background:var(--accent);}
+    .switch.on::after{left:19px;}
+
+    /* ===== SUMMARY BAR (위험 알림 컨텍스트 → 디자인 시스템 red soft) ===== */
+    .summary-bar{
+      display:flex;align-items:center;gap:12px;
+      padding:12px 16px;
+      background:var(--palette-white);
+      border-radius:18px;
+      box-shadow:0 1px 2px rgba(0,0,0,.03);
+      cursor:pointer;text-decoration:none;color:var(--t1);
+    }
+    .summary-dot{
+      width:8px;height:8px;border-radius:999px;
+      background:var(--palette-red-600);flex-shrink:0;
+      animation: haru-pulse 2s ease-in-out infinite;
+    }
+    .summary-text{
+      flex:1;font-size:14px;font-weight:600;
+      color:var(--t1);line-height:1.4;letter-spacing:-.2px;
+    }
+    .summary-text b{color:var(--palette-red-700);font-weight:800;}
+    .summary-bar iconify-icon{color:var(--t3);font-size:18px;}
+
+    /* ===== 필터 칩 (보호자앱 chip 등가) ===== */
+    .filter-row{
+      display:flex;gap:8px;overflow-x:auto;
+      -webkit-overflow-scrolling:touch;scrollbar-width:none;
+      padding-right:var(--page-pad);
+      margin-right:calc(-1 * var(--page-pad));
+      mask-image:linear-gradient(90deg,black 88%,transparent 100%);
+      -webkit-mask-image:linear-gradient(90deg,black 88%,transparent 100%);
+    }
+    .chip{
+      flex-shrink:0;
+      height:34px;padding:0 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.85);
+      border:1px solid rgba(255,255,255,.9);
+      font-size:13px;font-weight:600;color:var(--t2);
+      cursor:pointer;font-family:inherit;
+      display:inline-flex;align-items:center;gap:5px;
+      box-shadow:0 1px 3px rgba(0,0,0,.04);
+      transition:.15s;
+    }
+    .chip.is-active{
+      background:var(--accent);color:var(--palette-white);font-weight:700;
+      border-color:var(--accent);
+      box-shadow:0 3px 10px rgba(var(--brand-green-500-rgb), .22);
+    }
+    .chip .count{
+      font-size:11.5px;font-weight:700;opacity:.85;
+    }
+
+    /* ===== 섹션 라벨 (보호자앱 sec-label 등가) ===== */
+    .sec-label{
+      display:flex;align-items:center;gap:10px;
+      padding:8px 4px 6px;cursor:pointer;
+    }
+    .sec-label-text{
+      font-size:12px;font-weight:700;color:var(--t2);letter-spacing:.2px;
+    }
+    .sec-label-count{
+      font-size:11px;font-weight:700;color:var(--accent-strong);
+      background:var(--accent-soft);
+      padding:2px 9px;border-radius:999px;
+    }
+    .sec-label-chev{
+      margin-left:auto;color:var(--t3);transition:transform .2s;
+      display:inline-flex;
+    }
+    .sec-label-chev iconify-icon{font-size:18px;}
+    .sec-label.collapsed .sec-label-chev{transform:rotate(-90deg);}
+
+    .msg-list{
+      display:flex;flex-direction:column;gap:8px;
+      overflow:hidden;
+      transition:max-height .25s ease, opacity .2s ease;
+    }
+    .msg-list.collapsed{max-height:0 !important;opacity:0;}
+
+    /* ===== 메시지 카드 (보호자앱 msg-item 등가) ===== */
+    .msg-item{
+      display:flex;align-items:center;gap:14px;
+      padding:12px 16px;
+      background:var(--palette-white);
+      border-radius:18px;
+      box-shadow:0 1px 2px rgba(0,0,0,.03);
+      text-decoration:none;color:inherit;
+      cursor:pointer;
+      transition:transform .12s;
+    }
+    .msg-item:active{transform:scale(.99);}
+    .msg-item.is-unread{box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .10);}
+    .msg-item.is-action{align-items:flex-start;padding:16px;}
+
+    .av{
+      width:44px;height:44px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;flex-shrink:0;position:relative;overflow:hidden;
+      font-size:15px;letter-spacing:-.3px;
+    }
+    .av img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+    .av.guardian{background:var(--brand-blue-100);color:var(--brand-blue-600);}
+    .av.caregiver{background:var(--accent-soft);color:var(--accent-strong);}
+    .av.doctor{background:var(--brand-yellow-100);color:var(--brand-yellow-600);}
+    .av.system{
+      background:var(--color-bg-canvas);color:var(--t2);
+      border:1px solid var(--color-border-subtle,rgba(0,0,0,.05));
+    }
+    .av.system.is-alert{background:var(--danger-soft);color:var(--palette-red-700);border-color:transparent;}
+    .av.system.is-rx{background:var(--accent-soft);color:var(--accent-strong);border-color:transparent;}
+    .av.system.is-info{background:rgba(var(--brand-blue-500-rgb), .10);color:var(--brand-blue-600);border-color:transparent;}
+    .av.system iconify-icon{font-size:20px;}
+    .av.online::after{
+      content:'';position:absolute;bottom:1px;right:1px;
+      width:11px;height:11px;border-radius:999px;background:var(--accent);
+      border:2.5px solid var(--palette-white);
+    }
+
+    .msg-body{flex:1;min-width:0;}
+    .msg-name-row{display:flex;align-items:center;gap:6px;margin-bottom:2px;}
+    .msg-name{
+      font-size:14.5px;font-weight:700;color:var(--t1);letter-spacing:-.2px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .badge{
+      height:16px;padding:0 7px;border-radius:999px;
+      font-size:10.5px;font-weight:700;line-height:1;
+      display:inline-flex;align-items:center;flex-shrink:0;letter-spacing:0;
+    }
+    .badge--info{background:var(--palette-gray-100);color:var(--t2);}
+    .badge--warning{background:var(--palette-gray-100);color:var(--t2);}
+    .badge--critical{background:var(--danger-soft);color:var(--palette-red-700);}
+    .badge--success{background:var(--palette-gray-100);color:var(--t2);}
+
+    .msg-preview{
+      font-size:13px;font-weight:500;color:var(--t2);line-height:1.4;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .msg-preview b{color:var(--t1);font-weight:600;}
+
+    .msg-meta{
+      display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;
+    }
+    .msg-item.is-action .msg-meta{align-self:flex-start;}
+    .msg-time{font-size:11.5px;font-weight:500;color:var(--t3);}
+    .msg-badge{
+      background:var(--accent);color:var(--palette-white);
+      font-size:11px;font-weight:700;border-radius:999px;
+      padding:1px 7px;min-width:20px;text-align:center;line-height:18px;
+    }
+    .msg-badge.danger{background:var(--danger);}
+
+    /* msg-cta — v3.2.14 표준(system/components.css)을 인라인 복제.
+       v15는 .tabbar 충돌 회피로 components.css를 로드하지 않으므로 로컬 정의. */
+    .msg-actions{display:flex;gap:var(--space-2);margin-top:var(--space-3);}
+    .msg-cta{
+      display:inline-flex;align-items:center;gap:6px;
+      height:40px;padding:0 var(--space-5);
+      border-radius:var(--radius-pill);
+      font:700 14px/1 var(--font-family-base);letter-spacing:-.2px;
+      background:var(--color-accent);color:var(--color-accent-on);
+      border:0;cursor:pointer;text-decoration:none;font-family:inherit;
+      box-shadow:0 3px 10px rgba(var(--color-accent-rgb),.22);
+      transition:transform .1s ease;
+    }
+    .msg-cta:active{transform:scale(.97);}
+    .msg-cta:disabled{opacity:.6;cursor:default;box-shadow:none;}
+    .msg-cta iconify-icon{font-size:15px;}
+    .msg-cta--secondary{
+      background:var(--color-bg-surface);color:var(--color-text-primary);
+      border:1px solid var(--color-border-subtle);box-shadow:none;
+    }
+    .msg-cta--danger{
+      background:var(--color-danger);color:var(--color-text-on-dark);
+    }
+
+    /* 진입 애니메이션 (보호자앱과 동일) */
+    .sec-label,.msg-item{animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both;}
+    .sec-label{animation-delay:120ms;}
+    .msg-list > .msg-item:nth-child(1){animation-delay:180ms;}
+    .msg-list > .msg-item:nth-child(2){animation-delay:240ms;}
+    .msg-list > .msg-item:nth-child(3){animation-delay:300ms;}
+    .msg-list > .msg-item:nth-child(4){animation-delay:360ms;}
+    .msg-list > .msg-item:nth-child(n+5){animation-delay:420ms;}
+    @keyframes haru-fade-in-up{
+      from{opacity:0;transform:translateY(8px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+    @media (prefers-reduced-motion:reduce){.sec-label,.msg-item{animation:none !important;}}
+
+    /* ===== OVERLAY SHEETS (의료진 답신 + 긴급 상세) ===== */
+    .overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.4);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      display:none;align-items:flex-end;justify-content:center;z-index:200;
+    }
+    .overlay.show{display:flex;}
+    .sheet{
+      background:var(--palette-white);border-radius:28px 28px 0 0;
+      padding:22px 24px calc(28px + env(safe-area-inset-bottom,0px));
+      width:100%;max-width:430px;max-height:88vh;overflow-y:auto;
+    }
+    .sheet-ava{
+      width:48px;height:48px;border-radius:50%;flex-shrink:0;
+      background:var(--brand-blue-100);color:var(--brand-blue-600);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:17px;font-weight:700;
+    }
+    .sheet-id{flex:1;min-width:0;line-height:1.25;}
+
+    .sheet-msg-in{
+      padding:16px 18px;background:var(--clinical-surface-muted);border-radius:16px;
+      font-size:15px;font-weight:500;color:var(--t1);line-height:1.55;
+      margin-bottom:18px;
+    }
+    .sheet-msg-in-time{font-size:12px;font-weight:500;color:var(--t3);margin-top:8px;}
+
+    .ai-suggest{
+      padding:16px 18px;background:var(--palette-white);
+      border-radius:20px;
+      box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .10);
+      font-size:15px;font-weight:500;color:var(--t1);line-height:1.55;
+      margin-bottom:18px;cursor:pointer;font-family:inherit;text-align:left;
+      width:100%;display:block;
+    }
+    .ai-suggest-tag{
+      display:inline-block;font-size:11px;font-weight:700;
+      padding:2px 8px;border-radius:5px;
+      background:var(--accent);color:var(--palette-white);margin-right:8px;
+      vertical-align:1px;letter-spacing:.2px;
+    }
+
+    .templates-ttl{
+      font-size:12px;font-weight:700;color:var(--t3);
+      letter-spacing:.2px;margin:18px 0 10px;
+    }
+    .templates{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .tpl-btn{
+      padding:14px;background:var(--clinical-surface);border:0;border-radius:14px;
+      font-size:13.5px;font-weight:700;color:var(--t1);
+      cursor:pointer;font-family:inherit;text-align:left;line-height:1.4;
+    }
+
+    .compose{
+      margin-top:18px;padding:8px 8px 8px 18px;background:var(--clinical-surface-muted);
+      border-radius:999px;display:flex;align-items:center;gap:10px;
+    }
+    .compose-input{
+      flex:1;border:0;outline:0;font-size:15px;font-family:inherit;
+      color:var(--t1);background:transparent;min-height:36px;
+    }
+    .compose-input:focus-visible{box-shadow:0 0 0 2px var(--color-accent), 0 0 0 4px rgba(var(--color-accent-rgb), .25);border-radius:8px;}
+    .compose-mic,.compose-send{
+      width:40px;height:40px;border-radius:50%;border:0;flex-shrink:0;
+      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+    }
+    .compose-mic{background:var(--palette-white);color:var(--t2);}
+    .compose-send{background:var(--accent);color:var(--palette-white);}
+    .compose iconify-icon{font-size:19px;}
+
+    .urg-banner{
+      display:flex;align-items:center;gap:12px;
+      padding:14px 16px;background:var(--danger-soft);
+      border-radius:14px;margin-bottom:16px;
+    }
+    .urg-banner iconify-icon{font-size:22px;color:var(--danger);flex-shrink:0;}
+    .urg-banner-text{font-size:14px;font-weight:700;color:var(--palette-red-700);line-height:1.4;}
+    .urg-banner-text span{display:block;font-size:11.5px;font-weight:500;color:var(--palette-red-600);margin-top:2px;letter-spacing:.1px;}
+
+    .urg-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+    .urg-cell{background:var(--clinical-surface);border-radius:14px;padding:14px 16px;line-height:1.25;}
+    .urg-cell-label{font-size:11px;font-weight:500;color:var(--t3);}
+    .urg-cell-val{font-size:18px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;margin-top:6px;letter-spacing:-.4px;}
+    .urg-cell-val.danger{color:var(--palette-red-700);}
+    .urg-cell-trend{font-size:11px;font-weight:600;color:var(--palette-red-600);margin-top:4px;}
+
+    .urg-rec{
+      background:var(--palette-white);
+      box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .10);
+      padding:14px 16px;border-radius:14px;margin-bottom:14px;
+      font-size:13.5px;font-weight:500;color:var(--t1);line-height:1.55;
+    }
+    .urg-rec b{font-weight:700;color:var(--accent-strong);display:block;font-size:11px;letter-spacing:.3px;margin-bottom:4px;}
+
+    .urg-actions{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+    .urg-action-primary{
+      width:100%;padding:16px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
+      background:var(--accent);color:var(--palette-white);
+      font-size:15px;font-weight:700;letter-spacing:-.2px;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      box-shadow:0 6px 18px rgba(var(--brand-green-500-rgb), .3);
+    }
+    .urg-action-primary iconify-icon{font-size:20px;}
+    .urg-action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .urg-action-secondary{
+      padding:14px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
+      background:var(--palette-white);border:1px solid var(--palette-gray-200);
+      color:var(--t1);font-size:13.5px;font-weight:700;
+      display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    }
+    .urg-action-secondary iconify-icon{font-size:18px;color:var(--t2);}
+    .urg-cancel{
+      width:100%;margin-top:8px;padding:12px;
+      background:transparent;border:0;cursor:pointer;font-family:inherit;
+      font-size:13px;font-weight:600;color:var(--t3);
+    }
+
+    /* ===== TAB BAR (의료진 고유 — SOS 포함) · v3.2.5: 위치 통일 env+12px (d01 기준) ===== */
+    .tab-wrap{
+      position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);
+      left:50%;transform:translateX(-50%);
+      display:flex;align-items:center;gap:10px;
+      width:calc(100% - 32px);max-width:398px;z-index:40;
+    }
+    .tab iconify-icon{font-size:26px;}
+    .tab-label{display:none;}
+    .tab.active{color:var(--accent-strong);}
+    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(var(--brand-green-500-rgb), .28));}
+    .sos{
+      position:relative;width:var(--tab-h);height:var(--tab-h);flex-shrink:0;border-radius:50%;
+      background:var(--color-danger);border:0;
+      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
+      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+    }
+    .sos iconify-icon{font-size:26px;color:var(--palette-white);}
+
+    .toast{
+      position:fixed;left:50%;bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 18px);
+      transform:translateX(-50%) translateY(20px);
+      background:rgba(28,28,30,.92);color:var(--palette-white);font-size:14px;font-weight:600;
+      padding:11px 20px;border-radius:999px;
+      opacity:0;transition:.25s;pointer-events:none;z-index:300;white-space:nowrap;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+    /* Inline 대체 */
+    .ico-lg { font-size: 20px; }
+    .mb-3   { margin-bottom: 14px; }
+    .text-t3 { color: var(--t3); }
+    .text-danger { color: var(--danger); }
+    .border-danger { border-color: var(--danger); color: var(--danger); }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="ai-orb-bg" aria-hidden="true"><div class="ai-orb"></div></div>
+
+  <div class="app">
+
+    <header class="header">
+      <div class="top-nav">
+        <span class="h-left" aria-hidden="true"></span>
+        <div class="title-block">
+          <h1 class="h-name">Communication</h1>
+        </div>
+        <span class="h-left" aria-hidden="true"></span>
+      </div>
+    </header>
+
+    <main class="stack">
+
+      <!-- 미확인 요약 (보호자앱 summary-bar 패턴) -->
+      <a href="#urgent" class="summary-bar">
+        <span class="summary-dot"></span>
+        <span class="summary-text"><b>3</b> need review · incl. 1 AI risk alert</span>
+        <iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>
+      </a>
+
+      <!-- 자동응답 (의료진 고유) -->
+      <section class="auto-reply">
+        <span class="auto-ico"><iconify-icon icon="mingcute:brain-fill"></iconify-icon></span>
+        <div class="auto-text">
+          <div class="auto-main">"On rounds now" auto-reply</div>
+          <div class="auto-sub">Tells families you'll reply after rounds</div>
+        </div>
+        <button class="switch on" onclick="this.classList.toggle('on');toast(this.classList.contains('on')?'Auto-reply ON':'Auto-reply OFF');" aria-label="Toggle auto-reply"></button>
+      </section>
+
+      <!-- 필터 칩 (보호자앱 chip 패턴) -->
+      <div class="filter-row" role="tablist">
+        <button class="chip is-active" type="button" onclick="filterMsg('all',this)" aria-pressed="true">All <span class="count">8</span></button>
+        <button class="chip" type="button" onclick="filterMsg('unread',this)">Unanswered <span class="count">3</span></button>
+        <button class="chip" type="button" onclick="filterMsg('guardian',this)">Family <span class="count">4</span></button>
+        <button class="chip" type="button" onclick="filterMsg('caregiver',this)">Caregiver <span class="count">2</span></button>
+        <button class="chip" type="button" onclick="filterMsg('doctor',this)">Doctor <span class="count">1</span></button>
+      </div>
+
+      <!-- 확인 필요 -->
+      <section id="urgent">
+        <div class="sec-label" onclick="toggleSection(this)">
+          <span class="sec-label-text">Needs review</span>
+          <span class="sec-label-count">3</span>
+          <span class="sec-label-chev"><iconify-icon icon="material-symbols:expand-more-rounded"></iconify-icon></span>
+        </div>
+        <div class="msg-list">
+
+          <!-- AI 위험 알림 (업무성 카드) -->
+          <div class="msg-item is-unread is-action" data-type="unread">
+            <div class="av system is-alert"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">AI risk alert</span>
+                <span class="badge badge--critical">Urgent</span>
+              </div>
+              <div class="msg-preview"><b>Myeong-ja Choi</b> · BP 180/110 · 2F Rm B-2</div>
+              <div class="msg-actions">
+                <button type="button" class="msg-cta msg-cta--danger" onclick="openUrgent()">View details</button>
+                <button type="button" class="msg-cta msg-cta--secondary" onclick="toast('Notify attending')">Notify attending</button>
+              </div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">3 min ago</span></div>
+          </div>
+
+          <!-- 보호자 미회신 -->
+          <a class="msg-item is-unread" href="#" onclick="event.preventDefault();openReply('Mi-yeong Kim','Soon-ja Kim&#39;s daughter','Did she eat lunch well today? She said she had no appetite this morning, so I&#39;m worried…','12 min ago');" data-type="guardian">
+            <div class="av guardian online">K</div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">Mi-yeong Kim, Family</span>
+                <span class="badge badge--info">Soon-ja Kim's daughter</span>
+              </div>
+              <div class="msg-preview">"Did she eat lunch well today? She said she had no appetite this morning…"</div>
+            </div>
+            <div class="msg-meta">
+              <span class="msg-time">12 min</span>
+              <span class="msg-badge">2</span>
+            </div>
+          </a>
+
+          <!-- 요양보호사 보고 -->
+          <a class="msg-item is-unread" href="#" onclick="event.preventDefault();toast('Mi-seon Park, Caregiver chat');" data-type="caregiver">
+            <div class="av caregiver">P</div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">Mi-seon Park, Caregiver</span>
+                <span class="badge badge--warning">Photo</span>
+              </div>
+              <div class="msg-preview">Re-measured Ms. Choi's BP: 180/108. Photo attached.</div>
+            </div>
+            <div class="msg-meta">
+              <span class="msg-time">28 min</span>
+              <span class="msg-badge">1</span>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- 오늘 -->
+      <section>
+        <div class="sec-label" onclick="toggleSection(this)">
+          <span class="sec-label-text">Today</span>
+          <span class="sec-label-count">2</span>
+          <span class="sec-label-chev"><iconify-icon icon="material-symbols:expand-more-rounded"></iconify-icon></span>
+        </div>
+        <div class="msg-list">
+
+          <a class="msg-item" href="#" onclick="event.preventDefault();toast('Dr. Sang-hun Lee chat');" data-type="doctor">
+            <div class="av doctor">L</div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">Dr. Sang-hun Lee</span>
+                <span class="badge badge--success">Prescription</span>
+              </div>
+              <div class="msg-preview"><b>Ms. Choi's prescription changed</b> · Amlodipine 5→10mg</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">1 hr</span></div>
+          </a>
+
+          <a class="msg-item" href="#" onclick="event.preventDefault();openReply('Jeong-hyeon Lee','Jeong-suk Lee&#39;s daughter','Could we visit this weekend? I think Mom would love to see family.','2 hr ago');" data-type="guardian">
+            <div class="av guardian">L</div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">Jeong-hyeon Lee, Family</span>
+                <span class="badge badge--info">Jeong-suk Lee's daughter</span>
+              </div>
+              <div class="msg-preview">"Could we visit this weekend? I think Mom would love to see…"</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">2 hr</span></div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- 이전 -->
+      <section>
+        <div class="sec-label collapsed" onclick="toggleSection(this)">
+          <span class="sec-label-text">Earlier</span>
+          <span class="sec-label-count">3</span>
+          <span class="sec-label-chev"><iconify-icon icon="material-symbols:expand-more-rounded"></iconify-icon></span>
+        </div>
+        <div class="msg-list collapsed">
+
+          <a class="msg-item" href="#" onclick="event.preventDefault();toast('Xia Gao, Caregiver chat');" data-type="caregiver">
+            <div class="av caregiver">X</div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">Xia Gao, Caregiver</span>
+                <span class="badge badge--info">Auto-translated</span>
+              </div>
+              <div class="msg-preview">"Ms. Jeong-suk Lee ate 1/2 of lunch. Medication taken."</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">4 hr</span></div>
+          </a>
+
+          <a class="msg-item" href="#" onclick="event.preventDefault();toast('Seo-yeon Han, Family chat');" data-type="guardian">
+            <div class="av guardian">H</div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">Seo-yeon Han, Family</span>
+                <span class="badge badge--info">Mi-ja Han's daughter</span>
+              </div>
+              <div class="msg-preview">"Thank you. I'll come pick up next week's prescription."</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">Yesterday</span></div>
+          </a>
+
+          <a class="msg-item" href="#" onclick="event.preventDefault();toast('Family group chat');" data-type="guardian">
+            <div class="av guardian"><iconify-icon icon="material-symbols:family-restroom-rounded" class="ico-lg"></iconify-icon></div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">Yeong-ja Park's family group</span>
+                <span class="badge badge--info">3 members</span>
+              </div>
+              <div class="msg-preview">"Sharing this week's Tuesday visit schedule."</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">Yesterday</span></div>
+          </a>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-wrap">
+    <nav class="tabbar" role="tablist">
+      <a href="d01-home.html" class="tab" aria-label="Now"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon><span class="tab-label">Now</span></a>
+      <a href="d02-round.html" class="tab" aria-label="Rounds"><iconify-icon icon="material-symbols:bed-rounded"></iconify-icon><span class="tab-label">Rounds</span></a>
+      <a href="d03-inbox.html" class="tab active" aria-label="Communication"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon><span class="tab-label">Comms</span></a>
+      <a href="d04-handover.html" class="tab" aria-label="Handover"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon><span class="tab-label">Handover</span></a>
+    </nav>
+    <a href="d-sos.html" class="sos" aria-label="SOS emergency"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></a>
+  </div>
+
+  <!-- REPLY OVERLAY (보호자 답신) -->
+  <div class="overlay" id="ov" onclick="if(event.target===this)closeOv();">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-head">
+        <div class="sheet-ava" id="ovAva">K</div>
+        <div class="sheet-id">
+          <div class="sheet-ttl" id="ovName">Mi-yeong Kim, Family</div>
+          <div class="sheet-sub" id="ovSub">Soon-ja Kim's daughter · 12 min ago</div>
+        </div>
+      </div>
+
+      <div class="sheet-msg-in">
+        <span id="ovBody">Did she eat lunch well today? She said she had no appetite this morning, so I'm worried…</span>
+        <div class="sheet-msg-in-time" id="ovTime">12 min ago</div>
+      </div>
+
+      <button class="ai-suggest" onclick="useReply('Used the AI suggested reply')">
+        <span class="ai-suggest-tag">AI suggestion</span>"She ate a full lunch today. Her appetite seems to have recovered a bit. I'll update you again after dinner."
+      </button>
+
+      <div class="templates-ttl">Quick replies</div>
+      <div class="templates">
+        <button class="tpl-btn" onclick="useReply('On rounds — will reply in 30 min')">On rounds now<br>Reply in 30 min</button>
+        <button class="tpl-btn" onclick="useReply('She was doing well today')">She was well today</button>
+        <button class="tpl-btn" onclick="useReply('Monitoring')">Currently monitoring</button>
+        <button class="tpl-btn" onclick="useReply('Recommend attending consult')">Recommend attending consult</button>
+      </div>
+
+      <div class="compose">
+        <input class="compose-input" placeholder="Type or use voice" aria-label="Type or use voice">
+        <button class="compose-mic" aria-label="Voice"><iconify-icon icon="ph:microphone-fill"></iconify-icon></button>
+        <button class="compose-send" onclick="useReply('Reply sent')" aria-label="Send"><iconify-icon icon="material-symbols:send-rounded"></iconify-icon></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- URGENT DETAIL OVERLAY -->
+  <div class="overlay" id="ovUrgent" onclick="if(event.target===this)closeUrgent();">
+    <div class="sheet" role="dialog" aria-labelledby="urgTitle">
+      <div class="sheet-handle"></div>
+
+      <div class="urg-banner">
+        <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
+        <div class="urg-banner-text">AI risk signal · Clinician review needed<span>Myeong-ja Choi · 82F · 2F Rm B-2 · 3 min ago</span></div>
+      </div>
+
+      <div class="sheet-head" class="mb-3">
+        <div class="sheet-id">
+          <div class="sheet-ttl" id="urgTitle">Suspected hypertension · Sharp BP rise</div>
+          <div class="sheet-sub">Measured by Mi-seon Park, Caregiver · 2 consecutive critical readings</div>
+        </div>
+      </div>
+
+      <div class="urg-summary">
+        <div class="urg-cell">
+          <div class="urg-cell-label">BP</div>
+          <div class="urg-cell-val danger">180/110</div>
+          <div class="urg-cell-trend">↑ 138/85 → 180/110</div>
+        </div>
+        <div class="urg-cell">
+          <div class="urg-cell-label">Pulse</div>
+          <div class="urg-cell-val">102</div>
+          <div class="urg-cell-trend">↑ vs usual 78</div>
+        </div>
+        <div class="urg-cell">
+          <div class="urg-cell-label">SpO₂</div>
+          <div class="urg-cell-val">96%</div>
+          <div class="urg-cell-trend" class="text-t3">Normal</div>
+        </div>
+        <div class="urg-cell">
+          <div class="urg-cell-label">Consciousness</div>
+          <div class="urg-cell-val">Alert</div>
+          <div class="urg-cell-trend" class="text-t3">No change</div>
+        </div>
+      </div>
+
+      <div class="urg-rec">
+        <b>AI suggested action</b>
+        Consider increasing Amlodipine 5mg → 10mg. Re-measure within 30 min required. Call 119 if dyspnea or headache develops.
+      </div>
+
+      <div class="urg-actions">
+        <button class="urg-action-primary" onclick="urgConfirm('acknowledge')">
+          <iconify-icon icon="mingcute:check-circle-fill"></iconify-icon>Acknowledge · Staff responding
+        </button>
+        <div class="urg-action-row">
+          <button class="urg-action-secondary" onclick="urgConfirm('doctor')">
+            <iconify-icon icon="material-symbols:medical-services-rounded"></iconify-icon>Notify attending
+          </button>
+          <button class="urg-action-secondary" onclick="urgConfirm('handover')">
+            <iconify-icon icon="mingcute:document-2-fill"></iconify-icon>Add to handover
+          </button>
+        </div>
+        <div class="urg-action-row">
+          <button class="urg-action-secondary" onclick="urgConfirm('round')">
+            <iconify-icon icon="material-symbols:bed-rounded"></iconify-icon>Check on rounds
+          </button>
+          <button class="urg-action-secondary" onclick="urgConfirm('sos')" class="border-danger">
+            <iconify-icon icon="mingcute:warning-fill" class="text-danger"></iconify-icon>Switch to SOS
+          </button>
+        </div>
+      </div>
+      <button class="urg-cancel" onclick="closeUrgent()">Close</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function toast(msg){
+      const el=document.getElementById('toast');
+      el.textContent=msg;el.classList.add('show');
+      clearTimeout(window.__t);window.__t=setTimeout(()=>el.classList.remove('show'),1800);
+    }
+    function openReply(name, relation, body, time){
+      document.getElementById('ovName').textContent=name+', Family';
+      document.getElementById('ovAva').textContent=name[0];
+      document.getElementById('ovSub').textContent=(relation||'')+' · '+(time||'');
+      document.getElementById('ovBody').textContent=body||'';
+      document.getElementById('ovTime').textContent=time||'';
+      document.getElementById('ov').classList.add('show');
+    }
+    function closeOv(){document.getElementById('ov').classList.remove('show');}
+    function openUrgent(){document.getElementById('ovUrgent').classList.add('show');}
+    function closeUrgent(){document.getElementById('ovUrgent').classList.remove('show');}
+    function urgConfirm(action){
+      const labels={
+        acknowledge:'Acknowledged · Marked as staff responding',
+        doctor:'Report sent to Dr. Sang-hun Lee',
+        handover:'Added to next handover',
+        round:'Rounds Mode · Moving to Myeong-ja Choi',
+        sos:'Switching to SOS screen'
+      };
+      toast(labels[action]);
+      closeUrgent();
+      if(action==='round') setTimeout(()=>{location.href='d02-round.html?focus=p10';},700);
+      else if(action==='sos') setTimeout(()=>{location.href='d-sos.html';},700);
+      else if(action==='handover') setTimeout(()=>{location.href='d04-handover.html';},700);
+    }
+    function useReply(msg){closeOv();toast(msg);}
+    function toggleSection(label){
+      const list=label.nextElementSibling;
+      if(!list) return;
+      const isCollapsed=label.classList.contains('collapsed');
+      if(isCollapsed){
+        label.classList.remove('collapsed');
+        list.classList.remove('collapsed');
+        list.style.maxHeight=list.scrollHeight+'px';
+        setTimeout(()=>{ list.style.maxHeight='none'; },260);
+      } else {
+        list.style.maxHeight=list.scrollHeight+'px';
+        list.offsetHeight;
+        label.classList.add('collapsed');
+        list.classList.add('collapsed');
+        list.style.maxHeight='0';
+      }
+    }
+    function filterMsg(type, btn){
+      document.querySelectorAll('.chip').forEach(c=>{c.classList.remove('is-active');c.setAttribute('aria-pressed','false');});
+      btn.classList.add('is-active');btn.setAttribute('aria-pressed','true');
+      document.querySelectorAll('.msg-item').forEach(item=>{
+        if(type==='all'){item.style.display='';return;}
+        if(type==='unread'){
+          item.style.display=item.classList.contains('is-unread')?'':'none';return;
+        }
+        item.style.display=item.getAttribute('data-type')===type?'':'none';
+      });
+    }
+    const params=new URLSearchParams(location.search);
+    const thread=params.get('thread');
+    if(thread==='c1'){ openUrgent(); }
+    else if(thread==='g1'){ openReply('Mi-yeong Kim','Soon-ja Kim’s daughter','Did she eat lunch well today? She said she had no appetite this morning, so I’m worried…','12 min ago'); }
+  </script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
+</body>
+</html>

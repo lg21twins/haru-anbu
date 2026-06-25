@@ -19,7 +19,10 @@
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     .app-shell { max-width: 430px; margin: 0 auto; }
-    .sec-title { font-size: var(--text-headline); font-weight: var(--weight-bold); margin-bottom: var(--space-3); }
+    /* components.css의 [data-role=guardian] .sec-title(margin-bottom:0)를 이기려면 같은 specificity로 올린다 */
+    [data-role="guardian"] .sec-title { font-size: var(--text-headline); font-weight: var(--weight-bold); margin-bottom: var(--space-7); }
+    /* 약 카드 박스 간 여유 (stack-tight 4px·u-gap-3 8px 대신 20px) */
+    .med-list { gap: var(--space-6); }
 
     .med-head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); }
     .med-icon {
@@ -33,13 +36,13 @@
     .med-type { font-size: var(--text-caption); color: var(--color-text-secondary); }
 
     .med-details {
-      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);
-      padding: var(--space-3) 0;
-      border-top: 1px solid var(--color-border-subtle);
-      border-bottom: 1px solid var(--color-border-subtle);
+      display: flex; flex-direction: column;
+      margin: var(--space-4) 0;
     }
-    .med-d-label { font-size: var(--text-mini); color: var(--color-text-secondary); }
-    .med-d-value { font-size: var(--text-callout); font-weight: var(--weight-semibold); margin-top: 2px; }
+    .med-row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; }
+    .med-row > iconify-icon { font-size: 18px; color: var(--color-text-tertiary); flex-shrink: 0; }
+    .med-d-label { font-size: var(--text-caption); color: var(--color-text-tertiary); }
+    .med-d-value { font-size: var(--text-callout); font-weight: var(--weight-semibold); color: var(--color-text-primary); margin-left: auto; }
 
     .med-warn { margin-top: var(--space-4); }
     .med-warn-head {
@@ -61,7 +64,7 @@
       margin-top: 7px;
     }
 
-    .change-log { display: flex; flex-direction: column; gap: var(--space-3); }
+    .change-log { display: flex; flex-direction: column; gap: var(--space-6); }
     .change-card { padding: var(--space-5); }
     .change-text { font-size: var(--text-callout); font-weight: var(--weight-semibold); margin-bottom: 2px; }
     .change-date { font-size: var(--text-mini); color: var(--color-text-secondary); margin-bottom: var(--space-2); }
@@ -156,11 +159,11 @@
 
   <header class="header">
     <div class="top-nav">
-      <a class="icon-btn" href="g05-mypage.html" aria-label="뒤로"><iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon></a>
+      <a class="icon-btn" href="g05-mypage.html" aria-label="뒤로"><iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon></a>
       <div class="title-block">
         <h1 class="h-name">처방전</h1>
       </div>
-      <button class="icon-btn" aria-label="공유"><iconify-icon icon="fluent:share-24-filled"></iconify-icon></button>
+      <button class="icon-btn" aria-label="공유"><iconify-icon icon="mingcute:share-2-fill"></iconify-icon></button>
     </div>
   </header>
 
@@ -169,43 +172,43 @@
 
       <section>
         <div class="sec-title">현재 처방약</div>
-        <div class="stack-tight u-gap-3">
+        <div class="stack-tight med-list">
 
           <article class="card fade-in fade-in--d1">
             <div class="med-head">
-              <span class="med-icon"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon></span>
-              <div><div class="med-name">아모디핀 5mg</div><div class="med-type">혈압약</div></div>
+              <span class="med-icon"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+              <div><div class="med-name">암로디핀 5mg</div><div class="med-type">혈압약</div></div>
             </div>
             <div class="med-details">
-              <div><div class="med-d-label">복용 시간</div><div class="med-d-value">아침 식후</div></div>
-              <div><div class="med-d-label">용량</div><div class="med-d-value">1정</div></div>
-              <div><div class="med-d-label">처방일</div><div class="med-d-value">2026.03.15</div></div>
-              <div><div class="med-d-label">담당의</div><div class="med-d-value">이상훈 원장</div></div>
+              <div class="med-row"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon><span class="med-d-label">복용 시간</span><span class="med-d-value">아침 식후</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon><span class="med-d-label">용량</span><span class="med-d-value">1정</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon><span class="med-d-label">처방일</span><span class="med-d-value">2026.03.15</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="med-d-label">담당의</span><span class="med-d-value">이상훈 원장</span></div>
             </div>
             <div class="med-warn">
-              <div class="med-warn-head"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon> 보호자가 알아야 할 것</div>
+              <div class="med-warn-head"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> 보호자가 알아야 할 것</div>
               <ul class="med-warn-list">
                 <li>자몽 주스와 함께 복용 금지 — 약물 농도 상승 위험</li>
                 <li>어지러움·두통 지속 시 담당 간호사에게 연락</li>
                 <li>일어설 때 천천히 — 기립성 저혈압 가능</li>
               </ul>
-              <a href="g-guardian-live.html?chat=1" class="btn btn--ghost u-mt-3-pl-0"><iconify-icon icon="fluent:sparkle-24-filled"></iconify-icon>AI에게 더 물어보기</a>
+              <a href="g-guardian-live.html?chat=1" class="btn btn--ghost u-mt-3-pl-0"><iconify-icon icon="material-symbols:auto-awesome-rounded"></iconify-icon>AI에게 더 물어보기</a>
             </div>
           </article>
 
           <article class="card fade-in fade-in--d2">
             <div class="med-head">
-              <span class="med-icon"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon></span>
+              <span class="med-icon"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
               <div><div class="med-name">메트포르민 500mg</div><div class="med-type">당뇨약</div></div>
             </div>
             <div class="med-details">
-              <div><div class="med-d-label">복용 시간</div><div class="med-d-value">아침·저녁 식후</div></div>
-              <div><div class="med-d-label">용량</div><div class="med-d-value">1정씩</div></div>
-              <div><div class="med-d-label">처방일</div><div class="med-d-value">2026.03.15</div></div>
-              <div><div class="med-d-label">담당의</div><div class="med-d-value">이상훈 원장</div></div>
+              <div class="med-row"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon><span class="med-d-label">복용 시간</span><span class="med-d-value">아침·저녁 식후</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon><span class="med-d-label">용량</span><span class="med-d-value">1정씩</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon><span class="med-d-label">처방일</span><span class="med-d-value">2026.03.15</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="med-d-label">담당의</span><span class="med-d-value">이상훈 원장</span></div>
             </div>
             <div class="med-warn">
-              <div class="med-warn-head"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon> 보호자가 알아야 할 것</div>
+              <div class="med-warn-head"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> 보호자가 알아야 할 것</div>
               <ul class="med-warn-list">
                 <li>식사를 거르면 저혈당 위험 — 식사량 감소 시 즉시 알림</li>
                 <li>메스꺼움·복통이 1주 이상 지속되면 연락</li>
@@ -216,17 +219,17 @@
 
           <article class="card fade-in fade-in--d3">
             <div class="med-head">
-              <span class="med-icon"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon></span>
+              <span class="med-icon"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
               <div><div class="med-name">판크레아틴</div><div class="med-type">소화제</div></div>
             </div>
             <div class="med-details">
-              <div><div class="med-d-label">복용 시간</div><div class="med-d-value">점심 식후</div></div>
-              <div><div class="med-d-label">용량</div><div class="med-d-value">1정</div></div>
-              <div><div class="med-d-label">처방일</div><div class="med-d-value">2026.02.20</div></div>
-              <div><div class="med-d-label">담당의</div><div class="med-d-value">이상훈 원장</div></div>
+              <div class="med-row"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon><span class="med-d-label">복용 시간</span><span class="med-d-value">점심 식후</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon><span class="med-d-label">용량</span><span class="med-d-value">1정</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon><span class="med-d-label">처방일</span><span class="med-d-value">2026.02.20</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="med-d-label">담당의</span><span class="med-d-value">이상훈 원장</span></div>
             </div>
             <div class="med-warn">
-              <div class="med-warn-head"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon> 보호자가 알아야 할 것</div>
+              <div class="med-warn-head"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> 보호자가 알아야 할 것</div>
               <ul class="med-warn-list">
                 <li>식사 직후 30분 안에 복용 — 효과 최대화</li>
                 <li>알레르기 반응(두드러기·호흡 곤란) 시 즉시 중단·연락</li>
@@ -241,7 +244,7 @@
         <div class="sec-title">변경 이력</div>
         <div class="change-log">
           <div class="card change-card">
-            <div class="change-text">아모디핀 용량 변경: 2.5mg → <strong>5mg</strong></div>
+            <div class="change-text">암로디핀 용량 변경: 2.5mg → <strong>5mg</strong></div>
             <div class="change-date">2026.03.15 · 이상훈 원장</div>
             <div class="change-reason">최근 혈압 측정값 상승 추세 반영 — 평균 138/88 → 안정 목표</div>
           </div>
@@ -263,11 +266,11 @@
 
   <div class="bottom-bar">
     <nav class="tabbar">
-      <a href="g-guardian-live.html" class="tab" aria-label="홈"><span class="tab-icon"><iconify-icon icon="fluent:home-24-filled" class="u-fs-26"></iconify-icon></span></a>
-      <a href="g02-ai-guide.html" class="tab" aria-label="AI 가이드"><span class="tab-icon"><iconify-icon icon="fluent:book-24-filled" class="u-fs-26"></iconify-icon></span></a>
-      <a href="g03-sotong.html" class="tab" aria-label="소통"><span class="tab-icon"><iconify-icon icon="fluent:chat-24-filled" class="text-22"></iconify-icon></span></a>
-      <a href="g05-records.html" class="tab active" aria-label="기록"><span class="tab-icon"><iconify-icon icon="fluent:folder-24-filled" class="u-fs-26"></iconify-icon></span></a>
-      <a href="g05-mypage.html" class="tab" aria-label="마이"><span class="tab-icon"><iconify-icon icon="fluent:person-24-filled" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g-guardian-live.html" class="tab" aria-label="홈"><span class="tab-icon"><iconify-icon icon="mingcute:home-1-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g02-ai-guide.html" class="tab" aria-label="AI 가이드"><span class="tab-icon"><iconify-icon icon="material-symbols:menu-book-rounded" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g03-sotong.html" class="tab" aria-label="소통"><span class="tab-icon"><iconify-icon icon="material-symbols:chat-rounded" class="text-22"></iconify-icon></span></a>
+      <a href="g05-records.html" class="tab active" aria-label="기록"><span class="tab-icon"><iconify-icon icon="mingcute:folder-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g05-mypage.html" class="tab" aria-label="마이"><span class="tab-icon"><iconify-icon icon="mingcute:user-3-fill" class="u-fs-26"></iconify-icon></span></a>
     </nav>
     <a href="g-guardian-live.html?chat=1" class="ai-fab" aria-label="AI 어시스턴트">
       <svg width="22" height="22" viewBox="0 0 2526 2526" fill="var(--brand-blue-500)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>

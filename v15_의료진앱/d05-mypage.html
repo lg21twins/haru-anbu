@@ -26,7 +26,7 @@
     html{height:100%;background:var(--clinical-canvas);font-size:16px;}
     body{
       height:100%;color:var(--t1);overflow-x:hidden;
-      font-family:var(--font-family-base);font-size:18px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
+      font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
       background:transparent;
     }
     .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background: var(--clinical-bg-image);}
@@ -36,7 +36,7 @@
     }
 
     /* HEADER (v15 통일 — grid 44·1fr·44 / h-eyebrow + h-name) */
-    .header{padding:calc(var(--safe-t) + 14px) var(--pad) 8px;position:relative;z-index:5;}
+    .header{padding:calc(var(--safe-t) + 14px) var(--page-pad) 8px;position:relative;z-index:5;}
     .top-nav .icon-btn{grid-column:3;justify-self:end;}
     .top-nav .icon-btn:first-child{grid-column:1;justify-self:start;}
     .h-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
@@ -47,7 +47,7 @@
 
     /* PROFILE HERO */
     .profile-hero{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;
-      margin:8px var(--pad) 0;padding:24px;
+      margin:8px var(--page-pad) 0;padding:24px;
       background:var(--palette-white);border-radius:24px;
       box-shadow:var(--shadow-card-floating);
       position:relative;z-index:1;
@@ -83,7 +83,7 @@
 
     /* GPS / STATUS row */
     .gps{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 80ms both;
-      margin:16px var(--pad) 0;padding:18px 20px;
+      margin:16px var(--page-pad) 0;padding:18px 20px;
       background:var(--palette-white);border-radius:var(--cg-card-radius);
       display:flex;align-items:center;gap:14px;
       box-shadow:var(--shadow-card-floating);
@@ -109,7 +109,7 @@
     }
 
     /* SECTION + ROWS */
-    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--pad) 0;position:relative;z-index:1;}
+    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--page-pad) 0;position:relative;z-index:1;}
     .sec-ttl{
       font-size:11px;font-weight:600;color:var(--t3);
       letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px;padding-left:4px;
@@ -162,7 +162,7 @@
     .switch.on::after{left:21px;}
 
     .logout{
-      margin:24px var(--pad) 0;padding:15px;
+      margin:24px var(--page-pad) 0;padding:15px;
       width:calc(100% - 44px);
       background:var(--palette-white);border:0;border-radius:16px;
       color:var(--palette-red-600);font-size:13.5px;font-weight:600;
@@ -173,7 +173,7 @@
     }
     .logout iconify-icon{font-size:18px;}
     .ver{
-      margin:18px var(--pad) 0;text-align:center;
+      margin:18px var(--page-pad) 0;text-align:center;
       font-size:12px;font-weight:500;color:var(--t3);
       position:relative;z-index:1;
     }
@@ -218,7 +218,7 @@
         <div class="title-block">
           <h1 class="h-name">마이</h1>
         </div>
-        <button class="icon-btn" aria-label="설정"><iconify-icon icon="fluent:settings-24-filled"></iconify-icon></button>
+        <button class="icon-btn" aria-label="설정"><iconify-icon icon="mingcute:settings-3-fill"></iconify-icon></button>
       </div>
     </header>
 
@@ -228,7 +228,7 @@
         <div class="pf-meta">
           <div class="pf-name">박지현</div>
           <div class="pf-role">간호사 · 7년차</div>
-          <div class="pf-org"><iconify-icon icon="fluent:building-24-filled"></iconify-icon>하늘요양원 · 2층 담당</div>
+          <div class="pf-org"><iconify-icon icon="mingcute:building-4-fill"></iconify-icon>하늘요양원 · 2층 담당</div>
         </div>
       </div>
       <div class="pf-stats">
@@ -248,7 +248,7 @@
     </section>
 
     <section class="gps">
-      <span class="gps-pulse"><iconify-icon icon="fluent:location-live-24-filled"></iconify-icon></span>
+      <span class="gps-pulse"><iconify-icon icon="mingcute:location-fill"></iconify-icon></span>
       <div class="gps-meta">
         <div class="gps-main">근무 중 · 시설 내 위치 확인됨</div>
         <div class="gps-sub">07:00 출근 · 9시간 12분 경과</div>
@@ -260,7 +260,7 @@
       <div class="sec-ttl">알림 · 모드</div>
       <div class="rows">
         <div class="row">
-          <span class="row-ico ok"><iconify-icon icon="fluent:weather-moon-24-filled"></iconify-icon></span>
+          <span class="row-ico ok"><iconify-icon icon="mingcute:moon-fill"></iconify-icon></span>
           <div class="row-meta">
             <div class="row-label">야간 모드</div>
             <div class="row-sub">21:00–07:00 알림 민감도 ↑</div>
@@ -276,7 +276,7 @@
           <button class="switch" onclick="this.classList.toggle('on');toast('집중 모드 '+(this.classList.contains('on')?'ON':'OFF'));"></button>
         </div>
         <div class="row">
-          <span class="row-ico ok"><iconify-icon icon="fluent:phone-vibrate-24-filled"></iconify-icon></span>
+          <span class="row-ico ok"><iconify-icon icon="mingcute:phone-fill"></iconify-icon></span>
           <div class="row-meta">
             <div class="row-label">햅틱 강조</div>
             <div class="row-sub">시끄러운 환경 진동 강화</div>
@@ -284,7 +284,7 @@
           <button class="switch on" onclick="this.classList.toggle('on');"></button>
         </div>
         <div class="row">
-          <span class="row-ico warn"><iconify-icon icon="fluent:translate-24-filled"></iconify-icon></span>
+          <span class="row-ico warn"><iconify-icon icon="mingcute:translate-2-fill"></iconify-icon></span>
           <div class="row-meta">
             <div class="row-label">자동 번역</div>
             <div class="row-sub">중국어·베트남어 ↔ 한국어</div>
@@ -298,20 +298,20 @@
       <div class="sec-ttl">빠른 도구</div>
       <div class="rows">
         <a class="row" href="#" onclick="event.preventDefault();toast('빠른 처방 라이브러리');">
-          <span class="row-ico ok"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon></span>
+          <span class="row-ico ok"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
           <div class="row-meta">
             <div class="row-label">빠른 처방 라이브러리</div>
             <div class="row-sub">자주 쓰는 처방 5건</div>
           </div>
-          <span class="row-val">5건<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">5건<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('답변 템플릿 편집');">
-          <span class="row-ico ok"><iconify-icon icon="fluent:comment-multiple-24-filled"></iconify-icon></span>
+          <span class="row-ico ok"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon></span>
           <div class="row-meta">
             <div class="row-label">빠른 답변 템플릿</div>
             <div class="row-sub">보호자 회신 6종</div>
           </div>
-          <span class="row-val">6건<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">6건<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('Apple Watch');">
           <span class="row-ico neutral"><iconify-icon icon="fluent:smartwatch-24-filled"></iconify-icon></span>
@@ -319,15 +319,15 @@
             <div class="row-label">Apple Watch 연동</div>
             <div class="row-sub">SOS 진동 · 1탭 응답</div>
           </div>
-          <span class="row-val">미연결<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">미연결<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('잠금화면 위젯');">
-          <span class="row-ico neutral"><iconify-icon icon="fluent:phone-lock-24-filled"></iconify-icon></span>
+          <span class="row-ico neutral"><iconify-icon icon="mingcute:lock-fill"></iconify-icon></span>
           <div class="row-meta">
             <div class="row-label">잠금화면 위젯</div>
             <div class="row-sub">다음 환자·미회신·SOS</div>
           </div>
-          <span class="row-val">활성<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">활성<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
@@ -336,28 +336,28 @@
       <div class="sec-ttl">근무 · 데이터</div>
       <div class="rows">
         <a class="row" href="#" onclick="event.preventDefault();toast('근무표');">
-          <span class="row-ico neutral"><iconify-icon icon="fluent:calendar-clock-24-filled"></iconify-icon></span>
+          <span class="row-ico neutral"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon></span>
           <div class="row-meta">
             <div class="row-label">근무표</div>
             <div class="row-sub">데이 5일 · 야간 1일</div>
           </div>
-          <span class="row-val"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('활동 리포트');">
-          <span class="row-ico neutral"><iconify-icon icon="fluent:document-data-24-filled"></iconify-icon></span>
+          <span class="row-ico neutral"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon></span>
           <div class="row-meta">
             <div class="row-label">활동 리포트</div>
             <div class="row-sub">이달 회진 142회 · SBAR 21건</div>
           </div>
-          <span class="row-val"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('의료 STT 학습');">
-          <span class="row-ico ok"><iconify-icon icon="fluent:mic-sparkle-24-filled"></iconify-icon></span>
+          <span class="row-ico ok"><iconify-icon icon="material-symbols:auto-awesome-rounded"></iconify-icon></span>
           <div class="row-meta">
             <div class="row-label">의료 STT 학습</div>
             <div class="row-sub">개인 발화 89% 정확도</div>
           </div>
-          <span class="row-val">학습 중<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">학습 중<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
@@ -366,28 +366,28 @@
       <div class="sec-ttl">지원</div>
       <div class="rows">
         <a class="row" href="#" onclick="event.preventDefault();toast('도움말 · 준비중');">
-          <span class="row-ico neutral"><iconify-icon icon="fluent:question-circle-24-filled"></iconify-icon></span>
+          <span class="row-ico neutral"><iconify-icon icon="mingcute:question-fill"></iconify-icon></span>
           <div class="row-meta"><div class="row-label">도움말 · FAQ</div></div>
-          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('개인정보 처리방침 · 준비중');">
-          <span class="row-ico neutral"><iconify-icon icon="fluent:shield-task-24-filled"></iconify-icon></span>
+          <span class="row-ico neutral"><iconify-icon icon="material-symbols:health-and-safety-rounded"></iconify-icon></span>
           <div class="row-meta"><div class="row-label">개인정보 처리방침</div></div>
-          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="../v10_의료진웹/의료진_대시보드_v9.5.html" target="_blank">
-          <span class="row-ico neutral"><iconify-icon icon="fluent:desktop-24-filled"></iconify-icon></span>
+          <span class="row-ico neutral"><iconify-icon icon="mingcute:monitor-fill"></iconify-icon></span>
           <div class="row-meta">
             <div class="row-label">PC 웹 열기</div>
             <div class="row-sub">데스크탑에서 분석 · 배치 처리</div>
           </div>
-          <span class="row-val"><iconify-icon icon="fluent:open-24-filled"></iconify-icon></span>
+          <span class="row-val"><iconify-icon icon="material-symbols:open-in-new-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
 
     <button class="logout" onclick="toast('로그아웃');">
-      <iconify-icon icon="fluent:sign-out-24-filled"></iconify-icon>로그아웃
+      <iconify-icon icon="material-symbols:logout-rounded"></iconify-icon>로그아웃
     </button>
     <div class="ver">하루안부 · 의료진앱 v15.0</div>
 
@@ -395,13 +395,13 @@
 
   <div class="tab-wrap">
     <nav class="tabbar" role="tablist">
-      <a href="d01-home.html" class="tab" aria-label="지금"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="tab-label">지금</span></a>
-      <a href="d02-round.html" class="tab" aria-label="회진"><iconify-icon icon="fluent:bed-24-filled"></iconify-icon><span class="tab-label">회진</span></a>
-      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon><span class="tab-label">소통</span></a>
-      <a href="d04-handover.html" class="tab" aria-label="인계"><iconify-icon icon="fluent:document-arrow-right-24-filled"></iconify-icon><span class="tab-label">인계</span></a>
-      <a href="d05-mypage.html" class="tab active" aria-current="page" aria-label="마이"><iconify-icon icon="fluent:person-24-filled"></iconify-icon><span class="tab-label">마이</span></a>
+      <a href="d01-home.html" class="tab" aria-label="지금"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon><span class="tab-label">지금</span></a>
+      <a href="d02-round.html" class="tab" aria-label="회진"><iconify-icon icon="material-symbols:bed-rounded"></iconify-icon><span class="tab-label">회진</span></a>
+      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon><span class="tab-label">소통</span></a>
+      <a href="d04-handover.html" class="tab" aria-label="인계"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon><span class="tab-label">인계</span></a>
+      <a href="d05-mypage.html" class="tab active" aria-current="page" aria-label="마이"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="tab-label">마이</span></a>
     </nav>
-    <a href="d-sos.html" class="sos" aria-label="SOS"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></a>
+    <a href="d-sos.html" class="sos" aria-label="SOS"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></a>
   </div>
 
   <div class="toast" id="toast"></div>

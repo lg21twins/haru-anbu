@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en" data-role="patient" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="var(--patient-canvas-warm)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Haru Anbu · Connect with family</title>
+
+  <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="patient.css">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+
+  <style>
+    /* ─────────────────────────────────────────────────────
+       토큰 (페이지 로컬, A+B 적용)
+       타이포: 28 / 22 / 18 / 16 / 14 (4의 배수 모듈러)
+       라운드: 24 / 16 / 12 (3단계)
+       콘트라스트: 본문 var(--palette-gray-800), 보조 var(--palette-gray-700) — WCAG AAA
+       포커스: 3px 오렌지 ring
+       ───────────────────────────────────────────────────── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-height: 0;
+    }
+
+    /* 키보드 포커스 — 전역 (WCAG AAA) */
+    .call-heading a:focus-visible,
+    .fam-row:focus-visible,
+    .fam-icon-btn:focus-visible,
+    .tl-item:focus-visible {
+      outline: 3px solid var(--brand-orange-500);
+      outline-offset: 3px;
+      border-radius: 16px;
+    }
+    .fam-icon-btn:focus-visible { border-radius: 50%; outline-offset: 4px; }
+
+    /* ── 페이지 헤딩 ─────────────────────────── */
+    .call-heading h1 {
+      font: 700 28px / 1.15 var(--font-family-base);
+      letter-spacing: -0.5px;
+    }
+    .call-heading p {
+      font: 500 18px / 1.4 var(--font-family-base);
+      color: var(--palette-gray-700);
+      margin-top: 4px;
+    }
+
+    /* ── 2열 레이아웃 ─────────────────────────── */
+    .call-cols {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 5fr 4fr;
+      gap: 18px;
+      min-height: 0;
+    }
+
+    .call-panel {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .panel-title {
+      font: 700 14px / 1 var(--font-family-base);
+      color: var(--palette-gray-700);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      padding: 4px 6px 6px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-title iconify-icon { color: var(--brand-orange-500); font-size: 16px; }
+
+    /* ── 좌측: 가족 row 리스트 ─────────────────── */
+    .fam-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      min-height: 0;
+    }
+    .fam-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      border-radius: 16px;                                /* B: 모듈러 라운드 */
+      background: rgba(255, 255, 255, 0.75);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+      text-decoration: none;
+      color: var(--palette-gray-800);                                     /* A: 본문 콘트라스트 강화 */
+      transition: background .12s, box-shadow .15s, transform .1s;
+    }
+    .fam-row:hover {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 6px 18px rgba(var(--color-accent-rgb), 0.15);
+    }
+    /* A4: 아바타 컬러 ring으로 상태 시각화 강화 */
+    .fam-row .avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      position: relative; flex-shrink: 0;
+      overflow: hidden;
+      box-shadow: 0 0 0 3px var(--brand-green-500), 0 4px 14px rgba(0, 0, 0, 0.12);
+    }
+    .fam-row--offline .avatar {
+      box-shadow: 0 0 0 3px var(--patient-avatar-offline), 0 4px 14px rgba(0, 0, 0, 0.12);
+    }
+    .fam-row .avatar img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .fam-row .avatar .dot {
+      position: absolute; right: 3px; bottom: 3px; z-index: 1;
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 3px solid white; background: var(--patient-avatar-offline);
+    }
+    .fam-row .avatar .dot--on { background: var(--brand-green-500); }
+
+    .fam-row-meta { flex: 1; min-width: 0; }
+    .fam-row-name {
+      font: 700 22px / 1.1 var(--font-family-base);       /* B: 24 → 22 (모듈러) */
+      letter-spacing: -0.4px;
+      display: inline-flex; align-items: baseline; gap: 10px;
+      color: var(--palette-gray-800);
+    }
+    .fam-row-name .rel {
+      font-size: 14px;                                    /* B: 16 → 14 */
+      font-weight: 600;
+      color: var(--palette-gray-700);
+      padding: 3px 10px;
+      border-radius: 12px;                                /* B: 999 → 12 (모듈러) */
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .fam-row-status {
+      margin-top: 6px;
+      font: 600 14px / 1.2 var(--font-family-base);       /* B: 15 → 14 */
+      color: var(--brand-green-700);                                     /* A3: 콘트라스트 ↑ (green-700) */
+    }
+    .fam-row--offline .fam-row-status { color: var(--palette-gray-700); }
+
+    .fam-row-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .fam-icon-btn {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--brand-orange-50);
+      color: var(--brand-orange-700);                     /* A3: 600 → 700 콘트라스트 */
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .1s, background .12s;
+    }
+    .fam-icon-btn:hover { background: var(--brand-orange-100); }
+    .fam-icon-btn:active { transform: scale(.94); }
+    .fam-icon-btn iconify-icon { font-size: 26px; }
+    .fam-icon-btn--primary {
+      background: var(--brand-orange-500);
+      color: white;
+      box-shadow: 0 6px 16px rgba(var(--color-accent-rgb), 0.35);
+    }
+    .fam-icon-btn--primary:hover { background: var(--brand-orange-600); }
+    .fam-row--offline .fam-icon-btn--primary {
+      background: var(--palette-gray-200);
+      color: var(--palette-gray-700);                                     /* A3: 콘트라스트 ↑ */
+      box-shadow: none;
+    }
+
+    /* ── 우측: 받은 안부 타임라인 ──────────────── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 4px;
+      scrollbar-color: rgba(0,0,0,0.15) transparent;       /* Firefox */
+      scrollbar-width: thin;
+    }
+    .timeline::-webkit-scrollbar { width: 6px; }
+    .timeline::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 12px; }
+
+    .tl-day {
+      font: 700 14px / 1 var(--font-family-base);          /* B: 13 → 14 */
+      color: var(--palette-gray-700);                                       /* A3: 콘트라스트 강화 */
+      letter-spacing: 0.2px;
+      padding: 12px 8px 6px;
+    }
+    .tl-day:first-of-type { padding-top: 4px; }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 12px 10px;
+      border-radius: 12px;                                 /* B: 14 → 12 (모듈러) */
+      text-decoration: none;
+      color: var(--palette-gray-800);                                       /* A3: 본문 강화 */
+      transition: background .12s;
+      min-height: 56px;                                     /* 터치 타깃 보장 */
+    }
+    .tl-item:hover { background: rgba(255, 255, 255, 0.6); }
+    .tl-item .avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      position: relative; overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    .tl-item .avatar img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .tl-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .tl-line {
+      font: 700 16px / 1.25 var(--font-family-base);
+      letter-spacing: -0.2px;
+    }
+    .tl-line iconify-icon {
+      font-size: 16px;
+      color: var(--brand-orange-600);                       /* A3: 500 → 600 */
+      vertical-align: -2px;
+      margin-right: 5px;
+    }
+    .tl-preview {
+      font: 500 14px / 1.4 var(--font-family-base);
+      color: var(--palette-gray-700);                                        /* A3: secondary → 명시적 8:1 */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .tl-time {
+      font: 600 14px / 1 var(--font-family-base);            /* B: 13 → 14 */
+      color: var(--palette-gray-700);
+      margin-top: 2px;
+    }
+    .tl-item--unread .tl-line { color: var(--brand-orange-700); }
+    .tl-item--unread {
+      background: rgba(255, 224, 178, 0.55);                 /* 진한 오렌지 배경으로 색맹 색 대비 보강 */
+    }
+    .tl-item--unread:hover { background: rgba(255, 247, 232, 0.95); }
+    .tl-unread-badge {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+
+    @media (max-width: 1000px) {
+      .call-cols { grid-template-columns: 1fr; }
+      .call-panel { padding: 14px 16px; }
+      .fam-row { padding: 14px 16px; gap: 14px; }
+      .fam-row .avatar { width: 60px; height: 60px; }
+      .fam-row-name { font-size: 18px; }                     /* B: 21 → 18 */
+      .fam-icon-btn { width: 52px; height: 52px; }
+      .fam-icon-btn iconify-icon { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="p-header p-header--nav">
+      <div aria-hidden="true"></div>
+      <nav class="top-nav" aria-label="Main menu">
+        <a class="nav-tab" href="p01-today.html">
+          <iconify-icon icon="mingcute:home-1-fill" width="22" aria-hidden="true"></iconify-icon>
+          Home
+        </a>
+        <a class="nav-tab" href="p02-med-alert.html">
+          <iconify-icon icon="mingcute:clipboard-fill" width="22" aria-hidden="true"></iconify-icon>
+          To-do
+        </a>
+        <a class="nav-tab nav-tab--active" href="p03-call.html" aria-current="page">
+          <iconify-icon icon="material-symbols:family-restroom-rounded" width="22" aria-hidden="true"></iconify-icon>
+          Family
+        </a>
+        <a class="nav-tab" href="p08-help.html">
+          <iconify-icon icon="ph:hand-waving-fill" width="22" aria-hidden="true"></iconify-icon>
+          Help
+        </a>
+      </nav>
+      <div aria-hidden="true"></div>
+    </header>
+
+    <div class="main">
+
+      <div class="call-heading">
+        <h1>Connect with family</h1>
+        <p>Start a video call with family who are online now, or see the messages they've sent you.</p>
+      </div>
+
+      <div class="call-cols">
+
+        <!-- ═══════════════ 좌측: 가족 리스트 ═══════════════ -->
+        <section class="call-panel glass" aria-labelledby="panel-title-call">
+          <h2 class="panel-title" id="panel-title-call">
+            <iconify-icon icon="material-symbols:family-restroom-rounded" aria-hidden="true"></iconify-icon>
+            Calls · Messages
+          </h2>
+
+          <div class="fam-list">
+
+            <a href="p03-call.html" class="fam-row" aria-label="Video call daughter Minji — online now">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Daughter Minji">
+                <span class="dot dot--on"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name">Minji <span class="rel">Daughter</span></div>
+                <div class="fam-row-status">Online now</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="Video call Minji">
+                  <iconify-icon icon="material-symbols:videocam-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="Voice call Minji">
+                  <iconify-icon icon="mingcute:phone-fill" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
+            <a href="p03-call.html" class="fam-row" aria-label="Video call granddaughter Seoyeon — online now">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="Granddaughter Seoyeon">
+                <span class="dot dot--on"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name">Seoyeon <span class="rel">Granddaughter</span></div>
+                <div class="fam-row-status">Online now</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="Video call Seoyeon">
+                  <iconify-icon icon="material-symbols:videocam-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="Message Seoyeon">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
+            <a href="p05-voice.html" class="fam-row fam-row--offline" aria-label="Leave a voice message for son Taewoo — away">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Son Taewoo">
+                <span class="dot"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name">Taewoo <span class="rel">Son</span></div>
+                <div class="fam-row-status">Away · active 3 hours ago</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="Leave a voice message for Taewoo">
+                  <iconify-icon icon="ph:microphone-fill" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="Message Taewoo">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
+          </div>
+        </section>
+
+        <!-- ═══════════════ 우측: 받은 안부 타임라인 ═══════════════ -->
+        <section class="call-panel glass" aria-labelledby="panel-title-timeline">
+          <h2 class="panel-title" id="panel-title-timeline">
+            <iconify-icon icon="material-symbols:cardiology-rounded" aria-hidden="true"></iconify-icon>
+            Recent messages
+          </h2>
+
+          <div class="timeline" role="list">
+
+            <div class="tl-day">Today</div>
+
+            <a href="p06-photo.html" class="tl-item tl-item--unread" role="listitem" aria-label="Unread — Minji sent a photo, 9:32 AM">
+              <span class="tl-unread-badge">Unread</span>
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="material-symbols:image-rounded" aria-hidden="true"></iconify-icon>
+                  Minji sent a photo
+                </div>
+                <div class="tl-preview">1 photo from your granddaughter's graduation</div>
+                <div class="tl-time">9:32 AM</div>
+              </div>
+            </a>
+
+            <a href="p07-message.html" class="tl-item tl-item--unread" role="listitem" aria-label="Unread — message from Seoyeon, 8:10 AM">
+              <span class="tl-unread-badge">Unread</span>
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                  Message from Seoyeon
+                </div>
+                <div class="tl-preview">"I love you, Grandma. Have a wonderful day today!"</div>
+                <div class="tl-time">8:10 AM</div>
+              </div>
+            </a>
+
+            <div class="tl-day">Yesterday</div>
+
+            <a href="p07-message.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="ph:microphone-fill" aria-hidden="true"></iconify-icon>
+                  Voice message from Minji
+                </div>
+                <div class="tl-preview">23 sec · "Hi Mom, how are you? I'll visit soon"</div>
+                <div class="tl-time">7:45 PM</div>
+              </div>
+            </a>
+
+            <a href="p07-message.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                  Message from Seoyeon
+                </div>
+                <div class="tl-preview">"Grandma, I won an award at school today"</div>
+                <div class="tl-time">4:20 PM</div>
+              </div>
+            </a>
+
+            <div class="tl-day">3 days ago</div>
+
+            <a href="p03-call.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="material-symbols:videocam-rounded" aria-hidden="true"></iconify-icon>
+                  Video call with Taewoo
+                </div>
+                <div class="tl-preview">18 min · Video call ended</div>
+                <div class="tl-time">8:15 PM</div>
+              </div>
+            </a>
+
+            <a href="p06-photo.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="material-symbols:image-rounded" aria-hidden="true"></iconify-icon>
+                  Minji sent a photo
+                </div>
+                <div class="tl-preview">3 photos from a walk in the park</div>
+                <div class="tl-time">3:00 PM</div>
+              </div>
+            </a>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

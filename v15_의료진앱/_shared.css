@@ -28,8 +28,7 @@
   --safe-b: max(env(safe-area-inset-bottom, 0px), 20px);
   --tab-h: 64px;
   --tab-bot: 12px;            /* v11과 동일: 14→12 */
-  --pad: 20px;
-  --page-pad: 20px;           /* v11 별칭과 통일 — 두 변수 모두 동작 */
+  --page-pad: 20px;           /* 본문 좌우 padding 단일 변수 (구 --pad 별칭 통합 2026-06-24) */
 
   /* clinical 캔버스/그라디언트는 tokens.css의 SoT를 사용한다. */
 }

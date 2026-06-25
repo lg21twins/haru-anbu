@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="./_shared.css?v=20260525p">
   <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
   <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
+  <!-- 공통 셸(헤더/로고/아이콘버튼) 단일 소스 — 인라인 복붙 대체 -->
+  <link rel="stylesheet" href="../07_디자인/system/shell.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <style>
     /* :root 별칭은 _shared.css 에서 정의 */
@@ -25,7 +27,7 @@
     html{height:100%;background:var(--clinical-canvas);font-size:16px;}
     body{
       height:100%;color:var(--t1);overflow-x:hidden;
-      font-family:var(--font-family-base);font-size:18px;letter-spacing:-.2px;
+      font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;
       -webkit-font-smoothing:antialiased;
       background:transparent;
     }
@@ -36,29 +38,10 @@
       padding-bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 60px);
     }
 
-    /* ===== HEADER ===== */
-    .header{
-      padding:calc(var(--safe-t) + 6px) var(--page-pad) 0;
-      position:static;
-    }
-    /* v3.2.5: 세 앱 헤더 통일 — brand SVG 28px + 4px tap zone */
-    .logo{display:inline-flex;align-items:center;text-decoration:none;color:var(--color-accent-strong);padding:4px;margin:-4px;}
-    .logo svg{width:28px;height:28px;display:block;}
-    /* v3.2.5: 세 앱 헤더 통일 — 44×44 / 22px icon / 8×8 dot @ 10,10 (medical 기준) */
-    .icon-btn{
-      width:44px;height:44px;border-radius:50%;
-      background:rgba(255,255,255,.55);
-      border:.5px solid rgba(255,255,255,.55);
-      backdrop-filter:blur(12px) saturate(140%);
-      -webkit-backdrop-filter:blur(12px) saturate(140%);
-      cursor:pointer;text-decoration:none;
-      display:inline-flex;align-items:center;justify-content:center;
-      box-shadow:0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06);
-      position:relative;transition:transform .1s;
-    }
+    /* ===== HEADER · 공유 shell.css 로 이동 (header/logo/icon-btn) ===== */
 
     /* ===== GREETING ===== */
-    .greet{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;padding:0 var(--pad);position:relative;z-index:1;}
+    .greet{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;padding:0 var(--page-pad);position:relative;z-index:1;}
     .greet-eyebrow{
       font-size:11px;font-weight:600;color:var(--accent-strong);
       letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px;
@@ -83,7 +66,7 @@
 
     /* ===== HERO ALERT — 위험 환자 (근거 + 권장 액션 + CTA 2개) ===== */
     .alert{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 80ms both;
-      margin:28px var(--pad) 0;padding:20px;
+      margin:28px var(--page-pad) 0;padding:20px;
       background:var(--card-bg);
       border-radius:var(--radius-card-lg);
       /* 위험 의미 보존: red-tinted shadow */
@@ -158,7 +141,7 @@
     }
 
     /* ===== SECTION ===== */
-    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--pad) 0;position:relative;z-index:1;}
+    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--page-pad) 0;position:relative;z-index:1;}
     .sec-head{
       display:flex;align-items:baseline;justify-content:space-between;
       margin-bottom:14px;padding:0 2px;
@@ -312,11 +295,11 @@
         </a>
         <div class="top-actions">
           <a href="d03-inbox.html" class="icon-btn" aria-label="알림">
-            <iconify-icon icon="fluent:alert-24-filled"></iconify-icon>
+            <iconify-icon icon="mingcute:notification-fill"></iconify-icon>
             <span class="notif-dot"></span>
           </a>
           <a href="d05-mypage.html" class="icon-btn" aria-label="마이">
-            <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+            <iconify-icon icon="mingcute:user-3-fill"></iconify-icon>
           </a>
         </div>
       </div>
@@ -333,24 +316,24 @@
     <!-- ============ ALERT — 위험 환자: 근거 + 권장 액션 + CTA 2개 ============ -->
     <article class="alert">
       <div class="alert-top">
-        <span class="alert-ico"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></span>
+        <span class="alert-ico"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon></span>
         <span class="alert-tag">즉시 확인</span>
       </div>
       <div class="alert-main">최명자 어르신</div>
       <div class="alert-sub">
-        <iconify-icon icon="fluent:location-24-filled"></iconify-icon>2층 B-2호
+        <iconify-icon icon="mingcute:location-fill"></iconify-icon>2층 B-2호
         <span aria-hidden="true">·</span>
-        <iconify-icon icon="fluent:clock-24-filled"></iconify-icon>14:02 측정
+        <iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon>14:02 측정
       </div>
 
       <div class="alert-evidence" aria-label="임상 근거">
         <div class="evi-row">
-          <iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon>
+          <iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon>
           <span class="evi-main">혈압 180/110</span>
           <span class="evi-sub">직전 162/96 대비 상승</span>
         </div>
         <div class="evi-row warn">
-          <iconify-icon icon="fluent:emoji-meh-24-filled"></iconify-icon>
+          <iconify-icon icon="material-symbols:mood-rounded"></iconify-icon>
           <span class="evi-main">두통 호소</span>
           <span class="evi-sub">13:50 보고</span>
         </div>
@@ -363,10 +346,10 @@
 
       <div class="alert-ctas">
         <a class="alert-cta primary" href="d02-round.html?focus=10">
-          <iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon>지금 확인
+          <iconify-icon icon="mingcute:check-fill"></iconify-icon>지금 확인
         </a>
         <a class="alert-cta secondary" href="d02-round.html?focus=10&open=card">
-          <iconify-icon icon="fluent:bed-24-filled"></iconify-icon>회진 카드 열기
+          <iconify-icon icon="material-symbols:bed-rounded"></iconify-icon>회진 카드 열기
         </a>
       </div>
     </article>
@@ -378,61 +361,61 @@
           <div class="sec-eyebrow">AI 판단</div>
           <h2 class="sec-ttl">오늘의 우선순위<span class="sec-count" aria-label="총 5건">5</span></h2>
         </div>
-        <a class="sec-more" href="d02-round.html">회진 시작 <iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></a>
+        <a class="sec-more" href="d02-round.html">회진 시작 <iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></a>
       </div>
       <div class="act-list">
 
-        <div class="act-group-head warn-h"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon>오늘 처리<span class="cnt">· 2</span></div>
+        <div class="act-group-head warn-h"><iconify-icon icon="mingcute:warning-fill"></iconify-icon>오늘 처리<span class="cnt">· 2</span></div>
 
         <a class="act-card warn" href="d02-round.html?focus=11">
           <span class="act-avatar">김</span>
           <div class="act-meta">
             <div class="act-main">김순자 · 미열 + 투약 확인</div>
-            <div class="act-sub"><iconify-icon icon="fluent:location-24-filled"></iconify-icon>2층 A-5호 · <span class="act-status">37.8°C <span class="vital">13:30</span></span> · 보호자 문의</div>
+            <div class="act-sub"><iconify-icon icon="mingcute:location-fill"></iconify-icon>2층 A-5호 · <span class="act-status">37.8°C <span class="vital">13:30</span></span> · 보호자 문의</div>
           </div>
-          <span class="act-chev"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="act-chev"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
 
         <a class="act-card warn" href="d02-round.html?focus=12">
           <span class="act-avatar">이</span>
           <div class="act-meta">
             <div class="act-main">이정숙 · 낙상 회진</div>
-            <div class="act-sub"><iconify-icon icon="fluent:location-24-filled"></iconify-icon>3층 C-1호 · <span class="act-status">야간 배회 ↑</span></div>
+            <div class="act-sub"><iconify-icon icon="mingcute:location-fill"></iconify-icon>3층 C-1호 · <span class="act-status">야간 배회 ↑</span></div>
           </div>
-          <span class="act-chev"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="act-chev"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
 
-        <div class="act-group-head watch-h"><iconify-icon icon="fluent:eye-24-filled"></iconify-icon>관찰<span class="cnt">· 1</span></div>
+        <div class="act-group-head watch-h"><iconify-icon icon="mingcute:eye-2-fill"></iconify-icon>관찰<span class="cnt">· 1</span></div>
 
         <a class="act-card watch" href="d02-round.html?focus=9">
           <span class="act-avatar">박</span>
           <div class="act-meta">
             <div class="act-main">박영자 · 통증 추이</div>
-            <div class="act-sub"><iconify-icon icon="fluent:location-24-filled"></iconify-icon>2층 A-3호 · <span class="act-status">VAS 4 <span class="vital">14:15</span></span></div>
+            <div class="act-sub"><iconify-icon icon="mingcute:location-fill"></iconify-icon>2층 A-3호 · <span class="act-status">VAS 4 <span class="vital">14:15</span></span></div>
           </div>
-          <span class="act-chev"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="act-chev"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
 
-        <div class="act-group-head wait-h"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon>대기<span class="cnt">· 1</span></div>
+        <div class="act-group-head wait-h"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>대기<span class="cnt">· 1</span></div>
 
         <a class="act-card wait" href="d03-inbox.html?thread=g1">
-          <span class="act-avatar"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></span>
+          <span class="act-avatar"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon></span>
           <div class="act-meta">
             <div class="act-main">보호자 답변</div>
-            <div class="act-sub"><iconify-icon icon="fluent:person-24-filled"></iconify-icon>김미영 외 2건 · 회신 필요</div>
+            <div class="act-sub"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon>김미영 외 2건 · 회신 필요</div>
           </div>
-          <span class="act-chev"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="act-chev"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
 
-        <div class="act-group-head due-h"><iconify-icon icon="fluent:flag-24-filled"></iconify-icon>마감 임박<span class="cnt">· 1</span></div>
+        <div class="act-group-head due-h"><iconify-icon icon="material-symbols:flag-rounded"></iconify-icon>마감 임박<span class="cnt">· 1</span></div>
 
         <a class="act-card due" href="d04-handover.html">
-          <span class="act-avatar"><iconify-icon icon="fluent:document-24-filled"></iconify-icon></span>
+          <span class="act-avatar"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon></span>
           <div class="act-meta">
             <div class="act-main">SBAR 인계 작성</div>
-            <div class="act-sub"><iconify-icon icon="fluent:document-edit-24-filled"></iconify-icon>이브닝 전 2시간 18분</div>
+            <div class="act-sub"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>이브닝 전 2시간 18분</div>
           </div>
-          <span class="act-chev"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="act-chev"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
 
       </div>
@@ -443,12 +426,12 @@
   <!-- ============ TAB BAR + SOS ============ -->
   <div class="tab-wrap">
     <nav class="tabbar" role="tablist">
-      <a href="d01-home.html" class="tab active" aria-label="지금"><iconify-icon icon="fluent:home-24-filled"></iconify-icon><span class="tab-label">지금</span></a>
-      <a href="d02-round.html" class="tab" aria-label="회진"><iconify-icon icon="fluent:bed-24-filled"></iconify-icon><span class="tab-label">회진</span></a>
-      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon><span class="tab-label">소통</span></a>
-      <a href="d04-handover.html" class="tab" aria-label="인수인계"><iconify-icon icon="fluent:document-arrow-right-24-filled"></iconify-icon><span class="tab-label">인계</span></a>
+      <a href="d01-home.html" class="tab active" aria-label="지금"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon><span class="tab-label">지금</span></a>
+      <a href="d02-round.html" class="tab" aria-label="회진"><iconify-icon icon="material-symbols:bed-rounded"></iconify-icon><span class="tab-label">회진</span></a>
+      <a href="d03-inbox.html" class="tab" aria-label="소통"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon><span class="tab-label">소통</span></a>
+      <a href="d04-handover.html" class="tab" aria-label="인수인계"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon><span class="tab-label">인계</span></a>
     </nav>
-    <a href="d-sos.html" class="sos" aria-label="SOS"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></a>
+    <a href="d-sos.html" class="sos" aria-label="SOS"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></a>
   </div>
 
   <div class="toast" id="toast"></div>

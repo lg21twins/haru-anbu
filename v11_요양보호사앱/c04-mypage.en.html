@@ -37,13 +37,14 @@
       --t3: var(--color-text-tertiary);
       --safe-t: env(safe-area-inset-top, 0px);
       --safe-b: max(env(safe-area-inset-bottom, 0px), 20px);
+      --text-body: 18px;
       --tab-h: 64px;
       --tab-bot: 12px;
-      --pad: 20px;
+      --page-pad: 20px;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
     html{height:100%;background:var(--clinical-canvas);font-size:16px;}
-    body{height:100%;color:var(--t1);overflow-x:hidden;font-family:var(--font-family-base);font-size:18px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;} /* v3.2.7: 본문 18px — caregiver 고령 배려 표준 통일 */
+    body{height:100%;color:var(--t1);overflow-x:hidden;font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;} /* v3.2.7: 본문 18px — caregiver 고령 배려 표준 통일 */
     .bg{
       position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
       background: var(--clinical-bg-image);
@@ -78,7 +79,7 @@
     .h-title{flex:1;text-align:center;font-size:17px;font-weight:700;color:var(--t1);letter-spacing:-.3px;}
 
     .profile-hero{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;
-      margin:8px var(--pad) 0;padding:24px;
+      margin:8px var(--page-pad) 0;padding:24px;
       /* v3.2.8: 카드 토큰 (caregiver.css --cg-card-*) — hero는 라운드만 24px로 강조 */
       background:var(--cg-card-bg);border-radius:24px;
       box-shadow:var(--shadow-card-floating);
@@ -127,7 +128,7 @@
     .pf-stat__val .sm{font-size:12px;color:var(--t3);font-weight:600;}
 
     .gps{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 80ms both;
-      margin:16px var(--pad) 0;padding:18px 20px;
+      margin:16px var(--page-pad) 0;padding:18px 20px;
       background:var(--cg-card-bg);border-radius:var(--cg-card-radius);
       display:flex;align-items:center;gap:14px;
       box-shadow:var(--shadow-card-floating);
@@ -152,7 +153,7 @@
       font-size:12px;font-weight:600;border:0;cursor:pointer;font-family:inherit;
     }
 
-    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--pad) 0;position:relative;z-index:1;}
+    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--page-pad) 0;position:relative;z-index:1;}
     .sec-ttl{
       font-size:11px;font-weight:600;color:var(--t3);
       letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px;padding-left:4px;
@@ -205,7 +206,7 @@
     .switch.on::after{left:21px;}
 
     .logout{
-      margin:24px var(--pad) 0;padding:15px;
+      margin:24px var(--page-pad) 0;padding:15px;
       width:calc(100% - 44px);
       background:var(--cg-card-bg);border:0;border-radius:16px;
       box-shadow:var(--cg-card-shadow);
@@ -217,7 +218,7 @@
     }
     .logout iconify-icon{font-size:18px;}
     .ver{
-      margin:18px var(--pad) 0;text-align:center;
+      margin:18px var(--page-pad) 0;text-align:center;
       font-size:12px;font-weight:500;color:var(--t3);
       position:relative;z-index:1;
     }
@@ -245,7 +246,7 @@
           <h1 class="h-name">My</h1>
         </div>
         <button class="icon-btn" type="button" aria-label="Settings" onclick="toast('Settings')">
-          <iconify-icon icon="fluent:settings-24-filled"></iconify-icon>
+          <iconify-icon icon="mingcute:settings-3-fill"></iconify-icon>
         </button>
       </div>
     </header>
@@ -257,20 +258,20 @@
           <div class="pf-name">Lee Young-soo</div>
           <div class="pf-sub">Seocho Silver Care · Floor 2</div>
           <div class="pf-pills">
-            <span class="pf-pill pf-pill--accent"><iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon>Caregiver Level 1</span>
-            <span class="pf-pill"><iconify-icon icon="fluent:calendar-24-filled"></iconify-icon>4 years</span>
-            <span class="pf-pill"><iconify-icon icon="fluent:building-24-filled"></iconify-icon>Floor 2</span>
+            <span class="pf-pill pf-pill--accent"><iconify-icon icon="material-symbols:health-and-safety-rounded"></iconify-icon>Caregiver Level 1</span>
+            <span class="pf-pill"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon>4 years</span>
+            <span class="pf-pill"><iconify-icon icon="mingcute:building-4-fill"></iconify-icon>Floor 2</span>
           </div>
         </div>
       </div>
       <div class="pf-stats">
         <div class="pf-stat">
-          <span class="pf-stat__ico"><iconify-icon icon="fluent:people-24-filled"></iconify-icon></span>
+          <span class="pf-stat__ico"><iconify-icon icon="material-symbols:family-restroom-rounded"></iconify-icon></span>
           <div class="pf-stat__meta"><div class="pf-stat__label">Assigned patients</div></div>
           <div class="pf-stat__val">4<span class="sm"></span></div>
         </div>
         <div class="pf-stat">
-          <span class="pf-stat__ico"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></span>
+          <span class="pf-stat__ico"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon></span>
           <div class="pf-stat__meta">
             <div class="pf-stat__label">Records submitted this month</div>
             <div class="pf-stat__bar"><div class="pf-stat__bar-fill" style="--bar-w:85%"></div></div>
@@ -278,7 +279,7 @@
           <div class="pf-stat__val">17<span class="sm">/20</span></div>
         </div>
         <div class="pf-stat">
-          <span class="pf-stat__ico"><iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon></span>
+          <span class="pf-stat__ico"><iconify-icon icon="material-symbols:health-and-safety-rounded"></iconify-icon></span>
           <div class="pf-stat__meta">
             <div class="pf-stat__label">Continuing education this year</div>
             <div class="pf-stat__bar"><div class="pf-stat__bar-fill" style="--bar-w:75%"></div></div>
@@ -289,7 +290,7 @@
     </section>
 
     <section class="gps">
-      <span class="gps-pulse"><iconify-icon icon="fluent:location-live-24-filled"></iconify-icon></span>
+      <span class="gps-pulse"><iconify-icon icon="mingcute:location-fill"></iconify-icon></span>
       <div class="gps-meta">
         <div class="gps-main">On day shift · Facility GPS confirmed</div>
         <div class="gps-sub">Clocked in 07:00 · 3 hr 12 min left</div>
@@ -316,7 +317,7 @@
         </div>
         <div class="row">
           <div class="row-meta">
-            <div class="row-label">Guardian messages</div>
+            <div class="row-label">Family messages</div>
             <div class="row-sub">Push for unread messages</div>
           </div>
           <button class="switch on" onclick="this.classList.toggle('on');"></button>
@@ -339,28 +340,28 @@
             <div class="row-label">This week's schedule</div>
             <div class="row-sub">4 day shifts · 1 night · 2 days off</div>
           </div>
-          <span class="row-val">7 days<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">7 days<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('Handover notes · Coming soon');">
           <div class="row-meta">
             <div class="row-label">Handover notes</div>
             <div class="row-sub">Voice · Text · Photos</div>
           </div>
-          <span class="row-val"><span class="row-pending">Coming soon</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">Coming soon</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('AI task guide · Coming soon');">
           <div class="row-meta">
             <div class="row-label">AI task guide</div>
             <div class="row-sub">Manuals · Rules · Situational responses</div>
           </div>
-          <span class="row-val"><span class="row-pending">Coming soon</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">Coming soon</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('Language · English');">
           <div class="row-meta">
             <div class="row-label">Language</div>
             <div class="row-sub">한국어 · 中文 · Tiếng Việt</div>
           </div>
-          <span class="row-val">English<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">English<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
@@ -373,21 +374,21 @@
             <div class="row-label">Service records</div>
             <div class="row-sub">Auto monthly tally · E-signature</div>
           </div>
-          <span class="row-val"><span class="row-badge">3</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-badge">3</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('Attendance log 15/15');">
           <div class="row-meta">
             <div class="row-label">Attendance log</div>
             <div class="row-sub">GPS · Time · Signature history</div>
           </div>
-          <span class="row-val">15 days<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">15 days<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('Certification · Education 6/8h');">
           <div class="row-meta">
             <div class="row-label">Certification · Training</div>
             <div class="row-sub">Level 1 · Expires 2028.07 · CE 6/8h</div>
           </div>
-          <span class="row-val"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
@@ -397,24 +398,24 @@
       <div class="rows">
         <a class="row" href="#" onclick="event.preventDefault();toast('Help · Coming soon');">
           <div class="row-meta"><div class="row-label">Help · FAQ</div></div>
-          <span class="row-val"><span class="row-pending">Coming soon</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">Coming soon</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('Support center · Coming soon');">
           <div class="row-meta"><div class="row-label">Support center · 1:1 inquiry</div></div>
-          <span class="row-val"><span class="row-pending">Coming soon</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">Coming soon</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('Haru Anbu Caregiver v1.0');">
           <div class="row-meta">
             <div class="row-label">App info</div>
             <div class="row-sub">Version 1.0.0 · PWA</div>
           </div>
-          <span class="row-val"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
 
     <button class="logout" onclick="toast('Logged out · PIN setup required at next login');">
-      <iconify-icon icon="fluent:sign-out-24-filled"></iconify-icon>Log out
+      <iconify-icon icon="material-symbols:logout-rounded"></iconify-icon>Log out
     </button>
     <div class="ver">Haru Anbu · Caregiver app v1.0</div>
 
@@ -423,19 +424,19 @@
   <div class="bottom-bar">
     <nav class="tabbar" aria-label="Caregiver app tab bar">
       <a href="c01-today.en.html" class="tab" aria-label="Today">
-        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:home-1-fill"></iconify-icon>
         <span class="tab-label">Today</span>
       </a>
       <a href="c02-checklist.en.html" class="tab" aria-label="Records">
-        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         <span class="tab-label">Records</span>
       </a>
       <a href="c03-sotong.en.html" class="tab" aria-label="Messages">
-        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>
         <span class="tab-label">Messages</span>
       </a>
       <a href="c04-mypage.en.html" class="tab active" aria-current="page" aria-label="My">
-        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:user-3-fill"></iconify-icon>
         <span class="tab-label">My</span>
       </a>
     </nav>
@@ -443,7 +444,7 @@
       <span class="cg-sos__ring" aria-hidden="true">
         <svg class="sos-ring" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
       </span>
-      <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+      <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
     </button>
   </div>
 

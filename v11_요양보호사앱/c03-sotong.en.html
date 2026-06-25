@@ -403,7 +403,7 @@
         <h1 class="h-name">Messages</h1>
       </div>
       <button class="icon-btn" type="button" aria-label="Quick report" onclick="openReport()">
-        <iconify-icon icon="fluent:compose-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>
       </button>
     </div>
   </header>
@@ -415,42 +415,42 @@
       <a href="#unread" class="summary-bar">
         <span class="summary-bar__dot"></span>
         <span class="summary-bar__text">Unread messages <b>4</b> · Ms. Lee under low-grade fever observation</span>
-        <iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
+        <iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>
       </a>
 
       <!-- 인수인계 체크 카드 (요양보호사 특화) -->
       <section class="act-card is-handover" aria-label="Night → Day handover">
         <div class="act-card__head">
           <span class="act-card__title">
-            <iconify-icon icon="fluent:handshake-24-filled"></iconify-icon>Night → Day handover
+            <iconify-icon icon="ph:hand-waving-fill"></iconify-icon>Night → Day handover
           </span>
           <span class="act-card__meta hand-summary"><b>4</b>/5 checked</span>
         </div>
         <div class="hand-checks">
           <button class="hc is-done" onclick="toast('Fall risk · Ms. Lee checked')">
-            <span class="hc__dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+            <span class="hc__dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
             Fall risk
           </button>
           <button class="hc is-done" onclick="toast('Medication · All morning meds taken')">
-            <span class="hc__dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+            <span class="hc__dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
             Medication
           </button>
           <button class="hc is-done" onclick="toast('No pain reported')">
-            <span class="hc__dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+            <span class="hc__dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
             Pain
           </button>
           <button class="hc is-done" onclick="toast('No wandering or aggression')">
-            <span class="hc__dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+            <span class="hc__dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
             Wandering/aggression
           </button>
           <button class="hc is-todo" onclick="openHandoverTodo()">
-            <span class="hc__dot"><iconify-icon icon="fluent:alert-16-filled"></iconify-icon></span>
+            <span class="hc__dot"><iconify-icon icon="mingcute:notification-fill"></iconify-icon></span>
             Notify family
           </button>
         </div>
         <button class="act-cta act-cta--warn" onclick="openHandoverTodo()">
           Review unchecked item
-          <iconify-icon icon="fluent:arrow-right-24-filled"></iconify-icon>
+          <iconify-icon icon="mingcute:arrow-right-fill"></iconify-icon>
         </button>
       </section>
 
@@ -465,13 +465,13 @@
       <section id="unread">
         <div class="sec-label" onclick="toggleSection(this)">
           <span class="sec-label__text">Unread</span>
-          <iconify-icon icon="fluent:chevron-down-24-filled" class="sec-label__chevron"></iconify-icon>
+          <iconify-icon icon="material-symbols:expand-more-rounded" class="sec-label__chevron"></iconify-icon>
         </div>
         <div class="msg-list">
 
           <!-- 이상감지: 미열 (업무성 액션) -->
           <div class="msg-item is-unread is-action" data-type="alert" data-cat="alert">
-            <div class="av av--system is-crit"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></div>
+            <div class="av av--system is-crit"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon></div>
             <div class="msg-body">
               <div class="msg-name-row">
                 <span class="msg-name">Ms. Lee · Low-grade fever</span>
@@ -506,11 +506,11 @@
           </a>
 
           <!-- 보호자(가족) 대화 -->
-          <a class="msg-item is-unread" data-type="guard" data-cat="msg" onclick="toast('Chat with Ms. Park guardian')">
+          <a class="msg-item is-unread" data-type="guard" data-cat="msg" onclick="toast('Chat with Ms. Park\'s family')">
             <div class="av av--guard">P</div>
             <div class="msg-body">
               <div class="msg-name-row">
-                <span class="msg-name">Ms. Park guardian</span>
+                <span class="msg-name">Ms. Park's family</span>
                 <span class="badge badge--guard">Family</span>
               </div>
               <div class="msg-preview">Is Mother's blood pressure okay today? I'm a bit worried</div>
@@ -549,7 +549,7 @@
       <section>
         <div class="sec-label is-collapsed" onclick="toggleSection(this)">
           <span class="sec-label__text">Today</span>
-          <iconify-icon icon="fluent:chevron-down-24-filled" class="sec-label__chevron"></iconify-icon>
+          <iconify-icon icon="material-symbols:expand-more-rounded" class="sec-label__chevron"></iconify-icon>
         </div>
         <div class="msg-list is-collapsed">
 
@@ -568,7 +568,7 @@
 
           <!-- 체위 변경 리마인더 -->
           <div class="msg-item is-action" data-type="alert" data-cat="alert">
-            <div class="av av--system is-warn"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></div>
+            <div class="av av--system is-warn"><iconify-icon icon="material-symbols:alarm-rounded"></iconify-icon></div>
             <div class="msg-body">
               <div class="msg-name-row">
                 <span class="msg-name">Ms. Choi repositioning</span>
@@ -589,7 +589,7 @@
       <section>
         <div class="sec-label is-collapsed" onclick="toggleSection(this)">
           <span class="sec-label__text">Earlier</span>
-          <iconify-icon icon="fluent:chevron-down-24-filled" class="sec-label__chevron"></iconify-icon>
+          <iconify-icon icon="material-symbols:expand-more-rounded" class="sec-label__chevron"></iconify-icon>
         </div>
         <div class="msg-list is-collapsed">
           <a class="msg-item" data-type="nurse" data-cat="msg" onclick="toast('Nurse Lee Hae-jin')">
@@ -604,11 +604,11 @@
             <div class="msg-meta"><span class="msg-time">06:45</span></div>
           </a>
 
-          <a class="msg-item" data-type="guard" data-cat="msg" onclick="toast('Ms. Choi guardian')">
+          <a class="msg-item" data-type="guard" data-cat="msg" onclick="toast('Ms. Choi\'s family')">
             <div class="av av--guard">C</div>
             <div class="msg-body">
               <div class="msg-name-row">
-                <span class="msg-name">Ms. Choi guardian</span>
+                <span class="msg-name">Ms. Choi's family</span>
                 <span class="badge badge--guard">Family</span>
               </div>
               <div class="msg-preview">Thank you so much for the walk photos. Mother looks happy</div>
@@ -618,7 +618,7 @@
 
           <a class="msg-item" data-type="ai" data-cat="msg" onclick="toast('AI work guide')">
             <div class="av av--system">
-              <iconify-icon icon="fluent:chat-bubbles-question-24-filled"></iconify-icon>
+              <iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>
             </div>
             <div class="msg-body">
               <div class="msg-name-row">
@@ -638,19 +638,19 @@
   <div class="bottom-bar">
     <nav class="tabbar" aria-label="Caregiver app tab bar">
       <a href="c01-today.en.html" class="tab" aria-label="Today">
-        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:home-1-fill"></iconify-icon>
         <span class="tab-label">Today</span>
       </a>
       <a href="c02-checklist.en.html" class="tab" aria-label="Records">
-        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         <span class="tab-label">Records</span>
       </a>
       <a href="c03-sotong.en.html" class="tab active" aria-current="page" aria-label="Messages">
-        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>
         <span class="tab-label">Messages</span>
       </a>
       <a href="c04-mypage.en.html" class="tab" aria-label="My">
-        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:user-3-fill"></iconify-icon>
         <span class="tab-label">My</span>
       </a>
     </nav>
@@ -658,7 +658,7 @@
       <span class="cg-sos__ring" aria-hidden="true">
         <svg class="sos-ring" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
       </span>
-      <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+      <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
     </button>
   </div>
 
@@ -669,7 +669,7 @@
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-head">
-      <div class="sh-ic"><iconify-icon icon="fluent:send-24-filled"></iconify-icon></div>
+      <div class="sh-ic"><iconify-icon icon="material-symbols:send-rounded"></iconify-icon></div>
       <div>
         <div class="sh-ttl">Quick report to nurse</div>
         <div class="sh-sub">Patient → template → one-line note</div>
@@ -704,7 +704,7 @@
     <div class="cta-row">
       <button class="cta-btn cta-soft" onclick="closeSheet()">Cancel</button>
       <button class="cta-btn cta-primary" onclick="sendReport()">
-        <iconify-icon icon="fluent:send-24-filled" class="cta-icon"></iconify-icon>Send to nurse
+        <iconify-icon icon="material-symbols:send-rounded" class="cta-icon"></iconify-icon>Send to nurse
       </button>
     </div>
   </div>
@@ -777,7 +777,7 @@
     HaruCG.openSheet(
       '<div class="cg-sheet__head">' +
         '<div class="cg-sheet__ico cg-sheet__ico--warn">' +
-          '<iconify-icon icon="fluent:person-warning-24-filled"></iconify-icon>' +
+          '<iconify-icon icon="mingcute:warning-fill"></iconify-icon>' +
         '</div>' +
         '<div>' +
           '<div class="cg-sheet__ttl">Unchecked handover · Notify family</div>' +
@@ -786,21 +786,21 @@
       '</div>' +
       '<div class="cg-sheet__body">' +
         '<div class="cg-row">' +
-          '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="fluent:temperature-24-filled"></iconify-icon></span>' +
+          '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="ph:thermometer-fill"></iconify-icon></span>' +
           '<div class="cg-row__body"><div class="cg-row__t">Reason for observation</div><div class="cg-row__d">Temp 37.4℃ · 3 dry coughs</div></div>' +
         '</div>' +
         '<div class="cg-row">' +
-          '<span class="cg-row__ico"><iconify-icon icon="fluent:lightbulb-24-filled"></iconify-icon></span>' +
+          '<span class="cg-row__ico"><iconify-icon icon="mingcute:bulb-fill"></iconify-icon></span>' +
           '<div class="cg-row__body"><div class="cg-row__t">Suggested message</div><div class="cg-row__d">"She has a low-grade fever this morning and is under observation. I\'ll share the re-measurement result before lunch."</div></div>' +
         '</div>' +
         '<div class="cg-row">' +
-          '<span class="cg-row__ico"><iconify-icon icon="fluent:people-24-filled"></iconify-icon></span>' +
-          '<div class="cg-row__body"><div class="cg-row__t">Recipient</div><div class="cg-row__d">Guardian (Ms. Lee\'s daughter · 010-****-1234)</div></div>' +
+          '<span class="cg-row__ico"><iconify-icon icon="material-symbols:family-restroom-rounded"></iconify-icon></span>' +
+          '<div class="cg-row__body"><div class="cg-row__t">Recipient</div><div class="cg-row__d">Family (Ms. Lee\'s daughter · 010-****-1234)</div></div>' +
         '</div>' +
       '</div>' +
       '<div class="cg-sheet__cta">' +
         '<button class="cta-btn cta-soft sh-btn sh-btn--soft" onclick="HaruCG.closeSheet()">Cancel</button>' +
-        '<button class="cta-btn cta-primary sh-btn sh-btn--primary" onclick="confirmHandover()"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon> Check off + send</button>' +
+        '<button class="cta-btn cta-primary sh-btn sh-btn--primary" onclick="confirmHandover()"><iconify-icon icon="mingcute:check-fill"></iconify-icon> Check off + send</button>' +
       '</div>',
       { variant: 'warn' }
     );
@@ -821,9 +821,9 @@
         title: 'Anomaly · Low-grade fever observation',
         sub: 'Ms. Lee · Floor 2 · Room B-2',
         rows: [
-          ['fluent:temperature-24-filled', 'Time detected', '06:40'],
-          ['fluent:warning-24-filled', 'Observed values', 'Temp 37.4℃ · 3 coughs'],
-          ['fluent:lightbulb-24-filled', 'Next action', 'Recheck at 10:30 · Call nurse if ≥ 38℃']
+          ['ph:thermometer-fill', 'Time detected', '06:40'],
+          ['mingcute:warning-fill', 'Observed values', 'Temp 37.4℃ · 3 coughs'],
+          ['mingcute:bulb-fill', 'Next action', 'Recheck at 10:30 · Call nurse if ≥ 38℃']
         ],
         ctaLink: 'c02-checklist.en.html?pt=lee'
       },
@@ -831,9 +831,9 @@
         title: 'Repositioning reminder',
         sub: 'Ms. Choi · Room A-7 · Next 11:00',
         rows: [
-          ['fluent:clock-24-filled', 'Cycle', 'Every 2 hours (last 10:30)'],
-          ['fluent:warning-24-filled', 'Caution', 'Persistent redness on right hip'],
-          ['fluent:lightbulb-24-filled', 'Recommended', 'Right → left side-lying 30 min → backrest']
+          ['material-symbols:schedule-rounded', 'Cycle', 'Every 2 hours (last 10:30)'],
+          ['mingcute:warning-fill', 'Caution', 'Persistent redness on right hip'],
+          ['mingcute:bulb-fill', 'Recommended', 'Right → left side-lying 30 min → backrest']
         ],
         ctaLink: 'c02-checklist.en.html?pt=choi'
       }
@@ -841,7 +841,7 @@
     var d = data[kind] || data.fever;
     HaruCG.openSheet(
       '<div class="cg-sheet__head">' +
-        '<div class="cg-sheet__ico cg-sheet__ico--warn"><iconify-icon icon="fluent:alert-24-filled"></iconify-icon></div>' +
+        '<div class="cg-sheet__ico cg-sheet__ico--warn"><iconify-icon icon="mingcute:notification-fill"></iconify-icon></div>' +
         '<div><div class="cg-sheet__ttl">' + d.title + '</div><div class="cg-sheet__sub">' + d.sub + '</div></div>' +
       '</div>' +
       '<div class="cg-sheet__body">' +
@@ -854,7 +854,7 @@
       '</div>' +
       '<div class="cg-sheet__cta">' +
         '<button class="cta-btn cta-soft sh-btn sh-btn--soft" onclick="HaruCG.closeSheet();HaruCG.toast(\'Nurse called\')">Call nurse</button>' +
-        '<button class="cta-btn cta-primary sh-btn sh-btn--primary" onclick="HaruCG.closeSheet();location.href=\'' + d.ctaLink + '\'"><iconify-icon icon="fluent:pen-24-filled"></iconify-icon> Start record</button>' +
+        '<button class="cta-btn cta-primary sh-btn sh-btn--primary" onclick="HaruCG.closeSheet();location.href=\'' + d.ctaLink + '\'"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon> Start record</button>' +
       '</div>',
       { variant: 'warn' }
     );

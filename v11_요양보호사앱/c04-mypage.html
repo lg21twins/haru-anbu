@@ -37,13 +37,14 @@
       --t3: var(--color-text-tertiary);
       --safe-t: env(safe-area-inset-top, 0px);
       --safe-b: max(env(safe-area-inset-bottom, 0px), 20px);
+      --text-body: 18px;
       --tab-h: 64px;
       --tab-bot: 12px;
-      --pad: 20px;
+      --page-pad: 20px;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
     html{height:100%;background:var(--clinical-canvas);font-size:16px;}
-    body{height:100%;color:var(--t1);overflow-x:hidden;font-family:var(--font-family-base);font-size:18px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased;} /* v3.2.7: 본문 18px — caregiver 고령 배려 표준 통일 */
+    body{height:100%;color:var(--t1);overflow-x:hidden;font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;} /* v3.2.7: 본문 18px — caregiver 고령 배려 표준 통일 */
     .bg{
       position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
       background: var(--clinical-bg-image);
@@ -78,7 +79,7 @@
     .h-title{flex:1;text-align:center;font-size:17px;font-weight:700;color:var(--t1);letter-spacing:-.3px;}
 
     .profile-hero{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;
-      margin:8px var(--pad) 0;padding:24px;
+      margin:8px var(--page-pad) 0;padding:24px;
       /* v3.2.8: 카드 토큰 (caregiver.css --cg-card-*) — hero는 라운드만 24px로 강조 */
       background:var(--cg-card-bg);border-radius:24px;
       box-shadow:var(--shadow-card-floating);
@@ -127,7 +128,7 @@
     .pf-stat__val .sm{font-size:12px;color:var(--t3);font-weight:600;}
 
     .gps{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 80ms both;
-      margin:16px var(--pad) 0;padding:18px 20px;
+      margin:16px var(--page-pad) 0;padding:18px 20px;
       background:var(--cg-card-bg);border-radius:var(--cg-card-radius);
       display:flex;align-items:center;gap:14px;
       box-shadow:var(--shadow-card-floating);
@@ -152,7 +153,7 @@
       font-size:12px;font-weight:600;border:0;cursor:pointer;font-family:inherit;
     }
 
-    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--pad) 0;position:relative;z-index:1;}
+    .sec{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 160ms both;margin:32px var(--page-pad) 0;position:relative;z-index:1;}
     .sec-ttl{
       font-size:11px;font-weight:600;color:var(--t3);
       letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px;padding-left:4px;
@@ -205,7 +206,7 @@
     .switch.on::after{left:21px;}
 
     .logout{
-      margin:24px var(--pad) 0;padding:15px;
+      margin:24px var(--page-pad) 0;padding:15px;
       width:calc(100% - 44px);
       background:var(--cg-card-bg);border:0;border-radius:16px;
       box-shadow:var(--cg-card-shadow);
@@ -217,7 +218,7 @@
     }
     .logout iconify-icon{font-size:18px;}
     .ver{
-      margin:18px var(--pad) 0;text-align:center;
+      margin:18px var(--page-pad) 0;text-align:center;
       font-size:12px;font-weight:500;color:var(--t3);
       position:relative;z-index:1;
     }
@@ -245,7 +246,7 @@
           <h1 class="h-name">마이</h1>
         </div>
         <button class="icon-btn" type="button" aria-label="설정" onclick="toast('설정')">
-          <iconify-icon icon="fluent:settings-24-filled"></iconify-icon>
+          <iconify-icon icon="mingcute:settings-3-fill"></iconify-icon>
         </button>
       </div>
     </header>
@@ -257,20 +258,20 @@
           <div class="pf-name">이영수 선생님</div>
           <div class="pf-sub">서초실버케어 · 2층 담당</div>
           <div class="pf-pills">
-            <span class="pf-pill pf-pill--accent"><iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon>요양보호사 1급</span>
-            <span class="pf-pill"><iconify-icon icon="fluent:calendar-24-filled"></iconify-icon>4년차</span>
-            <span class="pf-pill"><iconify-icon icon="fluent:building-24-filled"></iconify-icon>2층</span>
+            <span class="pf-pill pf-pill--accent"><iconify-icon icon="material-symbols:health-and-safety-rounded"></iconify-icon>요양보호사 1급</span>
+            <span class="pf-pill"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon>4년차</span>
+            <span class="pf-pill"><iconify-icon icon="mingcute:building-4-fill"></iconify-icon>2층</span>
           </div>
         </div>
       </div>
       <div class="pf-stats">
         <div class="pf-stat">
-          <span class="pf-stat__ico"><iconify-icon icon="fluent:people-24-filled"></iconify-icon></span>
+          <span class="pf-stat__ico"><iconify-icon icon="material-symbols:family-restroom-rounded"></iconify-icon></span>
           <div class="pf-stat__meta"><div class="pf-stat__label">담당 어르신</div></div>
           <div class="pf-stat__val">4<span class="sm">명</span></div>
         </div>
         <div class="pf-stat">
-          <span class="pf-stat__ico"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></span>
+          <span class="pf-stat__ico"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon></span>
           <div class="pf-stat__meta">
             <div class="pf-stat__label">이번 달 기록지 제출</div>
             <div class="pf-stat__bar"><div class="pf-stat__bar-fill" style="--bar-w:85%"></div></div>
@@ -278,7 +279,7 @@
           <div class="pf-stat__val">17<span class="sm">/20</span></div>
         </div>
         <div class="pf-stat">
-          <span class="pf-stat__ico"><iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon></span>
+          <span class="pf-stat__ico"><iconify-icon icon="material-symbols:health-and-safety-rounded"></iconify-icon></span>
           <div class="pf-stat__meta">
             <div class="pf-stat__label">올해 보수교육</div>
             <div class="pf-stat__bar"><div class="pf-stat__bar-fill" style="--bar-w:75%"></div></div>
@@ -289,7 +290,7 @@
     </section>
 
     <section class="gps">
-      <span class="gps-pulse"><iconify-icon icon="fluent:location-live-24-filled"></iconify-icon></span>
+      <span class="gps-pulse"><iconify-icon icon="mingcute:location-fill"></iconify-icon></span>
       <div class="gps-meta">
         <div class="gps-main">주간 근무 중 · 시설 GPS 확인됨</div>
         <div class="gps-sub">07:00 출근 · 3시간 12분 남음</div>
@@ -339,28 +340,28 @@
             <div class="row-label">이번 주 일정</div>
             <div class="row-sub">주간 4일 · 야간 1일 · 휴무 2일</div>
           </div>
-          <span class="row-val">7일<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">7일<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('인수인계 메모 · 준비중');">
           <div class="row-meta">
             <div class="row-label">인수인계 메모</div>
             <div class="row-sub">음성 · 텍스트 · 사진</div>
           </div>
-          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('AI 업무 가이드 · 준비중');">
           <div class="row-meta">
             <div class="row-label">AI 업무 가이드</div>
             <div class="row-sub">매뉴얼 · 규정 · 상황별 대응</div>
           </div>
-          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('언어 설정 · 한국어');">
           <div class="row-meta">
             <div class="row-label">언어</div>
             <div class="row-sub">한국어 · 中文 · Tiếng Việt</div>
           </div>
-          <span class="row-val">한국어<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">한국어<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
@@ -373,21 +374,21 @@
             <div class="row-label">서비스 제공기록지</div>
             <div class="row-sub">월별 자동 집계 · 전자서명</div>
           </div>
-          <span class="row-val"><span class="row-badge">3</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-badge">3</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('출퇴근 기록 15/15');">
           <div class="row-meta">
             <div class="row-label">출퇴근 기록</div>
             <div class="row-sub">GPS · 시간 · 서명 이력</div>
           </div>
-          <span class="row-val">15일<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val">15일<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('자격증 · 보수교육 6/8h');">
           <div class="row-meta">
             <div class="row-label">자격증 · 교육이수</div>
             <div class="row-sub">1급 · 만료 2028.07 · 보수 6/8h</div>
           </div>
-          <span class="row-val"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
@@ -397,24 +398,24 @@
       <div class="rows">
         <a class="row" href="#" onclick="event.preventDefault();toast('도움말 · 준비중');">
           <div class="row-meta"><div class="row-label">도움말 · FAQ</div></div>
-          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('고객센터 · 준비중');">
           <div class="row-meta"><div class="row-label">고객센터 · 1:1 문의</div></div>
-          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><span class="row-pending">준비중</span><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
         <a class="row" href="#" onclick="event.preventDefault();toast('하루안부 요양보호사 v1.0');">
           <div class="row-meta">
             <div class="row-label">앱 정보</div>
             <div class="row-sub">버전 1.0.0 · PWA</div>
           </div>
-          <span class="row-val"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></span>
+          <span class="row-val"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
         </a>
       </div>
     </section>
 
     <button class="logout" onclick="toast('로그아웃 · 다음 로그인 시 PIN 설정 필요');">
-      <iconify-icon icon="fluent:sign-out-24-filled"></iconify-icon>로그아웃
+      <iconify-icon icon="material-symbols:logout-rounded"></iconify-icon>로그아웃
     </button>
     <div class="ver">하루안부 · 요양보호사앱 v1.0</div>
 
@@ -423,19 +424,19 @@
   <div class="bottom-bar">
     <nav class="tabbar" aria-label="요양보호사 앱 탭바">
       <a href="c01-today.html" class="tab" aria-label="오늘">
-        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:home-1-fill"></iconify-icon>
         <span class="tab-label">오늘</span>
       </a>
       <a href="c02-checklist.html" class="tab" aria-label="기록">
-        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         <span class="tab-label">기록</span>
       </a>
       <a href="c03-sotong.html" class="tab" aria-label="소통">
-        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>
         <span class="tab-label">소통</span>
       </a>
       <a href="c04-mypage.html" class="tab active" aria-current="page" aria-label="마이">
-        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:user-3-fill"></iconify-icon>
         <span class="tab-label">마이</span>
       </a>
     </nav>
@@ -443,7 +444,7 @@
       <span class="cg-sos__ring" aria-hidden="true">
         <svg class="sos-ring" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
       </span>
-      <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+      <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
     </button>
   </div>
 

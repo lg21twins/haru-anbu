@@ -403,7 +403,7 @@
         <h1 class="h-name">소통</h1>
       </div>
       <button class="icon-btn" type="button" aria-label="빠른 보고" onclick="openReport()">
-        <iconify-icon icon="fluent:compose-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>
       </button>
     </div>
   </header>
@@ -415,42 +415,42 @@
       <a href="#unread" class="summary-bar">
         <span class="summary-bar__dot"></span>
         <span class="summary-bar__text">읽지 않은 메시지 <b>4건</b> · 이정숙 어르신 미열 관찰 중</span>
-        <iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
+        <iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>
       </a>
 
       <!-- 인수인계 체크 카드 (요양보호사 특화) -->
       <section class="act-card is-handover" aria-label="야간→주간 인수인계">
         <div class="act-card__head">
           <span class="act-card__title">
-            <iconify-icon icon="fluent:handshake-24-filled"></iconify-icon>야간 → 주간 인수인계
+            <iconify-icon icon="ph:hand-waving-fill"></iconify-icon>야간 → 주간 인수인계
           </span>
           <span class="act-card__meta hand-summary"><b>4</b>/5 확인</span>
         </div>
         <div class="hand-checks">
           <button class="hc is-done" onclick="toast('낙상 위험 · 이정숙 확인 완료')">
-            <span class="hc__dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+            <span class="hc__dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
             낙상 위험
           </button>
           <button class="hc is-done" onclick="toast('복약 상태 · 전원 아침약 복용 완료')">
-            <span class="hc__dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+            <span class="hc__dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
             복약
           </button>
           <button class="hc is-done" onclick="toast('통증 호소 없음')">
-            <span class="hc__dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+            <span class="hc__dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
             통증
           </button>
           <button class="hc is-done" onclick="toast('배회 · 폭력 경향 없음')">
-            <span class="hc__dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+            <span class="hc__dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
             배회·폭력
           </button>
           <button class="hc is-todo" onclick="openHandoverTodo()">
-            <span class="hc__dot"><iconify-icon icon="fluent:alert-16-filled"></iconify-icon></span>
+            <span class="hc__dot"><iconify-icon icon="mingcute:notification-fill"></iconify-icon></span>
             가족 통보
           </button>
         </div>
         <button class="act-cta act-cta--warn" onclick="openHandoverTodo()">
           미확인 항목 확인하기
-          <iconify-icon icon="fluent:arrow-right-24-filled"></iconify-icon>
+          <iconify-icon icon="mingcute:arrow-right-fill"></iconify-icon>
         </button>
       </section>
 
@@ -465,13 +465,13 @@
       <section id="unread">
         <div class="sec-label" onclick="toggleSection(this)">
           <span class="sec-label__text">읽지 않음</span>
-          <iconify-icon icon="fluent:chevron-down-24-filled" class="sec-label__chevron"></iconify-icon>
+          <iconify-icon icon="material-symbols:expand-more-rounded" class="sec-label__chevron"></iconify-icon>
         </div>
         <div class="msg-list">
 
           <!-- 이상감지: 미열 (업무성 액션) -->
           <div class="msg-item is-unread is-action" data-type="alert" data-cat="alert">
-            <div class="av av--system is-crit"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></div>
+            <div class="av av--system is-crit"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon></div>
             <div class="msg-body">
               <div class="msg-name-row">
                 <span class="msg-name">이정숙 어르신 · 미열</span>
@@ -549,7 +549,7 @@
       <section>
         <div class="sec-label is-collapsed" onclick="toggleSection(this)">
           <span class="sec-label__text">오늘</span>
-          <iconify-icon icon="fluent:chevron-down-24-filled" class="sec-label__chevron"></iconify-icon>
+          <iconify-icon icon="material-symbols:expand-more-rounded" class="sec-label__chevron"></iconify-icon>
         </div>
         <div class="msg-list is-collapsed">
 
@@ -568,7 +568,7 @@
 
           <!-- 체위 변경 리마인더 -->
           <div class="msg-item is-action" data-type="alert" data-cat="alert">
-            <div class="av av--system is-warn"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></div>
+            <div class="av av--system is-warn"><iconify-icon icon="material-symbols:alarm-rounded"></iconify-icon></div>
             <div class="msg-body">
               <div class="msg-name-row">
                 <span class="msg-name">최명자 어르신 체위 변경</span>
@@ -589,7 +589,7 @@
       <section>
         <div class="sec-label is-collapsed" onclick="toggleSection(this)">
           <span class="sec-label__text">이전</span>
-          <iconify-icon icon="fluent:chevron-down-24-filled" class="sec-label__chevron"></iconify-icon>
+          <iconify-icon icon="material-symbols:expand-more-rounded" class="sec-label__chevron"></iconify-icon>
         </div>
         <div class="msg-list is-collapsed">
           <a class="msg-item" data-type="nurse" data-cat="msg" onclick="toast('이해진 간호사')">
@@ -618,7 +618,7 @@
 
           <a class="msg-item" data-type="ai" data-cat="msg" onclick="toast('AI 업무 가이드')">
             <div class="av av--system">
-              <iconify-icon icon="fluent:chat-bubbles-question-24-filled"></iconify-icon>
+              <iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>
             </div>
             <div class="msg-body">
               <div class="msg-name-row">
@@ -638,19 +638,19 @@
   <div class="bottom-bar">
     <nav class="tabbar" aria-label="요양보호사 앱 탭바">
       <a href="c01-today.html" class="tab" aria-label="오늘">
-        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:home-1-fill"></iconify-icon>
         <span class="tab-label">오늘</span>
       </a>
       <a href="c02-checklist.html" class="tab" aria-label="기록">
-        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         <span class="tab-label">기록</span>
       </a>
       <a href="c03-sotong.html" class="tab active" aria-current="page" aria-label="소통">
-        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>
         <span class="tab-label">소통</span>
       </a>
       <a href="c04-mypage.html" class="tab" aria-label="마이">
-        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:user-3-fill"></iconify-icon>
         <span class="tab-label">마이</span>
       </a>
     </nav>
@@ -658,7 +658,7 @@
       <span class="cg-sos__ring" aria-hidden="true">
         <svg class="sos-ring" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
       </span>
-      <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+      <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
     </button>
   </div>
 
@@ -669,7 +669,7 @@
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-head">
-      <div class="sh-ic"><iconify-icon icon="fluent:send-24-filled"></iconify-icon></div>
+      <div class="sh-ic"><iconify-icon icon="material-symbols:send-rounded"></iconify-icon></div>
       <div>
         <div class="sh-ttl">간호사에게 빠른 보고</div>
         <div class="sh-sub">환자 → 템플릿 → 한줄 메모</div>
@@ -704,7 +704,7 @@
     <div class="cta-row">
       <button class="cta-btn cta-soft" onclick="closeSheet()">취소</button>
       <button class="cta-btn cta-primary" onclick="sendReport()">
-        <iconify-icon icon="fluent:send-24-filled" class="cta-icon"></iconify-icon>간호사에게 전송
+        <iconify-icon icon="material-symbols:send-rounded" class="cta-icon"></iconify-icon>간호사에게 전송
       </button>
     </div>
   </div>
@@ -777,7 +777,7 @@
     HaruCG.openSheet(
       '<div class="cg-sheet__head">' +
         '<div class="cg-sheet__ico cg-sheet__ico--warn">' +
-          '<iconify-icon icon="fluent:person-warning-24-filled"></iconify-icon>' +
+          '<iconify-icon icon="mingcute:warning-fill"></iconify-icon>' +
         '</div>' +
         '<div>' +
           '<div class="cg-sheet__ttl">미확인 인수인계 · 가족 통보</div>' +
@@ -786,21 +786,21 @@
       '</div>' +
       '<div class="cg-sheet__body">' +
         '<div class="cg-row">' +
-          '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="fluent:temperature-24-filled"></iconify-icon></span>' +
+          '<span class="cg-row__ico cg-row__ico--warn"><iconify-icon icon="ph:thermometer-fill"></iconify-icon></span>' +
           '<div class="cg-row__body"><div class="cg-row__t">관찰 사유</div><div class="cg-row__d">체온 37.4℃ · 마른 기침 3회</div></div>' +
         '</div>' +
         '<div class="cg-row">' +
-          '<span class="cg-row__ico"><iconify-icon icon="fluent:lightbulb-24-filled"></iconify-icon></span>' +
+          '<span class="cg-row__ico"><iconify-icon icon="mingcute:bulb-fill"></iconify-icon></span>' +
           '<div class="cg-row__body"><div class="cg-row__t">추천 문구</div><div class="cg-row__d">"오늘 아침 미열이 있어 관찰 중입니다. 점심 전 재측정 결과 공유드릴게요."</div></div>' +
         '</div>' +
         '<div class="cg-row">' +
-          '<span class="cg-row__ico"><iconify-icon icon="fluent:people-24-filled"></iconify-icon></span>' +
+          '<span class="cg-row__ico"><iconify-icon icon="material-symbols:family-restroom-rounded"></iconify-icon></span>' +
           '<div class="cg-row__body"><div class="cg-row__t">전송 대상</div><div class="cg-row__d">보호자 (이정숙 따님 · 010-****-1234)</div></div>' +
         '</div>' +
       '</div>' +
       '<div class="cg-sheet__cta">' +
         '<button class="cta-btn cta-soft sh-btn sh-btn--soft" onclick="HaruCG.closeSheet()">취소</button>' +
-        '<button class="cta-btn cta-primary sh-btn sh-btn--primary" onclick="confirmHandover()"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon> 확인 처리 + 전송</button>' +
+        '<button class="cta-btn cta-primary sh-btn sh-btn--primary" onclick="confirmHandover()"><iconify-icon icon="mingcute:check-fill"></iconify-icon> 확인 처리 + 전송</button>' +
       '</div>',
       { variant: 'warn' }
     );
@@ -821,9 +821,9 @@
         title: '이상감지 · 미열 관찰',
         sub: '이정숙 어르신 · 2층 B-2호',
         rows: [
-          ['fluent:temperature-24-filled', '발생 시각', '06:40'],
-          ['fluent:warning-24-filled', '관찰 값', '체온 37.4℃ · 기침 3회'],
-          ['fluent:lightbulb-24-filled', '다음 행동', '10:30 재측정 · 38℃ 이상 시 간호사 호출']
+          ['ph:thermometer-fill', '발생 시각', '06:40'],
+          ['mingcute:warning-fill', '관찰 값', '체온 37.4℃ · 기침 3회'],
+          ['mingcute:bulb-fill', '다음 행동', '10:30 재측정 · 38℃ 이상 시 간호사 호출']
         ],
         ctaLink: 'c02-checklist.html?pt=lee'
       },
@@ -831,9 +831,9 @@
         title: '체위 변경 리마인더',
         sub: '최명자 어르신 · A-7호 · 다음 11:00',
         rows: [
-          ['fluent:clock-24-filled', '주기', '2시간 (10:30 마지막)'],
-          ['fluent:warning-24-filled', '주의', '오른쪽 둔부 발적 지속'],
-          ['fluent:lightbulb-24-filled', '권장', '오른쪽 → 왼쪽 측위 30분 → 등받이']
+          ['material-symbols:schedule-rounded', '주기', '2시간 (10:30 마지막)'],
+          ['mingcute:warning-fill', '주의', '오른쪽 둔부 발적 지속'],
+          ['mingcute:bulb-fill', '권장', '오른쪽 → 왼쪽 측위 30분 → 등받이']
         ],
         ctaLink: 'c02-checklist.html?pt=choi'
       }
@@ -841,7 +841,7 @@
     var d = data[kind] || data.fever;
     HaruCG.openSheet(
       '<div class="cg-sheet__head">' +
-        '<div class="cg-sheet__ico cg-sheet__ico--warn"><iconify-icon icon="fluent:alert-24-filled"></iconify-icon></div>' +
+        '<div class="cg-sheet__ico cg-sheet__ico--warn"><iconify-icon icon="mingcute:notification-fill"></iconify-icon></div>' +
         '<div><div class="cg-sheet__ttl">' + d.title + '</div><div class="cg-sheet__sub">' + d.sub + '</div></div>' +
       '</div>' +
       '<div class="cg-sheet__body">' +
@@ -854,7 +854,7 @@
       '</div>' +
       '<div class="cg-sheet__cta">' +
         '<button class="cta-btn cta-soft sh-btn sh-btn--soft" onclick="HaruCG.closeSheet();HaruCG.toast(\'간호사 호출됨\')">간호사 호출</button>' +
-        '<button class="cta-btn cta-primary sh-btn sh-btn--primary" onclick="HaruCG.closeSheet();location.href=\'' + d.ctaLink + '\'"><iconify-icon icon="fluent:pen-24-filled"></iconify-icon> 기록 시작</button>' +
+        '<button class="cta-btn cta-primary sh-btn sh-btn--primary" onclick="HaruCG.closeSheet();location.href=\'' + d.ctaLink + '\'"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon> 기록 시작</button>' +
       '</div>',
       { variant: 'warn' }
     );

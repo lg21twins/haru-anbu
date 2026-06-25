@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#EFF6FF">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Haru Anbu — Medical Timeline</title>
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css?v=24">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="../07_디자인/system/app.css?v=24">
+  <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <style>
+    .app-shell { max-width: 430px; margin: 0 auto; }
+    .page-sub { font-size: var(--text-callout); color: var(--color-text-secondary); }
+
+    /* 타임라인 컨테이너 — 세로 스레드 + 점 */
+    .tl-wrap { position: relative; padding-left: 28px; }
+    .tl-wrap::before {
+      content: ''; position: absolute;
+      left: 11px; top: 6px; bottom: 6px;
+      width: 2px; border-radius: 2px;
+      background: rgba(44,122,252,.18);
+    }
+
+    .tl-month {
+      position: relative;
+      font-size: var(--text-mini); font-weight: var(--weight-bold);
+      color: var(--color-text-secondary);
+      letter-spacing: 0.4px;
+      margin: var(--space-5) 0 var(--space-3);
+      padding-left: 4px;
+    }
+    .tl-month::before {
+      content: ''; position: absolute;
+      left: -23px; top: 50%; transform: translateY(-50%);
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--color-text-tertiary);
+      box-shadow: 0 0 0 3px var(--brand-blue-50);
+    }
+    .tl-month:first-child { margin-top: 0; }
+
+    .tl { display: flex; flex-direction: column; gap: var(--space-4); }
+    /* 카드 패딩은 .card 기본값(--space-5=16px) 그대로 사용 — 덮지 않는다 */
+    .tl-item { position: relative; }
+    /* 카드 옆 점 — 배지 중앙선에 맞춤 */
+    .tl-item::before {
+      content: ''; position: absolute;
+      left: -22px; top: 23px;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: white; border: 2.5px solid var(--color-accent);
+      box-shadow: 0 0 0 2.5px var(--brand-blue-50);
+    }
+    .tl-item.is-danger::before { border-color: var(--color-danger); }
+    .tl-item.is-success::before { border-color: var(--color-success); }
+
+    .tl-card-head {
+      display: flex; align-items: center; gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+    .tl-card-head .tl-date { margin-left: auto; font-size: var(--text-mini); color: var(--color-text-tertiary); font-variant-numeric: tabular-nums; }
+    .tl-title { font-size: var(--text-callout); font-weight: var(--weight-bold); margin-bottom: var(--space-2); letter-spacing: -0.2px; }
+    .tl-desc { font-size: var(--text-caption); color: var(--color-text-secondary); line-height: var(--leading-normal); }
+
+    /* 진입 애니메이션 */
+    .page-sub, .filter-row, .tl-month {
+      animation: haru-fade-in-up var(--motion-enter) var(--easing-standard) both;
+    }
+    .page-sub  { animation-delay: 50ms; }
+    .tl-month  { animation-delay: 150ms; }
+    .tl-item {
+      animation: haru-fade-in-up var(--motion-enter) var(--easing-standard) both;
+    }
+    .tl > .tl-item:nth-child(1) { animation-delay: 200ms; }
+    .tl > .tl-item:nth-child(2) { animation-delay: 260ms; }
+    .tl > .tl-item:nth-child(3) { animation-delay: 320ms; }
+    .tl > .tl-item:nth-child(4) { animation-delay: 380ms; }
+    .tl > .tl-item:nth-child(5) { animation-delay: 440ms; }
+    .tl > .tl-item:nth-child(n+6) { animation-delay: 500ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .page-sub, .filter-row, .tl-month, .tl-item { animation: none !important; }
+    }
+  </style>
+
+  <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn 표준 (2026-05-22 통합) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
+<style>
+  /* === 3앱 공통 헤더 표준 (d01-home 기준, 보호자앱에도 강제) === */
+  [data-platform="mobile"] .header{
+    padding: calc(env(safe-area-inset-top, 0px) + 6px) 20px 0 !important;
+    position: static !important;
+    background: transparent !important;
+  }
+  /* 기본 = 홈 패턴: 로고 + 액션 그룹 (flex space-between) */
+  [data-platform="mobile"] .header .top-nav{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    margin-bottom: 24px !important;
+  }
+  /* 서브 패턴: title-block 있을 때 → grid 3-col (44 / 1fr / 44) */
+  [data-platform="mobile"] .header .top-nav:has(> .title-block){
+    display: grid !important;
+    grid-template-columns: 44px 1fr 44px !important;
+    margin-bottom: 8px !important;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-left{
+    width: 44px; height: 44px;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .title-block{
+    grid-column: 2; text-align: center; line-height: 1.2; min-width: 0;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-name{
+    font: 600 17px/1.2 inherit; color: var(--color-text-primary); letter-spacing: -.3px; text-align: center;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :first-child{
+    grid-column: 1; justify-self: start;
+  }
+  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :last-child{
+    grid-column: 3; justify-self: end;
+  }
+  /* logo */
+  [data-platform="mobile"] .header .top-nav > .logo{
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    background: transparent !important;
+    border: 0 !important;
+    padding: 4px !important;
+    margin: -4px !important;
+    cursor: pointer !important;
+  }
+  [data-platform="mobile"] .header .top-nav > .logo svg{ width: 28px !important; height: 28px !important; display: block !important; }
+  /* top-actions 그룹 (홈 페이지) */
+  [data-platform="mobile"] .header .top-actions{
+    display: flex !important; align-items: center !important; gap: 8px !important;
+  }
+  /* icon-btn 글라스 (44×44, blur, shadow) */
+  [data-platform="mobile"] .header .icon-btn{
+    width: 44px !important; height: 44px !important; border-radius: 50% !important;
+    background: rgba(255,255,255,.55) !important;
+    border: .5px solid rgba(255,255,255,.55) !important;
+    backdrop-filter: blur(12px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
+    box-shadow: 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06) !important;
+    display: inline-flex !important; align-items: center !important; justify-content: center !important;
+    cursor: pointer !important; text-decoration: none !important;
+    position: relative !important;
+    transition: transform .1s !important;
+  }
+  [data-platform="mobile"] .header .icon-btn:active{ transform: scale(.93); }
+  [data-platform="mobile"] .header .icon-btn iconify-icon{
+    font-size: 22px !important;
+    color: var(--color-accent-strong) !important;
+  }
+  [data-platform="mobile"] .header .icon-btn .notif-dot,
+  [data-platform="mobile"] .header .notif-dot{
+    position: absolute !important; top: 10px !important; right: 10px !important;
+    width: 8px !important; height: 8px !important; border-radius: 50% !important;
+    background: var(--color-danger) !important;
+    border: 1.5px solid white !important;
+    z-index: 2 !important;
+  }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="header">
+    <div class="top-nav">
+      <a class="icon-btn" href="g05-records.html" aria-label="Back"><iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon></a>
+      <div class="title-block">
+        <h1 class="h-name">Medical Timeline</h1>
+      </div>
+      <div aria-hidden="true" style="width:44px;height:44px;flex-shrink:0"></div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="stack-loose u-pt-5">
+
+      <p class="page-sub">Mother Youngjah's medical history</p>
+
+      <div class="filter-row" role="tablist">
+        <button class="chip is-active" type="button" aria-pressed="true">All</button>
+        <button class="chip" type="button">Visit</button>
+        <button class="chip" type="button">Prescription change</button>
+        <button class="chip" type="button">Test</button>
+        <button class="chip" type="button">Urgent</button>
+      </div>
+
+      <div class="tl-wrap">
+        <div class="tl-month">April 2026</div>
+        <div class="tl">
+          <div class="card tl-item">
+            <div class="tl-card-head">
+              <span class="badge badge--info"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon>Prescription change</span>
+              <span class="tl-date">Apr 1</span>
+            </div>
+            <div class="tl-title">Donepezil dose adjusted</div>
+            <div class="tl-desc">5mg → 10mg increase. Based on cognitive assessment results. Side effects to be monitored.</div>
+          </div>
+        </div>
+
+        <div class="tl-month">March 2026</div>
+        <div class="tl">
+          <div class="card tl-item is-danger">
+            <div class="tl-card-head">
+              <span class="badge badge--danger"><iconify-icon icon="mingcute:warning-fill"></iconify-icon>Urgent</span>
+              <span class="tl-date">Mar 28</span>
+            </div>
+            <div class="tl-title">Fall incident</div>
+            <div class="tl-desc">Slipped while moving to the bathroom. X-ray showed no fracture. Walking aid recommended.</div>
+          </div>
+          <div class="card tl-item">
+            <div class="tl-card-head">
+              <span class="badge badge--info"><iconify-icon icon="mingcute:flask-fill"></iconify-icon>Test</span>
+              <span class="tl-date">Mar 20</span>
+            </div>
+            <div class="tl-title">Routine blood test</div>
+            <div class="tl-desc">CBC, liver and kidney function within normal range. HbA1c 6.1% (normal). Cholesterol borderline.</div>
+          </div>
+          <div class="card tl-item">
+            <div class="tl-card-head">
+              <span class="badge badge--info"><iconify-icon icon="solar:stethoscope-bold"></iconify-icon>Visit</span>
+              <span class="tl-date">Mar 14</span>
+            </div>
+            <div class="tl-title">Regular visit</div>
+            <div class="tl-desc">Overall condition good. MMSE 22 (mild cognitive impairment). Rehab exercise 3x/week advised.</div>
+          </div>
+          <div class="card tl-item">
+            <div class="tl-card-head">
+              <span class="badge badge--info"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon>Prescription change</span>
+              <span class="tl-date">Mar 12</span>
+            </div>
+            <div class="tl-title">Blood pressure med dose adjusted</div>
+            <div class="tl-desc">Amlodipine 2.5mg → 5mg. Based on recent upward trend in blood pressure readings.</div>
+          </div>
+          <div class="card tl-item is-success">
+            <div class="tl-card-head">
+              <span class="badge badge--success"><iconify-icon icon="mingcute:trophy-fill"></iconify-icon>Milestone</span>
+              <span class="tl-date">Mar 1</span>
+            </div>
+            <div class="tl-title">6 months at the facility</div>
+            <div class="tl-desc">Settled in fully. Improved independence in daily living. Increased participation in social activities.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="bottom-bar">
+    <nav class="tabbar">
+      <a href="g-guardian-live.html" class="tab" aria-label="Home"><span class="tab-icon"><iconify-icon icon="mingcute:home-1-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g02-ai-guide.html" class="tab" aria-label="AI Guide"><span class="tab-icon"><iconify-icon icon="material-symbols:menu-book-rounded" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g03-sotong.html" class="tab" aria-label="Communication"><span class="tab-icon"><iconify-icon icon="material-symbols:chat-rounded" class="text-22"></iconify-icon></span></a>
+      <a href="g05-records.html" class="tab active" aria-label="Records"><span class="tab-icon"><iconify-icon icon="mingcute:folder-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g05-mypage.html" class="tab" aria-label="My page"><span class="tab-icon"><iconify-icon icon="mingcute:user-3-fill" class="u-fs-26"></iconify-icon></span></a>
+    </nav>
+    <a href="g-guardian-live.html?chat=1" class="ai-fab" aria-label="AI assistant">
+      <svg width="22" height="22" viewBox="0 0 2526 2526" fill="var(--brand-blue-500)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
+    </a>
+  </div>
+
+</div>
+<script>
+  document.querySelectorAll('.filter-row .chip').forEach(function(c){
+    c.addEventListener('click', function(){
+      document.querySelectorAll('.filter-row .chip').forEach(function(x){ x.classList.remove('is-active'); x.setAttribute('aria-pressed','false'); });
+      c.classList.add('is-active');
+      c.setAttribute('aria-pressed','true');
+    });
+  });
+</script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
+</body>
+</html>
