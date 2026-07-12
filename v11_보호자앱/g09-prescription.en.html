@@ -17,142 +17,11 @@
   <link rel="stylesheet" href="../07_디자인/system/app.css?v=24">
   <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
-  <style>
-    .app-shell { max-width: 430px; margin: 0 auto; }
-    /* components.css의 [data-role=guardian] .sec-title(margin-bottom:0)를 이기려면 같은 specificity로 올린다 */
-    [data-role="guardian"] .sec-title { font-size: var(--text-headline); font-weight: var(--weight-bold); margin-bottom: var(--space-7); }
-    /* 약 카드 박스 간 여유 (stack-tight 4px·u-gap-3 8px 대신 20px) */
-    .med-list { gap: var(--space-6); }
-
-    .med-head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); }
-    .med-icon {
-      width: 40px; height: 40px; border-radius: 12px;
-      background: var(--color-accent-soft);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .med-icon iconify-icon { font-size: 20px; color: var(--color-accent); }
-    .med-name { font-size: var(--text-headline); font-weight: var(--weight-bold); }
-    .med-type { font-size: var(--text-caption); color: var(--color-text-secondary); }
-
-    .med-details {
-      display: flex; flex-direction: column;
-      margin: var(--space-4) 0;
-    }
-    .med-row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; }
-    .med-row > iconify-icon { font-size: 18px; color: var(--color-text-tertiary); flex-shrink: 0; }
-    .med-d-label { font-size: var(--text-caption); color: var(--color-text-tertiary); }
-    .med-d-value { font-size: var(--text-callout); font-weight: var(--weight-semibold); color: var(--color-text-primary); margin-left: auto; }
-
-    .med-warn { margin-top: var(--space-4); }
-    .med-warn-head {
-      display: flex; align-items: center; gap: var(--space-2);
-      font-size: var(--text-callout); font-weight: var(--weight-bold);
-      color: var(--palette-amber-700);
-      margin-bottom: var(--space-3);
-    }
-    .med-warn-list {
-      display: flex; flex-direction: column; gap: var(--space-2);
-      font-size: var(--text-caption); color: var(--color-text-secondary);
-      line-height: var(--leading-normal);
-    }
-    .med-warn-list li { display: flex; gap: var(--space-2); }
-    .med-warn-list li::before {
-      content: ''; flex-shrink: 0;
-      width: 4px; height: 4px; border-radius: var(--radius-pill);
-      background: var(--color-warning);
-      margin-top: 7px;
-    }
-
-    .change-log { display: flex; flex-direction: column; gap: var(--space-6); }
-    .change-card { padding: var(--space-5); }
-    .change-text { font-size: var(--text-callout); font-weight: var(--weight-semibold); margin-bottom: 2px; }
-    .change-date { font-size: var(--text-mini); color: var(--color-text-secondary); margin-bottom: var(--space-2); }
-    .change-reason { font-size: var(--text-caption); color: var(--color-text-secondary); line-height: var(--leading-normal); }
-  </style>
+  <link rel="stylesheet" href="styles/g09-prescription-part-1.css">
 
   <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn 표준 (2026-05-22 통합) -->
   <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
-<style>
-  /* === 3앱 공통 헤더 표준 (d01-home 기준, 보호자앱에도 강제) === */
-  [data-platform="mobile"] .header{
-    padding: calc(env(safe-area-inset-top, 0px) + 6px) 20px 0 !important;
-    position: static !important;
-    background: transparent !important;
-  }
-  /* 기본 = 홈 패턴: 로고 + 액션 그룹 (flex space-between) */
-  [data-platform="mobile"] .header .top-nav{
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 8px !important;
-    margin-bottom: 24px !important;
-  }
-  /* 서브 패턴: title-block 있을 때 → grid 3-col (44 / 1fr / 44) */
-  [data-platform="mobile"] .header .top-nav:has(> .title-block){
-    display: grid !important;
-    grid-template-columns: 44px 1fr 44px !important;
-    margin-bottom: 8px !important;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-left{
-    width: 44px; height: 44px;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .title-block{
-    grid-column: 2; text-align: center; line-height: 1.2; min-width: 0;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-name{
-    font: 600 17px/1.2 inherit; color: var(--color-text-primary); letter-spacing: -.3px; text-align: center;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :first-child{
-    grid-column: 1; justify-self: start;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :last-child{
-    grid-column: 3; justify-self: end;
-  }
-  /* logo */
-  [data-platform="mobile"] .header .top-nav > .logo{
-    display: inline-flex !important;
-    align-items: center !important;
-    text-decoration: none !important;
-    color: inherit !important;
-    background: transparent !important;
-    border: 0 !important;
-    padding: 4px !important;
-    margin: -4px !important;
-    cursor: pointer !important;
-  }
-  [data-platform="mobile"] .header .top-nav > .logo svg{ width: 28px !important; height: 28px !important; display: block !important; }
-  /* top-actions 그룹 (홈 페이지) */
-  [data-platform="mobile"] .header .top-actions{
-    display: flex !important; align-items: center !important; gap: 8px !important;
-  }
-  /* icon-btn 글라스 (44×44, blur, shadow) */
-  [data-platform="mobile"] .header .icon-btn{
-    width: 44px !important; height: 44px !important; border-radius: 50% !important;
-    background: rgba(255,255,255,.55) !important;
-    border: .5px solid rgba(255,255,255,.55) !important;
-    backdrop-filter: blur(12px) saturate(140%) !important;
-    -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
-    box-shadow: 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06) !important;
-    display: inline-flex !important; align-items: center !important; justify-content: center !important;
-    cursor: pointer !important; text-decoration: none !important;
-    position: relative !important;
-    transition: transform .1s !important;
-  }
-  [data-platform="mobile"] .header .icon-btn:active{ transform: scale(.93); }
-  [data-platform="mobile"] .header .icon-btn iconify-icon{
-    font-size: 22px !important;
-    color: var(--color-accent-strong) !important;
-  }
-  [data-platform="mobile"] .header .icon-btn .notif-dot,
-  [data-platform="mobile"] .header .notif-dot{
-    position: absolute !important; top: 10px !important; right: 10px !important;
-    width: 8px !important; height: 8px !important; border-radius: 50% !important;
-    background: var(--color-danger) !important;
-    border: 1.5px solid white !important;
-    z-index: 2 !important;
-  }
-</style>
+<link rel="stylesheet" href="styles/g09-prescription-part-2.css">
 </head>
 <body>
 <div class="app-shell">
@@ -163,7 +32,7 @@
       <div class="title-block">
         <h1 class="h-name">Prescription</h1>
       </div>
-      <button class="icon-btn" aria-label="Share"><iconify-icon icon="mingcute:share-2-fill"></iconify-icon></button>
+      <button type="button" class="icon-btn" aria-label="Share"><iconify-icon icon="mingcute:share-2-fill"></iconify-icon></button>
     </div>
   </header>
 

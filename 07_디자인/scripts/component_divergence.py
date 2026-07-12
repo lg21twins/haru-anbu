@@ -63,7 +63,9 @@ def collect_class_defs():
     """클래스명 → [(파일, 정규화된 선언, 원본 선언 첫 80자)] 매핑."""
     table: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
     for folder in FOLDERS:
-        for p in (REPO_ROOT / folder).rglob("*.html"):
+        files = list((REPO_ROOT / folder).rglob("*.html"))
+        files.extend((REPO_ROOT / folder).rglob("*.css"))
+        for p in files:
             if any(x in p.parts for x in EXCLUDE_PARTS):
                 continue
             try:
@@ -71,8 +73,12 @@ def collect_class_defs():
             except UnicodeDecodeError:
                 continue
             rel = str(p.relative_to(REPO_ROOT))
-            for sm in re.finditer(r"<style[^>]*>(.*?)</style>", text, re.DOTALL):
-                content = sm.group(1)
+            contents = (
+                [text]
+                if p.suffix == ".css"
+                else [sm.group(1) for sm in re.finditer(r"<style[^>]*>(.*?)</style>", text, re.DOTALL)]
+            )
+            for content in contents:
                 for m in CLASS_RULE_RE.finditer(content):
                     cls = m.group(1)
                     if cls in SKIP_CLASSES:

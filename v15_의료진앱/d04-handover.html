@@ -15,376 +15,9 @@
   <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
   <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
-  <style>
-    /* :root 별칭은 _shared.css 에서 정의 */
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-    /* v3.2.12+: clinical 캔버스 (v11 요양보호사앱과 동일 — var(--clinical-canvas) 토큰 참조) */
-    html{height:100%;background:var(--clinical-canvas);font-size:16px;}
-    body{
-      height:100%;color:var(--t1);overflow-x:hidden;
-      font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
-      background:transparent;
-    }
-    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background: var(--clinical-bg-image);}
-    .app{
-      max-width:430px;margin:0 auto;min-height:100%;position:relative;
-      padding-bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 40px);
-    }
-
-    /* HEADER (v15 통일 — grid 44·1fr·44 / h-eyebrow + h-name) */
-    .header{padding:calc(var(--safe-t) + 14px) var(--page-pad) 8px;position:relative;z-index:5;}
-    .top-nav .icon-btn{grid-column:3;justify-self:end;}
-    .h-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
-    /* v3.2.5: 헤더 icon-btn 글라스 통일 (d01 홈 스펙) */
-    .icon-btn{
-      width:44px;height:44px;border-radius:50%;
-      background:rgba(255,255,255,.55);
-      border:.5px solid rgba(255,255,255,.55);
-      backdrop-filter:blur(12px) saturate(140%);
-      -webkit-backdrop-filter:blur(12px) saturate(140%);
-      cursor:pointer;text-decoration:none;
-      display:inline-flex;align-items:center;justify-content:center;
-      box-shadow:0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06);
-      position:relative;transition:transform .1s;
-    }
-
-    /* COUNTDOWN — 슬림 인포 스트립 */
-    .countdown{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) 60ms both;
-      margin:0 var(--page-pad);padding:14px 18px;
-      display:flex;align-items:center;gap:14px;
-      background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.9);
-      border-radius:16px;
-      position:relative;z-index:1;
-    }
-    .countdown-ring{width:44px;height:44px;flex-shrink:0;position:relative;}
-    .countdown-ring svg{transform:rotate(-90deg);}
-    .countdown-val{
-      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-      font-size:13px;font-weight:700;color:var(--accent-strong);
-      font-variant-numeric:tabular-nums;letter-spacing:-.2px;
-    }
-    .countdown-meta{flex:1;min-width:0;line-height:1.3;}
-    .countdown-label{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.3px;text-transform:uppercase;}
-    .countdown-main{font-size:13px;font-weight:600;color:var(--t1);margin-top:3px;letter-spacing:-.2px;}
-
-    /* SECTION */
-    .sec{margin:20px var(--page-pad) 0;position:relative;z-index:1;}
-    .sec-head{
-      display:flex;align-items:baseline;justify-content:space-between;
-      margin-bottom:10px;padding:0 2px;
-    }
-    .sec-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
-    .sec-ttl{font-size:18px;font-weight:700;color:var(--t1);letter-spacing:-.4px;margin-top:5px;}
-    .sec-action{
-      font-size:12px;font-weight:600;padding:7px 12px;border-radius:999px;
-      background:var(--palette-white);color:var(--accent-strong);border:0;
-      cursor:pointer;font-family:inherit;align-self:flex-end;
-      box-shadow:0 1px 3px rgba(0,0,0,.04);
-    }
-
-    /* SBAR — 헤드라인+키밸류 위급 + 접힘 비위급 (배경필·사이드레일 금지) */
-    /* === SBAR 대시보드 컴포짓 (시안 5) ===
-       상단: 24h 추이 차트 / 중단: 2×2 그리드 / 하단: 권고 가중치
-       위계는 타이포·간격·태그 색상으로만. 좌측 스트로크/레일 없음. */
-    .sbar{
-      animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;
-      display:flex;flex-direction:column;gap:10px;
-    }
-
-    /* 상단: 24h 추이 차트 */
-    .sbar-trend{
-      background:var(--palette-white);border-radius:20px;
-      box-shadow:var(--cg-card-shadow);
-      padding:18px 20px 14px;
-    }
-    .sbar-trend-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px;}
-    .sbar-trend-ttl{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-.2px;}
-    .sbar-trend-sub{font-size:11px;color:var(--t3);margin-top:2px;line-height:1.3;}
-    .sbar-trend-val{
-      font-size:26px;font-weight:800;color:var(--color-danger);
-      letter-spacing:-.5px;line-height:1;font-variant-numeric:tabular-nums;text-align:right;
-    }
-    .sbar-trend-val small{font-size:12px;font-weight:600;color:var(--t3);margin-left:2px;}
-    .sbar-trend-time{font-size:10px;font-weight:600;color:var(--t3);margin-top:4px;text-align:right;letter-spacing:.2px;}
-    .sbar-chart{width:100%;height:108px;display:block;}
-    .sbar-chart-legend{
-      margin-top:8px;display:flex;align-items:center;gap:14px;
-      font-size:11px;font-weight:500;color:var(--t3);
-    }
-    .sbar-chart-legend > span{display:inline-flex;align-items:center;gap:5px;}
-    .sbar-chart-legend i{width:8px;height:8px;border-radius:2px;display:inline-block;}
-    .sbar-chart-legend .i-danger{background:var(--color-danger);}
-    .sbar-chart-legend .i-warn{background:var(--color-warning);}
-    .sbar-chart-legend .last{margin-left:auto;color:var(--t2);font-weight:600;}
-    .sbar-chart-legend .last b{color:var(--t1);font-weight:700;}
-
-    /* 중단: 2×2 SBAR 타일 그리드 */
-    .sbar-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-    .sbar-tile{
-      background:var(--palette-white);border-radius:16px;
-      box-shadow:var(--cg-card-shadow);
-      padding:14px 16px;text-align:left;
-      font-family:inherit;border:0;cursor:pointer;
-      display:flex;flex-direction:column;gap:6px;
-      transition:transform .12s;
-    }
-    .sbar-tile:active{transform:scale(.99);}
-    .sbar-tile-head{display:flex;align-items:center;gap:8px;}
-    .sbar-tile-tag{
-      width:22px;height:22px;border-radius:7px;flex-shrink:0;
-      display:inline-flex;align-items:center;justify-content:center;
-      font-size:11px;font-weight:800;letter-spacing:-.2px;
-      background:var(--palette-gray-100);color:var(--palette-gray-700);
-    }
-    .sbar-tile--danger .sbar-tile-tag{background:var(--danger-soft);color:var(--palette-red-700);}
-    .sbar-tile--warn  .sbar-tile-tag{background:var(--warn-soft);color:var(--palette-amber-700);}
-    .sbar-tile-label{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.3px;text-transform:uppercase;}
-    .sbar-tile-headline{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-.2px;line-height:1.3;}
-    .sbar-tile--danger .sbar-tile-headline{color:var(--palette-red-700);}
-    .sbar-tile--warn  .sbar-tile-headline{color:var(--palette-amber-700);}
-    .sbar-tile-sub{font-size:11.5px;font-weight:500;color:var(--t2);line-height:1.4;}
-
-    /* 하단: 권고 가중치 */
-    .sbar-rec{
-      background:var(--palette-white);border-radius:20px;
-      box-shadow:var(--cg-card-shadow);
-      padding:16px 20px;
-    }
-    .sbar-rec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;}
-    .sbar-rec-ttl{font-size:11px;font-weight:700;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
-    .sbar-rec-cnt{font-size:11px;font-weight:500;color:var(--t3);}
-    .sbar-rec-row{
-      display:flex;align-items:center;gap:10px;padding:9px 0;
-      border-top:1px solid rgba(0,0,0,.04);
-    }
-    .sbar-rec-row:first-of-type{border-top:0;}
-    .sbar-rec-num{
-      width:22px;height:22px;border-radius:50%;flex-shrink:0;
-      display:inline-flex;align-items:center;justify-content:center;
-      font-size:11px;font-weight:700;letter-spacing:-.2px;
-      background:var(--palette-gray-100);color:var(--palette-gray-700);
-    }
-    .sbar-rec-row.p-danger .sbar-rec-num{background:var(--color-danger);color:var(--palette-white);}
-    .sbar-rec-row.p-warn   .sbar-rec-num{background:var(--color-warning);color:var(--palette-white);}
-    .sbar-rec-text{flex:1;min-width:0;font-size:13px;font-weight:500;color:var(--t1);line-height:1.35;letter-spacing:-.1px;}
-    .sbar-rec-text b{font-weight:700;}
-    .sbar-rec-weight{width:60px;height:5px;background:rgba(0,0,0,.06);border-radius:3px;overflow:hidden;flex-shrink:0;}
-    .sbar-rec-weight i{display:block;height:100%;width:var(--weight, 0%);background:var(--palette-gray-400);}
-    .sbar-rec-row.p-danger .sbar-rec-weight i{background:var(--color-danger);}
-    .sbar-rec-row.p-warn   .sbar-rec-weight i{background:var(--color-warning);}
-
-    .ai-hint{
-      margin:12px 0 0;padding:14px 18px;background:var(--palette-white);
-      border-radius:20px;
-      box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .08);
-      display:flex;align-items:center;gap:12px;
-    }
-    .ai-hint iconify-icon{font-size:20px;color:var(--accent-strong);flex-shrink:0;}
-    .ai-hint-text{font-size:13px;font-weight:600;color:var(--t2);line-height:1.5;}
-    .ai-hint-text b{color:var(--t1);font-weight:700;}
-
-    /* CHECKS */
-    .checks{
-      background:var(--palette-white);border-radius:20px;overflow:hidden;
-      box-shadow:var(--cg-card-shadow);
-    }
-    .check-row{
-      padding:16px 18px;display:flex;align-items:center;gap:14px;
-      border-bottom:1px solid rgba(0,0,0,.05);cursor:pointer;
-    }
-    .check-row:last-child{border-bottom:0;}
-    .check-box{
-      width:26px;height:26px;border-radius:8px;flex-shrink:0;
-      border:2px solid rgba(0,0,0,.12);background:var(--palette-white);
-      display:inline-flex;align-items:center;justify-content:center;
-      transition:.15s;
-    }
-    .check-box iconify-icon{font-size:16px;color:var(--palette-white);opacity:0;transition:.15s;}
-    .check-row.checked .check-box{background:var(--accent);border-color:var(--accent);}
-    .check-row.checked .check-box iconify-icon{opacity:1;}
-    .check-text{flex:1;min-width:0;line-height:1.35;}
-    .check-label{font-size:14px;font-weight:600;color:var(--t1);letter-spacing:-.2px;}
-    .check-row.checked .check-label{color:var(--t2);font-weight:500;}
-    .check-sub{font-size:12px;font-weight:500;color:var(--t3);margin-top:3px;}
-    .check-cnt{
-      font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;
-      background:var(--warn-soft);color:var(--palette-amber-700);flex-shrink:0;
-    }
-
-    /* TIMELINE */
-    .accum{
-      background:var(--palette-white);border-radius:20px;padding:8px 0;
-      box-shadow:var(--cg-card-shadow);
-    }
-    .acc-row{
-      padding:14px 18px;display:flex;align-items:flex-start;gap:14px;
-    }
-    .acc-time{flex-shrink:0;width:54px;text-align:right;line-height:1.05;}
-    .acc-h{font-size:13px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;letter-spacing:-.3px;}
-    .acc-min{font-size:10.5px;font-weight:500;color:var(--t3);margin-top:3px;}
-    .acc-line{flex-shrink:0;width:2px;background:rgba(0,0,0,.06);align-self:stretch;margin-top:5px;position:relative;}
-    .acc-dot{
-      width:12px;height:12px;border-radius:50%;background:var(--accent);
-      position:absolute;top:0;left:50%;transform:translateX(-50%);
-      box-shadow:0 0 0 3px white;
-    }
-    .acc-dot.warn{background:var(--warn);}
-    .acc-dot.danger{background:var(--danger);}
-    .acc-body{flex:1;min-width:0;line-height:1.4;padding-bottom:4px;}
-    .acc-patient{font-size:13.5px;font-weight:600;color:var(--t1);letter-spacing:-.2px;}
-    .acc-msg{font-size:13px;font-weight:500;color:var(--t2);margin-top:4px;}
-    .acc-tag{
-      display:inline-block;font-size:10px;font-weight:600;padding:2px 6px;border-radius:5px;
-      background:var(--accent-soft);color:var(--accent-strong);margin-right:5px;letter-spacing:.2px;
-    }
-    .acc-tag.warn{background:var(--warn-soft);color:var(--palette-amber-700);}
-    .acc-tag.s{background:var(--brand-blue-100);color:var(--brand-blue-600);}
-    .acc-tag.a{background:var(--warn-soft);color:var(--palette-amber-700);}
-
-    /* VOICE */
-    .voice-bar{
-      background:var(--palette-white);border-radius:18px;
-      padding:12px 14px;display:flex;align-items:center;gap:12px;
-      box-shadow:var(--cg-card-shadow);
-    }
-    .voice-mic-lg{
-      width:46px;height:46px;border-radius:50%;flex-shrink:0;
-      background:var(--accent);
-      color:var(--palette-white);display:inline-flex;align-items:center;justify-content:center;
-      box-shadow:0 4px 14px rgba(var(--brand-green-500-rgb), .36);cursor:pointer;border:0;
-    }
-    .voice-mic-lg iconify-icon{font-size:22px;}
-    .voice-info{flex:1;min-width:0;line-height:1.3;}
-    .voice-info-main{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-.3px;}
-    .voice-info-sub{font-size:12px;font-weight:500;color:var(--t2);margin-top:2px;}
-
-    /* SEND */
-    .send-cta{
-      margin:10px var(--page-pad) 0;display:grid;grid-template-columns:1fr 2fr;gap:10px;
-      position:relative;z-index:1;
-    }
-    .send-draft{
-      padding:16px;background:var(--palette-white);border:0;
-      border-radius:16px;font-size:14px;font-weight:700;color:var(--t2);
-      cursor:pointer;font-family:inherit;
-      box-shadow:var(--cg-card-shadow);
-    }
-    .send-now{
-      padding:16px;background:var(--accent);
-      border:0;border-radius:14px;color:var(--palette-white);
-      font-size:15px;font-weight:700;letter-spacing:-.2px;
-      cursor:pointer;font-family:inherit;
-      box-shadow:0 6px 18px rgba(var(--brand-green-500-rgb), .35);
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    }
-    .send-now iconify-icon{font-size:18px;}
-
-    /* TAB BAR · v3.2.5: 세 앱 탭바 위치 통일 — env(safe-bottom) + 12px (d01 기준) */
-    .tab-wrap{
-      position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);
-      left:50%;transform:translateX(-50%);
-      display:flex;align-items:center;gap:10px;
-      width:calc(100% - 32px);max-width:398px;z-index:40;
-    }
-    /* v3.2.5: 탭바 — 보호자 스타일 통일 (글라스 + 아이콘 26px, 라벨 숨김) */
-    .tabbar{
-      flex:1;min-width:0;height:var(--tab-h);
-      background:rgba(255,255,255,.85);
-      backdrop-filter:blur(20px) saturate(140%);
-      -webkit-backdrop-filter:blur(20px) saturate(140%);
-      border:1px solid rgba(255,255,255,.55);
-      border-radius:999px;
-      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
-      display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;
-    }
-    .tab iconify-icon{font-size:26px;}
-    .tab-label{display:none;}
-    .tab.active{color:var(--accent-strong);}
-    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(var(--brand-green-500-rgb), .28));}
-    .sos{
-      position:relative;width:var(--tab-h);height:var(--tab-h);flex-shrink:0;border-radius:50%;
-      background:var(--color-danger);border:0;
-      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
-      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
-    }
-    .sos iconify-icon{font-size:26px;color:var(--palette-white);}
-    .toast{
-      position:fixed;left:50%;bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 18px);
-      transform:translateX(-50%) translateY(20px);
-      background:rgba(28,28,30,.92);color:var(--palette-white);font-size:14px;font-weight:600;
-      padding:11px 20px;border-radius:999px;
-      opacity:0;transition:.25s;pointer-events:none;z-index:300;white-space:nowrap;
-    }
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-    /* ===== HANDOVER SEND CONFIRMATION SHEET ===== */
-    .conf-overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.45);
-      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-      display:none;align-items:flex-end;justify-content:center;z-index:400;
-    }
-    .conf-overlay.show{display:flex;}
-    .conf-sheet{
-      background:var(--palette-white);color:var(--t1);
-      width:100%;max-width:430px;
-      border-radius:24px 24px 0 0;
-      padding:14px 22px calc(24px + env(safe-area-inset-bottom,0px));
-      box-shadow:0 -8px 28px rgba(0,0,0,.2);
-      animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both;max-height:88vh;overflow-y:auto;
-    }
-    @keyframes haru-fade-in-up {from{transform:translateY(8px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-    .conf-handle{width:40px;height:4px;background:rgba(0,0,0,.15);border-radius:2px;margin:0 auto 14px;}
-    .conf-eyebrow{font-size:11px;font-weight:700;letter-spacing:.4px;color:var(--accent-strong);text-transform:uppercase;}
-    .conf-ttl{font-size:20px;font-weight:700;color:var(--t1);letter-spacing:-.4px;line-height:1.3;margin-top:4px;}
-    .conf-sub{font-size:13px;font-weight:500;color:var(--t2);line-height:1.5;margin-top:6px;}
-
-    .conf-warn{
-      display:flex;align-items:center;gap:12px;
-      padding:14px 16px;background:var(--warn-soft);
-      border-radius:14px;margin:18px 0 16px;
-    }
-    .conf-warn iconify-icon{font-size:22px;color:var(--palette-amber-700);flex-shrink:0;}
-    .conf-warn-text{font-size:13.5px;font-weight:600;color:var(--palette-amber-700);line-height:1.4;}
-    .conf-warn-text b{display:block;font-size:14px;font-weight:700;}
-    .conf-warn-list{margin-top:6px;font-size:12.5px;font-weight:500;color:var(--palette-amber-700);line-height:1.5;}
-
-    .conf-meta{
-      background:var(--clinical-surface);border-radius:14px;padding:14px 16px;margin-bottom:16px;
-      display:flex;flex-direction:column;gap:8px;
-    }
-    .conf-meta>div{display:flex;justify-content:space-between;align-items:center;font-size:13px;gap:12px;}
-    .conf-meta span{color:var(--t3);font-weight:500;flex-shrink:0;}
-    .conf-meta b{color:var(--t1);font-weight:700;text-align:right;}
-    .conf-meta b.danger{color:var(--palette-red-700);}
-
-    .conf-section-ttl{
-      font-size:11px;font-weight:700;color:var(--t3);
-      letter-spacing:.4px;text-transform:uppercase;margin:6px 0 8px;
-    }
-    .conf-pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
-    .conf-pill{
-      display:inline-flex;align-items:center;gap:5px;
-      font-size:12px;font-weight:600;padding:6px 10px;border-radius:999px;
-      background:var(--accent-soft);color:var(--accent-strong);
-    }
-    .conf-pill.warn{background:var(--warn-soft);color:var(--palette-amber-700);}
-    .conf-pill.danger{background:var(--danger-soft);color:var(--palette-red-700);}
-    .conf-pill iconify-icon{font-size:13px;}
-
-    .conf-action-primary{
-      width:100%;padding:18px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
-      background:var(--accent);color:var(--palette-white);
-      font-size:16px;font-weight:700;letter-spacing:-.2px;
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      box-shadow:0 6px 18px rgba(var(--brand-green-500-rgb), .3);
-    }
-    .conf-action-primary iconify-icon{font-size:20px;}
-    .conf-cancel{
-      width:100%;margin-top:10px;padding:14px;
-      background:transparent;border:0;cursor:pointer;font-family:inherit;
-      font-size:14px;font-weight:700;color:var(--t2);
-    }
-  </style>
+  <link rel="stylesheet" href="styles/d04-handover.css">
+  <link rel="stylesheet" href="../07_디자인/system/interactions.css">
+  <script src="../07_디자인/system/interactions.js"></script>
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
@@ -397,7 +30,7 @@
         <div class="title-block">
           <div class="h-name">SBAR</div>
         </div>
-        <button class="icon-btn" aria-label="이력"><iconify-icon icon="material-symbols:history-rounded"></iconify-icon></button>
+        <button type="button" class="icon-btn" aria-label="이력"><iconify-icon icon="material-symbols:history-rounded"></iconify-icon></button>
       </div>
     </header>
 
@@ -423,7 +56,7 @@
         </div>
       </div>
       <div class="voice-bar">
-        <button class="voice-mic-lg" onclick="toast('녹음 시작 — 60초');" aria-label="음성 메모 녹음">
+        <button type="button" class="voice-mic-lg" onclick="toast('녹음 시작 — 60초');" aria-label="음성 메모 녹음">
           <iconify-icon icon="ph:microphone-fill"></iconify-icon>
         </button>
         <div class="voice-info">
@@ -439,7 +72,7 @@
           <div class="sec-eyebrow">AI 자동 분류</div>
           <h2 class="sec-ttl">SBAR 초안</h2>
         </div>
-        <button class="sec-action" onclick="toast('AI 재생성');">재생성</button>
+        <button type="button" class="sec-action" onclick="toast('AI 재생성');">재생성</button>
       </div>
 
       <div class="sbar">
@@ -595,7 +228,7 @@
           <div class="sec-eyebrow">오늘 적립</div>
           <h2 class="sec-ttl">메모 7건</h2>
         </div>
-        <button class="sec-action" onclick="toast('전체 보기');">전체</button>
+        <button type="button" class="sec-action" onclick="toast('전체 보기');">전체</button>
       </div>
       <div class="accum">
 
@@ -690,21 +323,16 @@
         <span class="conf-pill warn"><iconify-icon icon="mingcute:notification-fill"></iconify-icon>주의 환자 3명</span>
       </div>
 
-      <button class="conf-action-primary" onclick="confirmSend()">
+      <button type="button" class="conf-action-primary" onclick="confirmSend()">
         <iconify-icon icon="material-symbols:send-rounded"></iconify-icon>전송하기
       </button>
-      <button class="conf-cancel" onclick="closeSendConfirm()">취소 · 더 확인</button>
+      <button type="button" class="conf-cancel" onclick="closeSendConfirm()">취소 · 더 확인</button>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
   <script>
-    function toast(msg){
-      const el=document.getElementById('toast');
-      el.textContent=msg;el.classList.add('show');
-      clearTimeout(window.__t);window.__t=setTimeout(()=>el.classList.remove('show'),1800);
-    }
-    function openSendConfirm(){
+function openSendConfirm(){
       const rows = document.querySelectorAll('.check-row');
       const unchecked = Array.from(rows).filter(r=>!r.classList.contains('checked'));
       const warn = document.getElementById('sendWarn');

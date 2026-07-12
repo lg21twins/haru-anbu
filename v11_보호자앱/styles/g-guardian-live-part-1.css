@@ -1,0 +1,7 @@
+html.skip-intro .intro{display:none!important}
+  /* AI 오브는 건드리지 않음 — JS skipAllInstant()가 finale+dimmed 정상 적용 */
+  html.skip-intro body{visibility:visible}
+  html.skip-intro .intro-enter{opacity:1!important;transform:none!important;transition:none!important}
+  /* iframe(쇼케이스) 임베드: 페인트 부하 줄이기 — 오브 호흡 애니메이션·필 웨이브 캔버스 끔 */
+  html.skip-intro .ai-orb{animation:none!important;will-change:auto!important}
+  html.skip-intro #pillWave{display:none!important}

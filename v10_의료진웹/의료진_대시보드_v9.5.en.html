@@ -34,21 +34,21 @@
 
       /* 무채색 — 의료진 웹 고유 웜 그레이 톤 (tokens.css 팔레트와 톤 차이 있어 직접 정의).
          과거 `--surface: var(--surface)` 자기참조는 invalid 처리되어 실제 값으로 복원. */
-      --ink:    #1A1612;       /* 웜 다크 (사이드바 bg) — 코멘트의 "웜 그레이 톤" 의도 반영 */
-      --ink-2:  #2A2A2A;
-      --ink-3:  #555555;
-      --ink-4:  #888888;
-      --ink-5:  #AAAAAA;
-      --ink-6:  #D8D5D0;       /* 옅은 warm border */
-      --ink-7:  #BBB7B0;       /* 더 진한 warm border */
-      --surface:        #FFFFFF;      /* 카드 기본 배경 */
-      --surface-warm:   #FAF8F5;      /* 카드/패널 웜 톤 */
-      --surface-soft:   #F4F1ED;      /* 보조 카드 */
-      --surface-tint:   #EFECE7;      /* hover/divider */
-      --surface-tint-2: #E6E2DD;      /* 변형 */
-      --surface-tint-3: #D8D3CC;      /* 더 진한 분리선 */
+      --ink:    var(--medical-web-ink-1);
+      --ink-2:  var(--medical-web-ink-2);
+      --ink-3:  var(--medical-web-ink-3);
+      --ink-4:  var(--medical-web-ink-4);
+      --ink-5:  var(--medical-web-ink-5);
+      --ink-6:  var(--medical-web-border-1);
+      --ink-7:  var(--medical-web-border-2);
+      --surface:        var(--medical-web-surface);
+      --surface-warm:   var(--medical-web-surface-warm);
+      --surface-soft:   var(--medical-web-surface-soft);
+      --surface-tint:   var(--medical-web-surface-tint);
+      --surface-tint-2: var(--medical-web-surface-tint-2);
+      --surface-tint-3: var(--medical-web-surface-tint-3);
       --border-warm:    rgba(0,0,0,.07);
-      --bg:     #EEEDEA;
+      --bg:     var(--medical-web-canvas);
       --white:  var(--palette-white);
 
       /* 포인트 — 케어 그린 (data-role=medical → --color-accent = --brand-green-500) */
@@ -2051,7 +2051,7 @@
     .rec-gauge-frac .miss { color: var(--danger); font-weight: 700; }
 
     /* 실사 준비 게이지 링 바닥 색 (카테고리별) */
-    .rec-gauge-cell[data-type="nurse"]  { --gauge-color: #6366F1; }
+    .rec-gauge-cell[data-type="nurse"]  { --gauge-color: var(--medical-web-chart-nurse); }
     .rec-gauge-cell[data-type="pay"]    { --gauge-color: var(--accent); }
     .rec-gauge-cell[data-type="vital"]  { --gauge-color: var(--brand-blue-500); }
     .rec-gauge-cell[data-type="inc"]    { --gauge-color: var(--danger); }
@@ -2518,7 +2518,7 @@
     .cl-don-cell[data-cat="vital"] { --ring-color: var(--brand-blue-500); }
     .cl-don-cell[data-cat="med"]   { --ring-color: var(--accent-strong); }
     .cl-don-cell[data-cat="food"]  { --ring-color: var(--warn); }
-    .cl-don-cell[data-cat="care"]  { --ring-color: #A78BFA; }
+    .cl-don-cell[data-cat="care"]  { --ring-color: var(--medical-web-chart-care); }
 
     /* 타임라인 */
     .cl-tl-head-row {
@@ -3136,7 +3136,7 @@
        액티브만 브랜드 그린 pill로 정체성 유지
        ============================================================ */
     .sidebar {
-      background: #1A1612 !important;   /* DEBUG: 리터럴로 강제 (var(--ink) 평가 의심) */
+      background: var(--ink) !important;
       border-right: 0 !important;
       width: 220px !important;
     }
@@ -3642,12 +3642,12 @@
     </div>
 
     <div class="topbar-actions">
-      <button class="icon-btn" title="Notifications">
+      <button type="button" class="icon-btn" title="Notifications">
         <iconify-icon icon="mingcute:notification-fill"></iconify-icon>
         <span class="notif-dot"></span>
       </button>
 
-      <button class="sos-btn">
+      <button type="button" class="sos-btn">
         <iconify-icon icon="mingcute:question-fill"></iconify-icon>
         SOS Call
       </button>
@@ -3687,7 +3687,7 @@
             </span>
           </div>
         </div>
-        <button class="ph-all">View all</button>
+        <button type="button" class="ph-all">View all</button>
       </div>
       <div class="ph-list">
 
@@ -3698,7 +3698,7 @@
             <div class="ph-meta">Yeong-su Park Room 301 · 20 min since BP 180/110 detected</div>
           </div>
           <span class="ph-tag urgent">Urgent</span>
-          <button class="ph-btn em">Respond</button>
+          <button type="button" class="ph-btn em">Respond</button>
         </div>
 
         <div class="ph-item urgent">
@@ -3708,7 +3708,7 @@
             <div class="ph-meta">Soon-ja Kim Room 302 refused · Cheol-su Lee Room 303 on hold</div>
           </div>
           <span class="ph-tag urgent">Urgent</span>
-          <button class="ph-btn em">Respond</button>
+          <button type="button" class="ph-btn em">Respond</button>
         </div>
 
         <div class="ph-item">
@@ -3718,7 +3718,7 @@
             <div class="ph-meta">Yeong-su Park Room 301 · Wound care · Scheduled time imminent</div>
           </div>
           <span class="ph-tag warn">Imminent</span>
-          <button class="ph-btn">Record</button>
+          <button type="button" class="ph-btn">Record</button>
         </div>
 
         <div class="ph-item">
@@ -3728,7 +3728,7 @@
             <div class="ph-meta">Soon-ja Kim Room 302 · D-2 deadline · LTC regulation required</div>
           </div>
           <span class="ph-tag warn">Deadline approaching</span>
-          <button class="ph-btn">Write</button>
+          <button type="button" class="ph-btn">Write</button>
         </div>
 
         <div class="ph-item">
@@ -3738,7 +3738,7 @@
             <div class="ph-meta">Rooms 302·307·309 · Under meal observation</div>
           </div>
           <span class="ph-tag muted">On time</span>
-          <button class="ph-btn">Start</button>
+          <button type="button" class="ph-btn">Start</button>
         </div>
 
       </div>
@@ -3972,7 +3972,7 @@
               <div class="al-msg">BP 180/110 recorded · Recommend re-measure within 2 hrs &amp; consider transfer</div>
               <div class="al-time">10 min ago · AI detected</div>
             </div>
-            <button class="al-btn crit">Respond</button>
+            <button type="button" class="al-btn crit">Respond</button>
           </div>
 
           <div class="al-item caution">
@@ -3981,7 +3981,7 @@
               <div class="al-msg">Meal intake below 30% for 3 consecutive days · Consider nutrition consult &amp; family notification</div>
               <div class="al-time">Trend detected since yesterday</div>
             </div>
-            <button class="al-btn norm">Confirm</button>
+            <button type="button" class="al-btn norm">Confirm</button>
           </div>
 
           <div class="al-item">
@@ -3998,7 +3998,7 @@
               <div class="al-msg">"How did Mom's rehab session go today?" — unread message</div>
               <div class="al-time">30 min ago</div>
             </div>
-            <button class="al-btn norm">Reply</button>
+            <button type="button" class="al-btn norm">Reply</button>
           </div>
 
         </div>
@@ -4015,7 +4015,7 @@
       <div class="pt-page-head-text">
         <p>Ward 2 · 25 assigned patients · Last updated 10:24</p>
       </div>
-      <button class="pt-add-btn">
+      <button type="button" class="pt-add-btn">
         <iconify-icon icon="mingcute:add-fill"></iconify-icon>
         New Patient
       </button>
@@ -4217,7 +4217,7 @@
         <div class="pt-tab" onclick="ptTab(this)">Monitoring <span class="pt-tab-count">2</span></div>
         <div class="pt-tab" onclick="ptTab(this)">Stable <span class="pt-tab-count">20</span></div>
       </div>
-      <button class="pt-sort-btn">
+      <button type="button" class="pt-sort-btn">
         <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         Sort: Room no.
       </button>
@@ -4256,8 +4256,8 @@
         </div>
         <div class="pt-vital">10 min ago</div>
         <div class="pt-actions">
-          <button class="pt-act em">Respond</button>
-          <button class="pt-act">Chat</button>
+          <button type="button" class="pt-act em">Respond</button>
+          <button type="button" class="pt-act">Chat</button>
         </div>
       </div>
 
@@ -4283,8 +4283,8 @@
         </div>
         <div class="pt-vital">1 hr ago</div>
         <div class="pt-actions">
-          <button class="pt-act">Record</button>
-          <button class="pt-act">Chat</button>
+          <button type="button" class="pt-act">Record</button>
+          <button type="button" class="pt-act">Chat</button>
         </div>
       </div>
 
@@ -4310,8 +4310,8 @@
         </div>
         <div class="pt-vital">2 hrs ago</div>
         <div class="pt-actions">
-          <button class="pt-act">Record</button>
-          <button class="pt-act">Chat</button>
+          <button type="button" class="pt-act">Record</button>
+          <button type="button" class="pt-act">Chat</button>
         </div>
       </div>
 
@@ -4336,8 +4336,8 @@
         </div>
         <div class="pt-vital">2 hrs ago</div>
         <div class="pt-actions">
-          <button class="pt-act">Record</button>
-          <button class="pt-act">Chat</button>
+          <button type="button" class="pt-act">Record</button>
+          <button type="button" class="pt-act">Chat</button>
         </div>
       </div>
 
@@ -4362,8 +4362,8 @@
         </div>
         <div class="pt-vital">3 hrs ago</div>
         <div class="pt-actions">
-          <button class="pt-act">Record</button>
-          <button class="pt-act">Chat</button>
+          <button type="button" class="pt-act">Record</button>
+          <button type="button" class="pt-act">Chat</button>
         </div>
       </div>
 
@@ -4385,8 +4385,8 @@
         </div>
         <div class="pt-vital">30 min ago</div>
         <div class="pt-actions">
-          <button class="pt-act">Record</button>
-          <button class="pt-act">Chat</button>
+          <button type="button" class="pt-act">Record</button>
+          <button type="button" class="pt-act">Chat</button>
         </div>
       </div>
 
@@ -4411,8 +4411,8 @@
         </div>
         <div class="pt-vital">1 hr ago</div>
         <div class="pt-actions">
-          <button class="pt-act">Record</button>
-          <button class="pt-act">Chat</button>
+          <button type="button" class="pt-act">Record</button>
+          <button type="button" class="pt-act">Chat</button>
         </div>
       </div>
 
@@ -4434,8 +4434,8 @@
         </div>
         <div class="pt-vital">45 min ago</div>
         <div class="pt-actions">
-          <button class="pt-act">Record</button>
-          <button class="pt-act">Chat</button>
+          <button type="button" class="pt-act">Record</button>
+          <button type="button" class="pt-act">Chat</button>
         </div>
       </div>
 
@@ -4457,8 +4457,8 @@
         </div>
         <div class="pt-vital">1 hr ago</div>
         <div class="pt-actions">
-          <button class="pt-act">Record</button>
-          <button class="pt-act">Chat</button>
+          <button type="button" class="pt-act">Record</button>
+          <button type="button" class="pt-act">Chat</button>
         </div>
       </div>
 
@@ -4480,8 +4480,8 @@
         </div>
         <div class="pt-vital">20 min ago</div>
         <div class="pt-actions">
-          <button class="pt-act">Record</button>
-          <button class="pt-act">Chat</button>
+          <button type="button" class="pt-act">Record</button>
+          <button type="button" class="pt-act">Chat</button>
         </div>
       </div>
 
@@ -4499,7 +4499,7 @@
       <div class="pt-page-head-text">
         <p>Ward 2 · 22 total today · Last updated 10:24</p>
       </div>
-      <button class="pt-add-btn">
+      <button type="button" class="pt-add-btn">
         <iconify-icon icon="mingcute:add-fill"></iconify-icon>
         Add Medication Record
       </button>
@@ -4700,7 +4700,7 @@
         <div class="pt-tab" onclick="ptTab(this)">Completed <span class="pt-tab-count">12</span></div>
         <div class="pt-tab" onclick="ptTab(this)">Scheduled <span class="pt-tab-count">8</span></div>
       </div>
-      <button class="pt-sort-btn">
+      <button type="button" class="pt-sort-btn">
         <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         Sort: Time
       </button>
@@ -4743,8 +4743,8 @@
         <div class="med-done-time none">—</div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>Not administered</span></div>
         <div class="med-actions">
-          <button class="pt-act em">Administer</button>
-          <button class="pt-act">Refuse</button>
+          <button type="button" class="pt-act em">Administer</button>
+          <button type="button" class="pt-act">Refuse</button>
         </div>
       </div>
 
@@ -4773,8 +4773,8 @@
         <div class="med-done-time none">—</div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>Not administered</span></div>
         <div class="med-actions">
-          <button class="pt-act em">Administer</button>
-          <button class="pt-act">Refuse</button>
+          <button type="button" class="pt-act em">Administer</button>
+          <button type="button" class="pt-act">Refuse</button>
         </div>
       </div>
 
@@ -4803,8 +4803,8 @@
         <div class="med-done-time none">—</div>
         <div><span class="pt-badge wn"><span class="pt-badge-dot"></span>Refused</span></div>
         <div class="med-actions">
-          <button class="pt-act">Retry</button>
-          <button class="pt-act">Report</button>
+          <button type="button" class="pt-act">Retry</button>
+          <button type="button" class="pt-act">Report</button>
         </div>
       </div>
 
@@ -4833,8 +4833,8 @@
         <div class="med-done-time none">—</div>
         <div><span class="pt-badge wn"><span class="pt-badge-dot"></span>Refused</span></div>
         <div class="med-actions">
-          <button class="pt-act">Retry</button>
-          <button class="pt-act">Report</button>
+          <button type="button" class="pt-act">Retry</button>
+          <button type="button" class="pt-act">Report</button>
         </div>
       </div>
 
@@ -4863,8 +4863,8 @@
         <div class="med-done-time none">—</div>
         <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>Scheduled</span></div>
         <div class="med-actions">
-          <button class="pt-act">Administer</button>
-          <button class="pt-act">Refuse</button>
+          <button type="button" class="pt-act">Administer</button>
+          <button type="button" class="pt-act">Refuse</button>
         </div>
       </div>
 
@@ -4893,7 +4893,7 @@
         <div class="med-done-time">08:12</div>
         <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>Completed</span></div>
         <div class="med-actions">
-          <button class="pt-act">Edit</button>
+          <button type="button" class="pt-act">Edit</button>
         </div>
       </div>
 
@@ -4922,7 +4922,7 @@
         <div class="med-done-time">08:05</div>
         <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>Completed</span></div>
         <div class="med-actions">
-          <button class="pt-act">Edit</button>
+          <button type="button" class="pt-act">Edit</button>
         </div>
       </div>
 
@@ -4940,7 +4940,7 @@
       <div class="pt-page-head-text">
         <p>Ward 2 · April 18, 2026 · Morning shift</p>
       </div>
-      <button class="pt-add-btn">
+      <button type="button" class="pt-add-btn">
         <iconify-icon icon="mingcute:add-fill"></iconify-icon>
         Add Item
       </button>
@@ -5089,7 +5089,7 @@
         <div class="pt-tab" onclick="ptTab(this)">Completed <span class="pt-tab-count">14</span></div>
         <div class="pt-tab" onclick="ptTab(this)">Scheduled <span class="pt-tab-count">5</span></div>
       </div>
-      <button class="pt-sort-btn">
+      <button type="button" class="pt-sort-btn">
         <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         Sort: by time
       </button>
@@ -5338,7 +5338,7 @@
       <div class="pt-page-head-text">
         <p>Ward 2 · Day shift ends 22:00 · Last updated 10:24</p>
       </div>
-      <button class="pt-add-btn" id="sbar-top-btn" onclick="genSBAR(this)">
+      <button type="button" class="pt-add-btn" id="sbar-top-btn" onclick="genSBAR(this)">
         <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>
         Generate AI SBAR
       </button>
@@ -5447,7 +5447,7 @@
           </div>
           <div class="ho-tm-foot">
             <span class="ho-tm-meta"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon>Not delivered · 1 hr ago</span>
-            <button class="ho-tm-action" onclick="event.stopPropagation()">Deliver<iconify-icon icon="mingcute:arrow-right-fill"></iconify-icon></button>
+            <button type="button" class="ho-tm-action" onclick="event.stopPropagation()">Deliver<iconify-icon icon="mingcute:arrow-right-fill"></iconify-icon></button>
           </div>
         </div>
 
@@ -5476,7 +5476,7 @@
           </div>
           <div class="ho-tm-foot">
             <span class="ho-tm-meta"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon>Not delivered · 40 min ago</span>
-            <button class="ho-tm-action" onclick="event.stopPropagation()">Deliver</button>
+            <button type="button" class="ho-tm-action" onclick="event.stopPropagation()">Deliver</button>
           </div>
         </div>
 
@@ -5505,7 +5505,7 @@
           </div>
           <div class="ho-tm-foot">
             <span class="ho-tm-meta"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon>Not delivered · 20 min ago</span>
-            <button class="ho-tm-action" onclick="event.stopPropagation()">Deliver</button>
+            <button type="button" class="ho-tm-action" onclick="event.stopPropagation()">Deliver</button>
           </div>
         </div>
 
@@ -5541,7 +5541,7 @@
         <div class="pt-tab" onclick="ptTab(this)">Not delivered <span class="pt-tab-count">3</span></div>
         <div class="pt-tab" onclick="ptTab(this)">Completed <span class="pt-tab-count">2</span></div>
       </div>
-      <button class="pt-sort-btn">
+      <button type="button" class="pt-sort-btn">
         <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         Sort: by priority
       </button>
@@ -5584,8 +5584,8 @@
         <div><span class="ho-pri high"><span class="pt-badge-dot"></span>Urgent</span></div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>Not delivered</span></div>
         <div class="med-actions">
-          <button class="pt-act em">Deliver</button>
-          <button class="pt-act">Edit</button>
+          <button type="button" class="pt-act em">Deliver</button>
+          <button type="button" class="pt-act">Edit</button>
         </div>
       </div>
 
@@ -5616,8 +5616,8 @@
         <div><span class="ho-pri high"><span class="pt-badge-dot"></span>High</span></div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>Not delivered</span></div>
         <div class="med-actions">
-          <button class="pt-act em">Deliver</button>
-          <button class="pt-act">Edit</button>
+          <button type="button" class="pt-act em">Deliver</button>
+          <button type="button" class="pt-act">Edit</button>
         </div>
       </div>
 
@@ -5648,8 +5648,8 @@
         <div><span class="ho-pri mid"><span class="pt-badge-dot"></span>Moderate</span></div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>Not delivered</span></div>
         <div class="med-actions">
-          <button class="pt-act">Deliver</button>
-          <button class="pt-act">Edit</button>
+          <button type="button" class="pt-act">Deliver</button>
+          <button type="button" class="pt-act">Edit</button>
         </div>
       </div>
 
@@ -5676,7 +5676,7 @@
         <div><span class="ho-pri low"><span class="pt-badge-dot"></span>Low</span></div>
         <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>Completed</span></div>
         <div class="med-actions">
-          <button class="pt-act">Edit</button>
+          <button type="button" class="pt-act">Edit</button>
         </div>
       </div>
 
@@ -5703,7 +5703,7 @@
         <div><span class="ho-pri low"><span class="pt-badge-dot"></span>Low</span></div>
         <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>Completed</span></div>
         <div class="med-actions">
-          <button class="pt-act">Edit</button>
+          <button type="button" class="pt-act">Edit</button>
         </div>
       </div>
 
@@ -5737,7 +5737,7 @@
             <div class="ai-head-sub">Handover draft generated from today's care records</div>
           </div>
         </div>
-        <button class="ho-gen-btn" id="sbar-regen-btn" onclick="regenSBAR(this)">
+        <button type="button" class="ho-gen-btn" id="sbar-regen-btn" onclick="regenSBAR(this)">
           <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>
           Generate All SBAR
         </button>
@@ -5765,7 +5765,7 @@
       <div class="pt-page-head-text">
         <p>Ward 2 · Saturday, April 18, 2026 · Morning 2-shift</p>
       </div>
-      <button class="pt-add-btn">
+      <button type="button" class="pt-add-btn">
         <iconify-icon icon="mingcute:add-fill"></iconify-icon>
         Add schedule
       </button>
@@ -5777,9 +5777,9 @@
         <div class="pt-tab" onclick="schView(this,'daily')">Daily</div>
       </div>
       <div class="v10-row-gap-8">
-        <button class="pt-sort-btn">← March</button>
+        <button type="button" class="pt-sort-btn">← March</button>
         <span class="v10-fs-12-bold-ink2">April 2026</span>
-        <button class="pt-sort-btn">May →</button>
+        <button type="button" class="pt-sort-btn">May →</button>
       </div>
     </div>
 
@@ -6002,7 +6002,7 @@
       <div class="pt-page-head-text">
         <p>Ward 2 · April 18, 2026 · Audit D-7</p>
       </div>
-      <button class="pt-add-btn">
+      <button type="button" class="pt-add-btn">
         <iconify-icon icon="mingcute:add-fill"></iconify-icon>
         New Record
       </button>
@@ -6025,7 +6025,7 @@
         <div class="rec-alert-countdown-val">02:18</div>
         <div class="rec-alert-countdown-lbl">Time remaining</div>
       </div>
-      <button class="rec-alert-btn">Write now</button>
+      <button type="button" class="rec-alert-btn">Write now</button>
     </div>
 
     <!-- ══ 히어로: 48시간 이벤트·마감 타임라인 (데드라인축 시각 언어) ══ -->
@@ -6201,7 +6201,7 @@
               <div class="rec-aiq-title">Hypertensive crisis incident report</div>
               <div class="rec-aiq-meta">Room 301 Yeong-su Park · Incident report · D-7 required</div>
             </div>
-            <button class="rec-aiq-gen-btn" onclick="recAiqGen(this)">Generate</button>
+            <button type="button" class="rec-aiq-gen-btn" onclick="recAiqGen(this)">Generate</button>
           </div>
           <div class="rec-aiq-item">
             <div class="rec-aiq-icon"><iconify-icon icon="fluent:notepad-24-filled"></iconify-icon></div>
@@ -6209,7 +6209,7 @@
               <div class="rec-aiq-title">Medication refusal nursing notes</div>
               <div class="rec-aiq-meta">Room 303 Cheol-su Lee · Nursing notes</div>
             </div>
-            <button class="rec-aiq-gen-btn" onclick="recAiqGen(this)">Generate</button>
+            <button type="button" class="rec-aiq-gen-btn" onclick="recAiqGen(this)">Generate</button>
           </div>
           <div class="rec-aiq-item">
             <div class="rec-aiq-icon"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon></div>
@@ -6217,7 +6217,7 @@
               <div class="rec-aiq-title">April care service record</div>
               <div class="rec-aiq-meta">Room 302 Soon-ja Kim · Care service record · audit prep</div>
             </div>
-            <button class="rec-aiq-gen-btn" onclick="recAiqGen(this)">Generate</button>
+            <button type="button" class="rec-aiq-gen-btn" onclick="recAiqGen(this)">Generate</button>
           </div>
           <div class="rec-aiq-item">
             <div class="rec-aiq-icon"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon></div>
@@ -6225,7 +6225,7 @@
               <div class="rec-aiq-title">April care service record</div>
               <div class="rec-aiq-meta">Room 305 Mi-gyeong Choi · Care service record</div>
             </div>
-            <button class="rec-aiq-gen-btn" onclick="recAiqGen(this)">Generate</button>
+            <button type="button" class="rec-aiq-gen-btn" onclick="recAiqGen(this)">Generate</button>
           </div>
           <div class="rec-aiq-item">
             <div class="rec-aiq-icon"><iconify-icon icon="fluent:notepad-24-filled"></iconify-icon></div>
@@ -6233,11 +6233,11 @@
               <div class="rec-aiq-title">Rehabilitation progress nursing notes</div>
               <div class="rec-aiq-meta">Room 304 Byeong-seok Oh · Nursing notes</div>
             </div>
-            <button class="rec-aiq-gen-btn" onclick="recAiqGen(this)">Generate</button>
+            <button type="button" class="rec-aiq-gen-btn" onclick="recAiqGen(this)">Generate</button>
           </div>
         </div>
 
-        <button class="rec-aiq-bulk" onclick="recAiqBulk(this)">
+        <button type="button" class="rec-aiq-bulk" onclick="recAiqBulk(this)">
           <iconify-icon icon="material-symbols:auto-awesome-rounded"></iconify-icon>
           Auto-generate all 5 items
         </button>
@@ -6252,7 +6252,7 @@
         <div class="pt-tab" onclick="ptTab(this)">Vitals <span class="pt-tab-count">1</span></div>
         <div class="pt-tab" onclick="ptTab(this)">Incident report <span class="pt-tab-count">1</span></div>
       </div>
-      <button class="pt-sort-btn">
+      <button type="button" class="pt-sort-btn">
         <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         Sort: newest
       </button>
@@ -6288,7 +6288,7 @@
         <div class="pt-vital">10:30</div>
         <div class="med-actions">
           <span class="pt-badge sf v10-mr-1"><span class="pt-badge-dot"></span>Completed</span>
-          <button class="pt-act">View</button>
+          <button type="button" class="pt-act">View</button>
         </div>
       </div>
 
@@ -6311,7 +6311,7 @@
         <div class="pt-vital v10-text-danger-bold">Not filed</div>
         <div class="med-actions">
           <span class="pt-badge dg v10-mr-1"><span class="pt-badge-dot"></span>Not filed</span>
-          <button class="pt-act em">Write</button>
+          <button type="button" class="pt-act em">Write</button>
         </div>
       </div>
 
@@ -6334,7 +6334,7 @@
         <div class="pt-vital v10-text-danger-bold">Not filed</div>
         <div class="med-actions">
           <span class="pt-badge dg v10-mr-1"><span class="pt-badge-dot"></span>Not filed</span>
-          <button class="pt-act em">Write</button>
+          <button type="button" class="pt-act em">Write</button>
         </div>
       </div>
 
@@ -6356,7 +6356,7 @@
         <div class="pt-vital">08:45</div>
         <div class="med-actions">
           <span class="pt-badge sf v10-mr-1"><span class="pt-badge-dot"></span>Completed</span>
-          <button class="pt-act">View</button>
+          <button type="button" class="pt-act">View</button>
         </div>
       </div>
 
@@ -6379,7 +6379,7 @@
         <div class="pt-vital v10-text-danger-bold">Not filed</div>
         <div class="med-actions">
           <span class="pt-badge dg v10-mr-1"><span class="pt-badge-dot"></span>Not filed</span>
-          <button class="pt-act em">Write</button>
+          <button type="button" class="pt-act em">Write</button>
         </div>
       </div>
 
@@ -6402,7 +6402,7 @@
         <div class="pt-vital">14:35</div>
         <div class="med-actions">
           <span class="pt-badge sf v10-mr-1"><span class="pt-badge-dot"></span>Completed</span>
-          <button class="pt-act">View</button>
+          <button type="button" class="pt-act">View</button>
         </div>
       </div>
 
@@ -6428,7 +6428,7 @@
           <span class="my-chip">4 years 2 months experience</span>
         </div>
       </div>
-      <button class="my-edit-btn">Edit profile</button>
+      <button type="button" class="my-edit-btn">Edit profile</button>
     </div>
 
     <!-- 이번 달 통계 (KPI 재사용) -->
@@ -6587,7 +6587,7 @@
         <span class="ai-feed-label">Summary Feed</span>
       </div>
       <span class="ai-feed-count">3 today</span>
-      <button class="focus-btn" onclick="this.classList.toggle('on'); this.textContent = this.classList.contains('on') ? 'Focus Mode ON' : 'Focus Mode'">Focus Mode</button>
+      <button type="button" class="focus-btn" onclick="this.classList.toggle('on'); this.textContent = this.classList.contains('on') ? 'Focus Mode ON' : 'Focus Mode'">Focus Mode</button>
     </div>
     <div class="af-item urgent">
       <div class="af-head">
@@ -6753,24 +6753,24 @@
           <div class="cp-ai-item-head"><span class="ai-badge urgent">Urgent</span><span class="cp-ai-item-pt">Yeong-su Park (Room 301)</span></div>
           <div class="cp-ai-item-body">BP 180/110 measured. Recommend recheck within 2 hours then consider transfer. ER visit confirmed after same pattern last week.</div>
           <div class="cp-ai-item-actions">
-            <button class="cp-ai-act em" onclick="cpAiAct(this,'check')">Confirm</button>
-            <button class="cp-ai-act" onclick="cpAiAct(this,'memo')">Add memo</button>
+            <button type="button" class="cp-ai-act em" onclick="cpAiAct(this,'check')">Confirm</button>
+            <button type="button" class="cp-ai-act" onclick="cpAiAct(this,'memo')">Add memo</button>
           </div>
         </div>
         <div class="cp-ai-item warn">
           <div class="cp-ai-item-head"><span class="ai-badge caution">Monitoring</span><span class="cp-ai-item-pt">Soon-ja Kim (Room 302)</span></div>
           <div class="cp-ai-item-body">Meal intake below 30% for 3 consecutive days. Dietitian consult and family notification needed. Recommend physician report if weight loss trend continues.</div>
           <div class="cp-ai-item-actions">
-            <button class="cp-ai-act em" onclick="cpAiAct(this,'check')">Confirm</button>
-            <button class="cp-ai-act" onclick="cpAiAct(this,'notify')">Notify family</button>
+            <button type="button" class="cp-ai-act em" onclick="cpAiAct(this,'check')">Confirm</button>
+            <button type="button" class="cp-ai-act" onclick="cpAiAct(this,'notify')">Notify family</button>
           </div>
         </div>
         <div class="cp-ai-item">
           <div class="cp-ai-item-head"><span class="ai-badge info">Info</span><span class="cp-ai-item-pt">Records management</span></div>
           <div class="cp-ai-item-body">3 care service records not filed. Audit D-7. AI auto-generate can draft them now.</div>
           <div class="cp-ai-item-actions">
-            <button class="cp-ai-act em" onclick="cpAiAutoGen(this)">Auto-generate</button>
-            <button class="cp-ai-act" onclick="cpAiAct(this,'later')">Later</button>
+            <button type="button" class="cp-ai-act em" onclick="cpAiAutoGen(this)">Auto-generate</button>
+            <button type="button" class="cp-ai-act" onclick="cpAiAct(this,'later')">Later</button>
           </div>
         </div>
       </div>
@@ -6778,7 +6778,7 @@
         <div class="cp-ai-ask-label">Ask Haru AI</div>
         <div class="cp-ai-ask-row">
           <input class="cp-ai-ask-input" type="text"  placeholder="e.g. Recent vitals trend for Yeong-su Park?" aria-label="e.g. Recent vitals trend for Yeong-su Park?" onkeydown="if(event.key==='Enter')cpAiAsk(this)">
-          <button class="send-btn" onclick="cpAiAsk(this.previousElementSibling)">
+          <button type="button" class="send-btn" onclick="cpAiAsk(this.previousElementSibling)">
             <iconify-icon icon="material-symbols:send-rounded"></iconify-icon>
           </button>
         </div>
@@ -6791,7 +6791,7 @@
   <div class="cp-input-wrap" id="cp-main-input-wrap">
     <div class="cp-input-row">
       <input class="cp-input" type="text"  placeholder="Select a conversation to reply" aria-label="Select a conversation to reply" readonly class="v10-cursor-default-ink5">
-      <button class="send-btn v10-dim-40">
+      <button type="button" class="send-btn v10-dim-40">
         <iconify-icon icon="material-symbols:send-rounded"></iconify-icon>
       </button>
     </div>
@@ -6800,7 +6800,7 @@
   <!-- ── 대화 상세 뷰 (오버레이) ── -->
   <div class="cp-convo" id="cp-convo">
     <div class="cp-convo-header">
-      <button class="cp-back-btn" onclick="closeConvo()">
+      <button type="button" class="cp-back-btn" onclick="closeConvo()">
         <iconify-icon icon="mingcute:close-fill"></iconify-icon>
       </button>
       <div class="cp-convo-av" id="convo-av"></div>
@@ -6814,7 +6814,7 @@
     <div class="cp-convo-input-wrap">
       <div class="cp-convo-input-row">
         <input class="cp-convo-input" id="cp-convo-input" type="text" placeholder="Type a message" aria-label="Type a conversation message">
-        <button class="send-btn" onclick="sendConvoMsg()">
+        <button type="button" class="send-btn" onclick="sendConvoMsg()">
           <iconify-icon icon="material-symbols:send-rounded"></iconify-icon>
         </button>
       </div>
@@ -7236,9 +7236,9 @@
     // Build nurse filter buttons
     const nfBar = document.getElementById('sch-nf-bar');
     if (nfBar) {
-      let btns = `<button class="sch-nf-btn active" onclick="nurseFilter(this,'All')">All</button>`;
+      let btns = `<button type="button" class="sch-nf-btn active" onclick="nurseFilter(this,'All')">All</button>`;
       for (const n of nurses) {
-        btns += `<button class="sch-nf-btn${n.me ? ' me' : ''}" onclick="nurseFilter(this,'${n.name}')">${n.name}</button>`;
+        btns += `<button type="button" class="sch-nf-btn${n.me ? ' me' : ''}" onclick="nurseFilter(this,'${n.name}')">${n.name}</button>`;
       }
       nfBar.innerHTML = btns;
     }

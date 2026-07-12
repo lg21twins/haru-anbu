@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-role="caregiver" data-platform="mobile">
+<html lang="zh-CN" data-role="caregiver" data-platform="mobile" data-toast-duration="2200">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -20,317 +20,9 @@
   <link rel="stylesheet" href="caregiver.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
   <script defer src="caregiver.js"></script>
-  <style>
-    /* ============================================================
-       c04-schedule · 근무 일정 풀스크린 (c04 마이에서 push)
-       v1.0 · 2026-04-19
-       원칙: 주간 리스트 + 액션 메뉴 · 복잡한 타임라인 금지
-       ============================================================ */
-    :root {
-      --text-body: 18px; /* v3.2.7: 본문 18px — caregiver 표준 통일 */
-      --accent:        var(--color-accent);
-      --accent-soft:   var(--color-accent-soft);
-      --accent-strong: var(--color-accent-strong);
-      --t1:            var(--color-text-primary);
-      --t2:            var(--color-text-secondary);
-      --t3:            var(--color-text-tertiary);
-
-      --safe-t: env(safe-area-inset-top, 0px); /* v3.2.5: 단순 env() — 데스크톱 빈공간 제거 */
-      --safe-b: max(env(safe-area-inset-bottom, 0px), 20px);
-      --page-pad: 20px; /* v3.2.5: 본문 좌우 padding 통일 */
-
-      --glass-b: rgba(0,0,0,.05);
-    }
-
-    html { height: 100%; background: var(--clinical-canvas); }
-    body { min-height: 100%; color: var(--t1); overflow-x: hidden; font-size: var(--text-body); }
-
-    .bg {
-      position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
-      background: var(--clinical-bg-image);
-    }
-
-    .app {
-      max-width: 430px; margin: 0 auto; min-height: 100%;
-      position: relative;
-      padding-bottom: calc(var(--safe-b) + 24px);
-    }
-
-    /* ============ 헤더 · 보호자앱 header-mobile 통일 v4.0 ============ */
-    .app .header-mobile {
-      position: static !important;
-      background: transparent !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-    }
-    .app .header-mobile__left,
-    .app .header-mobile__right { color: var(--t2); }
-    .app .header-mobile__right iconify-icon,
-    .app .header-mobile__left iconify-icon { font-size: var(--size-icon-md); }
-
-    /* v3.2.5: 헤더 icon-btn 글라스 통일 (c01 홈 스펙) */
-    .icon-btn {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(255,255,255,.55);
-      border: .5px solid rgba(255,255,255,.55);
-      backdrop-filter: blur(12px) saturate(140%);
-      -webkit-backdrop-filter: blur(12px) saturate(140%);
-      display: inline-flex; align-items: center; justify-content: center;
-      cursor: pointer; text-decoration: none;
-      box-shadow: 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06);
-      position: relative; transition: transform .1s; font-family: inherit;
-    }
-
-    /* ============ 컨텐츠 ============ */
-    .content {
-      position: relative; z-index: 1;
-      padding: 0 var(--page-pad) 0;
-    }
-
-    /* 카드 공통 — v3.2.8: 솔리드 베이스라인 (caregiver.css --cg-card-*) */
-    .card {
-      background: var(--cg-card-bg);
-      border: 0;
-      border-radius: var(--cg-card-radius);
-      margin-bottom: 12px;
-      box-shadow: var(--cg-card-shadow);
-    }
-
-    /* ============ 주 네비 카드 ============ */
-    .nav-card { padding: 16px 18px 14px; }
-    .nav-month {
-      font-size: 11px; font-weight: 700; color: var(--t3);
-      letter-spacing: .3px; text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .nav-row {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 10px; margin-bottom: 12px;
-    }
-    .nav-range {
-      font-size: 18px; font-weight: 700; color: var(--t1); letter-spacing: -.4px;
-      font-variant-numeric: tabular-nums;
-    }
-    .nav-btns { display: flex; gap: 4px; flex-shrink: 0; }
-    .nav-btns button {
-      width: 48px; height: 48px; border-radius: 14px;
-      background: rgba(0,0,0,.04); border: none;
-      cursor: pointer; color: var(--t2);
-      display: inline-flex; align-items: center; justify-content: center;
-    }
-    .nav-btns iconify-icon { font-size: 22px; }
-
-    .sum-row {
-      display: flex; flex-wrap: wrap; gap: 6px;
-    }
-    .sum-pill {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 5px 10px; border-radius: 999px;
-      font-size: 11px; font-weight: 700;
-      background: rgba(0,0,0,.04); color: var(--t2);
-    }
-    .sum-pill b { font-weight: 700; color: var(--t1); font-variant-numeric: tabular-nums; }
-    .sum-pill .dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--palette-amber-600);
-    }
-    .sum-pill .dot.n   { background: var(--shift-night); }
-    .sum-pill .dot.off { background: rgba(107,114,128,.55); }
-
-    /* ============ 주간 리스트 카드 ============ */
-    .list-card { padding: 6px 0; }
-    .sch-day {
-      display: grid;
-      grid-template-columns: 44px 54px 1fr auto auto;
-      gap: 10px; align-items: center;
-      padding: 13px 16px;
-      min-height: 56px;
-      text-decoration: none; color: inherit;
-      cursor: pointer;
-      transition: background .12s;
-      /* 근무 구분은 좌측 컬러 레일이 아닌 .sd-chip(칩)으로만 표시 */
-    }
-    /* 휴무 row: 시각적 후퇴 (60-72% opacity) — 일하는 날 시각 우선순위 강화 */
-    .sch-day:has(.sd-chip.off) { opacity: .68; }
-    /* 작은 화면(<=360px): 환자 아바타 줄을 다음 줄로, count chip으로 축약 */
-    @media (max-width: 360px) {
-      .sch-day {
-        grid-template-columns: 44px 54px 1fr auto;
-        grid-template-areas:
-          "date  shift  time   chev"
-          "date  shift  pts    chev";
-        row-gap: 4px;
-      }
-      .sch-day .sd-date  { grid-area: date; }
-      .sch-day .sd-shift,
-      .sch-day > div:nth-child(2) { grid-area: shift; }
-      .sch-day .sd-time  { grid-area: time; }
-      .sch-day .sd-pts   { grid-area: pts; }
-      .sch-day .sd-chev,
-      .sch-day > iconify-icon:last-child { grid-area: chev; }
-    }
-    .sch-day + .sch-day {
-      border-top: 1px solid rgba(0,0,0,.05);
-    }
-    .sch-day:active { background: rgba(0,0,0,.02); }
-
-    .sd-date {
-      display: flex; align-items: baseline; gap: 4px;
-      font-variant-numeric: tabular-nums;
-    }
-    .sd-dow { font-size: 12px; color: var(--t3); font-weight: 700; }
-    .sd-num { font-size: 16px; color: var(--t1); font-weight: 700; }
-
-    .sch-day.today .sd-dow,
-    .sch-day.today .sd-num { color: var(--accent-strong); }
-
-    .sd-chip {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 4px 9px; border-radius: 999px;
-      font-size: 11px; font-weight: 700;
-      letter-spacing: -.1px;
-      background: rgba(217,119,6,.12); color: var(--palette-amber-700);
-    }
-    .sd-chip.n { background: rgba(99,102,241,.12); color: var(--shift-night-text); }
-    .sd-chip.off {
-      background: transparent;
-      color: var(--t3);
-      border: 1px dashed rgba(0,0,0,.15);
-    }
-    .sch-day.today .sd-chip {
-      background: rgba(var(--brand-green-500-rgb), .14); color: var(--accent-strong);
-    }
-
-    .sd-time {
-      font-size: 12.5px; font-weight: 600; color: var(--t2);
-      letter-spacing: -.2px;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-    .sch-day.today .sd-time {
-      color: var(--accent-strong); font-weight: 700;
-    }
-    .sd-time.muted { color: var(--t3); font-weight: 500; }
-
-    /* 그 날 배정된 환자 — 이니셜 아바타 스택 (옆에 인라인) */
-    .sd-pts {
-      display: inline-flex; align-items: center;
-      padding-left: 4px;
-    }
-    .sd-pts .pt {
-      width: 26px; height: 26px; border-radius: 50%;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; color: var(--palette-white);
-      letter-spacing: -.2px;
-      border: 2px solid rgba(255,255,255,.95);
-      box-shadow: 0 1px 3px rgba(0,0,0,.08);
-      font-variant-numeric: tabular-nums;
-    }
-    .sd-pts .pt + .pt { margin-left: -8px; }
-    .sd-pts .pt.k { background: var(--palette-amber-600); }
-    .sd-pts .pt.l { background: var(--shift-night-text); }
-    .sd-pts .pt.p { background: var(--shift-day); }
-    .sd-pts .pt.c { background: var(--shift-evening); }
-    .sd-pts .more {
-      width: 26px; height: 26px; border-radius: 50%;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 700; color: var(--t2);
-      background: rgba(0,0,0,.06);
-      border: 2px solid rgba(255,255,255,.95);
-      margin-left: -8px;
-    }
-    .sd-pts.empty {
-      font-size: 11px; font-weight: 600; color: var(--t3);
-      letter-spacing: -.1px;
-    }
-
-    .sd-now {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 2px 7px; border-radius: 999px;
-      font-size: 10px; font-weight: 700;
-      /* v3.2.8: danger 시멘틱 토큰 통일 (라벨 일관성) */
-      background: var(--color-danger); color: var(--palette-white);
-      letter-spacing: -.1px; flex-shrink: 0;
-    }
-    .sd-now::before {
-      content: ''; width: 5px; height: 5px; border-radius: 50%;
-      background: var(--palette-white);
-    }
-
-    /* ============ 메뉴 그룹 ============ */
-    .menu-title {
-      font-size: 12px; font-weight: 700; color: var(--t3);
-      padding: 0 4px; margin: 16px 0 8px;
-      letter-spacing: .2px;
-    }
-    .menu-group {
-      background: var(--cg-card-bg);
-      border: 0;
-      border-radius: var(--cg-card-radius);
-      overflow: hidden;
-      margin-bottom: 12px;
-      box-shadow: var(--cg-card-shadow);
-    }
-    .menu-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 20px;
-      text-decoration: none; color: var(--t1);
-      cursor: pointer; transition: background .15s;
-    }
-    .menu-item:active { background: rgba(0,0,0,.02); }
-    .menu-item + .menu-item { border-top: 1px solid rgba(0,0,0,.05); }
-
-    .mi-icon {
-      width: 32px; height: 32px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      background: rgba(var(--brand-green-500-rgb), .06);
-      color: var(--accent-strong);
-    }
-    .mi-icon iconify-icon { font-size: 16px; }
-    .mi-icon.amber { background: rgba(var(--color-warning-rgb), .08); color: var(--palette-amber-700); }
-    .mi-icon.indigo { background: rgba(99,102,241,.1); color: var(--shift-night-text); }
-    .mi-icon.grey { background: rgba(0,0,0,.04); color: var(--t1); }
-
-    .mi-body { flex: 1; min-width: 0; }
-    .mi-label { font-size: 14px; font-weight: 600; color: var(--t1); letter-spacing: -.1px; }
-    .mi-desc { font-size: 11px; color: var(--t3); margin-top: 1px; font-weight: 500; }
-    .mi-chevron { color: var(--t3); }
-    .mi-chevron iconify-icon { font-size: 14px; }
-
-    /* ============ 토스트 ============ */
-    .toast {
-      position: fixed; top: 80px; left: 50%;
-      transform: translateX(-50%) translateY(-8px);
-      background: rgba(28,28,30,.92); color: var(--palette-white);
-      padding: 11px 22px; border-radius: 999px;
-      font-size: 14px; font-weight: 600;
-      box-shadow: 0 8px 24px rgba(0,0,0,.18);
-      z-index: 300; opacity: 0; pointer-events: none;
-      transition: opacity .22s, transform .22s;
-      white-space: nowrap;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* ============ 애니메이션 ============ */
-    @keyframes haru-fade-in-up {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .content > * { animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both; }
-    .content > *:nth-child(2) { animation-delay: .05s; }
-    .content > *:nth-child(3) { animation-delay: .1s; }
-    .content > *:nth-child(4) { animation-delay: .15s; }
-    .content > *:nth-child(5) { animation-delay: .2s; }
-
-    /* Sheet footer buttons (JS template — inline 대체) */
-    .sh-btn {
-      flex: 1; height: 48px; border-radius: 14px; border: 0;
-      font: inherit; font-weight: 600;
-    }
-    .sh-btn--close   { background: var(--palette-gray-100); color: var(--t2); }
-    .sh-btn--go      { background: var(--accent); color: var(--palette-white); font-weight: 700; }
-  </style>
+  <link rel="stylesheet" href="styles/c04-schedule.css">
+  <link rel="stylesheet" href="../07_디자인/system/interactions.css">
+  <script src="../07_디자인/system/interactions.js"></script>
 </head>
 <body>
   <div class="bg"></div>
@@ -358,8 +50,8 @@
         <div class="nav-row">
           <div class="nav-range">4 月 13 日 → 19 日</div>
           <div class="nav-btns">
-            <button aria-label="上一周" onclick="navWeek(-1)"><iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon></button>
-            <button aria-label="下一周" onclick="navWeek(1)"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></button>
+            <button type="button" aria-label="上一周" onclick="navWeek(-1)"><iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon></button>
+            <button type="button" aria-label="下一周" onclick="navWeek(1)"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></button>
           </div>
         </div>
         <div class="sum-row">
@@ -494,15 +186,7 @@
   <div class="cg-toast" id="cgToast"></div>
 
   <script>
-    function toast(m) {
-      var t = document.getElementById('toastEl');
-      t.textContent = m;
-      t.classList.add('show');
-      clearTimeout(t._x);
-      t._x = setTimeout(function() { t.classList.remove('show'); }, 2200);
-    }
-
-    /* 주 네비 — 데모용 시각 피드백만 */
+/* 주 네비 — 데모용 시각 피드백만 */
     function navWeek(dir) {
       if (window.HaruCG) HaruCG.toast(dir > 0 ? '下一周 (4 月 20–26 日)' : '上一周 (4 月 6–12 日)');
       else toast(dir > 0 ? '下一周' : '上一周');
@@ -531,8 +215,8 @@
             : '') +
         '</div>' +
         '<div class="cg-sheet__cta">' +
-          '<button class="btn sh-btn sh-btn--close" onclick="HaruCG.closeSheet()">关闭</button>' +
-          (d.today ? '<button class="btn sh-btn sh-btn--go" onclick="HaruCG.closeSheet();location.href=\'c01-today.zh.html\'"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon> 今日界面</button>' : '')+
+          '<button type="button" class="btn sh-btn sh-btn--close" onclick="HaruCG.closeSheet()">关闭</button>' +
+          (d.today ? '<button type="button" class="btn sh-btn sh-btn--go" onclick="HaruCG.closeSheet();location.href=\'c01-today.zh.html\'"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon> 今日界面</button>' : '')+
         '</div>'
       );
     }

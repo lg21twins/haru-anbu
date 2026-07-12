@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" data-role="caregiver" data-platform="mobile">
+<html lang="ko" data-role="caregiver" data-platform="mobile" data-toast-duration="2200">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -332,20 +332,7 @@
     .mi-chevron iconify-icon { font-size: 14px; }
 
     /* ============ 토스트 ============ */
-    .toast {
-      position: fixed; top: 80px; left: 50%;
-      transform: translateX(-50%) translateY(-8px);
-      background: rgba(28,28,30,.92); color: var(--palette-white);
-      padding: 11px 22px; border-radius: 999px;
-      font-size: 14px; font-weight: 600;
-      box-shadow: 0 8px 24px rgba(0,0,0,.18);
-      z-index: 300; opacity: 0; pointer-events: none;
-      transition: opacity .22s, transform .22s;
-      white-space: nowrap;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* ============ 애니메이션 ============ */
+/* ============ 애니메이션 ============ */
     @keyframes haru-fade-in-up {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -364,6 +351,8 @@
     .sh-btn--close   { background: var(--palette-gray-100); color: var(--t2); }
     .sh-btn--go      { background: var(--accent); color: var(--palette-white); font-weight: 700; }
   </style>
+  <link rel="stylesheet" href="../07_디자인/system/interactions.css">
+  <script src="../07_디자인/system/interactions.js"></script>
 </head>
 <body>
   <div class="bg"></div>
@@ -393,8 +382,8 @@
             <div class="nav-range">4월 13일 → 19일</div>
           </div>
           <div class="nav-btns">
-            <button aria-label="이전 주" onclick="navWeek(-1)"><iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon></button>
-            <button aria-label="다음 주" onclick="navWeek(1)"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></button>
+            <button type="button" aria-label="이전 주" onclick="navWeek(-1)"><iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon></button>
+            <button type="button" aria-label="다음 주" onclick="navWeek(1)"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></button>
           </div>
         </div>
         <div class="week-total">
@@ -542,15 +531,7 @@
   <div class="cg-toast" id="cgToast"></div>
 
   <script>
-    function toast(m) {
-      var t = document.getElementById('toastEl');
-      t.textContent = m;
-      t.classList.add('show');
-      clearTimeout(t._x);
-      t._x = setTimeout(function() { t.classList.remove('show'); }, 2200);
-    }
-
-    /* 주 네비 — 데모용 시각 피드백만 */
+/* 주 네비 — 데모용 시각 피드백만 */
     function navWeek(dir) {
       if (window.HaruCG) HaruCG.toast(dir > 0 ? '다음 주 일정 (4월 20–26일)' : '이전 주 일정 (4월 6–12일)');
       else toast(dir > 0 ? '다음 주' : '이전 주');
@@ -579,8 +560,8 @@
             : '') +
         '</div>' +
         '<div class="cg-sheet__cta">' +
-          '<button class="btn sh-btn sh-btn--close" onclick="HaruCG.closeSheet()">닫기</button>' +
-          (d.today ? '<button class="btn sh-btn sh-btn--go" onclick="HaruCG.closeSheet();location.href=\'c01-today.html\'"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon> 오늘 화면</button>' : '')+
+          '<button type="button" class="btn sh-btn sh-btn--close" onclick="HaruCG.closeSheet()">닫기</button>' +
+          (d.today ? '<button type="button" class="btn sh-btn sh-btn--go" onclick="HaruCG.closeSheet();location.href=\'c01-today.html\'"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon> 오늘 화면</button>' : '')+
         '</div>'
       );
     }

@@ -196,16 +196,9 @@
       display:inline-flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;
     }
     .sos iconify-icon{font-size:26px;color:var(--palette-white);}
-
-    .toast{
-      position:fixed;left:50%;bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 18px);
-      transform:translateX(-50%) translateY(20px);
-      background:rgba(28,28,30,.92);color:var(--palette-white);font-size:14px;font-weight:600;
-      padding:11px 20px;border-radius:999px;
-      opacity:0;transition:.25s;pointer-events:none;z-index:300;white-space:nowrap;
-    }
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-  </style>
+</style>
+  <link rel="stylesheet" href="../07_디자인/system/interactions.css">
+  <script src="../07_디자인/system/interactions.js"></script>
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
@@ -218,7 +211,7 @@
         <div class="title-block">
           <h1 class="h-name">마이</h1>
         </div>
-        <button class="icon-btn" aria-label="설정"><iconify-icon icon="mingcute:settings-3-fill"></iconify-icon></button>
+        <button type="button" class="icon-btn" aria-label="설정"><iconify-icon icon="mingcute:settings-3-fill"></iconify-icon></button>
       </div>
     </header>
 
@@ -253,7 +246,7 @@
         <div class="gps-main">근무 중 · 시설 내 위치 확인됨</div>
         <div class="gps-sub">07:00 출근 · 9시간 12분 경과</div>
       </div>
-      <button class="gps-out" onclick="toast('퇴근 처리 시작');">퇴근</button>
+      <button type="button" class="gps-out" onclick="toast('퇴근 처리 시작');">퇴근</button>
     </section>
 
     <section class="sec">
@@ -265,7 +258,7 @@
             <div class="row-label">야간 모드</div>
             <div class="row-sub">21:00–07:00 알림 민감도 ↑</div>
           </div>
-          <button class="switch" onclick="this.classList.toggle('on');toast('야간 모드 '+(this.classList.contains('on')?'ON':'OFF'));"></button>
+          <button type="button" class="switch" onclick="this.classList.toggle('on');toast('야간 모드 '+(this.classList.contains('on')?'ON':'OFF'));"></button>
         </div>
         <div class="row">
           <span class="row-ico ok"><iconify-icon icon="fluent:headset-vr-24-filled"></iconify-icon></span>
@@ -273,7 +266,7 @@
             <div class="row-label">집중 모드</div>
             <div class="row-sub">SOS·위험 알림만 수신</div>
           </div>
-          <button class="switch" onclick="this.classList.toggle('on');toast('집중 모드 '+(this.classList.contains('on')?'ON':'OFF'));"></button>
+          <button type="button" class="switch" onclick="this.classList.toggle('on');toast('집중 모드 '+(this.classList.contains('on')?'ON':'OFF'));"></button>
         </div>
         <div class="row">
           <span class="row-ico ok"><iconify-icon icon="mingcute:phone-fill"></iconify-icon></span>
@@ -281,7 +274,7 @@
             <div class="row-label">햅틱 강조</div>
             <div class="row-sub">시끄러운 환경 진동 강화</div>
           </div>
-          <button class="switch on" onclick="this.classList.toggle('on');"></button>
+          <button type="button" class="switch on" onclick="this.classList.toggle('on');"></button>
         </div>
         <div class="row">
           <span class="row-ico warn"><iconify-icon icon="mingcute:translate-2-fill"></iconify-icon></span>
@@ -289,7 +282,7 @@
             <div class="row-label">자동 번역</div>
             <div class="row-sub">중국어·베트남어 ↔ 한국어</div>
           </div>
-          <button class="switch on" onclick="this.classList.toggle('on');"></button>
+          <button type="button" class="switch on" onclick="this.classList.toggle('on');"></button>
         </div>
       </div>
     </section>
@@ -386,7 +379,7 @@
       </div>
     </section>
 
-    <button class="logout" onclick="toast('로그아웃');">
+    <button type="button" class="logout" onclick="toast('로그아웃');">
       <iconify-icon icon="material-symbols:logout-rounded"></iconify-icon>로그아웃
     </button>
     <div class="ver">하루안부 · 의료진앱 v15.0</div>
@@ -405,13 +398,7 @@
   </div>
 
   <div class="toast" id="toast"></div>
-  <script>
-    function toast(msg){
-      const el=document.getElementById('toast');
-      el.textContent=msg;el.classList.add('show');
-      clearTimeout(window.__t);window.__t=setTimeout(()=>el.classList.remove('show'),1800);
-    }
-  </script>
+  
   <div class="bottom-scrim" aria-hidden="true"></div>
 </body>
 </html>

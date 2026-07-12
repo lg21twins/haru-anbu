@@ -17,160 +17,11 @@
   <link rel="stylesheet" href="../07_디자인/system/app.css?v=24">
   <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
-  <style>
-    .app-shell { max-width: 430px; margin: 0 auto; }
-    .page-sub { font-size: var(--text-callout); color: var(--color-text-secondary); }
-
-    /* 타임라인 컨테이너 — 세로 스레드 + 점 */
-    .tl-wrap { position: relative; padding-left: 28px; }
-    .tl-wrap::before {
-      content: ''; position: absolute;
-      left: 11px; top: 6px; bottom: 6px;
-      width: 2px; border-radius: 2px;
-      background: rgba(44,122,252,.18);
-    }
-
-    .tl-month {
-      position: relative;
-      font-size: var(--text-mini); font-weight: var(--weight-bold);
-      color: var(--color-text-secondary);
-      letter-spacing: 0.4px;
-      margin: var(--space-5) 0 var(--space-3);
-      padding-left: 4px;
-    }
-    .tl-month::before {
-      content: ''; position: absolute;
-      left: -23px; top: 50%; transform: translateY(-50%);
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--color-text-tertiary);
-      box-shadow: 0 0 0 3px var(--brand-blue-50);
-    }
-    .tl-month:first-child { margin-top: 0; }
-
-    .tl { display: flex; flex-direction: column; gap: var(--space-4); }
-    /* 카드 패딩은 .card 기본값(--space-5=16px) 그대로 사용 — 덮지 않는다 */
-    .tl-item { position: relative; }
-    /* 카드 옆 점 — 배지 중앙선에 맞춤 */
-    .tl-item::before {
-      content: ''; position: absolute;
-      left: -22px; top: 23px;
-      width: 10px; height: 10px; border-radius: 50%;
-      background: white; border: 2.5px solid var(--color-accent);
-      box-shadow: 0 0 0 2.5px var(--brand-blue-50);
-    }
-    .tl-item.is-danger::before { border-color: var(--color-danger); }
-    .tl-item.is-success::before { border-color: var(--color-success); }
-
-    .tl-card-head {
-      display: flex; align-items: center; gap: var(--space-3);
-      margin-bottom: var(--space-3);
-    }
-    .tl-card-head .tl-date { margin-left: auto; font-size: var(--text-mini); color: var(--color-text-tertiary); font-variant-numeric: tabular-nums; }
-    .tl-title { font-size: var(--text-callout); font-weight: var(--weight-bold); margin-bottom: var(--space-2); letter-spacing: -0.2px; }
-    .tl-desc { font-size: var(--text-caption); color: var(--color-text-secondary); line-height: var(--leading-normal); }
-
-    /* 진입 애니메이션 */
-    .page-sub, .filter-row, .tl-month {
-      animation: haru-fade-in-up var(--motion-enter) var(--easing-standard) both;
-    }
-    .page-sub  { animation-delay: 50ms; }
-    .tl-month  { animation-delay: 150ms; }
-    .tl-item {
-      animation: haru-fade-in-up var(--motion-enter) var(--easing-standard) both;
-    }
-    .tl > .tl-item:nth-child(1) { animation-delay: 200ms; }
-    .tl > .tl-item:nth-child(2) { animation-delay: 260ms; }
-    .tl > .tl-item:nth-child(3) { animation-delay: 320ms; }
-    .tl > .tl-item:nth-child(4) { animation-delay: 380ms; }
-    .tl > .tl-item:nth-child(5) { animation-delay: 440ms; }
-    .tl > .tl-item:nth-child(n+6) { animation-delay: 500ms; }
-    @media (prefers-reduced-motion: reduce) {
-      .page-sub, .filter-row, .tl-month, .tl-item { animation: none !important; }
-    }
-  </style>
+  <link rel="stylesheet" href="styles/g10-timeline-part-1.css">
 
   <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn 표준 (2026-05-22 통합) -->
   <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
-<style>
-  /* === 3앱 공통 헤더 표준 (d01-home 기준, 보호자앱에도 강제) === */
-  [data-platform="mobile"] .header{
-    padding: calc(env(safe-area-inset-top, 0px) + 6px) 20px 0 !important;
-    position: static !important;
-    background: transparent !important;
-  }
-  /* 기본 = 홈 패턴: 로고 + 액션 그룹 (flex space-between) */
-  [data-platform="mobile"] .header .top-nav{
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 8px !important;
-    margin-bottom: 24px !important;
-  }
-  /* 서브 패턴: title-block 있을 때 → grid 3-col (44 / 1fr / 44) */
-  [data-platform="mobile"] .header .top-nav:has(> .title-block){
-    display: grid !important;
-    grid-template-columns: 44px 1fr 44px !important;
-    margin-bottom: 8px !important;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-left{
-    width: 44px; height: 44px;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .title-block{
-    grid-column: 2; text-align: center; line-height: 1.2; min-width: 0;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-name{
-    font: 600 17px/1.2 inherit; color: var(--color-text-primary); letter-spacing: -.3px; text-align: center;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :first-child{
-    grid-column: 1; justify-self: start;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :last-child{
-    grid-column: 3; justify-self: end;
-  }
-  /* logo */
-  [data-platform="mobile"] .header .top-nav > .logo{
-    display: inline-flex !important;
-    align-items: center !important;
-    text-decoration: none !important;
-    color: inherit !important;
-    background: transparent !important;
-    border: 0 !important;
-    padding: 4px !important;
-    margin: -4px !important;
-    cursor: pointer !important;
-  }
-  [data-platform="mobile"] .header .top-nav > .logo svg{ width: 28px !important; height: 28px !important; display: block !important; }
-  /* top-actions 그룹 (홈 페이지) */
-  [data-platform="mobile"] .header .top-actions{
-    display: flex !important; align-items: center !important; gap: 8px !important;
-  }
-  /* icon-btn 글라스 (44×44, blur, shadow) */
-  [data-platform="mobile"] .header .icon-btn{
-    width: 44px !important; height: 44px !important; border-radius: 50% !important;
-    background: rgba(255,255,255,.55) !important;
-    border: .5px solid rgba(255,255,255,.55) !important;
-    backdrop-filter: blur(12px) saturate(140%) !important;
-    -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
-    box-shadow: 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06) !important;
-    display: inline-flex !important; align-items: center !important; justify-content: center !important;
-    cursor: pointer !important; text-decoration: none !important;
-    position: relative !important;
-    transition: transform .1s !important;
-  }
-  [data-platform="mobile"] .header .icon-btn:active{ transform: scale(.93); }
-  [data-platform="mobile"] .header .icon-btn iconify-icon{
-    font-size: 22px !important;
-    color: var(--color-accent-strong) !important;
-  }
-  [data-platform="mobile"] .header .icon-btn .notif-dot,
-  [data-platform="mobile"] .header .notif-dot{
-    position: absolute !important; top: 10px !important; right: 10px !important;
-    width: 8px !important; height: 8px !important; border-radius: 50% !important;
-    background: var(--color-danger) !important;
-    border: 1.5px solid white !important;
-    z-index: 2 !important;
-  }
-</style>
+<link rel="stylesheet" href="styles/g10-timeline-part-2.css">
 </head>
 <body>
 <div class="app-shell">
@@ -181,7 +32,7 @@
       <div class="title-block">
         <h1 class="h-name">Medical Timeline</h1>
       </div>
-      <div aria-hidden="true" style="width:44px;height:44px;flex-shrink:0"></div>
+      <div class="header-spacer" aria-hidden="true"></div>
     </div>
   </header>
 

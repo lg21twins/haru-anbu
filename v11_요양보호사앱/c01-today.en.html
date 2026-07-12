@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-role="caregiver" data-platform="mobile">
+<html lang="en" data-role="caregiver" data-platform="mobile" data-toast-duration="2600">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -401,20 +401,7 @@
     .sheet-cta {
       display: flex; gap: 8px; margin-top: 14px;
     }
-
-    .toast {
-      position: fixed; left: 50%;
-      bottom: calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 18px);
-      transform: translateX(-50%) translateY(20px);
-      background: rgba(28,28,30,.92); color: var(--palette-white);
-      padding: 11px 20px; border-radius: 999px;
-      font-size: 14px; font-weight: 600;
-      opacity: 0; pointer-events: none; z-index: 300;
-      transition: .25s; white-space: nowrap;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    @keyframes haru-fade-in-up {
+@keyframes haru-fade-in-up {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
@@ -441,10 +428,12 @@
     .sheet-row-label        { display: block; }
     .sheet-row-val          { display: block; }
   </style>
+  <link rel="stylesheet" href="../07_디자인/system/interactions.css">
+  <script src="../07_디자인/system/interactions.js"></script>
 </head>
 <body>
 
-  <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">Today</h1>
+  <h1 class="u-visually-hidden">Today</h1>
 
   <div class="bg"></div>
 
@@ -492,7 +481,7 @@
         <div class="hero-top">
           <span class="hero-time">10:15</span>
           <span class="hero-next">Next in <b>46 min</b></span>
-          <button class="hero-more" onclick="openHeroMenu()" aria-label="More">
+          <button type="button" class="hero-more" onclick="openHeroMenu()" aria-label="More">
             <iconify-icon icon="mingcute:more-1-fill"></iconify-icon>
           </button>
         </div>
@@ -503,7 +492,7 @@
           <b>Ready to measure</b> · 2 hrs since 08:00 BP medication
         </span>
         <div class="hero-actions">
-          <button class="btn btn-primary" onclick="location.href='c02-checklist.en.html'">
+          <button type="button" class="btn btn-primary" onclick="location.href='c02-checklist.en.html'">
             <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>Start recording
           </button>
         </div>
@@ -634,7 +623,7 @@
           <div class="obs-name"><b>Ms. Lee</b> · Low-grade fever observation</div>
           <div class="obs-meta">Floor 2 · Room B-2 · Last check 06:40</div>
         </div>
-        <button class="obs-call-mini" onclick="event.stopPropagation();callNurse('Ms. Lee fever')" aria-label="Call nurse">
+        <button type="button" class="obs-call-mini" onclick="event.stopPropagation();callNurse('Ms. Lee fever')" aria-label="Call nurse">
           <iconify-icon icon="mingcute:phone-fill"></iconify-icon>Call
         </button>
       </div>
@@ -676,7 +665,7 @@
         <span class="tab-label">My</span>
       </a>
     </nav>
-    <button class="cg-sos" data-sos-bind aria-label="Emergency SOS · Hold 3 sec to call">
+    <button type="button" class="cg-sos" data-sos-bind aria-label="Emergency SOS · Hold 3 sec to call">
       <span class="cg-sos__ring" aria-hidden="true">
         <svg class="sos-ring" viewBox="0 0 60 60">
           <circle cx="30" cy="30" r="27"/>
@@ -743,8 +732,8 @@
           '</div>' +
         '</div>' +
         '<div class="cg-sheet__cta">' +
-          '<button class="btn sheet-btn--warn" onclick="HaruCG.closeSheet();callNurse(\'Fever observation\')"><iconify-icon icon="mingcute:phone-fill"></iconify-icon>Call nurse</button>' +
-          '<button class="btn btn-primary sheet-btn--primary" onclick="HaruCG.closeSheet();location.href=\'c02-checklist.en.html?pt=lee\'"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>Start record</button>' +
+          '<button type="button" class="btn sheet-btn--warn" onclick="HaruCG.closeSheet();callNurse(\'Fever observation\')"><iconify-icon icon="mingcute:phone-fill"></iconify-icon>Call nurse</button>' +
+          '<button type="button" class="btn btn-primary sheet-btn--primary" onclick="HaruCG.closeSheet();location.href=\'c02-checklist.en.html?pt=lee\'"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>Start record</button>' +
         '</div>',
         { variant: 'warn' }
       );
@@ -765,21 +754,21 @@
             <div class="sheet-sub">10:15 · Floor 2 · Room A-3</div>
           </div>
         </div>
-        <button class="sheet-row sheet-row--btn" onclick="toast('Ms. Park · BP check marked complete');closeSheet()">
+        <button type="button" class="sheet-row sheet-row--btn" onclick="toast('Ms. Park · BP check marked complete');closeSheet()">
           <span class="sheet-row-ico sheet-row-ico--accent"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           <span class="sheet-row-text">
             <span class="sheet-row-label">Mark complete</span>
             <span class="sheet-row-val">Skip measurement, mark as done</span>
           </span>
         </button>
-        <button class="sheet-row sheet-row--btn" onclick="toast('Postponed to 10:30');closeSheet()">
+        <button type="button" class="sheet-row sheet-row--btn" onclick="toast('Postponed to 10:30');closeSheet()">
           <span class="sheet-row-ico sheet-row-ico--neutral"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon></span>
           <span class="sheet-row-text">
             <span class="sheet-row-label">Postpone to 10:30</span>
             <span class="sheet-row-val">Move to next measurement slot</span>
           </span>
         </button>
-        <button class="sheet-row sheet-row--btn" onclick="toast('Ms. Park · Details');closeSheet()">
+        <button type="button" class="sheet-row sheet-row--btn" onclick="toast('Ms. Park · Details');closeSheet()">
           <span class="sheet-row-ico sheet-row-ico--neutral"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon></span>
           <span class="sheet-row-text">
             <span class="sheet-row-label">Patient details</span>
@@ -790,12 +779,7 @@
     }
 
     function closeSheet()  { document.getElementById('overlay').classList.remove('show'); }
-    function toast(m) {
-      const t = document.getElementById('toastEl');
-      t.textContent = m; t.classList.add('show');
-      clearTimeout(t._x); t._x = setTimeout(() => t.classList.remove('show'), 2600);
-    }
-  </script>
+</script>
   <div class="bottom-scrim" aria-hidden="true"></div>
 </body>
 </html>

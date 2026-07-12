@@ -14,15 +14,7 @@
     } catch(e){}
   })();
 </script>
-<style>
-  html.skip-intro .intro{display:none!important}
-  /* AI 오브는 건드리지 않음 — JS skipAllInstant()가 finale+dimmed 정상 적용 */
-  html.skip-intro body{visibility:visible}
-  html.skip-intro .intro-enter{opacity:1!important;transform:none!important;transition:none!important}
-  /* iframe(쇼케이스) 임베드: 페인트 부하 줄이기 — 오브 호흡 애니메이션·필 웨이브 캔버스 끔 */
-  html.skip-intro .ai-orb{animation:none!important;will-change:auto!important}
-  html.skip-intro #pillWave{display:none!important}
-</style>
+<link rel="stylesheet" href="styles/g-guardian-live-part-1.css">
   <meta charset="UTF-8">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -40,588 +32,7 @@
   <link rel="stylesheet" href="../07_디자인/system/home.css?v=24">
   <script src="../07_디자인/_app-theme.js"></script>
   <script src="../07_디자인/_iconify-icon.min.js"></script>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    a,button,[role=button]{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
-    
-    :root{
-      /* v3.2.4 (2026-05-11) · audit doc §5.1.3 — 로컬 hex → tokens.css semantic alias
-         변수명은 유지해 본문 var(--blue) 등 호출은 그대로 동작.
-         값만 tokens.css 의미 토큰 참조 → 역할/테마 변경 시 자동 추종. */
-      --blue:var(--color-accent);
-      --blue-l:var(--brand-blue-400);
-      --blue-d:var(--color-accent-strong);
-      --green:var(--brand-green-500);         /* v3.2.9: 케어 키컬러 — 의료진/요양보호사 accent와 통일 */
-      --green-d:var(--brand-green-600);       /* v3.2.9: 케어 키컬러 진한 톤 */
-      --amber:var(--color-warning);
-      --red:var(--color-danger);
-      --t1:var(--color-text-primary);
-      --t2:var(--color-text-secondary,rgba(0,0,0,.5));
-      --t3:var(--color-text-tertiary,rgba(0,0,0,.35));
-      --font:'Pretendard Variable','Pretendard',-apple-system,system-ui,sans-serif;
-      --tab-zone:calc(env(safe-area-inset-bottom,0px) + 96px);
-      --peek:512px;
-      --sheet-h:calc(100dvh - var(--tab-zone));
-      --sheet-collapsed-y:calc(var(--sheet-h) - var(--peek));
-    }
-    html{color-scheme:light;background:var(--brand-blue-200);overscroll-behavior:none}
-    body{font-family:var(--font);color:var(--t1);-webkit-font-smoothing:antialiased;background:transparent;margin:0;overflow-x:clip;overscroll-behavior:none}
-
-    /* 배경 — v10 아카이브 톤: 베이스 화이트-크림, orb가 강도 담당 */
-    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--guardian-cream-light)}
-    .bg .g1,.bg .g2{display:none}
-    .bg::before,.bg::after{display:none}
-    .grain{display:none}
-
-    /* ═══════════════════════════════════════
-       AI 오브 — v10 아카이브 강도 (중앙 50/32%, opacity 1, blend 없음)
-    ═══════════════════════════════════════ */
-    .ai-orb-bg{position:fixed;top:50%;left:50%;width:560px;height:560px;max-width:110vw;max-height:110vw;transform:translate(-50%,-50%);pointer-events:none;z-index:1;transition:transform 2.4s cubic-bezier(.22,1,.36,1),opacity 1.4s ease}
-    .ai-orb{position:absolute;inset:0;border-radius:50%;
-      background:var(--guardian-sky-2);
-      filter:blur(48px);
-      animation:orbBreath 7s cubic-bezier(.45,.05,.55,.95) infinite;
-      will-change:transform,opacity,filter}
-    /* 연속적으로 크기 큰 변화 — 재시작 없이 계속 출렁임 */
-    @keyframes orbBreath{
-      0%{transform:scale(1) translateY(0) translateX(0);opacity:.88;filter:blur(24px)}
-      18%{transform:scale(1.14) translateY(-14px) translateX(8px);opacity:.98;filter:blur(20px)}
-      35%{transform:scale(.96) translateY(6px) translateX(-6px);opacity:.85;filter:blur(28px)}
-      52%{transform:scale(1.22) translateY(-18px) translateX(-4px);opacity:1;filter:blur(18px)}
-      70%{transform:scale(1.04) translateY(-2px) translateX(10px);opacity:.92;filter:blur(23px)}
-      85%{transform:scale(1.16) translateY(-10px) translateX(-8px);opacity:.97;filter:blur(21px)}
-      100%{transform:scale(1) translateY(0) translateX(0);opacity:.88;filter:blur(24px)}
-    }
-    /* 피나레: 오브가 커지며 하단에 앉아 상단에 큰 돔(arc)을 만듦 */
-    .ai-orb-bg.finale{transform:translate(-50%,-10%) scale(2)}
-    .ai-orb-bg.finale .ai-orb{animation:none;filter:blur(24px);opacity:1;transition:opacity 1.4s ease}
-
-    /* 인트로 텍스트 오버레이 (오브는 영구, 이것만 사라짐) */
-    .intro{position:fixed;inset:0;z-index:101;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 36px;transition:opacity .55s ease,visibility .55s ease,background-color .95s cubic-bezier(.22,1,.36,1);pointer-events:auto}
-    /* 진입 시 로고만 보여줄 때는 화면을 순백으로 덮어 오브 감춤 */
-    .intro.brand-only{background:white}
-    .intro.gone{opacity:0;visibility:hidden;pointer-events:none}
-    /* 인트로 스테이지 — 브랜드 → 호명 → 메인 + 체크 → 클로징 */
-    .intro-stage{position:relative;z-index:2;text-align:center;width:100%;max-width:340px;margin:0 auto;transform:translateY(-26px);color:var(--palette-gray-900);display:flex;flex-direction:column;align-items:center;transition:opacity .55s ease}
-    .intro-stage.fade-out{opacity:0}
-    /* Stage 0: 브랜드 로고만 (크게) — 들어올 때 살짝 확대 페이드인, 나갈 때 긴 페이드아웃 */
-    .intro-brand{display:flex;flex-direction:column;align-items:center;gap:14px;opacity:0;transform:translateY(6px) scale(.96);transition:opacity .85s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
-    .intro-brand.show{opacity:1;transform:translateY(0) scale(1);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-    .intro-brand-mark{width:112px;height:112px;display:flex;align-items:center;justify-content:center}
-    .intro-brand-mark svg{width:100%;height:100%;display:block}
-    .intro-address{font-size:15px;font-weight:500;letter-spacing:-.2px;color:rgba(255,255,255,.78);text-shadow:0 1px 12px rgba(18,52,116,.18);margin-bottom:10px;opacity:0;transform:translateY(4px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
-    .intro-main{font-size:28px;font-weight:700;line-height:1.28;letter-spacing:-.7px;color:rgba(255,255,255,.92);text-shadow:0 1px 16px rgba(18,52,116,.22);opacity:0;transform:translateY(6px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-    .intro-main b{color:#fff;font-weight:700}
-    .intro-close{font-size:24px;font-weight:700;line-height:1.45;letter-spacing:-.5px;color:#fff;text-shadow:0 1px 16px rgba(18,52,116,.22);opacity:0;transform:translateY(6px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-    /* 일과 체크리스트 — Stage 1 (호명 + 메인 + 체크) — #8 형식 이식, 메인 컬러 토큰 유지 */
-    .intro-checks{margin-top:22px;display:flex;flex-direction:column;gap:8px;width:236px;min-width:0}
-    .intro-check{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:10px 14px 10px 10px;border-radius:16px;background:rgba(255,255,255,.82);backdrop-filter:blur(14px) saturate(1.1);-webkit-backdrop-filter:blur(14px) saturate(1.1);box-shadow:0 1px 2px rgba(16,32,64,.06),0 6px 16px rgba(16,32,64,.05);opacity:0;transform:translateY(8px) scale(.98);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
-    .intro-check-ico{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:10px;background:rgba(var(--color-accent-rgb),.14);color:var(--color-accent)}
-    .intro-check-ico iconify-icon{font-size:17px}
-    .intro-check-meta{display:flex;align-items:baseline;justify-content:space-between;gap:10px;min-width:0;padding-right:4px}
-    .intro-check-label{font-size:13.5px;color:rgba(28,28,30,.55);font-weight:500;letter-spacing:-.2px}
-    .intro-check-value{font-size:17px;font-weight:700;color:var(--palette-gray-900);letter-spacing:-.3px;font-variant-numeric:tabular-nums;display:inline-flex;align-items:baseline;gap:2px}
-    .intro-check-value em{font-style:normal;font-size:12.5px;font-weight:600;color:rgba(28,28,30,.5);margin-left:1px}
-    .intro-check-done{display:inline-flex;align-items:center;justify-content:center;opacity:0;transform:scale(.4);transition:opacity .4s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.34,1.56,.64,1)}
-    .intro-check-done iconify-icon{font-size:19px;color:var(--green)}
-    .intro-check.show{opacity:1;transform:translateY(0) scale(1)}
-    .intro-check.show .intro-check-done{opacity:1;transform:scale(1);transition-delay:.18s}
-    @media (prefers-reduced-motion:reduce){
-      .intro-check{transition:opacity .15s ease}
-      .intro-check-done{transition:none!important}
-    }
-    .intro-address.show,.intro-main.show,.intro-close.show{opacity:1;transform:translateY(0)}
-    .intro-skip{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 118px);left:50%;transform:translateX(-50%);font-size:12.5px;letter-spacing:1.4px;color:rgba(40,60,100,.4);font-weight:600;text-transform:uppercase;cursor:pointer;background:none;border:none;padding:10px 18px;z-index:3;transition:opacity .45s cubic-bezier(.22,1,.36,1)}
-    .intro-skip:active{transform:translateX(-50%) scale(.96);color:rgba(40,60,100,.65)}
-    /* 브랜드 로고만 보일 때(Stage 0)는 SKIP 숨김 */
-    .intro.brand-only .intro-skip{opacity:0;pointer-events:none}
-    /* brand-only: 로고를 뷰포트 정가운데로 고정 */
-    .intro.brand-only .intro-brand{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3}
-
-    /* 오브 스테이지별 톤 — 메시지와 같이 연기하도록 */
-    .ai-orb-bg.stage-data .ai-orb{filter:blur(22px) saturate(1.12) brightness(1.06)}
-    .ai-orb-bg.stage-close .ai-orb{filter:blur(28px) saturate(.9) brightness(.98);animation-duration:10s}
-
-    /* 홈 모드 dimming — v10 아카이브 강도 복구: 오브가 배경 주인공 */
-    .ai-orb-bg.dimmed{opacity:1}
-    .ai-orb-bg.dimmed.finale{transform:translate(-50%,-10%) scale(2)}
-    @media (prefers-reduced-motion: reduce){
-      .ai-orb-bg.dimmed{transition:none}
-    }
-
-    /* 홈 콘텐츠는 인트로 동안 숨김 — 순차 등장.
-       .intro-enter 클래스가 붙어있을 때만 느린 인트로 트랜지션 적용,
-       등장 완료 후 JS가 제거하면 홈 기본 트랜지션(.4s 등)으로 복귀 */
-    .chat-fixed.intro-enter{opacity:0;transition:opacity 1s cubic-bezier(.22,1,.36,1)}
-    .bottom-bar.intro-enter{opacity:0;transform:translateX(-50%) translateY(12px);transition:opacity 1.8s cubic-bezier(.22,1,.36,1),transform 1.8s cubic-bezier(.22,1,.36,1)}
-    /* 리포트 시트는 화면 아래에서 대기하다가 슬라이드 업 */
-    .report-sheet.intro-enter{transform:translateY(100vh)}
-    body.ready .chat-fixed.intro-enter{opacity:1}
-    body.ready .report-sheet.intro-enter{transform:translateY(0);transition:transform 0.55s cubic-bezier(.22,.68,0,1);transition-delay:0.22s}
-    body.ready .bottom-bar.intro-enter{opacity:1;transform:translateX(-50%) translateY(0);transition-delay:0.22s}
-
-    @media (prefers-reduced-motion:reduce){
-      .ai-orb{animation:none}
-    }
-
-    .app{max-width:430px;margin:0 auto;position:relative;pointer-events:none}
-    .app *{pointer-events:auto}
-
-    /* ═══════════════════════════════════════
-       AI 채팅 — 고정 배경 (움직이지 않음)
-    ═══════════════════════════════════════ */
-    .chat-fixed{
-      position:fixed;top:0;left:50%;transform:translateX(-50%);
-      width:100%;max-width:430px;height:100vh;
-      z-index:1;
-      display:flex;flex-direction:column;
-      /* 상단/좌우 padding은 .header가 처리 — 하단 padding만 유지 (탭바 여유) */
-      padding:0 0 calc(env(safe-area-inset-bottom,0px) + 96px);
-    }
-    /* 본문(.greeting-zone 이하)은 좌우 padding 별도 적용 — .header는 자체 padding 있음 */
-    .chat-fixed > *:not(.header){padding-left:20px;padding-right:20px;}
-
-    /* v3.2.5: 세 앱 헤더 통일 — margin-bottom 24px (medical 기준) */
-    .top-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-    /* v3.2.4: 세 앱 헤더 통일 — brand SVG only 28px */
-    .logo{display:inline-flex;align-items:center;background:transparent;border:0;padding:4px;margin:-4px;cursor:pointer;font-family:inherit;transition:transform .1s}
-    .logo:active{transform:scale(.94)}
-
-    /* ═══ 대화 기록 드로어 ═══ */
-    .ch-scrim{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,0);pointer-events:none;transition:background .32s ease}
-    .ch-scrim.open{background:rgba(0,0,0,.36);pointer-events:auto;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
-    .ch-panel{position:fixed;top:0;left:0;bottom:0;width:min(86%,340px);background:white;z-index:61;transform:translateX(-100%);transition:transform .38s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:0 12px 48px rgba(0,0,0,.2)}
-    .ch-panel.open{transform:translateX(0)}
-    .ch-head{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 18px) 18px 12px}
-    .ch-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;color:var(--palette-gray-900);letter-spacing:-.4px}
-    .ch-title svg{width:22px;height:22px;display:block}
-    .ch-actions{display:flex;align-items:center;gap:6px}
-    .ch-icon-btn{width:34px;height:34px;border-radius:50%;background:var(--guardian-gray-tint);border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .1s;padding:0}
-    .ch-icon-btn:active{transform:scale(.92)}
-    .ch-icon-btn iconify-icon{font-size:17px;color:var(--palette-gray-900)}
-    .ch-search{padding:6px 18px 8px}
-    .ch-search-inner{display:flex;align-items:center;gap:8px;background:var(--guardian-bg-tint);border-radius:10px;padding:9px 12px}
-    .ch-search-inner:focus-visible{box-shadow:0 0 0 2px var(--color-accent), 0 0 0 4px rgba(var(--color-accent-rgb), .25);border-radius:8px;}
-    .ch-search-inner iconify-icon{font-size:15px;color:rgba(28,28,30,.5)}
-    .ch-search-inner input{flex:1;border:0;background:transparent;font-size:13.5px;color:var(--palette-gray-900);font-family:inherit;outline:none;letter-spacing:-.2px}
-    .ch-new-btn{margin:4px 18px 6px;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:var(--color-accent);color:white;border:0;border-radius:10px;font-family:inherit;font-size:13.5px;font-weight:700;letter-spacing:-.2px;cursor:pointer;transition:transform .1s}
-    .ch-new-btn:active{transform:scale(.98)}
-    .ch-new-btn iconify-icon{font-size:16px}
-    .ch-list{flex:1;overflow-y:auto;padding:4px 10px calc(env(safe-area-inset-bottom,0px) + 16px);-webkit-overflow-scrolling:touch}
-    .ch-group{margin-top:10px}
-    .ch-group-label{font-size:11px;font-weight:700;color:rgba(28,28,30,.42);letter-spacing:.3px;padding:6px 10px 4px}
-    .ch-item{display:flex;gap:10px;width:100%;padding:10px;border:0;border-radius:10px;background:transparent;cursor:pointer;text-align:left;text-decoration:none;color:inherit;font:inherit;transition:background .12s}
-    .ch-item:active{background:var(--guardian-bg-tint)}
-    .ch-item-ico{width:32px;height:32px;border-radius:9px;background:var(--color-accent-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--color-accent)}
-    .ch-item-ico iconify-icon{font-size:16px;color:var(--color-accent)}
-    /* Haru Anbu 로고 마크 — AI 관련 컴포넌트에서 다른 아이콘 대신 사용 */
-    .haru-mark{width:18px;height:18px;display:block}
-    .ch-item-ico .haru-mark{width:20px;height:20px}
-    .ai-comment-icon .haru-mark{width:20px;height:20px}
-    .ch-item-body{flex:1;min-width:0}
-    .ch-item-title{font-size:13.5px;font-weight:700;color:var(--palette-gray-900);letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
-    .ch-item-preview{font-size:12px;color:rgba(28,28,30,.52);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.35}
-    .ch-item-time{font-size:10.5px;color:rgba(28,28,30,.4);flex-shrink:0;align-self:flex-start;margin-top:3px;font-weight:600;letter-spacing:.1px}
-    /* .header > .top-nav > .icon-btn 표준 — c01/d01과 동일 (캐시·specificity 회피) */
-    .header{padding:calc(env(safe-area-inset-top,0px) + 6px) 20px 0;position:static;background:transparent;}
-
-    .greeting-zone{padding:12px 4px 0}
-    /* v3.2.4: letter-spacing 살짝 약화(-.85 → -.65)로 다른 두 앱과 톤 맞춤. 크기/감성 톤은 유지 */
-    .greeting-main{font-size:28px;font-weight:700;line-height:1.22;letter-spacing:-.65px;color:var(--guardian-text-warm-dark);margin-bottom:8px;text-shadow:0 1px 0 rgba(255,255,255,.2)}
-    .greeting-sub{font-size:15px;color:rgba(42,24,16,.62);line-height:1.45;margin-bottom:20px;font-weight:500}
-
-    /* AI 프롬프트 — 센터 칩 */
-    .ai-prompts{flex:1;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:20px 4px}
-    .ai-prompts-label{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.4px;text-align:center;margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:6px}
-    .ai-prompts-label::before,.ai-prompts-label::after{content:'';width:24px;height:1px;background:rgba(var(--color-accent-rgb),.2)}
-    .ai-prompt-item{display:flex;align-items:center;gap:10px;width:100%;font-family:inherit;text-align:left;cursor:pointer;background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.8);box-shadow:0 2px 12px rgba(0,0,0,.04);padding:13px 16px;border-radius:14px;font-size:15px;font-weight:600;color:var(--t1);letter-spacing:-.3px;transition:transform .12s}
-    .ai-prompt-item:active{transform:scale(.97)}
-    .ai-prompt-item iconify-icon{font-size:18px;color:var(--blue);flex-shrink:0}
-
-    /* AI 입력창 — 흰 바탕, 로고 제거, 마이크+전송 버튼 */
-    /* 홈 모드: 탭바 위(104px), 채팅 모드: 맨 아래(24px)로 슬라이드 다운 */
-    .chat-input-area{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 92px);left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;z-index:45;padding:0;--kb:0px;transition:bottom .22s cubic-bezier(.22,1,.36,1)}
-    body.chat-mode .chat-input-area{bottom:calc(max(env(safe-area-inset-bottom,0px), 20px) + 12px + var(--kb))}
-    /* 키보드 올라와 있을 땐 safe-area 무시 — 키보드 바로 위에 딱 붙음 */
-    body.chat-mode .chat-input-area.kb-up{bottom:calc(var(--kb) + 12px)}
-    .ai-input-inner{border-radius:999px;display:flex;align-items:center;gap:4px;padding:8px 10px 8px 22px;background:white;border:0;box-shadow:0 4px 20px rgba(0,0,0,.1)}
-    /* 실제 input — 한글 IME 보장. 악세서리바는 visualViewport로 위치 보정 */
-    .ai-placeholder{flex:1;font-size:15px;color:var(--t1);font-family:inherit;border:0;outline:none;background:transparent;padding:0;min-width:0;height:38px;letter-spacing:-.2px;-webkit-appearance:none;appearance:none;caret-color:var(--blue)}
-    .ai-placeholder::placeholder{color:rgba(28,28,30,.42);font-weight:500}
-    .ai-placeholder:focus{color:var(--t1)}
-    .ai-mic-btn{width:38px;height:38px;border-radius:50%;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;padding:0;flex-shrink:0;background:transparent}
-    .ai-mic-btn iconify-icon{font-size:22px;color:var(--t2)}
-    .ai-mic-btn:active{transform:scale(.9)}
-
-    /* 채팅 모드 중에는 네이티브 스크롤 잠금 — 스와이프 업 시 scrollY 튀는 걸 원천 차단 */
-    body.chat-mode{overflow:hidden;touch-action:none}
-
-    /* 홈 AI 프롬프트 — 추천 질문 (순환 강조 + 진입 페이드인) */
-    .home-prompts{padding:10px 4px 0;display:none;flex-direction:column;gap:14px}
-    body.chat-mode .home-prompts{display:flex;animation:promptsFadeIn .55s cubic-bezier(.22,1,.36,1) both}
-    .home-prompts button{
-      font-family:inherit;text-align:left;background:transparent;border:0;cursor:pointer;
-      display:block;width:100%;padding:2px 0;letter-spacing:-.4px;
-      font-size:16px;font-weight:500;color:rgba(42,24,16,.28);
-      transform-origin:left center;will-change:transform,color;
-      animation:cyclePrompt 6s cubic-bezier(.45,.05,.55,.95) infinite;
-    }
-    .home-prompts button:active{opacity:.55}
-    /* 진입 시 아이템 스태거 페이드인 — cyclePrompt와 병렬 실행 */
-    body.chat-mode .home-prompts button:nth-child(1){animation:cyclePrompt 6s cubic-bezier(.45,.05,.55,.95) -2s infinite,promptItemFadeIn .5s cubic-bezier(.22,1,.36,1) .08s both}
-    body.chat-mode .home-prompts button:nth-child(2){animation:cyclePrompt 6s cubic-bezier(.45,.05,.55,.95)  0s infinite,promptItemFadeIn .5s cubic-bezier(.22,1,.36,1) .18s both}
-    body.chat-mode .home-prompts button:nth-child(3){animation:cyclePrompt 6s cubic-bezier(.45,.05,.55,.95) -4s infinite,promptItemFadeIn .5s cubic-bezier(.22,1,.36,1) .28s both}
-    @keyframes cyclePrompt{
-      0%     {transform:scale(1);   color:rgba(42,24,16,.28);font-weight:500}
-      33.33% {transform:scale(1.15);color:var(--guardian-text-warm-dark);           font-weight:800}
-      48%,100%{transform:scale(1);  color:rgba(42,24,16,.28);font-weight:500}
-    }
-    @keyframes promptsFadeIn{
-      from{opacity:0;transform:translateY(8px)}
-      to  {opacity:1;transform:translateY(0)}
-    }
-    @keyframes promptItemFadeIn{
-      from{opacity:0;transform:translateY(6px)}
-      to  {opacity:1;transform:translateY(0)}
-    }
-    @media (prefers-reduced-motion:reduce){
-      .home-prompts button{animation:none}
-      body.chat-mode .home-prompts,
-      body.chat-mode .home-prompts button:nth-child(1),
-      body.chat-mode .home-prompts button:nth-child(2),
-      body.chat-mode .home-prompts button:nth-child(3){animation:none}
-    }
-
-    /* 일일 리포트 보기 버튼 — 채팅 모드에서만 노출 */
-    .report-view-btn{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 110px);transform:translateX(-50%);display:inline-flex;align-items:center;gap:5px;padding:8px 14px;background:var(--guardian-bg-tint);border:0;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.12);font-size:13px;font-weight:700;color:var(--t1);font-family:inherit;z-index:46;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
-    .report-view-btn.show{opacity:1;pointer-events:auto}
-    .report-view-btn:active{transform:translateX(-50%) scale(.96)}
-    .report-view-btn iconify-icon{font-size:14px;color:var(--blue)}
-
-    /* AI 채팅 힌트 버튼 — 홈 모드에서만 노출 (리포트 시트 위 AI 오브 영역)
-       v3.2.4: 시트 margin-top 30vh와 동기화 */
-    .chat-hint-btn{position:fixed;left:50%;top:calc(36vh - 48px);transform:translateX(-50%);display:inline-flex;align-items:center;gap:5px;padding:8px 14px;background:var(--guardian-bg-tint);border:0;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.12);font-size:13px;font-weight:700;color:var(--t1);font-family:inherit;z-index:46;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .45s ease,transform .3s ease}
-    body.ready .chat-hint-btn{opacity:1;pointer-events:auto;transition-delay:0.5s}
-    body.chat-mode .chat-hint-btn{opacity:0!important;pointer-events:none!important;transition-delay:0s!important}
-    .chat-hint-btn.dismissed{opacity:0!important;pointer-events:none!important;transition:opacity .6s ease!important;transition-delay:0s!important}
-    .chat-hint-btn:active{transform:translateX(-50%) scale(.96)}
-    .chat-hint-btn iconify-icon{font-size:14px;color:var(--blue);animation:hintBounce 1.8s cubic-bezier(.45,.05,.55,.95) infinite}
-    @keyframes hintBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
-    @media (prefers-reduced-motion:reduce){.chat-hint-btn iconify-icon{animation:none}}
-
-    /* ═══════════════════════════════════════
-       리포트 시트 — audit doc §5.1.6: "위로 올라오는 sheet" 강조를 줄이고
-       세 앱 카드 스택 문법에 가까워지도록 약화.
-       margin-top 40vh: 인사말 + 서브카피가 자연스럽게 보이는 peek 위치.
-       radius 28→22, shadow 위→아래 방향.
-    ═══════════════════════════════════════ */
-    .report-sheet{
-      position:relative;z-index:5;
-      margin-top:calc(36vh);
-      /* v3.2.9: 그라디언트 제거 → 단일 솔리드 (var(--guardian-bg-tint-soft)) */
-      background:var(--guardian-bg-tint-soft);
-      backdrop-filter:blur(32px) saturate(150%) brightness(1.02);
-      -webkit-backdrop-filter:blur(32px) saturate(150%) brightness(1.02);
-      border-radius:22px 22px 0 0;
-      border-top:0.5px solid rgba(255,255,255,0.88);
-      border-left:0.5px solid rgba(255,255,255,0.72);
-      border-right:0.5px solid rgba(255,255,255,0.72);
-      box-shadow:0 4px 20px rgba(0,0,0,0.06),0 -1px 0 rgba(255,255,255,0.5);
-      min-height:calc(100vh + 240px);
-      padding-bottom:calc(env(safe-area-inset-bottom,0px) + 112px);
-      transition:transform 0.42s cubic-bezier(.22,.68,0,1);
-    }
-    .report-sheet.mode-chat{transform:translateY(100vh);pointer-events:none}
-    /* 채팅 모드 동안엔 시트를 fixed로 완전 잠금 — 스크롤/드래그로 기어올라오지 못하게 */
-    body.chat-mode .report-sheet{
-      position:fixed;top:0;left:0;right:0;
-      margin:calc(36vh + 2px) 0 0 0;
-      width:100%;box-sizing:border-box;
-      transition:transform .42s cubic-bezier(.22,.68,0,1);
-    }
-
-    /* 시트 드래그 영역 */
-    .sheet-drag{padding:12px 0 6px;cursor:grab;display:flex;justify-content:center;touch-action:none}
-    .sheet-drag-pill{width:40px;height:5px;border-radius:3px;background:rgba(0,0,0,.15)}
-
-    /* 탭바/채팅바 전환 (bottom-bar = 탭바 + AI FAB 통합) */
-    .bottom-bar{transition:opacity .4s cubic-bezier(.32,.72,0,1),transform .4s cubic-bezier(.32,.72,0,1)}
-    .bottom-bar.hide{opacity:0!important;pointer-events:none!important;transform:translateX(-50%) translateY(20px)!important}
-    .chat-input-area{transition:bottom .42s cubic-bezier(.32,.72,0,1),opacity .35s cubic-bezier(.32,.72,0,1),transform .35s cubic-bezier(.32,.72,0,1)}
-    .chat-input-area.hide{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(20px);visibility:hidden}
-    /* peek(초기 뷰포트): 입력바 숨김 — 리포트 위 시각 간섭 제거. 스크롤해서 리포트가 올라오면 페이드인 */
-    .chat-input-area.peek-hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(10px)}
-    body.chat-mode .chat-input-area.peek-hidden{opacity:1;pointer-events:auto;transform:translateX(-50%)}
-
-
-    .report-content{padding:8px 16px 0}
-
-    /* 요약 카드 — Apple Health 패턴: 데이터 카드는 순백 솔리드 (글라스 아님) */
-    .summary-card{background:white;border:1px solid rgba(0,0,0,.05);border-radius:20px;padding:18px 20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04)}
-    .summary-title{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.3px;margin-bottom:12px}
-    .summary-metrics{display:flex}
-    .summary-item{flex:1;text-align:center;position:relative}
-    .summary-item+.summary-item::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:1px;background:rgba(0,0,0,.06)}
-    .summary-icon{font-size:20px;margin-bottom:4px}
-    .summary-val{font-size:18px;font-weight:800;letter-spacing:-.5px;line-height:1}
-    .summary-label{font-size:11px;color:var(--t3);margin-top:3px}
-
-    .section-header{display:flex;align-items:center;justify-content:space-between;padding:12px 4px 10px;gap:10px}
-    .section-title{font-size:17px;font-weight:800;letter-spacing:-.3px}
-    .section-date{font-size:12px;color:var(--t3)}
-    /* 명시 primary action — audit doc §5.1.7: 첫 카드 영역에 분명한 다음 행동
-       Apple Health/Notes 패턴: 콘텐츠 영역 안의 인라인 액션은 솔리드 텍스트 링크. 글라스 chrome 아님 */
-    .section-cta{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--blue);text-decoration:none;padding:6px 4px;background:transparent;border:0;letter-spacing:-.2px;cursor:pointer;flex-shrink:0;transition:opacity .12s}
-    .section-cta:active{opacity:.55}
-    .section-cta iconify-icon{font-size:13px}
-
-    .ai-comment{display:flex;align-items:flex-start;gap:12px;padding:16px;border-radius:20px;margin-bottom:10px;background:white;border:1px solid rgba(var(--color-accent-rgb),.1);box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04)}
-    .ai-comment-icon{width:32px;height:32px;border-radius:50%;background:var(--color-accent-soft);color:var(--color-accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .ai-comment-text{font-size:14px;line-height:1.6;flex:1}
-    .ai-comment-text b{color:var(--blue);font-weight:700}
-
-    /* 오늘의 순간 — 사진 + 간호사 코멘트 카드 */
-    .moment-card{display:block;width:100%;background:white;border:1px solid rgba(0,0,0,.05);border-radius:20px;overflow:hidden;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04);cursor:pointer;text-align:left;font:inherit;transition:transform .12s;text-decoration:none;color:inherit}
-    .moment-card:active{transform:scale(.98)}
-    .moment-photo{position:relative;height:200px;background:var(--guardian-warm-cream) url('mockup.png') center/cover no-repeat;overflow:hidden}
-    .moment-photo::after{content:'';position:absolute;inset:auto 0 0 0;height:30%;background:rgba(0,0,0,.12);pointer-events:none}
-    .moment-tag{position:absolute;top:12px;left:12px;z-index:2;display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:11px;font-weight:700;color:var(--palette-amber-700);letter-spacing:-.2px}
-    .moment-tag iconify-icon{font-size:13px}
-    .moment-body{padding:14px 18px 16px}
-    .moment-quote{font-size:14px;font-weight:600;line-height:1.5;letter-spacing:-.3px;color:var(--t1);margin-bottom:6px}
-    .moment-meta{font-size:11.5px;color:var(--t3);display:flex;align-items:center;gap:6px}
-
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .grid-full{grid-column:1/-1}
-    .w{background:white;border:1px solid rgba(0,0,0,.05);border-radius:20px;padding:14px;cursor:pointer;transition:transform .12s;position:relative;overflow:hidden;contain:layout style paint;box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04);aspect-ratio:1/1;display:flex;flex-direction:column}
-    .w.grid-full{aspect-ratio:auto;padding:18px}
-    /* 1:1 박스 안에서 점 그리드가 텍스트 바로 아래에 자연스럽게 배치 */
-    .w .dot-grid{margin:10px auto 16px;max-width:none;gap:4px;width:calc(100% - 28px);padding:0}
-    .w.alert{border-color:rgba(var(--color-warning-rgb), .35);box-shadow:0 2px 8px rgba(var(--color-warning-rgb), .08)}
-    /* 상태 점 — 정상(블루) / 주의(노랑) */
-    .w-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;position:relative}
-    .w-dot.ok{background:var(--green);box-shadow:0 0 0 3px rgba(var(--brand-green-500-rgb), .22)}
-    .w-dot.warn{background:var(--palette-amber-500);box-shadow:0 0 0 3px rgba(var(--color-warning-rgb), .2);animation:wDotPulse 1.8s ease-in-out infinite}
-    @keyframes wDotPulse{0%,100%{box-shadow:0 0 0 3px rgba(var(--color-warning-rgb), .2)}50%{box-shadow:0 0 0 6px rgba(var(--color-warning-rgb), .08)}}
-    @media (prefers-reduced-motion:reduce){.w-dot.warn{animation:none}}
-    /* 맥박 위젯 — 상단 빨간 아이콘 타이틀 + 하단 큰 숫자 */
-    .pulse-w{overflow:hidden;min-height:180px;display:flex;flex-direction:column}
-    .pulse-main{margin-top:auto}
-    .pulse-num{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
-    .pulse-num .n{font-size:64px;font-weight:800;letter-spacing:-3px;line-height:.88;color:var(--t1)}
-    .pulse-num .u{font-size:15px;font-weight:700;color:var(--t3);letter-spacing:.3px}
-    .pulse-sub{font-size:11.5px;color:var(--t3);font-weight:500}
-    /* 식사 위젯 — 카드 전체 이미지 + 하단 검정 그라디언트 오버레이 */
-    .food-w{padding:0;overflow:hidden;background:var(--guardian-warm-cream) url("image%20(16).png") center/cover no-repeat;min-height:180px;position:relative}
-    .food-overlay{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.55) 35%,rgba(0,0,0,0) 100%);color:white}
-    .food-overlay .lbl{display:flex;align-items:center;gap:6px;margin-bottom:3px}
-    .food-overlay .lbl iconify-icon{color:white;font-size:16px;opacity:.95}
-    .food-overlay .lbl span{font-size:11.5px;color:rgba(255,255,255,.88);font-weight:600;letter-spacing:.2px}
-    .food-overlay .val{font-size:16px;font-weight:800;letter-spacing:-.3px;line-height:1.25;color:white;text-shadow:0 1px 2px rgba(0,0,0,.35)}
-    /* 수면 타임라인 그래프 — 풀칸, 레퍼런스 스타일 */
-    .sleep-chart{margin-top:12px}
-    .sleep-bars{display:flex;align-items:flex-end;gap:6px;height:110px;padding:0 2px}
-    .sleep-bars .sb{flex:1;border-radius:5px;min-height:4px}
-    .sleep-ticks{display:flex;margin-top:4px;height:10px;position:relative}
-    .sleep-ticks .tk{flex:1;position:relative}
-    .sleep-ticks .tk::before{content:'';position:absolute;left:0;top:0;width:1px;height:4px;background:rgba(0,0,0,.13)}
-    .sleep-ticks .tk.major::before{height:9px;background:rgba(0,0,0,.45);width:1.5px}
-    .sleep-ticks::after{content:'';position:absolute;right:0;top:0;width:1.5px;height:9px;background:rgba(0,0,0,.45)}
-    .sleep-labels{display:flex;justify-content:space-between;margin-top:5px;font-size:11px;color:var(--t3);font-weight:600;letter-spacing:.2px}
-    .sleep-legend{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:11px;color:var(--t3);font-weight:500}
-    .sleep-legend .grad-bar{flex:1;display:flex;gap:2px;height:6px}
-    .sleep-legend .grad-bar span{flex:1;border-radius:2px}
-    .sleep-legend .grad-bar span:nth-child(1){background:hsl(217,85%,88%)}
-    .sleep-legend .grad-bar span:nth-child(2){background:hsl(217,87%,78%)}
-    .sleep-legend .grad-bar span:nth-child(3){background:hsl(217,90%,69%)}
-    .sleep-legend .grad-bar span:nth-child(4){background:hsl(217,92%,59%)}
-    .sleep-legend .grad-bar span:nth-child(5){background:hsl(217,95%,50%)}
-    .w:active{transform:scale(.97)}
-    .w-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-    .w-title{font-size:16px;font-weight:800;color:var(--t1);display:flex;align-items:center;gap:6px;letter-spacing:-.3px}
-    .w-title iconify-icon{font-size:18px}
-    .w-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px}
-    .dot-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:6px auto 0;max-width:160px}
-    .d{width:100%;aspect-ratio:1;border-radius:50%;min-width:0;background:var(--score-color, var(--blue))}
-    .sb{background:var(--trend-color, var(--blue));height:var(--bar-h, 12px)}
-    /* 기분 위젯 — 요일 헤더 */
-    .dow-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:8px auto 0;width:calc(100% - 28px);padding:0;font-size:9px;color:var(--t3);font-weight:700;text-align:center;letter-spacing:.2px}
-    /* 기분 위젯 — 주간 막대 (수면 카드 막대 스타일과 통일) */
-    .mood-bars{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;margin-top:auto;height:64px}
-    .mood-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px}
-    .mood-bar i{width:100%;max-width:15px;border-radius:6px 6px 4px 4px;display:block;min-height:6px;background:var(--brand-blue-500)}
-    .mood-bar span{font-size:9px;font-weight:700;color:var(--t3)}
-
-    .insight-card{display:flex;align-items:flex-start;gap:12px;padding:16px;border-radius:16px;margin-bottom:10px;background:white;border:1px solid rgba(0,0,0,.05);cursor:pointer;transition:transform .12s;box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04)}
-    .insight-card:active{transform:scale(.98)}
-    .insight-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .insight-body{flex:1}
-    .insight-title{font-size:14px;font-weight:700;margin-bottom:3px}
-    .insight-desc{font-size:13px;color:var(--t2);line-height:1.45}
-    .insight-cta{font-size:12px;font-weight:700;color:var(--blue);margin-top:6px}
-
-    .schedule-preview{background:white;border:1px solid rgba(0,0,0,.05);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04)}
-    .sch-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.05)}
-    .sch-item:last-child{border-bottom:none}
-    .sch-time-badge{font-size:13px;font-weight:700;color:var(--blue);background:rgba(var(--color-accent-rgb),.08);padding:4px 10px;border-radius:8px;flex-shrink:0;min-width:52px;text-align:center}
-    .sch-time-badge.done{color:var(--t3);background:rgba(0,0,0,.03)}
-    .sch-time-badge.now{color:white;background:var(--blue)}
-    .sch-name{font-size:14px;font-weight:600;flex:1}
-    .sch-name.done{color:var(--t3);text-decoration:line-through}
-    .sch-status{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
-
-    .quick-scroll{display:flex;gap:10px;overflow-x:auto;padding:4px 4px;-webkit-overflow-scrolling:touch}
-    .quick-scroll::-webkit-scrollbar{display:none}
-    .quick-btn{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:12px 18px;border-radius:14px;background:white;border:1px solid rgba(0,0,0,.05);cursor:pointer;transition:transform .12s;text-decoration:none;color:var(--t1);box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04)}
-    .quick-btn:active{transform:scale(.96)}
-    .quick-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .quick-label{font-size:13px;font-weight:600;white-space:nowrap}
-
-    /* v3.2.9: bottom env+40px — iPhone 16 Pro home indicator(34px)에서 충분히 위로 올림. Safari/PWA 양쪽 대응 */
-    .bottom-bar{position:fixed;bottom:calc(max(env(safe-area-inset-bottom,0px), 20px) + 12px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:40;width:calc(100% - 32px);max-width:398px}
-    .tab.active{color:var(--color-accent)}
-    .tab.active iconify-icon,
-    .tab.active .tab-icon svg{filter:none}
-    .tab-icon{display:flex;align-items:center}
-    .tab-icon svg{width:26px;height:26px;fill:currentColor}
-    .ai-fab{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.55);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(255,255,255,.65);box-shadow:0 8px 28px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;flex-shrink:0;padding:0;font:inherit;color:inherit}
-    .ai-fab:active{transform:scale(.92)}
-
-    /* Scrim Fade — 탭바 위 페이드 마스크로 배경과 분리감 강화 (보호자홈 한정) */
-    .bottom-scrim{
-      position:fixed;left:0;right:0;bottom:0;height:108px;z-index:39;pointer-events:none;
-      background:rgba(240,244,248,1);
-      backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
-      -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 55%);
-              mask-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 55%);
-      transition:opacity .4s cubic-bezier(.32,.72,0,1);
-    }
-    .bottom-scrim.hide{opacity:0}
-    body.chat-mode .bottom-scrim{opacity:0;pointer-events:none}
-    /* 스크림 위에서 탭바·FAB는 깊이감을 위해 그림자만 살짝 보강 */
-    body .tabbar{box-shadow:0 8px 24px rgba(15,27,45,.10), inset 0 1px 0 rgba(255,255,255,.4)}
-    body .ai-fab{box-shadow:0 10px 26px rgba(15,27,45,.12), inset 0 1px 0 rgba(255,255,255,.6)}
-    @media (prefers-reduced-transparency: reduce){
-      .bottom-scrim{backdrop-filter:none;-webkit-backdrop-filter:none}
-    }
-
-    /* 바텀시트 */
-    .jw-overlay{position:fixed;inset:0;background:rgba(0,0,0,.25);display:none;align-items:flex-end;justify-content:center;z-index:200}
-    .jw-overlay.show{display:flex}
-    .jw-sheet{background:rgba(255,255,255,.97);border-radius:28px 28px 0 0;padding:20px 24px calc(32px + env(safe-area-inset-bottom,0px));width:100%;max-width:430px}
-    .sheet-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center}
-    .sheet-icon iconify-icon{font-size:22px;color:white}
-    .srow{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:rgba(0,0,0,.025);margin-bottom:8px}
-    .srow-icon{width:36px;height:36px;border-radius:10px;background:white;display:flex;align-items:center;justify-content:center}
-    .srow-icon iconify-icon{font-size:18px}
-    .srow-text{flex:1}
-    .srow-label{font-size:12px;color:var(--t3)}
-    .srow-val{font-size:15px;font-weight:600;margin-top:1px}
-    .srow-badge{padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700}
-
-    /* 더블탭 힌트 — 리포트 시트 바로 위 우측 고정 */
-    .tap-inline-wrap{position:fixed;top:calc(env(safe-area-inset-top,0px) + 260px);right:calc(50% - 199px);z-index:6;display:flex;justify-content:flex-end;opacity:0;transition:opacity .8s cubic-bezier(.22,1,.36,1);pointer-events:none}
-    @media (max-width:430px){.tap-inline-wrap{right:16px}}
-    .tap-inline-wrap.show{opacity:1}
-    .tap-inline-wrap.dismissed,
-    .tap-inline-wrap.scrolled-away{opacity:0}
-    .tap-inline{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:400;color:rgba(255,255,255,.92);letter-spacing:-.15px;line-height:1.3;text-shadow:0 1px 3px rgba(0,0,0,.12);padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.08);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:.5px solid rgba(255,255,255,.18)}
-    .tap-inline iconify-icon{font-size:13px;opacity:.95;animation:tapBlink 1.6s ease-in-out infinite}
-    @keyframes tapBlink{0%,100%{opacity:.95}50%{opacity:.45}}
-    @media (prefers-reduced-motion:reduce){.tap-inline iconify-icon{animation:none}}
-
-    .toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-8px);background:rgba(28,28,30,.88);color:white;padding:12px 24px;border-radius:999px;font-size:15px;font-weight:500;font-family:var(--font);box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:300;opacity:0;transition:opacity .22s,transform .22s;pointer-events:none}
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-    .home-ind{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:rgba(0,0,0,.15);z-index:99}
-  
-    /* iOS PWA standalone 모드: url(#glass-warp) 미지원 → 순수 blur + 진한 배경으로 fallback */
-    @media (display-mode: standalone) {
-      .tabbar, .ai-fab {
-        backdrop-filter: blur(24px) saturate(160%) !important;
-        -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
-        background: rgba(255,255,255,.92) !important;
-        border: 1px solid rgba(255,255,255,.6) !important;
-      }
-    }
-
-    /* Inline 대체 (audit 정책: inline 0) — 반복 패턴 클래스화 */
-    .chip-green-d        { color: var(--green-d); background: rgba(var(--brand-green-500-rgb), .12); }
-    .text-green-d        { color: var(--green-d); }
-    .text-blue           { color: var(--blue); }
-    .text-amber-soft     { color: var(--amber); }
-    .text-accent         { color: var(--color-accent); }
-    .text-meta           { color: var(--t3); }
-    .chip-neutral        { color: var(--t3); background: rgba(0,0,0,.04); }
-    .bg-blue             { background: var(--blue); }
-    .row-gap-10          { display: flex; align-items: center; gap: 10px; }
-    .row-gap-8-py-7      { display: flex; align-items: center; gap: 8px; padding: 7px 0; }
-    .bullet-dot-15       { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,.15); flex-shrink: 0; }
-    .time-cell           { font-size: 11px; color: var(--t3); width: 34px; flex-shrink: 0; font-weight: 600; }
-    .text-12-strong      { font-size: 12px; font-weight: 600; color: var(--t1); }
-    .text-12-strong-flex { font-size: 12px; font-weight: 600; flex: 1; }
-    .text-12-meta        { font-size: 12px; color: var(--t3); }
-    .text-11-meta-mt     { font-size: 11px; color: var(--t3); margin-top: 2px; }
-    .text-10-meta        { font-size: 10px; color: var(--t3); }
-    .text-26             { font-size: 26px; }
-    .text-dim-18         { font-size: 18px; font-weight: 600; opacity: .4; }
-    .text-display-strong { font-size: 38px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; margin-bottom: 4px; }
-    .text-display-strong--mb2 { margin-bottom: 2px; }
-    .text-26-bold-tight { font-size: 24px; font-weight: 800; letter-spacing: -1px; }
-    .text-13-meta { font-size: 13px; font-weight: 500; color: var(--t3); }
-    .text-10half-meta-bold { font-size: 10.5px; color: var(--t3); font-weight: 600; }
-    .text-30-display { font-size: 30px; font-weight: 800; letter-spacing: -1.2px; color: var(--blue); line-height: 1; }
-    .text-14-strong { font-size: 14px; font-weight: 700; margin-top: 6px; color: var(--t1); }
-    .text-10-eyebrow-blue { font-size: 10px; font-weight: 700; color: var(--blue); letter-spacing: .5px; text-transform: uppercase; margin-bottom: 8px; }
-    .hyg-check-box { width: 18px; height: 18px; border-radius: 5px; background: var(--guardian-teal); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; flex-shrink: 0; }
-    .hyg-check-box--empty { width: 18px; height: 18px; border-radius: 5px; border: 2px solid rgba(0,0,0,.1); flex-shrink: 0; }
-    .v11-pulse-bg { position: absolute; width: 0; height: 0; pointer-events: none; }
-    .v11-eyebrow-tight { padding: 8px 0 2px; }
-    .v11-eyebrow-start { padding: 0 0 10px; justify-content: flex-start; }
-    .v11-pillwave-card { position: relative; overflow: hidden; padding: 0; min-height: 180px; }
-    .v11-pillwave-canvas { position: absolute; bottom: 0; left: -4px; width: calc(100% + 8px); height: 55%; }
-    .v11-pillwave-body { position: relative; z-index: 1; padding: 14px; }
-    .v11-text-teal { color: var(--guardian-teal); }
-    .v11-text-mint { color: var(--guardian-mint-light); }
-    .v11-text-danger { color: var(--color-danger); }
-    .v11-mb-2 { margin-bottom: 8px; }
-    .v11-mt-1 { margin-top: 4px; }
-    .v11-mt-2 { margin-top: 8px; }
-    .v11-amber-chip { color: var(--palette-amber-600); background: rgba(var(--color-warning-rgb), .12); }
-    .v11-row-baseline { display: flex; align-items: baseline; gap: 6px; line-height: 1; }
-    .v11-text-t2 { color: var(--t2); }
-    .v11-text-t2-bg { color: var(--t2); background: rgba(0,0,0,.05); }
-    .v11-stretch-row { display: flex; gap: 14px; margin-top: 10px; align-items: stretch; }
-    .v11-accent-tile { flex: 1.1; min-width: 0; background: rgba(var(--color-accent-rgb),.06); border-radius: 14px; padding: 14px 14px 12px; }
-    .v11-col-between { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 4px 0; }
-    .v11-amber-soft-bg { background: rgba(var(--color-warning-rgb), .12); }
-    .v11-accent-soft-bg { background: rgba(var(--color-accent-rgb),.10); }
-    .v11-ico-18-amber { font-size: 18px; color: var(--amber); }
-    .v11-ico-18-blue { font-size: 18px; color: var(--blue); }
-    /* Sheet icon backgrounds + chips */
-    .sheet-icon-bg-amber { background: var(--amber); }
-    .sheet-icon-bg-green { background: var(--green); }
-    .sheet-icon-bg-red   { background: var(--red); }
-    .v11-text-red       { color: var(--red); }
-    .v11-text-green     { color: var(--green); }
-    .v11-text-blue-l    { color: var(--blue-l); }
-    .v11-text-accent-faint { color: rgba(var(--color-accent-rgb),.3); }
-    .v11-chip-amber-strong { color: var(--palette-amber-700); background: rgba(var(--color-warning-rgb), .12); }
-    .v11-chip-blue-d-soft  { color: var(--blue-d); background: rgba(var(--color-accent-rgb),.1); }
-    .v11-chip-blue-soft    { color: var(--blue); background: rgba(var(--color-accent-rgb),.1); }
-    .v11-chip-red-strong   { color: var(--palette-red-700); background: rgba(var(--color-danger-rgb), .1); }
-    .v11-chip-amber-strong-2 { color: var(--amber); background: rgba(var(--color-warning-rgb), .1); }
-    .v11-cta-row { display: flex; gap: 8px; margin-top: 16px; }
-    .v11-cta-tile { flex: 1; padding: 14px; border-radius: 14px; color: white; text-align: center; font-size: 14px; font-weight: 700; text-decoration: none; }
-    .v11-cta-tile--blue { background: var(--blue); }
-    .v11-cta-tile--red  { background: var(--red); }
-    .v11-dots-row { display: flex; gap: 2px; margin: 12px 0 12px; }
-    /* Dynamic JS bars use CSS vars */
-    .v11-pill-bar { flex: 1; height: 22px; border-radius: 3px; background: var(--bar-bg, rgba(0,0,0,.06)); }
-    .v11-pill-bar--filled { background: var(--amber); }
-    .v11-score-block { background: var(--score-color, var(--blue)); }
-    .v11-trend-bar { background: var(--trend-color, var(--blue)); height: var(--bar-h, 12px); }
-  </style>
+  <link rel="stylesheet" href="styles/g-guardian-live-part-2.css">
   <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
   <link rel="prefetch" href="g-guardian-live.html">
   <link rel="prefetch" href="g02-ai-guide.html">
@@ -631,86 +42,7 @@
 
   <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn·애니메이션 표준 -->
   <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
-<style>
-  /* === 3앱 공통 헤더 표준 (d01-home 기준, 보호자앱에도 강제) === */
-  [data-platform="mobile"] .header{
-    padding: calc(env(safe-area-inset-top, 0px) + 6px) 20px 0 !important;
-    position: static !important;
-    background: transparent !important;
-  }
-  /* 기본 = 홈 패턴: 로고 + 액션 그룹 (flex space-between) */
-  [data-platform="mobile"] .header .top-nav{
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 8px !important;
-    margin-bottom: 24px !important;
-  }
-  /* 서브 패턴: title-block 있을 때 → grid 3-col (44 / 1fr / 44) */
-  [data-platform="mobile"] .header .top-nav:has(> .title-block){
-    display: grid !important;
-    grid-template-columns: 44px 1fr 44px !important;
-    margin-bottom: 8px !important;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-left{
-    width: 44px; height: 44px;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .title-block{
-    grid-column: 2; text-align: center; line-height: 1.2; min-width: 0;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > .h-name{
-    font: 600 17px/1.2 inherit; color: var(--color-text-primary); letter-spacing: -.3px; text-align: center;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :first-child{
-    grid-column: 1; justify-self: start;
-  }
-  [data-platform="mobile"] .header .top-nav:has(> .title-block) > :last-child{
-    grid-column: 3; justify-self: end;
-  }
-  /* logo */
-  [data-platform="mobile"] .header .top-nav > .logo{
-    display: inline-flex !important;
-    align-items: center !important;
-    text-decoration: none !important;
-    color: inherit !important;
-    background: transparent !important;
-    border: 0 !important;
-    padding: 4px !important;
-    margin: -4px !important;
-    cursor: pointer !important;
-  }
-  [data-platform="mobile"] .header .top-nav > .logo svg{ width: 28px !important; height: 28px !important; display: block !important; }
-  /* top-actions 그룹 (홈 페이지) */
-  [data-platform="mobile"] .header .top-actions{
-    display: flex !important; align-items: center !important; gap: 8px !important;
-  }
-  /* icon-btn 글라스 (44×44, blur, shadow) */
-  [data-platform="mobile"] .header .icon-btn{
-    width: 44px !important; height: 44px !important; border-radius: 50% !important;
-    background: rgba(255,255,255,.55) !important;
-    border: .5px solid rgba(255,255,255,.55) !important;
-    backdrop-filter: blur(12px) saturate(140%) !important;
-    -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
-    box-shadow: 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06) !important;
-    display: inline-flex !important; align-items: center !important; justify-content: center !important;
-    cursor: pointer !important; text-decoration: none !important;
-    position: relative !important;
-    transition: transform .1s !important;
-  }
-  [data-platform="mobile"] .header .icon-btn:active{ transform: scale(.93); }
-  [data-platform="mobile"] .header .icon-btn iconify-icon{
-    font-size: 22px !important;
-    color: var(--color-accent-strong) !important;
-  }
-  [data-platform="mobile"] .header .icon-btn .notif-dot,
-  [data-platform="mobile"] .header .notif-dot{
-    position: absolute !important; top: 10px !important; right: 10px !important;
-    width: 8px !important; height: 8px !important; border-radius: 50% !important;
-    background: var(--color-danger) !important;
-    border: 1.5px solid white !important;
-    z-index: 2 !important;
-  }
-</style>
+<link rel="stylesheet" href="styles/g-guardian-live-part-3.css">
 </head>
 <body>
 
@@ -720,7 +52,7 @@
   <!-- 인트로 텍스트 (시퀀스 끝나면 페이드아웃) -->
   <div class="intro" id="intro">
     <div class="intro-stage" id="introStage"></div>
-    <button class="intro-skip" onclick="skipIntro()">SKIP</button>
+    <button type="button" class="intro-skip" onclick="skipIntro()">SKIP</button>
   </div>
 
 <div class="bg"><div class="g1"></div><div class="g2"></div></div>
@@ -748,20 +80,20 @@
 
     <!-- 추천 프롬프트 -->
     <div class="home-prompts">
-      <button class="prompt-p">영자님 오늘 어떠셨어요?</button>
-      <button class="prompt-s">이번 주 케어 내용 요약해줘</button>
-      <button class="prompt-s">간호사한테 메시지 남겨줘</button>
+      <button type="button" class="prompt-p">영자님 오늘 어떠셨어요?</button>
+      <button type="button" class="prompt-s">이번 주 케어 내용 요약해줘</button>
+      <button type="button" class="prompt-s">간호사한테 메시지 남겨줘</button>
     </div>
 
   </div>
 
   <!-- 일일 리포트 보기 버튼 — 채팅 모드 전용 -->
-  <button class="report-view-btn" id="reportViewBtn" aria-label="일일 리포트 보기">
+  <button type="button" class="report-view-btn" id="reportViewBtn" aria-label="일일 리포트 보기">
     <iconify-icon icon="mingcute:arrow-up-fill"></iconify-icon>일일 리포트 보기
   </button>
 
   <!-- AI 채팅 힌트 버튼 — 홈 모드 전용 (리포트 내리면 AI 채팅) -->
-  <button class="chat-hint-btn" id="chatHintBtn" aria-label="AI 채팅하기">
+  <button type="button" class="chat-hint-btn" id="chatHintBtn" aria-label="AI 채팅하기">
     <iconify-icon icon="mingcute:arrow-down-fill"></iconify-icon>AI 채팅하기
   </button>
 
@@ -769,7 +101,7 @@
   <div class="chat-input-area hide peek-hidden" id="chatInputArea">
     <div class="ai-input-inner">
       <input type="text" class="ai-placeholder" id="aiPlaceholder" placeholder="하루 AI에게 물어보세요..." autocomplete="off" enterkeyhint="send" aria-label="AI에게 메시지 입력">
-      <button class="ai-mic-btn" aria-label="음성 입력"><iconify-icon icon="ph:microphone-fill"></iconify-icon></button>
+      <button type="button" class="ai-mic-btn" aria-label="음성 입력"><iconify-icon icon="ph:microphone-fill"></iconify-icon></button>
     </div>
   </div>
 
@@ -780,7 +112,7 @@
 
       <div class="report-content">
 
-        <div class="section-header" style="padding-right:0">
+        <div class="section-header is-flush-right">
           <div class="section-title">일일 리포트</div>
           <div class="section-date" id="reportDate"></div>
         </div>
@@ -929,7 +261,7 @@
       <a href="g05-records.html" class="tab" aria-label="기록"><span class="tab-icon"><iconify-icon icon="mingcute:folder-fill" class="text-26"></iconify-icon></span></a>
       <a href="g05-mypage.html" class="tab" aria-label="마이"><span class="tab-icon"><iconify-icon icon="mingcute:user-3-fill" class="text-26"></iconify-icon></span></a>
     </nav>
-    <button class="ai-fab" id="aiFab" aria-label="AI와 대화하기">
+    <button type="button" class="ai-fab" id="aiFab" aria-label="AI와 대화하기">
       <svg width="22" height="22" viewBox="0 0 2526 2526" fill="var(--brand-blue-500)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
     </button>
   </div>
@@ -1798,7 +1130,7 @@
       var week=[95,95,88,80,68,45,25], days=['월','화','수','목','금','토','일'];
       /* 좋음(70+) 진파랑 · 보통(50-69) 연파랑 · 주의(<50) 호박색 — 점 그리드와 동일 스케일 */
       var color=function(s){return s>=70?'var(--brand-blue-500)':s>=50?'var(--brand-blue-200)':'var(--palette-amber-300)';};
-      var html='';for(var i=0;i<7;i++){var h=Math.max(16,week[i]);html+='<div class="mood-bar"><i style="height:'+h+'%;background:'+color(week[i])+'"></i><span>'+days[i]+'</span></div>';}el.innerHTML=html;
+      var html='';for(var i=0;i<7;i++){var h=Math.max(16,week[i]);html+='<div class="mood-bar"><i style="--mood-h:'+h+'%;--mood-color:'+color(week[i])+'"></i><span>'+days[i]+'</span></div>';}el.innerHTML=html;
     })();
 
     /* 수면 타임라인 — 22시~08시, 20바(30분 단위), 레퍼런스 스타일 */
@@ -1827,17 +1159,7 @@
     /* 투약 파도 — iframe 임베드에서는 CSS로 캔버스를 숨기므로 RAF 자체를 안 돌림 */
     (function(){var c=document.getElementById('pillWave');if(!c)return;if(document.documentElement.classList.contains('skip-intro'))return;var ctx=c.getContext('2d');var cw=0,ch=0;function resize(){cw=c.offsetWidth;ch=c.offsetHeight;c.width=cw;c.height=ch;}resize();window.addEventListener('resize',resize);var t=0,visible=false,last=0,rafId=0;var io=new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(visible&&!rafId)rafId=requestAnimationFrame(draw);},{threshold:0.01});io.observe(c);function draw(now){rafId=0;if(!visible)return;if(now-last<66){rafId=requestAnimationFrame(draw);return;}last=now;t+=0.04;ctx.clearRect(0,0,cw,ch);ctx.beginPath();ctx.moveTo(0,ch);for(var x=0;x<=cw;x+=6){var y=Math.sin(x*0.03+t*1.8+3)*8+Math.sin(x*0.06+t*0.6)*4+34;ctx.lineTo(x,y);}ctx.lineTo(cw,ch);ctx.closePath();ctx.fillStyle='rgba(34,197,94,.42)';ctx.fill();rafId=requestAnimationFrame(draw);}})();
   </script>
-<style>
-@keyframes overlayOut{from{opacity:1}to{opacity:0}}
-#t-overlay{
-  position:fixed;inset:0;z-index:35;
-  background:var(--brand-blue-50);
-  pointer-events:none;
-  display:flex;align-items:center;justify-content:center;
-  animation:overlayOut .35s ease .15s both;
-}
-#t-overlay svg{width:72px;height:72px;display:block}
-</style>
+<link rel="stylesheet" href="styles/g-guardian-live-part-4.css">
 <script>
 (function(){
   var ov=document.createElement('div');ov.id='t-overlay';

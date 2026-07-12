@@ -274,15 +274,21 @@ def count_allowed_inline_css_vars(text: str) -> int:
     return count
 
 
-def find_broken_at_rules(text: str) -> list[tuple[int, str]]:
+def find_broken_at_rules(text: str, *, is_css: bool = False) -> list[tuple[int, str]]:
     """`<style>` 블록 안 `@keyframes` / `@media` 등 at-rule이 정상 닫혔는지 검사.
     또한 keyframes 안의 selector가 %/from/to 외 다른 클래스이면 손상으로 판정 — c02-checklist
     같은 사고 (keyframes 닫는 `}` 누락 → 다음 룰이 keyframes로 빨려 들어감) 회귀 방지.
     """
     violations: list[tuple[int, str]] = []
-    for sm in re.finditer(r"<style[^>]*>(.*?)</style>", text, re.DOTALL):
-        content = sm.group(1)
-        base = text[: sm.start()].count("\n") + 1
+    style_blocks = (
+        [(text, 1)]
+        if is_css
+        else [
+            (sm.group(1), text[: sm.start()].count("\n") + 1)
+            for sm in re.finditer(r"<style[^>]*>(.*?)</style>", text, re.DOTALL)
+        ]
+    )
+    for content, base in style_blocks:
         for km in re.finditer(r"@(\w+)\s+[\w-]*\s*\{", content):
             at_name = km.group(1)
             start = km.end()
@@ -356,6 +362,7 @@ def find_non_iconify_icons(path: Path, text: str) -> tuple[list[tuple[int, str]]
         'shift-ring', 'progress-fill', 'progress-stroke', 'spark-line',
         # v0.4: viewBox 자동 허용 좁힌 후 명시 클래스 필요
         'countdown-ring',
+        'sbar-chart',
     )
 
     def is_allowed_svg(snippet: str) -> bool:
@@ -571,7 +578,7 @@ def check_app_folder(rules: dict, folder: str) -> tuple[list[CheckResult], dict]
                 icon_total += len(icon_hits)
                 icon_files[rel] = len(icon_hits)
             allowed_summary["브랜드 로고 SVG"] = allowed_summary.get("브랜드 로고 SVG", 0) + brand_ok
-            at_hits = find_broken_at_rules(text)
+            at_hits = find_broken_at_rules(text, is_css=p.suffix.lower() == ".css")
             if at_hits:
                 at_total += len(at_hits)
                 at_files[rel] = len(at_hits)

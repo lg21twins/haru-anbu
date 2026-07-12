@@ -1,0 +1,9 @@
+@keyframes overlayOut{from{opacity:1}to{opacity:0}}
+#t-overlay{
+  position:fixed;inset:0;z-index:35;
+  background:var(--brand-blue-50);
+  pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+  animation:overlayOut .35s ease .15s both;
+}
+#t-overlay svg{width:72px;height:72px;display:block}

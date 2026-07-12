@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" data-role="caregiver" data-platform="mobile">
+<html lang="ko" data-role="caregiver" data-platform="mobile" data-toast-duration="2600">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -440,19 +440,7 @@
     /* v3.2.6: .sos-grid/.sos-card/.sos-hint 로컬 정의 제거 — SOS 유형 시트는 HaruCG.openSosTypeSheet가 .cg-sos-grid 등 caregiver.css 클래스로 렌더링 */
 
     /* Toast — v15 d01과 동일 (bottom, 탭바 위) */
-    .toast {
-      position: fixed; left: 50%;
-      bottom: calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 18px);
-      transform: translateX(-50%) translateY(20px);
-      background: rgba(28,28,30,.92); color: var(--palette-white);
-      padding: 11px 20px; border-radius: 999px;
-      font-size: 14px; font-weight: 600;
-      opacity: 0; pointer-events: none; z-index: 300;
-      transition: .25s; white-space: nowrap;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* 등장 애니 */
+/* 등장 애니 */
     @keyframes haru-fade-in-up {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -481,10 +469,12 @@
     .sheet-row-label        { display: block; }
     .sheet-row-val          { display: block; }
   </style>
+  <link rel="stylesheet" href="../07_디자인/system/interactions.css">
+  <script src="../07_디자인/system/interactions.js"></script>
 </head>
 <body>
 
-  <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">오늘</h1>
+  <h1 class="u-visually-hidden">오늘</h1>
 
   <div class="bg"></div>
 
@@ -535,7 +525,7 @@
         <div class="hero-top">
           <span class="hero-time">10:15</span>
           <span class="hero-next">다음까지 <b>46분</b></span>
-          <button class="hero-more" onclick="openHeroMenu()" aria-label="더보기">
+          <button type="button" class="hero-more" onclick="openHeroMenu()" aria-label="더보기">
             <iconify-icon icon="mingcute:more-1-fill"></iconify-icon>
           </button>
         </div>
@@ -546,7 +536,7 @@
           <b>측정 가능</b> · 혈압약 08:00 복용 후 2시간 경과
         </span>
         <div class="hero-actions">
-          <button class="btn btn-primary" onclick="location.href='c02-checklist.html'">
+          <button type="button" class="btn btn-primary" onclick="location.href='c02-checklist.html'">
             <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>지금 기록 시작
           </button>
         </div>
@@ -680,7 +670,7 @@
           <div class="obs-name"><b>이정숙</b> 어르신 · 미열 관찰</div>
           <div class="obs-meta">2층 B-2호 · 마지막 체크 06:40</div>
         </div>
-        <button class="obs-call-mini" onclick="event.stopPropagation();callNurse('이정숙 미열')" aria-label="간호사 호출">
+        <button type="button" class="obs-call-mini" onclick="event.stopPropagation();callNurse('이정숙 미열')" aria-label="간호사 호출">
           <iconify-icon icon="mingcute:phone-fill"></iconify-icon>호출
         </button>
       </div>
@@ -724,7 +714,7 @@
       </a>
     </nav>
     <!-- v3.2.6: caregiver.js HaruCG.installSOS() 자동 바인딩에 맞춰 cg-sos 표준 마크업으로 통일 -->
-    <button class="cg-sos" data-sos-bind aria-label="긴급 SOS · 3초 길게 누르면 즉시 발신">
+    <button type="button" class="cg-sos" data-sos-bind aria-label="긴급 SOS · 3초 길게 누르면 즉시 발신">
       <span class="cg-sos__ring" aria-hidden="true">
         <svg class="sos-ring" viewBox="0 0 60 60">
           <circle cx="30" cy="30" r="27"/>
@@ -796,8 +786,8 @@
           '</div>' +
         '</div>' +
         '<div class="cg-sheet__cta">' +
-          '<button class="btn sheet-btn--warn" onclick="HaruCG.closeSheet();callNurse(\'미열 관찰\')"><iconify-icon icon="mingcute:phone-fill"></iconify-icon>간호사 호출</button>' +
-          '<button class="btn btn-primary sheet-btn--primary" onclick="HaruCG.closeSheet();location.href=\'c02-checklist.html?pt=lee\'"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>기록 시작</button>' +
+          '<button type="button" class="btn sheet-btn--warn" onclick="HaruCG.closeSheet();callNurse(\'미열 관찰\')"><iconify-icon icon="mingcute:phone-fill"></iconify-icon>간호사 호출</button>' +
+          '<button type="button" class="btn btn-primary sheet-btn--primary" onclick="HaruCG.closeSheet();location.href=\'c02-checklist.html?pt=lee\'"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>기록 시작</button>' +
         '</div>',
         { variant: 'warn' }
       );
@@ -819,21 +809,21 @@
             <div class="sheet-sub">10:15 · 2층 A-3호</div>
           </div>
         </div>
-        <button class="sheet-row sheet-row--btn" onclick="toast('박영자 · 혈압 측정 완료 처리');closeSheet()">
+        <button type="button" class="sheet-row sheet-row--btn" onclick="toast('박영자 · 혈압 측정 완료 처리');closeSheet()">
           <span class="sheet-row-ico sheet-row-ico--accent"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           <span class="sheet-row-text">
             <span class="sheet-row-label">완료 처리</span>
             <span class="sheet-row-val">따로 측정 없이 완료로 표시</span>
           </span>
         </button>
-        <button class="sheet-row sheet-row--btn" onclick="toast('10:30으로 연기');closeSheet()">
+        <button type="button" class="sheet-row sheet-row--btn" onclick="toast('10:30으로 연기');closeSheet()">
           <span class="sheet-row-ico sheet-row-ico--neutral"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon></span>
           <span class="sheet-row-text">
             <span class="sheet-row-label">10:30으로 연기</span>
             <span class="sheet-row-val">다음 측정 슬롯으로 미룸</span>
           </span>
         </button>
-        <button class="sheet-row sheet-row--btn" onclick="toast('박영자 어르신 상세');closeSheet()">
+        <button type="button" class="sheet-row sheet-row--btn" onclick="toast('박영자 어르신 상세');closeSheet()">
           <span class="sheet-row-ico sheet-row-ico--neutral"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon></span>
           <span class="sheet-row-text">
             <span class="sheet-row-label">어르신 상세</span>
@@ -847,12 +837,7 @@
        .cg-sos[data-sos-bind] 버튼을 자동 바인딩한다. (탭=유형 시트, 3초 hold=1초 카운트다운→발신) */
 
     function closeSheet()  { document.getElementById('overlay').classList.remove('show'); }
-    function toast(m) {
-      const t = document.getElementById('toastEl');
-      t.textContent = m; t.classList.add('show');
-      clearTimeout(t._x); t._x = setTimeout(() => t.classList.remove('show'), 2600);
-    }
-  </script>
+</script>
   <div class="bottom-scrim" aria-hidden="true"></div>
 </body>
 </html>

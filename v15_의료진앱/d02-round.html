@@ -15,535 +15,9 @@
   <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
   <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
-  <style>
-    /* :root 별칭은 _shared.css 에서 정의 */
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-    /* v3.2.12+: clinical 캔버스 (v11 요양보호사앱과 동일 — var(--clinical-canvas) 토큰 참조) */
-    html{height:100%;background:var(--clinical-canvas);font-size:16px;}
-    body{
-      height:100%;color:var(--t1);overflow-x:hidden;
-      font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
-      background:transparent;
-    }
-    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background: var(--clinical-bg-image);}
-    .app{
-      max-width:430px;margin:0 auto;min-height:100%;position:relative;
-      /* v3.2.9: 하단 탭바와 judge 버튼 겹침 방지 — 안전 여백 증량 (40 → 80) */
-      padding-bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 80px);
-    }
-
-    /* ===== HEADER (v15 통일 — grid 44·1fr·44 / h-eyebrow + h-name) ===== */
-    .header{
-      padding:calc(var(--safe-t) + 14px) var(--page-pad) 8px;
-      position:relative;z-index:5;
-    }
-    .h-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
-    .top-nav .icon-btn{grid-column:3;justify-self:end;}
-
-    /* ===== PROGRESS — v3.2.7 슬림 strip: 카드 래퍼 제거, 헤더 직속
-       위계는 타이포·여백으로만 (rule: no bg color rails). */
-    .progress{
-      margin-top:18px;display:flex;align-items:center;gap:12px;
-    }
-    .progress-bar{flex:1;height:4px;border-radius:999px;background:rgba(0,0,0,.06);overflow:hidden;}
-    .progress-fill{
-      height:100%;width:var(--bar-w, 0%);
-      background:var(--accent-strong);
-      border-radius:999px;transition:width .35s var(--easing-emphasize);
-    }
-    .progress-text{
-      font-size:13px;font-weight:600;color:var(--t2);
-      font-variant-numeric:tabular-nums;display:inline-flex;align-items:baseline;gap:5px;
-    }
-    .progress-text b{color:var(--t1);font-weight:700;font-size:14px;}
-    .prog-tag{
-      font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0;
-    }
-
-    /* ===== ROUND CARDS — v3.2.8: 2개 카드로 분리 (Review / Input)
-       그림자 또렷하게, 내부 divider 가시성 확보 */
-    .stage{padding:4px var(--page-pad) 0;position:relative;z-index:1;}
-    .deck{position:relative;display:flex;flex-direction:column;gap:12px;}
-    .card{
-      background:var(--palette-white);border-radius:var(--radius-card-lg);
-      box-shadow:var(--cg-card-shadow);
-      overflow:hidden;
-      transition:transform .35s var(--easing-emphasize), opacity .25s;
-    }
-    .card.swipe-out-left{transform:translateX(-120%) rotate(-6deg);opacity:0;}
-    .card.swipe-out-right{transform:translateX(120%) rotate(6deg);opacity:0;}
-
-    /* 환자 헤더 — 1행 압축 (avatar | name+age+pos pill / meta) */
-    .card-head{
-      padding:16px 18px;display:flex;align-items:center;gap:14px;
-    }
-    .card-ava{
-      width:48px;height:48px;border-radius:50%;flex-shrink:0;
-      background:var(--accent-soft);color:var(--accent-strong);
-      display:inline-flex;align-items:center;justify-content:center;
-      font-size:18px;font-weight:700;letter-spacing:-.4px;
-    }
-    .card-id{flex:1;min-width:0;line-height:1.25;}
-    .card-name-row{
-      display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
-    }
-    .card-name{font-size:19px;font-weight:700;color:var(--t1);letter-spacing:-.5px;}
-    .card-age{font-size:12.5px;font-weight:500;color:var(--t3);}
-    /* v3.2.8: 9/15 인라인 pill (스택 컬럼 제거) */
-    .card-pos{
-      margin-left:auto;flex-shrink:0;
-      font-size:12px;font-weight:600;color:var(--accent-strong);
-      background:var(--accent-soft);
-      padding:3px 9px;border-radius:999px;
-      font-variant-numeric:tabular-nums;letter-spacing:-.1px;
-    }
-    .card-pos b{font-weight:700;font-size:13px;}
-    .card-meta{
-      font-size:12.5px;font-weight:500;color:var(--t3);margin-top:3px;
-      display:flex;align-items:center;gap:6px;
-    }
-    .card-meta iconify-icon{font-size:13px;color:var(--t3);}
-    .card-meta-dot{color:rgba(0,0,0,.18);}
-
-    /* === ZONE 1 · 지난 라운드 — v3.2.8
-       visible hairline + tight grid + 명확한 last-note 타이틀 */
-    .summary{
-      padding:18px 18px 16px;
-    }
-    .summary-ttl{
-      font-size:11px;font-weight:700;color:var(--t3);
-      letter-spacing:.2px;margin-bottom:12px;
-      display:flex;align-items:center;gap:6px;
-    }
-    .summary-ttl iconify-icon{font-size:13px;}
-    .summary-grid{
-      display:grid;grid-template-columns:1fr 1fr;
-      column-gap:18px;row-gap:12px;
-      margin-bottom:14px;
-    }
-    .vital{
-      line-height:1.2;
-    }
-    .vital-label{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.1px;}
-    .vital-val{
-      font-size:21px;font-weight:700;color:var(--t1);
-      font-variant-numeric:tabular-nums;margin-top:5px;
-      display:flex;align-items:baseline;gap:3px;letter-spacing:-.5px;
-    }
-    .vital-val small{font-size:11.5px;font-weight:500;color:var(--t3);}
-    .vital.warn .vital-val{color:var(--palette-amber-700);}
-    .vital.danger .vital-val{color:var(--palette-red-700);}
-    .vital-trend{font-size:11px;font-weight:500;color:var(--t2);margin-top:3px;}
-    .vital-trend.up{color:var(--palette-red-600);}
-    .vital-trend.down{color:var(--accent-strong);}
-
-    /* 지난 메모 — 명시적 타이틀 + 톤 변화 */
-    .last-note{
-      padding-top:14px;margin-top:4px;
-      font-size:13.5px;font-weight:500;color:var(--t2);line-height:1.55;
-    }
-    .last-note-ttl{
-      font-size:11px;font-weight:700;color:var(--t3);
-      letter-spacing:.2px;margin-bottom:6px;
-    }
-    .last-note-meta{font-size:11px;font-weight:500;color:var(--t3);margin-top:8px;}
-
-    /* === ZONE 2 · 지금 기록 — v3.2.8: 별도 카드 (card--input) */
-    .card--input{
-      box-shadow:var(--cg-card-shadow);
-    }
-    .input-zone{
-      padding:16px 18px 18px;
-    }
-    .input-ttl{
-      font-size:12px;font-weight:700;color:var(--accent-strong);
-      letter-spacing:.2px;margin-bottom:14px;
-      display:flex;align-items:center;gap:6px;
-    }
-    .input-ttl::before{
-      content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);
-      box-shadow:0 0 0 0 rgba(var(--brand-green-500-rgb), .5);animation: haru-pulse 2s ease-in-out infinite;
-    }
-
-    .voice{
-      width:100%;display:flex;align-items:center;gap:14px;
-      padding:16px;background:var(--accent-soft);
-      border:0;border-radius:16px;
-      cursor:pointer;font-family:inherit;text-align:left;
-      transition:transform .12s;
-    }
-    .voice:active{transform:scale(.99);}
-    .voice.recording{
-      background:rgba(var(--color-danger-rgb), .08);
-    }
-    .voice-mic{
-      width:48px;height:48px;border-radius:50%;flex-shrink:0;
-      background:var(--accent);color:var(--palette-white);display:inline-flex;align-items:center;justify-content:center;
-    }
-    .voice.recording .voice-mic{
-      background:var(--danger);
-      animation:rec 1.2s infinite;
-    }
-    @keyframes rec{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
-    .voice-mic iconify-icon{font-size:24px;}
-    .voice-text{flex:1;min-width:0;line-height:1.3;}
-    .voice-main{font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.3px;}
-    .voice-sub{font-size:12.5px;font-weight:500;color:var(--t2);margin-top:4px;}
-
-    .stt-preview{
-      margin:14px 0 0;padding:16px 18px;background:var(--clinical-surface);
-      border-radius:14px;font-size:14px;font-weight:500;color:var(--t1);line-height:1.65;
-      display:none;
-    }
-    .stt-preview.show{display:block;}
-    .stt-tag{
-      display:inline-block;font-size:11px;font-weight:700;
-      padding:2px 7px;border-radius:5px;
-      background:var(--accent);color:var(--palette-white);margin-right:6px;
-      vertical-align:1px;letter-spacing:.2px;
-    }
-    .stt-foot{margin-top:10px;font-size:12px;color:var(--t3);font-weight:600;}
-
-    .aux{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
-    .aux-btn{
-      display:flex;align-items:center;justify-content:center;gap:6px;
-      height:46px;background:var(--clinical-surface-muted);border:0;border-radius:12px;
-      font-size:13.5px;font-weight:600;color:var(--t1);
-      cursor:pointer;font-family:inherit;
-    }
-    .aux-btn iconify-icon{font-size:17px;color:var(--accent-strong);}
-
-    /* 4단계 토글 */
-    .judge-ttl{
-      font-size:11px;font-weight:700;color:var(--t3);
-      letter-spacing:.2px;margin:20px 0 10px;
-      display:flex;align-items:center;gap:6px;
-    }
-    .judge-ttl iconify-icon{font-size:13px;color:var(--accent-strong);}
-    .judge{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-    .judge-btn{
-      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-      height:54px;background:var(--clinical-surface-muted);border:1.5px solid transparent;
-      border-radius:12px;font-family:inherit;cursor:pointer;
-      transition:all .15s;
-    }
-    .judge-btn .judge-dot{width:12px;height:12px;border-radius:50%;}
-    .judge-btn .judge-label{font-size:13px;font-weight:600;color:var(--t1);}
-    .judge-btn[data-level="ok"] .judge-dot{background:var(--accent);}
-    .judge-btn[data-level="watch"] .judge-dot{background:var(--brand-yellow-400);}
-    .judge-btn[data-level="warn"] .judge-dot{background:var(--warn);}
-    .judge-btn[data-level="danger"] .judge-dot{background:var(--danger);}
-    .judge-btn.selected[data-level="ok"]{border-color:var(--accent);background:var(--accent-soft);}
-    .judge-btn.selected[data-level="watch"]{border-color:var(--brand-yellow-400);background:var(--brand-yellow-50);}
-    .judge-btn.selected[data-level="warn"]{border-color:var(--warn);background:var(--warn-soft);}
-    .judge-btn.selected[data-level="danger"]{border-color:var(--danger);background:var(--danger-soft);}
-
-    /* 저장 힌트 — v3.2.7: 카드 외부 별도 컨테이너 X. 슬림 caption 톤. */
-    .saved-hint{
-      margin:10px 4px 0;
-      display:flex;align-items:center;gap:8px;
-      position:relative;z-index:1;
-    }
-    .saved-hint iconify-icon{font-size:14px;color:var(--accent-strong);flex-shrink:0;}
-    .saved-text{font-size:12px;font-weight:500;color:var(--t3);line-height:1.4;}
-    .saved-text b{color:var(--t2);font-weight:600;}
-    .saved-text b{color:var(--t1);}
-
-    /* SWIPE BAR — v3.2.7: 3분할 동일 높이/라운드/그림자.
-       primary 만 색으로 위계 표시, secondary 2개는 동일 톤 (시각 무게 균일) */
-    .swipe-bar{
-      display:grid;grid-template-columns:auto auto 1fr;gap:8px;
-      margin:14px 0 4px;position:relative;z-index:1;
-    }
-    .swipe-prev, .swipe-skip, .swipe-next{
-      height:50px;display:flex;align-items:center;justify-content:center;gap:6px;
-      border:0;border-radius:14px;font-family:inherit;font-size:13.5px;font-weight:700;
-      letter-spacing:-.2px;cursor:pointer;padding:0 16px;
-      box-shadow:0 1px 2px rgba(0,0,0,.04);
-      transition:transform .12s;
-    }
-    .swipe-prev:active, .swipe-skip:active, .swipe-next:active{transform:scale(.98);}
-    .swipe-prev, .swipe-skip{background:var(--palette-white);color:var(--t2);}
-    .swipe-prev iconify-icon, .swipe-skip iconify-icon{font-size:16px;}
-    .swipe-skip{color:var(--palette-amber-700);}
-    .swipe-next{
-      background:var(--accent);color:var(--palette-white);font-size:14.5px;
-      box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .22);
-    }
-    .swipe-next iconify-icon{font-size:18px;}
-
-    /* === PATIENT LIST SHEET === */
-    .overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.4);
-      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-      display:none;align-items:flex-end;justify-content:center;z-index:200;
-    }
-    .overlay.show{display:flex;}
-    .sheet{
-      background:var(--palette-white);border-radius:28px 28px 0 0;
-      padding:18px 18px calc(28px + env(safe-area-inset-bottom,0px));
-      width:100%;max-width:430px;max-height:80vh;overflow-y:auto;
-    }
-    .sheet-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
-
-    .pl-list{display:flex;flex-direction:column;}
-    .pl-item{
-      padding:12px 6px;display:flex;align-items:center;gap:12px;
-      border-bottom:1px solid rgba(0,0,0,.05);cursor:pointer;
-      background:transparent;border-left:0;border-right:0;border-top:0;width:100%;
-      font-family:inherit;text-align:left;
-    }
-    .pl-item:last-child{border-bottom:0;}
-    .pl-status{
-      width:24px;flex-shrink:0;
-      display:inline-flex;align-items:center;justify-content:center;
-      font-size:13px;font-weight:600;color:var(--t3);
-    }
-    .pl-status.done{color:var(--accent-strong);}
-    .pl-status.current{color:var(--accent-strong);font-weight:700;}
-    .pl-status.pending{color:var(--t3);}
-    .pl-status.skipped{color:var(--palette-amber-700);}
-    .pl-status iconify-icon{font-size:16px;}
-    .pl-meta{flex:1;min-width:0;line-height:1.25;}
-    .pl-name{font-size:14.5px;font-weight:600;color:var(--t1);}
-    .pl-name.current{color:var(--accent-strong);}
-    .pl-name.pending{color:var(--t2);}
-    .pl-room{font-size:12px;font-weight:500;color:var(--t3);margin-top:2px;}
-    .pl-tag{
-      flex-shrink:0;font-size:10px;font-weight:600;padding:3px 8px;border-radius:999px;
-      background:var(--danger-soft);color:var(--palette-red-700);
-    }
-    .pl-tag.warn{background:var(--warn-soft);color:var(--palette-amber-700);}
-
-    /* === INTRO STATE — 몇차 라운드/이어서/새로 시작 === */
-    .intro{animation:haru-fade-in-up var(--duration-slow,350ms) var(--easing-standard) both;
-      margin:6px 0 0;position:relative;z-index:1;
-    }
-    .intro-card{
-      background:var(--palette-white);border-radius:24px;padding:24px;
-      box-shadow:var(--cg-card-shadow);
-      margin-bottom:14px;
-    }
-    .intro-eyebrow{
-      font-size:11px;font-weight:600;color:var(--accent-strong);
-      letter-spacing:.4px;text-transform:uppercase;margin-bottom:8px;
-    }
-    .intro-ttl{
-      font-size:22px;font-weight:700;color:var(--t1);letter-spacing:-.5px;
-      line-height:1.3;margin-bottom:6px;
-    }
-    .intro-sub{font-size:14px;font-weight:500;color:var(--t2);line-height:1.5;}
-
-    .intro-progress{
-      margin-top:20px;padding:18px;background:var(--clinical-surface);border-radius:18px;
-    }
-    .intro-prog-row{
-      display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;
-    }
-    .intro-prog-label{font-size:12px;font-weight:600;color:var(--t2);}
-    .intro-prog-val{font-size:13px;font-weight:600;color:var(--accent-strong);font-variant-numeric:tabular-nums;}
-    .intro-prog-bar{height:8px;border-radius:999px;background:rgba(0,0,0,.06);overflow:hidden;}
-    .intro-prog-fill{
-      height:100%;width:var(--bar-w, 0%);background:var(--accent-strong);
-      border-radius:999px;
-    }
-    .intro-prog-foot{
-      margin-top:10px;display:flex;align-items:center;gap:6px;
-      font-size:12px;font-weight:500;color:var(--t3);
-    }
-    .intro-prog-foot iconify-icon{font-size:14px;}
-
-    .intro-next{
-      margin-top:18px;padding:16px;background:var(--accent-soft);border-radius:14px;
-      display:flex;align-items:center;gap:12px;
-    }
-    .intro-next-ava{
-      width:42px;height:42px;border-radius:50%;flex-shrink:0;
-      background:var(--palette-white);color:var(--accent-strong);
-      display:inline-flex;align-items:center;justify-content:center;
-      font-size:16px;font-weight:600;
-    }
-    .intro-next-meta{flex:1;min-width:0;line-height:1.3;}
-    .intro-next-label{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.3px;text-transform:uppercase;}
-    .intro-next-name{font-size:15px;font-weight:600;color:var(--t1);margin-top:3px;}
-    .intro-next-room{font-size:12px;font-weight:500;color:var(--t3);margin-top:1px;}
-
-    .intro-cta{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
-    .intro-btn-primary{
-      width:100%;padding:18px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
-      background:var(--accent);color:var(--palette-white);
-      font-size:16px;font-weight:700;letter-spacing:-.3px;
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      box-shadow:0 3px 10px rgba(var(--brand-green-500-rgb), .22);
-      transition:transform .12s;
-    }
-    .intro-btn-primary:active{transform:scale(.99);}
-    .intro-btn-primary iconify-icon{font-size:20px;}
-    .intro-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-    .intro-btn-secondary{
-      padding:14px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
-      background:var(--palette-white);color:var(--t2);
-      font-size:13px;font-weight:600;
-      display:inline-flex;align-items:center;justify-content:center;gap:6px;
-      box-shadow:var(--cg-card-shadow);
-    }
-    .intro-btn-secondary iconify-icon{font-size:16px;color:var(--t2);}
-
-    .intro-history{
-      background:var(--palette-white);border-radius:18px;padding:18px;
-      box-shadow:var(--cg-card-shadow);
-    }
-    .intro-hist-ttl{
-      font-size:11px;font-weight:600;color:var(--t3);
-      letter-spacing:.4px;text-transform:uppercase;margin-bottom:12px;
-    }
-    .intro-hist-row{
-      display:flex;align-items:center;gap:12px;padding:8px 0;
-      border-bottom:1px dashed rgba(0,0,0,.05);
-    }
-    .intro-hist-row:last-child{border-bottom:0;}
-    .intro-hist-num{
-      width:28px;height:28px;border-radius:8px;flex-shrink:0;
-      background:var(--accent-soft);color:var(--accent-strong);
-      display:inline-flex;align-items:center;justify-content:center;
-      font-size:12px;font-weight:700;
-    }
-    .intro-hist-meta{flex:1;min-width:0;line-height:1.25;}
-    .intro-hist-label{font-size:13px;font-weight:600;color:var(--t1);}
-    .intro-hist-time{font-size:11px;font-weight:500;color:var(--t3);margin-top:1px;}
-    .intro-hist-stat{
-      flex-shrink:0;font-size:11px;font-weight:600;color:var(--accent-strong);
-      font-variant-numeric:tabular-nums;
-    }
-
-    /* === COMPLETION STATE === */
-    .complete{
-      margin:32px 0 0;padding:32px 24px;
-      background:var(--palette-white);border-radius:24px;text-align:center;
-      box-shadow:0 8px 28px rgba(0,0,0,.06);
-      position:relative;z-index:1;
-    }
-    .complete-ico{
-      width:72px;height:72px;border-radius:50%;
-      background:var(--accent-strong);
-      color:var(--palette-white);display:inline-flex;align-items:center;justify-content:center;
-      box-shadow:0 3px 10px rgba(var(--brand-green-500-rgb), .22);
-      margin-bottom:20px;
-    }
-    .complete-ico iconify-icon{font-size:36px;}
-    .complete-ttl{font-size:22px;font-weight:700;color:var(--t1);letter-spacing:-.5px;margin-bottom:8px;}
-    .complete-sub{font-size:14px;font-weight:500;color:var(--t2);line-height:1.5;margin-bottom:24px;}
-    .complete-stats{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
-      margin-bottom:24px;padding:16px;background:var(--clinical-surface);border-radius:16px;
-    }
-    .complete-stat-val{font-size:22px;font-weight:700;color:var(--accent-strong);font-variant-numeric:tabular-nums;letter-spacing:-.5px;}
-    .complete-stat-label{font-size:11px;font-weight:500;color:var(--t3);margin-top:4px;}
-    .complete-cta{
-      display:flex;gap:8px;
-    }
-    .complete-cta a, .complete-cta button{
-      flex:1;padding:14px;border-radius:14px;border:0;cursor:pointer;
-      font-family:inherit;font-size:14px;font-weight:700;
-      display:inline-flex;align-items:center;justify-content:center;gap:6px;
-      text-decoration:none;
-    }
-    .complete-cta .secondary{background:var(--clinical-surface-muted);color:var(--t1);}
-    .complete-cta .primary{background:var(--accent);color:var(--palette-white);box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .22);}
-    .complete-cta iconify-icon{font-size:16px;}
-
-    /* TAB BAR · v3.2.5: 세 앱 탭바 위치 통일 — env(safe-bottom) + 12px (d01 기준) */
-    .tab-wrap{
-      position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);
-      left:50%;transform:translateX(-50%);
-      display:flex;align-items:center;gap:10px;
-      width:calc(100% - 32px);max-width:398px;z-index:40;
-    }
-    /* v3.2.5: 탭바 — 보호자 스타일 통일 (글라스 + 아이콘 26px, 라벨 숨김) */
-    .tabbar{
-      flex:1;min-width:0;height:var(--tab-h);
-      background:rgba(255,255,255,.85);
-      backdrop-filter:blur(20px) saturate(140%);
-      -webkit-backdrop-filter:blur(20px) saturate(140%);
-      border:1px solid rgba(255,255,255,.55);
-      border-radius:999px;
-      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
-      display:flex;align-items:stretch;justify-content:space-around;padding:0 10px;
-    }
-    .tab iconify-icon{font-size:26px;}
-    .tab-label{display:none;}
-    .tab.active{color:var(--accent-strong);}
-    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(var(--brand-green-500-rgb), .28));}
-    .sos{
-      position:relative;width:var(--tab-h);height:var(--tab-h);flex-shrink:0;border-radius:50%;
-      background:var(--color-danger);border:0;
-      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
-      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
-    }
-    .sos iconify-icon{font-size:26px;color:var(--palette-white);}
-    .toast{
-      position:fixed;left:50%;bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 18px);
-      transform:translateX(-50%) translateY(20px);
-      background:rgba(28,28,30,.92);color:var(--palette-white);font-size:14px;font-weight:600;
-      padding:11px 20px;border-radius:999px;
-      opacity:0;transition:.25s;pointer-events:none;z-index:300;white-space:nowrap;
-    }
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-    /* ===== JUDGE ACTION SHEET ===== */
-    .ja-overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.5);
-      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-      display:none;align-items:flex-end;justify-content:center;z-index:400;
-    }
-    .ja-overlay.show{display:flex;}
-    .ja-sheet{
-      background:var(--palette-white);color:var(--t1);
-      width:100%;max-width:430px;
-      border-radius:24px 24px 0 0;
-      padding:14px 20px calc(24px + env(safe-area-inset-bottom,0px));
-      box-shadow:0 -8px 28px rgba(0,0,0,.2);
-      animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both;
-    }
-    @keyframes haru-fade-in-up {from{transform:translateY(8px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-    .ja-handle{width:40px;height:4px;background:rgba(0,0,0,.15);border-radius:2px;margin:0 auto 14px;}
-    .ja-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
-    .ja-ico{
-      width:44px;height:44px;border-radius:12px;flex-shrink:0;
-      display:inline-flex;align-items:center;justify-content:center;font-size:24px;
-    }
-    .ja-ico.warn{background:var(--warn-soft);color:var(--palette-amber-700);}
-    .ja-ico.danger{background:var(--danger-soft);color:var(--danger);}
-    .ja-eyebrow{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;}
-    .ja-eyebrow.warn{color:var(--palette-amber-700);}
-    .ja-eyebrow.danger{color:var(--palette-red-700);}
-    .ja-ttl{font-size:18px;font-weight:700;color:var(--t1);letter-spacing:-.4px;line-height:1.3;margin-top:3px;}
-    .ja-sub{font-size:13px;font-weight:500;color:var(--t2);line-height:1.5;margin-bottom:14px;}
-    .ja-options{display:flex;flex-direction:column;gap:8px;}
-    .ja-opt{
-      display:flex;align-items:center;gap:14px;
-      padding:14px 16px;background:var(--clinical-surface);
-      border:1px solid var(--palette-gray-200);
-      border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;width:100%;
-      color:var(--t1);
-    }
-    .ja-opt:active{transform:scale(.99);}
-    .ja-opt iconify-icon{font-size:22px;color:var(--t2);flex-shrink:0;}
-    .ja-opt.danger iconify-icon{color:var(--danger);}
-    .ja-opt-ttl{font-size:14.5px;font-weight:700;color:var(--t1);}
-    .ja-opt-sub{font-size:12px;font-weight:500;color:var(--t3);margin-top:2px;}
-    .ja-cancel{
-      width:100%;margin-top:10px;padding:14px;
-      background:transparent;border:0;cursor:pointer;font-family:inherit;
-      font-size:13.5px;font-weight:600;color:var(--t3);
-    }
-
-    /* Inline 대체 */
-    .pt-row-bar > span { width: var(--bar-w, 0%); }
-    .mt-3 { margin-top: 14px; }
-    .alert-banner--warn { background: var(--warn-soft); color: var(--palette-amber-700); }
-    .text-amber-warn    { color: var(--palette-amber-700); }
-  </style>
+  <link rel="stylesheet" href="styles/d02-round.css">
+  <link rel="stylesheet" href="../07_디자인/system/interactions.css">
+  <script src="../07_디자인/system/interactions.js"></script>
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
@@ -557,7 +31,7 @@
           <div class="h-eyebrow" id="hEyebrow">회진 모드</div>
           <div class="h-name" id="hName">2차 라운드</div>
         </div>
-        <button class="icon-btn" onclick="openList()" aria-label="환자 목록"><iconify-icon icon="mingcute:clipboard-fill"></iconify-icon></button>
+        <button type="button" class="icon-btn" onclick="openList()" aria-label="환자 목록"><iconify-icon icon="mingcute:clipboard-fill"></iconify-icon></button>
       </div>
       <div class="progress" id="progBar">
         <div class="progress-bar"><div class="progress-fill" id="progFill" style="--bar-w:53%"></div></div>
@@ -596,14 +70,14 @@
         </div>
 
         <div class="intro-cta">
-          <button class="intro-btn-primary" onclick="startRound('resume')">
+          <button type="button" class="intro-btn-primary" onclick="startRound('resume')">
             <iconify-icon icon="mingcute:play-fill"></iconify-icon>이어서 진행 (9번째부터)
           </button>
           <div class="intro-btn-row">
-            <button class="intro-btn-secondary" onclick="openList()">
+            <button type="button" class="intro-btn-secondary" onclick="openList()">
               <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>환자 목록 보기
             </button>
-            <button class="intro-btn-secondary" onclick="startRound('restart')">
+            <button type="button" class="intro-btn-secondary" onclick="startRound('restart')">
               <iconify-icon icon="mingcute:refresh-2-fill"></iconify-icon>처음부터 다시
             </button>
           </div>
@@ -636,13 +110,13 @@
       <!-- v3.2.6: swipe-bar 를 진행률 바 ↔ 환자 카드 사이로 이동.
            이전/건너뛰기/저장하고 다음을 카드 상단에 두어 thumb-zone 친화. -->
       <div class="swipe-bar">
-        <button class="swipe-prev" onclick="swipe('prev')" aria-label="이전 환자">
+        <button type="button" class="swipe-prev" onclick="swipe('prev')" aria-label="이전 환자">
           <iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon>이전
         </button>
-        <button class="swipe-skip" onclick="swipe('skip')" aria-label="건너뛰기 (자고 계심·부재 등)">
+        <button type="button" class="swipe-skip" onclick="swipe('skip')" aria-label="건너뛰기 (자고 계심·부재 등)">
           <iconify-icon icon="mingcute:refresh-2-fill"></iconify-icon>건너뛰기
         </button>
-        <button class="swipe-next" onclick="swipe('next')">
+        <button type="button" class="swipe-next" onclick="swipe('next')">
           저장하고 다음<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>
         </button>
       </div>
@@ -679,7 +153,7 @@
           <section class="input-zone">
             <div class="input-ttl">지금 기록</div>
 
-            <button class="voice" id="voiceBtn" onclick="toggleVoice()">
+            <button type="button" class="voice" id="voiceBtn" onclick="toggleVoice()">
               <span class="voice-mic"><iconify-icon icon="ph:microphone-fill" id="voiceIco"></iconify-icon></span>
               <div class="voice-text">
                 <div class="voice-main" id="voiceMain">음성으로 한 번에 기록</div>
@@ -696,22 +170,22 @@
             </div>
 
             <div class="aux">
-              <button class="aux-btn" onclick="toast('카메라 열기');"><iconify-icon icon="material-symbols:photo-camera-rounded"></iconify-icon>사진</button>
-              <button class="aux-btn" onclick="toast('빠른 메모');"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>메모</button>
+              <button type="button" class="aux-btn" onclick="toast('카메라 열기');"><iconify-icon icon="material-symbols:photo-camera-rounded"></iconify-icon>사진</button>
+              <button type="button" class="aux-btn" onclick="toast('빠른 메모');"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>메모</button>
             </div>
 
             <div class="judge-ttl"><iconify-icon icon="material-symbols:health-and-safety-rounded"></iconify-icon>AI 위험 신호 · 의료진 확인</div>
             <div class="judge">
-              <button class="judge-btn selected" data-level="ok" onclick="selectJudge(this)">
+              <button type="button" class="judge-btn selected" data-level="ok" onclick="selectJudge(this)">
                 <span class="judge-dot"></span><span class="judge-label">정상</span>
               </button>
-              <button class="judge-btn" data-level="watch" onclick="selectJudge(this)">
+              <button type="button" class="judge-btn" data-level="watch" onclick="selectJudge(this)">
                 <span class="judge-dot"></span><span class="judge-label">관찰</span>
               </button>
-              <button class="judge-btn" data-level="warn" onclick="selectJudge(this)">
+              <button type="button" class="judge-btn" data-level="warn" onclick="selectJudge(this)">
                 <span class="judge-dot"></span><span class="judge-label">주의</span>
               </button>
-              <button class="judge-btn" data-level="danger" onclick="selectJudge(this)">
+              <button type="button" class="judge-btn" data-level="danger" onclick="selectJudge(this)">
                 <span class="judge-dot"></span><span class="judge-label">위험</span>
               </button>
             </div>
@@ -763,18 +237,13 @@
       </div>
       <div class="ja-sub" id="jaSub">기록은 저장되었습니다. 추가로 어떤 후속 조치를 진행할까요?</div>
       <div class="ja-options" id="jaOptions"></div>
-      <button class="ja-cancel" onclick="closeJudgeSheet()">기록만 저장 · 닫기</button>
+      <button type="button" class="ja-cancel" onclick="closeJudgeSheet()">기록만 저장 · 닫기</button>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
   <script>
-    function toast(msg){
-      const el=document.getElementById('toast');
-      el.textContent=msg;el.classList.add('show');
-      clearTimeout(window.__t);window.__t=setTimeout(()=>el.classList.remove('show'),1800);
-    }
-    /* === 데모용 15명 (8명 done, 9번째 current, 6명 pending) === */
+/* === 데모용 15명 (8명 done, 9번째 current, 6명 pending) === */
     const ROUND_TOTAL=15;
     const ROUND_DONE_COUNT=8;
     /* v3.2.9: 환자별 지난 라운드 데이터. vitals = [bp, temp, pain, meal].
@@ -1040,7 +509,7 @@
         const ico={done:'mingcute:check-fill',current:'mingcute:play-fill',skipped:'mingcute:refresh-2-fill',pending:''}[s];
         const num=i+1;
         const tag=p.risk==='danger'?'<span class="pl-tag">위험</span>':p.risk==='warn'?'<span class="pl-tag warn">주의</span>':'';
-        return `<button class="pl-item" onclick="jumpTo(${i})">
+        return `<button type="button" class="pl-item" onclick="jumpTo(${i})">
           <span class="pl-status ${s}">${ico?`<iconify-icon icon="${ico}"></iconify-icon>`:num}</span>
           <span class="pl-meta">
             <span class="pl-name ${s}">${p.name} 어르신${s==='current'?' · 진행 중':''}</span>
@@ -1132,7 +601,7 @@
       document.getElementById('jaTitle').textContent = c.title;
       document.getElementById('jaSub').textContent = c.sub;
       document.getElementById('jaOptions').innerHTML = c.options.map(o =>
-        `<button class="ja-opt${o.danger?' danger':''}" onclick="judgeAction('${o.act}')">
+        `<button type="button" class="ja-opt${o.danger?' danger':''}" onclick="judgeAction('${o.act}')">
           <iconify-icon icon="${o.ico}"></iconify-icon>
           <div><div class="ja-opt-ttl">${o.ttl}</div><div class="ja-opt-sub">${o.sub}</div></div>
         </button>`

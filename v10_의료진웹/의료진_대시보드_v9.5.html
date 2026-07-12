@@ -34,21 +34,21 @@
 
       /* 무채색 — 의료진 웹 고유 웜 그레이 톤 (tokens.css 팔레트와 톤 차이 있어 직접 정의).
          과거 `--surface: var(--surface)` 자기참조는 invalid 처리되어 실제 값으로 복원. */
-      --ink:    #1A1612;       /* 웜 다크 (사이드바 bg) — 코멘트의 "웜 그레이 톤" 의도 반영 */
-      --ink-2:  #2A2A2A;
-      --ink-3:  #555555;
-      --ink-4:  #888888;
-      --ink-5:  #AAAAAA;
-      --ink-6:  #D8D5D0;       /* 옅은 warm border */
-      --ink-7:  #BBB7B0;       /* 더 진한 warm border */
-      --surface:        #FFFFFF;      /* 카드 기본 배경 */
-      --surface-warm:   #FAF8F5;      /* 카드/패널 웜 톤 */
-      --surface-soft:   #F4F1ED;      /* 보조 카드 */
-      --surface-tint:   #EFECE7;      /* hover/divider */
-      --surface-tint-2: #E6E2DD;      /* 변형 */
-      --surface-tint-3: #D8D3CC;      /* 더 진한 분리선 */
+      --ink:    var(--medical-web-ink-1);
+      --ink-2:  var(--medical-web-ink-2);
+      --ink-3:  var(--medical-web-ink-3);
+      --ink-4:  var(--medical-web-ink-4);
+      --ink-5:  var(--medical-web-ink-5);
+      --ink-6:  var(--medical-web-border-1);
+      --ink-7:  var(--medical-web-border-2);
+      --surface:        var(--medical-web-surface);
+      --surface-warm:   var(--medical-web-surface-warm);
+      --surface-soft:   var(--medical-web-surface-soft);
+      --surface-tint:   var(--medical-web-surface-tint);
+      --surface-tint-2: var(--medical-web-surface-tint-2);
+      --surface-tint-3: var(--medical-web-surface-tint-3);
       --border-warm:    rgba(0,0,0,.07);
-      --bg:     #EEEDEA;
+      --bg:     var(--medical-web-canvas);
       --white:  var(--palette-white);
 
       /* 포인트 — 케어 그린 (data-role=medical → --color-accent = --brand-green-500) */
@@ -2051,7 +2051,7 @@
     .rec-gauge-frac .miss { color: var(--danger); font-weight: 700; }
 
     /* 실사 준비 게이지 링 바닥 색 (카테고리별) */
-    .rec-gauge-cell[data-type="nurse"]  { --gauge-color: #6366F1; }
+    .rec-gauge-cell[data-type="nurse"]  { --gauge-color: var(--medical-web-chart-nurse); }
     .rec-gauge-cell[data-type="pay"]    { --gauge-color: var(--accent); }
     .rec-gauge-cell[data-type="vital"]  { --gauge-color: var(--brand-blue-500); }
     .rec-gauge-cell[data-type="inc"]    { --gauge-color: var(--danger); }
@@ -2518,7 +2518,7 @@
     .cl-don-cell[data-cat="vital"] { --ring-color: var(--brand-blue-500); }
     .cl-don-cell[data-cat="med"]   { --ring-color: var(--accent-strong); }
     .cl-don-cell[data-cat="food"]  { --ring-color: var(--warn); }
-    .cl-don-cell[data-cat="care"]  { --ring-color: #A78BFA; }
+    .cl-don-cell[data-cat="care"]  { --ring-color: var(--medical-web-chart-care); }
 
     /* 타임라인 */
     .cl-tl-head-row {
@@ -3136,7 +3136,7 @@
        액티브만 브랜드 그린 pill로 정체성 유지
        ============================================================ */
     .sidebar {
-      background: #1A1612 !important;   /* DEBUG: 리터럴로 강제 (var(--ink) 평가 의심) */
+      background: var(--ink) !important;
       border-right: 0 !important;
       width: 220px !important;
     }
@@ -3642,12 +3642,12 @@
     </div>
 
     <div class="topbar-actions">
-      <button class="icon-btn" title="알림">
+      <button type="button" class="icon-btn" title="알림">
         <iconify-icon icon="mingcute:notification-fill"></iconify-icon>
         <span class="notif-dot"></span>
       </button>
 
-      <button class="sos-btn">
+      <button type="button" class="sos-btn">
         <iconify-icon icon="mingcute:question-fill"></iconify-icon>
         SOS 발신
       </button>
@@ -3687,7 +3687,7 @@
             </span>
           </div>
         </div>
-        <button class="ph-all">전체 보기</button>
+        <button type="button" class="ph-all">전체 보기</button>
       </div>
       <div class="ph-list">
 
@@ -3698,7 +3698,7 @@
             <div class="ph-meta">박영수 301호 · 180/110 감지 후 20분 경과</div>
           </div>
           <span class="ph-tag urgent">긴급</span>
-          <button class="ph-btn em">대응</button>
+          <button type="button" class="ph-btn em">대응</button>
         </div>
 
         <div class="ph-item urgent">
@@ -3708,7 +3708,7 @@
             <div class="ph-meta">김순자 302호 거부 · 이철수 303호 보류 중</div>
           </div>
           <span class="ph-tag urgent">긴급</span>
-          <button class="ph-btn em">대응</button>
+          <button type="button" class="ph-btn em">대응</button>
         </div>
 
         <div class="ph-item">
@@ -3718,7 +3718,7 @@
             <div class="ph-meta">박영수 301호 · 상처 관리 · 예정 시각 임박</div>
           </div>
           <span class="ph-tag warn">임박</span>
-          <button class="ph-btn">기록</button>
+          <button type="button" class="ph-btn">기록</button>
         </div>
 
         <div class="ph-item">
@@ -3728,7 +3728,7 @@
             <div class="ph-meta">김순자 302호 · D-2 마감 · 장기요양 고시 필수</div>
           </div>
           <span class="ph-tag warn">마감 임박</span>
-          <button class="ph-btn">작성</button>
+          <button type="button" class="ph-btn">작성</button>
         </div>
 
         <div class="ph-item">
@@ -3738,7 +3738,7 @@
             <div class="ph-meta">302·307·309호 · 식사량 관찰 대상</div>
           </div>
           <span class="ph-tag muted">정시</span>
-          <button class="ph-btn">시작</button>
+          <button type="button" class="ph-btn">시작</button>
         </div>
 
       </div>
@@ -3972,7 +3972,7 @@
               <div class="al-msg">혈압 180/110 측정 · 2시간 내 재측정 후 이송 검토 권장</div>
               <div class="al-time">10분 전 · AI 감지</div>
             </div>
-            <button class="al-btn crit">대응</button>
+            <button type="button" class="al-btn crit">대응</button>
           </div>
 
           <div class="al-item caution">
@@ -3981,7 +3981,7 @@
               <div class="al-msg">식사량 3일 연속 30% 미만 · 영양 상담 및 보호자 알림 고려</div>
               <div class="al-time">어제부터 추이 감지</div>
             </div>
-            <button class="al-btn norm">확인</button>
+            <button type="button" class="al-btn norm">확인</button>
           </div>
 
           <div class="al-item">
@@ -3998,7 +3998,7 @@
               <div class="al-msg">"오늘 어머니 재활 치료 결과 어떻게 됐나요?" 미확인 메시지</div>
               <div class="al-time">30분 전</div>
             </div>
-            <button class="al-btn norm">답장</button>
+            <button type="button" class="al-btn norm">답장</button>
           </div>
 
         </div>
@@ -4015,7 +4015,7 @@
       <div class="pt-page-head-text">
         <p>2병동 · 담당 환자 25명 · 마지막 업데이트 10:24</p>
       </div>
-      <button class="pt-add-btn">
+      <button type="button" class="pt-add-btn">
         <iconify-icon icon="mingcute:add-fill"></iconify-icon>
         신규 환자
       </button>
@@ -4217,7 +4217,7 @@
         <div class="pt-tab" onclick="ptTab(this)">모니터링 <span class="pt-tab-count">2</span></div>
         <div class="pt-tab" onclick="ptTab(this)">안정 <span class="pt-tab-count">20</span></div>
       </div>
-      <button class="pt-sort-btn">
+      <button type="button" class="pt-sort-btn">
         <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         정렬: 호실순
       </button>
@@ -4256,8 +4256,8 @@
         </div>
         <div class="pt-vital">10분 전</div>
         <div class="pt-actions">
-          <button class="pt-act em">대응</button>
-          <button class="pt-act">채팅</button>
+          <button type="button" class="pt-act em">대응</button>
+          <button type="button" class="pt-act">채팅</button>
         </div>
       </div>
 
@@ -4283,8 +4283,8 @@
         </div>
         <div class="pt-vital">1시간 전</div>
         <div class="pt-actions">
-          <button class="pt-act">기록</button>
-          <button class="pt-act">채팅</button>
+          <button type="button" class="pt-act">기록</button>
+          <button type="button" class="pt-act">채팅</button>
         </div>
       </div>
 
@@ -4310,8 +4310,8 @@
         </div>
         <div class="pt-vital">2시간 전</div>
         <div class="pt-actions">
-          <button class="pt-act">기록</button>
-          <button class="pt-act">채팅</button>
+          <button type="button" class="pt-act">기록</button>
+          <button type="button" class="pt-act">채팅</button>
         </div>
       </div>
 
@@ -4336,8 +4336,8 @@
         </div>
         <div class="pt-vital">2시간 전</div>
         <div class="pt-actions">
-          <button class="pt-act">기록</button>
-          <button class="pt-act">채팅</button>
+          <button type="button" class="pt-act">기록</button>
+          <button type="button" class="pt-act">채팅</button>
         </div>
       </div>
 
@@ -4362,8 +4362,8 @@
         </div>
         <div class="pt-vital">3시간 전</div>
         <div class="pt-actions">
-          <button class="pt-act">기록</button>
-          <button class="pt-act">채팅</button>
+          <button type="button" class="pt-act">기록</button>
+          <button type="button" class="pt-act">채팅</button>
         </div>
       </div>
 
@@ -4385,8 +4385,8 @@
         </div>
         <div class="pt-vital">30분 전</div>
         <div class="pt-actions">
-          <button class="pt-act">기록</button>
-          <button class="pt-act">채팅</button>
+          <button type="button" class="pt-act">기록</button>
+          <button type="button" class="pt-act">채팅</button>
         </div>
       </div>
 
@@ -4411,8 +4411,8 @@
         </div>
         <div class="pt-vital">1시간 전</div>
         <div class="pt-actions">
-          <button class="pt-act">기록</button>
-          <button class="pt-act">채팅</button>
+          <button type="button" class="pt-act">기록</button>
+          <button type="button" class="pt-act">채팅</button>
         </div>
       </div>
 
@@ -4434,8 +4434,8 @@
         </div>
         <div class="pt-vital">45분 전</div>
         <div class="pt-actions">
-          <button class="pt-act">기록</button>
-          <button class="pt-act">채팅</button>
+          <button type="button" class="pt-act">기록</button>
+          <button type="button" class="pt-act">채팅</button>
         </div>
       </div>
 
@@ -4457,8 +4457,8 @@
         </div>
         <div class="pt-vital">1시간 전</div>
         <div class="pt-actions">
-          <button class="pt-act">기록</button>
-          <button class="pt-act">채팅</button>
+          <button type="button" class="pt-act">기록</button>
+          <button type="button" class="pt-act">채팅</button>
         </div>
       </div>
 
@@ -4480,8 +4480,8 @@
         </div>
         <div class="pt-vital">20분 전</div>
         <div class="pt-actions">
-          <button class="pt-act">기록</button>
-          <button class="pt-act">채팅</button>
+          <button type="button" class="pt-act">기록</button>
+          <button type="button" class="pt-act">채팅</button>
         </div>
       </div>
 
@@ -4499,7 +4499,7 @@
       <div class="pt-page-head-text">
         <p>2병동 · 오늘 총 22건 · 마지막 업데이트 10:24</p>
       </div>
-      <button class="pt-add-btn">
+      <button type="button" class="pt-add-btn">
         <iconify-icon icon="mingcute:add-fill"></iconify-icon>
         투약 기록
       </button>
@@ -4700,7 +4700,7 @@
         <div class="pt-tab" onclick="ptTab(this)">완료 <span class="pt-tab-count">12</span></div>
         <div class="pt-tab" onclick="ptTab(this)">예정 <span class="pt-tab-count">8</span></div>
       </div>
-      <button class="pt-sort-btn">
+      <button type="button" class="pt-sort-btn">
         <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         정렬: 시간순
       </button>
@@ -4743,8 +4743,8 @@
         <div class="med-done-time none">—</div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미투여</span></div>
         <div class="med-actions">
-          <button class="pt-act em">투약</button>
-          <button class="pt-act">거부</button>
+          <button type="button" class="pt-act em">투약</button>
+          <button type="button" class="pt-act">거부</button>
         </div>
       </div>
 
@@ -4773,8 +4773,8 @@
         <div class="med-done-time none">—</div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미투여</span></div>
         <div class="med-actions">
-          <button class="pt-act em">투약</button>
-          <button class="pt-act">거부</button>
+          <button type="button" class="pt-act em">투약</button>
+          <button type="button" class="pt-act">거부</button>
         </div>
       </div>
 
@@ -4803,8 +4803,8 @@
         <div class="med-done-time none">—</div>
         <div><span class="pt-badge wn"><span class="pt-badge-dot"></span>거부</span></div>
         <div class="med-actions">
-          <button class="pt-act">재시도</button>
-          <button class="pt-act">보고</button>
+          <button type="button" class="pt-act">재시도</button>
+          <button type="button" class="pt-act">보고</button>
         </div>
       </div>
 
@@ -4833,8 +4833,8 @@
         <div class="med-done-time none">—</div>
         <div><span class="pt-badge wn"><span class="pt-badge-dot"></span>거부</span></div>
         <div class="med-actions">
-          <button class="pt-act">재시도</button>
-          <button class="pt-act">보고</button>
+          <button type="button" class="pt-act">재시도</button>
+          <button type="button" class="pt-act">보고</button>
         </div>
       </div>
 
@@ -4863,8 +4863,8 @@
         <div class="med-done-time none">—</div>
         <div><span class="pt-badge upcoming"><span class="pt-badge-dot"></span>예정</span></div>
         <div class="med-actions">
-          <button class="pt-act">투약</button>
-          <button class="pt-act">거부</button>
+          <button type="button" class="pt-act">투약</button>
+          <button type="button" class="pt-act">거부</button>
         </div>
       </div>
 
@@ -4893,7 +4893,7 @@
         <div class="med-done-time">08:12</div>
         <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
         <div class="med-actions">
-          <button class="pt-act">수정</button>
+          <button type="button" class="pt-act">수정</button>
         </div>
       </div>
 
@@ -4922,7 +4922,7 @@
         <div class="med-done-time">08:05</div>
         <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
         <div class="med-actions">
-          <button class="pt-act">수정</button>
+          <button type="button" class="pt-act">수정</button>
         </div>
       </div>
 
@@ -4940,7 +4940,7 @@
       <div class="pt-page-head-text">
         <p>2병동 · 2026년 4월 18일 · 오전 근무 기준</p>
       </div>
-      <button class="pt-add-btn">
+      <button type="button" class="pt-add-btn">
         <iconify-icon icon="mingcute:add-fill"></iconify-icon>
         항목 추가
       </button>
@@ -5089,7 +5089,7 @@
         <div class="pt-tab" onclick="ptTab(this)">완료 <span class="pt-tab-count">14</span></div>
         <div class="pt-tab" onclick="ptTab(this)">예정 <span class="pt-tab-count">5</span></div>
       </div>
-      <button class="pt-sort-btn">
+      <button type="button" class="pt-sort-btn">
         <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         정렬: 시간순
       </button>
@@ -5338,7 +5338,7 @@
       <div class="pt-page-head-text">
         <p>2병동 · 오전 근무 종료 22:00 예정 · 마지막 업데이트 10:24</p>
       </div>
-      <button class="pt-add-btn" id="sbar-top-btn" onclick="genSBAR(this)">
+      <button type="button" class="pt-add-btn" id="sbar-top-btn" onclick="genSBAR(this)">
         <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>
         AI SBAR 생성
       </button>
@@ -5447,7 +5447,7 @@
           </div>
           <div class="ho-tm-foot">
             <span class="ho-tm-meta"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon>미전달 · 1시간 전</span>
-            <button class="ho-tm-action" onclick="event.stopPropagation()">전달<iconify-icon icon="mingcute:arrow-right-fill"></iconify-icon></button>
+            <button type="button" class="ho-tm-action" onclick="event.stopPropagation()">전달<iconify-icon icon="mingcute:arrow-right-fill"></iconify-icon></button>
           </div>
         </div>
 
@@ -5476,7 +5476,7 @@
           </div>
           <div class="ho-tm-foot">
             <span class="ho-tm-meta"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon>미전달 · 40분 전</span>
-            <button class="ho-tm-action" onclick="event.stopPropagation()">전달</button>
+            <button type="button" class="ho-tm-action" onclick="event.stopPropagation()">전달</button>
           </div>
         </div>
 
@@ -5505,7 +5505,7 @@
           </div>
           <div class="ho-tm-foot">
             <span class="ho-tm-meta"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon>미전달 · 20분 전</span>
-            <button class="ho-tm-action" onclick="event.stopPropagation()">전달</button>
+            <button type="button" class="ho-tm-action" onclick="event.stopPropagation()">전달</button>
           </div>
         </div>
 
@@ -5541,7 +5541,7 @@
         <div class="pt-tab" onclick="ptTab(this)">미전달 <span class="pt-tab-count">3</span></div>
         <div class="pt-tab" onclick="ptTab(this)">완료 <span class="pt-tab-count">2</span></div>
       </div>
-      <button class="pt-sort-btn">
+      <button type="button" class="pt-sort-btn">
         <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         정렬: 우선순위
       </button>
@@ -5584,8 +5584,8 @@
         <div><span class="ho-pri high"><span class="pt-badge-dot"></span>긴급</span></div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미전달</span></div>
         <div class="med-actions">
-          <button class="pt-act em">전달</button>
-          <button class="pt-act">편집</button>
+          <button type="button" class="pt-act em">전달</button>
+          <button type="button" class="pt-act">편집</button>
         </div>
       </div>
 
@@ -5616,8 +5616,8 @@
         <div><span class="ho-pri high"><span class="pt-badge-dot"></span>높음</span></div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미전달</span></div>
         <div class="med-actions">
-          <button class="pt-act em">전달</button>
-          <button class="pt-act">편집</button>
+          <button type="button" class="pt-act em">전달</button>
+          <button type="button" class="pt-act">편집</button>
         </div>
       </div>
 
@@ -5648,8 +5648,8 @@
         <div><span class="ho-pri mid"><span class="pt-badge-dot"></span>보통</span></div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>미전달</span></div>
         <div class="med-actions">
-          <button class="pt-act">전달</button>
-          <button class="pt-act">편집</button>
+          <button type="button" class="pt-act">전달</button>
+          <button type="button" class="pt-act">편집</button>
         </div>
       </div>
 
@@ -5676,7 +5676,7 @@
         <div><span class="ho-pri low"><span class="pt-badge-dot"></span>낮음</span></div>
         <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
         <div class="med-actions">
-          <button class="pt-act">수정</button>
+          <button type="button" class="pt-act">수정</button>
         </div>
       </div>
 
@@ -5703,7 +5703,7 @@
         <div><span class="ho-pri low"><span class="pt-badge-dot"></span>낮음</span></div>
         <div><span class="pt-badge sf"><span class="pt-badge-dot"></span>완료</span></div>
         <div class="med-actions">
-          <button class="pt-act">수정</button>
+          <button type="button" class="pt-act">수정</button>
         </div>
       </div>
 
@@ -5737,7 +5737,7 @@
             <div class="ai-head-sub">오늘 케어 기록 기반 인수인계 초안 생성 완료</div>
           </div>
         </div>
-        <button class="ho-gen-btn" id="sbar-regen-btn" onclick="regenSBAR(this)">
+        <button type="button" class="ho-gen-btn" id="sbar-regen-btn" onclick="regenSBAR(this)">
           <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>
           전체 SBAR 생성
         </button>
@@ -5765,7 +5765,7 @@
       <div class="pt-page-head-text">
         <p>2병동 · 2026년 4월 18일 토요일 · 오전 2교대</p>
       </div>
-      <button class="pt-add-btn">
+      <button type="button" class="pt-add-btn">
         <iconify-icon icon="mingcute:add-fill"></iconify-icon>
         일정 추가
       </button>
@@ -5777,9 +5777,9 @@
         <div class="pt-tab" onclick="schView(this,'daily')">일간</div>
       </div>
       <div class="v10-row-gap-8">
-        <button class="pt-sort-btn">← 3월</button>
+        <button type="button" class="pt-sort-btn">← 3월</button>
         <span class="v10-fs-12-bold-ink2">2026년 4월</span>
-        <button class="pt-sort-btn">5월 →</button>
+        <button type="button" class="pt-sort-btn">5월 →</button>
       </div>
     </div>
 
@@ -6002,7 +6002,7 @@
       <div class="pt-page-head-text">
         <p>2병동 · 2026년 4월 18일 · 실사 D-7</p>
       </div>
-      <button class="pt-add-btn">
+      <button type="button" class="pt-add-btn">
         <iconify-icon icon="mingcute:add-fill"></iconify-icon>
         새 기록
       </button>
@@ -6025,7 +6025,7 @@
         <div class="rec-alert-countdown-val">02:18</div>
         <div class="rec-alert-countdown-lbl">남은 시간</div>
       </div>
-      <button class="rec-alert-btn">지금 작성</button>
+      <button type="button" class="rec-alert-btn">지금 작성</button>
     </div>
 
     <!-- ══ 히어로: 48시간 이벤트·마감 타임라인 (데드라인축 시각 언어) ══ -->
@@ -6201,7 +6201,7 @@
               <div class="rec-aiq-title">혈압 위기 사고보고서</div>
               <div class="rec-aiq-meta">301호 박영수 · 사고보고 · D-7 필수</div>
             </div>
-            <button class="rec-aiq-gen-btn" onclick="recAiqGen(this)">생성</button>
+            <button type="button" class="rec-aiq-gen-btn" onclick="recAiqGen(this)">생성</button>
           </div>
           <div class="rec-aiq-item">
             <div class="rec-aiq-icon"><iconify-icon icon="fluent:notepad-24-filled"></iconify-icon></div>
@@ -6209,7 +6209,7 @@
               <div class="rec-aiq-title">투약 거부 간호기록</div>
               <div class="rec-aiq-meta">303호 이철수 · 간호기록</div>
             </div>
-            <button class="rec-aiq-gen-btn" onclick="recAiqGen(this)">생성</button>
+            <button type="button" class="rec-aiq-gen-btn" onclick="recAiqGen(this)">생성</button>
           </div>
           <div class="rec-aiq-item">
             <div class="rec-aiq-icon"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon></div>
@@ -6217,7 +6217,7 @@
               <div class="rec-aiq-title">4월 급여제공기록지</div>
               <div class="rec-aiq-meta">302호 김순자 · 급여기록 · 실사 대비</div>
             </div>
-            <button class="rec-aiq-gen-btn" onclick="recAiqGen(this)">생성</button>
+            <button type="button" class="rec-aiq-gen-btn" onclick="recAiqGen(this)">생성</button>
           </div>
           <div class="rec-aiq-item">
             <div class="rec-aiq-icon"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon></div>
@@ -6225,7 +6225,7 @@
               <div class="rec-aiq-title">4월 급여제공기록지</div>
               <div class="rec-aiq-meta">305호 최미경 · 급여기록</div>
             </div>
-            <button class="rec-aiq-gen-btn" onclick="recAiqGen(this)">생성</button>
+            <button type="button" class="rec-aiq-gen-btn" onclick="recAiqGen(this)">생성</button>
           </div>
           <div class="rec-aiq-item">
             <div class="rec-aiq-icon"><iconify-icon icon="fluent:notepad-24-filled"></iconify-icon></div>
@@ -6233,11 +6233,11 @@
               <div class="rec-aiq-title">재활 경과 간호기록</div>
               <div class="rec-aiq-meta">304호 오병석 · 간호기록</div>
             </div>
-            <button class="rec-aiq-gen-btn" onclick="recAiqGen(this)">생성</button>
+            <button type="button" class="rec-aiq-gen-btn" onclick="recAiqGen(this)">생성</button>
           </div>
         </div>
 
-        <button class="rec-aiq-bulk" onclick="recAiqBulk(this)">
+        <button type="button" class="rec-aiq-bulk" onclick="recAiqBulk(this)">
           <iconify-icon icon="material-symbols:auto-awesome-rounded"></iconify-icon>
           5건 일괄 자동생성
         </button>
@@ -6252,7 +6252,7 @@
         <div class="pt-tab" onclick="ptTab(this)">바이탈 <span class="pt-tab-count">1</span></div>
         <div class="pt-tab" onclick="ptTab(this)">사고보고 <span class="pt-tab-count">1</span></div>
       </div>
-      <button class="pt-sort-btn">
+      <button type="button" class="pt-sort-btn">
         <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         정렬: 최신순
       </button>
@@ -6288,7 +6288,7 @@
         <div class="pt-vital">10:30</div>
         <div class="med-actions">
           <span class="pt-badge sf v10-mr-1"><span class="pt-badge-dot"></span>완료</span>
-          <button class="pt-act">보기</button>
+          <button type="button" class="pt-act">보기</button>
         </div>
       </div>
 
@@ -6311,7 +6311,7 @@
         <div class="pt-vital v10-text-danger-bold">미작성</div>
         <div class="med-actions">
           <span class="pt-badge dg v10-mr-1"><span class="pt-badge-dot"></span>미작성</span>
-          <button class="pt-act em">작성</button>
+          <button type="button" class="pt-act em">작성</button>
         </div>
       </div>
 
@@ -6334,7 +6334,7 @@
         <div class="pt-vital v10-text-danger-bold">미작성</div>
         <div class="med-actions">
           <span class="pt-badge dg v10-mr-1"><span class="pt-badge-dot"></span>미작성</span>
-          <button class="pt-act em">작성</button>
+          <button type="button" class="pt-act em">작성</button>
         </div>
       </div>
 
@@ -6356,7 +6356,7 @@
         <div class="pt-vital">08:45</div>
         <div class="med-actions">
           <span class="pt-badge sf v10-mr-1"><span class="pt-badge-dot"></span>완료</span>
-          <button class="pt-act">보기</button>
+          <button type="button" class="pt-act">보기</button>
         </div>
       </div>
 
@@ -6379,7 +6379,7 @@
         <div class="pt-vital v10-text-danger-bold">미작성</div>
         <div class="med-actions">
           <span class="pt-badge dg v10-mr-1"><span class="pt-badge-dot"></span>미작성</span>
-          <button class="pt-act em">작성</button>
+          <button type="button" class="pt-act em">작성</button>
         </div>
       </div>
 
@@ -6402,7 +6402,7 @@
         <div class="pt-vital">14:35</div>
         <div class="med-actions">
           <span class="pt-badge sf v10-mr-1"><span class="pt-badge-dot"></span>완료</span>
-          <button class="pt-act">보기</button>
+          <button type="button" class="pt-act">보기</button>
         </div>
       </div>
 
@@ -6428,7 +6428,7 @@
           <span class="my-chip">경력 4년 2개월</span>
         </div>
       </div>
-      <button class="my-edit-btn">프로필 편집</button>
+      <button type="button" class="my-edit-btn">프로필 편집</button>
     </div>
 
     <!-- 이번 달 통계 (KPI 재사용) -->
@@ -6587,7 +6587,7 @@
         <span class="ai-feed-label">요약 피드</span>
       </div>
       <span class="ai-feed-count">오늘 3건</span>
-      <button class="focus-btn" onclick="this.classList.toggle('on'); this.textContent = this.classList.contains('on') ? '집중 모드 ON' : '집중 모드'">집중 모드</button>
+      <button type="button" class="focus-btn" onclick="this.classList.toggle('on'); this.textContent = this.classList.contains('on') ? '집중 모드 ON' : '집중 모드'">집중 모드</button>
     </div>
     <div class="af-item urgent">
       <div class="af-head">
@@ -6753,24 +6753,24 @@
           <div class="cp-ai-item-head"><span class="ai-badge urgent">긴급</span><span class="cp-ai-item-pt">박영수님 (301호)</span></div>
           <div class="cp-ai-item-body">혈압 180/110 측정. 2시간 내 재측정 후 이송 검토 권장. 지난주 동일 패턴 후 응급실 방문 이력 확인됨.</div>
           <div class="cp-ai-item-actions">
-            <button class="cp-ai-act em" onclick="cpAiAct(this,'check')">확인</button>
-            <button class="cp-ai-act" onclick="cpAiAct(this,'memo')">메모 추가</button>
+            <button type="button" class="cp-ai-act em" onclick="cpAiAct(this,'check')">확인</button>
+            <button type="button" class="cp-ai-act" onclick="cpAiAct(this,'memo')">메모 추가</button>
           </div>
         </div>
         <div class="cp-ai-item warn">
           <div class="cp-ai-item-head"><span class="ai-badge caution">주의</span><span class="cp-ai-item-pt">김순자님 (302호)</span></div>
           <div class="cp-ai-item-body">식사량 3일 연속 30% 미만. 영양사 상담 및 보호자 알림 필요. 체중 감소 추이 지속 시 의사 보고 권장.</div>
           <div class="cp-ai-item-actions">
-            <button class="cp-ai-act em" onclick="cpAiAct(this,'check')">확인</button>
-            <button class="cp-ai-act" onclick="cpAiAct(this,'notify')">보호자 알림</button>
+            <button type="button" class="cp-ai-act em" onclick="cpAiAct(this,'check')">확인</button>
+            <button type="button" class="cp-ai-act" onclick="cpAiAct(this,'notify')">보호자 알림</button>
           </div>
         </div>
         <div class="cp-ai-item">
           <div class="cp-ai-item-head"><span class="ai-badge info">정보</span><span class="cp-ai-item-pt">기록 관리</span></div>
           <div class="cp-ai-item-body">급여제공기록지 미작성 3건. 실사일 기준 D-7. AI 자동생성으로 초안 작성 가능.</div>
           <div class="cp-ai-item-actions">
-            <button class="cp-ai-act em" onclick="cpAiAutoGen(this)">자동생성</button>
-            <button class="cp-ai-act" onclick="cpAiAct(this,'later')">나중에</button>
+            <button type="button" class="cp-ai-act em" onclick="cpAiAutoGen(this)">자동생성</button>
+            <button type="button" class="cp-ai-act" onclick="cpAiAct(this,'later')">나중에</button>
           </div>
         </div>
       </div>
@@ -6778,7 +6778,7 @@
         <div class="cp-ai-ask-label">AI에게 질문</div>
         <div class="cp-ai-ask-row">
           <input class="cp-ai-ask-input" type="text"  placeholder="예: 박영수님 최근 바이탈 추이는?" aria-label="예: 박영수님 최근 바이탈 추이는?" onkeydown="if(event.key==='Enter')cpAiAsk(this)">
-          <button class="send-btn" onclick="cpAiAsk(this.previousElementSibling)">
+          <button type="button" class="send-btn" onclick="cpAiAsk(this.previousElementSibling)">
             <iconify-icon icon="material-symbols:send-rounded"></iconify-icon>
           </button>
         </div>
@@ -6791,7 +6791,7 @@
   <div class="cp-input-wrap" id="cp-main-input-wrap">
     <div class="cp-input-row">
       <input class="cp-input" type="text"  placeholder="대화를 선택하면 답장할 수 있습니다" aria-label="대화를 선택하면 답장할 수 있습니다" readonly class="v10-cursor-default-ink5">
-      <button class="send-btn v10-dim-40">
+      <button type="button" class="send-btn v10-dim-40">
         <iconify-icon icon="material-symbols:send-rounded"></iconify-icon>
       </button>
     </div>
@@ -6800,7 +6800,7 @@
   <!-- ── 대화 상세 뷰 (오버레이) ── -->
   <div class="cp-convo" id="cp-convo">
     <div class="cp-convo-header">
-      <button class="cp-back-btn" onclick="closeConvo()">
+      <button type="button" class="cp-back-btn" onclick="closeConvo()">
         <iconify-icon icon="mingcute:close-fill"></iconify-icon>
       </button>
       <div class="cp-convo-av" id="convo-av"></div>
@@ -6814,7 +6814,7 @@
     <div class="cp-convo-input-wrap">
       <div class="cp-convo-input-row">
         <input class="cp-convo-input" id="cp-convo-input" type="text" placeholder="메시지 입력" aria-label="대화 메시지 입력">
-        <button class="send-btn" onclick="sendConvoMsg()">
+        <button type="button" class="send-btn" onclick="sendConvoMsg()">
           <iconify-icon icon="material-symbols:send-rounded"></iconify-icon>
         </button>
       </div>
@@ -7236,9 +7236,9 @@
     // Build nurse filter buttons
     const nfBar = document.getElementById('sch-nf-bar');
     if (nfBar) {
-      let btns = `<button class="sch-nf-btn active" onclick="nurseFilter(this,'전체')">전체</button>`;
+      let btns = `<button type="button" class="sch-nf-btn active" onclick="nurseFilter(this,'전체')">전체</button>`;
       for (const n of nurses) {
-        btns += `<button class="sch-nf-btn${n.me ? ' me' : ''}" onclick="nurseFilter(this,'${n.name}')">${n.name}</button>`;
+        btns += `<button type="button" class="sch-nf-btn${n.me ? ' me' : ''}" onclick="nurseFilter(this,'${n.name}')">${n.name}</button>`;
       }
       nfBar.innerHTML = btns;
     }
