@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="ko" data-role="onboarding" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F4F4F6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>하루안부 · 약관 동의</title>
+
+  <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+  <link rel="apple-touch-icon" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <script src="../07_디자인/_app-theme.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+
+  <style>
+    body {
+      background: var(--color-bg-canvas);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ------ 상단 (back + step) -------------------------------------- */
+    .ob-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 56px;
+      padding: calc(env(safe-area-inset-top, 0px) + 6px) var(--space-page-margin) 0;
+    }
+    .ob-back {
+      width: var(--size-touch-target); height: var(--size-touch-target);
+      margin-left: calc(var(--space-3) * -1);
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; border: 0; border-radius: var(--radius-full);
+      color: var(--color-text-primary); cursor: pointer;
+    }
+    .ob-back:active { transform: scale(0.94); }
+    .ob-back:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+    .ob-step {
+      font: var(--weight-semibold) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      padding-right: var(--space-2);
+    }
+    .ob-step b { color: var(--color-accent); }
+
+    /* ------ 본문 ---------------------------------------------------- */
+    .ob-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-5) var(--space-page-margin) var(--space-4);
+    }
+    .head { margin-bottom: var(--space-6); }
+    .head h1 {
+      font: var(--weight-bold) var(--font-24) / 1.35 var(--font-family-base);
+      color: var(--color-text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-3);
+    }
+    .head p {
+      font: var(--weight-medium) var(--text-body) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+
+    /* ------ 전체 동의 ---------------------------------------------- */
+    .agree-all {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      width: 100%;
+      text-align: left;
+      background: var(--color-bg-surface);
+      border: 0;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-2);
+      padding: var(--space-5);
+      margin-bottom: var(--space-5);
+      cursor: pointer;
+    }
+    .agree-all .agree-all-label {
+      flex: 1;
+      font: var(--weight-bold) var(--text-body-lg) / 1.3 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .agree-all .agree-all-sub {
+      display: block;
+      font: var(--weight-regular) var(--text-caption) / 1.4 var(--font-family-base);
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ------ 체크 아이콘 (공용) ------------------------------------- */
+    .ck {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      border-radius: var(--radius-full);
+      background: var(--color-bg-surface-muted);
+      color: var(--color-text-tertiary);
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: background var(--motion-micro) var(--easing-standard),
+                  color var(--motion-micro) var(--easing-standard);
+    }
+    /* 미체크 상태에서는 체크 글리프를 숨겨 빈 원만 남긴다 — 색만으로 on/off를 구분하면
+       색약 사용자가 법적 동의 상태를 오판할 수 있다(스트로크 추가 없이 채움·글리프 유무로 구분). */
+    .ck > iconify-icon {
+      opacity: 0;
+      transition: opacity var(--motion-micro) var(--easing-standard);
+    }
+    [aria-checked="true"] > .ck {
+      background: var(--color-accent);
+      color: var(--color-accent-on);
+    }
+    [aria-checked="true"] > .ck > iconify-icon { opacity: 1; }
+
+    /* ------ 개별 동의 리스트 --------------------------------------- */
+    .agree-list {
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-1);
+      overflow: hidden;
+    }
+    .agree-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-4) var(--space-5);
+    }
+    .agree-item + .agree-item { border-top: 1px solid var(--color-border-subtle); }
+    .agree-check {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+    }
+    .agree-check .ck { margin-top: 1px; }
+    .agree-text { flex: 1; min-width: 0; }
+    .agree-title-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+    .agree-title {
+      font: var(--weight-semibold) var(--text-body) / 1.3 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .req {
+      font: var(--weight-semibold) var(--text-mini) / 1 var(--font-family-base);
+      color: var(--color-accent);
+    }
+    .opt {
+      font: var(--weight-medium) var(--text-mini) / 1 var(--font-family-base);
+      color: var(--color-text-tertiary);
+    }
+    /* 민감정보는 일반 개인정보와 '별도로' 동의받아야 한다(개인정보보호법 제23조) — 별도성 시각 강조 */
+    .sep {
+      font: var(--weight-semibold) var(--text-mini) / 1 var(--font-family-base);
+      color: var(--color-accent-on);
+      background: var(--color-accent);
+      border-radius: var(--radius-full);
+      padding: 3px var(--space-2);
+    }
+    .agree-desc {
+      font: var(--weight-regular) var(--text-caption) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+      margin-top: var(--space-2);
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    .agree-detail {
+      font: var(--weight-regular) var(--text-mini) / 1.6 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      margin-top: var(--space-2);
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    .agree-detail b { color: var(--color-text-secondary); font-weight: var(--weight-semibold); }
+    .agree-detail .nowrap { white-space: nowrap; }
+    /* 근거 법령 각주 — 이 서비스가 어떤 조문 위에 설계됐는지 명시(디자인·신뢰 목적) */
+    .agree-law {
+      display: inline-block;
+      margin-top: var(--space-2);
+      font: var(--weight-medium) var(--text-mini) / 1.3 var(--font-family-base);
+      color: var(--color-text-tertiary);
+    }
+
+    /* ------ 권리 안내 + 시안 고지 ---------------------------------- */
+    .rights-note {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-bg-surface-muted);
+      border-radius: var(--radius-card);
+      font: var(--weight-regular) var(--text-caption) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+    .rights-note iconify-icon { flex-shrink: 0; color: var(--color-text-tertiary); margin-top: 1px; }
+    .rights-note b { color: var(--color-text-primary); font-weight: var(--weight-semibold); }
+    .proto-note {
+      margin-top: var(--space-4);
+      font: var(--weight-regular) var(--text-mini) / 1.5 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      text-align: center;
+    }
+
+    /* ------ 하단 CTA ----------------------------------------------- */
+    .cta-area {
+      padding: var(--space-4) var(--space-page-margin) calc(var(--space-8) + env(safe-area-inset-bottom));
+      background: var(--color-bg-canvas);
+    }
+    .btn {
+      width: 100%;
+      height: var(--size-button-large);
+      border-radius: var(--radius-button);
+      font: var(--weight-bold) var(--text-body-lg) / 1 var(--font-family-base);
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--space-3);
+      border: 0; cursor: pointer;
+      transition: transform var(--motion-micro) var(--easing-standard);
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--color-accent); color: var(--color-accent-on); box-shadow: var(--shadow-2); }
+    .btn-primary[disabled] {
+      background: var(--color-bg-surface-muted);
+      color: var(--color-text-tertiary);
+      box-shadow: none;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="ob-top">
+    <button class="ob-back" type="button" aria-label="뒤로" onclick="obBack()">
+      <iconify-icon icon="material-symbols:chevron-left-rounded" width="28"></iconify-icon>
+    </button>
+    <span class="ob-step"><b>4</b> / 6</span>
+  </header>
+
+  <main class="ob-body">
+    <div class="head">
+      <h1>하루안부 이용을 위해<br>약관에 동의해 주세요</h1>
+      <p>필수 항목에 동의해야 케어 소식을 주고받을 수 있어요. 건강정보는 별도로 동의를 받습니다.</p>
+    </div>
+
+    <!-- 전체 동의 -->
+    <button class="agree-all" type="button" id="agreeAll" role="checkbox" aria-checked="false" onclick="toggleAll()">
+      <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="18"></iconify-icon></span>
+      <span class="agree-all-label">전체 동의
+        <span class="agree-all-sub">필수·선택 항목에 모두 동의해요</span>
+      </span>
+    </button>
+
+    <!-- 개별 동의 -->
+    <div class="agree-list">
+
+      <!-- 1. 이용약관 -->
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="1" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">이용약관</span>
+              <span class="req">필수</span>
+            </span>
+            <span class="agree-desc">하루안부 서비스 이용에 관한 기본 약관이에요.</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- 2. 개인정보 수집·이용 -->
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="1" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">개인정보 수집·이용</span>
+              <span class="req">필수</span>
+            </span>
+            <span class="agree-desc">이름·연락처·역할 등 회원 가입과 케어 연결에 필요한 최소한의 정보를 수집해요.</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- 3. 민감정보(건강정보) — 별도 동의 (개인정보보호법 제23조) -->
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="1" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">민감정보(건강정보) 수집·이용</span>
+              <span class="req">필수</span>
+              <span class="sep">별도 동의</span>
+            </span>
+            <span class="agree-desc">투약·식사·활력징후 등 건강정보를 케어 기록과 공유를 위해 수집해요.</span>
+            <span class="agree-detail">
+              <b>수집 항목</b> 투약·식사·수면·활력징후, 케어 기록<br>
+              <b>이용 목적</b> 어르신 상태 공유 및 돌봄 연계<br>
+              <b>동의 방식</b> 일반 개인정보와 <span class="nowrap">분리해 별도로 받아요.</span>
+            </span>
+            <span class="agree-law">근거: 개인정보보호법 제23조(민감정보)</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- 4. 제3자 제공 (개인정보보호법 제17조) -->
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="1" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">제3자 제공</span>
+              <span class="req">필수</span>
+            </span>
+            <span class="agree-desc">돌봄을 함께하는 가족·의료진·요양보호사에게 케어 정보를 제공해요.</span>
+            <span class="agree-detail">
+              <b>제공받는 자</b> 가족(보호자), 의료진(간호사·의사), 요양보호사<br>
+              <b>제공 항목</b> 케어 기록, 투약·식사·활력징후, 메시지<br>
+              <b>보유·이용 기간</b> 회원 탈퇴 시 즉시 파기<span class="nowrap">(법령상 보존 항목 제외)</span><br>
+              <b>거부 권리</b> 동의를 거부할 수 있으나, 케어 소통 기능은 제한될 수 있어요.
+            </span>
+            <span class="agree-law">근거: 개인정보보호법 제17조(제3자 제공)</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- 5. 의료정보 열람 (의료법 제21조) — §4.7 법 대조 반영 -->
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="1" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">의료정보 열람 동의</span>
+              <span class="req">필수</span>
+            </span>
+            <span class="agree-desc">간호사·의사가 기록한 건강정보를 본인과 지정한 가족·케어팀이 열람하는 데 동의해요.</span>
+            <span class="agree-detail">
+              <b>본인</b> 본인 정보는 언제든 직접 열람할 수 있어요.<br>
+              <b>가족·케어팀</b> 어르신 본인의 동의를 받아 열람해요.<br>
+              <b>대리 동의</b> 판단이 어려운 경우 <span class="nowrap">후견인·대리권 증빙으로 갈음해요.</span>
+            </span>
+            <span class="agree-law">근거: 의료법 제21조(기록 열람)</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- 6. 마케팅 (선택) -->
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="0" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">마케팅 정보 수신</span>
+              <span class="opt">선택</span>
+            </span>
+            <span class="agree-desc">서비스 소식·이벤트 안내를 알림으로 받아요. 동의하지 않아도 이용할 수 있어요.</span>
+          </span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- 정보주체 권리 안내 -->
+    <div class="rights-note">
+      <iconify-icon icon="mingcute:shield-fill" width="18" aria-hidden="true"></iconify-icon>
+      <span><b>내 정보 권리</b> 동의한 정보는 마이페이지에서 언제든 열람·정정·삭제하거나 동의를 철회할 수 있어요. 역할별로 볼 수 있는 정보는 최소한으로 분리돼요.</span>
+    </div>
+
+    <p class="proto-note">본 동의 화면은 프로토타입 시안이며, 실제 약관·처리방침은 법률 검토 후 확정됩니다.</p>
+  </main>
+
+  <div class="cta-area">
+    <button class="btn btn-primary" type="button" id="continueBtn" disabled onclick="goNext()">동의하고 계속</button>
+  </div>
+
+  <script>
+    (function () {
+      var role = new URLSearchParams(location.search).get('role') || '';
+      window.obQS = role ? ('?role=' + encodeURIComponent(role)) : '';
+    })();
+    function obBack() {
+      if (document.referrer) { history.back(); }
+      else { location.href = 'ob01-welcome.html' + window.obQS; }
+    }
+
+    var items = Array.prototype.slice.call(document.querySelectorAll('.js-item'));
+    var agreeAll = document.getElementById('agreeAll');
+    var continueBtn = document.getElementById('continueBtn');
+
+    function setChecked(el, on) { el.setAttribute('aria-checked', on ? 'true' : 'false'); }
+    function isChecked(el) { return el.getAttribute('aria-checked') === 'true'; }
+
+    function refresh() {
+      var allOn = items.every(isChecked);
+      setChecked(agreeAll, allOn);
+      var requiredOn = items.filter(function (i) { return i.getAttribute('data-req') === '1'; }).every(isChecked);
+      continueBtn.disabled = !requiredOn;
+    }
+    function toggleItem(el) { setChecked(el, !isChecked(el)); refresh(); }
+    function toggleAll() {
+      var next = !isChecked(agreeAll);
+      items.forEach(function (i) { setChecked(i, next); });
+      refresh();
+    }
+    function goNext() {
+      if (continueBtn.disabled) return;
+      /* POC: 다음 단계(권한/프로필)는 미구현 → 데모상 홈으로 복귀 */
+      location.href = 'ob01-welcome.html' + window.obQS;
+    }
+    refresh();
+  </script>
+
+</body>
+</html>

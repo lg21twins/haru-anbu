@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en" data-role="onboarding" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F4F4F6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Haru Anbu · Consent</title>
+
+  <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+  <link rel="apple-touch-icon" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <script src="../07_디자인/_app-theme.js"></script>
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+
+  <style>
+    body {
+      background: var(--color-bg-canvas);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ob-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 56px;
+      padding: calc(env(safe-area-inset-top, 0px) + 6px) var(--space-page-margin) 0;
+    }
+    .ob-back {
+      width: var(--size-touch-target); height: var(--size-touch-target);
+      margin-left: calc(var(--space-3) * -1);
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; border: 0; border-radius: var(--radius-full);
+      color: var(--color-text-primary); cursor: pointer;
+    }
+    .ob-back:active { transform: scale(0.94); }
+    .ob-back:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+    .ob-step {
+      font: var(--weight-semibold) var(--text-caption) / 1 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      padding-right: var(--space-2);
+    }
+    .ob-step b { color: var(--color-accent); }
+
+    .ob-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-5) var(--space-page-margin) var(--space-4);
+    }
+    .head { margin-bottom: var(--space-6); }
+    .head h1 {
+      font: var(--weight-bold) var(--font-24) / 1.35 var(--font-family-base);
+      color: var(--color-text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-3);
+    }
+    .head p {
+      font: var(--weight-medium) var(--text-body) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+
+    .agree-all {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      width: 100%;
+      text-align: left;
+      background: var(--color-bg-surface);
+      border: 0;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-2);
+      padding: var(--space-5);
+      margin-bottom: var(--space-5);
+      cursor: pointer;
+    }
+    .agree-all .agree-all-label {
+      flex: 1;
+      font: var(--weight-bold) var(--text-body-lg) / 1.3 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .agree-all .agree-all-sub {
+      display: block;
+      font: var(--weight-regular) var(--text-caption) / 1.4 var(--font-family-base);
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+    }
+
+    .ck {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      border-radius: var(--radius-full);
+      background: var(--color-bg-surface-muted);
+      color: var(--color-text-tertiary);
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: background var(--motion-micro) var(--easing-standard),
+                  color var(--motion-micro) var(--easing-standard);
+    }
+    /* Empty ring when unchecked — distinguishing on/off by colour alone can mislead
+       colour-blind users about a legal consent state (fill + glyph presence, no extra stroke). */
+    .ck > iconify-icon {
+      opacity: 0;
+      transition: opacity var(--motion-micro) var(--easing-standard);
+    }
+    [aria-checked="true"] > .ck {
+      background: var(--color-accent);
+      color: var(--color-accent-on);
+    }
+    [aria-checked="true"] > .ck > iconify-icon { opacity: 1; }
+
+    .agree-list {
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-1);
+      overflow: hidden;
+    }
+    .agree-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-4) var(--space-5);
+    }
+    .agree-item + .agree-item { border-top: 1px solid var(--color-border-subtle); }
+    .agree-check {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+    }
+    .agree-check .ck { margin-top: 1px; }
+    .agree-text { flex: 1; min-width: 0; }
+    .agree-title-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+    .agree-title {
+      font: var(--weight-semibold) var(--text-body) / 1.3 var(--font-family-base);
+      color: var(--color-text-primary);
+    }
+    .req {
+      font: var(--weight-semibold) var(--text-mini) / 1 var(--font-family-base);
+      color: var(--color-accent);
+    }
+    .opt {
+      font: var(--weight-medium) var(--text-mini) / 1 var(--font-family-base);
+      color: var(--color-text-tertiary);
+    }
+    /* Health data must be consented to separately from ordinary personal data
+       (PIPA Art. 23) — visually flag that separateness. */
+    .sep {
+      font: var(--weight-semibold) var(--text-mini) / 1 var(--font-family-base);
+      color: var(--color-accent-on);
+      background: var(--color-accent);
+      border-radius: var(--radius-full);
+      padding: 3px var(--space-2);
+    }
+    .agree-desc {
+      font: var(--weight-regular) var(--text-caption) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+      margin-top: var(--space-2);
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    .agree-detail {
+      font: var(--weight-regular) var(--text-mini) / 1.6 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      margin-top: var(--space-2);
+      overflow-wrap: break-word;
+    }
+    .agree-detail b { color: var(--color-text-secondary); font-weight: var(--weight-semibold); }
+    .agree-detail .nowrap { white-space: nowrap; }
+    .agree-law {
+      display: inline-block;
+      margin-top: var(--space-2);
+      font: var(--weight-medium) var(--text-mini) / 1.3 var(--font-family-base);
+      color: var(--color-text-tertiary);
+    }
+
+    .rights-note {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-bg-surface-muted);
+      border-radius: var(--radius-card);
+      font: var(--weight-regular) var(--text-caption) / 1.5 var(--font-family-base);
+      color: var(--color-text-secondary);
+    }
+    .rights-note iconify-icon { flex-shrink: 0; color: var(--color-text-tertiary); margin-top: 1px; }
+    .rights-note b { color: var(--color-text-primary); font-weight: var(--weight-semibold); }
+    .proto-note {
+      margin-top: var(--space-4);
+      font: var(--weight-regular) var(--text-mini) / 1.5 var(--font-family-base);
+      color: var(--color-text-tertiary);
+      text-align: center;
+    }
+
+    .cta-area {
+      padding: var(--space-4) var(--space-page-margin) calc(var(--space-8) + env(safe-area-inset-bottom));
+      background: var(--color-bg-canvas);
+    }
+    .btn {
+      width: 100%;
+      height: var(--size-button-large);
+      border-radius: var(--radius-button);
+      font: var(--weight-bold) var(--text-body-lg) / 1 var(--font-family-base);
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--space-3);
+      border: 0; cursor: pointer;
+      transition: transform var(--motion-micro) var(--easing-standard);
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--color-accent); color: var(--color-accent-on); box-shadow: var(--shadow-2); }
+    .btn-primary[disabled] {
+      background: var(--color-bg-surface-muted);
+      color: var(--color-text-tertiary);
+      box-shadow: none;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="ob-top">
+    <button class="ob-back" type="button" aria-label="Back" onclick="obBack()">
+      <iconify-icon icon="material-symbols:chevron-left-rounded" width="28"></iconify-icon>
+    </button>
+    <span class="ob-step"><b>4</b> / 6</span>
+  </header>
+
+  <main class="ob-body">
+    <div class="head">
+      <h1>Please agree to the terms<br>to start using Haru Anbu</h1>
+      <p>Required items are needed to share care updates. Health data is consented to separately.</p>
+    </div>
+
+    <button class="agree-all" type="button" id="agreeAll" role="checkbox" aria-checked="false" onclick="toggleAll()">
+      <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="18"></iconify-icon></span>
+      <span class="agree-all-label">Agree to all
+        <span class="agree-all-sub">Agree to every required and optional item</span>
+      </span>
+    </button>
+
+    <div class="agree-list">
+
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="1" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">Terms of Service</span>
+              <span class="req">Required</span>
+            </span>
+            <span class="agree-desc">The basic terms for using the Haru Anbu service.</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="1" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">Personal data collection</span>
+              <span class="req">Required</span>
+            </span>
+            <span class="agree-desc">Minimal data such as name, contact, and role, needed to join and connect care.</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="1" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">Sensitive (health) data</span>
+              <span class="req">Required</span>
+              <span class="sep">Separate</span>
+            </span>
+            <span class="agree-desc">Medication, meals, and vital signs, collected for care records and sharing.</span>
+            <span class="agree-detail">
+              <b>Items</b> Medication, meals, sleep, vital signs, care notes<br>
+              <b>Purpose</b> Sharing the resident's status and coordinating care<br>
+              <b>Consent</b> Collected separately from ordinary personal data
+            </span>
+            <span class="agree-law">Basis: PIPA Art. 23 (sensitive data)</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="1" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">Provision to third parties</span>
+              <span class="req">Required</span>
+            </span>
+            <span class="agree-desc">Care information is provided to the family, medical staff, and care worker.</span>
+            <span class="agree-detail">
+              <b>Recipients</b> Family, medical staff (nurses·doctors), care worker<br>
+              <b>Items</b> Care notes, medication, meals, vital signs, messages<br>
+              <b>Retention</b> Deleted on withdrawal, except records kept by law<br>
+              <b>Right to refuse</b> You may refuse, but care messaging may be limited
+            </span>
+            <span class="agree-law">Basis: PIPA Art. 17 (third-party provision)</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="1" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">Medical record access</span>
+              <span class="req">Required</span>
+            </span>
+            <span class="agree-desc">Health records entered by nurses and doctors may be viewed by you and your chosen care team.</span>
+            <span class="agree-detail">
+              <b>You</b> You can always view your own records directly<br>
+              <b>Family·team</b> They view with the resident's consent<br>
+              <b>Proxy consent</b> Where judgment is impaired, a guardian or proxy stands in
+            </span>
+            <span class="agree-law">Basis: Medical Service Act Art. 21 (record access)</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="agree-item">
+        <button class="agree-check js-item" type="button" role="checkbox" aria-checked="false" data-req="0" onclick="toggleItem(this)">
+          <span class="ck" aria-hidden="true"><iconify-icon icon="mingcute:check-fill" width="16"></iconify-icon></span>
+          <span class="agree-text">
+            <span class="agree-title-row">
+              <span class="agree-title">Marketing messages</span>
+              <span class="opt">Optional</span>
+            </span>
+            <span class="agree-desc">Receive news and event alerts. You can still use the service without agreeing.</span>
+          </span>
+        </button>
+      </div>
+
+    </div>
+
+    <div class="rights-note">
+      <iconify-icon icon="mingcute:shield-fill" width="18" aria-hidden="true"></iconify-icon>
+      <span><b>Your data rights</b> You can view, correct, delete, or withdraw consent anytime in My Page. What each role can see is kept to the minimum.</span>
+    </div>
+
+    <p class="proto-note">This consent screen is a prototype draft. Final terms and privacy policy are confirmed after legal review.</p>
+  </main>
+
+  <div class="cta-area">
+    <button class="btn btn-primary" type="button" id="continueBtn" disabled onclick="goNext()">Agree and continue</button>
+  </div>
+
+  <script>
+    (function () {
+      var role = new URLSearchParams(location.search).get('role') || '';
+      window.obQS = role ? ('?role=' + encodeURIComponent(role)) : '';
+    })();
+    function obBack() {
+      if (document.referrer) { history.back(); }
+      else { location.href = 'ob01-welcome.html' + window.obQS; }
+    }
+
+    var items = Array.prototype.slice.call(document.querySelectorAll('.js-item'));
+    var agreeAll = document.getElementById('agreeAll');
+    var continueBtn = document.getElementById('continueBtn');
+
+    function setChecked(el, on) { el.setAttribute('aria-checked', on ? 'true' : 'false'); }
+    function isChecked(el) { return el.getAttribute('aria-checked') === 'true'; }
+
+    function refresh() {
+      var allOn = items.every(isChecked);
+      setChecked(agreeAll, allOn);
+      var requiredOn = items.filter(function (i) { return i.getAttribute('data-req') === '1'; }).every(isChecked);
+      continueBtn.disabled = !requiredOn;
+    }
+    function toggleItem(el) { setChecked(el, !isChecked(el)); refresh(); }
+    function toggleAll() {
+      var next = !isChecked(agreeAll);
+      items.forEach(function (i) { setChecked(i, next); });
+      refresh();
+    }
+    function goNext() {
+      if (continueBtn.disabled) return;
+      /* POC: later steps (permissions/profile) are not built — return home for the demo */
+      location.href = 'ob01-welcome.html' + window.obQS;
+    }
+    refresh();
+  </script>
+
+</body>
+</html>
