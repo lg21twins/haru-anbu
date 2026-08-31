@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="ko" data-role="patient" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="var(--patient-canvas-warm)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>하루안부 · 오늘</title>
+
+  <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="patient.css">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+
+  <link rel="stylesheet" href="styles/p01-today.css">
+  <style>
+
+    /* 리디자인 공통 스파크라인 */
+    .rd-spark{ display:block; flex:0 0 auto; }
+    .rd-spark polyline{ fill:none; stroke:var(--color-accent); stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+    .rd-spark circle{ fill:var(--color-accent); }
+    .cond{ background:var(--color-bg-surface); border-radius:22px; padding:18px 20px; box-shadow:0 1px 3px rgba(16,24,40,.07); display:flex; align-items:center; gap:16px; }
+    .cond-ic{ width:56px; height:56px; border-radius:50%; background:var(--color-accent-soft); color:var(--color-accent); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+    .cond-ic iconify-icon{ font-size:30px; }
+    .cond-body{ flex:1; min-width:0; }
+    .cond-t{ font-size:20px; font-weight:800; letter-spacing:-.4px; }
+    .cond-s{ font-size:15px; color:var(--color-text-secondary); margin-top:3px; font-weight:500; }
+  </style>
+</head>
+<body>
+
+  <h1 class="u-visually-hidden">오늘</h1>
+  <div class="app">
+
+    <header class="p-header p-header--nav">
+      <div class="clock">
+        <span class="clock-time">오후 2:30</span>
+        <span class="clock-date">4월 18일 토요일</span>
+      </div>
+      <nav class="top-nav" aria-label="주요 메뉴">
+        <a class="nav-tab nav-tab--active" href="p01-today.html" aria-current="page">
+          <iconify-icon icon="mingcute:home-1-fill" width="22" aria-hidden="true"></iconify-icon>
+          홈
+        </a>
+        <a class="nav-tab" href="p02-med-alert.html">
+          <iconify-icon icon="mingcute:clipboard-fill" width="22" aria-hidden="true"></iconify-icon>
+          할일
+        </a>
+        <a class="nav-tab" href="p03-call.html">
+          <iconify-icon icon="material-symbols:family-restroom-rounded" width="22" aria-hidden="true"></iconify-icon>
+          가족
+        </a>
+        <a class="nav-tab" href="p08-help.html">
+          <iconify-icon icon="ph:hand-waving-fill" width="22" aria-hidden="true"></iconify-icon>
+          도움
+        </a>
+      </nav>
+      <a href="p11-settings.html" class="p-settings-quick" aria-label="내 화면 설정 (글자 크기·고대비)">
+        <iconify-icon icon="mingcute:settings-3-fill" width="20" aria-hidden="true"></iconify-icon>
+      </a>
+    </header>
+
+    <div class="main">
+
+      <!-- ── 왼쪽: AI 말벗 (상황 카드 + 답장 + 음성) ── -->
+      <div class="left">
+        <div class="ai-panel glass">
+
+          <!-- AI 미니 헤더: 하루안부 심볼 + 한마디 -->
+          <div class="ai-mini-header">
+            <div class="ai-mini-av" aria-label="하루안부">
+              <img src="../07_디자인/logo/brand-system/01_심볼단독.svg" alt="하루안부 로고">
+            </div>
+            <div>
+              <div class="ai-mini-greet">민지가 사진 보냈어요</div>
+              <div class="ai-mini-detail">방금 · 사진 2장이랑 문자 한 통</div>
+            </div>
+          </div>
+
+          <!-- 카드 슬롯: 지금 상황에 맞는 카드 하나 -->
+          <div class="card-slot">
+            <article class="msg-card msg-card--clickable" aria-label="딸 민지의 메시지" onclick="location.href='p07-message.html'">
+              <header class="msg-card-head">
+                <div class="msg-av">
+                  <img src="../07_디자인/img/people/av-daughter.webp" alt="딸 민지">
+                  <span class="msg-av-dot" aria-hidden="true"></span>
+                </div>
+                <div>
+                  <div class="msg-from">딸 민지</div>
+                  <div class="msg-time">방금 · 사진 2장 · 문자 1통</div>
+                </div>
+              </header>
+
+              <div class="msg-photos">
+                <a href="p06-photo.html" onclick="event.stopPropagation();" aria-label="사진 크게 보기">
+                  <img class="photo-thumb" src="../07_디자인/img/people/photo-park.webp" alt="민지가 보낸 공원 사진">
+                  <span class="photo-hint" aria-hidden="true">
+                    <iconify-icon icon="ph:magnifying-glass-bold"></iconify-icon>
+                    눌러서 크게
+                  </span>
+                </a>
+                <a href="p06-photo.html" onclick="event.stopPropagation();" aria-label="사진 크게 보기">
+                  <img class="photo-thumb" src="../07_디자인/img/people/photo-family.webp" alt="민지가 보낸 손녀 사진">
+                </a>
+              </div>
+
+              <div class="msg-text">"엄마, 오늘 수지랑 공원 다녀왔어요. 날씨가 너무 좋아요!"</div>
+            </article>
+          </div>
+
+          <!-- 빠른 답장 — 답장 톤만으로 통일 (전화 칩은 오른쪽 빠른전화와 중복이라 제거) -->
+          <div class="quick-replies">
+            <button class="quick-chip" type="button" onclick="location.href='p07-message.html'">예쁘구나, 잘 다녀왔네</button>
+            <button class="quick-chip" type="button" onclick="location.href='p07-message.html'">고맙다고 전해줘</button>
+            <button class="quick-chip" type="button" onclick="location.href='p06-photo.html'">사진 더 크게</button>
+          </div>
+
+        </div>
+
+        <!-- 음성 입력 버튼 — ai-panel 바깥, help-btn과 자매 -->
+        <button class="voice-btn" type="button" aria-label="음성으로 말하기" onclick="location.href='p05-voice.html'">
+          <iconify-icon icon="ph:microphone-fill" width="36" aria-hidden="true"></iconify-icon>
+          눌러서 말하기
+        </button>
+      </div>
+
+      <!-- ── 오른쪽: 지금 할 일 → 오늘 일정 → 가족 전화 → 도움요청 ── -->
+      <div class="right">
+
+        <!-- D. 지금 할 일 카드 — 약 복용 + 먹었어요 확인 버튼 -->
+        <section class="now-action" aria-label="지금 약 드실 시간">
+          <div class="now-tag">
+            <iconify-icon icon="material-symbols:alarm-rounded" width="18" aria-hidden="true"></iconify-icon>
+            지금 할 일
+          </div>
+          <div class="now-title">약 복용</div>
+          <div class="now-sub">오후 2:30 · 혈압약 · 당뇨약 · 비타민D</div>
+          <button class="now-confirm" type="button" aria-label="약 복용 완료" onclick="openMedConfirm()">
+            <iconify-icon icon="mingcute:check-circle-fill" width="30" aria-hidden="true"></iconify-icon>
+            먹었어요
+          </button>
+        </section>
+
+        <!-- 오늘 컨디션 (신규 · 본인 건강 주체성) -->
+        <section class="cond" aria-label="오늘 내 건강 상태">
+          <div class="cond-ic"><iconify-icon icon="mingcute:heartbeat-fill" aria-hidden="true"></iconify-icon></div>
+          <div class="cond-body">
+            <div class="cond-t">오늘 컨디션 좋아요</div>
+            <div class="cond-s">혈압 · 체온 모두 안정적이에요</div>
+          </div>
+          <svg class="rd-spark" width="74" height="30" viewBox="0 0 74 30"><polyline points="3,18 17,17 31,19 45,16 59,17 71,14"/></svg>
+        </section>
+
+        <!-- 오늘 일정 (지금 전후 4개만 — 전체는 P-02) -->
+        <a href="p02-med-alert.html" class="fn-schedule" aria-label="오늘 할 일 전체 보기">
+          <div class="sch-header">
+            <div class="sch-title">오늘 일정</div>
+            <div class="sch-date">4월 18일 토</div>
+          </div>
+          <!-- 노인 인지부하 ↓ — 현재 + 다음 3건만 (전체는 p02) -->
+          <div class="sch-list">
+
+            <div class="sch-item current">
+              <div class="sch-time">오후 2:30</div>
+              <div class="sch-line"><div class="sch-dot"></div><div class="sch-connector"></div></div>
+              <div>
+                <div class="sch-label">약 복용</div>
+                <div class="sch-sub">혈압약 · 당뇨약 · 비타민D</div>
+              </div>
+            </div>
+
+            <div class="sch-item upcoming">
+              <div class="sch-time">오후 4:00</div>
+              <div class="sch-line"><div class="sch-dot"></div><div class="sch-connector"></div></div>
+              <div>
+                <div class="sch-label">산책</div>
+                <div class="sch-sub">공원 30분</div>
+              </div>
+            </div>
+
+            <div class="sch-item upcoming">
+              <div class="sch-time">오후 5:30</div>
+              <div class="sch-line"><div class="sch-dot"></div><div class="sch-connector"></div></div>
+              <div>
+                <div class="sch-label">민지와 영상통화</div>
+                <div class="sch-sub">매주 토요일</div>
+              </div>
+            </div>
+
+            <div class="sch-item upcoming">
+              <div class="sch-time">오후 6:00</div>
+              <div class="sch-line"><div class="sch-dot"></div><div class="sch-connector"></div></div>
+              <div><div class="sch-label">저녁 식사</div></div>
+            </div>
+
+          </div>
+
+          <div class="sch-footer">
+            전체 일정 보기
+            <iconify-icon icon="material-symbols:chevron-right-rounded" width="18" aria-hidden="true"></iconify-icon>
+          </div>
+        </a>
+
+        <!-- 가족 3명 빠른 전화 — 일정 다음, 도움 요청 위 -->
+        <section class="fam-quick glass" aria-label="가족에게 바로 전화">
+          <header class="fam-quick-head">
+            <div class="fam-quick-title">
+              <iconify-icon icon="material-symbols:family-restroom-rounded" width="20" aria-hidden="true"></iconify-icon>
+              가족에게 전화
+            </div>
+            <a href="p03-call.html" class="fam-quick-more" aria-label="연결하기 화면 열기">
+              모두 보기
+              <iconify-icon icon="material-symbols:chevron-right-rounded" width="16" aria-hidden="true"></iconify-icon>
+            </a>
+          </header>
+          <div class="fam-quick-list">
+            <a href="p03-call.html" class="fam-row" aria-label="딸 민지에게 바로 영상통화 — 지금 접속 중">
+              <div class="fam-av fam-av--orange">
+                <img src="../07_디자인/img/people/av-daughter.webp" alt="딸 민지">
+                <span class="fam-av-dot fam-av-dot--on" aria-hidden="true"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name-line">민지 <span class="fam-row-relation">딸</span></div>
+                <div class="fam-row-status">지금 접속 중</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="민지 영상통화">
+                  <iconify-icon icon="material-symbols:videocam-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="민지 음성통화">
+                  <iconify-icon icon="mingcute:phone-fill" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
+            <a href="p03-call.html" class="fam-row" aria-label="손녀 서연에게 바로 영상통화 — 지금 접속 중">
+              <div class="fam-av fam-av--green">
+                <img src="../07_디자인/img/people/av-granddaughter.webp" alt="손녀 서연">
+                <span class="fam-av-dot fam-av-dot--on" aria-hidden="true"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name-line">서연 <span class="fam-row-relation">손녀</span></div>
+                <div class="fam-row-status">지금 접속 중</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="서연 영상통화">
+                  <iconify-icon icon="material-symbols:videocam-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="서연 메시지">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
+            <a href="p05-voice.html" class="fam-row fam-row--offline" aria-label="아들 태우에게 음성 메시지 남기기 — 자리 비움">
+              <div class="fam-av fam-av--blue">
+                <img src="../07_디자인/img/people/av-son.webp" alt="아들 태우">
+                <span class="fam-av-dot" aria-hidden="true"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name-line">태우 <span class="fam-row-relation">아들</span></div>
+                <div class="fam-row-status">자리 비움</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="태우 음성 메시지">
+                  <iconify-icon icon="ph:microphone-fill" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="태우 문자">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!-- 도움 요청 -->
+        <button class="help-btn" type="button" aria-label="도움이 필요해요, 누르면 가족에게 알림이 갑니다" onclick="location.href='p08-help.html'">
+          <iconify-icon icon="ph:hand-waving-fill" width="36" aria-hidden="true"></iconify-icon>
+          도움이 필요해요
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 약 복용 확인 모달 (의료 안전: 실수 탭 방지 2단계 확인) -->
+  <div class="confirm-overlay" id="medConfirm" role="dialog" aria-modal="true" aria-labelledby="medConfirmTitle">
+    <div class="confirm-dialog">
+      <div class="confirm-icon" aria-hidden="true">
+        <iconify-icon icon="mingcute:capsule-fill"></iconify-icon>
+      </div>
+      <div class="confirm-title" id="medConfirmTitle">약 드셨어요?</div>
+      <div class="confirm-sub">혈압약 · 당뇨약 · 비타민D<br>방금 모두 드신 게 맞으시면 "네" 눌러주세요.</div>
+      <div class="confirm-actions">
+        <button class="cf-btn cf-btn--ghost" type="button" onclick="closeMedConfirm()">아니요</button>
+        <button class="cf-btn cf-btn--primary" type="button" onclick="confirmMedTaken()">네, 먹었어요</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openMedConfirm() {
+      document.getElementById('medConfirm').classList.add('is-open');
+    }
+    function closeMedConfirm() {
+      document.getElementById('medConfirm').classList.remove('is-open');
+    }
+    function confirmMedTaken() {
+      location.href = 'p10-med-done.html';
+    }
+    // ESC로 닫기
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMedConfirm();
+    });
+    // 배경 클릭으로 닫기
+    document.getElementById('medConfirm').addEventListener('click', (e) => {
+      if (e.target.id === 'medConfirm') closeMedConfirm();
+    });
+  </script>
+
+</body>
+</html>

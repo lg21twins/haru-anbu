@@ -2,6 +2,20 @@
 07_디자인/references
 07_디자인/_archive
 07_디자인/mockup
+# 주의: 위 규칙은 루트에만 적용된다(경로에 슬래시가 있어 앵커됨).
+#   haru-anbu-showcase-v8-bundle/07_디자인/mockup 은 쇼케이스의 SOS 플로우 iframe이
+#   상대경로로 실제 로드하므로 배포에 반드시 필요하다. 제외하면 데모가 깨진다.
+# 다만 그 안의 내부 작업노트는 공개될 이유가 없으므로 파일 단위로만 제외한다:
+**/mockup/**/HANDOFF.md
+**/mockup/**/SESSION_*.md
+**/mockup/**/AUDIT_*.md
+**/mockup/**/PROMPT*.md
+**/mockup/**/TEAM_UPDATE*.md
+# 제안서 작업 폴더 전체 — 수치검증대장·이슈로그·법적리스크 검토 등 내부 문서다.
+# Vercel은 링크가 없어도 경로만 알면 정적 파일을 그대로 서빙하므로 통째로 뺀다.
+# (현장 배포용 요약은 루트 meet.html 하나뿐이고, 그건 별도로 유지된다.)
+08_제안서
+
 _archive
 **/_archive
 making-of*
@@ -10,5 +24,48 @@ node_modules
 .DS_Store
 *_백업_*
 *_backup_*
+# 원본 백업 폴더 — "_원본백업_" 은 위 *_백업_* 패턴에 걸리지 않는다(_백업_ 앞뒤 밑줄이 없음).
+# 옛 쇼케이스 사본이 통째로 들어 있어 공개되면 안 되므로 명시적으로 제외한다.
+_원본백업_
+**/_원본백업_
 하루안부v2
 하루안부v2_*
+**/_voice-samples
+**/clover_prenorm_backup
+
+# ── 2026-08-31 배포 용량 정리 ────────────────────────────────────────────────
+# 아래는 번들 안의 html/css/js 어디서도 참조하지 않는 것만 골랐다(참조 0건 확인).
+# 판단 근거를 남겨 두는 이유: 이 폴더들은 "쇼케이스 번들 안"에 있어서 얼핏 필요해 보이지만
+# 실제 서빙 대상이 아니다. 반대로 아래 것들은 절대 빼면 안 된다 —
+#   · 발표/audio/clover, clover-en : new Audio(`발표/audio/clover/clover-${...}.mp3`) 로
+#     JS가 문자열 조립해 부른다. 정적 스캔에 안 잡히니 과거에 빼서 음성이 죽은 적이 있다.
+#   · img/opt/*-900.webp, *-480.webp : img[data-msrc] / [data-bgm] 을 JS가 폰에서 갈아끼운다.
+#   · 07_디자인/mockup 의 *.html : SOS 플로우 iframe 대상.
+# 내부 감사용 스크린샷 — 화면 캡처 31장, 저장소에는 남기되 공개 배포에는 불필요
+**/audit-screenshots
+# webp 최적화로 대체된 초대형 원본 PNG (번들 내 참조 0건)
+haru-anbu-showcase-v8-bundle/07_디자인/mockup/v11_보호자앱/img/간호사.png
+haru-anbu-showcase-v8-bundle/07_디자인/mockup/v11_보호자앱/img/하루안부캐릭터.png
+haru-anbu-showcase-v8-bundle/07_디자인/mockup/v11_보호자앱/하루안부캐릭터.png
+haru-anbu-showcase-v8-bundle/07_디자인/mockup/v11_보호자앱/image (16).png
+haru-anbu-showcase-v8-bundle/img/slide08.png
+# 쓰지 않는 목업 템플릿 원본
+haru-anbu-showcase-v8-bundle/Mockup-templates/iPad Pro 12.9 - Silver - Landscape - Figma.png
+
+# ── 내부 작업자료 — 사이트 어디에서도 링크하지 않는데 경로만 알면 열린다 ──────────
+# Vercel은 링크 유무와 무관하게 정적 파일을 그대로 서빙한다. 아래는 배포 진입점
+# (쇼케이스 ko/en, meet.html)에서 참조 0건임을 확인하고 뺀다.
+# 기획서 덱 HTML(중간고사기획서/*.html)은 그대로 둔다 — assets/·스토리보드/·등장인물/을
+# 실제로 부르므로 그 셋도 유지. 아래 목록은 덱이 전혀 참조하지 않는 것만이다.
+#
+# 타사 자료(신영그룹·카카오엔터프라이즈 회사소개서)와 수업 배포 PDF — 공개 대상이 아니다
+중간고사기획서/참고자료
+# 작업용 화면 캡처 184장
+중간고사기획서/스크린샷
+중간고사기획서/스크린샷_v15
+# 팀원 실명이 파일명에 들어간 제출본 PDF
+03_설계/제출본
+# 인스타 출력용 원본 영상·이미지 (오프라인 산출물)
+09_포트폴리오/인스타_출력
+# 발표 원본 자료 — 사이트가 쓰는 음성·이미지는 쇼케이스 번들 안 발표/ 에 따로 있다
+05_발표
