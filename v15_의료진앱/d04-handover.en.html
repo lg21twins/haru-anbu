@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-role="medical" data-platform="mobile" class="has-c01-bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#DCFCE7">
+  <title>Haru Anbu · Medical Staff · Handover</title>
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="./_shared.css?v=20260525p">
+  <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="styles/d04-handover.css">
+  <link rel="stylesheet" href="../07_디자인/system/interactions.css">
+  <script src="../07_디자인/system/interactions.js"></script>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="ai-orb-bg" aria-hidden="true"><div class="ai-orb"></div></div>
+  <div class="app">
+
+    <header class="header">
+      <div class="top-nav">
+        <span class="h-left" aria-hidden="true"></span>
+        <div class="title-block">
+          <div class="h-name">SBAR</div>
+        </div>
+        <button type="button" class="icon-btn" aria-label="History"><iconify-icon icon="material-symbols:history-rounded"></iconify-icon></button>
+      </div>
+    </header>
+
+    <section class="countdown">
+      <div class="countdown-ring">
+        <svg class="countdown-ring-svg" viewBox="0 0 44 44" width="44" height="44">
+          <circle cx="22" cy="22" r="19" fill="none" stroke="rgba(34,197,94,.15)" stroke-width="3"/>
+          <circle cx="22" cy="22" r="19" fill="none" stroke="var(--accent)" stroke-width="3"
+                  stroke-dasharray="119" stroke-dashoffset="44" stroke-linecap="round"/>
+        </svg>
+        <div class="countdown-val">2:18</div>
+      </div>
+      <div class="countdown-meta">
+        <div class="countdown-label">Until next handover</div>
+        <div class="countdown-main">17:30 · to Hye-jeong Kim, Nurse</div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head">
+        <div>
+          <h2 class="sec-ttl">Voice memo</h2>
+        </div>
+      </div>
+      <div class="voice-bar">
+        <button type="button" class="voice-mic-lg" onclick="toast('Recording started — 60 sec');" aria-label="Record voice memo">
+          <iconify-icon icon="ph:microphone-fill"></iconify-icon>
+        </button>
+        <div class="voice-info">
+          <div class="voice-info-main">Add a 1-minute voice memo</div>
+          <div class="voice-info-sub">Transcribed and appended to the SBAR</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head">
+        <div>
+          <div class="sec-eyebrow">AI auto-sort</div>
+          <h2 class="sec-ttl">SBAR draft</h2>
+        </div>
+        <button type="button" class="sec-action" onclick="toast('AI regenerate');">Regenerate</button>
+      </div>
+
+      <div class="sbar">
+
+        <!-- 상단: 24h 혈압 추이 -->
+        <div class="sbar-trend">
+          <div class="sbar-trend-head">
+            <div>
+              <div class="sbar-trend-ttl">Myeong-ja Choi · 24h BP</div>
+              <div class="sbar-trend-sub">2F Rm B-2 · 82F · Hypertension history</div>
+            </div>
+            <div>
+              <div class="sbar-trend-val">180<small>/110</small></div>
+              <div class="sbar-trend-time">Measured 14:02</div>
+            </div>
+          </div>
+          <svg class="sbar-chart" viewBox="0 0 320 108" preserveAspectRatio="none" role="img" aria-label="24-hour BP trend">
+            <defs>
+              <linearGradient id="bpAreaFill" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="var(--color-danger)" stop-opacity=".18"/>
+                <stop offset="1" stop-color="var(--color-danger)" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <line x1="0" y1="28" x2="320" y2="28" stroke="var(--color-danger)" stroke-width="1" stroke-dasharray="3 3" opacity=".5"/>
+            <text x="4" y="24" font-size="9" fill="var(--color-danger)" font-weight="700">Critical 170+</text>
+            <line x1="0" y1="56" x2="320" y2="56" stroke="var(--color-warning)" stroke-width="1" stroke-dasharray="3 3" opacity=".35"/>
+            <text x="4" y="52" font-size="9" fill="var(--palette-amber-700)" font-weight="600">Caution 140+</text>
+            <path d="M0,80 L40,72 L80,66 L120,58 L160,52 L200,40 L240,28 L280,18 L320,10 L320,108 L0,108 Z" fill="url(#bpAreaFill)"/>
+            <path d="M0,80 L40,72 L80,66 L120,58 L160,52 L200,40 L240,28 L280,18 L320,10" fill="none" stroke="var(--color-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="80" cy="66" r="3" fill="#fff" stroke="var(--color-warning)" stroke-width="2"/>
+            <circle cx="160" cy="52" r="3" fill="#fff" stroke="var(--color-warning)" stroke-width="2"/>
+            <circle cx="240" cy="28" r="3.5" fill="var(--color-danger)" stroke="#fff" stroke-width="2"/>
+            <circle cx="320" cy="10" r="5" fill="var(--color-danger)" stroke="#fff" stroke-width="2"/>
+          </svg>
+          <div class="sbar-chart-legend">
+            <span><i class="i-danger"></i>Critical</span>
+            <span><i class="i-warn"></i>Caution</span>
+            <span class="last">06:00 → now <b>14:02</b></span>
+          </div>
+        </div>
+
+        <!-- 중단: 2×2 SBAR 타일 -->
+        <div class="sbar-grid">
+          <button class="sbar-tile sbar-tile--danger" type="button" onclick="toast('S · Situation details');">
+            <div class="sbar-tile-head"><span class="sbar-tile-tag">S</span><span class="sbar-tile-label">Situation</span></div>
+            <div class="sbar-tile-headline">3 critical readings</div>
+            <div class="sbar-tile-sub">Physician notified · 5→10mg</div>
+          </button>
+          <button class="sbar-tile" type="button" onclick="toast('B · Background details');">
+            <div class="sbar-tile-head"><span class="sbar-tile-tag">B</span><span class="sbar-tile-label">Background</span></div>
+            <div class="sbar-tile-headline">2 comorbidities</div>
+            <div class="sbar-tile-sub">Avg systolic 165 · Family OK</div>
+          </button>
+          <button class="sbar-tile sbar-tile--warn" type="button" onclick="toast('A · Assessment details');">
+            <div class="sbar-tile-head"><span class="sbar-tile-tag">A</span><span class="sbar-tile-label">Assessment</span></div>
+            <div class="sbar-tile-headline">Re-measure needed</div>
+            <div class="sbar-tile-sub">16:00·20:00 · Night fall risk</div>
+          </button>
+          <button class="sbar-tile" type="button" onclick="toast('R · Recommendation details');">
+            <div class="sbar-tile-head"><span class="sbar-tile-tag">R</span><span class="sbar-tile-label">Recommendation</span></div>
+            <div class="sbar-tile-headline">4 pending</div>
+            <div class="sbar-tile-sub">Page doctor · Measure · Family</div>
+          </button>
+        </div>
+
+        <!-- 하단: 권고 가중치 -->
+        <div class="sbar-rec">
+          <div class="sbar-rec-head">
+            <div class="sbar-rec-ttl">Recommendation weighting</div>
+            <div class="sbar-rec-cnt">4 items · by priority</div>
+          </div>
+          <div class="sbar-rec-row p-danger">
+            <span class="sbar-rec-num">1</span>
+            <span class="sbar-rec-text">Page doctor immediately if systolic <b>160+</b></span>
+            <span class="sbar-rec-weight"><i style="--weight:95%"></i></span>
+          </div>
+          <div class="sbar-rec-row p-warn">
+            <span class="sbar-rec-num">2</span>
+            <span class="sbar-rec-text">Measure BP at 16:00 and 20:00</span>
+            <span class="sbar-rec-weight"><i style="--weight:80%"></i></span>
+          </div>
+          <div class="sbar-rec-row p-warn">
+            <span class="sbar-rec-num">3</span>
+            <span class="sbar-rec-text">Tidy area around bed, night light ON</span>
+            <span class="sbar-rec-weight"><i style="--weight:55%"></i></span>
+          </div>
+          <div class="sbar-rec-row">
+            <span class="sbar-rec-num">4</span>
+            <span class="sbar-rec-text">Share evening status with family</span>
+            <span class="sbar-rec-weight"><i style="--weight:30%"></i></span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ai-hint">
+        <iconify-icon icon="material-symbols:auto-awesome-rounded"></iconify-icon>
+        <div class="ai-hint-text">7 voice notes and memos from rounds were <b>auto-sorted into the 4 SBAR areas</b>.</div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head">
+        <div>
+          <div class="sec-eyebrow">Pre-shift check</div>
+          <h2 class="sec-ttl">5 must-do checks · 3/5</h2>
+        </div>
+      </div>
+      <div class="checks">
+        <div class="check-row checked" onclick="this.classList.toggle('checked')">
+          <span class="check-box"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
+          <div class="check-text">
+            <div class="check-label">Confirm fall-risk patients</div>
+            <div class="check-sub">Jeong-suk Lee · Bed rails ON</div>
+          </div>
+        </div>
+        <div class="check-row checked" onclick="this.classList.toggle('checked')">
+          <span class="check-box"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
+          <div class="check-text">
+            <div class="check-label">Confirm missed medications</div>
+            <div class="check-sub">22/28 done, 6 scheduled for 18:00</div>
+          </div>
+        </div>
+        <div class="check-row checked" onclick="this.classList.toggle('checked')">
+          <span class="check-box"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
+          <div class="check-text">
+            <div class="check-label">Hand over patients reporting pain</div>
+            <div class="check-sub">Yeong-ja Park (VAS 4 → 3)</div>
+          </div>
+        </div>
+        <div class="check-row" onclick="this.classList.toggle('checked')">
+          <span class="check-box"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
+          <div class="check-text">
+            <div class="check-label">Wandering/aggression-risk patients</div>
+            <div class="check-sub">Jeong-suk Lee · Monitor increased night activity</div>
+          </div>
+          <span class="check-cnt">Unconfirmed</span>
+        </div>
+        <div class="check-row" onclick="this.classList.toggle('checked')">
+          <span class="check-box"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
+          <div class="check-text">
+            <div class="check-label">Family notifications complete</div>
+            <div class="check-sub">Myeong-ja Choi's family call OK, Soon-ja Kim's family no reply</div>
+          </div>
+          <span class="check-cnt">Unconfirmed</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head">
+        <div>
+          <div class="sec-eyebrow">Collected today</div>
+          <h2 class="sec-ttl">7 memos</h2>
+        </div>
+        <button type="button" class="sec-action" onclick="toast('View all');">All</button>
+      </div>
+      <div class="accum">
+
+        <div class="acc-row">
+          <div class="acc-time"><div class="acc-h">14:02</div><div class="acc-min">Just now</div></div>
+          <div class="acc-line"><span class="acc-dot danger"></span></div>
+          <div class="acc-body">
+            <div class="acc-patient">Myeong-ja Choi · 2F Rm B-2</div>
+            <div class="acc-msg"><span class="acc-tag s">S</span>BP 180/110, reported to doctor → dose increased</div>
+          </div>
+        </div>
+
+        <div class="acc-row">
+          <div class="acc-time"><div class="acc-h">13:45</div><div class="acc-min">17 min</div></div>
+          <div class="acc-line"><span class="acc-dot warn"></span></div>
+          <div class="acc-body">
+            <div class="acc-patient">Yeong-ja Park · 2F Rm A-3</div>
+            <div class="acc-msg"><span class="acc-tag a">A</span>Knee pain VAS 4, eased after analgesic</div>
+          </div>
+        </div>
+
+        <div class="acc-row">
+          <div class="acc-time"><div class="acc-h">13:30</div><div class="acc-min">32 min</div></div>
+          <div class="acc-line"><span class="acc-dot warn"></span></div>
+          <div class="acc-body">
+            <div class="acc-patient">Soon-ja Kim · 2F Rm A-5</div>
+            <div class="acc-msg"><span class="acc-tag a">A</span>Temp 37.8 low fever · re-measure in 1 hr</div>
+          </div>
+        </div>
+
+        <div class="acc-row">
+          <div class="acc-time"><div class="acc-h">12:15</div><div class="acc-min">1 hr</div></div>
+          <div class="acc-line"><span class="acc-dot"></span></div>
+          <div class="acc-body">
+            <div class="acc-patient">Seong-ho Jeong · 3F Rm C-3</div>
+            <div class="acc-msg"><span class="acc-tag">Normal</span>Ate full meal, SpO₂ 96%</div>
+          </div>
+        </div>
+
+        <div class="acc-row">
+          <div class="acc-time"><div class="acc-h">10:50</div><div class="acc-min">3 hr</div></div>
+          <div class="acc-line"></div>
+          <div class="acc-body">
+            <div class="acc-patient">Jeong-suk Lee · 3F Rm C-1</div>
+            <div class="acc-msg"><span class="acc-tag a">A</span>Wandered once at night, hand over fall risk</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <div class="tab-wrap">
+    <nav class="tabbar" role="tablist">
+      <a href="d01-home.html" class="tab" aria-label="Now"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon><span class="tab-label">Now</span></a>
+      <a href="d02-round.html" class="tab" aria-label="Rounds"><iconify-icon icon="material-symbols:bed-rounded"></iconify-icon><span class="tab-label">Rounds</span></a>
+      <a href="d03-inbox.html" class="tab" aria-label="Communication"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon><span class="tab-label">Comms</span></a>
+      <a href="d04-handover.html" class="tab active" aria-label="Handover"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon><span class="tab-label">Handover</span></a>
+    </nav>
+    <a href="d-sos.html" class="sos" aria-label="SOS emergency"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></a>
+  </div>
+
+  <!-- ============ SEND CONFIRMATION SHEET ============ -->
+  <div class="conf-overlay" id="sendOverlay" onclick="if(event.target===this)closeSendConfirm();">
+    <div class="conf-sheet" role="dialog" aria-labelledby="sendTitle">
+      <div class="conf-handle"></div>
+      <div class="conf-eyebrow">Send to shift</div>
+      <div class="conf-ttl" id="sendTitle">Send to the evening shift?</div>
+      <div class="conf-sub">You can keep adding memos after sending. Critical and unconfirmed items are passed along with a red badge.</div>
+
+      <div id="sendWarn" class="conf-warn">
+        <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
+        <div class="conf-warn-text">
+          <b><span id="sendUncheckedCnt">2</span> unconfirmed checklist items</b>
+          <div class="conf-warn-list" id="sendUncheckedList">· Wandering/aggression-risk patients<br>· Family notifications complete</div>
+        </div>
+      </div>
+
+      <div class="conf-meta">
+        <div><span>Recipient</span><b>Evening shift (from 15:00)</b></div>
+        <div><span>Patients handed over</span><b>15</b></div>
+        <div><span>Critical/Caution</span><b class="danger">Myeong-ja Choi · Jeong-suk Lee · Yeong-ja Park</b></div>
+        <div><span>SBAR sorting</span><b>7 voice/memo items auto-sorted</b></div>
+      </div>
+
+      <div class="conf-section-ttl">Sent along with this</div>
+      <div class="conf-pill-row">
+        <span class="conf-pill"><iconify-icon icon="mingcute:check-fill"></iconify-icon>SBAR 4 areas</span>
+        <span class="conf-pill"><iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>5 must-do checks</span>
+        <span class="conf-pill"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>7 collected memos</span>
+        <span class="conf-pill warn"><iconify-icon icon="mingcute:notification-fill"></iconify-icon>3 caution patients</span>
+      </div>
+
+      <button type="button" class="conf-action-primary" onclick="confirmSend()">
+        <iconify-icon icon="material-symbols:send-rounded"></iconify-icon>Send
+      </button>
+      <button type="button" class="conf-cancel" onclick="closeSendConfirm()">Cancel · Review more</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script>
+function openSendConfirm(){
+      const rows = document.querySelectorAll('.check-row');
+      const unchecked = Array.from(rows).filter(r=>!r.classList.contains('checked'));
+      const warn = document.getElementById('sendWarn');
+      if(unchecked.length===0){
+        warn.style.display='none';
+      } else {
+        warn.style.display='flex';
+        document.getElementById('sendUncheckedCnt').textContent = unchecked.length;
+        document.getElementById('sendUncheckedList').innerHTML =
+          unchecked.map(r=>'· '+r.querySelector('.check-label').textContent).join('<br>');
+      }
+      document.getElementById('sendOverlay').classList.add('show');
+    }
+    function closeSendConfirm(){
+      document.getElementById('sendOverlay').classList.remove('show');
+    }
+    function confirmSend(){
+      closeSendConfirm();
+      toast('Sent to evening shift · Awaiting read');
+    }
+  </script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
+</body>
+</html>

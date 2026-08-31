@@ -1,104 +1,115 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## 디자인 규칙 (필수)
-
-- **이모지 절대 금지**: 모든 UI(HTML/CSS/JS, 문서 포함)에서 이모지(😊, 🙂, 💊 등) 사용 금지. 아이콘이 필요하면 `iconify-icon`(fluent:* 등)로 통일.
-- 적용 범위: v9.5_보호자앱, v10_의료진웹, v11_요양보호사앱, v12_환자앱, v13_온보딩, v14_쇼케이스 전체
-- 기존 파일에 이모지가 있으면 수정 시 iconify 아이콘으로 교체할 것
+Guidance for AI coding assistants working in this repository.
 
 ## Project Overview
 
-Antigravity Kit is an AI-powered design intelligence toolkit providing searchable databases of UI styles, color palettes, font pairings, chart types, and UX guidelines. It works as a skill/workflow for AI coding assistants (Claude Code, Windsurf, Cursor, etc.).
+하루안부 (Haru Anbu) is a senior-care service design project (university coursework / exhibition /
+competition deliverables). The product is a set of high-fidelity **static HTML prototypes** — no build
+step, no framework — for four user roles, plus a public showcase site and a Next.js "making-of"
+presentation microsite. Prototypes exist in ko/en/zh variants (`*.html`, `*.en.html`, `*.zh.html`).
 
-## Search Command
+Data canon (fixed across all designs — do not invent new patients):
+박영자 78·A-3 / 최명자 82·B-1 / 김순자 79·B-2 / 이정숙 85·A-7(미열).
+
+## Hard Rules
+
+- **이모지 절대 금지**: no emoji anywhere in UI (HTML/CSS/JS or docs rendered as UI). Icons must use
+  `iconify-icon` (`fluent:*` family). Replace any emoji you encounter while editing a file.
+- **Design tokens over raw hex**: use variables from `07_디자인/tokens/tokens.css`; avoid inline
+  styles and direct hex values (enforced by `design_audit.py`).
+- **Never push to `main`.** Always: new branch (`feat/...`, `fix/...`, `chore/...`) → commit →
+  `git push -u origin <branch>` → `gh pr create`.
+- `06_로그/대화기록_작업로그.md` is an append-only session log the user expects Claude to update on request.
+
+## Directory Map
+
+```
+01_기획 … 06_로그               # planning, market research, design docs, research, decks, logs
+07_디자인/                      # design system: tokens/tokens.css, system/ (shared CSS/JS,
+                                #   interactions.js/css), scripts/ (audit tools), review-reports/
+v11_보호자앱/                   # guardian app        (entry: g-guardian-live.html)
+v11_요양보호사앱/               # caregiver app       (entry: c01-today.html)
+v12_환자앱/                     # patient app         (entry: p01-today.html)
+v15_의료진앱/                   # medical-staff app   (entry: d01-home.html)
+v10_의료진웹/                   # medical-staff web   (entry: 의료진_대시보드_v9.5.html)
+v13_온보딩/                     # onboarding          (entry: ob01-welcome.html)
+haru-anbu-showcase-v8-bundle/   # public showcase site (ko + .en.html)
+haru-anbu-making-of/            # SEPARATE nested git repo — Next.js 16.2.6, React 19, TS,
+                                #   Tailwind 4, GSAP, Lenis; live at haru-anbu-making-of.vercel.app
+중간고사기획서/                 # proposal deck (하루안부_기획서_v15.html + untracked EN version)
+vercel.json / serve.py          # deployment rewrites / local no-cache server
+```
+
+Shared per-app CSS extracted by the 2026-07-12 cleanup lives in each app's `styles/` folder
+(e.g. `v11_보호자앱/styles/`). Common toast/interaction code: `07_디자인/system/interactions.js|css`.
+
+## Run
 
 ```bash
-python3 src/ui-ux-pro-max/scripts/search.py "<query>" --domain <domain> [-n <max_results>]
+cd '/Users/yechanshon/Desktop/Haru Anbu'
+python3 -m http.server 8000          # plain static server, or:
+python3 serve.py                     # no-cache server on :8910 (avoids stale browser cache)
 ```
 
-**Domain search:**
-- `product` - Product type recommendations (SaaS, e-commerce, portfolio)
-- `style` - UI styles (glassmorphism, minimalism, brutalism) + AI prompts and CSS keywords
-- `typography` - Font pairings with Google Fonts imports
-- `color` - Color palettes by product type
-- `landing` - Page structure and CTA strategies
-- `chart` - Chart types and library recommendations
-- `ux` - Best practices and anti-patterns
+Making-of site (Node >= 20): `cd haru-anbu-making-of && npm install && npm run dev`
+(also `npm run lint`, `npm run build`).
 
-**Stack search:**
+## Verify (run all after any prototype change)
+
 ```bash
-python3 src/ui-ux-pro-max/scripts/search.py "<query>" --stack <stack>
-```
-Available stacks: `html-tailwind` (default), `react`, `nextjs`, `astro`, `vue`, `nuxtjs`, `nuxt-ui`, `svelte`, `swiftui`, `react-native`, `flutter`, `shadcn`, `jetpack-compose`
-
-## Architecture
-
-```
-src/ui-ux-pro-max/                # Source of Truth
-├── data/                         # Canonical CSV databases
-│   ├── products.csv, styles.csv, colors.csv, typography.csv, ...
-│   └── stacks/                   # Stack-specific guidelines
-├── scripts/
-│   ├── search.py                 # CLI entry point
-│   ├── core.py                   # BM25 + regex hybrid search engine
-│   └── design_system.py          # Design system generation
-└── templates/
-    ├── base/                     # Base templates (skill-content.md, quick-reference.md)
-    └── platforms/                # Platform configs (claude.json, cursor.json, ...)
-
-cli/                              # CLI installer (uipro-cli on npm)
-├── src/
-│   ├── commands/init.ts          # Install command with template generation
-│   └── utils/template.ts         # Template rendering engine
-└── assets/                       # Bundled assets (~564KB)
-    ├── data/                     # Copy of src/ui-ux-pro-max/data/
-    ├── scripts/                  # Copy of src/ui-ux-pro-max/scripts/
-    └── templates/                # Copy of src/ui-ux-pro-max/templates/
-
-.claude/skills/ui-ux-pro-max/     # Claude Code skill (symlinks to src/)
-.factory/skills/ui-ux-pro-max/   # Droid (Factory) skill (symlinks to src/)
-.shared/ui-ux-pro-max/            # Symlink to src/ui-ux-pro-max/
-.claude-plugin/                   # Claude Marketplace publishing
+python3 07_디자인/scripts/static_integrity.py                  # 66 active HTML: structure/refs/JS/CSS
+python3 07_디자인/scripts/test_fixtures/test_runner.py         # audit regression tests (8)
+python3 07_디자인/scripts/design_audit.py --target mobile-apps # token/emoji/icon/inline-style audit
+python3 07_디자인/scripts/visual_check.py                      # static checks; --capture uses headless Chrome
 ```
 
-The search engine uses BM25 ranking combined with regex matching. Domain auto-detection is available when `--domain` is omitted.
+All four passed as of 2026-07-13. Reports land in `07_디자인/review-reports/`.
 
-## Sync Rules
+## Deployment (Vercel, static)
 
-**Source of Truth:** `src/ui-ux-pro-max/`
+`vercel.json` rewrites: `/` and `/ko` → `haru-anbu-showcase-v8-bundle/haru-anbu-showcase-v8.html`,
+`/en` → the `.en.html` version, `/making_of` → proxied to the separate Next.js deployment.
 
-When modifying files:
+## Related Working Copies (do not confuse) — full map in `_버전지도.md`
 
-1. **Data & Scripts** - Edit in `src/ui-ux-pro-max/`:
-   - `data/*.csv` and `data/stacks/*.csv`
-   - `scripts/*.py`
-   - Changes automatically available via symlinks in `.claude/`, `.factory/`, `.shared/`
+- **This repo** — the Codex structural-refactor line (styles/ extraction), branch
+  `chore/cleanup-split-20260712`. The deployed line (haruanbu.site).
 
-2. **Templates** - Edit in `src/ui-ux-pro-max/templates/`:
-   - `base/skill-content.md` - Common SKILL.md content
-   - `base/quick-reference.md` - Quick reference section (Claude only)
-   - `platforms/*.json` - Platform-specific configs
+**Nested inside this repo folder** (NOT at `~/Desktop/` — earlier docs were wrong). All three are
+gitignore-protected, so they never enter this repo's commits and survive `git clean`:
 
-3. **CLI Assets** - Run sync before publishing:
-   ```bash
-   cp -r src/ui-ux-pro-max/data/* cli/assets/data/
-   cp -r src/ui-ux-pro-max/scripts/* cli/assets/scripts/
-   cp -r src/ui-ux-pro-max/templates/* cli/assets/templates/
-   ```
+- `./Haru-Anbu-실험_피드백반영_20260710/` — independent git repo (branch `master`, last 2026-07-22),
+  **the DESIGN-CANONICAL line** (mentor feedback 21건 + policy + data canon applied). Merging into
+  this repo requires **porting, not file copy**. Local-only, not deployed/pushed. Read-only reference.
+- `./HaruAnbu_싹통일전백업_20260625_1351/` — plain snapshot from before the 2026-06-25 icon/style
+  unification. Reference/restore only.
+- `./haru-anbu-making-of/` — separate Next.js repo (its own git + Vercel deploy).
 
-4. **Reference Folders** - No manual sync needed. The CLI generates these from templates during `uipro init`.
+Absent now: `하루안부v2` (only a stale `.gitignore` rule remains); the old Desktop review tools
+(`하루안부-비교-런처.html` etc.) are no longer at `~/Desktop/`.
 
-## Prerequisites
+## Status as of 2026-07-13
 
-Python 3.x (no external dependencies required)
+- Branch `chore/cleanup-split-20260712` is **local-only** (no upstream, no PR). Latest commit
+  `eb4b91b`: large cleanup — shared CSS extraction, toast commonization, 690 `type="button"` fixes.
+- Uncommitted: 6 modified tracked files (`.vercelignore`, `vercel.json`, work log, showcase ko/en HTML,
+  기획서 v15) + ~15 untracked items (portfolio-panels/, 전람회_표지/, EN deck, EN voice samples, work-instruction .md files).
+- Nested `haru-anbu-making-of` repo: 14+ modified files + asset deletions uncommitted on `main` —
+  deliberately left pending user review. Do NOT mix pre-existing user changes with cleanup changes in one commit.
+- Detailed handoff: `CLAUDE_HANDOFF_CODE_CLEANUP_20260712.md` (read it before continuing cleanup work).
 
-## Git Workflow
+## Pending Work
 
-Never push directly to `main`. Always:
-
-1. Create a new branch: `git checkout -b feat/...` or `fix/...`
-2. Commit changes
-3. Push branch: `git push -u origin <branch>`
-4. Create PR: `gh pr create`
+1. Push branch + create PR for the cleanup work (after reviewing the split with the user).
+2. Real-browser visual audit (handoff §4): capture 6 representative screens (the entry files listed
+   in the map above) at the same mobile viewport via Playwright; compare header/card/tabbar/token
+   consistency; then re-run all Verify commands.
+3. Review + commit `haru-anbu-making-of` changes with the user (separate repo, separate commits).
+4. Merge decision vs the design-canonical experiment repo — porting, not copying.
+5. Figma migration pilot interrupted 2026-07-13 (see experiment repo `v11_보호자앱/_figma_handoff.md`):
+   guardian home being recreated in Figma file `f8I9rALSAUEH9cEb7iEK0W`; header/greeting done, rest unfinished.
+6. Queued tasks in `중간고사기획서/` untracked docs: `_굿디자인_출품_작성.md` (Good Design award entry),
+   `_덱폴리시_작업지시.md`, `_앱영어화_작업지시.md` (app English localization).
+7. `07_디자인/review-reports/component_divergence_*.md`: divergence candidates must NOT be bulk-unified —
+   mix of intended role variants and true duplicates; review case-by-case with captures (handoff §5).

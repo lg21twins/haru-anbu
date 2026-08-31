@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" data-role="medical" data-platform="mobile" class="has-c01-bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#DCFCE7">
+  <title>Haru Anbu · Medical Staff · Now</title>
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+  <link rel="stylesheet" href="../07_디자인/system/app.css">
+  <!-- system/components.css?v=20260523e 제거: .tabbar position 등이 의료진 페이지 고유 .tab-wrap 구조와 충돌 (d04-handover 등 다른 의료진 페이지와 불일치 유발) -->
+  <link rel="stylesheet" href="../07_디자인/system/home.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="./_shared.css?v=20260525p">
+  <!-- 의료진 모바일 ↔ 요양보호사 디자인 시스템 통합 (2026-05-21) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css">
+  <!-- 공통 셸(헤더/로고/아이콘버튼) 단일 소스 — 인라인 복붙 대체 -->
+  <link rel="stylesheet" href="../07_디자인/system/shell.css">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="styles/d01-home.css">
+  <link rel="stylesheet" href="../07_디자인/system/interactions.css">
+  <script src="../07_디자인/system/interactions.js"></script>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="ai-orb-bg" aria-hidden="true"><div class="ai-orb"></div></div>
+  <div class="app">
+
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+      <div class="top-nav">
+        <a class="logo" href="d01-home.html" aria-label="Haru Anbu Home">
+          <svg viewBox="0 0 512 512" fill="none">
+            <g transform="translate(50,50) scale(0.163)">
+              <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="currentColor" class="ico-accent-strong"/>
+              <path d="M4.68 19.34C1286.35-131.48 1286.35 630.4 1286.35 1246.66L28.31 2526C7.32 2031.8 3.73 1368.08 867.14 1263.52C-115.88 1211.75 4.68 424.16 4.68 19.34Z" fill="currentColor" class="ico-accent-strong"/>
+            </g>
+          </svg>
+        </a>
+        <div class="top-actions">
+          <a href="d03-inbox.html" class="icon-btn" aria-label="Notifications">
+            <iconify-icon icon="mingcute:notification-fill"></iconify-icon>
+            <span class="notif-dot"></span>
+          </a>
+          <a href="d05-mypage.html" class="icon-btn" aria-label="My page">
+            <iconify-icon icon="mingcute:user-3-fill"></iconify-icon>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ GREETING ============ -->
+    <section class="greet">
+      <div class="greet-eyebrow">
+        <span class="pulse"></span>Day shift · Handover in 2 hr 18 min
+      </div>
+      <h1 class="greet-main"><b>Ji-hyeon Park</b>, Nurse,<br>You are caring for 15 patients today.</h1>
+    </section>
+
+    <!-- ============ ALERT — 위험 환자: 근거 + 권장 액션 + CTA 2개 ============ -->
+    <article class="alert">
+      <div class="alert-top">
+        <span class="alert-ico"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon></span>
+        <span class="alert-tag">Immediate Review</span>
+      </div>
+      <div class="alert-main">Myeong-ja Choi</div>
+      <div class="alert-sub">
+        <iconify-icon icon="mingcute:location-fill"></iconify-icon>2F Rm B-2
+        <span aria-hidden="true">·</span>
+        <iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon>Measured 14:02
+      </div>
+
+      <div class="alert-evidence" aria-label="Clinical evidence">
+        <div class="evi-row">
+          <iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon>
+          <span class="evi-main">BP 180/110</span>
+          <span class="evi-sub">Up from 162/96</span>
+        </div>
+        <div class="evi-row warn">
+          <iconify-icon icon="material-symbols:mood-rounded"></iconify-icon>
+          <span class="evi-main">Headache reported</span>
+          <span class="evi-sub">Reported 13:50</span>
+        </div>
+      </div>
+
+      <div class="alert-recommend">
+        <span class="rec-label">Recommended</span>
+        <span class="rec-list">Re-measure · Notify attending · Escalate rounds priority</span>
+      </div>
+
+      <div class="alert-ctas">
+        <a class="alert-cta primary" href="d02-round.html?focus=10">
+          <iconify-icon icon="mingcute:check-fill"></iconify-icon>Review Now
+        </a>
+        <a class="alert-cta secondary" href="d02-round.html?focus=10&open=card">
+          <iconify-icon icon="material-symbols:bed-rounded"></iconify-icon>Open Rounds Card
+        </a>
+      </div>
+    </article>
+
+    <!-- ============ 오늘의 우선순위 — 환자·작업 통합 큐 ============ -->
+    <section class="sec">
+      <div class="sec-head">
+        <div>
+          <div class="sec-eyebrow">AI Assessment</div>
+          <h2 class="sec-ttl">Today's Priorities<span class="sec-count" aria-label="5 items total">5</span></h2>
+        </div>
+        <a class="sec-more" href="d02-round.html">Start Rounds <iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></a>
+      </div>
+      <div class="act-list">
+
+        <div class="act-group-head warn-h"><iconify-icon icon="mingcute:warning-fill"></iconify-icon>Action Today<span class="cnt">· 2</span></div>
+
+        <a class="act-card warn" href="d02-round.html?focus=11">
+          <span class="act-avatar">K</span>
+          <div class="act-meta">
+            <div class="act-main">Soon-ja Kim · Low fever + Medication check</div>
+            <div class="act-sub"><iconify-icon icon="mingcute:location-fill"></iconify-icon>2F Rm A-5 · <span class="act-status">37.8°C <span class="vital">13:30</span></span> · Family inquiry</div>
+          </div>
+          <span class="act-chev"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
+        </a>
+
+        <a class="act-card warn" href="d02-round.html?focus=12">
+          <span class="act-avatar">L</span>
+          <div class="act-meta">
+            <div class="act-main">Jeong-suk Lee · Fall-risk Rounds</div>
+            <div class="act-sub"><iconify-icon icon="mingcute:location-fill"></iconify-icon>3F Rm C-1 · <span class="act-status">Night wandering ↑</span></div>
+          </div>
+          <span class="act-chev"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
+        </a>
+
+        <div class="act-group-head watch-h"><iconify-icon icon="mingcute:eye-2-fill"></iconify-icon>Monitor<span class="cnt">· 1</span></div>
+
+        <a class="act-card watch" href="d02-round.html?focus=9">
+          <span class="act-avatar">P</span>
+          <div class="act-meta">
+            <div class="act-main">Yeong-ja Park · Pain trend</div>
+            <div class="act-sub"><iconify-icon icon="mingcute:location-fill"></iconify-icon>2F Rm A-3 · <span class="act-status">VAS 4 <span class="vital">14:15</span></span></div>
+          </div>
+          <span class="act-chev"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
+        </a>
+
+        <div class="act-group-head wait-h"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>Pending<span class="cnt">· 1</span></div>
+
+        <a class="act-card wait" href="d03-inbox.html?thread=g1">
+          <span class="act-avatar"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon></span>
+          <div class="act-meta">
+            <div class="act-main">Family reply</div>
+            <div class="act-sub"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon>Mi-yeong Kim +2 · Response needed</div>
+          </div>
+          <span class="act-chev"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
+        </a>
+
+        <div class="act-group-head due-h"><iconify-icon icon="material-symbols:flag-rounded"></iconify-icon>Due Soon<span class="cnt">· 1</span></div>
+
+        <a class="act-card due" href="d04-handover.html">
+          <span class="act-avatar"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon></span>
+          <div class="act-meta">
+            <div class="act-main">Write SBAR Handover</div>
+            <div class="act-sub"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon>2 hr 18 min before evening shift</div>
+          </div>
+          <span class="act-chev"><iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
+        </a>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============ TAB BAR + SOS ============ -->
+  <div class="tab-wrap">
+    <nav class="tabbar" role="tablist">
+      <a href="d01-home.html" class="tab active" aria-label="Now"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon><span class="tab-label">Now</span></a>
+      <a href="d02-round.html" class="tab" aria-label="Rounds"><iconify-icon icon="material-symbols:bed-rounded"></iconify-icon><span class="tab-label">Rounds</span></a>
+      <a href="d03-inbox.html" class="tab" aria-label="Communication"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon><span class="tab-label">Comms</span></a>
+      <a href="d04-handover.html" class="tab" aria-label="Handover"><iconify-icon icon="mingcute:document-2-fill"></iconify-icon><span class="tab-label">Handover</span></a>
+    </nav>
+    <a href="d-sos.html" class="sos" aria-label="SOS emergency"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></a>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  
+  <div class="bottom-scrim" aria-hidden="true"></div>
+</body>
+</html>

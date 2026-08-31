@@ -251,7 +251,7 @@
 
   <!-- 헤더 — 표준 -->
   <div class="header" id="header">
-    <div class="header-left"><a href="g-guardian-live.html" class="btn-icon" aria-label="뒤로 가기"><iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon></a></div>
+    <div class="header-left"><a href="g-guardian-live.html" class="btn-icon" aria-label="뒤로 가기"><iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon></a></div>
     <span class="header-title">일일 리포트</span>
     <div class="header-right"></div>
   </div>
@@ -285,7 +285,7 @@
         <!-- 투약 -->
         <div class="w" onclick="openSheet('pill')">
           <div class="w-head">
-            <div class="w-title"><iconify-icon icon="tabler:pill-filled" style="color:#6EE7B7"></iconify-icon>투약</div>
+            <div class="w-title"><iconify-icon icon="mingcute:capsule-fill" style="color:#6EE7B7"></iconify-icon>투약</div>
             <div class="w-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div>
           </div>
           <div style="position:relative;z-index:1">
@@ -301,7 +301,7 @@
         <!-- 식사 -->
         <div class="w" onclick="openSheet('food')">
           <div class="w-head">
-            <div class="w-title"><iconify-icon icon="fluent:food-24-filled" style="color:var(--green-d)"></iconify-icon>식사</div>
+            <div class="w-title"><iconify-icon icon="ph:bowl-food-fill" style="color:var(--green-d)"></iconify-icon>식사</div>
           </div>
           <div style="position:relative;z-index:1">
             <div style="font-size:34px;font-weight:800;letter-spacing:-1.5px;line-height:1">3<span style="font-size:16px;font-weight:600;color:var(--t3)"> 끼</span></div>
@@ -316,7 +316,7 @@
         <!-- 기분 + 활동 결합 -->
         <div class="w grid-full" onclick="openSheet('mood')">
           <div class="w-head">
-            <div class="w-title"><iconify-icon icon="fluent:emoji-24-filled" style="color:var(--blue)"></iconify-icon>기분 · 활동</div>
+            <div class="w-title"><iconify-icon icon="material-symbols:mood-rounded" style="color:var(--blue)"></iconify-icon>기분 · 활동</div>
           </div>
           <div class="combined-inner">
             <div class="combined-half">
@@ -334,7 +334,7 @@
         <!-- 위생 -->
         <div class="w" onclick="openSheet('hygiene')">
           <div class="w-head">
-            <div class="w-title"><iconify-icon icon="fluent:drop-24-filled" style="color:var(--blue)"></iconify-icon>위생</div>
+            <div class="w-title"><iconify-icon icon="mingcute:drop-fill" style="color:var(--blue)"></iconify-icon>위생</div>
           </div>
           <div class="chk-row"><div class="chk-box done">✓</div><div class="chk-name">세면</div><div class="chk-time">07:00</div></div>
           <div class="chk-row"><div class="chk-box done">✓</div><div class="chk-name">구강</div><div class="chk-time">07:10</div></div>
@@ -345,7 +345,7 @@
         <div class="w nurse-card" onclick="openSheet('nurse')">
           <div class="nurse-img">
             <div class="nurse-img-placeholder">
-              <iconify-icon icon="fluent:person-24-filled" style="font-size:40px;color:var(--blue-d);opacity:.5"></iconify-icon>
+              <iconify-icon icon="mingcute:user-3-fill" style="font-size:40px;color:var(--blue-d);opacity:.5"></iconify-icon>
             </div>
           </div>
           <div class="nurse-body">
@@ -359,7 +359,7 @@
         <!-- 특이사항 (full-width) -->
         <div class="w note-widget grid-full" onclick="openSheet('note')">
           <div class="w-head">
-            <div class="w-title"><iconify-icon icon="fluent:warning-24-filled" style="color:var(--amber)"></iconify-icon>특이사항</div>
+            <div class="w-title"><iconify-icon icon="mingcute:warning-fill" style="color:var(--amber)"></iconify-icon>특이사항</div>
             <div class="w-badge" style="color:#92400E;background:rgba(245,158,11,.12)">1건</div>
           </div>
           <div class="note-text">점심 식사량이 평소보다 소폭 감소. 저녁 경과 관찰 예정.</div>
@@ -372,8 +372,8 @@
     <!-- ══ ZONE E: CTA ══ -->
     <div class="zone">
       <div class="cta-row">
-        <a href="g03-chat.html" class="cta-btn cta-secondary"><iconify-icon icon="fluent:chat-24-filled" style="font-size:18px"></iconify-icon>담당자에게 문의</a>
-        <a href="g-guardian-live.html?chat=1" class="cta-btn cta-primary"><iconify-icon icon="fluent:sparkle-24-filled" style="font-size:18px"></iconify-icon>AI에게 질문</a>
+        <a href="g03-chat.html" class="cta-btn cta-secondary"><iconify-icon icon="material-symbols:chat-rounded" style="font-size:18px"></iconify-icon>담당자에게 문의</a>
+        <a href="g-guardian-live.html?chat=1" class="cta-btn cta-primary"><iconify-icon icon="material-symbols:auto-awesome-rounded" style="font-size:18px"></iconify-icon>AI에게 질문</a>
       </div>
     </div>
 
@@ -407,40 +407,40 @@
 /* ─── 바텀시트 ─── */
 const SHEETS = {
   pill: `<div class="sheet-handle"></div>
-    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#FBBF24,#F59E0B)"><iconify-icon icon="tabler:pill-filled"></iconify-icon></div><div><div class="sheet-ttl">투약 상세</div><div class="sheet-sub">오늘 3회 모두 완료</div></div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:syringe-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">아침 투약</div><div class="srow-val">혈압약 · 당뇨약 — 08:00</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
+    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#FBBF24,#F59E0B)"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></div><div><div class="sheet-ttl">투약 상세</div><div class="sheet-sub">오늘 3회 모두 완료</div></div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:syringe-rounded" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">아침 투약</div><div class="srow-val">혈압약 · 당뇨약 — 08:00</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
     <div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:medical-services-rounded" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">점심 투약</div><div class="srow-val">소화제 — 12:30</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:heart-pulse-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오후 투약</div><div class="srow-val">관절 영양제 — 14:00</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>`,
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:cardiology-rounded" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오후 투약</div><div class="srow-val">관절 영양제 — 14:00</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>`,
 
   food: `<div class="sheet-handle"></div>
-    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#34D399,#059669)"><iconify-icon icon="fluent:food-24-filled"></iconify-icon></div><div><div class="sheet-ttl">식사 상세</div><div class="sheet-sub">3끼 완료 · 점심 섭취 감소</div></div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">아침 07:30</div><div class="srow-val">죽 + 반찬 2종 — 잔반 없음</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">양호</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--amber)"></iconify-icon></div><div class="srow-text"><div class="srow-label">점심 12:00</div><div class="srow-val">밥 + 국 + 반찬 3종 — 55%</div></div><div class="srow-badge" style="color:#92400E;background:rgba(245,158,11,.12)">감소</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">저녁 18:30</div><div class="srow-val">밥 + 된장찌개 — 잔반 없음</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">양호</div></div>`,
+    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#34D399,#059669)"><iconify-icon icon="ph:bowl-food-fill"></iconify-icon></div><div><div class="sheet-ttl">식사 상세</div><div class="sheet-sub">3끼 완료 · 점심 섭취 감소</div></div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="ph:bowl-food-fill" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">아침 07:30</div><div class="srow-val">죽 + 반찬 2종 — 잔반 없음</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">양호</div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="ph:bowl-food-fill" style="color:var(--amber)"></iconify-icon></div><div class="srow-text"><div class="srow-label">점심 12:00</div><div class="srow-val">밥 + 국 + 반찬 3종 — 55%</div></div><div class="srow-badge" style="color:#92400E;background:rgba(245,158,11,.12)">감소</div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="ph:bowl-food-fill" style="color:var(--green-d)"></iconify-icon></div><div class="srow-text"><div class="srow-label">저녁 18:30</div><div class="srow-val">밥 + 된장찌개 — 잔반 없음</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">양호</div></div>`,
 
   mood: `<div class="sheet-handle"></div>
-    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:emoji-24-filled"></iconify-icon></div><div><div class="sheet-ttl">기분 · 활동 상세</div><div class="sheet-sub">전반적으로 밝은 상태</div></div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:emoji-24-filled" style="color:var(--green)"></iconify-icon></div><div class="srow-text"><div class="srow-label">기분 — 오전</div><div class="srow-val">밝고 활기찬 상태</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">좋음</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:emoji-meh-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">기분 — 오후</div><div class="srow-val">점심 후 안정적</div></div><div class="srow-badge" style="color:var(--blue-d);background:rgba(44,122,252,.1)">보통</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:walk-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오전 스트레칭</div><div class="srow-val">10분 · 상체 중심 스트레칭</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:walk-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오후 산책</div><div class="srow-val">15분 · 1층 정원 산책</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>`,
+    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="material-symbols:mood-rounded"></iconify-icon></div><div><div class="sheet-ttl">기분 · 활동 상세</div><div class="sheet-sub">전반적으로 밝은 상태</div></div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:mood-rounded" style="color:var(--green)"></iconify-icon></div><div class="srow-text"><div class="srow-label">기분 — 오전</div><div class="srow-val">밝고 활기찬 상태</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">좋음</div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:mood-rounded" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">기분 — 오후</div><div class="srow-val">점심 후 안정적</div></div><div class="srow-badge" style="color:var(--blue-d);background:rgba(44,122,252,.1)">보통</div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:directions-run-rounded" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오전 스트레칭</div><div class="srow-val">10분 · 상체 중심 스트레칭</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:directions-run-rounded" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">오후 산책</div><div class="srow-val">15분 · 1층 정원 산책</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>`,
 
   hygiene: `<div class="sheet-handle"></div>
-    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:drop-24-filled"></iconify-icon></div><div><div class="sheet-ttl">위생 상세</div><div class="sheet-sub">3건 중 2건 완료</div></div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:drop-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">세면</div><div class="srow-val">아침 07:00 완료</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:drop-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">구강 케어</div><div class="srow-val">아침 07:10 완료</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:drop-24-filled" style="color:rgba(44,122,252,.3)"></iconify-icon></div><div class="srow-text"><div class="srow-label">취침 전 세면</div><div class="srow-val">20:00 예정</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">예정</div></div>`,
+    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="mingcute:drop-fill"></iconify-icon></div><div><div class="sheet-ttl">위생 상세</div><div class="sheet-sub">3건 중 2건 완료</div></div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="mingcute:drop-fill" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">세면</div><div class="srow-val">아침 07:00 완료</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="mingcute:drop-fill" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">구강 케어</div><div class="srow-val">아침 07:10 완료</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">완료</div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="mingcute:drop-fill" style="color:rgba(44,122,252,.3)"></iconify-icon></div><div class="srow-text"><div class="srow-label">취침 전 세면</div><div class="srow-val">20:00 예정</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">예정</div></div>`,
 
   note: `<div class="sheet-handle"></div>
-    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#FBBF24,#F59E0B)"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></div><div><div class="sheet-ttl">특이사항</div><div class="sheet-sub">오늘 1건 기록</div></div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:food-24-filled" style="color:var(--amber)"></iconify-icon></div><div class="srow-text"><div class="srow-label">점심 식사량 감소</div><div class="srow-val">평소 대비 약 45% 감소. 컨디션 이상 없음. 저녁 식사 때 경과 관찰 예정.</div></div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:person-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">담당자 소견</div><div class="srow-val">김서연 간호사: 일시적 식욕 감소로 판단. 수분 섭취는 정상.</div></div></div>`,
+    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,#FBBF24,#F59E0B)"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></div><div><div class="sheet-ttl">특이사항</div><div class="sheet-sub">오늘 1건 기록</div></div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="ph:bowl-food-fill" style="color:var(--amber)"></iconify-icon></div><div class="srow-text"><div class="srow-label">점심 식사량 감소</div><div class="srow-val">평소 대비 약 45% 감소. 컨디션 이상 없음. 저녁 식사 때 경과 관찰 예정.</div></div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="mingcute:user-3-fill" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">담당자 소견</div><div class="srow-val">김서연 간호사: 일시적 식욕 감소로 판단. 수분 섭취는 정상.</div></div></div>`,
 
   nurse: `<div class="sheet-handle"></div>
-    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></div><div><div class="sheet-ttl">김서연 간호사</div><div class="sheet-sub">실버케어 3층 · 5년차</div></div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:clock-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">근무 시간</div><div class="srow-val">07:00 ~ 15:00 (주간)</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">근무중</div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:call-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">연락처</div><div class="srow-val">실버케어 내선 302</div></div></div>
-    <div class="srow"><div class="srow-icon"><iconify-icon icon="fluent:chat-24-filled" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">최근 메시지</div><div class="srow-val">어르신 오전 산책 잘 다녀오셨어요</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">10:30</div></div>`
+    <div class="sheet-head"><div class="sheet-icon" style="background:linear-gradient(135deg,var(--blue-l),var(--blue))"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon></div><div><div class="sheet-ttl">김서연 간호사</div><div class="sheet-sub">실버케어 3층 · 5년차</div></div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:schedule-rounded" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">근무 시간</div><div class="srow-val">07:00 ~ 15:00 (주간)</div></div><div class="srow-badge" style="color:var(--green-d);background:rgba(52,211,153,.12)">근무중</div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="mingcute:phone-fill" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">연락처</div><div class="srow-val">실버케어 내선 302</div></div></div>
+    <div class="srow"><div class="srow-icon"><iconify-icon icon="material-symbols:chat-rounded" style="color:var(--blue)"></iconify-icon></div><div class="srow-text"><div class="srow-label">최근 메시지</div><div class="srow-val">어르신 오전 산책 잘 다녀오셨어요</div></div><div class="srow-badge" style="color:var(--t3);background:rgba(0,0,0,.04)">10:30</div></div>`
 };
 
 function openSheet(type){

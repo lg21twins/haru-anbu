@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#EFF6FF">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Haru Anbu — AI Care Guide</title>
+
+  <!-- v3.1 디자인 시스템 (sw cache-bust: v23) -->
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css?v=24">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="../07_디자인/system/app.css?v=24">
+  <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+
+  <link rel="stylesheet" href="styles/g02-ai-guide-part-1.css">
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g03-sotong.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
+
+  <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn 표준 (2026-05-22 통합) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
+<link rel="stylesheet" href="styles/g02-ai-guide-part-2.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <header class="header">
+    <div class="top-nav">
+      <span class="h-left" aria-hidden="true"></span>
+      <div class="title-block">
+        <h1 class="h-name">AI Care Guide</h1>
+      </div>
+      <a class="icon-btn" href="g06-alert.html" aria-label="Notifications"><iconify-icon icon="mingcute:notification-fill"></iconify-icon></a>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="stack-loose u-pt-5">
+
+      <!-- 추천 카드 (1차 콘텐츠 — AI 채팅과 분리) -->
+      <button type="button" class="card-action rec-card fade-in fade-in--d1" onclick="location.href='g-guardian-live.html?chat=1'">
+        <div class="rec-card__head">
+          <div class="rec-card__icon"><img src="../07_디자인/logo/brand-system/01_심볼단독.svg" alt="" aria-hidden="true"></div>
+          <span class="rec-card__eyebrow">Personalized for Young-ja</span>
+        </div>
+        <div class="rec-card__title">Amlodipine should not be taken with grapefruit</div>
+        <div class="rec-card__desc">Taking amlodipine with grapefruit juice can raise drug levels in the body. Check the meal-time precautions for details.</div>
+        <span class="rec-card__more">Learn more <iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon></span>
+      </button>
+
+      <!-- 자주 묻는 질문 -->
+      <section class="fade-in fade-in--d2">
+        <div class="sec-head">
+          <span class="sec-head__title">FAQ</span>
+          <button type="button" class="sec-head__more" id="q-more-btn" onclick="toggleAllQ()">See all</button>
+        </div>
+        <div class="cat-row" role="tablist">
+          <button class="chip is-active" type="button" onclick="filterQ('all',this)" aria-pressed="true">All</button>
+          <button class="chip" type="button" onclick="filterQ('med',this)">Medication &amp; Health</button>
+          <button class="chip" type="button" onclick="filterQ('care',this)">Daily Care</button>
+          <button class="chip" type="button" onclick="filterQ('cost',this)">Cost &amp; Benefits</button>
+          <button class="chip" type="button" onclick="filterQ('mental',this)">Emotional Support</button>
+        </div>
+        <div class="q-list u-mt-4">
+          <div class="q-item" data-cat="med" onclick="toggleQ(this)">
+            <div class="q-item__row">
+              <span class="q-item__badge">Q</span>
+              <span class="q-item__text">I'm worried about side effects from my parent's medication</span>
+              <iconify-icon icon="material-symbols:chevron-right-rounded" class="q-item__arrow"></iconify-icon>
+            </div>
+            <div class="q-answer"><div class="q-answer__inner">
+              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">Headache, dizziness, and indigestion are common early reactions. If severe allergic reactions, difficulty breathing, or loss of consciousness occur, seek medical care immediately. Inform the pharmacist and attending doctor of all current medications to check for interactions.</p></div>
+            </div></div>
+          </div>
+          <div class="q-item" data-cat="med" onclick="toggleQ(this)">
+            <div class="q-item__row">
+              <span class="q-item__badge">Q</span>
+              <span class="q-item__text">How do I read blood pressure and blood sugar readings?</span>
+              <iconify-icon icon="material-symbols:chevron-right-rounded" class="q-item__arrow"></iconify-icon>
+            </div>
+            <div class="q-answer"><div class="q-answer__inner">
+              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">Normal blood pressure is below 120/80 mmHg; 130 or above is pre-hypertension. Fasting blood sugar below 100 mg/dL is normal; 126 or above indicates diabetes. Home readings are most accurate taken at rest after waking in the morning.</p></div>
+            </div></div>
+          </div>
+          <div class="q-item" data-cat="care" onclick="toggleQ(this)">
+            <div class="q-item__row">
+              <span class="q-item__badge">Q</span>
+              <span class="q-item__text">What diet is recommended for a hypertension patient?</span>
+              <iconify-icon icon="material-symbols:chevron-right-rounded" class="q-item__arrow"></iconify-icon>
+            </div>
+            <div class="q-answer"><div class="q-answer__inner">
+              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">Keep sodium under 2,000 mg per day (about 5 g of salt). Limit soup broth, avoid processed foods, and eat potassium-rich foods like bananas, potatoes, and tomatoes regularly. Blue-backed fish is recommended at least twice a week.</p></div>
+            </div></div>
+          </div>
+          <div class="q-item" data-cat="care" onclick="toggleQ(this)">
+            <div class="q-item__row">
+              <span class="q-item__badge">Q</span>
+              <span class="q-item__text">What exercises help prevent falls?</span>
+              <iconify-icon icon="material-symbols:chevron-right-rounded" class="q-item__arrow"></iconify-icon>
+            </div>
+            <div class="q-answer"><div class="q-answer__inner">
+              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">Try chair-assisted single-leg stands, heel raises, and sit-to-stands. Just 10–15 minutes a day can improve lower-body strength and balance, significantly reducing fall risk.</p></div>
+            </div></div>
+          </div>
+          <div class="q-item" data-cat="cost" onclick="toggleQ(this)">
+            <div class="q-item__row">
+              <span class="q-item__badge">Q</span>
+              <span class="q-item__text">How do I apply for a long-term care grade?</span>
+              <iconify-icon icon="material-symbols:chevron-right-rounded" class="q-item__arrow"></iconify-icon>
+            </div>
+            <div class="q-answer"><div class="q-answer__inner">
+              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">Apply by visiting a National Health Insurance Service branch, calling 1577-1000, or through the NHIS website. Assessment typically takes about 30 days from submission.</p></div>
+            </div></div>
+          </div>
+          <div class="q-item" data-cat="cost" onclick="toggleQ(this)">
+            <div class="q-item__row">
+              <span class="q-item__badge">Q</span>
+              <span class="q-item__text">Are there government programs that help cover care costs?</span>
+              <iconify-icon icon="material-symbols:chevron-right-rounded" class="q-item__arrow"></iconify-icon>
+            </div>
+            <div class="q-answer"><div class="q-answer__inner">
+              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">Qualifying for a long-term care insurance grade unlocks home care and facility care benefits. Additional programs include family care allowances, special care benefits, and inpatient nursing support.</p></div>
+            </div></div>
+          </div>
+          <div class="q-item" data-cat="mental" onclick="toggleQ(this)">
+            <div class="q-item__row">
+              <span class="q-item__badge">Q</span>
+              <span class="q-item__text">What can I do when I'm completely exhausted as a family member?</span>
+              <iconify-icon icon="material-symbols:chevron-right-rounded" class="q-item__arrow"></iconify-icon>
+            </div>
+            <div class="q-answer"><div class="q-answer__inner">
+              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">Family burnout is a common experience. Try to carve out even 30 minutes of personal time each day, and make use of respite care services such as short-term residential stays and day programs.</p></div>
+            </div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 케어 지식 -->
+      <section class="fade-in fade-in--d3">
+        <div class="sec-head">
+          <span class="sec-head__title">Care Knowledge</span>
+          <button type="button" class="sec-head__more">See all</button>
+        </div>
+        <div class="article-list">
+          <article class="card article-card" onclick="location.href='g-guardian-live.html?chat=1'">
+            <div class="article-card__body">
+              <span class="article-card__tag">Diet</span>
+              <div class="article-card__title">Low-Sodium Eating Guide for Hypertension</div>
+              <div class="article-card__desc">Recipes and meal-planning tips for reducing sodium without sacrificing flavor.</div>
+            </div>
+            <div class="article-card__thumb"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=160&q=80&fit=crop" alt="" aria-hidden="true"></div>
+          </article>
+          <article class="card article-card" onclick="location.href='g-guardian-live.html?chat=1'">
+            <div class="article-card__body">
+              <span class="article-card__tag">Exercise</span>
+              <div class="article-card__title">5 Fall-Prevention Exercises You Can Do at Home</div>
+              <div class="article-card__desc">Simple moves to build lower-body strength and balance.</div>
+            </div>
+            <div class="article-card__thumb"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=160&q=80&fit=crop" alt="" aria-hidden="true"></div>
+          </article>
+          <article class="card article-card" onclick="location.href='g-guardian-live.html?chat=1'">
+            <div class="article-card__body">
+              <span class="article-card__tag">Medication</span>
+              <div class="article-card__title">Why Medication Timing Matters</div>
+              <div class="article-card__desc">The same medicine can work differently depending on when you take it.</div>
+            </div>
+            <div class="article-card__thumb"><img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=160&q=80&fit=crop" alt="" aria-hidden="true"></div>
+          </article>
+          <article class="card article-card" onclick="location.href='g-guardian-live.html?chat=1'">
+            <div class="article-card__body">
+              <span class="article-card__tag">Mental Health</span>
+              <div class="article-card__title">Family Burnout: Rest When You See These Signs</div>
+              <div class="article-card__desc">Long-term caregiving takes a real toll on families too.</div>
+            </div>
+            <div class="article-card__thumb"><img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=160&q=80&fit=crop" alt="" aria-hidden="true"></div>
+          </article>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="bottom-bar">
+    <nav class="tabbar">
+      <a href="g-guardian-live.html" class="tab" aria-label="Home"><span class="tab-icon"><iconify-icon icon="mingcute:home-1-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g02-ai-guide.html" class="tab active" aria-label="AI Care Guide"><span class="tab-icon"><iconify-icon icon="material-symbols:menu-book-rounded" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g03-sotong.html" class="tab" aria-label="Communication"><span class="tab-icon"><iconify-icon icon="material-symbols:chat-rounded" class="text-22"></iconify-icon></span></a>
+      <a href="g05-records.html" class="tab" aria-label="Records"><span class="tab-icon"><iconify-icon icon="mingcute:folder-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g05-mypage.html" class="tab" aria-label="My Page"><span class="tab-icon"><iconify-icon icon="mingcute:user-3-fill" class="u-fs-26"></iconify-icon></span></a>
+    </nav>
+    <a href="g-guardian-live.html?chat=1" class="ai-fab" aria-label="AI Assistant">
+      <svg width="22" height="22" viewBox="0 0 2526 2526" fill="var(--brand-blue-500)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
+    </a>
+  </div>
+
+</div>
+
+<script>
+  var qExpanded = false, currentCat = 'all';
+  function applyQVisibility(){
+    var items = document.querySelectorAll('.q-item');
+    var btn = document.getElementById('q-more-btn');
+    if(currentCat === 'all'){
+      var n = 0;
+      items.forEach(function(it){
+        if(qExpanded){ it.style.display=''; }
+        else { if(n < 3){ it.style.display=''; n++; } else it.style.display='none'; }
+      });
+      btn.style.display = '';
+      btn.textContent = qExpanded ? 'Collapse' : 'See all';
+    } else {
+      items.forEach(function(it){ it.style.display = it.getAttribute('data-cat') === currentCat ? '' : 'none'; });
+      btn.style.display = 'none';
+    }
+  }
+  function filterQ(cat, btn){
+    document.querySelectorAll('.cat-row .chip').forEach(function(c){ c.classList.remove('is-active'); c.setAttribute('aria-pressed','false'); });
+    btn.classList.add('is-active'); btn.setAttribute('aria-pressed','true');
+    currentCat = cat;
+    if(cat === 'all') qExpanded = false;
+    applyQVisibility();
+  }
+  function toggleAllQ(){ qExpanded = !qExpanded; applyQVisibility(); }
+  applyQVisibility();
+  function toggleQ(el){
+    var open = el.classList.contains('is-open');
+    document.querySelectorAll('.q-item.is-open').forEach(function(it){
+      it.classList.remove('is-open');
+      it.querySelector('.q-answer').style.maxHeight = '0';
+    });
+    if(!open){
+      el.classList.add('is-open');
+      var ans = el.querySelector('.q-answer');
+      ans.style.maxHeight = ans.scrollHeight + 'px';
+    }
+  }
+</script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
+</body>
+</html>

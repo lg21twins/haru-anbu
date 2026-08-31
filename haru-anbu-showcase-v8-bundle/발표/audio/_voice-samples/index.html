@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Haru Anbu · EN 나레이션 보이스 후보</title>
+<style>
+  :root{--ink:#16181D;--ink2:#5B616E;--mute:#9AA0AC;--line:#EAECEF;--bg:#F6F7F9;--card:#FFFFFF;--blue:#2C7AFC;--green:#1FA463}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px}
+  h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:0 0 6px}
+  .sub{color:var(--ink2);font-size:14px;margin:0 0 8px}
+  .note{background:#FFF8E6;border-radius:12px;padding:14px 16px;font-size:13px;color:#7A5B00;margin:18px 0 28px}
+  .note b{color:#5A4400}
+  h2{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:34px 0 6px}
+  .line{font-size:13px;color:var(--ink2);margin:0 0 14px;font-style:normal}
+  .card{background:var(--card);border-radius:14px;padding:16px 18px;margin:0 0 12px;display:flex;align-items:center;gap:16px}
+  .card.rec{box-shadow:inset 0 0 0 2px var(--blue)}
+  .meta{flex:1;min-width:0}
+  .vname{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .vdesc{font-size:13px;color:var(--ink2);margin-top:2px}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.02em;color:#fff;background:var(--blue);border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:2px}
+  .tag.g{background:var(--green)}
+  audio{height:38px}
+  .foot{margin-top:40px;font-size:13px;color:var(--ink2);border-top:1px solid var(--line);padding-top:20px}
+  code{background:#EEF1F4;border-radius:5px;padding:1px 6px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>EN 나레이션 보이스 후보</h1>
+  <p class="sub">하루안부 영어판 셀프투어 나레이션 — 역할별 후보를 들어보고 고르세요.</p>
+  <div class="note">
+    <b>무료 티어 제약</b> · ElevenLabs 무료 계정은 <b>프리메이드 기본 보이스만</b> API로 쓸 수 있어, 프로페셔널/라이브러리 보이스(Sunny·Jiyoung·Onyu 등 더 따뜻한 후보)는 막혀 있습니다. 아래는 전부 무료로 바로 쓸 수 있는 프리메이드 보이스입니다. (샘플은 Flash v2.5 · 음색 비교용)
+  </div>
+
+  <h2>내레이터 — 클로버 (차분·따뜻 여성)</h2>
+  <p class="line">대사: "Hello. I'm Clover, the AI inside Haru Anbu. I'll guide you through it."</p>
+
+  <div class="card rec">
+    <div class="meta"><div class="vname">Sarah<span class="tag">추천</span></div><div class="vdesc">Mature, Reassuring, Confident — 클로버의 "차분·따뜻·신뢰" 톤에 가장 근접</div></div>
+    <audio controls preload="none" src="01-narrator-Sarah/tts_Hello_20260625_182025.mp3"></audio>
+  </div>
+  <div class="card">
+    <div class="meta"><div class="vname">Matilda</div><div class="vdesc">Knowledgable, Professional — 또렷·따뜻, 안내형</div></div>
+    <audio controls preload="none" src="04-narrator-Matilda/tts_Hello_20260625_182030.mp3"></audio>
+  </div>
+  <div class="card">
+    <div class="meta"><div class="vname">Lily</div><div class="vdesc">Velvety Actress — 부드럽고 낮은 톤</div></div>
+    <audio controls preload="none" src="13-narrator-Lily/tts_Hello_20260625_182217.mp3"></audio>
+  </div>
+
+  <h2>Family · 보호자 (pain1 · pain5)</h2>
+  <p class="line">대사: "I'm not sure if she ate well today."</p>
+  <div class="card">
+    <div class="meta"><div class="vname">Jessica<span class="tag g">여성</span></div><div class="vdesc">Playful, Bright, Warm — 걱정하는 딸 톤</div></div>
+    <audio controls preload="none" src="05-family-Jessica/tts_I'm_n_20260625_182032.mp3"></audio>
+  </div>
+  <div class="card">
+    <div class="meta"><div class="vname">Will<span class="tag g">남성</span></div><div class="vdesc">Relaxed Optimist — 걱정하는 아들 톤</div></div>
+    <audio controls preload="none" src="06-family-Will/tts_I'm_n_20260625_182034.mp3"></audio>
+  </div>
+
+  <h2>Caregiver · 요양보호사 (pain2)</h2>
+  <p class="line">대사: "I spend two hours a day on calls from families."</p>
+  <div class="card rec">
+    <div class="meta"><div class="vname">Alice<span class="tag">추천</span></div><div class="vdesc">Clear, Engaging Educator — 실무적·또렷한 현장 톤</div></div>
+    <audio controls preload="none" src="15-caregiver-Alice/tts_I_spe_20260625_182234.mp3"></audio>
+  </div>
+  <div class="card">
+    <div class="meta"><div class="vname">Laura</div><div class="vdesc">Enthusiast, Quirky — 조금 더 가볍고 친근</div></div>
+    <audio controls preload="none" src="16-caregiver-Laura/tts_I_spe_20260625_182234.mp3"></audio>
+  </div>
+
+  <h2>Patient · 어르신/환자 (pain3)</h2>
+  <p class="line">대사: "I don't want to worry my children."</p>
+  <div class="card rec">
+    <div class="meta"><div class="vname">Bill<span class="tag">추천</span></div><div class="vdesc">Wise, Mature, Balanced — 나이 든 어르신(남성)으로 읽힘</div></div>
+    <audio controls preload="none" src="09-patient-Bill/tts_I_don_20260625_182039.mp3"></audio>
+  </div>
+  <p class="line" style="color:#9AA0AC">※ 프리메이드엔 "할머니(고령 여성)" 톤이 마땅치 않습니다. 어르신을 여성으로 가려면 유료 보이스가 필요합니다.</p>
+
+  <h2>Clinician · 의사 (pain4)</h2>
+  <p class="line">대사: "I log each patient's condition separately, every time."</p>
+  <div class="card rec">
+    <div class="meta"><div class="vname">Brian<span class="tag">추천</span></div><div class="vdesc">Deep, Resonant and Comforting — 안정적인 의사 톤</div></div>
+    <audio controls preload="none" src="11-clinician-Brian/tts_I_log_20260625_182042.mp3"></audio>
+  </div>
+  <div class="card">
+    <div class="meta"><div class="vname">Charlie</div><div class="vdesc">Deep, Confident, Energetic — 더 단단하고 활기</div></div>
+    <audio controls preload="none" src="12-clinician-Charlie/tts_I_log_20260625_182044.mp3"></audio>
+  </div>
+
+  <div class="foot">
+    역할마다 하나씩 골라주시면 그 보이스로 본편(31개 클립)을 뽑겠습니다. 내레이터 후보를 더 듣고 싶으면 말씀하세요 — 프리메이드 안에서 더 추가할 수 있습니다.
+  </div>
+</div>
+</body>
+</html>

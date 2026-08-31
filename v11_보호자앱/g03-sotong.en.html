@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#EFF6FF">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Haru Anbu — Communication</title>
+
+  <!-- v3.1 디자인 시스템 -->
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css?v=24">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="../07_디자인/system/app.css?v=24">
+  <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+
+  <link rel="stylesheet" href="styles/g03-sotong-part-1.css">
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){})}</script>
+  <link rel="prefetch" href="g-guardian-live.html">
+  <link rel="prefetch" href="g02-ai-guide.html">
+  <link rel="prefetch" href="g05-records.html">
+  <link rel="prefetch" href="g05-mypage.html">
+
+  <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn 표준 (2026-05-22 통합) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
+<link rel="stylesheet" href="styles/g03-sotong-part-2.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <header class="header">
+    <div class="top-nav">
+      <span class="h-left" aria-hidden="true"></span>
+      <div class="title-block">
+        <h1 class="h-name">Messages</h1>
+      </div>
+      <button type="button" class="icon-btn" aria-label="New message"><iconify-icon icon="mingcute:pencil-fill"></iconify-icon></button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="stack stack-loose">
+
+      <!-- 미확인 5건 — 단일 기준 -->
+      <a href="#unread" class="summary-bar fade-in fade-in--d1">
+        <span class="summary-bar__dot"></span>
+        <span class="summary-bar__text"><b>5 unread</b> messages · Check-up scheduled tomorrow morning</span>
+        <iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>
+      </a>
+
+      <!-- 필터 칩 -->
+      <div class="filter-row fade-in fade-in--d2" role="tablist">
+        <button class="chip is-active" type="button" onclick="filterMsg('all',this)" aria-pressed="true">All 5</button>
+        <button class="chip" type="button" onclick="filterMsg('care',this)">Care</button>
+        <button class="chip" type="button" onclick="filterMsg('schedule',this)">Schedule</button>
+        <button class="chip" type="button" onclick="filterMsg('billing',this)">Billing</button>
+        <button class="chip" type="button" onclick="filterMsg('chat',this)">Chat</button>
+      </div>
+
+      <!-- 읽지 않음 -->
+      <section id="unread">
+        <div class="sec-label" onclick="toggleSection(this)">
+          <span class="sec-label__text">Unread</span>
+          <iconify-icon icon="material-symbols:expand-more-rounded" class="sec-label__chevron"></iconify-icon>
+        </div>
+        <div class="msg-list">
+
+          <a href="g03-chat-nurse.html" class="msg-item is-unread" data-type="chat">
+            <div class="av av--nurse av--online"><img src="img/간호사.png" alt="Seoyeon Kim"></div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">Nurse Kim Seoyeon</span>
+                <span class="badge badge--success">On duty</span>
+              </div>
+              <div class="msg-preview">Evening medication done. How she's been feeling today…</div>
+            </div>
+            <div class="msg-meta">
+              <span class="msg-time">6:05 PM</span>
+              <span class="msg-badge">4</span>
+            </div>
+          </a>
+
+          <!-- 업무성: 확인 필요 -->
+          <div class="msg-item is-unread is-action" data-type="care">
+            <div class="av av--system is-care"><iconify-icon icon="material-symbols:cardiology-rounded" class="u-icon-sm"></iconify-icon></div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">Blood Sugar Test Notice</span>
+                <span class="badge badge--info">Care</span>
+              </div>
+              <div class="msg-preview">A simple fingerstick test to collect a small blood sample</div>
+              <div class="msg-actions">
+                <button type="button" class="msg-cta" onclick="confirmAction(this,'Acknowledged')">Confirm</button>
+                <button type="button" class="msg-cta msg-cta--secondary">Details</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg-item is-unread is-action" data-type="care">
+            <div class="av av--system is-med"><iconify-icon icon="mingcute:capsule-fill" class="u-icon-sm"></iconify-icon></div>
+            <div class="msg-body">
+              <div class="msg-name-row">
+                <span class="msg-name">Medication Time Change</span>
+                <span class="badge badge--info">Care</span>
+              </div>
+              <div class="msg-preview">Evening medication 18:00 → 18:30 (after meals)</div>
+              <div class="msg-actions">
+                <button type="button" class="msg-cta" onclick="confirmAction(this,'Approved')">Approve</button>
+                <a href="g03-chat-nurse.html" class="msg-cta msg-cta--secondary">Call</a>
+              </div>
+            </div>
+          </div>
+
+          <a href="g03-chat-patient.html" class="msg-item is-unread" data-type="chat">
+            <div class="av av--family"><img src="img/환자.png" alt="Park Youngjа"></div>
+            <div class="msg-body">
+              <div class="msg-name-row"><span class="msg-name">Youngja (Mom)</span></div>
+              <div class="msg-preview">The weather's so nice today~</div>
+            </div>
+            <div class="msg-meta">
+              <span class="msg-time">3:20 PM</span>
+              <span class="msg-badge">1</span>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Today -->
+      <section>
+        <div class="sec-label is-collapsed" onclick="toggleSection(this)">
+          <span class="sec-label__text">Today</span>
+          <iconify-icon icon="material-symbols:expand-more-rounded" class="sec-label__chevron"></iconify-icon>
+        </div>
+        <div class="msg-list is-collapsed">
+          <div class="msg-item" data-type="care">
+            <div class="av av--system is-food"><iconify-icon icon="ph:bowl-food-fill" class="u-icon-sm"></iconify-icon></div>
+            <div class="msg-body">
+              <div class="msg-name-row"><span class="msg-name">Lunch Completed</span><span class="badge badge--info">Care</span></div>
+              <div class="msg-preview">Rice + miso soup + 3 side dishes, intake 80%</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">12:05</span></div>
+          </div>
+          <div class="msg-item" data-type="schedule">
+            <div class="av av--system is-schedule"><iconify-icon icon="mingcute:calendar-fill" class="u-icon-sm"></iconify-icon></div>
+            <div class="msg-body">
+              <div class="msg-name-row"><span class="msg-name">Check-up Tomorrow Morning</span><span class="badge badge--warning">Schedule</span></div>
+              <div class="msg-preview">4/17 (Thu) 10:00 AM · Fasting required</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">9:00 AM</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Earlier -->
+      <section>
+        <div class="sec-label is-collapsed" onclick="toggleSection(this)">
+          <span class="sec-label__text">Earlier</span>
+          <iconify-icon icon="material-symbols:expand-more-rounded" class="sec-label__chevron"></iconify-icon>
+        </div>
+        <div class="msg-list is-collapsed">
+          <a href="g03-chat-family.html" class="msg-item" data-type="chat">
+            <div class="av av--nurse">L</div>
+            <div class="msg-body">
+              <div class="msg-name-row"><span class="msg-name">Nurse Lee Sujin</span></div>
+              <div class="msg-preview">Heads up about the check-up scheduled tomorrow morning</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">Yesterday</span></div>
+          </a>
+          <a href="g08-billing.html" class="msg-item" data-type="billing">
+            <div class="av av--system is-billing"><iconify-icon icon="mingcute:bill-fill" class="u-icon-sm"></iconify-icon></div>
+            <div class="msg-body">
+              <div class="msg-name-row"><span class="msg-name">April Care Invoice</span><span class="badge badge--info">Billing</span></div>
+              <div class="msg-preview">₩1,245,000 · Due 4/25 (9 days left)</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">Yesterday</span></div>
+          </a>
+          <a href="g03-chat-family.html" class="msg-item" data-type="chat">
+            <div class="av av--doctor"><img src="img/의사.png" alt="Dr. Jeong Hyunwoo"></div>
+            <div class="msg-body">
+              <div class="msg-name-row"><span class="msg-name">Dr. Jeong Hyunwoo</span></div>
+              <div class="msg-preview">I'll let you know once next week's test results are in</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">4/14</span></div>
+          </a>
+          <a href="g03-chat-family.html" class="msg-item" data-type="chat">
+            <div class="av av--family"><iconify-icon icon="material-symbols:family-restroom-rounded" class="u-icon-sm"></iconify-icon></div>
+            <div class="msg-body">
+              <div class="msg-name-row"><span class="msg-name">Family Group</span></div>
+              <div class="msg-preview">Can we visit this weekend?</div>
+            </div>
+            <div class="msg-meta"><span class="msg-time">4/14</span></div>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- v3.1 통일 탭바 -->
+  <div class="bottom-bar">
+    <nav class="tabbar">
+      <a href="g-guardian-live.html" class="tab" aria-label="Home"><span class="tab-icon"><iconify-icon icon="mingcute:home-1-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g02-ai-guide.html" class="tab" aria-label="AI Guide"><span class="tab-icon"><iconify-icon icon="material-symbols:menu-book-rounded" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g03-sotong.html" class="tab active" aria-label="Messages"><span class="tab-icon"><iconify-icon icon="material-symbols:chat-rounded" class="text-22"></iconify-icon></span></a>
+      <a href="g05-records.html" class="tab" aria-label="Records"><span class="tab-icon"><iconify-icon icon="mingcute:folder-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g05-mypage.html" class="tab" aria-label="My page"><span class="tab-icon"><iconify-icon icon="mingcute:user-3-fill" class="u-fs-26"></iconify-icon></span></a>
+    </nav>
+    <a href="g-guardian-live.html?chat=1" class="ai-fab" aria-label="AI assistant">
+      <svg width="22" height="22" viewBox="0 0 2526 2526" fill="var(--brand-blue-500)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
+    </a>
+  </div>
+
+</div>
+
+<script>
+  function toggleSection(label){
+    var list = label.nextElementSibling;
+    if(!list) return;
+    var isCollapsed = label.classList.contains('is-collapsed');
+    if(isCollapsed){
+      label.classList.remove('is-collapsed');
+      list.classList.remove('is-collapsed');
+      list.style.maxHeight = list.scrollHeight + 'px';
+      setTimeout(function(){ list.style.maxHeight = 'none'; }, 250);
+    } else {
+      list.style.maxHeight = list.scrollHeight + 'px';
+      list.offsetHeight;
+      label.classList.add('is-collapsed');
+      list.classList.add('is-collapsed');
+      list.style.maxHeight = '0';
+    }
+  }
+  function filterMsg(type, btn){
+    document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('is-active'); c.setAttribute('aria-pressed','false'); });
+    btn.classList.add('is-active'); btn.setAttribute('aria-pressed','true');
+    document.querySelectorAll('.msg-item').forEach(function(item){
+      if(type === 'all'){ item.style.display = ''; return; }
+      item.style.display = item.getAttribute('data-type') === type ? '' : 'none';
+    });
+  }
+  function confirmAction(btn, label){
+    btn.disabled = true;
+    btn.textContent = label;
+  }
+</script>
+  <div class="bottom-scrim" aria-hidden="true"></div>
+</body>
+</html>

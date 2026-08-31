@@ -485,7 +485,7 @@
       <div class="header-row">
         <span class="header-ttl">소통</span>
         <button class="icon-btn" onclick="openReport()" aria-label="빠른 보고">
-          <iconify-icon icon="fluent:compose-24-filled"></iconify-icon>
+          <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>
         </button>
       </div>
     </header>
@@ -493,34 +493,34 @@
     <!-- ============ 인수인계 체크 (필수 항목 누락 방지) ============ -->
     <section class="hand-card" aria-label="야간→주간 인수인계">
       <div class="hand-top">
-        <span class="hand-k"><iconify-icon icon="fluent:handshake-24-filled"></iconify-icon>야간 → 주간 인수인계</span>
+        <span class="hand-k"><iconify-icon icon="ph:hand-waving-fill"></iconify-icon>야간 → 주간 인수인계</span>
         <span class="hand-pct"><b>4</b>/5 확인</span>
       </div>
       <div class="hand-checks">
         <button class="hc done" onclick="toast('낙상 위험 · 이정숙 확인 완료')">
-          <span class="hc-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+          <span class="hc-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           낙상 위험
         </button>
         <button class="hc done" onclick="toast('복약 상태 · 전원 아침약 복용 완료')">
-          <span class="hc-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+          <span class="hc-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           복약
         </button>
         <button class="hc done" onclick="toast('통증 호소 없음')">
-          <span class="hc-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+          <span class="hc-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           통증
         </button>
         <button class="hc done" onclick="toast('배회 · 폭력 경향 없음')">
-          <span class="hc-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span>
+          <span class="hc-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>
           배회·폭력
         </button>
         <button class="hc todo" onclick="toast('이정숙 미열 → 가족 통보 필요')">
-          <span class="hc-dot"><iconify-icon icon="fluent:alert-16-filled"></iconify-icon></span>
+          <span class="hc-dot"><iconify-icon icon="mingcute:notification-fill"></iconify-icon></span>
           가족 통보
         </button>
       </div>
       <button class="hand-cta" onclick="toast('이정숙 어르신 가족 통보 작성')">
         미확인 항목 확인 하기
-        <iconify-icon icon="fluent:arrow-right-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:arrow-right-fill"></iconify-icon>
       </button>
     </section>
 
@@ -535,12 +535,12 @@
     <div class="sec-l" id="sec-unread" onclick="toggleSection('unread')">
       <span class="t">읽지 않음</span>
       <span class="n">4</span>
-      <iconify-icon icon="fluent:chevron-down-24-filled" class="chev"></iconify-icon>
+      <iconify-icon icon="material-symbols:expand-more-rounded" class="chev"></iconify-icon>
     </div>
     <div class="msg-list" id="list-unread">
 
       <a class="msg unread" data-type="alert" onclick="toast('이정숙 · 미열')">
-        <div class="av crit"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></div>
+        <div class="av crit"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon></div>
         <div class="msg-body">
           <div class="msg-top">
             <span class="msg-name">이정숙 어르신 · 미열</span>
@@ -611,7 +611,7 @@
     <div class="sec-l collapsed" id="sec-today" onclick="toggleSection('today')">
       <span class="t">오늘</span>
       <span class="n">2</span>
-      <iconify-icon icon="fluent:chevron-down-24-filled" class="chev"></iconify-icon>
+      <iconify-icon icon="material-symbols:expand-more-rounded" class="chev"></iconify-icon>
     </div>
     <div class="msg-list hidden" id="list-today">
       <a class="msg" data-type="center" onclick="toast('센터 공지')">
@@ -629,7 +629,7 @@
       </a>
 
       <a class="msg" data-type="alert" onclick="toast('체위 변경 리마인더')">
-        <div class="av warn"><iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon></div>
+        <div class="av warn"><iconify-icon icon="material-symbols:alarm-rounded"></iconify-icon></div>
         <div class="msg-body">
           <div class="msg-top">
             <span class="msg-name">최명자 어르신 체위 변경</span>
@@ -647,7 +647,7 @@
     <div class="sec-l collapsed" id="sec-prev" onclick="toggleSection('prev')">
       <span class="t">이전</span>
       <span class="n">3</span>
-      <iconify-icon icon="fluent:chevron-down-24-filled" class="chev"></iconify-icon>
+      <iconify-icon icon="material-symbols:expand-more-rounded" class="chev"></iconify-icon>
     </div>
     <div class="msg-list hidden" id="list-prev">
       <a class="msg" data-type="nurse" onclick="toast('이해진 간호사')">
@@ -679,7 +679,7 @@
       </a>
 
       <a class="msg" data-type="ai" onclick="toast('AI 가이드')">
-        <div class="av grey"><iconify-icon icon="fluent:chat-bubbles-question-24-filled"></iconify-icon></div>
+        <div class="av grey"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon></div>
         <div class="msg-body">
           <div class="msg-top">
             <span class="msg-name">AI 업무 가이드</span>
@@ -695,25 +695,25 @@
     <!-- ============ 보호자 공유 (1탭 전송) ============ -->
     <section class="share-card" aria-label="오늘 보호자에게 공유">
       <div class="share-top">
-        <span class="share-k"><iconify-icon icon="fluent:people-team-24-filled"></iconify-icon>오늘 보호자에게 공유</span>
+        <span class="share-k"><iconify-icon icon="material-symbols:family-restroom-rounded"></iconify-icon>오늘 보호자에게 공유</span>
         <span class="share-meta">담당 4명 · 카톡 연동</span>
       </div>
       <div class="share-checks">
         <button class="sc on" onclick="this.classList.toggle('on')">
-          <iconify-icon icon="fluent:food-24-filled"></iconify-icon>식사
+          <iconify-icon icon="ph:bowl-food-fill"></iconify-icon>식사
         </button>
         <button class="sc on" onclick="this.classList.toggle('on')">
-          <iconify-icon icon="fluent:toilet-24-filled"></iconify-icon>배설
+          <iconify-icon icon="material-symbols:wc-rounded"></iconify-icon>배설
         </button>
         <button class="sc on" onclick="this.classList.toggle('on')">
-          <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>이상 증상
+          <iconify-icon icon="mingcute:warning-fill"></iconify-icon>이상 증상
         </button>
         <button class="sc on" onclick="this.classList.toggle('on')">
-          <iconify-icon icon="fluent:emoji-24-filled"></iconify-icon>기분·수면
+          <iconify-icon icon="material-symbols:mood-rounded"></iconify-icon>기분·수면
         </button>
       </div>
       <button class="share-cta" onclick="toast('보호자 4명에게 오늘의 안부 전송 완료')">
-        <iconify-icon icon="fluent:send-24-filled"></iconify-icon>오늘의 안부 보내기 (4명)
+        <iconify-icon icon="material-symbols:send-rounded"></iconify-icon>오늘의 안부 보내기 (4명)
       </button>
     </section>
 
@@ -722,13 +722,13 @@
   <!-- ============ 탭바 ============ -->
   <div class="bottom-bar">
     <nav class="tabbar">
-      <a href="c01-today.html" class="tab" aria-label="홈"><iconify-icon icon="fluent:home-24-filled"></iconify-icon></a>
-      <a href="c02-checklist.html" class="tab" aria-label="체크리스트"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon></a>
-      <a href="c03-sotong.html" class="tab active" aria-label="소통"><iconify-icon icon="fluent:chat-24-filled"></iconify-icon></a>
-      <a href="c04-mypage.html" class="tab" aria-label="마이"><iconify-icon icon="fluent:person-24-filled"></iconify-icon></a>
+      <a href="c01-today.html" class="tab" aria-label="홈"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon></a>
+      <a href="c02-checklist.html" class="tab" aria-label="체크리스트"><iconify-icon icon="mingcute:clipboard-fill"></iconify-icon></a>
+      <a href="c03-sotong.html" class="tab active" aria-label="소통"><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon></a>
+      <a href="c04-mypage.html" class="tab" aria-label="마이"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon></a>
     </nav>
     <button class="sos-fab" onclick="toast('SOS 호출 · 유형을 선택하세요')" aria-label="긴급 SOS">
-      <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+      <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
     </button>
   </div>
 
@@ -737,7 +737,7 @@
     <div class="sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-head">
-        <div class="sh-ic"><iconify-icon icon="fluent:send-24-filled"></iconify-icon></div>
+        <div class="sh-ic"><iconify-icon icon="material-symbols:send-rounded"></iconify-icon></div>
         <div>
           <div class="sh-ttl">간호사에게 빠른 보고</div>
           <div class="sh-sub">환자 → 템플릿 → 한줄 메모</div>
@@ -772,7 +772,7 @@
       <div class="cta-row">
         <button class="cta-btn cta-soft" onclick="closeSheet()">취소</button>
         <button class="cta-btn cta-primary" onclick="sendReport()">
-          <iconify-icon icon="fluent:send-24-filled" style="font-size:18px"></iconify-icon>간호사에게 전송
+          <iconify-icon icon="material-symbols:send-rounded" style="font-size:18px"></iconify-icon>간호사에게 전송
         </button>
       </div>
     </div>

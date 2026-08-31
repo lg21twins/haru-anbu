@@ -192,6 +192,26 @@
      식별하기 위한 보조 팔레트. 가족/관리자/외부 의료진 등 비-주요 역할용. */
   --avatar-manager: #7C3AED;   /* violet-600 — 시설 관리자 */
 
+  /* --- Medical Web · Warm Neutral --------------------------------------
+     의료진 웹의 고밀도 대시보드에 쓰는 웜 뉴트럴 팔레트. 화면별 로컬 hex를
+     금지하고 동일한 사이드바·표면·구분선 톤을 공유하기 위한 원시 토큰. */
+  --medical-web-ink-1: #1A1612;
+  --medical-web-ink-2: #2A2A2A;
+  --medical-web-ink-3: #555555;
+  --medical-web-ink-4: #888888;
+  --medical-web-ink-5: #AAAAAA;
+  --medical-web-border-1: #D8D5D0;
+  --medical-web-border-2: #BBB7B0;
+  --medical-web-surface: #FFFFFF;
+  --medical-web-surface-warm: #FAF8F5;
+  --medical-web-surface-soft: #F4F1ED;
+  --medical-web-surface-tint: #EFECE7;
+  --medical-web-surface-tint-2: #E6E2DD;
+  --medical-web-surface-tint-3: #D8D3CC;
+  --medical-web-canvas: #EEEDEA;
+  --medical-web-chart-nurse: #6366F1;
+  --medical-web-chart-care: #A78BFA;
+
   /* --- Color · Shift (요양보호사 시프트 식별) ----------------------------
      근무 일정 화면에서 시프트 종류(데이/이브닝/나이트)를 시각적으로 구분.
      accent와 별개 — 일정/시간 도메인 한정. */
@@ -879,6 +899,7 @@ a { color: inherit; text-decoration: none; }
 .u-text-danger     { color: var(--color-danger); }
 
 .u-bg-surface      { background: var(--color-bg-surface); }
+.u-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .u-bg-glass        { background: var(--color-bg-glass); backdrop-filter: blur(var(--blur-card)); -webkit-backdrop-filter: blur(var(--blur-card)); }
 .u-bg-accent       { background: var(--color-accent); color: var(--color-accent-on); }
 

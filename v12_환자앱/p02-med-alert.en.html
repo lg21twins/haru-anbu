@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en" data-role="patient" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="var(--patient-canvas-warm)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Haru Anbu · Today's tasks</title>
+
+  <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="patient.css">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+
+  <link rel="stylesheet" href="styles/p02-med-alert.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="p-header p-header--nav">
+      <a href="p01-today.html" class="p-back" aria-label="Back">
+        <iconify-icon icon="material-symbols:chevron-left-rounded" width="28" aria-hidden="true"></iconify-icon>
+        Back
+      </a>
+      <nav class="top-nav" aria-label="Main menu">
+        <a class="nav-tab" href="p01-today.html">
+          <iconify-icon icon="mingcute:home-1-fill" width="22" aria-hidden="true"></iconify-icon>
+          Home
+        </a>
+        <a class="nav-tab nav-tab--active" href="p02-med-alert.html" aria-current="page">
+          <iconify-icon icon="mingcute:clipboard-fill" width="22" aria-hidden="true"></iconify-icon>
+          To-do
+        </a>
+        <a class="nav-tab" href="p03-call.html">
+          <iconify-icon icon="material-symbols:family-restroom-rounded" width="22" aria-hidden="true"></iconify-icon>
+          Family
+        </a>
+        <a class="nav-tab" href="p08-help.html">
+          <iconify-icon icon="ph:hand-waving-fill" width="22" aria-hidden="true"></iconify-icon>
+          Help
+        </a>
+      </nav>
+      <div aria-hidden="true"></div>
+    </header>
+
+    <div class="main">
+
+      <div class="todo-head">
+        <h1>Today's tasks</h1>
+        <p class="sub">Sat, Apr 18 · It's now 2:30 PM</p>
+      </div>
+
+      <div class="progress glass" aria-label="Today's progress">
+        <div class="progress-label">
+          <div class="big">Today <em>4 / 7</em> done</div>
+          <div class="small">Next: 2:30 PM, take your pills</div>
+        </div>
+        <div class="progress-bar" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7">
+          <div class="progress-fill" style="--bar-w:57%"></div>
+        </div>
+      </div>
+
+      <div class="todo-list glass" role="list" aria-label="Today's task timeline">
+
+        <div class="todo-item done" role="listitem">
+          <div class="todo-time"><span class="ampm">AM</span>8:00</div>
+          <div class="todo-icon">
+            <iconify-icon icon="mingcute:check-fill" width="20" aria-hidden="true"></iconify-icon>
+          </div>
+          <div class="todo-main">
+            <div class="todo-name">Breakfast</div>
+            <div class="todo-sub">Porridge · three side dishes</div>
+          </div>
+          <div class="todo-status">Done</div>
+        </div>
+
+        <div class="todo-item done" role="listitem">
+          <div class="todo-time"><span class="ampm">AM</span>8:30</div>
+          <div class="todo-icon">
+            <iconify-icon icon="mingcute:check-fill" width="20" aria-hidden="true"></iconify-icon>
+          </div>
+          <div class="todo-main">
+            <div class="todo-name">Morning pills</div>
+            <div class="todo-sub">BP pill · Diabetes pill</div>
+          </div>
+          <div class="todo-status">Done</div>
+        </div>
+
+        <div class="todo-item done" role="listitem">
+          <div class="todo-time"><span class="ampm">AM</span>10:00</div>
+          <div class="todo-icon">
+            <iconify-icon icon="mingcute:check-fill" width="20" aria-hidden="true"></iconify-icon>
+          </div>
+          <div class="todo-main">
+            <div class="todo-name">Blood pressure check</div>
+            <div class="todo-sub">Caregiver visit · 122/78</div>
+          </div>
+          <div class="todo-status">Done</div>
+        </div>
+
+        <div class="todo-item done" role="listitem">
+          <div class="todo-time"><span class="ampm">PM</span>12:00</div>
+          <div class="todo-icon">
+            <iconify-icon icon="mingcute:check-fill" width="20" aria-hidden="true"></iconify-icon>
+          </div>
+          <div class="todo-main">
+            <div class="todo-name">Lunch</div>
+            <div class="todo-sub">Rice · soup · side dishes</div>
+          </div>
+          <div class="todo-status">Done</div>
+        </div>
+
+        <div class="todo-item now" role="listitem" aria-current="true">
+          <div class="todo-time"><span class="ampm">PM</span>2:30</div>
+          <div class="todo-icon">
+            <iconify-icon icon="mingcute:capsule-fill" width="22" aria-hidden="true"></iconify-icon>
+          </div>
+          <div class="todo-main">
+            <div class="todo-name">Take afternoon pills</div>
+            <div class="todo-sub">BP pill · Diabetes pill · Vitamin D · with a glass of water</div>
+          </div>
+          <div class="todo-status">Now</div>
+        </div>
+
+        <div class="todo-item upcoming" role="listitem">
+          <div class="todo-time"><span class="ampm">PM</span>4:00</div>
+          <div class="todo-icon">
+            <iconify-icon icon="material-symbols:directions-run-rounded" width="22" aria-hidden="true"></iconify-icon>
+          </div>
+          <div class="todo-main">
+            <div class="todo-name">Take a walk</div>
+            <div class="todo-sub">Neighborhood park · about 30 min</div>
+          </div>
+          <div class="todo-status">Up next</div>
+        </div>
+
+        <div class="todo-item upcoming" role="listitem">
+          <div class="todo-time"><span class="ampm">PM</span>6:00</div>
+          <div class="todo-icon">
+            <iconify-icon icon="ph:bowl-food-fill" width="22" aria-hidden="true"></iconify-icon>
+          </div>
+          <div class="todo-main">
+            <div class="todo-name">Dinner · Evening pills</div>
+            <div class="todo-sub">BP pill · Diabetes pill</div>
+          </div>
+          <div class="todo-status">Up next</div>
+        </div>
+
+      </div>
+
+      <div class="now-action">
+        <button type="button" class="btn btn--lg btn--success" id="markNowDone">
+          <iconify-icon icon="mingcute:check-circle-fill" width="28" aria-hidden="true"></iconify-icon>
+          I took my afternoon pills
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // "지금" 항목의 완료 버튼 — 눌리면 그 줄을 완료로 바꾸고 진행 바도 업데이트.
+    (function () {
+      var btn = document.getElementById('markNowDone');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var nowRow = document.querySelector('.todo-item.now');
+        if (!nowRow) return;
+        nowRow.classList.remove('now');
+        nowRow.classList.add('done');
+        nowRow.setAttribute('aria-current', 'false');
+        nowRow.querySelector('.todo-status').textContent = 'Done';
+        nowRow.querySelector('.todo-icon').innerHTML =
+          '<iconify-icon icon="mingcute:check-fill" width="20" aria-hidden="true"></iconify-icon>';
+
+        // 진행 바 업데이트
+        var fill = document.querySelector('.progress-fill');
+        var big = document.querySelector('.progress-label .big');
+        var bar = document.querySelector('.progress-bar');
+        if (fill && big && bar) {
+          fill.style.width = '71%';
+          big.innerHTML = 'Today <em>5 / 7</em> done';
+          bar.setAttribute('aria-valuenow', '5');
+        }
+        var small = document.querySelector('.progress-label .small');
+        if (small) small.textContent = 'Next: 4:00 PM, take a walk';
+
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.pointerEvents = 'none';
+      });
+    })();
+  </script>
+
+</body>
+</html>

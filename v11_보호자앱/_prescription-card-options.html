@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ko" data-role="guardian" data-platform="mobile">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>처방전 박스 · 개선안 5</title>
+<link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+<script src="../07_디자인/_iconify-icon.min.js"></script>
+<style>
+  :root{
+    --t1: var(--color-text-primary);
+    --t2: var(--color-text-secondary);
+    --t3: var(--color-text-tertiary);
+    --blue: var(--brand-blue-500);
+    --blue-strong: var(--brand-blue-600);
+    --blue-soft: var(--brand-blue-50);
+    --blue-chip: var(--brand-blue-100);
+    --amber-t: var(--palette-amber-700);
+    --amber-soft: var(--color-warning-soft);
+    --shadow: 0 2px 12px rgba(0,0,0,.05), 0 1px 3px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:var(--font-family-base);
+    background:var(--color-bg-canvas);color:var(--t1);
+    padding:30px 16px 90px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto}
+  h1{font-size:23px;font-weight:800;letter-spacing:-.5px;margin-bottom:7px}
+  .sub{font-size:13.5px;color:var(--t2);line-height:1.65;margin-bottom:18px;max-width:760px}
+  .issue{
+    font-size:12.5px;color:var(--t2);line-height:1.7;background:var(--color-bg-surface);
+    border-radius:14px;padding:15px 17px;margin-bottom:14px;box-shadow:var(--shadow);max-width:760px;
+  }
+  .issue b{color:var(--blue-strong)}
+  .rules{
+    font-size:11.5px;color:var(--t3);line-height:1.6;margin-bottom:30px;max-width:760px;
+  }
+  .rules b{color:var(--amber-t)}
+
+  /* before strip */
+  .before-strip{margin-bottom:34px}
+  .before-strip .stage{max-width:340px}
+
+  /* options grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:24px}
+  .opt{background:var(--color-bg-surface);border-radius:18px;padding:16px 16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .opt.is-before{max-width:372px}
+  .opt-head{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+  .opt-no{
+    font-size:12.5px;font-weight:800;color:var(--color-text-on-accent);background:var(--blue);
+    width:23px;height:23px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .opt-no.is-soft{background:var(--amber-t)}
+  .opt-no.is-before{background:var(--t3)}
+  .opt-name{font-size:15px;font-weight:800;letter-spacing:-.3px}
+  .opt-desc{font-size:12px;color:var(--t3);line-height:1.55;margin:7px 2px 15px;min-height:52px}
+  .opt-tag{display:inline-block;font-size:10.5px;font-weight:700;color:var(--blue-strong);background:var(--blue-soft);border-radius:6px;padding:2px 7px;margin-left:auto;flex-shrink:0}
+  .opt-tag.is-soft{color:var(--amber-t);background:var(--amber-soft)}
+  .stage{
+    background:var(--blue-soft);border-radius:16px;padding:18px;
+    display:flex;justify-content:center;margin-top:auto;
+  }
+
+  /* ===== 공통 처방 카드 베이스 ===== */
+  .rx{
+    background:var(--color-bg-surface);border-radius:18px;padding:18px;width:100%;
+    box-shadow:0 2px 10px rgba(0,0,0,.045),0 1px 3px rgba(0,0,0,.04);
+  }
+  .rx .ic{
+    width:40px;height:40px;border-radius:12px;background:var(--blue-chip);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .rx .ic iconify-icon{font-size:20px;color:var(--blue)}
+
+  /* ───────── 현행 (BEFORE) ───────── */
+  .b-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .b-name{font-size:17px;font-weight:700;letter-spacing:-.3px}
+  .b-type{font-size:13px;color:var(--t2)}
+  .b-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin:14px 0}
+  .b-lab{font-size:11px;color:var(--t3)}
+  .b-val{font-size:14px;font-weight:600;margin-top:3px}
+  .b-warn-h{display:flex;align-items:center;gap:5px;font-size:14px;font-weight:700;color:var(--amber-t);margin:14px 0 9px}
+  .b-warn-h iconify-icon{font-size:16px}
+  .b-warn ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .b-warn li{font-size:13px;color:var(--t2);line-height:1.5;padding-left:11px;position:relative}
+  .b-warn li::before{content:'';position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--color-warning)}
+
+  /* ───────── O1 · 타이포 위계형 ───────── */
+  .o1-type{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.3px;margin-bottom:4px}
+  .o1-name{font-size:24px;font-weight:800;letter-spacing:-.6px;line-height:1.1}
+  .o1-name span{font-size:17px;font-weight:700;color:var(--t2);margin-left:2px}
+  .o1-sched{font-size:16px;font-weight:600;color:var(--t1);margin-top:12px}
+  .o1-meta{font-size:11.5px;color:var(--t3);margin-top:6px}
+  .o1-warn{margin-top:16px}
+  .o1-warn-h{font-size:11px;font-weight:800;color:var(--amber-t);letter-spacing:.4px}
+  .o1-warn p{font-size:12.5px;color:var(--t2);line-height:1.6;margin-top:5px}
+
+  /* ───────── O2 · 핵심 행동 우선형 ───────── */
+  .o2-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .o2-name{font-size:17px;font-weight:800;letter-spacing:-.3px}
+  .o2-type{font-size:12px;color:var(--t3);margin-top:3px}
+  .o2-hero{display:flex;gap:20px;margin:16px 0 4px}
+  .o2-hero-item{display:flex;flex-direction:column;gap:4px}
+  .o2-hero-item .k{font-size:11px;font-weight:700;color:var(--t3)}
+  .o2-hero-item b{font-size:21px;font-weight:800;letter-spacing:-.5px;color:var(--blue-strong);line-height:1}
+  .o2-warn{margin-top:16px}
+  .o2-warn-h{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--amber-t);margin-bottom:8px}
+  .o2-warn-h iconify-icon{font-size:15px}
+  .o2-warn ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+  .o2-warn li{font-size:12.5px;color:var(--t2);line-height:1.5;padding-left:11px;position:relative}
+  .o2-warn li::before{content:'';position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--color-warning)}
+
+  /* ───────── O3 · 아이콘 리딩 데이터행 ───────── */
+  .o3-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .o3-name{font-size:17px;font-weight:800;letter-spacing:-.3px}
+  .o3-type{font-size:12.5px;color:var(--t2);margin-top:2px}
+  .o3-rows{display:flex;flex-direction:column}
+  .o3-row{display:flex;align-items:center;gap:11px;padding:9px 0}
+  .o3-row iconify-icon{font-size:18px;color:var(--t3);flex-shrink:0}
+  .o3-row .lab{font-size:13px;color:var(--t3)}
+  .o3-row .val{font-size:13.5px;font-weight:600;color:var(--t1);margin-left:auto}
+  .o3-warn{display:flex;align-items:center;gap:11px;padding:10px 0 0}
+  .o3-warn iconify-icon{font-size:18px;color:var(--amber-t);flex-shrink:0}
+  .o3-warn .txt{font-size:12.5px;color:var(--t2);line-height:1.5}
+  .o3-warn .txt b{color:var(--amber-t);font-weight:700}
+
+  /* ───────── O4 · 구획 그룹형 ───────── */
+  .o4-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .o4-name{font-size:17px;font-weight:800;letter-spacing:-.3px}
+  .o4-type{font-size:12.5px;color:var(--t2);margin-top:2px}
+  .o4-sec{margin-bottom:16px}
+  .o4-sec:last-child{margin-bottom:0}
+  .o4-lab{font-size:10.5px;font-weight:800;color:var(--t3);letter-spacing:.6px;margin-bottom:7px}
+  .o4-lab--warn{color:var(--amber-t)}
+  .o4-row{font-size:15px;color:var(--t1)}
+  .o4-row b{font-weight:700}
+  .o4-quiet{font-size:13px;color:var(--t2)}
+  .o4-warn{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .o4-warn li{font-size:12.5px;color:var(--t2);line-height:1.5;padding-left:11px;position:relative}
+  .o4-warn li::before{content:'';position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--color-warning)}
+
+  /* ───────── O5 · 시맨틱 콜아웃형 ───────── */
+  .o5-head{display:flex;align-items:center;gap:12px}
+  .o5-name{font-size:17px;font-weight:800;letter-spacing:-.3px}
+  .o5-sched{font-size:13px;color:var(--t2);margin-top:3px}
+  .o5-sched b{color:var(--t1);font-weight:600}
+  .o5-callout{background:var(--amber-soft);border-radius:12px;padding:13px 14px;margin-top:16px}
+  .o5-callout-h{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:var(--amber-t);margin-bottom:9px}
+  .o5-callout-h iconify-icon{font-size:16px}
+  .o5-callout ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .o5-callout li{font-size:12.5px;color:var(--amber-t);line-height:1.5;padding-left:12px;position:relative;opacity:.92}
+  .o5-callout li::before{content:'';position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--amber-t);opacity:.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>처방전 박스 · 개선안 5</h1>
+  <p class="sub">현재 카드는 정보가 같은 굵기·크기로 평평하게 나열돼 "텍스트 벽"처럼 보이고, 무엇이 중요한지(언제·얼마나 먹이나, 보호자가 알아야 할 위험) 위계가 약합니다. 아래는 같은 정보를 서로 다른 방식으로 정리한 5가지 방향입니다.</p>
+
+  <div class="issue">
+    <b>현행 문제</b> · ① 약 이름·복용정보·메타(처방일/담당의)가 비슷한 비중 → 평평함 ② 보호자에게 가장 중요한 "복용법"과 "주의"가 묻힘 ③ 2×2 그리드가 표처럼 건조함
+  </div>
+  <p class="rules">설계 기준: 위계는 <b>타이포·크기·간격</b>으로 (배경 컬러필·보더·그라데이션 지양). 5번만 안전정보 강조를 위해 <b>시맨틱 소프트 콜아웃</b>(디자인시스템의 card-alert 패턴)을 사용 — 룰 경계라 별도 표시.</p>
+
+  <!-- ===== BEFORE ===== -->
+  <div class="before-strip">
+    <div class="opt is-before">
+      <div class="opt-head"><span class="opt-no is-before">현</span><span class="opt-name">현행 (Before)</span></div>
+      <div class="opt-desc">지금 화면. 비교 기준.</div>
+      <div class="stage">
+        <div class="rx">
+          <div class="b-head">
+            <span class="ic"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+            <div><div class="b-name">아모디핀 5mg</div><div class="b-type">혈압약</div></div>
+          </div>
+          <div class="b-grid">
+            <div><div class="b-lab">복용 시간</div><div class="b-val">아침 식후</div></div>
+            <div><div class="b-lab">용량</div><div class="b-val">1정</div></div>
+            <div><div class="b-lab">처방일</div><div class="b-val">2026.03.15</div></div>
+            <div><div class="b-lab">담당의</div><div class="b-val">이상훈 원장</div></div>
+          </div>
+          <div class="b-warn">
+            <div class="b-warn-h"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> 보호자가 알아야 할 것</div>
+            <ul>
+              <li>자몽 주스와 함께 복용 금지</li>
+              <li>일어설 때 천천히 — 기립성 저혈압</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== OPTIONS ===== -->
+  <div class="grid">
+
+    <!-- O1 -->
+    <div class="opt">
+      <div class="opt-head"><span class="opt-no">1</span><span class="opt-name">타이포 위계형</span><span class="opt-tag">순수 룰</span></div>
+      <div class="opt-desc">약 이름을 헤드라인급으로 키워 주인공으로. 복용법은 행동선(secondary), 처방일·담당의는 작은 메타로 강등. 아이콘·필·보더 없이 크기·굵기·톤만으로 위계.</div>
+      <div class="stage">
+        <div class="rx o1">
+          <div class="o1-type">혈압약</div>
+          <div class="o1-name">아모디핀 <span>5mg</span></div>
+          <div class="o1-sched">아침 식후 · 1정</div>
+          <div class="o1-meta">처방 2026.03.15 · 이상훈 원장</div>
+          <div class="o1-warn">
+            <div class="o1-warn-h">주의</div>
+            <p>자몽 주스와 함께 복용 금지 · 일어설 때 천천히(기립성 저혈압)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- O2 -->
+    <div class="opt">
+      <div class="opt-head"><span class="opt-no">2</span><span class="opt-name">핵심 행동 우선형</span><span class="opt-tag">순수 룰</span></div>
+      <div class="opt-desc">보호자의 1번 질문 "언제·얼마나"를 가장 큰 요소로. 복용 정보를 강조 숫자로 키워 시선 앵커로 삼고, 행정 메타는 헤더로 축소.</div>
+      <div class="stage">
+        <div class="rx o2">
+          <div class="o2-top">
+            <div><div class="o2-name">아모디핀 5mg</div><div class="o2-type">혈압약 · 이상훈 원장 · 2026.03.15</div></div>
+            <span class="ic"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+          </div>
+          <div class="o2-hero">
+            <div class="o2-hero-item"><span class="k">언제</span><b>아침 식후</b></div>
+            <div class="o2-hero-item"><span class="k">얼마나</span><b>1정</b></div>
+          </div>
+          <div class="o2-warn">
+            <div class="o2-warn-h"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> 보호자가 알아야 할 것</div>
+            <ul>
+              <li>자몽 주스와 함께 복용 금지</li>
+              <li>일어설 때 천천히 — 기립성 저혈압</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- O3 -->
+    <div class="opt">
+      <div class="opt-head"><span class="opt-no">3</span><span class="opt-name">아이콘 리딩 데이터행</span><span class="opt-tag">순수 룰</span></div>
+      <div class="opt-desc">2×2 표를 세로 행으로 풀고 각 행 앞에 모노톤 아이콘. 텍스트 벽을 끊어 스캔이 쉬워지고, 값은 우측 정렬로 정돈.</div>
+      <div class="stage">
+        <div class="rx o3">
+          <div class="o3-head">
+            <span class="ic"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+            <div><div class="o3-name">아모디핀 5mg</div><div class="o3-type">혈압약</div></div>
+          </div>
+          <div class="o3-rows">
+            <div class="o3-row"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon><span class="lab">복용 시간</span><span class="val">아침 식후</span></div>
+            <div class="o3-row"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon><span class="lab">용량</span><span class="val">1정</span></div>
+            <div class="o3-row"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon><span class="lab">처방일</span><span class="val">2026.03.15</span></div>
+            <div class="o3-row"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="lab">담당의</span><span class="val">이상훈 원장</span></div>
+          </div>
+          <div class="o3-warn">
+            <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
+            <span class="txt"><b>주의</b> · 자몽 주스 금지, 일어설 때 천천히(기립성 저혈압)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- O4 -->
+    <div class="opt">
+      <div class="opt-head"><span class="opt-no">4</span><span class="opt-name">구획 그룹형</span><span class="opt-tag">순수 룰</span></div>
+      <div class="opt-desc">카드를 "복용법 / 처방 정보 / 주의" 미니 구획으로 나누고 작은 라벨 + 넉넉한 간격으로 그룹화. 정보 묶음이 명확해 위계가 또렷.</div>
+      <div class="stage">
+        <div class="rx o4">
+          <div class="o4-head">
+            <span class="ic"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+            <div><div class="o4-name">아모디핀 5mg</div><div class="o4-type">혈압약</div></div>
+          </div>
+          <div class="o4-sec">
+            <div class="o4-lab">복용법</div>
+            <div class="o4-row"><b>아침 식후</b> · 1정</div>
+          </div>
+          <div class="o4-sec">
+            <div class="o4-lab">처방 정보</div>
+            <div class="o4-row o4-quiet">2026.03.15 · 이상훈 원장</div>
+          </div>
+          <div class="o4-sec">
+            <div class="o4-lab o4-lab--warn">보호자가 알아야 할 것</div>
+            <ul class="o4-warn">
+              <li>자몽 주스와 함께 복용 금지</li>
+              <li>일어설 때 천천히 — 기립성 저혈압</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- O5 -->
+    <div class="opt">
+      <div class="opt-head"><span class="opt-no is-soft">5</span><span class="opt-name">시맨틱 콜아웃형</span><span class="opt-tag is-soft">소프트필</span></div>
+      <div class="opt-desc">약 정보는 간결하게, 가장 중요한 "안전 주의"를 소프트 호박색 콜아웃으로 띄워 앵커. 단, 배경 컬러필을 쓰므로 룰 경계 — 의미적 강조(card-alert)로만 한정.</div>
+      <div class="stage">
+        <div class="rx o5">
+          <div class="o5-head">
+            <span class="ic"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+            <div>
+              <div class="o5-name">아모디핀 5mg</div>
+              <div class="o5-sched"><b>아침 식후 · 1정</b> · 혈압약 · 이상훈 원장</div>
+            </div>
+          </div>
+          <div class="o5-callout">
+            <div class="o5-callout-h"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> 보호자가 알아야 할 것</div>
+            <ul>
+              <li>자몽 주스와 함께 복용 금지 — 약물 농도 상승</li>
+              <li>일어설 때 천천히 — 기립성 저혈압</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

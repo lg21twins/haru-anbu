@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-role="caregiver" data-platform="mobile">
+<html lang="en" data-role="caregiver" data-platform="mobile" data-toast-duration="2000">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -220,7 +220,7 @@
     }
     .now-row > iconify-icon { font-size: 15px; color: var(--t3); flex-shrink: 0; }
 
-    /* Hero row (박영자 · 1순위) · 미세 강조만 */
+    /* Hero row (Yeong-ja Park · 1순위) · 미세 강조만 */
     .now-row.hero { padding: 10px 4px; }
     .now-row.hero .now-row-t { font-size: 14px; }
     .now-row.hero .now-row-s { font-size: 11.5px; }
@@ -679,19 +679,7 @@
     /* v3.2.7: .bottom-bar / .tabbar / .tab 로컬 정의 제거 — caregiver.css가 SoT (4-b 섹션) */
 
     /* Toast */
-    .toast {
-      position: fixed; top: 72px; left: 50%;
-      transform: translateX(-50%) translateY(-8px);
-      background: rgba(28,28,30,.92); color: var(--palette-white);
-      padding: 11px 20px; border-radius: 999px;
-      font-size: 13px; font-weight: 600;
-      box-shadow: 0 8px 24px rgba(0,0,0,.2);
-      z-index: 400; opacity: 0; pointer-events: none;
-      transition: opacity .22s, transform .22s;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* 등장 */
+/* 등장 */
     @keyframes haru-fade-in-up {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -708,6 +696,8 @@
     .kp-btn { flex: 1; }
     .kp-btn--cancel { background: var(--palette-gray-100); color: var(--color-text-secondary); }
   </style>
+  <link rel="stylesheet" href="../07_디자인/system/interactions.css">
+  <script src="../07_디자인/system/interactions.js"></script>
 </head>
 <body>
   <div class="bg"></div>
@@ -723,7 +713,7 @@
           <h1 class="h-name">Care Records</h1>
         </div>
         <button class="icon-btn" type="button" aria-label="Voice memo" onclick="toast('Voice memo started (5s)')">
-          <iconify-icon icon="fluent:mic-24-filled"></iconify-icon>
+          <iconify-icon icon="ph:microphone-fill"></iconify-icon>
         </button>
       </div>
     </header>
@@ -732,55 +722,55 @@
     <section class="now-card">
       <div class="now-head">
         <span class="now-k">
-          <iconify-icon icon="fluent:clock-alarm-24-filled"></iconify-icon>
+          <iconify-icon icon="material-symbols:alarm-rounded"></iconify-icon>
           Due now
         </span>
       </div>
 
       <div class="now-rows">
-        <button class="now-row hero" onclick="openPatient('park')">
+        <button type="button" class="now-row hero" onclick="openPatient('park')">
           <span class="av md warn">P</span>
           <div class="now-row-body">
             <div class="now-row-t"><b>Ms. Park</b> · Recheck blood sugar</div>
             <div class="now-row-s">A-3 · Before lunch · Morning glucose <b class="warn-text">142, watch</b></div>
           </div>
-          <iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
+          <iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>
         </button>
-        <button class="now-row" onclick="openPatient('choi')">
+        <button type="button" class="now-row" onclick="openPatient('choi')">
           <span class="av sm">C</span>
           <div class="now-row-body">
             <div class="now-row-t"><b>Ms. Choi</b> · Finish hygiene</div>
             <div class="now-row-s">B-1 · 10 min ago</div>
           </div>
-          <iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
+          <iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>
         </button>
-        <button class="now-row" onclick="openPatient('lee')">
+        <button type="button" class="now-row" onclick="openPatient('lee')">
           <span class="av sm">L</span>
           <div class="now-row-body">
             <div class="now-row-t"><b>Ms. Lee</b> · Afternoon activity</div>
             <div class="now-row-s">A-7 · 14:00 scheduled</div>
           </div>
-          <iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
+          <iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>
         </button>
       </div>
 
-      <button class="now-card-cta" onclick="openQuick('bp', 'park')">
-        <iconify-icon icon="fluent:edit-24-filled"></iconify-icon>
+      <button type="button" class="now-card-cta" onclick="openQuick('bp', 'park')">
+        <iconify-icon icon="mingcute:pencil-fill"></iconify-icon>
         <span>Record now · <b>Ms. Park blood sugar</b></span>
-        <iconify-icon icon="fluent:arrow-right-24-filled" class="ar"></iconify-icon>
+        <iconify-icon icon="mingcute:arrow-right-fill" class="ar"></iconify-icon>
       </button>
     </section>
 
     <!-- 담당 환자 (4명) · 섹션 레이블 대신 토글만 -->
     <div class="pt-toggle-row">
       <div class="pt-toggle" role="tablist">
-        <button class="on" onclick="togglePtView(this, 'patient')">By patient</button>
-        <button onclick="togglePtView(this, 'time')">By time</button>
+        <button type="button" class="on" onclick="togglePtView(this, 'patient')">By patient</button>
+        <button type="button" onclick="togglePtView(this, 'time')">By time</button>
       </div>
       <span class="pt-toggle-hint">4 assigned · Tap → full record</span>
     </div>
     <div class="pt-list">
-      <button class="pt-row-c warn" onclick="openPatient('park')">
+      <button type="button" class="pt-row-c warn" onclick="openPatient('park')">
         <span class="av lg warn">P</span>
         <div class="pt-row-info">
           <div class="pt-row-top">
@@ -796,7 +786,7 @@
         </div>
       </button>
 
-      <button class="pt-row-c" onclick="openPatient('choi')">
+      <button type="button" class="pt-row-c" onclick="openPatient('choi')">
         <span class="av lg">C</span>
         <div class="pt-row-info">
           <div class="pt-row-top">
@@ -812,7 +802,7 @@
         </div>
       </button>
 
-      <button class="pt-row-c" onclick="openPatient('kim')">
+      <button type="button" class="pt-row-c" onclick="openPatient('kim')">
         <span class="av lg">K</span>
         <div class="pt-row-info">
           <div class="pt-row-top">
@@ -828,12 +818,12 @@
         </div>
       </button>
 
-      <button class="pt-row-c done" onclick="openPatient('lee')">
+      <button type="button" class="pt-row-c done" onclick="openPatient('lee')">
         <span class="av lg ok">L</span>
         <div class="pt-row-info">
           <div class="pt-row-top">
             <div class="pt-row-n">Ms. Lee <span class="room">· A-7 · Age 85</span></div>
-            <div class="pt-row-pct"><span class="ok"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>Done</span></div>
+            <div class="pt-row-pct"><span class="ok"><iconify-icon icon="mingcute:check-circle-fill"></iconify-icon>Done</span></div>
           </div>
           <div class="pt-row-bar-wrap">
             <div class="pt-row-bar"><span style="--bar-w:100%"></span></div>
@@ -854,13 +844,13 @@
     <header class="header">
       <div class="top-nav">
         <button class="icon-btn" type="button" onclick="backToHub()" aria-label="Back">
-          <iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon>
+          <iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon>
         </button>
         <div class="title-block">
           <h1 class="h-name" id="pdName">Ms. Park · A-3</h1>
         </div>
         <button class="icon-btn" type="button" onclick="openStepperMode()" aria-label="Check in order">
-          <iconify-icon icon="fluent:text-bullet-list-tree-24-filled"></iconify-icon>
+          <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         </button>
       </div>
     </header>
@@ -876,15 +866,15 @@
         <span class="pf-tag warn">Glucose watch</span>
       </div>
       <div class="pf-alert">
-        <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
         <span>Post-meal glucose 142 mg/dL — recheck before lunch advised</span>
       </div>
     </section>
 
     <div class="seg" role="tablist">
-      <button class="seg-btn active">Morning</button>
-      <button class="seg-btn">Afternoon</button>
-      <button class="seg-btn">Night</button>
+      <button type="button" class="seg-btn active">Morning</button>
+      <button type="button" class="seg-btn">Afternoon</button>
+      <button type="button" class="seg-btn">Night</button>
     </div>
 
     <div class="pd-bar-wrap">
@@ -893,9 +883,9 @@
 
     <!-- 2×4 그리드 -->
     <div class="grid8">
-      <button class="g-card done" onclick="openStepperAt(1)">
+      <button type="button" class="g-card done" onclick="openStepperAt(1)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon></span>
           <span class="g-state">Done</span>
         </div>
         <div class="g-t">Vitals</div>
@@ -903,9 +893,9 @@
         <div class="g-prev">Yesterday 128/82 · 36.5°</div>
       </button>
 
-      <button class="g-card done" onclick="openStepperAt(2)">
+      <button type="button" class="g-card done" onclick="openStepperAt(2)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="fluent:food-24-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="ph:bowl-food-fill"></iconify-icon></span>
           <span class="g-state">Done</span>
         </div>
         <div class="g-t">Meal</div>
@@ -913,9 +903,9 @@
         <div class="g-prev">Yesterday 80% · Regular diet</div>
       </button>
 
-      <button class="g-card done" onclick="openStepperAt(3)">
+      <button type="button" class="g-card done" onclick="openStepperAt(3)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
           <span class="g-state">Done</span>
         </div>
         <div class="g-t">Medication</div>
@@ -923,9 +913,9 @@
         <div class="g-prev">Diabetes · joint · supplement pending</div>
       </button>
 
-      <button class="g-card now" onclick="openStepperAt(4)">
+      <button type="button" class="g-card now" onclick="openStepperAt(4)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="fluent:drop-24-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="mingcute:drop-fill"></iconify-icon></span>
           <span class="g-state">In progress</span>
         </div>
         <div class="g-t">Hygiene</div>
@@ -933,9 +923,9 @@
         <div class="g-prev">Hair wash · bath pending</div>
       </button>
 
-      <button class="g-card idle" onclick="openStepperAt(5)">
+      <button type="button" class="g-card idle" onclick="openStepperAt(5)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="fluent:person-walking-24-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="material-symbols:directions-run-rounded"></iconify-icon></span>
           <span class="g-state">Pending</span>
         </div>
         <div class="g-t">Activity</div>
@@ -943,9 +933,9 @@
         <div class="g-prev">Yesterday walk 25 min</div>
       </button>
 
-      <button class="g-card idle" onclick="openStepperAt(6)">
+      <button type="button" class="g-card idle" onclick="openStepperAt(6)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="fluent:drop-24-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="mingcute:drop-fill"></iconify-icon></span>
           <span class="g-state">Pending</span>
         </div>
         <div class="g-t">Toileting</div>
@@ -953,9 +943,9 @@
         <div class="g-prev">Yesterday urine 4x</div>
       </button>
 
-      <button class="g-card idle" onclick="openStepperAt(7)">
+      <button type="button" class="g-card idle" onclick="openStepperAt(7)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="fluent:brain-circuit-24-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="mingcute:brain-fill"></iconify-icon></span>
           <span class="g-state">Pending</span>
         </div>
         <div class="g-t">Cognition · mood</div>
@@ -963,9 +953,9 @@
         <div class="g-prev">Yesterday good</div>
       </button>
 
-      <button class="g-card idle" onclick="openStepperAt(8)">
+      <button type="button" class="g-card idle" onclick="openStepperAt(8)">
         <div class="g-head">
-          <span class="g-ic"><iconify-icon icon="fluent:note-24-filled"></iconify-icon></span>
+          <span class="g-ic"><iconify-icon icon="fluent:notepad-24-filled"></iconify-icon></span>
           <span class="g-state">Pending</span>
         </div>
         <div class="g-t">Notes</div>
@@ -979,27 +969,27 @@
   <div class="bottom-bar">
     <nav class="tabbar" aria-label="Caregiver app tab bar">
       <a href="c01-today.en.html" class="tab" aria-label="Today">
-        <iconify-icon icon="fluent:home-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:home-1-fill"></iconify-icon>
         <span class="tab-label">Today</span>
       </a>
       <a href="c02-checklist.en.html" class="tab active" aria-current="page" aria-label="Records">
-        <iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>
         <span class="tab-label">Records</span>
       </a>
       <a href="c03-sotong.en.html" class="tab" aria-label="Messages">
-        <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+        <iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>
         <span class="tab-label">Messages</span>
       </a>
       <a href="c04-mypage.en.html" class="tab" aria-label="My">
-        <iconify-icon icon="fluent:person-24-filled"></iconify-icon>
+        <iconify-icon icon="mingcute:user-3-fill"></iconify-icon>
         <span class="tab-label">My</span>
       </a>
     </nav>
-    <button class="cg-sos" data-sos-bind aria-label="Emergency SOS · hold 3s to call immediately">
+    <button type="button" class="cg-sos" data-sos-bind aria-label="Emergency SOS · hold 3s to call immediately">
       <span class="cg-sos__ring" aria-hidden="true">
         <svg class="sos-ring" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27"/></svg>
       </span>
-      <iconify-icon icon="fluent:warning-24-filled"></iconify-icon>
+      <iconify-icon icon="mingcute:warning-fill"></iconify-icon>
     </button>
   </div>
 
@@ -1021,24 +1011,24 @@
           <div class="bs-t" id="bsT">Vitals record</div>
           <div class="bs-s" id="bsS">Last values prefilled · tap to edit</div>
         </div>
-        <button class="bs-close" onclick="closeBS()" aria-label="Close"><iconify-icon icon="fluent:dismiss-24-filled"></iconify-icon></button>
+        <button type="button" class="bs-close" onclick="closeBS()" aria-label="Close"><iconify-icon icon="mingcute:close-fill"></iconify-icon></button>
       </div>
 
       <!-- 환자 셀렉터 -->
       <div class="bs-pt" id="bsPt">
-        <button class="bs-pt-c" data-id="park">
+        <button type="button" class="bs-pt-c" data-id="park">
           <span class="av md warn">P</span>
           <span class="bs-pt-nm">Ms. Park<span class="bs-pt-rm">A-3</span></span>
         </button>
-        <button class="bs-pt-c" data-id="choi">
+        <button type="button" class="bs-pt-c" data-id="choi">
           <span class="av md">C</span>
           <span class="bs-pt-nm">Ms. Choi<span class="bs-pt-rm">B-1</span></span>
         </button>
-        <button class="bs-pt-c" data-id="kim">
+        <button type="button" class="bs-pt-c" data-id="kim">
           <span class="av md">K</span>
           <span class="bs-pt-nm">Ms. Kim<span class="bs-pt-rm">B-2</span></span>
         </button>
-        <button class="bs-pt-c" data-id="lee">
+        <button type="button" class="bs-pt-c" data-id="lee">
           <span class="av md ok">L</span>
           <span class="bs-pt-nm">Ms. Lee<span class="bs-pt-rm">A-7</span></span>
         </button>
@@ -1048,9 +1038,9 @@
       <div id="bsBody"></div>
 
       <div class="bs-foot">
-        <button class="bs-btn ghost" onclick="closeBS()">Cancel</button>
-        <button class="bs-btn primary" onclick="saveQuick()">
-          <iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon>
+        <button type="button" class="bs-btn ghost" onclick="closeBS()">Cancel</button>
+        <button type="button" class="bs-btn primary" onclick="saveQuick()">
+          <iconify-icon icon="mingcute:check-fill"></iconify-icon>
           Save
         </button>
       </div>
@@ -1065,15 +1055,15 @@
 
     <div class="st-header">
       <div class="st-top">
-        <button class="icon-btn" onclick="closeStepper()" aria-label="Close">
-          <iconify-icon icon="fluent:dismiss-24-filled"></iconify-icon>
+        <button type="button" class="icon-btn" onclick="closeStepper()" aria-label="Close">
+          <iconify-icon icon="mingcute:close-fill"></iconify-icon>
         </button>
         <div class="st-ctx">
           <div class="st-ctx-top"><b id="stPtName">Ms. Park</b> · Check in order</div>
           <div class="st-ctx-sub" id="stepLabel">1 / 8 · Vitals</div>
         </div>
-        <button class="icon-btn" onclick="toast('Draft saved')" aria-label="Save draft">
-          <iconify-icon icon="fluent:save-24-filled"></iconify-icon>
+        <button type="button" class="icon-btn" onclick="toast('Draft saved')" aria-label="Save draft">
+          <iconify-icon icon="mingcute:save-2-fill"></iconify-icon>
         </button>
       </div>
       <div class="dots" id="dots"></div>
@@ -1083,120 +1073,120 @@
     <div class="st-body">
       <section class="step active" data-step="1">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon>Step 1 · Vitals</span>
+          <span class="step-kicker"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon>Step 1 · Vitals</span>
           <h2 class="step-title">Enter blood pressure and temperature</h2>
           <p class="step-hint">Yesterday BP 128/82 · temp 36.5°</p>
         </div>
         <div class="v-grid">
-          <button class="v-field" onclick="openVitalKeypad('Blood pressure · systolic','mmHg','132','128',this)"><div class="v-field-l">BP · systolic</div><div class="v-field-v">132<span class="u">mmHg</span></div></button>
-          <button class="v-field" onclick="openVitalKeypad('Blood pressure · diastolic','mmHg','84','82',this)"><div class="v-field-l">BP · diastolic</div><div class="v-field-v">84<span class="u">mmHg</span></div></button>
-          <button class="v-field" onclick="openVitalKeypad('Temperature','°C','36.7','36.5',this)"><div class="v-field-l">Temperature</div><div class="v-field-v">36.7<span class="u">°C</span></div></button>
-          <button class="v-field" onclick="openVitalKeypad('Pulse','bpm','76','74',this)"><div class="v-field-l">Pulse</div><div class="v-field-v">76<span class="u">bpm</span></div></button>
-          <button class="v-field full warn" onclick="openVitalKeypad('Blood sugar · 2h post-meal','mg/dL','142','135',this)"><div class="v-field-l">Blood sugar · 2h post-meal</div><div class="v-field-v">142<span class="u">mg/dL · watch range</span></div></button>
+          <button type="button" class="v-field" onclick="openVitalKeypad('Blood pressure · systolic','mmHg','132','128',this)"><div class="v-field-l">BP · systolic</div><div class="v-field-v">132<span class="u">mmHg</span></div></button>
+          <button type="button" class="v-field" onclick="openVitalKeypad('Blood pressure · diastolic','mmHg','84','82',this)"><div class="v-field-l">BP · diastolic</div><div class="v-field-v">84<span class="u">mmHg</span></div></button>
+          <button type="button" class="v-field" onclick="openVitalKeypad('Temperature','°C','36.7','36.5',this)"><div class="v-field-l">Temperature</div><div class="v-field-v">36.7<span class="u">°C</span></div></button>
+          <button type="button" class="v-field" onclick="openVitalKeypad('Pulse','bpm','76','74',this)"><div class="v-field-l">Pulse</div><div class="v-field-v">76<span class="u">bpm</span></div></button>
+          <button type="button" class="v-field full warn" onclick="openVitalKeypad('Blood sugar · 2h post-meal','mg/dL','142','135',this)"><div class="v-field-l">Blood sugar · 2h post-meal</div><div class="v-field-v">142<span class="u">mg/dL · watch range</span></div></button>
         </div>
       </section>
 
       <section class="step" data-step="2">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="fluent:food-24-filled"></iconify-icon>Step 2 · Meal</span>
+          <span class="step-kicker"><iconify-icon icon="ph:bowl-food-fill"></iconify-icon>Step 2 · Meal</span>
           <h2 class="step-title">How much breakfast?</h2>
           <p class="step-hint">Yesterday 80%, expected within usual range today</p>
         </div>
         <div class="opts" style="--opts-cols:5">
-          <button class="opt" onclick="pickOne(this)">0%</button>
-          <button class="opt" onclick="pickOne(this)">25%</button>
-          <button class="opt" onclick="pickOne(this)">50%</button>
-          <button class="opt on" onclick="pickOne(this)">75%</button>
-          <button class="opt" onclick="pickOne(this)">100%</button>
+          <button type="button" class="opt" onclick="pickOne(this)">0%</button>
+          <button type="button" class="opt" onclick="pickOne(this)">25%</button>
+          <button type="button" class="opt" onclick="pickOne(this)">50%</button>
+          <button type="button" class="opt on" onclick="pickOne(this)">75%</button>
+          <button type="button" class="opt" onclick="pickOne(this)">100%</button>
         </div>
         <div class="sec">
           <div class="sec-l">Texture</div>
           <div class="opts">
-            <button class="opt on" onclick="pickOne(this)">Regular</button>
-            <button class="opt" onclick="pickOne(this)">Soft</button>
-            <button class="opt" onclick="pickOne(this)">Liquid</button>
+            <button type="button" class="opt on" onclick="pickOne(this)">Regular</button>
+            <button type="button" class="opt" onclick="pickOne(this)">Soft</button>
+            <button type="button" class="opt" onclick="pickOne(this)">Liquid</button>
           </div>
         </div>
       </section>
 
       <section class="step" data-step="3">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon>Step 3 · Medication</span>
+          <span class="step-kicker"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon>Step 3 · Medication</span>
           <h2 class="step-title">Check the meds taken</h2>
           <p class="step-hint">Note any refused meds below</p>
         </div>
         <div class="chks">
-          <button class="chk on" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">BP meds · morning</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Diabetes meds · noon</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Joint meds · evening</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Supplement</span></button>
+          <button type="button" class="chk on" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">BP meds · morning</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Diabetes meds · noon</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Joint meds · evening</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Supplement</span></button>
         </div>
       </section>
 
       <section class="step" data-step="4">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="fluent:drop-24-filled"></iconify-icon>Step 4 · Hygiene</span>
+          <span class="step-kicker"><iconify-icon icon="mingcute:drop-fill"></iconify-icon>Step 4 · Hygiene</span>
           <h2 class="step-title">Hygiene items done today</h2>
           <p class="step-hint">Select multiple</p>
         </div>
         <div class="chks">
-          <button class="chk on" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Oral care</span></button>
-          <button class="chk on" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Face wash</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Hair wash</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Bath · shower</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Hand · foot care</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Change of clothes</span></button>
+          <button type="button" class="chk on" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Oral care</span></button>
+          <button type="button" class="chk on" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Face wash</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Hair wash</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Bath · shower</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Hand · foot care</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Change of clothes</span></button>
         </div>
       </section>
 
       <section class="step" data-step="5">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="fluent:person-walking-24-filled"></iconify-icon>Step 5 · Activity</span>
+          <span class="step-kicker"><iconify-icon icon="material-symbols:directions-run-rounded"></iconify-icon>Step 5 · Activity</span>
           <h2 class="step-title">Activities done</h2>
           <p class="step-hint">Keep at least 20 min</p>
         </div>
         <div class="chks">
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Walking assist</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Outdoor walk</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Repositioning</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Rehab exercise</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Walking assist</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Outdoor walk</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Repositioning</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Rehab exercise</span></button>
         </div>
       </section>
 
       <section class="step" data-step="6">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="fluent:drop-24-filled"></iconify-icon>Step 6 · Toileting</span>
+          <span class="step-kicker"><iconify-icon icon="mingcute:drop-fill"></iconify-icon>Step 6 · Toileting</span>
           <h2 class="step-title">Toileting record</h2>
         </div>
         <div class="sec">
           <div class="sec-l">Stool · count</div>
           <div class="opts">
-            <button class="opt on" onclick="pickOne(this)">None</button>
-            <button class="opt" onclick="pickOne(this)">1x</button>
-            <button class="opt" onclick="pickOne(this)">2x+</button>
+            <button type="button" class="opt on" onclick="pickOne(this)">None</button>
+            <button type="button" class="opt" onclick="pickOne(this)">1x</button>
+            <button type="button" class="opt" onclick="pickOne(this)">2x+</button>
           </div>
         </div>
         <div class="sec">
           <div class="sec-l">Urine · count</div>
           <div class="opts">
-            <button class="opt" onclick="pickOne(this)">1–3x</button>
-            <button class="opt on" onclick="pickOne(this)">4–6x</button>
-            <button class="opt" onclick="pickOne(this)">7x+</button>
+            <button type="button" class="opt" onclick="pickOne(this)">1–3x</button>
+            <button type="button" class="opt on" onclick="pickOne(this)">4–6x</button>
+            <button type="button" class="opt" onclick="pickOne(this)">7x+</button>
           </div>
         </div>
       </section>
 
       <section class="step" data-step="7">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="fluent:brain-circuit-24-filled"></iconify-icon>Step 7 · Cognition · mood</span>
+          <span class="step-kicker"><iconify-icon icon="mingcute:brain-fill"></iconify-icon>Step 7 · Cognition · mood</span>
           <h2 class="step-title">How was the mood today?</h2>
         </div>
         <div class="opts" style="--opts-cols:5">
-          <button class="opt" onclick="pickOne(this)">Low</button>
-          <button class="opt" onclick="pickOne(this)">Listless</button>
-          <button class="opt on" onclick="pickOne(this)">Good</button>
-          <button class="opt" onclick="pickOne(this)">Lively</button>
-          <button class="opt" onclick="pickOne(this)">Anxious</button>
+          <button type="button" class="opt" onclick="pickOne(this)">Low</button>
+          <button type="button" class="opt" onclick="pickOne(this)">Listless</button>
+          <button type="button" class="opt on" onclick="pickOne(this)">Good</button>
+          <button type="button" class="opt" onclick="pickOne(this)">Lively</button>
+          <button type="button" class="opt" onclick="pickOne(this)">Anxious</button>
         </div>
         <div class="sec">
           <div class="sec-l">Note</div>
@@ -1206,7 +1196,7 @@
 
       <section class="step" data-step="8">
         <div class="step-head">
-          <span class="step-kicker"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon>Step 8 · Notes</span>
+          <span class="step-kicker"><iconify-icon icon="mingcute:warning-fill"></iconify-icon>Step 8 · Notes</span>
           <h2 class="step-title">Anything to report?</h2>
           <p class="step-hint">Shared with the nurse and family</p>
         </div>
@@ -1215,11 +1205,11 @@
     </div>
 
     <footer class="st-foot">
-      <button class="btn btn-prev" id="btnPrev" onclick="prev()">
-        <iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon>Back
+      <button type="button" class="btn btn-prev" id="btnPrev" onclick="prev()">
+        <iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon>Back
       </button>
-      <button class="btn btn-next" id="btnNext" onclick="next()">
-        Next<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
+      <button type="button" class="btn btn-next" id="btnNext" onclick="next()">
+        Next<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>
       </button>
     </footer>
   </div>
@@ -1268,13 +1258,13 @@
       if (!p) return;
       const pct = Math.round((p.done / p.total) * 100);
       document.getElementById('pdName').innerHTML =
-        `${p.name} · ${p.room} <span class="head-pct" id="pdPct">${p.done}/${p.total}</span>`;
+        `${p.name} · ${p.room} <span class="head-pct">${p.done}/${p.total}</span>`;
       document.getElementById('pdMeta').textContent = `Age ${p.age} · ${p.tags.slice(0,2).map(t=>t[0]).join(' · ')}`;
       document.getElementById('pdBarFill').style.width = pct + '%';
       const pf = document.getElementById('pdProfile');
       const tagsHTML = p.tags.map(t => `<span class="pf-tag${t[1]?' warn':''}">${t[0]}</span>`).join('');
       const alertHTML = p.alert
-        ? `<div class="pf-alert"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon><span>${p.alert}</span></div>`
+        ? `<div class="pf-alert"><iconify-icon icon="mingcute:warning-fill"></iconify-icon><span>${p.alert}</span></div>`
         : '';
       pf.innerHTML = `<div class="pf-tags">${tagsHTML}</div>${alertHTML}`;
       document.getElementById('stPtName').textContent = p.name;
@@ -1286,36 +1276,36 @@
     const QUICK_BODIES = {
       bp: (p) => `
         <div class="bs-grid">
-          <button class="bs-f on" onclick="openVitalKeypad('Blood pressure · systolic','mmHg','132','128',this)"><div class="bs-f-l">Systolic</div><div class="bs-f-v">132<span class="u">mmHg</span></div><div class="bs-f-prev">Yesterday 128</div></button>
-          <button class="bs-f on" onclick="openVitalKeypad('Blood pressure · diastolic','mmHg','84','82',this)"><div class="bs-f-l">Diastolic</div><div class="bs-f-v">84<span class="u">mmHg</span></div><div class="bs-f-prev">Yesterday 82</div></button>
-          <button class="bs-f" onclick="openVitalKeypad('Temperature','°C','36.7','36.5',this)"><div class="bs-f-l">Temperature</div><div class="bs-f-v">36.7<span class="u">°C</span></div><div class="bs-f-prev">Yesterday 36.5</div></button>
-          <button class="bs-f" onclick="openVitalKeypad('Pulse','bpm','76','74',this)"><div class="bs-f-l">Pulse</div><div class="bs-f-v">76<span class="u">bpm</span></div><div class="bs-f-prev">Yesterday 74</div></button>
-          ${p === 'park' ? '<button class="bs-f full bs-f--warn" onclick="openVitalKeypad(\'Blood sugar\',\'mg/dL\',\'142\',\'135\',this)"><div class="bs-f-l">Blood sugar · recheck advised</div><div class="bs-f-v">142<span class="u">mg/dL</span></div><div class="bs-f-prev">Morning 142 (watch)</div></button>' : ''}
+          <button type="button" class="bs-f on" onclick="openVitalKeypad('Blood pressure · systolic','mmHg','132','128',this)"><div class="bs-f-l">Systolic</div><div class="bs-f-v">132<span class="u">mmHg</span></div><div class="bs-f-prev">Yesterday 128</div></button>
+          <button type="button" class="bs-f on" onclick="openVitalKeypad('Blood pressure · diastolic','mmHg','84','82',this)"><div class="bs-f-l">Diastolic</div><div class="bs-f-v">84<span class="u">mmHg</span></div><div class="bs-f-prev">Yesterday 82</div></button>
+          <button type="button" class="bs-f" onclick="openVitalKeypad('Temperature','°C','36.7','36.5',this)"><div class="bs-f-l">Temperature</div><div class="bs-f-v">36.7<span class="u">°C</span></div><div class="bs-f-prev">Yesterday 36.5</div></button>
+          <button type="button" class="bs-f" onclick="openVitalKeypad('Pulse','bpm','76','74',this)"><div class="bs-f-l">Pulse</div><div class="bs-f-v">76<span class="u">bpm</span></div><div class="bs-f-prev">Yesterday 74</div></button>
+          ${p === 'park' ? '<button type="button" class="bs-f full bs-f--warn" onclick="openVitalKeypad(\'Blood sugar\',\'mg/dL\',\'142\',\'135\',this)"><div class="bs-f-l">Blood sugar · recheck advised</div><div class="bs-f-v">142<span class="u">mg/dL</span></div><div class="bs-f-prev">Morning 142 (watch)</div></button>' : ''}
         </div>
       `,
       meal: () => `
         <div class="sec-l sec-l--gap-b">Intake</div>
         <div class="opts" style="--opts-cols:5">
-          <button class="opt" onclick="pickOne(this)">0%</button>
-          <button class="opt" onclick="pickOne(this)">25%</button>
-          <button class="opt" onclick="pickOne(this)">50%</button>
-          <button class="opt on" onclick="pickOne(this)">75%</button>
-          <button class="opt" onclick="pickOne(this)">100%</button>
+          <button type="button" class="opt" onclick="pickOne(this)">0%</button>
+          <button type="button" class="opt" onclick="pickOne(this)">25%</button>
+          <button type="button" class="opt" onclick="pickOne(this)">50%</button>
+          <button type="button" class="opt on" onclick="pickOne(this)">75%</button>
+          <button type="button" class="opt" onclick="pickOne(this)">100%</button>
         </div>
         <div class="sec-l sec-l--gap-tb">Texture</div>
         <div class="opts">
-          <button class="opt on" onclick="pickOne(this)">Regular</button>
-          <button class="opt" onclick="pickOne(this)">Soft</button>
-          <button class="opt" onclick="pickOne(this)">Liquid</button>
+          <button type="button" class="opt on" onclick="pickOne(this)">Regular</button>
+          <button type="button" class="opt" onclick="pickOne(this)">Soft</button>
+          <button type="button" class="opt" onclick="pickOne(this)">Liquid</button>
         </div>
       `,
       med: () => `
         <div class="sec-l sec-l--gap-b">Meds taken</div>
         <div class="chks">
-          <button class="chk on" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">BP meds · morning</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Diabetes meds · noon</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Joint meds · evening</span></button>
-          <button class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon></span><span class="chk-t">Supplement</span></button>
+          <button type="button" class="chk on" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">BP meds · morning</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Diabetes meds · noon</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Joint meds · evening</span></button>
+          <button type="button" class="chk" onclick="tog(this)"><span class="chk-dot"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span><span class="chk-t">Supplement</span></button>
         </div>
       `,
       note: () => `
@@ -1387,7 +1377,7 @@
         barEl.style.width = (cur / total * 100) + '%';
         if (cur >= total) {
           row.classList.add('done');
-          pctEl.innerHTML = '<span class="ok"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>Done</span>';
+          pctEl.innerHTML = '<span class="ok"><iconify-icon icon="mingcute:check-circle-fill"></iconify-icon>Done</span>';
         }
       }
       // 동기화 pill의 대기 카운트도 +1 (오프라인일 때만)
@@ -1409,7 +1399,7 @@
       function render() {
         HaruCG.openSheet(
           '<div class="cg-sheet__head">' +
-            '<div class="cg-sheet__ico"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></div>' +
+            '<div class="cg-sheet__ico"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon></div>' +
             '<div>' +
               '<div class="cg-sheet__ttl">' + label + ' entry</div>' +
               '<div class="cg-sheet__sub">Last value ' + (prev || '-') + ' · enter then save</div>' +
@@ -1423,11 +1413,11 @@
             ['1','2','3','4','5','6','7','8','9'].map(function(n){return '<button class="cg-keypad__btn" type="button" onclick="kpPush(\''+n+'\')">'+n+'</button>'}).join('') +
             '<button class="cg-keypad__btn cg-keypad__btn--util" type="button" onclick="kpPush(\'.\')">.</button>' +
             '<button class="cg-keypad__btn" type="button" onclick="kpPush(\'0\')">0</button>' +
-            '<button class="cg-keypad__btn cg-keypad__btn--util" type="button" onclick="kpBack()" aria-label="Delete"><iconify-icon icon="fluent:backspace-24-filled"></iconify-icon></button>' +
+            '<button class="cg-keypad__btn cg-keypad__btn--util" type="button" onclick="kpBack()" aria-label="Delete"><iconify-icon icon="material-symbols:backspace-rounded"></iconify-icon></button>' +
           '</div>' +
           '<div class="cg-sheet__cta">' +
-            '<button class="btn kp-btn kp-btn--cancel" onclick="HaruCG.closeSheet()">Cancel</button>' +
-            '<button class="btn btn--primary kp-btn" onclick="kpSave(\''+label+'\',\''+unit+'\')">Save</button>' +
+            '<button type="button" class="btn kp-btn kp-btn--cancel" onclick="HaruCG.closeSheet()">Cancel</button>' +
+            '<button type="button" class="btn btn--primary kp-btn" onclick="kpSave(\''+label+'\',\''+unit+'\')">Save</button>' +
           '</div>'
         );
       }
@@ -1508,10 +1498,10 @@
 
       const nxt = document.getElementById('btnNext');
       if (cur === TOTAL) {
-        nxt.innerHTML = '<iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon>Finish record';
+        nxt.innerHTML = '<iconify-icon icon="mingcute:check-fill"></iconify-icon>Finish record';
         nxt.classList.remove('btn-next'); nxt.classList.add('btn-done');
       } else {
-        nxt.innerHTML = 'Next<iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>';
+        nxt.innerHTML = 'Next<iconify-icon icon="material-symbols:chevron-right-rounded"></iconify-icon>';
         nxt.classList.remove('btn-done'); nxt.classList.add('btn-next');
       }
       renderDots();
@@ -1560,12 +1550,7 @@
         if (c) list.appendChild(c);
       });
     }
-    function toast(msg) {
-      const t = document.getElementById('toastEl');
-      t.textContent = msg; t.classList.add('show');
-      clearTimeout(t._x); t._x = setTimeout(() => t.classList.remove('show'), 2000);
-    }
-  </script>
+</script>
   <div class="bottom-scrim" aria-hidden="true"></div>
 </body>
 </html>

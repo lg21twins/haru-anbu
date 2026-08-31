@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en" data-role="patient" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="var(--patient-canvas-warm)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Haru Anbu · Today</title>
+
+  <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="patient.css">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+
+  <link rel="stylesheet" href="styles/p01-today.css">
+</head>
+<body>
+
+  <h1 class="u-visually-hidden">Today</h1>
+  <div class="app">
+
+    <header class="p-header p-header--nav">
+      <div class="clock">
+        <span class="clock-time">2:30 PM</span>
+        <span class="clock-date">Sat, Apr 18</span>
+      </div>
+      <nav class="top-nav" aria-label="Main menu">
+        <a class="nav-tab nav-tab--active" href="p01-today.html" aria-current="page">
+          <iconify-icon icon="mingcute:home-1-fill" width="22" aria-hidden="true"></iconify-icon>
+          Home
+        </a>
+        <a class="nav-tab" href="p02-med-alert.html">
+          <iconify-icon icon="mingcute:clipboard-fill" width="22" aria-hidden="true"></iconify-icon>
+          To-do
+        </a>
+        <a class="nav-tab" href="p03-call.html">
+          <iconify-icon icon="material-symbols:family-restroom-rounded" width="22" aria-hidden="true"></iconify-icon>
+          Family
+        </a>
+        <a class="nav-tab" href="p08-help.html">
+          <iconify-icon icon="ph:hand-waving-fill" width="22" aria-hidden="true"></iconify-icon>
+          Help
+        </a>
+      </nav>
+      <a href="p11-settings.html" class="p-settings-quick" aria-label="Display settings (text size &amp; contrast)">
+        <iconify-icon icon="mingcute:settings-3-fill" width="20" aria-hidden="true"></iconify-icon>
+      </a>
+    </header>
+
+    <div class="main">
+
+      <!-- ── 왼쪽: AI 말벗 (상황 카드 + 답장 + 음성) ── -->
+      <div class="left">
+        <div class="ai-panel glass">
+
+          <!-- AI 미니 헤더: 하루안부 심볼 + 한마디 -->
+          <div class="ai-mini-header">
+            <div class="ai-mini-av" aria-label="Haru Anbu">
+              <img src="../07_디자인/logo/brand-system/01_심볼단독.svg" alt="Haru Anbu logo">
+            </div>
+            <div>
+              <div class="ai-mini-greet">Minji sent you photos</div>
+              <div class="ai-mini-detail">Just now · 2 photos &amp; a message</div>
+            </div>
+          </div>
+
+          <!-- 카드 슬롯: 지금 상황에 맞는 카드 하나 -->
+          <div class="card-slot">
+            <article class="msg-card msg-card--clickable" aria-label="Message from daughter Minji" onclick="location.href='p07-message.html'">
+              <header class="msg-card-head">
+                <div class="msg-av">
+                  <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Daughter Minji">
+                  <span class="msg-av-dot" aria-hidden="true"></span>
+                </div>
+                <div>
+                  <div class="msg-from">Minji (daughter)</div>
+                  <div class="msg-time">Just now · 2 photos · 1 message</div>
+                </div>
+              </header>
+
+              <div class="msg-photos">
+                <a href="p06-photo.html" onclick="event.stopPropagation();" aria-label="View photo larger">
+                  <img class="photo-thumb" src="https://picsum.photos/seed/minji-park-spring/520/520" alt="Park photo from Minji">
+                  <span class="photo-hint" aria-hidden="true">
+                    <iconify-icon icon="ph:magnifying-glass-bold"></iconify-icon>
+                    Tap to enlarge
+                  </span>
+                </a>
+                <a href="p06-photo.html" onclick="event.stopPropagation();" aria-label="View photo larger">
+                  <img class="photo-thumb" src="https://picsum.photos/seed/minji-sooji-smile/520/520" alt="Granddaughter photo from Minji">
+                </a>
+              </div>
+
+              <div class="msg-text">"Mom, Suji and I went to the park today. The weather was so lovely!"</div>
+            </article>
+          </div>
+
+          <!-- 빠른 답장 — 답장 톤만으로 통일 (전화 칩은 오른쪽 빠른전화와 중복이라 제거) -->
+          <div class="quick-replies">
+            <button class="quick-chip" type="button" onclick="location.href='p07-message.html'">Sounds lovely!</button>
+            <button class="quick-chip" type="button" onclick="location.href='p07-message.html'">Thank you, dear</button>
+            <button class="quick-chip" type="button" onclick="location.href='p06-photo.html'">See photos bigger</button>
+          </div>
+
+        </div>
+
+        <!-- 음성 입력 버튼 — ai-panel 바깥, help-btn과 자매 -->
+        <button class="voice-btn" type="button" aria-label="Speak to Haru AI" onclick="location.href='p05-voice.html'">
+          <iconify-icon icon="ph:microphone-fill" width="36" aria-hidden="true"></iconify-icon>
+          Tap to speak
+        </button>
+      </div>
+
+      <!-- ── 오른쪽: 지금 할 일 → 오늘 일정 → 가족 전화 → 도움요청 ── -->
+      <div class="right">
+
+        <!-- D. 지금 할 일 카드 — 약 복용 + 먹었어요 확인 버튼 -->
+        <section class="now-action" aria-label="Time to take your medication">
+          <div class="now-tag">
+            <iconify-icon icon="material-symbols:alarm-rounded" width="18" aria-hidden="true"></iconify-icon>
+            Right now
+          </div>
+          <div class="now-title">Medication</div>
+          <div class="now-sub">2:30 PM · BP pill · Diabetes pill · Vitamin D</div>
+          <button class="now-confirm" type="button" aria-label="Confirm medication taken" onclick="openMedConfirm()">
+            <iconify-icon icon="mingcute:check-circle-fill" width="30" aria-hidden="true"></iconify-icon>
+            I took it
+          </button>
+        </section>
+
+        <!-- 오늘 일정 (지금 전후 4개만 — 전체는 P-02) -->
+        <a href="p02-med-alert.html" class="fn-schedule" aria-label="View full today's schedule">
+          <div class="sch-header">
+            <div class="sch-title">Today</div>
+            <div class="sch-date">Sat, Apr 18</div>
+          </div>
+          <!-- Reduced cognitive load — current + next 3 items only (full list on p02) -->
+          <div class="sch-list">
+
+            <div class="sch-item current">
+              <div class="sch-time">2:30 PM</div>
+              <div class="sch-line"><div class="sch-dot"></div><div class="sch-connector"></div></div>
+              <div>
+                <div class="sch-label">Medication</div>
+                <div class="sch-sub">BP · Diabetes · Vitamin D</div>
+              </div>
+            </div>
+
+            <div class="sch-item upcoming">
+              <div class="sch-time">4:00 PM</div>
+              <div class="sch-line"><div class="sch-dot"></div><div class="sch-connector"></div></div>
+              <div>
+                <div class="sch-label">Walk</div>
+                <div class="sch-sub">Park, 30 min</div>
+              </div>
+            </div>
+
+            <div class="sch-item upcoming">
+              <div class="sch-time">5:30 PM</div>
+              <div class="sch-line"><div class="sch-dot"></div><div class="sch-connector"></div></div>
+              <div>
+                <div class="sch-label">Video call with Minji</div>
+                <div class="sch-sub">Every Saturday</div>
+              </div>
+            </div>
+
+            <div class="sch-item upcoming">
+              <div class="sch-time">6:00 PM</div>
+              <div class="sch-line"><div class="sch-dot"></div><div class="sch-connector"></div></div>
+              <div><div class="sch-label">Dinner</div></div>
+            </div>
+
+          </div>
+
+          <div class="sch-footer">
+            See full schedule
+            <iconify-icon icon="material-symbols:chevron-right-rounded" width="18" aria-hidden="true"></iconify-icon>
+          </div>
+        </a>
+
+        <!-- 가족 3명 빠른 전화 — 일정 다음, 도움 요청 위 -->
+        <section class="fam-quick glass" aria-label="Call family">
+          <header class="fam-quick-head">
+            <div class="fam-quick-title">
+              <iconify-icon icon="material-symbols:family-restroom-rounded" width="20" aria-hidden="true"></iconify-icon>
+              Call family
+            </div>
+            <a href="p03-call.html" class="fam-quick-more" aria-label="Open contacts screen">
+              See all
+              <iconify-icon icon="material-symbols:chevron-right-rounded" width="16" aria-hidden="true"></iconify-icon>
+            </a>
+          </header>
+          <div class="fam-quick-list">
+            <a href="p03-call.html" class="fam-row" aria-label="Video call daughter Minji — online now">
+              <div class="fam-av fam-av--orange">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Daughter Minji">
+                <span class="fam-av-dot fam-av-dot--on" aria-hidden="true"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name-line">Minji <span class="fam-row-relation">Daughter</span></div>
+                <div class="fam-row-status">Online now</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="Video call Minji">
+                  <iconify-icon icon="material-symbols:videocam-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="Voice call Minji">
+                  <iconify-icon icon="mingcute:phone-fill" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
+            <a href="p03-call.html" class="fam-row" aria-label="Video call granddaughter Seoyeon — online now">
+              <div class="fam-av fam-av--green">
+                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="Granddaughter Seoyeon">
+                <span class="fam-av-dot fam-av-dot--on" aria-hidden="true"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name-line">Seoyeon <span class="fam-row-relation">Granddaughter</span></div>
+                <div class="fam-row-status">Online now</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="Video call Seoyeon">
+                  <iconify-icon icon="material-symbols:videocam-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="Message Seoyeon">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
+            <a href="p05-voice.html" class="fam-row fam-row--offline" aria-label="Leave a voice message for son Taewoo — away">
+              <div class="fam-av fam-av--blue">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Son Taewoo">
+                <span class="fam-av-dot" aria-hidden="true"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name-line">Taewoo <span class="fam-row-relation">Son</span></div>
+                <div class="fam-row-status">Away</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="Voice message Taewoo">
+                  <iconify-icon icon="ph:microphone-fill" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="Message Taewoo">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!-- 도움 요청 -->
+        <button class="help-btn" type="button" aria-label="I need help — tap to alert family" onclick="location.href='p08-help.html'">
+          <iconify-icon icon="ph:hand-waving-fill" width="36" aria-hidden="true"></iconify-icon>
+          I need help
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 약 복용 확인 모달 (의료 안전: 실수 탭 방지 2단계 확인) -->
+  <div class="confirm-overlay" id="medConfirm" role="dialog" aria-modal="true" aria-labelledby="medConfirmTitle">
+    <div class="confirm-dialog">
+      <div class="confirm-icon" aria-hidden="true">
+        <iconify-icon icon="mingcute:capsule-fill"></iconify-icon>
+      </div>
+      <div class="confirm-title" id="medConfirmTitle">Did you take your pills?</div>
+      <div class="confirm-sub">BP pill · Diabetes pill · Vitamin D<br>If you just took all of them, tap "Yes."</div>
+      <div class="confirm-actions">
+        <button class="cf-btn cf-btn--ghost" type="button" onclick="closeMedConfirm()">Not yet</button>
+        <button class="cf-btn cf-btn--primary" type="button" onclick="confirmMedTaken()">Yes, I took them</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openMedConfirm() {
+      document.getElementById('medConfirm').classList.add('is-open');
+    }
+    function closeMedConfirm() {
+      document.getElementById('medConfirm').classList.remove('is-open');
+    }
+    function confirmMedTaken() {
+      location.href = 'p10-med-done.html';
+    }
+    // ESC로 닫기
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMedConfirm();
+    });
+    // 배경 클릭으로 닫기
+    document.getElementById('medConfirm').addEventListener('click', (e) => {
+      if (e.target.id === 'medConfirm') closeMedConfirm();
+    });
+  </script>
+
+</body>
+</html>

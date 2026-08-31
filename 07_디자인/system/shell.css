@@ -1,0 +1,31 @@
+/* ============================================================================
+   SHELL · 모바일 앱 공통 헤더 (header / logo / icon-btn)
+   ----------------------------------------------------------------------------
+   "세 앱 헤더 통일 (medical 기준)" — 기존에 각 페이지 <style>에 동일 규칙을
+   복붙해 맞춰오던 것을 단일 소스로 추출. 마크업은 그대로(.header/.logo/.icon-btn).
+   대상: v11_요양보호사앱(c0x) · v15_의료진앱(d0x). 토큰 참조이므로 역할별 색은 자동.
+   주의: components.css 의 .tabbar 는 의료진 .tab-wrap 과 충돌하므로 여기엔 셸 헤더만 둔다.
+   ============================================================================ */
+
+.header {
+  position: static;
+  padding: calc(var(--safe-t) + 6px) var(--page-pad) 0;
+  background: transparent;
+}
+
+/* brand SVG 28px + 4px tap zone */
+.logo { display: inline-flex; align-items: center; text-decoration: none; color: inherit; padding: 4px; margin: -4px; }
+.logo svg { width: 28px; height: 28px; display: block; }
+
+/* 44×44 / 22px icon / 8×8 dot */
+.icon-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,.55);
+  border: .5px solid rgba(255,255,255,.55);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; text-decoration: none;
+  box-shadow: 0 1px 1px rgba(255,255,255,.6) inset, 0 4px 16px rgba(0,0,0,.06);
+  position: relative; transition: transform .1s;
+}

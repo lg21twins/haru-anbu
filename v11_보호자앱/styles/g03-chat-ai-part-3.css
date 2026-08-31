@@ -1,0 +1,2 @@
+@keyframes overlayOut{from{opacity:1}to{opacity:0}}
+#t-overlay{position:fixed;inset:0;z-index:35;background:var(--guardian-bg-tint);pointer-events:none;animation:overlayOut .18s ease both}

@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en" data-role="patient" data-platform="mobile">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="var(--patient-canvas-warm)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Haru Anbu · Connect with family</title>
+
+  <link rel="icon" type="image/svg+xml" href="../07_디자인/logo/brand-system/01_심볼단독.svg">
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="patient.css">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+
+  <link rel="stylesheet" href="styles/p03-call.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="p-header p-header--nav">
+      <div aria-hidden="true"></div>
+      <nav class="top-nav" aria-label="Main menu">
+        <a class="nav-tab" href="p01-today.html">
+          <iconify-icon icon="mingcute:home-1-fill" width="22" aria-hidden="true"></iconify-icon>
+          Home
+        </a>
+        <a class="nav-tab" href="p02-med-alert.html">
+          <iconify-icon icon="mingcute:clipboard-fill" width="22" aria-hidden="true"></iconify-icon>
+          To-do
+        </a>
+        <a class="nav-tab nav-tab--active" href="p03-call.html" aria-current="page">
+          <iconify-icon icon="material-symbols:family-restroom-rounded" width="22" aria-hidden="true"></iconify-icon>
+          Family
+        </a>
+        <a class="nav-tab" href="p08-help.html">
+          <iconify-icon icon="ph:hand-waving-fill" width="22" aria-hidden="true"></iconify-icon>
+          Help
+        </a>
+      </nav>
+      <div aria-hidden="true"></div>
+    </header>
+
+    <div class="main">
+
+      <div class="call-heading">
+        <h1>Connect with family</h1>
+        <p>Start a video call with family who are online now, or see the messages they've sent you.</p>
+      </div>
+
+      <div class="call-cols">
+
+        <!-- ═══════════════ 좌측: 가족 리스트 ═══════════════ -->
+        <section class="call-panel glass" aria-labelledby="panel-title-call">
+          <h2 class="panel-title" id="panel-title-call">
+            <iconify-icon icon="material-symbols:family-restroom-rounded" aria-hidden="true"></iconify-icon>
+            Calls · Messages
+          </h2>
+
+          <div class="fam-list">
+
+            <a href="p03-call.html" class="fam-row" aria-label="Video call daughter Minji — online now">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Daughter Minji">
+                <span class="dot dot--on"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name">Minji <span class="rel">Daughter</span></div>
+                <div class="fam-row-status">Online now</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="Video call Minji">
+                  <iconify-icon icon="material-symbols:videocam-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="Voice call Minji">
+                  <iconify-icon icon="mingcute:phone-fill" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
+            <a href="p03-call.html" class="fam-row" aria-label="Video call granddaughter Seoyeon — online now">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="Granddaughter Seoyeon">
+                <span class="dot dot--on"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name">Seoyeon <span class="rel">Granddaughter</span></div>
+                <div class="fam-row-status">Online now</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="Video call Seoyeon">
+                  <iconify-icon icon="material-symbols:videocam-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="Message Seoyeon">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
+            <a href="p05-voice.html" class="fam-row fam-row--offline" aria-label="Leave a voice message for son Taewoo — away">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Son Taewoo">
+                <span class="dot"></span>
+              </div>
+              <div class="fam-row-meta">
+                <div class="fam-row-name">Taewoo <span class="rel">Son</span></div>
+                <div class="fam-row-status">Away · active 3 hours ago</div>
+              </div>
+              <div class="fam-row-actions">
+                <span class="fam-icon-btn fam-icon-btn--primary" aria-label="Leave a voice message for Taewoo">
+                  <iconify-icon icon="ph:microphone-fill" aria-hidden="true"></iconify-icon>
+                </span>
+                <span class="fam-icon-btn" aria-label="Message Taewoo">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                </span>
+              </div>
+            </a>
+
+          </div>
+        </section>
+
+        <!-- ═══════════════ 우측: 받은 안부 타임라인 ═══════════════ -->
+        <section class="call-panel glass" aria-labelledby="panel-title-timeline">
+          <h2 class="panel-title" id="panel-title-timeline">
+            <iconify-icon icon="material-symbols:cardiology-rounded" aria-hidden="true"></iconify-icon>
+            Recent messages
+          </h2>
+
+          <div class="timeline" role="list">
+
+            <div class="tl-day">Today</div>
+
+            <a href="p06-photo.html" class="tl-item tl-item--unread" role="listitem" aria-label="Unread — Minji sent a photo, 9:32 AM">
+              <span class="tl-unread-badge">Unread</span>
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="material-symbols:image-rounded" aria-hidden="true"></iconify-icon>
+                  Minji sent a photo
+                </div>
+                <div class="tl-preview">1 photo from your granddaughter's graduation</div>
+                <div class="tl-time">9:32 AM</div>
+              </div>
+            </a>
+
+            <a href="p07-message.html" class="tl-item tl-item--unread" role="listitem" aria-label="Unread — message from Seoyeon, 8:10 AM">
+              <span class="tl-unread-badge">Unread</span>
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                  Message from Seoyeon
+                </div>
+                <div class="tl-preview">"I love you, Grandma. Have a wonderful day today!"</div>
+                <div class="tl-time">8:10 AM</div>
+              </div>
+            </a>
+
+            <div class="tl-day">Yesterday</div>
+
+            <a href="p07-message.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="ph:microphone-fill" aria-hidden="true"></iconify-icon>
+                  Voice message from Minji
+                </div>
+                <div class="tl-preview">23 sec · "Hi Mom, how are you? I'll visit soon"</div>
+                <div class="tl-time">7:45 PM</div>
+              </div>
+            </a>
+
+            <a href="p07-message.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="material-symbols:chat-rounded" aria-hidden="true"></iconify-icon>
+                  Message from Seoyeon
+                </div>
+                <div class="tl-preview">"Grandma, I won an award at school today"</div>
+                <div class="tl-time">4:20 PM</div>
+              </div>
+            </a>
+
+            <div class="tl-day">3 days ago</div>
+
+            <a href="p03-call.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="material-symbols:videocam-rounded" aria-hidden="true"></iconify-icon>
+                  Video call with Taewoo
+                </div>
+                <div class="tl-preview">18 min · Video call ended</div>
+                <div class="tl-time">8:15 PM</div>
+              </div>
+            </a>
+
+            <a href="p06-photo.html" class="tl-item" role="listitem">
+              <div class="avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="">
+              </div>
+              <div class="tl-body">
+                <div class="tl-line">
+                  <iconify-icon icon="material-symbols:image-rounded" aria-hidden="true"></iconify-icon>
+                  Minji sent a photo
+                </div>
+                <div class="tl-preview">3 photos from a walk in the park</div>
+                <div class="tl-time">3:00 PM</div>
+              </div>
+            </a>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

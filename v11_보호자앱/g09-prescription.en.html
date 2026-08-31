@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#EFF6FF">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Haru Anbu — Prescription</title>
+  <link rel="stylesheet" href="../07_디자인/tokens/tokens.css?v=24">
+
+  <script src="../07_디자인/_app-theme.js"></script>
+  <link rel="stylesheet" href="../07_디자인/system/app.css?v=24">
+  <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
+  <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="styles/g09-prescription-part-1.css">
+
+  <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn 표준 (2026-05-22 통합) -->
+  <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
+<link rel="stylesheet" href="styles/g09-prescription-part-2.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="header">
+    <div class="top-nav">
+      <a class="icon-btn" href="g05-mypage.html" aria-label="Back"><iconify-icon icon="material-symbols:chevron-left-rounded"></iconify-icon></a>
+      <div class="title-block">
+        <h1 class="h-name">Prescription</h1>
+      </div>
+      <button type="button" class="icon-btn" aria-label="Share"><iconify-icon icon="mingcute:share-2-fill"></iconify-icon></button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="stack-loose u-pt-5">
+
+      <section>
+        <div class="sec-title">Current Medications</div>
+        <div class="stack-tight med-list">
+
+          <article class="card fade-in fade-in--d1">
+            <div class="med-head">
+              <span class="med-icon"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+              <div><div class="med-name">Amlodipine 5mg</div><div class="med-type">Blood pressure</div></div>
+            </div>
+            <div class="med-details">
+              <div class="med-row"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon><span class="med-d-label">Time</span><span class="med-d-value">Morning, after meals</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon><span class="med-d-label">Dose</span><span class="med-d-value">1 tablet</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon><span class="med-d-label">Prescribed</span><span class="med-d-value">2026.03.15</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="med-d-label">Physician</span><span class="med-d-value">Dr. Lee Sang-hun</span></div>
+            </div>
+            <div class="med-warn">
+              <div class="med-warn-head"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> Family notes</div>
+              <ul class="med-warn-list">
+                <li>Do not take with grapefruit juice — risk of elevated drug levels</li>
+                <li>Contact the nurse if dizziness or headache persists</li>
+                <li>Rise slowly from sitting — orthostatic hypotension possible</li>
+              </ul>
+              <a href="g-guardian-live.html?chat=1" class="btn btn--ghost u-mt-3-pl-0"><iconify-icon icon="material-symbols:auto-awesome-rounded"></iconify-icon>Ask AI for more</a>
+            </div>
+          </article>
+
+          <article class="card fade-in fade-in--d2">
+            <div class="med-head">
+              <span class="med-icon"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+              <div><div class="med-name">Metformin 500mg</div><div class="med-type">Diabetes</div></div>
+            </div>
+            <div class="med-details">
+              <div class="med-row"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon><span class="med-d-label">Time</span><span class="med-d-value">Morning &amp; evening, after meals</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon><span class="med-d-label">Dose</span><span class="med-d-value">1 tablet each</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon><span class="med-d-label">Prescribed</span><span class="med-d-value">2026.03.15</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="med-d-label">Physician</span><span class="med-d-value">Dr. Lee Sang-hun</span></div>
+            </div>
+            <div class="med-warn">
+              <div class="med-warn-head"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> Family notes</div>
+              <ul class="med-warn-list">
+                <li>Skipping meals risks hypoglycemia — notify staff if appetite decreases</li>
+                <li>Contact if nausea or stomach pain persists beyond 1 week</li>
+                <li>Side effects intensify with alcohol (caution on outings)</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="card fade-in fade-in--d3">
+            <div class="med-head">
+              <span class="med-icon"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></span>
+              <div><div class="med-name">Pancreatin</div><div class="med-type">Digestive enzyme</div></div>
+            </div>
+            <div class="med-details">
+              <div class="med-row"><iconify-icon icon="material-symbols:schedule-rounded"></iconify-icon><span class="med-d-label">Time</span><span class="med-d-value">Lunch, after meals</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon><span class="med-d-label">Dose</span><span class="med-d-value">1 tablet</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:calendar-fill"></iconify-icon><span class="med-d-label">Prescribed</span><span class="med-d-value">2026.02.20</span></div>
+              <div class="med-row"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon><span class="med-d-label">Physician</span><span class="med-d-value">Dr. Lee Sang-hun</span></div>
+            </div>
+            <div class="med-warn">
+              <div class="med-warn-head"><iconify-icon icon="mingcute:warning-fill"></iconify-icon> Family notes</div>
+              <ul class="med-warn-list">
+                <li>Take within 30 min of finishing the meal — maximises effect</li>
+                <li>Stop immediately and contact staff if allergic reaction occurs (hives, breathing difficulty)</li>
+              </ul>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-title">Change History</div>
+        <div class="change-log">
+          <div class="card change-card">
+            <div class="change-text">Amlodipine dose change: 2.5mg → <strong>5mg</strong></div>
+            <div class="change-date">2026.03.15 · Dr. Lee Sang-hun</div>
+            <div class="change-reason">Recent upward trend in BP readings — avg 138/88; targeting stable range</div>
+          </div>
+          <div class="card change-card">
+            <div class="change-text">Joint supplement (Glucosamine) <strong>added</strong></div>
+            <div class="change-date">2026.02.20 · Dr. Lee Sang-hun</div>
+            <div class="change-reason">Right knee X-ray shows mild osteoarthritis progression — 6-week adjunct therapy</div>
+          </div>
+          <div class="card change-card">
+            <div class="change-text">Initial prescription registered</div>
+            <div class="change-date">2025.09.15 · On admission</div>
+            <div class="change-reason">Management of pre-existing conditions (hypertension, diabetes) initiated</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="bottom-bar">
+    <nav class="tabbar">
+      <a href="g-guardian-live.html" class="tab" aria-label="Home"><span class="tab-icon"><iconify-icon icon="mingcute:home-1-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g02-ai-guide.html" class="tab" aria-label="AI Guide"><span class="tab-icon"><iconify-icon icon="material-symbols:menu-book-rounded" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g03-sotong.html" class="tab" aria-label="Communication"><span class="tab-icon"><iconify-icon icon="material-symbols:chat-rounded" class="text-22"></iconify-icon></span></a>
+      <a href="g05-records.html" class="tab active" aria-label="Records"><span class="tab-icon"><iconify-icon icon="mingcute:folder-fill" class="u-fs-26"></iconify-icon></span></a>
+      <a href="g05-mypage.html" class="tab" aria-label="My page"><span class="tab-icon"><iconify-icon icon="mingcute:user-3-fill" class="u-fs-26"></iconify-icon></span></a>
+    </nav>
+    <a href="g-guardian-live.html?chat=1" class="ai-fab" aria-label="AI assistant">
+      <svg width="22" height="22" viewBox="0 0 2526 2526" fill="var(--brand-blue-500)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg>
+    </a>
+  </div>
+
+</div>
+  <div class="bottom-scrim" aria-hidden="true"></div>
+</body>
+</html>

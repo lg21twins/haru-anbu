@@ -1,0 +1,389 @@
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+    /* v3.2.12+: clinical 캔버스 (v11 요양보호사앱과 동일 — var(--clinical-canvas) 토큰 참조) */
+    html{height:100%;background:var(--clinical-canvas);font-size:16px;}
+    body{
+      height:100%;color:var(--t1);overflow-x:hidden;
+      font-family:var(--font-family-base);font-size:var(--text-body);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;
+      background:transparent;
+    }
+    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background: var(--clinical-bg-image);}
+
+    .app{
+      max-width:430px;margin:0 auto;min-height:100%;position:relative;
+      padding-bottom:calc(var(--safe-b) + var(--tab-h) + var(--tab-bot) + 40px);
+    }
+
+    /* ===== HEADER (v15 통일 — grid 44·1fr·44 / h-eyebrow + h-name) ===== */
+    .header{
+      padding:calc(var(--safe-t) + 6px) var(--page-pad) 0;
+      position:static;
+    }
+    .h-eyebrow{font-size:11px;font-weight:600;color:var(--accent-strong);letter-spacing:.4px;text-transform:uppercase;}
+    .top-nav .icon-btn{grid-column:3;justify-self:end;}
+
+    /* ===== STACK (보호자앱 stack-loose 등가) ===== */
+    .stack{
+      position:relative;z-index:1;
+      padding:8px var(--page-pad) 0;
+      display:flex;flex-direction:column;gap:14px;
+    }
+
+    /* ===== 자동응답 인라인 (의료진 고유) ===== */
+    .auto-reply{
+      padding:12px 16px;
+      display:flex;align-items:center;gap:10px;
+      background:var(--palette-white);
+      border-radius:20px;
+      box-shadow:0 1px 2px rgba(0,0,0,.03);
+    }
+    .auto-ico{
+      width:32px;height:32px;border-radius:10px;flex-shrink:0;
+      background:var(--accent-soft);color:var(--accent-strong);
+      display:inline-flex;align-items:center;justify-content:center;
+    }
+    .auto-ico iconify-icon{font-size:17px;}
+    .auto-text{flex:1;min-width:0;line-height:1.3;}
+    .auto-main{font-size:13.5px;font-weight:700;color:var(--t1);letter-spacing:-.2px;}
+    .auto-sub{font-size:12px;font-weight:500;color:var(--t3);margin-top:2px;}
+    .switch{
+      position:relative;width:48px;height:30px;border-radius:999px;
+      background:rgba(0,0,0,.12);cursor:pointer;flex-shrink:0;transition:.2s;border:0;
+    }
+    .switch::after{
+      content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;
+      border-radius:50%;background:var(--palette-white);
+      box-shadow:0 1px 3px rgba(0,0,0,.2);transition:.2s;
+    }
+    .switch.on{background:var(--accent);}
+    .switch.on::after{left:19px;}
+
+    /* ===== SUMMARY BAR (위험 알림 컨텍스트 → 디자인 시스템 red soft) ===== */
+    .summary-bar{
+      display:flex;align-items:center;gap:12px;
+      padding:12px 16px;
+      background:var(--palette-white);
+      border-radius:18px;
+      box-shadow:0 1px 2px rgba(0,0,0,.03);
+      cursor:pointer;text-decoration:none;color:var(--t1);
+    }
+    .summary-dot{
+      width:8px;height:8px;border-radius:999px;
+      background:var(--palette-red-600);flex-shrink:0;
+      animation: haru-pulse 2s ease-in-out infinite;
+    }
+    .summary-text{
+      flex:1;font-size:14px;font-weight:600;
+      color:var(--t1);line-height:1.4;letter-spacing:-.2px;
+    }
+    .summary-text b{color:var(--palette-red-700);font-weight:800;}
+    .summary-bar iconify-icon{color:var(--t3);font-size:18px;}
+
+    /* ===== 필터 칩 (보호자앱 chip 등가) ===== */
+    .filter-row{
+      display:flex;gap:8px;overflow-x:auto;
+      -webkit-overflow-scrolling:touch;scrollbar-width:none;
+      padding-right:var(--page-pad);
+      margin-right:calc(-1 * var(--page-pad));
+      mask-image:linear-gradient(90deg,black 88%,transparent 100%);
+      -webkit-mask-image:linear-gradient(90deg,black 88%,transparent 100%);
+    }
+    .chip{
+      flex-shrink:0;
+      height:34px;padding:0 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.85);
+      border:1px solid rgba(255,255,255,.9);
+      font-size:13px;font-weight:600;color:var(--t2);
+      cursor:pointer;font-family:inherit;
+      display:inline-flex;align-items:center;gap:5px;
+      box-shadow:0 1px 3px rgba(0,0,0,.04);
+      transition:.15s;
+    }
+    .chip.is-active{
+      background:var(--accent);color:var(--palette-white);font-weight:700;
+      border-color:var(--accent);
+      box-shadow:0 3px 10px rgba(var(--brand-green-500-rgb), .22);
+    }
+    .chip .count{
+      font-size:11.5px;font-weight:700;opacity:.85;
+    }
+
+    /* ===== 섹션 라벨 (보호자앱 sec-label 등가) ===== */
+    .sec-label{
+      display:flex;align-items:center;gap:10px;
+      padding:8px 4px 6px;cursor:pointer;
+    }
+    .sec-label-text{
+      font-size:12px;font-weight:700;color:var(--t2);letter-spacing:.2px;
+    }
+    .sec-label-count{
+      font-size:11px;font-weight:700;color:var(--accent-strong);
+      background:var(--accent-soft);
+      padding:2px 9px;border-radius:999px;
+    }
+    .sec-label-chev{
+      margin-left:auto;color:var(--t3);transition:transform .2s;
+      display:inline-flex;
+    }
+    .sec-label-chev iconify-icon{font-size:18px;}
+    .sec-label.collapsed .sec-label-chev{transform:rotate(-90deg);}
+
+    .msg-list{
+      display:flex;flex-direction:column;gap:8px;
+      overflow:hidden;
+      transition:max-height .25s ease, opacity .2s ease;
+    }
+    .msg-list.collapsed{max-height:0 !important;opacity:0;}
+
+    /* ===== 메시지 카드 (보호자앱 msg-item 등가) ===== */
+    .msg-item{
+      display:flex;align-items:center;gap:14px;
+      padding:12px 16px;
+      background:var(--palette-white);
+      border-radius:18px;
+      box-shadow:0 1px 2px rgba(0,0,0,.03);
+      text-decoration:none;color:inherit;
+      cursor:pointer;
+      transition:transform .12s;
+    }
+    .msg-item:active{transform:scale(.99);}
+    .msg-item.is-unread{box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .10);}
+    .msg-item.is-action{align-items:flex-start;padding:16px;}
+
+    .av{
+      width:44px;height:44px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;flex-shrink:0;position:relative;overflow:hidden;
+      font-size:15px;letter-spacing:-.3px;
+    }
+    .av img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+    .av.guardian{background:var(--brand-blue-100);color:var(--brand-blue-600);}
+    .av.caregiver{background:var(--accent-soft);color:var(--accent-strong);}
+    .av.doctor{background:var(--brand-yellow-100);color:var(--brand-yellow-600);}
+    .av.system{
+      background:var(--color-bg-canvas);color:var(--t2);
+      border:1px solid var(--color-border-subtle,rgba(0,0,0,.05));
+    }
+    .av.system.is-alert{background:var(--danger-soft);color:var(--palette-red-700);border-color:transparent;}
+    .av.system.is-rx{background:var(--accent-soft);color:var(--accent-strong);border-color:transparent;}
+    .av.system.is-info{background:rgba(var(--brand-blue-500-rgb), .10);color:var(--brand-blue-600);border-color:transparent;}
+    .av.system iconify-icon{font-size:20px;}
+    .av.online::after{
+      content:'';position:absolute;bottom:1px;right:1px;
+      width:11px;height:11px;border-radius:999px;background:var(--accent);
+      border:2.5px solid var(--palette-white);
+    }
+
+    .msg-body{flex:1;min-width:0;}
+    .msg-name-row{display:flex;align-items:center;gap:6px;margin-bottom:2px;}
+    .msg-name{
+      font-size:14.5px;font-weight:700;color:var(--t1);letter-spacing:-.2px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .badge{
+      height:16px;padding:0 7px;border-radius:999px;
+      font-size:10.5px;font-weight:700;line-height:1;
+      display:inline-flex;align-items:center;flex-shrink:0;letter-spacing:0;
+    }
+    .badge--info{background:var(--palette-gray-100);color:var(--t2);}
+    .badge--warning{background:var(--palette-gray-100);color:var(--t2);}
+    .badge--critical{background:var(--danger-soft);color:var(--palette-red-700);}
+    .badge--success{background:var(--palette-gray-100);color:var(--t2);}
+
+    .msg-preview{
+      font-size:13px;font-weight:500;color:var(--t2);line-height:1.4;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .msg-preview b{color:var(--t1);font-weight:600;}
+
+    .msg-meta{
+      display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;
+    }
+    .msg-item.is-action .msg-meta{align-self:flex-start;}
+    .msg-time{font-size:11.5px;font-weight:500;color:var(--t3);}
+    .msg-badge{
+      background:var(--accent);color:var(--palette-white);
+      font-size:11px;font-weight:700;border-radius:999px;
+      padding:1px 7px;min-width:20px;text-align:center;line-height:18px;
+    }
+    .msg-badge.danger{background:var(--danger);}
+
+    /* msg-cta — v3.2.14 표준(system/components.css)을 인라인 복제.
+       v15는 .tabbar 충돌 회피로 components.css를 로드하지 않으므로 로컬 정의. */
+    .msg-actions{display:flex;gap:var(--space-2);margin-top:var(--space-3);}
+    .msg-cta{
+      display:inline-flex;align-items:center;gap:6px;
+      height:40px;padding:0 var(--space-5);
+      border-radius:var(--radius-pill);
+      font:700 14px/1 var(--font-family-base);letter-spacing:-.2px;
+      background:var(--color-accent);color:var(--color-accent-on);
+      border:0;cursor:pointer;text-decoration:none;font-family:inherit;
+      box-shadow:0 3px 10px rgba(var(--color-accent-rgb),.22);
+      transition:transform .1s ease;
+    }
+    .msg-cta:active{transform:scale(.97);}
+    .msg-cta:disabled{opacity:.6;cursor:default;box-shadow:none;}
+    .msg-cta iconify-icon{font-size:15px;}
+    .msg-cta--secondary{
+      background:var(--color-bg-surface);color:var(--color-text-primary);
+      border:1px solid var(--color-border-subtle);box-shadow:none;
+    }
+    .msg-cta--danger{
+      background:var(--color-danger);color:var(--color-text-on-dark);
+    }
+
+    /* 진입 애니메이션 (보호자앱과 동일) */
+    .sec-label,.msg-item{animation: haru-fade-in-up var(--duration-slow, 350ms) var(--easing-standard) both;}
+    .sec-label{animation-delay:120ms;}
+    .msg-list > .msg-item:nth-child(1){animation-delay:180ms;}
+    .msg-list > .msg-item:nth-child(2){animation-delay:240ms;}
+    .msg-list > .msg-item:nth-child(3){animation-delay:300ms;}
+    .msg-list > .msg-item:nth-child(4){animation-delay:360ms;}
+    .msg-list > .msg-item:nth-child(n+5){animation-delay:420ms;}
+    @keyframes haru-fade-in-up{
+      from{opacity:0;transform:translateY(8px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+    @media (prefers-reduced-motion:reduce){.sec-label,.msg-item{animation:none !important;}}
+
+    /* ===== OVERLAY SHEETS (의료진 답신 + 긴급 상세) ===== */
+    .overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.4);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      display:none;align-items:flex-end;justify-content:center;z-index:200;
+    }
+    .overlay.show{display:flex;}
+    .sheet{
+      background:var(--palette-white);border-radius:28px 28px 0 0;
+      padding:22px 24px calc(28px + env(safe-area-inset-bottom,0px));
+      width:100%;max-width:430px;max-height:88vh;overflow-y:auto;
+    }
+    .sheet-ava{
+      width:48px;height:48px;border-radius:50%;flex-shrink:0;
+      background:var(--brand-blue-100);color:var(--brand-blue-600);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:17px;font-weight:700;
+    }
+    .sheet-id{flex:1;min-width:0;line-height:1.25;}
+
+    .sheet-msg-in{
+      padding:16px 18px;background:var(--clinical-surface-muted);border-radius:16px;
+      font-size:15px;font-weight:500;color:var(--t1);line-height:1.55;
+      margin-bottom:18px;
+    }
+    .sheet-msg-in-time{font-size:12px;font-weight:500;color:var(--t3);margin-top:8px;}
+
+    .ai-suggest{
+      padding:16px 18px;background:var(--palette-white);
+      border-radius:20px;
+      box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .10);
+      font-size:15px;font-weight:500;color:var(--t1);line-height:1.55;
+      margin-bottom:18px;cursor:pointer;font-family:inherit;text-align:left;
+      width:100%;display:block;
+    }
+    .ai-suggest-tag{
+      display:inline-block;font-size:11px;font-weight:700;
+      padding:2px 8px;border-radius:5px;
+      background:var(--accent);color:var(--palette-white);margin-right:8px;
+      vertical-align:1px;letter-spacing:.2px;
+    }
+
+    .templates-ttl{
+      font-size:12px;font-weight:700;color:var(--t3);
+      letter-spacing:.2px;margin:18px 0 10px;
+    }
+    .templates{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .tpl-btn{
+      padding:14px;background:var(--clinical-surface);border:0;border-radius:14px;
+      font-size:13.5px;font-weight:700;color:var(--t1);
+      cursor:pointer;font-family:inherit;text-align:left;line-height:1.4;
+    }
+
+    .compose{
+      margin-top:18px;padding:8px 8px 8px 18px;background:var(--clinical-surface-muted);
+      border-radius:999px;display:flex;align-items:center;gap:10px;
+    }
+    .compose-input{
+      flex:1;border:0;outline:0;font-size:15px;font-family:inherit;
+      color:var(--t1);background:transparent;min-height:36px;
+    }
+    .compose-input:focus-visible{box-shadow:0 0 0 2px var(--color-accent), 0 0 0 4px rgba(var(--color-accent-rgb), .25);border-radius:8px;}
+    .compose-mic,.compose-send{
+      width:40px;height:40px;border-radius:50%;border:0;flex-shrink:0;
+      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+    }
+    .compose-mic{background:var(--palette-white);color:var(--t2);}
+    .compose-send{background:var(--accent);color:var(--palette-white);}
+    .compose iconify-icon{font-size:19px;}
+
+    .urg-banner{
+      display:flex;align-items:center;gap:12px;
+      padding:14px 16px;background:var(--danger-soft);
+      border-radius:14px;margin-bottom:16px;
+    }
+    .urg-banner iconify-icon{font-size:22px;color:var(--danger);flex-shrink:0;}
+    .urg-banner-text{font-size:14px;font-weight:700;color:var(--palette-red-700);line-height:1.4;}
+    .urg-banner-text span{display:block;font-size:11.5px;font-weight:500;color:var(--palette-red-600);margin-top:2px;letter-spacing:.1px;}
+
+    .urg-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+    .urg-cell{background:var(--clinical-surface);border-radius:14px;padding:14px 16px;line-height:1.25;}
+    .urg-cell-label{font-size:11px;font-weight:500;color:var(--t3);}
+    .urg-cell-val{font-size:18px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;margin-top:6px;letter-spacing:-.4px;}
+    .urg-cell-val.danger{color:var(--palette-red-700);}
+    .urg-cell-trend{font-size:11px;font-weight:600;color:var(--palette-red-600);margin-top:4px;}
+
+    .urg-rec{
+      background:var(--palette-white);
+      box-shadow:0 2px 8px rgba(var(--brand-green-500-rgb), .10);
+      padding:14px 16px;border-radius:14px;margin-bottom:14px;
+      font-size:13.5px;font-weight:500;color:var(--t1);line-height:1.55;
+    }
+    .urg-rec b{font-weight:700;color:var(--accent-strong);display:block;font-size:11px;letter-spacing:.3px;margin-bottom:4px;}
+
+    .urg-actions{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+    .urg-action-primary{
+      width:100%;padding:16px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
+      background:var(--accent);color:var(--palette-white);
+      font-size:15px;font-weight:700;letter-spacing:-.2px;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      box-shadow:0 6px 18px rgba(var(--brand-green-500-rgb), .3);
+    }
+    .urg-action-primary iconify-icon{font-size:20px;}
+    .urg-action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .urg-action-secondary{
+      padding:14px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;
+      background:var(--palette-white);border:1px solid var(--palette-gray-200);
+      color:var(--t1);font-size:13.5px;font-weight:700;
+      display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    }
+    .urg-action-secondary iconify-icon{font-size:18px;color:var(--t2);}
+    .urg-cancel{
+      width:100%;margin-top:8px;padding:12px;
+      background:transparent;border:0;cursor:pointer;font-family:inherit;
+      font-size:13px;font-weight:600;color:var(--t3);
+    }
+
+    /* ===== TAB BAR (의료진 고유 — SOS 포함) · v3.2.5: 위치 통일 env+12px (d01 기준) ===== */
+    .tab-wrap{
+      position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);
+      left:50%;transform:translateX(-50%);
+      display:flex;align-items:center;gap:10px;
+      width:calc(100% - 32px);max-width:398px;z-index:40;
+    }
+    .tab iconify-icon{font-size:26px;}
+    .tab-label{display:none;}
+    .tab.active{color:var(--accent-strong);}
+    .tab.active iconify-icon{filter:drop-shadow(0 2px 6px rgba(var(--brand-green-500-rgb), .28));}
+    .sos{
+      position:relative;width:var(--tab-h);height:var(--tab-h);flex-shrink:0;border-radius:50%;
+      background:var(--color-danger);border:0;
+      box-shadow:0 6px 22px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
+      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+    }
+    .sos iconify-icon{font-size:26px;color:var(--palette-white);}
+/* Inline 대체 */
+    .ico-lg { font-size: 20px; }
+    .mb-3   { margin-bottom: 14px; }
+    .text-t3 { color: var(--t3); }
+    .text-danger { color: var(--danger); }
+    .border-danger { border-color: var(--danger); color: var(--danger); }
