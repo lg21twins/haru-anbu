@@ -42,6 +42,8 @@ _원본백업_
 #   · img/opt/*-900.webp, *-480.webp : img[data-msrc] / [data-bgm] 을 JS가 폰에서 갈아끼운다.
 #   · 07_디자인/mockup 의 *.html : SOS 플로우 iframe 대상.
 # 내부 감사용 스크린샷 — 화면 캡처 31장, 저장소에는 남기되 공개 배포에는 불필요
+# (glob 대신 명시 경로를 쓴다. 이 파일에서 확실히 동작이 확인된 형태는 앵커된 경로다)
+haru-anbu-showcase-v8-bundle/07_디자인/mockup/v11_보호자앱/audit-screenshots
 **/audit-screenshots
 # webp 최적화로 대체된 초대형 원본 PNG (번들 내 참조 0건)
 haru-anbu-showcase-v8-bundle/07_디자인/mockup/v11_보호자앱/img/간호사.png
