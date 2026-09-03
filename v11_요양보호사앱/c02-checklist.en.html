@@ -11,7 +11,7 @@
   <!-- Noto Sans SC: 중국어 폴백 (요양보호사 다국어 지원) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
+  <!-- v16: 이 화면엔 한자가 없어 Noto Sans SC 를 받지 않는다 -->
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
 
   <script src="../07_디자인/_app-theme.js"></script>
@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="../07_디자인/system/components.css?v=20260523e">
   <link rel="stylesheet" href="caregiver.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <!-- v15: 아이콘 데이터 동봉 — 네트워크가 막혀도 아이콘이 사라지지 않는다 -->
+  <script src="../07_디자인/_iconify-bundle.js"></script>
   <script defer src="caregiver.js"></script>
   <style>
     /* ============================================================
@@ -774,7 +776,7 @@
         <span class="av lg warn">P</span>
         <div class="pt-row-info">
           <div class="pt-row-top">
-            <div class="pt-row-n">Ms. Park <span class="room">· A-3 · Age 82</span></div>
+            <div class="pt-row-n">Ms. Park <span class="room">· A-3 · Age 78</span></div>
             <div class="pt-row-pct"><span class="warn">3/8</span></div>
           </div>
           <div class="pt-row-bar-wrap">
@@ -790,7 +792,7 @@
         <span class="av lg">C</span>
         <div class="pt-row-info">
           <div class="pt-row-top">
-            <div class="pt-row-n">Ms. Choi <span class="room">· B-1 · Age 74</span></div>
+            <div class="pt-row-n">Ms. Choi <span class="room">· B-1 · Age 82</span></div>
             <div class="pt-row-pct">5/8</div>
           </div>
           <div class="pt-row-bar-wrap">
@@ -855,7 +857,7 @@
       </div>
     </header>
     <div class="status-strip">
-      <span id="pdMeta">Age 82 · Diabetes · Hypertension</span>
+      <span id="pdMeta">Age 78 · Diabetes · Hypertension</span>
       <span class="head-pct" id="pdPct">3/8</span>
     </div>
 
@@ -1230,8 +1232,8 @@
     // 환자 데이터
     // ============================================================
     const PATIENTS = {
-      park: { name: 'Ms. Park', room: 'A-3', age: 82, done: 3, total: 8, tags: [['Diabetes',0],['Hypertension',0],['Glucose watch',1]], alert: 'Post-meal glucose 142 mg/dL — recheck before lunch advised' },
-      choi: { name: 'Ms. Choi', room: 'B-1', age: 74, done: 5, total: 8, tags: [['Standard care',0],['2 meds',0]], alert: null },
+      park: { name: 'Ms. Park', room: 'A-3', age: 78, done: 3, total: 8, tags: [['Diabetes',0],['Hypertension',0],['Glucose watch',1]], alert: 'Post-meal glucose 142 mg/dL — recheck before lunch advised' },
+      choi: { name: 'Ms. Choi', room: 'B-1', age: 82, done: 5, total: 8, tags: [['Standard care',0],['2 meds',0]], alert: null },
       kim:  { name: 'Ms. Kim', room: 'B-2', age: 79, done: 4, total: 8, tags: [['Arthritis',0],['Reposition q2h',0]], alert: null },
       lee:  { name: 'Ms. Lee', room: 'A-7', age: 85, done: 8, total: 8, tags: [['Post-stroke',0],['Mobility assist',0]], alert: null },
     };

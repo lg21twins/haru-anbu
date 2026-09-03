@@ -29,7 +29,7 @@
 
   <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn 표준 (2026-05-22 통합) -->
   <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
-<link rel="stylesheet" href="styles/g02-ai-guide-part-2.css">
+<link rel="stylesheet" href="styles/_header-mobile.css">
 </head>
 <body>
 
@@ -65,6 +65,7 @@
           <span class="sec-head__title">FAQ</span>
           <button type="button" class="sec-head__more" id="q-more-btn" onclick="toggleAllQ()">See all</button>
         </div>
+        <p class="sec-note">General health information. Assessment and diagnosis of a resident's condition are made by the care team's medical staff.</p>
         <div class="cat-row" role="tablist">
           <button class="chip is-active" type="button" onclick="filterQ('all',this)" aria-pressed="true">All</button>
           <button class="chip" type="button" onclick="filterQ('med',this)">Medication &amp; Health</button>
@@ -90,7 +91,7 @@
               <iconify-icon icon="material-symbols:chevron-right-rounded" class="q-item__arrow"></iconify-icon>
             </div>
             <div class="q-answer"><div class="q-answer__inner">
-              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">Normal blood pressure is below 120/80 mmHg; 130 or above is pre-hypertension. Fasting blood sugar below 100 mg/dL is normal; 126 or above indicates diabetes. Home readings are most accurate taken at rest after waking in the morning.</p></div>
+              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">Normal blood pressure is below 120/80 mmHg; 130 or above is pre-hypertension. Fasting blood sugar below 100 mg/dL is normal; 126 mg/dL or above meets the diagnostic threshold for diabetes. An actual diagnosis requires a physician. Home readings are most accurate taken at rest after waking in the morning.</p></div>
             </div></div>
           </div>
           <div class="q-item" data-cat="care" onclick="toggleQ(this)">

@@ -8,7 +8,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#DCFCE7">
   <title>Haru Anbu · Caregiver · Today</title>
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <!-- v16: CDN 폰트 제거 — tokens.css 안 통합 서브셋을 쓴다 -->
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
 
   <script src="../07_디자인/_app-theme.js"></script>
@@ -19,6 +19,8 @@
   <!-- 공통 셸(헤더/로고/아이콘버튼) 단일 소스 — 인라인 복붙 대체 -->
   <link rel="stylesheet" href="../07_디자인/system/shell.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <!-- v15: 아이콘 데이터 동봉 — 네트워크가 막혀도 아이콘이 사라지지 않는다 -->
+  <script src="../07_디자인/_iconify-bundle.js"></script>
   <script defer src="caregiver.js"></script>
   <style>
     :root {
@@ -598,7 +600,7 @@
           <span class="rs-av warn">L</span>
           <div class="roster-body">
             <div class="roster-top">
-              <span class="rs-nm">Ms. Lee<span class="rm">B-2</span></span>
+              <span class="rs-nm">Ms. Lee<span class="rm">A-7</span></span>
               <span class="rs-dots">
                 <span class="rd warn"></span>
                 <span class="rd"></span>
@@ -621,7 +623,7 @@
         <span class="obs-ic"><iconify-icon icon="mingcute:warning-fill"></iconify-icon></span>
         <div class="obs-title">
           <div class="obs-name"><b>Ms. Lee</b> · Low-grade fever observation</div>
-          <div class="obs-meta">Floor 2 · Room B-2 · Last check 06:40</div>
+          <div class="obs-meta">Floor 2 · Room A-7 · Last check 06:40</div>
         </div>
         <button type="button" class="obs-call-mini" onclick="event.stopPropagation();callNurse('Ms. Lee fever')" aria-label="Call nurse">
           <iconify-icon icon="mingcute:phone-fill"></iconify-icon>Call
@@ -705,7 +707,7 @@
           '</div>' +
           '<div>' +
             '<div class="cg-sheet__ttl">Ms. Lee · Low-grade fever</div>' +
-            '<div class="cg-sheet__sub">Floor 2 · Room B-2 · Last check 06:40 · Stage <b>Observation</b></div>' +
+            '<div class="cg-sheet__sub">Floor 2 · Room A-7 · Last check 06:40 · Stage <b>Observation</b></div>' +
           '</div>' +
         '</div>' +
         '<div class="cg-sheet__body">' +

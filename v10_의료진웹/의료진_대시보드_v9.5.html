@@ -5,11 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>하루안부 — 의료진 대시보드 v9.5</title>
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+  <!-- v16: JetBrains Mono(숫자용)를 저장소 안 사본으로 — 외부 폰트 호스트 의존 제거 -->
+  <style id="jetbrains-mono-local">
+    @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:swap;
+      src:url('../07_디자인/fonts/jetbrains-mono-latin.woff2') format('woff2');
+      unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+        U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+  </style>
   <script src="../07_디자인/_app-theme.js"></script>
   <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <!-- v15: 아이콘 데이터 동봉 — 네트워크가 막혀도 아이콘이 사라지지 않는다 -->
+  <script src="../07_디자인/_iconify-bundle.js"></script>
   <style>
     *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 
@@ -29,7 +35,10 @@
       /* ─────────────────────────────────────────────────────────
          의료진 웹 로컬 별칭 — 모두 tokens.css semantic 토큰 참조.
          data-role="medical" + data-platform="web" 에 의해 자동 오버라이드됨.
-         v9.5 화면에서 기존에 쓰던 --ink-*/--accent 등 별칭 이름은 호환을 위해 유지.
+         v9.5 화면에서 기존에 쓰던 --ink-N · --accent 등 별칭 이름은 호환을 위해 유지.
+         (예전엔 이 자리에 별표와 슬래시가 이어져 주석이 여기서 닫혀 버렸다. 그 바람에
+          바로 아래 --ink 선언 한 줄이 통째로 파서에 먹혔고, var(--ink) 를 쓰는 사이드바
+          배경이 투명해져 흰 글씨가 안 보였다. 주석 안에서 주석을 닫지 말 것.)
          ───────────────────────────────────────────────────────── */
 
       /* 무채색 — 의료진 웹 고유 웜 그레이 톤 (tokens.css 팔레트와 톤 차이 있어 직접 정의).
@@ -3530,7 +3539,8 @@
 .v10-memo-input:focus-visible{box-shadow:0 0 0 2px var(--color-accent), 0 0 0 4px rgba(var(--brand-green-500-rgb), .22);border-radius:8px;}
     .v10-memo-saved-tag { font-size: 11px; color: var(--ink-5); }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <!-- v16: chart.js 를 저장소 안 사본으로 (네트워크가 막혀도 차트가 유지된다) -->
+  <script src="../07_디자인/vendor/chart.umd.min.js"></script>
   <script>if(typeof Chart!=='undefined'){Chart.defaults.animation=false;}</script>
 </head>
 <body>
@@ -3977,7 +3987,7 @@
 
           <div class="al-item caution">
             <div class="al-body">
-              <div class="al-patient">302호 김순자 (여 · 78세)</div>
+              <div class="al-patient">302호 김순자 (여 · 79세)</div>
               <div class="al-msg">식사량 3일 연속 30% 미만 · 영양 상담 및 보호자 알림 고려</div>
               <div class="al-time">어제부터 추이 감지</div>
             </div>
@@ -4249,7 +4259,7 @@
           </div>
         </div>
         <div><span class="pt-badge dg"><span class="pt-badge-dot"></span>주의</span></div>
-        <div class="pt-note dg">혈압 180/110 이상 감지</div>
+        <div class="pt-note dg">혈압 180/110 임계값 초과</div>
         <div class="pt-progress">
           <span class="pt-pct low">45%</span>
           <div class="pt-pbar"><div class="pt-pfill low" style="--bar-w:45%"></div></div>
@@ -4268,7 +4278,7 @@
           <div>
             <div class="pt-room">302호</div>
             <div class="pt-name-text">김순자</div>
-            <div class="pt-meta">여 · 78세</div>
+            <div class="pt-meta">여 · 79세</div>
             <div class="pt-risks">
               <span class="pt-risk mid">낙상 중</span>
               <span class="pt-risk high">욕창 높음</span>
@@ -4589,7 +4599,7 @@
           <div class="pt-av sf">김</div>
           <div class="med-tl-pt-info">
             <div class="med-tl-pt-name">김순자</div>
-            <div class="med-tl-pt-sub">302호 · 여 · 78세</div>
+            <div class="med-tl-pt-sub">302호 · 여 · 79세</div>
           </div>
         </div>
         <div class="med-tl-track">
@@ -4875,7 +4885,7 @@
           <div>
             <div class="pt-room">302호</div>
             <div class="pt-name-text">김순자</div>
-            <div class="pt-meta">여 · 78세</div>
+            <div class="pt-meta">여 · 79세</div>
           </div>
         </div>
         <div class="med-drug">
@@ -5144,7 +5154,7 @@
         </div>
         <div>
           <div class="cl-task">혈압 재측정</div>
-          <div class="cl-task-sub">180/110 이상 감지 — 2시간 내 필수</div>
+          <div class="cl-task-sub">180/110 임계값 초과 — 2시간 내 필수</div>
         </div>
         <div class="cl-assignee">김코디 간호사</div>
         <div class="cl-sched overdue">12:00</div>
@@ -5485,7 +5495,7 @@
           <div class="ho-tm-top">
             <div class="ho-tm-id">
               <span class="ho-tm-room">302호</span>
-              <span class="ho-tm-name">김순자<span class="age">여 78</span></span>
+              <span class="ho-tm-name">김순자<span class="age">여 79</span></span>
             </div>
             <span class="ho-tm-badge mid">보통</span>
           </div>
@@ -5628,7 +5638,7 @@
           <div>
             <div class="pt-room">302호</div>
             <div class="pt-name-text">김순자</div>
-            <div class="pt-meta">여 · 78세</div>
+            <div class="pt-meta">여 · 79세</div>
           </div>
         </div>
         <div class="ho-sbar">
@@ -6367,7 +6377,7 @@
           <div>
             <div class="pt-room">302호</div>
             <div class="pt-name-text">김순자</div>
-            <div class="pt-meta">여 · 78세</div>
+            <div class="pt-meta">여 · 79세</div>
           </div>
         </div>
         <div>
@@ -6418,7 +6428,7 @@
 
     <!-- 프로필 카드 -->
     <div class="my-profile-card">
-      <div class="my-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="김코디 프로필 사진" loading="lazy" onerror="this.parentNode.textContent='김';this.parentNode.style.background='var(--ink)';this.parentNode.style.color='white';"></div>
+      <div class="my-avatar"><img src="../07_디자인/img/people/av-staff.webp" alt="김코디 프로필 사진" loading="lazy" onerror="this.parentNode.textContent='김';this.parentNode.style.background='var(--ink)';this.parentNode.style.color='white';"></div>
       <div class="v10-flex-1-min">
         <div class="my-name">김코디</div>
         <div class="my-role-line">간호사 · 햇살요양원 2병동 · 사번 NRS-2024-047</div>
@@ -6591,7 +6601,7 @@
     </div>
     <div class="af-item urgent">
       <div class="af-head">
-        <span class="af-badge urgent">패턴 감지</span>
+        <span class="af-badge urgent">반복 패턴</span>
         <span class="af-time">5분 전</span>
       </div>
       <div class="af-pt">박영수님<span class="af-pt-room">· 301호</span></div>
@@ -6599,7 +6609,7 @@
     </div>
     <div class="af-item">
       <div class="af-head">
-        <span class="af-badge">추이 분석</span>
+        <span class="af-badge">추이 요약</span>
         <span class="af-time">18분 전</span>
       </div>
       <div class="af-pt">김순자님<span class="af-pt-room">· 302호</span></div>
@@ -6607,7 +6617,7 @@
     </div>
     <div class="af-item">
       <div class="af-head">
-        <span class="af-badge">이상 예측</span>
+        <span class="af-badge">변화 관찰</span>
         <span class="af-time">42분 전</span>
       </div>
       <div class="af-pt">이철수님<span class="af-pt-room">· 303호</span></div>

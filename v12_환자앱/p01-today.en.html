@@ -14,6 +14,8 @@
   <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="patient.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <!-- v15: 아이콘 데이터 동봉 — 네트워크가 막혀도 아이콘이 사라지지 않는다 -->
+  <script src="../07_디자인/_iconify-bundle.js"></script>
 
   <link rel="stylesheet" href="styles/p01-today.css">
 </head>
@@ -72,7 +74,7 @@
             <article class="msg-card msg-card--clickable" aria-label="Message from daughter Minji" onclick="location.href='p07-message.html'">
               <header class="msg-card-head">
                 <div class="msg-av">
-                  <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Daughter Minji">
+                  <img src="../07_디자인/img/people/av-daughter.webp" alt="Daughter Minji">
                   <span class="msg-av-dot" aria-hidden="true"></span>
                 </div>
                 <div>
@@ -83,14 +85,14 @@
 
               <div class="msg-photos">
                 <a href="p06-photo.html" onclick="event.stopPropagation();" aria-label="View photo larger">
-                  <img class="photo-thumb" src="https://picsum.photos/seed/minji-park-spring/520/520" alt="Park photo from Minji">
+                  <img class="photo-thumb" src="../07_디자인/img/people/photo-park.webp" alt="Park photo from Minji">
                   <span class="photo-hint" aria-hidden="true">
                     <iconify-icon icon="ph:magnifying-glass-bold"></iconify-icon>
                     Tap to enlarge
                   </span>
                 </a>
                 <a href="p06-photo.html" onclick="event.stopPropagation();" aria-label="View photo larger">
-                  <img class="photo-thumb" src="https://picsum.photos/seed/minji-sooji-smile/520/520" alt="Granddaughter photo from Minji">
+                  <img class="photo-thumb" src="../07_디자인/img/people/photo-family.webp" alt="Granddaughter photo from Minji">
                 </a>
               </div>
 
@@ -196,7 +198,7 @@
           <div class="fam-quick-list">
             <a href="p03-call.html" class="fam-row" aria-label="Video call daughter Minji — online now">
               <div class="fam-av fam-av--orange">
-                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Daughter Minji">
+                <img src="../07_디자인/img/people/av-daughter.webp" alt="Daughter Minji">
                 <span class="fam-av-dot fam-av-dot--on" aria-hidden="true"></span>
               </div>
               <div class="fam-row-meta">
@@ -215,7 +217,7 @@
 
             <a href="p03-call.html" class="fam-row" aria-label="Video call granddaughter Seoyeon — online now">
               <div class="fam-av fam-av--green">
-                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="Granddaughter Seoyeon">
+                <img src="../07_디자인/img/people/av-granddaughter.webp" alt="Granddaughter Seoyeon">
                 <span class="fam-av-dot fam-av-dot--on" aria-hidden="true"></span>
               </div>
               <div class="fam-row-meta">
@@ -234,7 +236,7 @@
 
             <a href="p05-voice.html" class="fam-row fam-row--offline" aria-label="Leave a voice message for son Taewoo — away">
               <div class="fam-av fam-av--blue">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Son Taewoo">
+                <img src="../07_디자인/img/people/av-son.webp" alt="Son Taewoo">
                 <span class="fam-av-dot" aria-hidden="true"></span>
               </div>
               <div class="fam-row-meta">

@@ -11,7 +11,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
+  <!-- v16: 이 화면엔 한자가 없어 Noto Sans SC 를 받지 않는다 -->
 
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
   <script src="../07_디자인/_app-theme.js"></script>
@@ -103,13 +103,13 @@
         </div>
         <div class="msg-list">
 
-          <!-- 이상감지: 미열 (업무성 액션) -->
+          <!-- 확인 요청: 미열 관찰 (업무성 액션) -->
           <div class="msg-item is-unread is-action" data-type="alert" data-cat="alert">
             <div class="av av--system is-crit"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon></div>
             <div class="msg-body">
               <div class="msg-name-row">
                 <span class="msg-name">Ms. Lee · Low-grade fever</span>
-                <span class="badge badge--critical">Anomaly</span>
+                <span class="badge badge--critical">Check requested</span>
               </div>
               <div class="msg-preview">Temp 37.4°C — 0.8°C above usual. Accompanied by 3 dry coughs</div>
               <div class="msg-actions">
@@ -443,8 +443,8 @@
     if (!window.HaruCG) { toast('Alert details'); return; }
     var data = {
       fever: {
-        title: 'Anomaly · Low-grade fever observation',
-        sub: 'Ms. Lee · Floor 2 · Room B-2',
+        title: 'Check requested · Low-grade fever observation',
+        sub: 'Ms. Lee · Room A-7',
         rows: [
           ['ph:thermometer-fill', 'Time detected', '06:40'],
           ['mingcute:warning-fill', 'Observed values', 'Temp 37.4℃ · 3 coughs'],
@@ -454,7 +454,7 @@
       },
       rotate: {
         title: 'Repositioning reminder',
-        sub: 'Ms. Choi · Room A-7 · Next 11:00',
+        sub: 'Ms. Choi · Room B-1 · Next 11:00',
         rows: [
           ['material-symbols:schedule-rounded', 'Cycle', 'Every 2 hours (last 10:30)'],
           ['mingcute:warning-fill', 'Caution', 'Persistent redness on right hip'],

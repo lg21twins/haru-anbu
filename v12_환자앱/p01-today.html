@@ -14,6 +14,8 @@
   <script src="../07_디자인/_app-theme.js"></script>
   <link rel="stylesheet" href="patient.css">
   <script src="../07_디자인/_iconify-icon.min.js"></script>
+  <!-- v15: 아이콘 데이터 동봉 — 네트워크가 막혀도 아이콘이 사라지지 않는다 -->
+  <script src="../07_디자인/_iconify-bundle.js"></script>
 
   <link rel="stylesheet" href="styles/p01-today.css">
 </head>
@@ -72,7 +74,7 @@
             <article class="msg-card msg-card--clickable" aria-label="딸 민지의 메시지" onclick="location.href='p07-message.html'">
               <header class="msg-card-head">
                 <div class="msg-av">
-                  <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="딸 민지">
+                  <img src="../07_디자인/img/people/av-daughter.webp" alt="딸 민지">
                   <span class="msg-av-dot" aria-hidden="true"></span>
                 </div>
                 <div>
@@ -83,14 +85,14 @@
 
               <div class="msg-photos">
                 <a href="p06-photo.html" onclick="event.stopPropagation();" aria-label="사진 크게 보기">
-                  <img class="photo-thumb" src="https://picsum.photos/seed/minji-park-spring/520/520" alt="민지가 보낸 공원 사진">
+                  <img class="photo-thumb" src="../07_디자인/img/people/photo-park.webp" alt="민지가 보낸 공원 사진">
                   <span class="photo-hint" aria-hidden="true">
                     <iconify-icon icon="ph:magnifying-glass-bold"></iconify-icon>
                     눌러서 크게
                   </span>
                 </a>
                 <a href="p06-photo.html" onclick="event.stopPropagation();" aria-label="사진 크게 보기">
-                  <img class="photo-thumb" src="https://picsum.photos/seed/minji-sooji-smile/520/520" alt="민지가 보낸 손녀 사진">
+                  <img class="photo-thumb" src="../07_디자인/img/people/photo-family.webp" alt="민지가 보낸 손녀 사진">
                 </a>
               </div>
 
@@ -196,7 +198,7 @@
           <div class="fam-quick-list">
             <a href="p03-call.html" class="fam-row" aria-label="딸 민지에게 바로 영상통화 — 지금 접속 중">
               <div class="fam-av fam-av--orange">
-                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="딸 민지">
+                <img src="../07_디자인/img/people/av-daughter.webp" alt="딸 민지">
                 <span class="fam-av-dot fam-av-dot--on" aria-hidden="true"></span>
               </div>
               <div class="fam-row-meta">
@@ -215,7 +217,7 @@
 
             <a href="p03-call.html" class="fam-row" aria-label="손녀 서연에게 바로 영상통화 — 지금 접속 중">
               <div class="fam-av fam-av--green">
-                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="손녀 서연">
+                <img src="../07_디자인/img/people/av-granddaughter.webp" alt="손녀 서연">
                 <span class="fam-av-dot fam-av-dot--on" aria-hidden="true"></span>
               </div>
               <div class="fam-row-meta">
@@ -234,7 +236,7 @@
 
             <a href="p05-voice.html" class="fam-row fam-row--offline" aria-label="아들 태우에게 음성 메시지 남기기 — 자리 비움">
               <div class="fam-av fam-av--blue">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="아들 태우">
+                <img src="../07_디자인/img/people/av-son.webp" alt="아들 태우">
                 <span class="fam-av-dot" aria-hidden="true"></span>
               </div>
               <div class="fam-row-meta">

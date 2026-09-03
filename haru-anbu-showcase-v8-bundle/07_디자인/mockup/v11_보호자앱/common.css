@@ -7,7 +7,8 @@
 /* ------------------------------------------------------------
    0. CDN Imports
    ------------------------------------------------------------ */
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+/* v16: CDN 폰트 대신 저장소 안 통합 서브셋 (tokens.css 안 @font-face) */
+@import url('../../../../07_디자인/tokens/tokens.css');
 @font-face { font-family: 'Pretendard Variable'; font-display: swap; src: local('Pretendard Variable'); }
 
 /* ------------------------------------------------------------

@@ -11,7 +11,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
+  <!-- v16: 이 화면엔 한자가 없어 Noto Sans SC 를 받지 않는다 -->
 
   <link rel="stylesheet" href="../07_디자인/tokens/tokens.css">
   <script src="../07_디자인/_app-theme.js"></script>
@@ -103,13 +103,13 @@
         </div>
         <div class="msg-list">
 
-          <!-- 이상감지: 미열 (업무성 액션) -->
+          <!-- 확인 요청: 미열 관찰 (업무성 액션) -->
           <div class="msg-item is-unread is-action" data-type="alert" data-cat="alert">
             <div class="av av--system is-crit"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon></div>
             <div class="msg-body">
               <div class="msg-name-row">
                 <span class="msg-name">이정숙 어르신 · 미열</span>
-                <span class="badge badge--critical">이상감지</span>
+                <span class="badge badge--critical">확인 요청</span>
               </div>
               <div class="msg-preview">체온 37.4°C — 평소보다 0.8도 높음. 마른기침 3회 동반</div>
               <div class="msg-actions">
@@ -443,8 +443,8 @@
     if (!window.HaruCG) { toast('알림 상세'); return; }
     var data = {
       fever: {
-        title: '이상감지 · 미열 관찰',
-        sub: '이정숙 어르신 · 2층 B-2호',
+        title: '확인 요청 · 미열 관찰',
+        sub: '이정숙 어르신 · A-7호',
         rows: [
           ['ph:thermometer-fill', '발생 시각', '06:40'],
           ['mingcute:warning-fill', '관찰 값', '체온 37.4℃ · 기침 3회'],
@@ -454,7 +454,7 @@
       },
       rotate: {
         title: '체위 변경 리마인더',
-        sub: '최명자 어르신 · A-7호 · 다음 11:00',
+        sub: '최명자 어르신 · B-1호 · 다음 11:00',
         rows: [
           ['material-symbols:schedule-rounded', '주기', '2시간 (10:30 마지막)'],
           ['mingcute:warning-fill', '주의', '오른쪽 둔부 발적 지속'],

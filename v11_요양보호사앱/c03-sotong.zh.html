@@ -103,13 +103,13 @@
         </div>
         <div class="msg-list">
 
-          <!-- 이상감지: 미열 (업무성 액션) -->
+          <!-- 확인 요청: 미열 관찰 (업무성 액션) -->
           <div class="msg-item is-unread is-action" data-type="alert" data-cat="alert">
             <div class="av av--system is-crit"><iconify-icon icon="material-symbols:cardiology-rounded"></iconify-icon></div>
             <div class="msg-body">
               <div class="msg-name-row">
                 <span class="msg-name">李静淑奶奶 · 微热</span>
-                <span class="badge badge--critical">异常检测</span>
+                <span class="badge badge--critical">请确认</span>
               </div>
               <div class="msg-preview">体温 37.4°C — 比平时高 0.8 度。伴干咳 3 次</div>
               <div class="msg-actions">
@@ -443,8 +443,8 @@
     if (!window.HaruCG) { toast('通知详情'); return; }
     var data = {
       fever: {
-        title: '异常检测 · 微热观察',
-        sub: '李静淑奶奶 · 2 楼 B-2 房',
+        title: '请确认 · 微热观察',
+        sub: '李静淑奶奶 · A-7 房',
         rows: [
           ['ph:thermometer-fill', '发生时间', '06:40'],
           ['mingcute:warning-fill', '观察值', '体温 37.4℃ · 咳嗽 3 次'],
@@ -454,7 +454,7 @@
       },
       rotate: {
         title: '翻身提醒',
-        sub: '崔明子奶奶 · A-7 房 · 下次 11:00',
+        sub: '崔明子奶奶 · B-1 房 · 下次 11:00',
         rows: [
           ['material-symbols:schedule-rounded', '周期', '2 小时 (10:30 上次)'],
           ['mingcute:warning-fill', '注意', '右臀部发红持续'],
