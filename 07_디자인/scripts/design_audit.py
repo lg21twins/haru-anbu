@@ -363,6 +363,10 @@ def find_non_iconify_icons(path: Path, text: str) -> tuple[list[tuple[int, str]]
         # v0.4: viewBox 자동 허용 좁힌 후 명시 클래스 필요
         'countdown-ring',
         'sbar-chart',
+        # v0.5(2026-08-02): 리디자인 시안 라인의 스파크라인.
+        # 기존 허용 'ov-spark'/'spark-line'과 같은 범주(추세 차트)이며 아이콘 대체물이 아니다.
+        # 'tl-spark'는 svg 자체가 아니라 감싸는 div의 클래스라 아래 preceding 창에서 잡힌다.
+        'rd-spark', 'tl-spark',
     )
 
     def is_allowed_svg(snippet: str) -> bool:
@@ -385,7 +389,9 @@ def find_non_iconify_icons(path: Path, text: str) -> tuple[list[tuple[int, str]]
     for m in re.finditer(r"<svg\b[^>]*>", text):
         snippet = m.group(0)
         ln = text[: m.start()].count("\n") + 1
-        if is_allowed_svg(snippet):
+        # 시각화 SVG는 감싸는 요소에만 시그니처 클래스가 붙는 경우가 있어
+        # 직전 60자(부모 여는 태그 범위)까지 함께 본다.
+        if is_allowed_svg(text[max(0, m.start() - 60) : m.end()]):
             allowed_brand += 1
             continue
         hits.append((ln, snippet[:90]))
