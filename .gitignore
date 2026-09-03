@@ -56,3 +56,8 @@ _archive/**/_대용량_git제외/
 
 # 루트 대용량 기획서 PDF (동일 바이트본이 _archive/2026-06-08/_대용량_git제외/에 보관됨)
 /하루안부_기획서_v15.pdf
+
+# 감사 리포트는 검증 명령을 돌릴 때마다 날짜 파일이 하나씩 쌓인다(내용은 대개 동일한 PASS).
+# 생성물이고 몇 초면 다시 만들 수 있으므로 추적하지 않는다 — 재생성은 CLAUDE.md 의 Verify 참고.
+07_디자인/review-reports/mobile-apps_audit_*.md
+07_디자인/review-reports/visual_check_v*.md
