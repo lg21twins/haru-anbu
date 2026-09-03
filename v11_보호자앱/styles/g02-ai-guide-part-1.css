@@ -50,6 +50,12 @@
       cursor: pointer; background: 0; border: 0;
     }
 
+    .sec-note {
+      font-size: var(--text-caption); line-height: 1.5;
+      color: var(--color-text-tertiary);
+      margin-bottom: var(--space-3);
+    }
+
     /* 카테고리 칩 row */
     .cat-row {
       display: flex; gap: var(--space-2);

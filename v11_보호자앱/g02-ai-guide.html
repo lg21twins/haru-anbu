@@ -29,7 +29,7 @@
 
   <!-- 보호자/요양보호사/의료진앱 공통 헤더·icon-btn 표준 (2026-05-22 통합) -->
   <link rel="stylesheet" href="../v11_요양보호사앱/caregiver.css?v=20260525p">
-<link rel="stylesheet" href="styles/g02-ai-guide-part-2.css">
+<link rel="stylesheet" href="styles/_header-mobile.css">
 </head>
 <body>
 
@@ -65,6 +65,7 @@
           <span class="sec-head__title">자주 묻는 질문</span>
           <button type="button" class="sec-head__more" id="q-more-btn" onclick="toggleAllQ()">전체보기</button>
         </div>
+        <p class="sec-note">일반적인 건강 정보입니다. 어르신 상태에 대한 판단과 진단은 담당 의료진이 합니다.</p>
         <div class="cat-row" role="tablist">
           <button class="chip is-active" type="button" onclick="filterQ('all',this)" aria-pressed="true">전체</button>
           <button class="chip" type="button" onclick="filterQ('med',this)">복약·건강</button>
@@ -90,7 +91,7 @@
               <iconify-icon icon="material-symbols:chevron-right-rounded" class="q-item__arrow"></iconify-icon>
             </div>
             <div class="q-answer"><div class="q-answer__inner">
-              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">정상 혈압은 120/80mmHg 미만, 130 이상은 고혈압 전단계. 공복 혈당은 100mg/dL 미만이 정상, 126 이상은 당뇨로 진단합니다. 가정 측정은 아침 기상 후 안정 상태가 가장 정확해요.</p></div>
+              <div class="q-answer__row"><span class="q-answer__a">A</span><p class="q-answer__text">정상 혈압은 120/80mmHg 미만, 130 이상은 고혈압 전단계. 공복 혈당은 100mg/dL 미만이 정상, 126mg/dL 이상은 당뇨병 진단 기준에 해당해요. 실제 진단은 의사 진료가 필요합니다. 가정 측정은 아침 기상 후 안정 상태가 가장 정확해요.</p></div>
             </div></div>
           </div>
           <div class="q-item" data-cat="care" onclick="toggleQ(this)">

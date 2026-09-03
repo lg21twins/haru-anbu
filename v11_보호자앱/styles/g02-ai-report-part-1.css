@@ -5,7 +5,7 @@
       position: relative;
       display: block; cursor: pointer; padding: 0; overflow: hidden;
       aspect-ratio: 4 / 5;
-      background: url('mockup.png') center/cover no-repeat, var(--color-bg-canvas);
+      background: url('../img/opt/mockup.webp') center/cover no-repeat, var(--color-bg-canvas);
       border-radius: var(--radius-card-lg);
       box-shadow: var(--card-shadow);
       color: white;
