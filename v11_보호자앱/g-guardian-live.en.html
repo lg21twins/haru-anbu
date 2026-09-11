@@ -669,11 +669,15 @@
       }
     })();
 
+    /* 발표·전시용 고정 시각 — 데이터 캐논(2026-04-18 토 오후 2:30).
+       실시간이면 발표 시각에 따라 이 화면만 인사말과 날짜가 달라진다. */
+    function HARU_DEMO_NOW(){ return new Date(2026, 3, 18, 14, 30); }
+
     /* date */
-    (function(){var now=new Date(),days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];var el=document.getElementById('reportDate');if(el)el.textContent=months[now.getMonth()]+' '+now.getDate()+' ('+days[now.getDay()]+')';})();
+    (function(){var now=HARU_DEMO_NOW(),days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];var el=document.getElementById('reportDate');if(el)el.textContent=months[now.getMonth()]+' '+now.getDate()+' ('+days[now.getDay()]+')';})();
 
     /* time-based greeting */
-    (function(){var h=new Date().getHours(),m=document.getElementById('greetingMain'),s=document.getElementById('greetingSub');if(h>=5&&h<11){m.innerHTML='Good morning,<br>Youngjah is doing well';s.innerHTML='She had a good breakfast — no need to worry.';}else if(h>=11&&h<14){m.innerHTML='Lunch went well,<br>everything is on track';s.innerHTML='The nurse is keeping up with afternoon medications.';}else if(h>=14&&h<18){m.innerHTML='We\'re taking good care<br>of Youngjah right now';s.innerHTML='You can count on us — no need to worry.';}else if(h>=18&&h<22){m.innerHTML='Good evening,<br>Youngjah is doing fine';s.innerHTML='The evening routine is on track.';}else{m.innerHTML='Have a restful night,<br>Youngjah is resting well';s.innerHTML='All of today\'s routines wrapped up smoothly.';}})();
+    (function(){var h=HARU_DEMO_NOW().getHours(),m=document.getElementById('greetingMain'),s=document.getElementById('greetingSub');if(h>=5&&h<11){m.innerHTML='Good morning,<br>Youngjah is doing well';s.innerHTML='She had a good breakfast — no need to worry.';}else if(h>=11&&h<14){m.innerHTML='Lunch went well,<br>everything is on track';s.innerHTML='The nurse is keeping up with afternoon medications.';}else if(h>=14&&h<18){m.innerHTML='We\'re taking good care<br>of Youngjah right now';s.innerHTML='You can count on us — no need to worry.';}else if(h>=18&&h<22){m.innerHTML='Good evening,<br>Youngjah is doing fine';s.innerHTML='The evening routine is on track.';}else{m.innerHTML='Have a restful night,<br>Youngjah is resting well';s.innerHTML='All of today\'s routines wrapped up smoothly.';}})();
 
     function fillPrompt(text){
       var ph=document.getElementById('aiPlaceholder');
