@@ -949,6 +949,15 @@
     .feat-frame-img{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;display:block;filter:drop-shadow(0 24px 56px rgba(0,0,0,.10)) drop-shadow(0 4px 12px rgba(0,0,0,.05))}
     .feat-ipad-wrap{position:relative;width:1014px;height:721px;flex-shrink:0}
     .feat-ipad-screen{position:absolute;left:4.17%;top:5.64%;width:91.63%;height:88.67%;overflow:hidden;border-radius:12px;background:white;z-index:1}
+    /* 태블릿 상태바 — 폰 목업엔 있는데 태블릿엔 없었다.
+       앱(_app-theme.js)은 부모 클래스가 `feat-ipad-` 면 자기 상태바 주입을 건너뛰고,
+       쇼케이스는 폰만 그려줘서 앱이 비워둔 24px 자리가 그대로 빈 채 남아 있었다.
+       시각은 앱 헤더가 바로 아래에서 이미 보여주므로 우측 표시만 얹는다 —
+       9:41 을 같이 넣으면 헤더의 '오후 2:30' 과 어긋난다.
+       height 16px = 앱 내부 24px × iframe scale 0.68, padding 19px = 시계 좌측 여백 28px × 0.68 */
+    .feat-ipad-statusbar{position:absolute;left:4.17%;top:5.64%;width:91.63%;height:16px;z-index:2;
+      box-sizing:border-box;pointer-events:none;display:flex;align-items:center;justify-content:flex-end;gap:5px;padding-right:19px}
+    .feat-ipad-statusbar img{height:9px;width:auto;display:block}
     .feat-ipad-screen iframe{width:1366px;height:940px;transform:scale(0.6800);transform-origin:top left;border:0;pointer-events:none;display:block}
     .feat-imac-wrap{position:relative;width:1209px;height:1028px;flex-shrink:0}
     /* z-index:4로 PNG(z:3) 위에 올리고 0.3%씩 확장해서 PNG 스크린 가장자리 검정 outline 마스킹 */
@@ -1946,9 +1955,9 @@
       <span class="np-app-name">하루안부</span>
       <span class="np-time">지금</span>
     </div>
-    <p class="np-title">AI 나레이션 투어로 보시겠어요?</p>
-    <p class="np-desc">음성 나레이션과 함께 화면이 자동으로 흐르며, <br>하루안부를 처음부터 끝까지 안내합니다.</p>
-    <p class="np-guide np-guide-txt">화면은 자동으로 흐르고, <br>엔터키를 누르면 다음으로 넘어가요.</p>
+    <p class="np-title">자동 투어로 보시겠어요?</p>
+    <p class="np-desc">엔터키를 누르면 화면이 순서대로 흐르며, <br>하루안부를 처음부터 끝까지 안내합니다.</p>
+    <p class="np-guide np-guide-txt">엔터키를 누르면 다음 화면으로 넘어가요. <br>음성은 상단 ‘나레이션 켜기’로 들을 수 있어요.</p>
     <div class="np-actions">
       <button type="button" class="np-btn np-no" id="npNo">아니요</button>
       <button type="button" class="np-btn np-yes" id="npYes">예</button>
@@ -2002,9 +2011,18 @@
       document.getElementById('npYes').addEventListener('click', function(){
         /* 클릭 즉시(같은 제스처 안에서) 투어 시작 → 첫 음원 바로 재생(아이패드 자동재생 차단 방지) */
         hide();
-        if(typeof window.__haruPresent==='function') window.__haruPresent();
+        if(typeof window.__haruPresent==='function') window.__haruPresent(false);
         showHint();
       });
+      /* 카드가 떠 있을 때의 Enter/Space/↓ = '예' — 발표 중엔 키보드만으로 시작한다 */
+      window.addEventListener('keydown', function(e){
+        if(!card.classList.contains('show')) return;
+        var t=e.target; if(t && (t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable)) return;
+        if(e.key==='Enter' || e.key===' ' || e.key==='ArrowDown'){
+          e.preventDefault(); e.stopImmediatePropagation();   /* 같은 Enter 로 두 칸 넘어가지 않게 */
+          document.getElementById('npYes').click();
+        }
+      }, true);
       if(__isSync){
         /* ── 발표(아이패드 동기화 ?sync=) 전용 ──
            처음엔 아무것도 안 뜸. 첫 Enter를 누르면 나레이션 동의 카드(예/아니요)를 표시. */
@@ -2053,9 +2071,9 @@
         }
         window.__onNarrationChange = paint;   // 발표 엔진이 상태 바뀔 때마다 호출
         toggle.addEventListener('click', function(){
-          var on = (typeof window.__haruPresenting==='function') && window.__haruPresenting();
+          var on = (typeof window.__haruAudioOn==='function') && window.__haruAudioOn();
           if(on){ if(typeof window.__haruStop==='function') window.__haruStop(); }
-          else { hide(); showHint(); if(typeof window.__haruPresent==='function') window.__haruPresent(); }
+          else { hide(); showHint(); if(typeof window.__haruPresent==='function') window.__haruPresent(true); }
         });
       }
     })();
@@ -2407,7 +2425,23 @@
           window.scrollTo({top: Math.max(0, y - 80), behavior:'smooth'});
         }
         exitBtn.addEventListener('click',function(e){ e.stopPropagation(); exitFs(); });
-        video.addEventListener('ended',function(){ if(window.__haruPresenting && window.__haruPresenting()) return; goNext(); });
+        /* 투어 중이면 다음 구간은 투어가 정한다(스텝 인덱스가 어긋나지 않게) */
+        video.addEventListener('ended',function(){
+          if(window.__haruPresenting && window.__haruPresenting()){
+            if(window.__haruFilmDone) window.__haruFilmDone();
+            return;
+          }
+          goNext();
+        });
+        /* 투어가 영상 구간에 도착하면 처음부터 소리와 함께 재생한다.
+           apply() 의 스크롤 기반 자동재생은 지나가는 중에도 걸려서 중간부터 나올 수 있다 */
+        window.__rfPlayFromStart = function(){
+          if(!video.src && video.dataset.src) video.src = video.dataset.src;
+          try{ video.currentTime = 0; }catch(_){}
+          video.muted = false;
+          var onPlay = function(){ playing = true; video.setAttribute('controls',''); stage.classList.add('rf-on','rf-idle'); };
+          video.play().then(onPlay).catch(function(){ video.muted = true; video.play().then(onPlay).catch(function(){}); });
+        };
         var hideTimer=null;
         function wake(){
           if(!playing) return;
@@ -3723,6 +3757,10 @@
           <div class="feat-ipad-wrap">
             <div class="feat-ipad-screen">
               <iframe id="feat-patient-iframe" src="../v12_환자앱/p01-today.html?v=20260531-blur" title="환자 오늘 화면" loading="lazy"></iframe>
+            </div>
+            <div class="feat-ipad-statusbar" aria-hidden="true">
+              <img src="Mockup-templates/iOS iPadOS 26 Community/Wifi.svg" alt="" loading="lazy" decoding="async">
+              <img src="Mockup-templates/iOS iPadOS 26 Community/Frame.svg" alt="" loading="lazy" decoding="async">
             </div>
             <img class="feat-frame-img" src='img/opt/mt-ipad.webp' alt="" loading="lazy" decoding="async">
             <!-- Floating cards — extracted from p01-today.html (.now-action + .fam-quick) -->
@@ -5778,6 +5816,8 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     {c:null, s:'#problem', panTo:'.problem-chart-cap'},   // [발표용 음성제거] Shon 직접 설명
     {c:null, s:'#painConvo'},                             // Shon 직접 — "어 그럼, 각 사용자들의 불편한 점을 알아볼까요?" 여기서 멈춤 → Enter로 페르소나
     {c:null, s:'#painConvo', personaAll:true},   // [발표용] 엔터 한 번에 페르소나 말풍선 5개 전체 즉시 표시 · 음성·글로우 없음
+    {c:null, s:'#real-film .rf-head', top:true, hold:4200},   // Real Story — 먼저 제목에서 멈춘다("화면 너머, 진짜 하루의 안부.")
+    {c:null, s:'#rfScroll', film:true},         // 다음 Enter → 풀스크린으로 커진 뒤 처음부터 재생
     {c:null, s:'#app-preview', center:true},    // Shon 직접 — 브랜드 벤토 그리드를 화면 정중앙에 두고 멈춤
     {c:null, s:'#direction .container', center:true},
     {c:null, s:'.ds-brand'}, {c:null, s:'.ds-opt-b-grid'}, {c:null, s:'.ds-color-stack'},   // 디자인 — 음성 제거(Shon 직접 설명), 각 블록 멈춤·Enter로 다음 블록 스크롤
@@ -5797,10 +5837,12 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
   const STEPS_NARR = [
     {c:'n01', s:'#hero'}, {c:'n02', s:'#overview'},
     {c:'n03', s:'#problem', noPan:true},                   // 가장 무거운 질문 — 헤드라인 고정(스크롤 없음)
-    {c:'n04', s:'.problem-chart-wrap'},                     // 고령화 그래프 — 그래프로 스크롤 + 잘리면 팬
+    {c:'n04', s:'.problem-chart-wrap', mergeSilent:true},   // 고령화 그래프 — 음성 있을 때만 따로 넘긴다
     {c:'n05', s:'#painConvo', native:true},                 // 페르소나 도입 (네잎클로버)
-    {c:'pain1', s:'#painConvo', native:true, chain:true}, {c:'pain2', s:'#painConvo', native:true, chain:true}, {c:'pain3', s:'#painConvo', native:true, chain:true},
-    {c:'pain4', s:'#painConvo', native:true, chain:true}, {c:'pain5', s:'#painConvo', native:true},
+    {c:'pain1', s:'#painConvo', native:true, chain:true, mergeSilent:true}, {c:'pain2', s:'#painConvo', native:true, chain:true, mergeSilent:true}, {c:'pain3', s:'#painConvo', native:true, chain:true, mergeSilent:true},
+    {c:'pain4', s:'#painConvo', native:true, chain:true, mergeSilent:true}, {c:'pain5', s:'#painConvo', native:true, mergeSilent:true},
+    {c:null, s:'#real-film .rf-head', top:true, hold:4200},          // Real Story — 먼저 제목에서 멈춘다
+    {c:null, s:'#rfScroll', film:true},                     // 다음 Enter → 풀스크린 재생
     {c:'n06', s:'#app-preview', center:true},
     {c:'n07', s:'#direction .container', center:true},
     {c:'n08', s:'.ds-brand'}, {c:'n09', s:'.ds-opt-b-grid'}, {c:'n10', s:'.ds-color-stack'},
@@ -5889,6 +5931,12 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     const vh = window.innerHeight;
     const maxTop = Math.max(0, document.documentElement.scrollHeight - vh);
     if(STEPS[i].s === '#hero'){ return 0; }   // 히어로는 항상 페이지 최상단에 닿게(센터링 예외) — 원래대로
+    // 영상 — #rfScroll 은 200vh 스크롤-핀이라 "섹션 상단"에 맞추면 스테이지가 아직 0.6배다.
+    // 컨테이너 상단이 화면 위로 22vh 지나면 다 커지므로(GROW=0.22), 조금 넉넉히 30vh 에 세운다.
+    if(STEPS[i].film){
+      const t = window.scrollY + sec.getBoundingClientRect().top + Math.round(vh * 0.30);
+      return Math.max(0, Math.min(t, maxTop));
+    }
     if(STEPS[i].native){
       const smt = parseFloat(getComputedStyle(sec).scrollMarginTop) || 0;
       const t = window.scrollY + sec.getBoundingClientRect().top - smt;
@@ -5911,7 +5959,10 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     return Math.max(0, Math.min(target, maxTop));
   }
   // 거리에 비례한 지속시간 — 너무 빠르지 않게 더 부드럽고 자연스럽게(짧은 이동도 여유, 먼 이동은 길게)
-  function scrollDur(target){ return Math.max(750, Math.min(1900, Math.abs(target - window.scrollY) * 0.95)); }
+  function scrollDur(target){
+    if(window.scrollY < 80 && target > window.scrollY) return 2600;   // 히어로에서 내려가는 첫 스크롤
+    return Math.max(750, Math.min(1900, Math.abs(target - window.scrollY) * 0.95));
+  }
   function scrollToClip(i, done){
     const target = clipTarget(i);
     if(target == null){ if(done) done(); return; }
@@ -6034,6 +6085,27 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     });
   }
 
+  // 음성이 없을 때도 구간의 '동작'은 돌려준다. 원래 느린 팬·탭 순환·다국어/웹 데모가
+  // 전부 audio.play() 성공 뒤에 매달려 있어서, 음성을 끄면 갤러리는 훑지 않고
+  // 폰 목업은 첫 화면에 멈춰 있었다. 자동 팬은 slowScroll 로 명시한 구간만 —
+  // 나머지까지 움직이면 발표자가 말하는 동안 화면이 저 혼자 흐른다.
+  function startClipSilent(step, myIdx){
+    if(idx !== myIdx) return;
+    if(step.slowScroll){
+      const sec = document.querySelector(step.panTo || step.s);
+      if(sec){
+        const dist = Math.max(0, contentRange(sec).bottom + BREATH - window.innerHeight - window.scrollY);
+        startSlowScroll(sec, Math.max(7000, Math.round(dist * 7)));   // 약 140px/초 — 사진을 읽을 수 있는 속도
+      }
+    }
+    if(step.langDemo && window.__caregiverLangDemo) window.__caregiverLangDemo(4500);
+    if(step.webDemo && window.__medicalWebDemo) window.__medicalWebDemo(6000);
+    if(step.tabDemo && window.__deviceTabDemo){
+      const cfg = TAB_DEMOS[step.tabDemo];
+      if(cfg) window.__deviceTabDemo(cfg.iframe, cfg.pages, 9000);
+    }
+  }
+
   let audioTimer = null;
   function playAt(i, immediate){
     if(chainTimer){ clearTimeout(chainTimer); chainTimer = null; }  // 수동 조작 시 대기 중 자동연결 취소
@@ -6045,7 +6117,8 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     const step = STEPS[idx];
     const myIdx = idx;
     // 페르소나 구간은 발표 FAB가 음성을 직접 몬다 — 스크롤-자동 음성과 겹치지 않게 끄고 권한을 가져온다
-    if((step.c && /^pain/.test(step.c)) || step.s === '#painConvo'){ window.__painFabActive = true; if(window.__painCancelAuto) window.__painCancelAuto(); else if(window.__painStopAudio) window.__painStopAudio(); }
+    if((step.c && /^pain/.test(step.c)) || step.s === '#painConvo'){ window.__painFabActive = audioEnabled;   // 음성 없으면 대화가 스스로 흐르게 둔다
+      if(audioEnabled){ if(window.__painCancelAuto) window.__painCancelAuto(); else if(window.__painStopAudio) window.__painStopAudio(); } }
     else if(window.__aiGlow){ window.__aiGlow.resetPalette(); }   // 페르소나 구간 밖에선 기본 클로버 AI 팔레트로 복귀
     fab.classList.remove('is-playing'); setIcon(PLAY);              // 스크롤 동안은 정지 상태
     // 제자리 멈춤(stay) — 직전 음원과 같은 섹션에서 Shon이 말하는 c:null 스텝은 스크롤하지 않는다(상향 스크롤로 탑바가 다시 뜨는 것 방지)
@@ -6063,7 +6136,21 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     // ① 해당 섹션으로 부드럽게 스크롤 → ② 멈춤 → ③ 0.3초 뒤 음성 시작
     scrollToClip(idx, () => {
       if(idx !== myIdx) return;                                     // 스크롤 도중 다른 클립으로 넘어갔으면 취소
-      if(!step.c){ setLabel('Shon'); return; }                      // Shon 직접발화 — 음원 없음, 스크롤만
+      if(step.film){                                                // 영상 — 나레이션이 아니라 작품이라 음성 설정과 무관하게 재생
+        setLabel('Shon');
+        if(window.__rfPlayFromStart) window.__rfPlayFromStart();
+        return;
+      }
+      if(!step.c){                                                  // Shon 직접발화 — 음원 없음, 스크롤·동작만
+        setLabel('Shon'); startClipSilent(step, myIdx);
+        // 음성이 투어를 끌고 가는 중이면(방문자용 자동 투어) 음원 없는 구간에서 멈춰버린다.
+        // hold 를 준 구간만 그만큼 두고 알아서 넘어간다. 조용한 투어는 Enter 로만 움직인다.
+        if(__autoAdvance && step.hold && audioEnabled && myIdx < STEPS.length - 1){
+          chainTimer = setTimeout(() => { chainTimer = null; if(idx === myIdx) playNext(); }, step.hold);
+        }
+        return;
+      }
+      if(!audioEnabled){ setLabel(step.c); startClipSilent(step, myIdx); return; }   // 음성 자동재생 끔 — 스크롤·동작만 (탑바 '나레이션 켜기'로 켠다)
       // immediate(예/켜기 클릭): 사용자 제스처 안에서 곧바로 재생 → 아이패드/사파리 자동재생 차단 방지
       if(immediate){ if(idx === myIdx) startClipAudio(step, myIdx); }
       else { audioTimer = setTimeout(() => { audioTimer = null; if(idx === myIdx) startClipAudio(step, myIdx); }, 150); }
@@ -6071,15 +6158,30 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
   }
   // narrationEnabled=false 동안엔 Enter/Space/방향키/클릭/자동연결 어떤 경로도 음성을 못 켠다.
   // "예" 또는 탑바 "나레이션 켜기"(__haruPresent)로만 활성화되고, "끄기"·"아니요"로 다시 잠근다.
-  function playNext(){ if(!narrationEnabled) return; setPresenting(true); playAt(idx + 1); }
-  function playPrev(){ if(!narrationEnabled) return; setPresenting(true); playAt(idx - 1); }
+  function wakeTour(){                                  // 잠들어 있으면 조용한 투어로 깨운다
+    if(narrationEnabled) return false;
+    narrationEnabled = true; audioEnabled = false;      // 음성은 탑바 토글로만 켜진다
+    if(typeof window.__onNarrationChange === 'function') window.__onNarrationChange(audioEnabled);
+    return true;
+  }
+  function skipSilent(i, dir){                          // 음성이 있을 때만 의미 있는 구간은 조용한 투어에서 건너뛴다
+    var n = STEPS.length, guard = 0;                    //  (같은 화면을 두 번 넘기게 되는 분할)
+    while(!audioEnabled && guard++ < n){
+      var st = STEPS[((i % n) + n) % n];
+      if(!st || !st.mergeSilent) break;
+      i += dir;
+    }
+    return i;
+  }
+  function playNext(){ var cold = wakeTour(); setPresenting(true); playAt(cold && idx < 0 ? clipForScroll() : skipSilent(idx + 1, 1)); }
+  function playPrev(){ var cold = wakeTour(); setPresenting(true); playAt(cold && idx < 0 ? clipForScroll() : skipSilent(idx - 1, -1)); }
 
   // ── 나레이션 투어 ON/OFF 상태 — 탑바 토글이 구독/제어 ──
-  var presenting = false, narrationEnabled = false;
+  var presenting = false, narrationEnabled = false, audioEnabled = false;
   function setPresenting(v){
     if(presenting === v) return;
     presenting = v;
-    if(typeof window.__onNarrationChange === 'function') window.__onNarrationChange(v);
+    if(typeof window.__onNarrationChange === 'function') window.__onNarrationChange(audioEnabled);
   }
   function stopPresentation(){
     if(chainTimer){ clearTimeout(chainTimer); chainTimer = null; }
@@ -6091,13 +6193,15 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     if(window.__painCancelAuto) window.__painCancelAuto();   // 페르소나 구간 자체 자동재생도 중단
     if(window.__aiGlow) window.__aiGlow.off();
     idx = -1;
-    narrationEnabled = false;        // 끄기 → 이후 Enter 등 모든 입력 차단
+    narrationEnabled = false; audioEnabled = false;        // 끄기 → 이후 Enter 등 모든 입력 차단
     setPresenting(false);
     try { if(window.__haruSyncPublish) window.__haruSyncPublish('__reset__'); } catch(e){}   // 발표뷰(아이패드)도 처음으로
   }
   window.__haruStop = stopPresentation;
   window.__haruPresenting = function(){ return presenting; };
-  window.__haruNarrationOn = function(){ return narrationEnabled; };   // 페르소나 자동재생이 음성 허용 여부를 확인
+  window.__haruFilmDone = function(){ if(STEPS[idx] && STEPS[idx].film) playNext(); };   // 영상이 끝나면 투어가 이어받는다
+  window.__haruNarrationOn = function(){ return narrationEnabled && audioEnabled; };
+  window.__haruAudioOn = function(){ return audioEnabled; };   // 페르소나 자동재생이 음성 허용 여부를 확인
 
   fab.addEventListener('click', playNext);
   // Enter / ↓ / Space = 다음 음원, ↑ = 이전 음원 (입력창 포커스 시 무시)
@@ -6124,8 +6228,9 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
   /* AI 나레이션 투어 — 진입 알림 카드의 "예"·탑바 "켜기"가 호출하는 발표 시작 훅(여기서만 활성화) */
   /* 보고 있는 섹션부터 이어서 재생 — 맨 위면 자연히 hero(0)부터 */
   // "예"/"켜기" 누르면 곧바로 첫 음원(clip-01)부터 재생 시작. (다음 음원은 Enter)
-  window.__haruPresent = function(){
-    narrationEnabled = true; setPresenting(true);
+  window.__haruPresent = function(withAudio){
+    narrationEnabled = true; audioEnabled = (withAudio === true); setPresenting(true);
+    if(typeof window.__onNarrationChange === 'function') window.__onNarrationChange(audioEnabled);
     var start = clipForScroll();
     if(start === 0){ try { if(window.__haruSyncPublish) window.__haruSyncPublish('__reset__'); } catch(e){} }   // 맨 위에서 시작 = 발표뷰도 처음으로
     playAt(start, true);
@@ -6553,6 +6658,7 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
 
   /* 베젤 이미지·플로팅 장식은 폰에서 제거 (세로 40% 를 먹고 정보는 0) */
   #features-by-role .feat-imac-wrap > .feat-frame-img,
+  #features-by-role .feat-ipad-wrap > .feat-ipad-statusbar,
   #features-by-role .feat-ipad-wrap > .feat-frame-img{display:none !important}
   #features-by-role .feat-ipad-wrap > .feat-float{display:none !important}
 
@@ -8168,6 +8274,7 @@ html.m-full-open .topbar{z-index:0 !important}
   #features-by-role .feat-ipad-wrap{width:1014px !important;height:721px !important}
   #features-by-role .feat-imac-wrap,
   #ff-medical-integration .feat-imac-wrap{width:1209px !important;height:1028px !important}
+  #features-by-role .feat-ipad-wrap > .feat-ipad-statusbar,
   #features-by-role .feat-ipad-wrap > .feat-frame-img,
   #features-by-role .feat-imac-wrap > .feat-frame-img,
   #ff-medical-integration .feat-imac-wrap > .feat-frame-img{display:block !important}
