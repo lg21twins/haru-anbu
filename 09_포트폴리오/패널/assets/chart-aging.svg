@@ -1,0 +1,31 @@
+<svg class="mkt-chart-svg" viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
+          <defs>
+            <linearGradient id="bdGradProb" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--brand-blue-500)" stop-opacity="0.16"/>
+              <stop offset="100%" stop-color="var(--brand-blue-500)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="121" x2="560" y2="121" stroke="var(--palette-gray-100)" stroke-width="1"/>
+          <line x1="0" y1="88"  x2="560" y2="88"  stroke="var(--palette-gray-100)" stroke-width="1"/>
+          <line x1="0" y1="54"  x2="560" y2="54"  stroke="var(--palette-gray-100)" stroke-width="1"/>
+          <text x="566" y="124" font-size="9" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">10%</text>
+          <text x="566" y="91"  font-size="9" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">20%</text>
+          <text x="566" y="57"  font-size="9" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">30%</text>
+          <path class="mc-area" d="M 0,131 L 70,124 L 140,118 L 210,111 L 238,108 L 280,102 L 350,87 L 420,69 L 490,53 L 560,39 L 560,155 L 0,155 Z" fill="url(#bdGradProb)"/>
+          <polyline class="mc-line" pathLength="1" points="0,131 70,124 140,118 210,111 238,108 280,102 350,87" fill="none" stroke="var(--brand-blue-500)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+          <polyline class="mc-proj" points="350,87 420,69 490,53 560,39" fill="none" stroke="var(--brand-blue-500)" stroke-width="2" stroke-dasharray="4 5" opacity="0.38" stroke-linejoin="round" stroke-linecap="round"/>
+          <line x1="0" y1="155" x2="560" y2="155" stroke="var(--palette-gray-200)" stroke-width="1"/>
+          <line class="mc-2017" x1="238" y1="108" x2="238" y2="155" stroke="#EBEBEB" stroke-width="1" stroke-dasharray="3 4"/>
+          <circle class="mc-2017" cx="238" cy="108" r="3.5" fill="white" stroke="#CCCCCC" stroke-width="1.5"/>
+          <text x="238" y="169" text-anchor="middle" font-size="9" fill="#AAAAAA" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2017</text>
+          <text x="238" y="181" text-anchor="middle" font-size="8" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">고령사회 14%</text>
+          <line class="mc-now" x1="350" y1="87" x2="350" y2="155" stroke="var(--brand-blue-500)" stroke-width="1" stroke-dasharray="3 4" opacity="0.22"/>
+          <circle class="mc-now-dot" cx="350" cy="87" r="6" fill="var(--brand-blue-500)" stroke="white" stroke-width="2.5"/>
+          <rect class="mc-now" x="323" y="60" width="54" height="18" rx="9" fill="var(--brand-blue-500)"/>
+          <text class="mc-now" x="350" y="72.5" text-anchor="middle" font-size="9" fill="white" font-weight="700" letter-spacing="0.06em" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">NOW</text>
+          <line class="mc-now" x1="350" y1="81" x2="350" y2="78" stroke="var(--brand-blue-500)" stroke-width="1.5"/>
+          <text x="350" y="169" text-anchor="middle" font-size="9" fill="var(--brand-blue-500)" font-weight="700" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2025</text>
+          <text x="350" y="181" text-anchor="middle" font-size="8" fill="var(--brand-blue-500)" opacity="0.75" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">초고령사회 20.3%</text>
+          <text x="0"   y="169" text-anchor="start" font-size="9" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2000</text>
+          <text x="560" y="169" text-anchor="end"   font-size="9" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2040 (추계)</text>
+        </svg>

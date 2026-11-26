@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 — 표지 구조형 베리에이션</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard',-apple-system,system-ui,sans-serif;background:#0d1014;color:#fff;-webkit-font-smoothing:antialiased;padding:30px 24px 70px}
+  .head{max-width:1180px;margin:0 auto 26px}
+  .head h1{font-size:24px;font-weight:800;letter-spacing:-.03em}
+  .head p{font-size:14px;color:#9aa6b4;margin-top:7px}
+  .sheet{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+  .vlabel{font-size:14.5px;font-weight:800;color:#e4e9f0;margin-bottom:11px;display:flex;align-items:baseline;gap:9px}
+  .vlabel .tag2{font-size:12.5px;font-weight:600;color:#8b97a6}
+
+  .board{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#1a1f26;container-type:size;box-shadow:0 18px 50px rgba(0,0,0,.4)}
+  .board .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .scrim{position:absolute;inset:0;pointer-events:none}
+  .s-bottom{background:linear-gradient(to top, rgba(8,12,18,.80) 0%, rgba(8,12,18,.44) 20%, rgba(8,12,18,0) 47%)}
+  .s-bottom-strong{background:linear-gradient(to top, rgba(8,12,18,.92) 0%, rgba(8,12,18,.55) 27%, rgba(8,12,18,0) 58%)}
+  .panel-left{position:absolute;top:0;bottom:0;left:0;width:42%}
+  .band{position:absolute;left:0;right:0;bottom:0}
+  .tint{position:absolute;inset:0;pointer-events:none;background:#2C7AFC;mix-blend-mode:multiply;opacity:.5}
+
+  .lk{position:absolute;color:#fff}
+  .lk.shadow *{text-shadow:0 1px 2px rgba(0,0,0,.42), 0 2px 18px rgba(0,0,0,.5)}
+  /* positions */
+  .at-left{left:5cqw;top:50%;transform:translateY(-50%);max-width:33cqw;text-align:left}
+  .at-band{left:5cqw;bottom:4.5cqw;max-width:70cqw;text-align:left}
+  .at-bl{left:4.8cqw;bottom:5.4cqw;max-width:58cqw;text-align:left}
+  .at-bc{left:50%;bottom:6cqw;transform:translateX(-50%);max-width:78cqw;text-align:center}
+  .at-bc .logo{justify-content:center}
+  /* typography */
+  .kicker{font-size:1.18cqw;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1.5cqw;color:rgba(255,255,255,.9)}
+  .logo{display:inline-flex;align-items:center;gap:.7cqw;margin-bottom:2cqw}
+  .logo svg{height:3.4cqw;width:auto;display:block}
+  .logo .wm{font-size:2.8cqw;font-weight:800;letter-spacing:-.04em;line-height:1;color:#fff}
+  .tag{font-size:4.2cqw;font-weight:800;letter-spacing:-.038em;line-height:1.1;color:#fff}
+  .tag.big{font-size:5.0cqw}
+  .ac{color:#a9c9ff}
+  .idn{font-size:1.46cqw;font-weight:600;line-height:1.55;margin-top:1.7cqw;max-width:44cqw;color:#fff}
+  .at-bc .idn{max-width:62cqw;margin-left:auto;margin-right:auto}
+  .en{font-size:1.1cqw;font-weight:700;letter-spacing:.06em;margin-top:1cqw;color:rgba(255,255,255,.82)}
+  /* small scale for split/band */
+  .lk.sm .kicker{font-size:1.0cqw}
+  .lk.sm .logo svg{height:2.9cqw}
+  .lk.sm .logo .wm{font-size:2.3cqw}
+  .lk.sm .tag{font-size:3.0cqw}
+  .lk.sm .idn{font-size:1.25cqw;max-width:32cqw}
+  .lk.sm .en{font-size:.95cqw}
+  .lk.sm.at-band .idn{max-width:64cqw}
+  /* ink theme (dark text on light) */
+  .lk.ink .kicker{color:#5a6b7e}
+  .lk.ink .logo .wm{color:#15212e}
+  .lk.ink .tag{color:#15212e}
+  .lk.ink .ac{color:#2563eb}
+  .lk.ink .idn{color:#52617a}
+  .lk.ink .en{color:#8b97a6}
+</style></head>
+<body>
+  <div class="head">
+    <h1>하루안부 — 표지 구조형 베리에이션 (다른 접근 6)</h1>
+    <p>스크림형 10개와 달리 레이아웃 자체가 다른 접근 · 분할 / 솔리드 밴드 / 블루 틴트 / 크롭 · 각진 16:9</p>
+  </div>
+  <div class="sheet">
+<div class="item"><div class="vlabel">B1 · 분할(화이트) <span class="tag2">좌측 솔리드 화이트 패널 + 우측 사진</span></div><div class="board"><img class="bg" src="wow2.png" style="object-position:66% 45%" alt=""><div class="panel-left" style="background:#ffffff"></div><div class="lk ink sm at-left"><div class="kicker">대한민국 디자인 전람회</div><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div><div class="tag">흩어진 돌봄을,<br><span class="ac">하나의 안부</span>로.</div><div class="idn">독거노인용 아닙니다 — 요양시설의 가족·의료진·<br>요양보호사·환자를 잇는 AI 케어 소통 플랫폼</div><div class="en">HARU ANBU · AI CARE COMMUNICATION PLATFORM</div></div></div></div>
+<div class="item"><div class="vlabel">B2 · 분할(블루) <span class="tag2">좌측 브랜드 블루 패널 + 우측 사진</span></div><div class="board"><img class="bg" src="wow2.png" style="object-position:66% 45%" alt=""><div class="panel-left" style="background:#2563eb"></div><div class="lk white sm at-left"><div class="kicker">대한민국 디자인 전람회</div><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#ffffff"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#ffffff"/></g></svg><span class="wm">하루안부</span></div><div class="tag">흩어진 돌봄을,<br><span class="ac">하나의 안부</span>로.</div><div class="idn">독거노인용 아닙니다 — 요양시설의 가족·의료진·<br>요양보호사·환자를 잇는 AI 케어 소통 플랫폼</div><div class="en">HARU ANBU · AI CARE COMMUNICATION PLATFORM</div></div></div></div>
+<div class="item"><div class="vlabel">B3 · 솔리드 밴드(화이트) <span class="tag2">하단 화이트 밴드 마스트헤드</span></div><div class="board"><img class="bg" src="wow2.png" style="object-position:50% 33%" alt=""><div class="band" style="height:32cqh;background:#ffffff"></div><div class="lk ink sm at-band"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div><div class="tag">흩어진 돌봄을,<br><span class="ac">하나의 안부</span>로.</div><div class="idn">독거노인용 아닙니다 — 요양시설의 가족·의료진·<br>요양보호사·환자를 잇는 AI 케어 소통 플랫폼</div></div></div></div>
+<div class="item"><div class="vlabel">B4 · 솔리드 밴드(다크) <span class="tag2">하단 네이비 밴드 + 화이트</span></div><div class="board"><img class="bg" src="wow2.png" style="object-position:50% 33%" alt=""><div class="band" style="height:32cqh;background:#0f1726"></div><div class="lk white sm at-band"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#6ea8ff"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#6ea8ff"/></g></svg><span class="wm">하루안부</span></div><div class="tag">흩어진 돌봄을,<br><span class="ac">하나의 안부</span>로.</div><div class="idn">독거노인용 아닙니다 — 요양시설의 가족·의료진·<br>요양보호사·환자를 잇는 AI 케어 소통 플랫폼</div></div></div></div>
+<div class="item"><div class="vlabel">B5 · 블루 틴트 <span class="tag2">브랜드 블루 멀티플라이 + 센터 대형</span></div><div class="board"><img class="bg" src="wow2.png" style="filter:grayscale(.25) contrast(1.05);object-position:50% 42%" alt=""><div class="tint"></div><div class="scrim s-bottom"></div><div class="lk white shadow at-bc"><div class="kicker">대한민국 디자인 전람회</div><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#ffffff"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#ffffff"/></g></svg><span class="wm">하루안부</span></div><div class="tag big">흩어진 돌봄을,<br><span class="ac">하나의 안부</span>로.</div><div class="idn">독거노인용 아닙니다 — 요양시설의 가족·의료진·<br>요양보호사·환자를 잇는 AI 케어 소통 플랫폼</div></div></div></div>
+<div class="item"><div class="vlabel">B6 · 크롭(가족+폰) <span class="tag2">우측 줌인 + 좌하단 텍스트</span></div><div class="board"><img class="bg" src="wow2.png" style="object-position:86% 50%;transform:scale(1.28);transform-origin:86% 50%" alt=""><div class="scrim s-bottom-strong"></div><div class="lk white shadow at-bl"><div class="kicker">대한민국 디자인 전람회</div><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div><div class="tag">흩어진 돌봄을,<br><span class="ac">하나의 안부</span>로.</div><div class="idn">독거노인용 아닙니다 — 요양시설의 가족·의료진·<br>요양보호사·환자를 잇는 AI 케어 소통 플랫폼</div><div class="en">HARU ANBU · AI CARE COMMUNICATION PLATFORM</div></div></div></div>
+  </div>
+</body></html>

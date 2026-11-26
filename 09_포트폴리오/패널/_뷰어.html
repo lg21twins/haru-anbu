@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하루안부 패널 — 전체 보기</title>
+<style>
+:root{
+  --bg:#0e1013; --panel:#16191e; --line:#252a31;
+  --tx:#e8ebef; --tx-mid:#9aa3ae; --tx-dim:#6b737e;
+  --accent:#4d9dff; --warn:#f5a524; --ok:#31c48d;
+  --r:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--tx);
+  font-family:'SUIT','Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  -webkit-font-smoothing:antialiased; word-break:keep-all; line-height:1.6;
+}
+a{color:inherit}
+
+/* ── 상단 ── */
+header{
+  position:sticky; top:0; z-index:20; background:rgba(14,16,19,.92);
+  backdrop-filter:blur(12px); border-bottom:1px solid var(--line);
+}
+.hin{max-width:1680px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; gap:26px; flex-wrap:wrap}
+.brand{font-size:15px; font-weight:800; letter-spacing:-.01em}
+.brand span{color:var(--tx-dim); font-weight:500; margin-left:8px; font-size:13px}
+nav{display:flex; gap:4px; margin-left:auto}
+nav button{
+  background:none; border:0; color:var(--tx-mid); font:inherit; font-size:13.5px; font-weight:600;
+  padding:7px 14px; border-radius:99px; cursor:pointer; transition:.15s;
+}
+nav button:hover{color:var(--tx); background:#1d2127}
+nav button.on{background:var(--accent); color:#04101f}
+
+main{max-width:1680px; margin:0 auto; padding:34px 28px 90px}
+section[hidden]{display:none}
+
+.lead{max-width:760px; margin-bottom:30px}
+.lead h1{font-size:26px; font-weight:800; letter-spacing:-.025em; line-height:1.25}
+.lead p{margin-top:10px; color:var(--tx-mid); font-size:14px}
+
+/* ── 카드 ── */
+.grid{display:grid; gap:26px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:1180px){.g2{grid-template-columns:1fr}}
+
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); overflow:hidden}
+.card figure{margin:0; background:#fff; line-height:0}
+.card img{width:100%; height:auto; display:block}
+.cap{padding:13px 16px 15px; border-top:1px solid var(--line)}
+.cap h3{font-size:14px; font-weight:700; letter-spacing:-.01em}
+.cap p{margin-top:4px; color:var(--tx-mid); font-size:12.5px; line-height:1.55}
+.meta{margin-top:9px; display:flex; gap:7px; flex-wrap:wrap}
+.tag{
+  font-size:11px; font-weight:600; letter-spacing:.01em; padding:3px 9px; border-radius:99px;
+  background:#1e242c; color:var(--tx-mid);
+}
+.tag--a{background:rgba(77,157,255,.14); color:#8dc2ff}
+.tag--w{background:rgba(245,165,36,.14); color:#f7c46c}
+.tag--o{background:rgba(49,196,141,.14); color:#6fdcb4}
+.links{margin-top:11px; display:flex; gap:8px; flex-wrap:wrap}
+.links a{
+  font-size:12px; font-weight:600; text-decoration:none; padding:6px 12px; border-radius:7px;
+  background:#1e242c; color:var(--tx); border:1px solid var(--line); transition:.15s;
+}
+.links a:hover{background:#262d36; border-color:#39414c}
+.links a.pri{background:var(--accent); color:#04101f; border-color:transparent}
+
+.hgroup{margin:44px 0 20px; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+.hgroup:first-of-type{margin-top:0}
+.hgroup h2{font-size:17px; font-weight:800; letter-spacing:-.02em}
+.hgroup span{color:var(--tx-dim); font-size:13px}
+.rule{height:1px; background:var(--line); flex:1; min-width:40px}
+
+/* ── 대조 ── */
+.cmp{display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start}
+@media(max-width:1180px){.cmp{grid-template-columns:1fr}}
+.cmp .side{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); overflow:hidden}
+.side .lbl{padding:10px 15px; font-size:12.5px; font-weight:700; border-bottom:1px solid var(--line); display:flex; gap:9px; align-items:center}
+.dot{width:7px; height:7px; border-radius:50%; flex:0 0 auto}
+.dot--ours{background:var(--ok)} .dot--ref{background:var(--warn)}
+.side img{width:100%; display:block; background:#fff}
+
+.note{
+  margin-top:16px; padding:14px 16px; background:#14181d; border:1px solid var(--line);
+  border-left:2px solid var(--accent); border-radius:0 var(--r) var(--r) 0;
+  font-size:13px; color:var(--tx-mid);
+}
+.note b{color:var(--tx); font-weight:700}
+.note ul{margin:8px 0 0 17px}
+.note li{margin-top:4px}
+
+footer{border-top:1px solid var(--line); margin-top:60px; padding:22px 28px; color:var(--tx-dim); font-size:12.5px}
+footer .fin{max-width:1680px; margin:0 auto; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+code{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#a9c7ea}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hin">
+    <div class="brand">하루안부 패널<span>A4 가로 2장 · 297×210mm @300dpi</span></div>
+    <nav>
+      <button class="on" data-t="ours">우리 판</button>
+      <button data-t="ref">레퍼런스 원본</button>
+      <button data-t="cmp">대조</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════ 우리 판 ══════════ -->
+<section id="ours">
+  <div class="lead">
+    <h1>제작 중인 패널 두 판</h1>
+    <p>같은 내용을 두 가지 판형으로 만들어 두었습니다. ATOMX판이 현재 작업본이고,
+       흰 에디토리얼판은 기획서 원안대로 만든 대조본입니다. 아직 어느 쪽으로 갈지 결정하지 않았습니다.</p>
+  </div>
+
+  <div class="hgroup">
+    <h2>ATOMX판</h2><span>현재 작업본 · 레퍼런스 판형 복제</span><div class="rule"></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <figure><img src="_뷰어에셋/atomx-b1.png" alt="ATOMX판 보드1"></figure>
+      <div class="cap">
+        <h3>보드 1 — 왜 이렇게 설계했는가</h3>
+        <p>User Research · Needs↔Solution 3행 대응표 · Service Diagram 벤 3원 · 5W 카드 · Market Context</p>
+        <div class="meta"><span class="tag tag--a">타이포 정규화 완료</span><span class="tag tag--o">여백 4.20mm 균일</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <figure><img src="_뷰어에셋/atomx-b2.png" alt="ATOMX판 보드2"></figure>
+      <div class="cap">
+        <h3>보드 2 — 무엇을 만들었나</h3>
+        <p>보호자 · 어르신 · 케어팀 4역할 화면 18점 · 지시선 콜아웃 · 번호 시퀀스 · 상태 칩</p>
+        <div class="meta"><span class="tag tag--o">겹침 0건</span><span class="tag tag--o">판 밖 이탈 0건</span><span class="tag tag--w">일부 화면 판독성 미달</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <div class="cap" style="border-top:0">
+      <div class="links">
+        <a class="pri" href="하루안부_패널_ATOMX판_A4가로_2장.html" target="_blank">라이브 HTML 열기</a>
+        <a href="하루안부_패널_ATOMX판_A4가로_2장.pdf" target="_blank">인쇄용 PDF</a>
+        <a href="_뷰어에셋/atomx-b1.png" target="_blank">보드1 원본 이미지</a>
+        <a href="_뷰어에셋/atomx-b2.png" target="_blank">보드2 원본 이미지</a>
+      </div>
+      <p style="margin-top:11px">라이브 HTML 안의 화면은 스크린샷이 아니라 <b style="color:var(--tx)">실제 앱이 iframe 으로 돌아갑니다</b>.
+         처음 로드에 몇 초 걸립니다.</p>
+    </div>
+  </div>
+
+  <div class="hgroup">
+    <h2>흰 에디토리얼판</h2><span>기획서 원안 · 대조본</span><div class="rule"></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <figure><img src="_뷰어에셋/white-b1.png" alt="흰 에디토리얼판 보드1"></figure>
+      <div class="cap"><h3>보드 1</h3><p>흰 바탕 · 박스 없음 · 위계는 타이포와 여백으로만</p></div>
+    </div>
+    <div class="card">
+      <figure><img src="_뷰어에셋/white-b2.png" alt="흰 에디토리얼판 보드2"></figure>
+      <div class="cap"><h3>보드 2</h3><p>같은 원칙의 화면·시스템 판</p></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <div class="cap" style="border-top:0">
+      <div class="links">
+        <a class="pri" href="하루안부_패널_A4가로_2장.html" target="_blank">라이브 HTML 열기</a>
+        <a href="하루안부_패널_A4가로_2장.pdf" target="_blank">인쇄용 PDF</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>결정이 필요한 지점</b>
+    <ul>
+      <li>ATOMX판은 하늘 그라데이션·컬러 카드를 의도적으로 씁니다 — 프로젝트 상시 규칙(그라데이션·배경 컬러 필 금지)과 어긋납니다.</li>
+      <li>흰 에디토리얼판은 규칙을 지키지만 레퍼런스의 밀도·화려함이 없습니다.</li>
+      <li>어느 쪽을 최종으로 갈지, 혹은 ATOMX 골격에 흰 바탕을 입힐지.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ 레퍼런스 ══════════ -->
+<section id="ref" hidden>
+  <div class="lead">
+    <h1>레퍼런스 원본 4장</h1>
+    <p>카톡으로 받은 판형 레퍼런스입니다. 네 장 모두 <b style="color:var(--tx)">3507×2480px = A4 가로 297×210mm @300dpi</b> —
+       우리 판형과 정확히 같아서 <code>px ÷ 300 × 72 = pt</code> 로 원본 수치를 그대로 옮겨올 수 있었습니다.</p>
+  </div>
+
+  <div class="hgroup">
+    <h2>NASA — Pocket Mission Control</h2><span>2026-08-11 · 직접 만든 판 · <b style="color:#f7c46c">1차 레퍼런스</b> · Figma iNt51HokozrSYHr5ElRZqc</span><div class="rule"></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <figure><img src="_뷰어에셋/ref-NASA_패널A_node1-5.png" alt="다크-01"></figure>
+      <div class="cap">
+        <h3>패널 A — 개념 · 결정 · 시스템판 <span style="color:var(--tx-dim);font-weight:500">node 1-5</span></h3>
+        <p>좌상단 풀블리드 실사 + 흰 명패 카드 · 초대형 타이틀 · CORE IDENTITY 3원(× 곱셈) ·
+           미션 브리프 + 스펙표 · 코드 에디터 콜라주 · DESIGN APPROACH 1·2·3 · 소실점 A 작도 · 하단 탭 카드 4장.
+           <b style="color:var(--tx)">패널 기획의 규칙 12개가 여기서 나왔습니다.</b></p>
+        <div class="meta"><span class="tag tag--w">1차 레퍼런스</span><span class="tag">A 키비주얼 지배형</span><span class="tag">부분 차용</span></div>
+        <div class="links"><a href="_레퍼런스/NASA_패널A_개념결정시스템판_node1-5.png" target="_blank">원본 300dpi 열기</a></div>
+      </div>
+    </div>
+    <div class="card">
+      <figure><img src="_뷰어에셋/ref-NASA_패널B_node1-9.png" alt="다크-02"></figure>
+      <div class="cap">
+        <h3>패널 B — 화면 갤러리판 <span style="color:var(--tx-dim);font-weight:500">node 1-9</span></h3>
+        <p>Today Sky / Sky Live / Nebula. 배경 실사 위 폰 목업 10대 + UI 조각을 느슨한 대각선으로.
+           섹션 마커는 번호 + 초광폭 자간 영문 + 2행 설명만, 상자·선 없음.</p>
+        <div class="meta"><span class="tag tag--w">1차 레퍼런스</span><span class="tag">B 갤러리 산포형</span><span class="tag">골격 기각</span></div>
+        <div class="links"><a href="_레퍼런스/NASA_패널B_화면갤러리판_node1-9.png" target="_blank">원본 300dpi 열기</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hgroup">
+    <h2>ATOMX 세트</h2><span>2026-08-14 · 판형을 실제로 복제한 2차 레퍼런스</span><div class="rule"></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <figure><img src="_뷰어에셋/ref-ATOMX-01_개요리서치판_보드1원본.png" alt="ATOMX-01"></figure>
+      <div class="cap">
+        <h3>ATOMX-01 — 개요·리서치판</h3>
+        <p>XR 소셜 플랫폼 "Tenper" / 프로젝트명 ATOMX. 고스트 워드마크 · 기울인 폰 2대 ·
+           Needs→Solution 2열 대응표 · 벤 3원 · 92% 초대형 수치 · 5W 카드 그리드</p>
+        <div class="meta"><span class="tag tag--a">보드1 원본</span></div>
+        <div class="links"><a href="_레퍼런스/ATOMX-01_개요리서치판_보드1원본.png" target="_blank">원본 300dpi 열기</a></div>
+      </div>
+    </div>
+    <div class="card">
+      <figure><img src="_뷰어에셋/ref-ATOMX-02_화면갤러리판_하루안부배치WIP_보드2원본.png" alt="ATOMX-02"></figure>
+      <div class="cap">
+        <h3>ATOMX-02 — 화면 갤러리판 (하루안부 배치 WIP)</h3>
+        <p>같은 템플릿 둘째 장인데 이미 하루안부 화면이 들어가 있는 작업 중 상태.
+           헤드라인 카피는 원본 템플릿("칭찬 구슬", "칭찬 공개 전/후")이 그대로 남아 있습니다.</p>
+        <div class="meta"><span class="tag tag--a">보드2 원본</span><span class="tag tag--w">카피 미교체 상태</span></div>
+        <div class="links"><a href="_레퍼런스/ATOMX-02_화면갤러리판_하루안부배치WIP_보드2원본.png" target="_blank">원본 300dpi 열기</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>세 쌍의 공통 구조</b>
+    NASA(1-5 · 1-9), ATOMX(01 · 02), 그리고 우리 기존 편입판(보드1·2) — 세 쌍 모두
+    <b>첫 장은 "왜"(개념·리서치·구조), 둘째 장은 "무엇"(화면·시스템)</b> 으로 갈랐습니다.
+    2장 구성의 정답은 이미 세 번 검증된 셈입니다.
+  </div>
+</section>
+
+<!-- ══════════ 대조 ══════════ -->
+<section id="cmp" hidden>
+  <div class="lead">
+    <h1>원본 대조</h1>
+    <p>같은 폭으로 나란히 놓았습니다. 왼쪽이 우리 판, 오른쪽이 따라간 원본입니다.</p>
+  </div>
+
+  <div class="hgroup"><h2>보드 1</h2><span>개요·리서치판</span><div class="rule"></div></div>
+  <div class="cmp">
+    <div class="side">
+      <div class="lbl"><span class="dot dot--ours"></span>우리 판 — ATOMX판 보드1</div>
+      <img src="_뷰어에셋/atomx-b1.png" alt="우리 보드1">
+    </div>
+    <div class="side">
+      <div class="lbl"><span class="dot dot--ref"></span>원본 — ATOMX-01</div>
+      <img src="_뷰어에셋/ref-ATOMX-01_개요리서치판_보드1원본.png" alt="원본 01">
+    </div>
+  </div>
+  <div class="note">
+    <b>원본에서 가져온 것</b>
+    <ul>
+      <li>고스트 워드마크 · 기울인 폰 2대 · 하늘 배경 · 인물 워터마크</li>
+      <li>Needs→Solution 대응표(원본 3행 그대로)</li>
+      <li>Service Diagram 벤 3원 + 좌우 pill/circle 연결선</li>
+      <li>초대형 수치 + 라인차트 · 5W 카드 그리드 · 중앙 정렬 히어로 문장</li>
+    </ul>
+  </div>
+
+  <div class="hgroup"><h2>보드 2</h2><span>화면 갤러리판</span><div class="rule"></div></div>
+  <div class="cmp">
+    <div class="side">
+      <div class="lbl"><span class="dot dot--ours"></span>우리 판 — ATOMX판 보드2</div>
+      <img src="_뷰어에셋/atomx-b2.png" alt="우리 보드2">
+    </div>
+    <div class="side">
+      <div class="lbl"><span class="dot dot--ref"></span>원본 — ATOMX-02</div>
+      <img src="_뷰어에셋/ref-ATOMX-02_화면갤러리판_하루안부배치WIP_보드2원본.png" alt="원본 02">
+    </div>
+  </div>
+  <div class="note">
+    <b>원본에서 가져온 것</b>
+    <ul>
+      <li>지시선 콜아웃 · 번호 시퀀스 캡션 · 상태 칩 · 컬러 블롭 군집</li>
+      <li>번호 캡션의 번호 색이 그 군집의 역할색을 따라가는 규칙</li>
+      <li>웹 대시보드 · 실사 사진을 폰 사이에 섞어 리듬을 만드는 배치</li>
+    </ul>
+    <b style="display:block;margin-top:12px">바꾼 것</b>
+    원본에 남아 있던 템플릿 카피("마이페이지에서 나의 칭찬 활동 내역을…", "칭찬 구슬", "칭찬 공개 전/후")를
+    전부 하루안부 내용으로 교체했습니다.
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="fin">
+    <span>김지욱 · 손예찬 · 고해은 &nbsp;|&nbsp; UX · UI 손예찬</span>
+    <span>haruanbu.site</span>
+  </div>
+</footer>
+
+<script>
+const btns=[...document.querySelectorAll('nav button')];
+const secs=['ours','ref','cmp'].map(id=>document.getElementById(id));
+function show(t){
+  btns.forEach(b=>b.classList.toggle('on', b.dataset.t===t));
+  secs.forEach(s=>s.hidden = s.id!==t);
+  history.replaceState(null,'','#'+t);
+  window.scrollTo({top:0});
+}
+btns.forEach(b=>b.addEventListener('click',()=>show(b.dataset.t)));
+const h=location.hash.slice(1);
+if(['ours','ref','cmp'].includes(h)) show(h);
+</script>
+</body>
+</html>

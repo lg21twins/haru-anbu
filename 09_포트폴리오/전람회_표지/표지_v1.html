@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 — 전람회 표지</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Pretendard',-apple-system,system-ui,sans-serif;
+    background:#0d1014;color:#fff;-webkit-font-smoothing:antialiased;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:16px;padding:26px;
+  }
+  .stage{width:100%;max-width:1280px}
+
+  /* ---- 16:9 아트보드 · 각진 모서리(라운딩 없음) ---- */
+  .cover{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;container-type:size;box-shadow:0 26px 80px rgba(0,0,0,.45)}
+  .cover .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+
+  /* ---- 밑에서 위로 그라데이션 스크림 (박스 없음) ---- */
+  .scrim{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(to top,
+      rgba(8,12,18,.90) 0%,
+      rgba(8,12,18,.66) 16%,
+      rgba(8,12,18,.30) 34%,
+      rgba(8,12,18,0) 56%);
+  }
+
+  /* ---- 좌하단(카피) + 우하단(로고 사인) 분리 ---- */
+  .lockup-left{position:absolute;left:4.8cqw;bottom:5.2cqw;max-width:60cqw}
+  .lockup-right{position:absolute;right:4.8cqw;bottom:5.2cqw;text-align:right}
+  .lockup-left *, .lockup-right *{text-shadow:0 1px 8px rgba(0,0,0,.32)}
+  .lockup-right .logo{margin-bottom:.9cqw}
+  .lockup-right .en{margin-top:0}
+
+  .kicker{font-size:1.18cqw;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:1.6cqw}
+
+  .logo{display:inline-flex;align-items:center;gap:.7cqw;margin-bottom:2.1cqw}
+  .logo svg{height:3.6cqw;width:auto;display:block;filter:drop-shadow(0 2px 7px rgba(0,0,0,.4))}
+  .logo .wm{font-size:2.9cqw;font-weight:800;letter-spacing:-.045em;color:#fff;line-height:1}
+
+  .tag{font-size:4.5cqw;font-weight:800;letter-spacing:-.04em;line-height:1.15}
+  .tag .ac{color:#2C7AFC}
+
+  .sub{font-size:1.55cqw;font-weight:600;letter-spacing:-.01em;line-height:1.5;color:rgba(255,255,255,.92);margin-top:1.8cqw;max-width:50cqw}
+  .en{font-size:1.12cqw;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.78);margin-top:1cqw}
+
+  .caption{font-size:12.5px;color:#7c8694;text-align:center;line-height:1.6}
+  .caption b{color:#aeb8c6}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="cover">
+      <img class="bg" src="wow2.png" alt="요양시설에서 가족·의료진·요양보호사·환자가 하루안부로 연결되는 장면">
+      <div class="scrim"></div>
+
+      <div class="lockup-left">
+        <div class="tag">흩어진 하루를,<br><span class="ac">하나의 안부</span>로.</div>
+        <div class="sub">가족·의료진·요양보호사·환자를 잇는<br>AI 케어 커뮤니케이션 플랫폼</div>
+      </div>
+      <div class="lockup-right">
+        <div class="logo">
+          <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g transform="translate(50,50) scale(0.163)">
+              <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/>
+              <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/>
+            </g>
+          </svg>
+          <span class="wm">하루안부</span>
+        </div>
+        <div class="en">AI CARE COMMUNICATION PLATFORM</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption">
+    표지 · 배경 <b>wow2.png</b> · 밑에서 위로 그라데이션 + 좌하단 락업 · 각진 16:9<br>
+    확정되면 고해상도 PNG로 내보내 드립니다.
+  </div>
+</body>
+</html>

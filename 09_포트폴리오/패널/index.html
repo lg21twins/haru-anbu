@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 — UX·UI 포트폴리오 패널 (A4 가로 ×2)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+<style>
+  :root{
+    --blue:#2C7AFC; --green:#22C55E; --orange:#FB923C;
+    --ink:#1C1C1E; --gray-700:#3A3A3C; --gray-600:#5B5B60;
+    --gray-500:#8E8E93; --gray-400:#AEAEB2;
+    --line:#E5E5EA; --surface:#FFFFFF; --canvas:#EFF3F8; --muted:#F5F7FA;
+    --blue-soft:#EAF2FF; --green-soft:#E7F8EE; --orange-soft:#FFF2E8;
+    --font:'Pretendard Variable','Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{font-family:var(--font); color:var(--ink); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;}
+  body{background:#DEE2E8; padding:40px 0;}
+
+  /* ── A4 landscape panel ── */
+  .panel{
+    position:relative; width:297mm; height:210mm; background:var(--surface);
+    margin:0 auto 40px; overflow:hidden;
+    box-shadow:0 24px 60px rgba(16,24,40,.16), 0 4px 12px rgba(16,24,40,.06);
+  }
+  .panel:last-child{margin-bottom:0;}
+  .panel--problem{background:var(--canvas);}
+
+  /* ── brand bar ── */
+  .topbar{position:absolute; top:44px; left:56px; right:56px; display:flex; align-items:center; justify-content:space-between; z-index:5;}
+  .brand{display:flex; align-items:center; gap:11px;}
+  .brand .sym{width:30px; height:30px; display:block;}
+  .brand .wm{font-size:23px; font-weight:700; letter-spacing:-0.04em; color:var(--ink);}
+  .pageno{font-size:13px; font-weight:600; letter-spacing:.14em; color:var(--gray-400);}
+  .pageno b{color:var(--ink);}
+  .eyebrow{font-size:13px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--blue);}
+
+  /* ════════ PANEL 1 — PROBLEM ════════ */
+  .p1{padding:112px 56px 52px; height:100%; display:flex; flex-direction:column;}
+  .p1-head{max-width:760px;}
+  .p1 h1{margin-top:12px; font-size:40px; font-weight:700; line-height:1.2; letter-spacing:-0.035em; color:var(--ink);}
+  .p1 h1 .accent{color:var(--blue);}
+  .p1-sub{margin-top:18px; font-size:16px; line-height:1.7; color:var(--gray-600); letter-spacing:-0.01em; max-width:880px;}
+
+  .pains{margin-top:auto; display:flex; flex-direction:column; gap:16px; padding-top:24px;}
+  .pbub{display:flex; align-items:flex-end; gap:14px; max-width:53%;}
+  .pbub.left{align-self:flex-start;}
+  .pbub.right{align-self:flex-end; flex-direction:row-reverse;}
+  .pperson{display:flex; flex-direction:column; align-items:center; gap:6px; flex:none; width:58px;}
+  .pav{width:54px; height:54px; border-radius:50%; object-fit:cover; background:var(--line);}
+  .prole{font-size:11.5px; font-weight:600; color:var(--gray-500);}
+  .pmsg{font-size:23px; font-weight:600; letter-spacing:-0.03em; line-height:1.4; color:var(--ink);
+    background:#fff; padding:17px 24px; border-radius:22px; box-shadow:0 8px 26px -12px rgba(15,23,42,.20); word-break:keep-all;}
+  .pbub.left .pmsg{border-bottom-left-radius:7px;}
+  .pbub.right .pmsg{border-bottom-right-radius:7px;}
+
+  /* ════════ PANEL 2 — SOLUTION ════════ */
+  .p2{padding:108px 56px 46px; height:100%; display:flex; flex-direction:column; gap:22px;}
+  .p2-head h2{margin-top:6px; font-size:32px; font-weight:700; line-height:1.18; letter-spacing:-0.035em; color:var(--ink);}
+  .p2-head h2 .accent{color:var(--blue);}
+
+  .p2-mid{display:grid; grid-template-columns:452px 1fr; gap:44px; align-items:center;}
+
+  /* device : phone */
+  .stage{position:relative; height:374px;}
+  .phone{position:absolute; background:#0B0B0D; border-radius:38px; padding:7px;
+    box-shadow:0 22px 46px rgba(16,24,40,.22), 0 6px 16px rgba(16,24,40,.10);}
+  .phone .screen{position:relative; overflow:hidden; border-radius:31px; background:#fff;}
+  .phone .screen iframe{position:absolute; left:0; top:0; border:0; display:block; pointer-events:none; transform-origin:top left;}
+  .phone .notch{position:absolute; top:7px; left:50%; transform:translateX(-50%); width:34%; height:18px; background:#0B0B0D; border-radius:0 0 12px 12px; z-index:3;}
+  .ph-a{left:0;   top:34px; z-index:1;}
+  .ph-b{left:130px; top:0;  z-index:3;}
+  .ph-c{left:260px; top:34px; z-index:2;}
+  .mock-legend{position:absolute; left:2px; bottom:-2px; display:flex; gap:18px;}
+  .dcap{display:flex; align-items:center; gap:7px; font-size:12px; color:var(--gray-600); font-weight:500; white-space:nowrap;}
+  .dcap .dot{width:8px; height:8px; border-radius:50%; flex:none;}
+  .dcap b{font-weight:600; color:var(--ink);}
+
+  /* feature pills */
+  .pv-label{font-size:12px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--gray-400); margin-bottom:16px;}
+  .pills{display:flex; flex-direction:column; gap:13px;}
+  .pillrow{display:flex; gap:13px;}
+  .pill{height:48px; padding:0 24px; border-radius:999px; background:var(--blue); color:#fff;
+    font-size:17px; font-weight:600; letter-spacing:-0.02em; display:inline-flex; align-items:center;}
+  .pill.icon{width:48px; padding:0; background:#fff; color:var(--blue); justify-content:center; box-shadow:0 3px 12px rgba(16,24,40,.10);}
+  .pill.icon iconify-icon{font-size:25px;}
+  .pv-cap{margin-top:18px; font-size:14px; color:var(--gray-600); font-weight:500; letter-spacing:-0.01em;}
+  .pv-cap b{color:var(--ink); font-weight:600;}
+
+  /* design-system strip */
+  .ds{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  .ds-card{background:var(--muted); border-radius:14px; padding:15px 17px;}
+  .ds-card .t{font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-500);}
+  .swatches{display:flex; gap:9px; margin-top:12px;}
+  .sw{flex:1; text-align:center;}
+  .sw .chipc{height:30px; border-radius:8px;}
+  .sw .hx{margin-top:7px; font-size:10px; font-weight:600; color:var(--gray-600);}
+  .type-sample{margin-top:11px;}
+  .type-sample .big{font-size:24px; font-weight:700; letter-spacing:-0.03em; color:var(--ink); line-height:1;}
+  .type-sample .scale{margin-top:8px; font-size:11.5px; color:var(--gray-500); font-weight:500;}
+  .icons{display:flex; gap:14px; margin-top:12px; color:var(--ink);}
+  .icons iconify-icon{font-size:24px;}
+  .principles{margin-top:11px; display:flex; flex-direction:column; gap:7px;}
+  .principles li{list-style:none; font-size:12px; color:var(--gray-700); font-weight:500; display:flex; align-items:center; gap:8px;}
+  .principles li iconify-icon{font-size:15px; color:var(--green);}
+
+  /* footer */
+  .p2-foot{margin-top:auto; display:flex; align-items:center; justify-content:space-between; padding-top:6px;}
+  .credits{font-size:13px; color:var(--gray-600); font-weight:500;}
+  .credits b{color:var(--ink); font-weight:600;}
+  .foot-r{display:flex; align-items:center; gap:16px;}
+  .foot-r .url{font-size:14px; font-weight:600; color:var(--ink); letter-spacing:-0.01em;}
+  .foot-r .url span{color:var(--gray-400); font-weight:500; display:block; font-size:11px; letter-spacing:.1em; text-transform:uppercase;}
+  .qr{width:58px; height:58px; background:#fff; border-radius:9px; padding:5px; box-shadow:0 0 0 1px var(--line);}
+  .qr svg{width:100%; height:100%; display:block;}
+
+  /* ════════ PANEL 3 — UI KIT (보호자앱 컴포넌트, 사이트 원본 그대로) ════════ */
+  .p3{padding:90px 48px 38px; height:100%; display:flex; flex-direction:column;}
+  .p3-head h2{margin-top:6px; font-size:28px; font-weight:700; letter-spacing:-0.03em; color:var(--ink);}
+  .p3-head h2 .accent{color:var(--blue);}
+  .uik-stage{flex:1; min-height:0; display:flex; align-items:flex-start; justify-content:center; margin-top:14px;}
+  .uik-stage .ds-gallery{transform-origin:top center;}
+
+  /* ── UI Kit components (haru-anbu-showcase-v8 원본 CSS · uik- 네임스페이스) ── */
+  .ds-gallery{
+    --t1:#1C1C1E;--t2:#5B5B60;--t3:#9AA0A6;
+    --blue:#2C7AFC;--blue-d:#1D4ED8;--blue-soft:#DBEAFE;
+    --green-d:#16A34A;--amber:#F59E0B;--mint:#34D399;--teal:#14B8A6;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:start;margin:0;width:1100px;
+  }
+  .uik-col{display:flex;flex-direction:column;gap:18px;min-width:0}
+  .uik-col:nth-child(1){margin-top:0}
+  .uik-col:nth-child(2){margin-top:64px}
+  .uik-col:nth-child(3){margin-top:0}
+  .uik-col:nth-child(4){margin-top:84px}
+  .uik-cell{break-inside:avoid;margin:0}
+  .uik-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .uik-w{position:relative;background:#fff;border-radius:20px;padding:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04);display:flex;flex-direction:column;min-width:0}
+  .uik-w.sq{aspect-ratio:1/1}
+  .uik-w-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+  .uik-w-title{font-size:16px;font-weight:800;color:var(--t1);display:flex;align-items:center;gap:6px;letter-spacing:-.3px}
+  .uik-w-title iconify-icon{font-size:18px}
+  .uik-display{font-size:34px;font-weight:800;letter-spacing:-1.5px;line-height:1;color:var(--t1)}
+  .uik-display span{font-size:17px;font-weight:600;opacity:.4}
+  .uik-meta{font-size:12px;color:var(--t3);margin-top:6px}
+  .uik-pill{padding:0}
+  .uik-pill .uik-pill-body{padding:14px;position:relative;z-index:1}
+  .uik-pill-wave{position:absolute;left:0;bottom:0;width:100%;height:44%;color:var(--mint);z-index:0}
+  .uik-pill-wave svg{width:100%;height:100%;display:block}
+  .uik-row-base{display:flex;align-items:baseline;gap:8px;line-height:1}
+  .uik-num-26{font-size:24px;font-weight:800;letter-spacing:-1px;color:var(--t1)}
+  .uik-num-26 span{font-size:12px;font-weight:500;color:var(--t3)}
+  .uik-num-side{font-size:10.5px;color:var(--t3);font-weight:600}
+  .uik-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0 5px;font-size:8.5px;color:var(--t3);font-weight:700;text-align:center}
+  .uik-dots{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:auto}
+  .uik-dots i{aspect-ratio:1;border-radius:50%;background:var(--blue)}
+  .uik-pulse-main{margin-top:auto}
+  .uik-pulse-num{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
+  .uik-pulse-num .n{font-size:52px;font-weight:800;letter-spacing:-2.5px;line-height:.88;color:var(--t1)}
+  .uik-pulse-num .u{font-size:14px;font-weight:700;color:var(--t3);letter-spacing:.3px}
+  .uik-pulse-sub{font-size:11px;color:var(--t3);font-weight:500}
+  .uik-hyg-row{display:flex;align-items:center;gap:8px;padding:6px 0}
+  .uik-hyg-box{width:18px;height:18px;border-radius:5px;background:var(--teal);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+  .uik-hyg-box iconify-icon{font-size:12px}
+  .uik-hyg-box.empty{background:transparent;border:2px solid rgba(0,0,0,.1)}
+  .uik-hyg-t{font-size:12px;font-weight:600;flex:1;color:var(--t1)}
+  .uik-hyg-time{font-size:10px;color:var(--t3)}
+  .uik-sleep-bars{display:flex;align-items:flex-end;gap:4px;height:96px;margin-top:14px}
+  .uik-sleep-bars i{flex:1;border-radius:4px;min-height:4px;background:var(--blue)}
+  .uik-sleep-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--t3);font-weight:600}
+  .uik-insight{flex-direction:row;align-items:center;gap:14px}
+  .uik-insight-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(245,158,11,.12)}
+  .uik-insight-icon iconify-icon{font-size:20px;color:var(--amber)}
+  .uik-insight-body{flex:1;min-width:0}
+  .uik-insight-title{font-size:15px;font-weight:700;margin-bottom:3px;color:var(--t1)}
+  .uik-insight-desc{font-size:13px;color:var(--t2);line-height:1.45}
+  .uik-insight-cta{font-size:12px;font-weight:700;color:var(--blue);margin-top:6px}
+  .uik-moment{padding:0}
+  .uik-moment-photo{height:170px;background:#F3E9DC center/cover no-repeat;position:relative}
+  .uik-moment-photo::after{content:'';position:absolute;inset:auto 0 0 0;height:34%;background:rgba(0,0,0,.14)}
+  .uik-moment-body{padding:14px 18px 16px}
+  .uik-moment-quote{font-size:14px;font-weight:600;line-height:1.5;letter-spacing:-.3px;color:var(--t1);margin-bottom:6px}
+  .uik-moment-meta{font-size:11.5px;color:var(--t3)}
+  .uik-aibar{flex-direction:row;align-items:center;gap:16px}
+  .uik-ring{position:relative;width:84px;height:84px;flex-shrink:0}
+  .uik-ring svg{width:84px;height:84px;display:block}
+  .uik-ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:var(--blue);letter-spacing:-1px}
+  .uik-aibar-body{flex:1;min-width:0}
+  .uik-aibar-label{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+  .uik-aibar-head{font-size:14px;font-weight:700;line-height:1.35;color:var(--t1);margin-bottom:2px}
+  .uik-aibar-sub{font-size:12.5px;color:var(--t2);line-height:1.4}
+  .uik-chat{background:#EEF2F7;border-radius:20px;padding:14px;gap:10px}
+  .uik-msg{display:flex;flex-direction:column;gap:4px;max-width:90%}
+  .uik-msg.in{align-self:flex-start}
+  .uik-msg.out{align-self:flex-end;align-items:flex-end}
+  .uik-msg-sender{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:5px;padding-left:2px}
+  .uik-sender-ico{width:16px;height:16px;border-radius:50%;background:var(--blue);display:inline-flex;align-items:center;justify-content:center}
+  .uik-sender-ico svg{width:9px;height:9px}
+  .uik-bubble{padding:10px 14px;font-size:13.5px;line-height:1.5}
+  .uik-msg.in .uik-bubble{background:#fff;border-radius:16px 16px 16px 4px;box-shadow:0 2px 8px rgba(0,0,0,.04);color:var(--t1)}
+  .uik-msg.out .uik-bubble{background:var(--blue);color:#fff;border-radius:16px 16px 4px 16px}
+  .uik-msg-time{font-size:10px;color:var(--t3);padding:0 2px}
+  .uik-conv{flex-direction:row;align-items:center;gap:12px}
+  .uik-av{width:44px;height:44px;border-radius:50%;flex-shrink:0;position:relative;overflow:hidden;background:var(--blue)}
+  .uik-av img{width:100%;height:100%;object-fit:cover;object-position:center top}
+  .uik-av.online::after{content:'';position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;background:var(--green-d);border:2.5px solid #fff}
+  .uik-conv-body{flex:1;min-width:0}
+  .uik-conv-name-row{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+  .uik-conv-name{font-size:14px;font-weight:700;white-space:nowrap;color:var(--t1)}
+  .uik-conv-tag{height:16px;padding:0 7px;border-radius:999px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;background:rgba(34,197,94,.14);color:var(--green-d)}
+  .uik-conv-preview{font-size:12.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .uik-conv-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+  .uik-conv-time{font-size:11px;color:var(--t3);font-weight:500}
+  .uik-conv-unread{background:var(--blue);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:1px 7px;min-width:20px;text-align:center;line-height:18px}
+  .uik-tl{position:relative;padding-left:24px;background:none;box-shadow:none;border-radius:0;padding-top:0;padding-bottom:0}
+  .uik-tl::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;border-radius:2px;background:rgba(44,122,252,.18)}
+  .uik-tl-month{font-size:11px;font-weight:700;color:var(--t2);letter-spacing:.4px;margin:0 0 10px 2px}
+  .uik-tl-item{position:relative;background:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04)}
+  .uik-tl-item::before{content:'';position:absolute;left:-20px;top:18px;width:10px;height:10px;border-radius:50%;background:#fff;border:2.5px solid var(--blue);box-shadow:0 0 0 2.5px #EFF6FF}
+  .uik-tl-item.danger::before{border-color:#FF3B30}
+  .uik-tl-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .uik-tl-ico{width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:#EFF6FF;color:var(--blue);flex-shrink:0}
+  .uik-tl-item.danger .uik-tl-ico{background:rgba(255,59,48,.10);color:#FF3B30}
+  .uik-tl-ico iconify-icon{font-size:16px}
+  .uik-tl-tag{height:16px;padding:0 7px;border-radius:999px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;background:rgba(255,59,48,.12);color:#A51B16}
+  .uik-tl-date{margin-left:auto;font-size:11px;color:var(--t3)}
+  .uik-tl-title{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--t1)}
+  .uik-tl-desc{font-size:12.5px;color:var(--t2);line-height:1.45}
+  .uik-profile{flex-direction:row;align-items:center;gap:12px}
+  .uik-profile-av{width:60px;height:60px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--blue-soft)}
+  .uik-profile-av img{width:100%;height:100%;object-fit:cover;object-position:center top}
+  .uik-profile-body{flex:1;min-width:0}
+  .uik-profile-name{font-size:19px;font-weight:700;color:var(--t1)}
+  .uik-profile-sub{font-size:12.5px;color:var(--t2);margin-top:2px}
+  .uik-pills{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .uik-pill-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:999px;background:#F2F2F7;font-size:11px;font-weight:700;color:var(--t2)}
+  .uik-pill-tag iconify-icon{font-size:12px}
+  .uik-pill-tag.accent{background:var(--blue-soft);color:var(--blue)}
+  .uik-med-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .uik-med-ico{width:40px;height:40px;border-radius:12px;background:var(--blue-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .uik-med-ico iconify-icon{font-size:20px;color:var(--blue)}
+  .uik-med-name{font-size:17px;font-weight:700;color:var(--t1)}
+  .uik-med-type{font-size:12.5px;color:var(--t2)}
+  .uik-med-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 0;border-top:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06)}
+  .uik-med-label{font-size:11px;color:var(--t3)}
+  .uik-med-value{font-size:13.5px;font-weight:600;color:var(--t1);margin-top:2px}
+  .uik-med-warn{margin-top:12px}
+  .uik-med-warn-head{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#B45309;margin-bottom:8px}
+  .uik-med-warn-head iconify-icon{font-size:16px}
+  .uik-med-warn-list{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--t2);line-height:1.4}
+  .uik-med-warn-list li{display:flex;gap:8px;list-style:none}
+  .uik-med-warn-list li::before{content:'';flex-shrink:0;width:4px;height:4px;border-radius:50%;background:var(--amber);margin-top:7px}
+  .uik-text-blue{color:var(--blue)}
+  .uik-text-mint{color:var(--mint)}
+  .uik-text-teal{color:var(--teal)}
+  .uik-text-danger{color:#FF3B30}
+
+  @media print{
+    body{background:#fff; padding:0;}
+    .panel{box-shadow:none; margin:0; page-break-after:always;}
+    .panel:last-child{page-break-after:auto;}
+    @page{size:297mm 210mm; margin:0;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ PANEL 1 · THE PROBLEM ══════════════════ -->
+<section class="panel panel--problem">
+  <div class="topbar">
+    <div class="brand">
+      <svg class="sym" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(50,50) scale(0.163)">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/>
+          <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/>
+        </g>
+      </svg>
+      <span class="wm">하루안부</span>
+    </div>
+    <div class="pageno"><b>01</b> / 03</div>
+  </div>
+
+  <div class="p1">
+    <div class="p1-head">
+      <div class="eyebrow">The Problem</div>
+      <h1>그렇다면 왜,<br><span class="accent">모두가 여전히 불안할까요?</span></h1>
+      <p class="p1-sub">보호자는 부모님의 하루가 궁금하고, 어르신은 자식 걱정을 덜고 싶고, 케어팀은 같은 설명을 매번 반복합니다. 같은 하루를 함께 걱정하지만, 그 마음은 서로에게 닿지 못한 채 매일 따로 흩어집니다.</p>
+    </div>
+
+    <div class="pains">
+      <div class="pbub left">
+        <div class="pperson"><img class="pav" src="../v11_보호자앱/img/보호자.png" alt="보호자"><span class="prole">보호자</span></div>
+        <div class="pmsg">오늘 밥은 잘 드셨는지 모르겠어요.</div>
+      </div>
+      <div class="pbub right">
+        <div class="pperson"><img class="pav" src="../v11_보호자앱/img/요양보호사.png" alt="요양보호사"><span class="prole">요양보호사</span></div>
+        <div class="pmsg">보호자 전화에 하루 두 시간을 써요.</div>
+      </div>
+      <div class="pbub left">
+        <div class="pperson"><img class="pav" src="../v11_보호자앱/img/환자.png" alt="환자"><span class="prole">환자</span></div>
+        <div class="pmsg">자식들 걱정시키고 싶지 않아요.</div>
+      </div>
+      <div class="pbub right">
+        <div class="pperson"><img class="pav" src="../v11_보호자앱/img/의사.png" alt="의료진"><span class="prole">의료진</span></div>
+        <div class="pmsg">어르신 상태를 매번 따로 기록해요.</div>
+      </div>
+      <div class="pbub left">
+        <div class="pperson"><img class="pav" src="../v11_보호자앱/img/보호자.png" alt="보호자"><span class="prole">보호자</span></div>
+        <div class="pmsg">멀리 있어서 자주 가보지도 못해요.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ PANEL 2 · THE SOLUTION ══════════════════ -->
+<section class="panel">
+  <div class="topbar">
+    <div class="brand">
+      <svg class="sym" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(50,50) scale(0.163)">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/>
+          <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/>
+        </g>
+      </svg>
+      <span class="wm">하루안부</span>
+    </div>
+    <div class="pageno"><b>02</b> / 03</div>
+  </div>
+
+  <div class="p2">
+    <div class="p2-head">
+      <div class="eyebrow">The Solution</div>
+      <h2><span class="accent">하루의 안부 한 줄</span>로, 세 시선을 잇다</h2>
+    </div>
+
+    <div class="p2-mid">
+      <!-- iframe phone mockups (live screens) -->
+      <div class="stage">
+        <div class="phone ph-a">
+          <div class="notch"></div>
+          <div class="screen" style="width:158px;height:343px;background:var(--blue-soft)">
+            <iframe src="../v11_보호자앱/g-guardian-live.html?embed=1" style="width:390px;height:850px;transform:scale(0.4051)" title="보호자 앱"></iframe>
+          </div>
+        </div>
+        <div class="phone ph-b">
+          <div class="notch"></div>
+          <div class="screen" style="width:158px;height:343px;background:var(--green-soft)">
+            <iframe src="../v15_의료진앱/d01-home.html?embed=1" style="width:390px;height:850px;transform:scale(0.4051)" title="의료진 앱"></iframe>
+          </div>
+        </div>
+        <div class="phone ph-c">
+          <div class="notch"></div>
+          <div class="screen" style="width:158px;height:343px;background:var(--orange-soft)">
+            <iframe src="../v12_환자앱/p01-today.html?embed=1" style="width:390px;height:850px;transform:scale(0.4051)" title="환자 앱"></iframe>
+          </div>
+        </div>
+        <div class="mock-legend">
+          <span class="dcap"><span class="dot" style="background:var(--blue)"></span><b>보호자</b></span>
+          <span class="dcap"><span class="dot" style="background:var(--green)"></span><b>의료진</b></span>
+          <span class="dcap"><span class="dot" style="background:var(--orange)"></span><b>환자</b></span>
+        </div>
+      </div>
+
+      <!-- feature pills (그대로) -->
+      <div class="pv">
+        <div class="pv-label">한 줄 기록 → 역할별 기능</div>
+        <div class="pills">
+          <div class="pillrow">
+            <span class="pill">음성 안부</span>
+            <span class="pill">복약 알림</span>
+            <span class="pill icon"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon></span>
+            <span class="pill">일정 공유</span>
+          </div>
+          <div class="pillrow">
+            <span class="pill icon"><iconify-icon icon="fluent:chat-multiple-24-filled"></iconify-icon></span>
+            <span class="pill">건강 일지</span>
+            <span class="pill icon"><iconify-icon icon="fluent:phone-vibrate-24-filled"></iconify-icon></span>
+            <span class="pill">긴급 호출</span>
+          </div>
+          <div class="pillrow">
+            <span class="pill">활동 리포트</span>
+            <span class="pill">의료진 메모</span>
+            <span class="pill icon"><iconify-icon icon="fluent:home-heart-24-filled"></iconify-icon></span>
+          </div>
+        </div>
+        <div class="pv-cap">한 번의 기록이 <b>역할에 맞는 사람에게 정확히</b> 전달됩니다.</div>
+      </div>
+    </div>
+
+    <!-- design system strip -->
+    <div class="ds">
+      <div class="ds-card">
+        <div class="t">Role Colors</div>
+        <div class="swatches">
+          <div class="sw"><div class="chipc" style="background:var(--blue)"></div><div class="hx">2C7AFC</div></div>
+          <div class="sw"><div class="chipc" style="background:var(--green)"></div><div class="hx">22C55E</div></div>
+          <div class="sw"><div class="chipc" style="background:var(--orange)"></div><div class="hx">FB923C</div></div>
+        </div>
+      </div>
+      <div class="ds-card">
+        <div class="t">Typography</div>
+        <div class="type-sample">
+          <div class="big">가나다 Aa 123</div>
+          <div class="scale">Pretendard Variable · 크기·굵기로 위계</div>
+        </div>
+      </div>
+      <div class="ds-card">
+        <div class="t">Icon System</div>
+        <div class="icons">
+          <iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon>
+          <iconify-icon icon="fluent:person-heart-24-filled"></iconify-icon>
+          <iconify-icon icon="fluent:chat-24-filled"></iconify-icon>
+          <iconify-icon icon="fluent:shield-checkmark-24-filled"></iconify-icon>
+        </div>
+        <div class="scale" style="margin-top:11px;font-size:11.5px;color:var(--gray-500);font-weight:500;">Fluent UI · 단색 통일</div>
+      </div>
+      <div class="ds-card">
+        <div class="t">Principles</div>
+        <ul class="principles">
+          <li><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>단색 토큰 · 무그라데이션</li>
+          <li><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>아이콘 통일 · 무이모지</li>
+          <li><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>타이포 · 간격 위계</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="p2-foot">
+      <div class="credits"><b>김지욱 · 손예찬 · 고해은</b> &nbsp;—&nbsp; 2026 학생 졸업 프로젝트</div>
+      <div class="foot-r">
+        <div class="url">haruanbu.site<span>Live Service</span></div>
+        <div class="qr" data-qr></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ PANEL 3 · UI KIT ══════════════════ -->
+<section class="panel">
+  <div class="topbar">
+    <div class="brand">
+      <svg class="sym" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(50,50) scale(0.163)">
+          <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/>
+          <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/>
+        </g>
+      </svg>
+      <span class="wm">하루안부</span>
+    </div>
+    <div class="pageno"><b>03</b> / 03</div>
+  </div>
+
+  <div class="p3">
+    <div class="p3-head">
+      <div class="eyebrow">UI Kit</div>
+      <h2>보호자앱 컴포넌트 <span class="accent">· 전 탭</span></h2>
+    </div>
+
+    <div class="uik-stage">
+      <div class="ds-gallery" data-role="guardian" style="transform:scale(0.92)">
+
+        <!-- 컬럼 1 -->
+        <div class="uik-col">
+          <div class="uik-cell">
+            <div class="uik-pair">
+              <div class="uik-w uik-pill sq">
+                <div class="uik-pill-wave"><svg viewBox="0 0 190 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0,30 C40,10 80,10 120,26 C150,38 175,32 190,24 L190,100 L0,100 Z" fill="currentColor" fill-opacity=".9"/><path d="M0,42 C45,24 85,26 125,40 C155,50 175,46 190,40 L190,100 L0,100 Z" fill="currentColor" fill-opacity=".42"/></svg></div>
+                <div class="uik-pill-body">
+                  <div class="uik-w-head"><div class="uik-w-title"><iconify-icon icon="fluent:pill-24-filled" class="uik-text-mint"></iconify-icon>투약</div></div>
+                  <div class="uik-display">33<span>%</span></div>
+                  <div class="uik-meta">1/3 완료</div>
+                </div>
+              </div>
+              <div class="uik-w sq">
+                <div class="uik-w-head"><div class="uik-w-title"><iconify-icon icon="fluent:heart-24-filled" class="uik-text-blue"></iconify-icon>기분</div></div>
+                <div class="uik-row-base"><div class="uik-num-26">87<span>점</span></div><div class="uik-num-side">주 71</div></div>
+                <div class="uik-dow"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span></div>
+                <div class="uik-dots"><i style="background:#BFDBFE"></i><i style="background:#93C5FD"></i><i style="background:#60A5FA"></i><i style="background:#93C5FD"></i><i style="background:#BFDBFE"></i><i style="background:#DBEAFE"></i><i style="background:#DBEAFE"></i><i style="background:#60A5FA"></i><i style="background:#3B82F6"></i><i style="background:#2C7AFC"></i><i style="background:#2C7AFC"></i><i style="background:#3B82F6"></i><i style="background:#93C5FD"></i><i style="background:#BFDBFE"></i></div>
+              </div>
+            </div>
+          </div>
+          <div class="uik-cell">
+            <div class="uik-w">
+              <div class="uik-w-head"><div class="uik-w-title"><iconify-icon icon="fluent:weather-moon-24-filled" class="uik-text-blue"></iconify-icon>수면</div></div>
+              <div class="uik-display">7<span>시간 </span>32<span>분</span></div>
+              <div class="uik-meta">지난 밤 · 깨심 1회</div>
+              <div class="uik-sleep-bars"><i style="height:16px;background:#BFDBFE"></i><i style="height:30px;background:#93C5FD"></i><i style="height:50px;background:#60A5FA"></i><i style="height:76px;background:#3B82F6"></i><i style="height:92px;background:#1D4ED8"></i><i style="height:86px;background:#1D4ED8"></i><i style="height:64px;background:#3B82F6"></i><i style="height:42px;background:#60A5FA"></i><i style="height:26px;background:#93C5FD"></i><i style="height:36px;background:#60A5FA"></i><i style="height:62px;background:#3B82F6"></i><i style="height:84px;background:#1D4ED8"></i><i style="height:78px;background:#1D4ED8"></i><i style="height:54px;background:#3B82F6"></i><i style="height:34px;background:#60A5FA"></i><i style="height:22px;background:#93C5FD"></i><i style="height:16px;background:#BFDBFE"></i><i style="height:11px;background:#BFDBFE"></i></div>
+              <div class="uik-sleep-labels"><span>22시</span><span>00시</span><span>02시</span><span>04시</span><span>06시</span><span>08시</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 컬럼 2 -->
+        <div class="uik-col">
+          <div class="uik-cell">
+            <div class="uik-w uik-chat">
+              <div class="uik-msg in">
+                <span class="uik-msg-sender"><span class="uik-sender-ico"><svg viewBox="0 0 2526 2526" fill="#fff"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z"/><path d="M4.677 19.335C1286.35-131.481 1286.35 630.399 1286.35 1246.66L28.315 2526C7.322 2031.8 3.73 1368.08 867.143 1263.52C-115.881 1211.75 4.677 424.157 4.677 19.335Z"/></svg></span>하루 AI</span>
+                <div class="uik-bubble">안녕하세요 민지님, 어머니 케어에 관한 질문이라면 뭐든 도와드릴게요.</div>
+                <span class="uik-msg-time">오전 9:00</span>
+              </div>
+              <div class="uik-msg out">
+                <div class="uik-bubble">어머니 점심 식사량이 줄어든 것 같아 걱정돼요.</div>
+                <span class="uik-msg-time">오전 9:01</span>
+              </div>
+            </div>
+          </div>
+          <div class="uik-cell">
+            <div class="uik-tl">
+              <div class="uik-tl-month">2026년 3월</div>
+              <div class="uik-tl-item danger">
+                <div class="uik-tl-head"><span class="uik-tl-ico"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon></span><span class="uik-tl-tag">긴급</span><span class="uik-tl-date">3월 28일</span></div>
+                <div class="uik-tl-title">낙상 사고 발생</div>
+                <div class="uik-tl-desc">화장실 이동 중 미끄러짐. X-ray 결과 골절 없음. 보행 보조기 사용 권장.</div>
+              </div>
+            </div>
+          </div>
+          <div class="uik-cell">
+            <div class="uik-pair">
+              <div class="uik-w sq">
+                <div class="uik-w-head"><div class="uik-w-title"><iconify-icon icon="fluent:pulse-24-filled" class="uik-text-danger"></iconify-icon>맥박</div></div>
+                <div class="uik-pulse-main">
+                  <div class="uik-pulse-num"><span class="n">72</span><span class="u">BPM</span></div>
+                  <div class="uik-pulse-sub">평균 근처</div>
+                </div>
+              </div>
+              <div class="uik-w sq">
+                <div class="uik-w-head"><div class="uik-w-title"><iconify-icon icon="fluent:drop-24-filled" class="uik-text-teal"></iconify-icon>위생</div></div>
+                <div class="uik-hyg-row"><span class="uik-hyg-box"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span><span class="uik-hyg-t">세면</span><span class="uik-hyg-time">07:30</span></div>
+                <div class="uik-hyg-row"><span class="uik-hyg-box"><iconify-icon icon="fluent:checkmark-24-filled"></iconify-icon></span><span class="uik-hyg-t">구강</span><span class="uik-hyg-time">07:40</span></div>
+                <div class="uik-hyg-row"><span class="uik-hyg-box empty"></span><span class="uik-hyg-t">목욕</span><span class="uik-hyg-time">예정</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 컬럼 3 -->
+        <div class="uik-col">
+          <div class="uik-cell">
+            <div class="uik-w uik-aibar">
+              <div class="uik-ring">
+                <svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="rgba(0,0,0,.06)" stroke-width="7"/><circle cx="42" cy="42" r="36" fill="none" stroke="#2C7AFC" stroke-width="7" stroke-linecap="round" stroke-dasharray="170 226" transform="rotate(-90 42 42)"/></svg>
+                <div class="uik-ring-num">75</div>
+              </div>
+              <div class="uik-aibar-body">
+                <div class="uik-aibar-label">AI 케어 분석</div>
+                <div class="uik-aibar-head">투약 3회 완료, 식사 양호</div>
+                <div class="uik-aibar-sub">점심 섭취량 소폭 감소 — 경과 관찰</div>
+              </div>
+            </div>
+          </div>
+          <div class="uik-cell">
+            <div class="uik-w uik-conv">
+              <div class="uik-av online"><img src="../v11_보호자앱/img/간호사.png" alt="김서연 간호사"></div>
+              <div class="uik-conv-body">
+                <div class="uik-conv-name-row"><span class="uik-conv-name">김서연 간호사</span><span class="uik-conv-tag">근무 중</span></div>
+                <div class="uik-conv-preview">저녁 투약도 완료했습니다. 오늘 하루 컨디션…</div>
+              </div>
+              <div class="uik-conv-meta"><span class="uik-conv-time">오후 6:05</span><span class="uik-conv-unread">4</span></div>
+            </div>
+          </div>
+          <div class="uik-cell">
+            <div class="uik-w uik-insight">
+              <div class="uik-insight-icon"><iconify-icon icon="fluent:food-24-filled"></iconify-icon></div>
+              <div class="uik-insight-body">
+                <div class="uik-insight-title">점심 식사량이 줄었어요</div>
+                <div class="uik-insight-desc">최근 3일간 점심 섭취율이 평균 65%로 감소했어요.</div>
+                <div class="uik-insight-cta">AI에게 물어보기 →</div>
+              </div>
+            </div>
+          </div>
+          <div class="uik-cell">
+            <div class="uik-w uik-profile">
+              <div class="uik-profile-av"><img src="../v11_보호자앱/img/보호자.png" alt="박민지"></div>
+              <div class="uik-profile-body">
+                <div class="uik-profile-name">박민지</div>
+                <div class="uik-profile-sub">어머님(박영자) 담당</div>
+                <div class="uik-pills"><span class="uik-pill-tag"><iconify-icon icon="fluent:building-24-filled"></iconify-icon>302호</span><span class="uik-pill-tag"><iconify-icon icon="fluent:calendar-24-filled"></iconify-icon>200일</span><span class="uik-pill-tag accent"><iconify-icon icon="fluent:star-24-filled"></iconify-icon>프리미엄</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 컬럼 4 -->
+        <div class="uik-col">
+          <div class="uik-cell">
+            <div class="uik-w">
+              <div class="uik-med-head"><span class="uik-med-ico"><iconify-icon icon="fluent:pill-24-filled"></iconify-icon></span><div><div class="uik-med-name">아모디핀 5mg</div><div class="uik-med-type">혈압약</div></div></div>
+              <div class="uik-med-grid">
+                <div><div class="uik-med-label">복용 시간</div><div class="uik-med-value">아침 식후</div></div>
+                <div><div class="uik-med-label">용량</div><div class="uik-med-value">1정</div></div>
+                <div><div class="uik-med-label">처방일</div><div class="uik-med-value">2026.03.15</div></div>
+                <div><div class="uik-med-label">담당의</div><div class="uik-med-value">이상훈 원장</div></div>
+              </div>
+              <div class="uik-med-warn">
+                <div class="uik-med-warn-head"><iconify-icon icon="fluent:warning-24-filled"></iconify-icon>보호자가 알아야 할 것</div>
+                <ul class="uik-med-warn-list"><li>자몽 주스와 함께 복용 금지 — 약물 농도 상승</li><li>어지러움·두통 지속 시 담당 간호사에게 연락</li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="uik-cell">
+            <div class="uik-w uik-moment">
+              <div class="uik-moment-photo" style="background-image:url('../v11_보호자앱/mockup.png')"></div>
+              <div class="uik-moment-body">
+                <div class="uik-moment-quote">"오전 산책 때 햇빛이 좋아서 한참 머무르셨어요. 기분이 정말 좋아 보이셨어요."</div>
+                <div class="uik-moment-meta">김서연 간호사 · 10:24</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+  (function(){
+    if(typeof qrcode==='undefined') return;
+    var qr=qrcode(0,'M'); qr.addData('https://haruanbu.site/'); qr.make();
+    var svg=qr.createSvgTag({cellSize:4, margin:0, scalable:true});
+    document.querySelectorAll('[data-qr]').forEach(function(el){ el.innerHTML=svg; });
+  })();
+</script>
+</body>
+</html>
