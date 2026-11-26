@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>하루안부 · 에디토리얼 리디자인 (2026-07-31)</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <script src="../_iconify-icon.min.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--font-family-base);background:#F3F5F7;color:#14161B;-webkit-font-smoothing:antialiased;padding:64px 24px 90px}
+    .wrap{max-width:720px;margin:0 auto}
+    .eyebrow{font-size:12px;font-weight:800;letter-spacing:.1em;color:#A6ABB3;text-transform:uppercase}
+    h1{font-size:38px;font-weight:800;letter-spacing:-.035em;margin-top:14px}
+    .sub{font-size:15px;color:#6B7280;margin-top:12px;line-height:1.6}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:36px}
+    a.card{display:block;text-decoration:none;color:inherit;background:#fff;border-radius:20px;padding:24px;box-shadow:0 1px 3px rgba(16,24,40,.05),0 10px 30px rgba(16,24,40,.05);transition:transform .12s}
+    a.card:hover{transform:translateY(-3px)}
+    .card .no{font-size:12px;font-weight:800;letter-spacing:.06em;color:#A6ABB3}
+    .card .ti{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-top:8px}
+    .card .de{font-size:13px;color:#6B7280;margin-top:8px;line-height:1.5}
+    .card .ac{display:inline-block;width:26px;height:4px;border-radius:2px;margin-top:16px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="eyebrow">Redesign v3 · Editorial Premium</div>
+    <h1>하루안부 리디자인</h1>
+    <div class="sub">흰 캔버스 · 초대형 타이포 · 단색+accent 1개 · 데이터가 히어로 · 여백. 현재 앱과 완전히 다른 룩, 같은 제품·데이터·브랜드 accent 유지. 멘토 피드백(60/30/10·플랫·타이포 위계)과 정합.</div>
+
+    <div class="grid">
+      <a class="card" href="01_요양_일정.html">
+        <div class="no">01 · 요양보호사</div>
+        <div class="ti">오늘 일정</div>
+        <div class="de">거대 4/8 · 무박스 타임라인 · 진행 라인</div>
+        <span class="ac" style="background:var(--brand-green-500)"></span>
+      </a>
+      <a class="card" href="02_보호자_리포트.html">
+        <div class="no">02 · 보호자</div>
+        <div class="ti">AI 일일 리포트</div>
+        <div class="de">거대 지표 · AI 내러티브 · 스파크라인 · 모먼트</div>
+        <span class="ac" style="background:var(--brand-blue-500)"></span>
+      </a>
+      <a class="card" href="03_의료진_대시보드.html">
+        <div class="no">03 · 의료진</div>
+        <div class="ti">담당 환자</div>
+        <div class="de">스파크라인 트리아지 · AI 초안→사람 확정</div>
+        <span class="ac" style="background:var(--brand-green-500)"></span>
+      </a>
+      <a class="card" href="04_환자_오늘.html">
+        <div class="no">04 · 환자 본인앱</div>
+        <div class="ti">오늘</div>
+        <div class="de">거대 인사 · 큰 약 히어로 · 대형 버튼</div>
+        <span class="ac" style="background:var(--brand-orange-400)"></span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

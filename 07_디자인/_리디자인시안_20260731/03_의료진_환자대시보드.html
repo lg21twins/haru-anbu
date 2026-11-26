@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="medical" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시안 · 의료진 · 환자 대시보드</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="_kit.css">
+  <script src="../_iconify-icon.min.js"></script>
+</head>
+<body>
+  <div class="proto-cap"><b>의료진 · 담당 환자</b> — 스파크라인 트리아지 + AI 초안→사람 확정 (리디자인 시안 v1)</div>
+
+  <div class="phone">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="sb-icons">
+        <iconify-icon icon="material-symbols:signal-cellular-4-bar"></iconify-icon>
+        <iconify-icon icon="material-symbols:wifi"></iconify-icon>
+        <iconify-icon icon="material-symbols:battery-full"></iconify-icon>
+      </span>
+    </div>
+
+    <div class="screen">
+      <div class="app-head">
+        <div class="eyebrow">의료진 · 병동 A</div>
+        <div class="kicker">7월 31일 목요일</div>
+        <h1>담당 환자 <span class="sub">· 관찰 2</span></h1>
+      </div>
+
+      <div class="seg">
+        <button class="on">관찰 필요 2</button>
+        <button>전체 4</button>
+      </div>
+
+      <div class="sec-title">관찰 필요 — 위로 정렬</div>
+
+      <!-- 관찰 필요 (상단) -->
+      <div class="prow is-watch">
+        <div class="who">
+          <div class="nm">이정숙 <span class="dot watch"></span></div>
+          <div class="mt">85세 · A-7 · 미열</div>
+        </div>
+        <svg class="spark" width="70" height="30" viewBox="0 0 70 30">
+          <polyline points="2,22 14,21 26,22 38,17 50,15 62,9 68,7"></polyline>
+          <circle cx="68" cy="7" r="2.6" fill="#F97316"></circle>
+        </svg>
+        <div class="val"><div class="n">37.4</div><div class="s">°C <iconify-icon icon="material-symbols:trending-up-rounded" style="font-size:13px;vertical-align:-1px;color:var(--brand-orange-500)"></iconify-icon></div></div>
+      </div>
+
+      <div class="prow is-watch">
+        <div class="who">
+          <div class="nm">박영자 <span class="dot watch"></span></div>
+          <div class="mt">78세 · A-3 · 혈압 상승</div>
+        </div>
+        <svg class="spark" width="70" height="30" viewBox="0 0 70 30">
+          <polyline points="2,20 14,19 26,21 38,18 50,19 62,15 68,13"></polyline>
+          <circle cx="68" cy="13" r="2.6" fill="#F97316"></circle>
+        </svg>
+        <div class="val"><div class="n">138/88</div><div class="s">mmHg <iconify-icon icon="material-symbols:trending-up-rounded" style="font-size:13px;vertical-align:-1px;color:var(--brand-orange-500)"></iconify-icon></div></div>
+      </div>
+
+      <div class="sec-title">안정</div>
+
+      <div class="prow">
+        <div class="who">
+          <div class="nm">최명자 <span class="dot ok"></span></div>
+          <div class="mt">82세 · B-1</div>
+        </div>
+        <svg class="spark" width="70" height="30" viewBox="0 0 70 30">
+          <polyline points="2,17 14,18 26,17 38,18 50,17 62,18 68,17"></polyline>
+          <circle cx="68" cy="17" r="2.6" fill="#9E9E9E"></circle>
+        </svg>
+        <div class="val"><div class="n">안정</div><div class="s">정상 범위</div></div>
+      </div>
+
+      <div class="prow">
+        <div class="who">
+          <div class="nm">김순자 <span class="dot ok"></span></div>
+          <div class="mt">79세 · B-2</div>
+        </div>
+        <svg class="spark" width="70" height="30" viewBox="0 0 70 30">
+          <polyline points="2,18 14,17 26,18 38,17 50,18 62,17 68,18"></polyline>
+          <circle cx="68" cy="18" r="2.6" fill="#9E9E9E"></circle>
+        </svg>
+        <div class="val"><div class="n">안정</div><div class="s">정상 범위</div></div>
+      </div>
+
+      <!-- 리포트 편집: AI 초안 → 사람 확정 -->
+      <div class="sec-title">리포트 편집 · 이정숙 A-7</div>
+      <div class="edit">
+        <div class="lab ai">AI 초안</div>
+        <div class="draft">오후 체온이 상승 추세입니다. 관찰을 권장합니다.</div>
+        <div class="arrow"><iconify-icon icon="mingcute:arrow-down-fill"></iconify-icon> 의료진이 확인·수정</div>
+        <div class="lab hu">의료진 확정</div>
+        <div class="final">저녁 8시 체온 재측정. <b>37.8°C 이상이면 당직의에게 연락.</b> 수분 섭취 유도하고 야간 근무자에게 인계.</div>
+        <div class="by"><iconify-icon icon="material-symbols:stethoscope-rounded"></iconify-icon> 간호사 이수진 · 방금 확정</div>
+      </div>
+    </div>
+
+    <nav class="tabbar">
+      <a class="on"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon>환자</a>
+      <a><iconify-icon icon="mingcute:heartbeat-fill"></iconify-icon>바이탈</a>
+      <a><iconify-icon icon="material-symbols:description-rounded"></iconify-icon>리포트</a>
+      <a><iconify-icon icon="mingcute:more-1-fill"></iconify-icon>더보기</a>
+    </nav>
+  </div>
+</body>
+</html>

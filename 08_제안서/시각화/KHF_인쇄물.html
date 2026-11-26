@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>하루안부 — KHF 2026 인쇄물</title>
+<link rel="stylesheet" href="../../07_디자인/tokens/tokens.css">
+<style>
+  :root{
+    --ink:#15181C; --ink-strong:#000; --ink-mute:#5A6068; --ink-faint:#8B929A;
+    --rule:#E3E6EA; --accent:#1E5FD6; --stop:#B3241F; --ok:#15803D;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink); background:#fff;
+    font-family:var(--font-family-base, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif);
+    font-size:10.5pt; line-height:1.62; letter-spacing:-0.01em;
+    -webkit-font-smoothing:antialiased; word-break:keep-all;
+  }
+  .page{padding:14mm 15mm; max-width:210mm; margin:0 auto; min-height:297mm; position:relative}
+  .page + .page{border-top:1px dashed #CFD4DA}
+
+  .eyebrow{font-size:8.5pt; font-weight:700; letter-spacing:.16em; color:var(--ink-faint); margin:0 0 8pt}
+  h1{font-size:27pt; line-height:1.1; letter-spacing:-0.045em; font-weight:800; margin:0 0 10pt; color:var(--ink-strong)}
+  h2{font-size:15pt; line-height:1.2; letter-spacing:-0.035em; font-weight:800; margin:0 0 8pt; color:var(--ink-strong)}
+  h3{font-size:10pt; font-weight:800; letter-spacing:.02em; margin:14pt 0 5pt; color:var(--ink-strong)}
+  h3.first{margin-top:0}
+  p{margin:0 0 7pt}
+  .lede{font-size:11.5pt; font-weight:500; line-height:1.55; margin:0 0 12pt; color:var(--ink)}
+  .mute{color:var(--ink-mute)}
+  .small{font-size:9pt; line-height:1.55}
+  .xs{font-size:8pt; line-height:1.5; color:var(--ink-faint)}
+  strong{font-weight:700; color:var(--ink-strong)}
+  .rule{height:1px; background:var(--rule); margin:12pt 0}
+  .rule.dark{height:2px; background:var(--ink-strong); margin:10pt 0 9pt}
+
+  /* 화면 4장 */
+  .shots{display:grid; grid-template-columns:repeat(4,1fr); gap:6mm; margin:6mm 0 4mm}
+  .shots{align-items:start}
+  .shot img{width:100%; aspect-ratio:500/940; object-fit:cover; object-position:top center; display:block; border-radius:3mm; background:#F4F5F7}
+  /* 2026-08-09 — 어르신 앱만 태블릿 화면(1800x2300 · 비율 0.78)이다.
+     폰 프레임(0.53)에 cover 로 넣으니 양옆이 잘려 글이 끊겼다. 20부 인쇄될 장이라 그냥 두면 안 된다.
+     프레임 높이는 유지해 캡션 줄을 맞추고, 이미지만 contain 으로 온전히 담는다. */
+  .shot.tab img{object-fit:contain; object-position:top center}
+  .shot .no{font-size:8pt; font-weight:800; letter-spacing:.1em; color:var(--accent); margin-top:4mm}
+  .shot .nm{font-size:10pt; font-weight:800; margin-top:1.5mm; color:var(--ink-strong)}
+  .shot .ds{font-size:8.5pt; line-height:1.45; color:var(--ink-mute); margin-top:1mm}
+
+  /* 2단 */
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:9mm}
+  .cols3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:7mm}
+
+  ul{margin:0 0 8pt; padding-left:0; list-style:none}
+  li{position:relative; padding-left:11pt; margin-bottom:3.5pt; font-size:9.5pt; line-height:1.5}
+  li::before{content:""; position:absolute; left:0; top:6.5pt; width:3.5pt; height:3.5pt; border-radius:50%; background:var(--ink-faint)}
+  li.y::before{background:var(--ok)}
+  li.n::before{background:var(--stop)}
+  li.a::before{background:var(--accent)}
+
+  .kv{font-size:9.5pt; margin-bottom:3pt; display:flex; gap:6pt; align-items:baseline}
+  .kv b{flex:0 0 46pt; color:var(--ink-strong)}
+  .kv > span{flex:1 1 auto; min-width:0}
+
+  /* 연락처 · QR */
+  .contact{display:grid; grid-template-columns:1fr 26mm; gap:8mm; align-items:end; margin-top:6mm}
+  .qr img{width:26mm; height:26mm; display:block}
+  .qr .cap{font-size:7pt; letter-spacing:.06em; color:var(--ink-faint); text-align:center; margin-top:1.5mm}
+  .fill{display:inline-block; min-width:42mm; border-bottom:1px solid var(--ink-faint); height:1.05em}
+  .fillwide{display:block; border-bottom:1px solid var(--rule); height:1.5em; margin-bottom:3mm}
+
+  .foot{position:absolute; left:15mm; right:15mm; bottom:10mm; font-size:7.5pt; color:var(--ink-faint);
+        display:flex; justify-content:space-between; letter-spacing:.04em}
+
+  /* 대사 박스 */
+  .line{font-size:14pt; font-weight:800; line-height:1.4; letter-spacing:-0.03em; color:var(--ink-strong); margin:3mm 0 2mm}
+  .qbox{margin-bottom:7mm}
+  .qbox .q{font-size:11pt; font-weight:800; color:var(--ink-strong); margin-bottom:2mm}
+  .qbox .why{font-size:8.5pt; color:var(--ink-mute); margin-bottom:3mm}
+
+  .num{font-size:8pt; font-weight:800; letter-spacing:.12em; color:var(--accent)}
+  .chk{font-size:9.5pt; margin-bottom:3.5pt; padding-left:14pt; position:relative}
+  .chk::before{content:""; position:absolute; left:0; top:3.4pt; width:8pt; height:8pt; border:1px solid var(--ink-faint); border-radius:1pt}
+
+  @page{ size:A4; margin:0 }
+  @media print{
+    .page{break-after:page; min-height:auto; height:297mm}
+    .page + .page{border-top:0}
+    .page:last-child{break-after:auto}
+    a{color:inherit; text-decoration:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ P1 · 소개서 앞면 ============ -->
+<section class="page">
+  <p class="eyebrow">요양시설 케어 커뮤니케이션 · 학생 설계 프로젝트</p>
+  <h1>한 번 입력하면<br>네 방향으로 도착합니다</h1>
+  <p class="lede">요양시설의 <strong>보호자 · 어르신 · 요양보호사 · 의료진</strong> 네 역할을 하루 한 번의 안부로 잇습니다.
+  네 역할은 각각 별도의 앱을 씁니다.</p>
+
+  <div class="shots">
+    <div class="shot">
+      <img src="../assets/shot_caregiver.png" alt="요양보호사 앱 오늘 화면">
+      <div class="no">01 · 입력</div>
+      <div class="nm">요양보호사</div>
+      <div class="ds">식사 · 투약 · 활동 · 위생 · 특이사항.<br>하루 5분 이내</div>
+    </div>
+    <div class="shot">
+      <img src="../assets/shot_family.png" alt="보호자 앱 홈 화면">
+      <div class="no">02 · 도착</div>
+      <div class="nm">보호자(가족)</div>
+      <div class="ds">하루 한 번 일일 리포트.<br>사진 · 요양보호사와 대화</div>
+    </div>
+    <div class="shot tab">
+      <img src="../assets/shot_patient.png" alt="환자 앱 오늘 화면">
+      <div class="no">03 · 도착</div>
+      <div class="nm">환자(어르신) <span style="font-weight:400">· 태블릿</span></div>
+      <div class="ds">큰 버튼 안부 확인.<br>가족 메시지 수신</div>
+    </div>
+    <div class="shot">
+      <img src="../assets/shot_doctor.png" alt="의료진 앱 홈 화면">
+      <div class="no">04 · 도착</div>
+      <div class="nm">의료진</div>
+      <div class="ds">상태 변화 타임라인.<br>확인 · 지시</div>
+    </div>
+  </div>
+
+  <div class="rule dark"></div>
+  <h2>요양보호사가 추가로 하는 일은 없습니다</h2>
+  <p class="small mute">새 기록을 더 쓰게 하지 않습니다. <strong>이미 남기고 있는 기록을 재사용</strong>해 네 역할에게 각자의 언어로 전달합니다.
+  업무가 늘면 현장에서 쓰이지 않는다는 것을 전제로 설계했습니다.</p>
+  <p class="small mute">요양보호사 한 분이 돌보는 어르신은 지금 1.5~1.9명입니다. 한국개발연구원은 2040년 <strong>3.0~3.7명</strong>이 될 것으로 전망했습니다(KDI, 2026.4). 약 두 배입니다.
+  <strong>가족에게 전화할 시간은 줄어드는 것이 아니라 구조적으로 사라집니다.</strong> 저희는 그 전화를 대신하려는 것이 아니라, 그 전화가 없어도 가족이 불안하지 않게 만들려고 합니다.</p>
+
+  <div class="rule"></div>
+  <div class="cols3">
+    <div>
+      <h3 class="first">화면 39개</h3>
+      <p class="small mute">4역할 전체의 고충실도 프로토타입. 언어 변형 포함 67개 파일. 클릭해서 동작합니다.</p>
+    </div>
+    <div>
+      <h3 class="first">공개 배포 중</h3>
+      <p class="small mute">지금 바로 열어보실 수 있습니다.<br><strong>haruanbu.site</strong></p>
+    </div>
+    <div>
+      <h3 class="first">법 조문 대조 완료</h3>
+      <p class="small mute">개인정보보호법 · 의료법 · 노인장기요양보험법을 조문 단위로 대조해 설계에 반영했습니다.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>하루안부 HARU ANBU</span><span>2026 · 앞면</span></div>
+</section>
+
+<!-- ============ P2 · 소개서 뒷면 ============ -->
+<section class="page">
+  <p class="eyebrow">먼저 솔직하게 말씀드립니다</p>
+  <h1>지금 어디까지 왔고<br>무엇이 안 됐는가</h1>
+
+  <div class="cols">
+    <div>
+      <h3 class="first">되어 있는 것</h3>
+      <ul>
+        <li class="y">4역할 화면과 사용자 흐름 — 고유 39개 화면</li>
+        <li class="y">디자인 시스템과 자동 검사 도구</li>
+        <li class="y">개인정보 동의 화면 · 권한 분리 설계</li>
+        <li class="y">의료기기 규제를 피하기 위한 기능 경계선</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="first">아직 안 된 것</h3>
+      <ul>
+        <li class="n">서버 · 데이터베이스 — <strong>앱의 서버 호출 0건</strong></li>
+        <li class="n">로그인 · 인증 · 실제 권한 통제</li>
+        <li class="n">AI 리포트 자동 생성 (현재 문구는 사람이 작성한 예시)</li>
+        <li class="n">법인 · 사업자 — 계약 주체가 될 수 없습니다</li>
+        <li class="n">도입 레퍼런스 — 실제 운영 데이터로 검증한 적 없음</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h3 class="first">일부러 넣지 않은 것도 있습니다</h3>
+  <div class="cols">
+    <div>
+      <ul>
+        <li class="a"><strong>이상 감지 · 위험도 판정 · 복약 판단</strong> — 넣는 순간 의료기기(SaMD) 허가 대상이 됩니다. AI는 요약 · 전달 · 검색까지만 하고 판단은 전부 의료진이 합니다</li>
+        <li class="a"><strong>진료기록 연동</strong> — 의료법상 열람 범위를 저희가 정할 수 없습니다. 저희가 다루는 것은 시설이 생성한 돌봄 기록뿐입니다</li>
+      </ul>
+    </div>
+    <div>
+      <ul>
+        <li class="a"><strong>기록 시스템 자체 구축</strong> — 시설에는 이미 백오피스 표준이 있습니다. 기록은 기존 시스템, 소통은 하루안부입니다</li>
+        <li class="a"><strong>요양보호사의 추가 입력 화면</strong> — 업무가 늘면 현장에서 쓰이지 않습니다</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule dark"></div>
+
+  <h2>저희가 찾는 것</h2>
+  <div class="cols">
+    <div>
+      <div class="kv"><b>지금</b> <span><strong>현장 이야기 2시간.</strong> 요양보호사 1~2분 · 관리자 1분. 비용도 개인정보도 들지 않습니다</span></div>
+      <div class="kv"><b>나중</b> <span>개발이 끝나면(2~4개월 예상) 시설 한 곳에서 <strong>8주 무상 파일럿</strong></span></div>
+      <div class="kv"><b>범위</b> <span>네 역할 전부가 아니라 <strong>요양보호사 입력 → 가족 일일 리포트</strong> 한 축만</span></div>
+      <div class="kv"><b>형태</b> <span>학교 · 지도교수를 경유한 연구 협력 · 언제든 중단하실 수 있습니다</span></div>
+    </div>
+    <div>
+      <p class="small mute" style="margin-top:2pt">개인정보와 관련해서는 <strong>준비가 끝나기 전까지 실제 어르신 정보를 받지 않습니다.</strong>
+      암호화 · 접근통제 · 접속기록 시스템을 먼저 만든 뒤에 시작합니다.
+      데이터를 저희가 보관하지 않는 구조도 함께 검토할 수 있습니다.</p>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="contact">
+    <div>
+      <h3 class="first">하루안부 팀</h3>
+      <p class="small" style="margin-bottom:5pt">김지욱 · 손예찬 · 고해은</p>
+      <div class="kv"><b>담당</b> <span>손예찬</span></div>
+      <div class="kv"><b>이메일</b> <span>team@haruanbu.site</span></div>
+      <!-- 전화 줄은 2026-08-09에 뺐다. 번호가 없는 상태로 인쇄하면 빈 밑줄만 남아
+           **미완성 서식으로 읽힌다.** 상대가 "전화번호는요?"를 먼저 묻게 만드는 자리다.
+           번호가 생기면 아래 한 줄의 주석을 풀고 번호를 넣는다 (세 파일 전부 같은 처리):
+             KHF_인쇄물.html · 의향확인서.html · 데이터파기확인서.html
+      <div class="kv"><b>전화</b> <span>010-0000-0000</span></div>
+      -->
+      <p class="xs" style="margin-top:6pt">데모 &nbsp;haruanbu.site &nbsp;— 별도 설치 없이 브라우저에서 바로 열립니다</p>
+    </div>
+    <div class="qr">
+      <img src="../assets/qr_haruanbu.svg" alt="haruanbu.site QR">
+      <div class="cap">haruanbu.site</div>
+    </div>
+  </div>
+
+  <div class="foot"><span>하루안부 HARU ANBU</span><span>2026 · 뒷면</span></div>
+</section>
+
+<!-- ============ P3 · 현장 카드 (우리가 본다) ============ -->
+<section class="page">
+  <p class="eyebrow">팀 내부용 · 주머니에 넣고 다닐 것</p>
+  <h1>현장 카드</h1>
+  <p class="lede">KHF 2026 · 8/19~21 · 코엑스 3층 C·D홀 &nbsp;|&nbsp; 우리는 부스가 없다. 서서, 2분 안에.</p>
+
+  <div class="rule dark"></div>
+
+  <h3 class="first"><span class="num">10초</span> &nbsp;첫 문장</h3>
+  <p class="line">"안녕하세요, ○○대에서 요양시설 가족 소통 앱을 설계한 학생팀입니다.<br>
+  <span style="color:var(--accent)">파는 게 아니라</span> 현장 의견을 들으러 왔습니다."</p>
+  <p class="xs">영업으로 분류되면 즉시 차단된다. 학생이라고 먼저 밝히면 방어가 내려가고 오히려 도와주려 한다.</p>
+
+  <div class="rule"></div>
+
+  <h3 class="first"><span class="num">60초</span> &nbsp;폰으로 화면 <strong>딱 2장</strong></h3>
+  <ul>
+    <li class="a"><strong>1. 요양보호사 오늘</strong> — "요양보호사가 5분 안에 이것만 입력하면"</li>
+    <li class="a"><strong>2. 가족 리포트</strong> — "가족한테 이렇게 갑니다. 한 번 입력, 네 방향"</li>
+  </ul>
+  <p class="xs">4역할 다 보여주려 하면 집중력이 먼저 끊긴다. 두 장이 한계다.</p>
+
+  <h3><span class="num">3분</span> &nbsp;관심을 보이면 하나 더</h3>
+  <ul>
+    <li class="a"><strong>어르신 본인 앱</strong> — <b>"장기요양 입소시설을 대상으로는 확인하지 못했습니다"</b>까지만 말한다.
+      <span class="xs">한정어를 빼고 "우리뿐"이라고 하면 <b>케어옵스</b>(시니어타운 입주민 앱)로 그 자리에서 반박당한다.</span>
+      "어르신이 진짜 써요?"가 나오면 대화가 시작된 것</li>
+  </ul>
+
+  <div class="rule dark"></div>
+
+  <div class="cols">
+    <div>
+      <h3 class="first">우리가 물어볼 것 — 이게 더 중요하다</h3>
+      <ul>
+        <li class="a"><strong>시설이 새 시스템 도입을 실제로 누가 결정합니까?</strong><br><span class="xs">원장인지 법인 사무국인지 지자체인지 — 가장 값진 정보</span></li>
+        <li class="a">요양시설에 가족앱 넣을 때 제일 걸리는 게 뭐예요?<br><span class="xs">개인정보인지, 업무 추가인지, 비용인지</span></li>
+        <li class="a">가족앱 만들어놨는데 안 쓰이는 이유가 뭐라고 보세요?</li>
+        <li class="a">보호자 컴플레인은 주로 어떤 겁니까?</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="first">하지 말 것</h3>
+      <ul>
+        <li class="n">초고령사회 통계 · 시장 규모 얘기 — 업계 사람 앞에서는 모욕</li>
+        <li class="n">화면 10장 이상 넘기기</li>
+        <li class="n">제안서 PDF 꺼내기 — 서서 못 읽는다</li>
+        <li class="n">"혁신 · 최초 · 패러다임"</li>
+        <li class="n">소개서를 <strong>먼저</strong> 건네기 — 대화 전에 주면 버려진다. <strong>헤어질 때</strong> 준다</li>
+        <li class="n">3명이 뭉쳐 다니기 — 부스가 부담스러워한다. 흩어지거나 2+1</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="cols">
+    <div>
+      <h3 class="first">출발 전 장비 점검</h3>
+      <div class="chk">화면 3장 <strong>스크린샷으로도</strong> 폰에 저장 (전시장 와이파이는 죽는다)</div>
+      <div class="chk">브라우저 탭 3개 미리 열어두기</div>
+      <div class="chk">밝기 100% 고정 · 자동잠금 끄기 · 저전력 모드 끄기</div>
+      <div class="chk">보조배터리</div>
+      <div class="chk">명함 (뒷면 QR) · 소개서 20부 · 이 카드</div>
+    </div>
+    <div>
+      <h3 class="first">하루 목표</h3>
+      <div class="chk"><strong>1인당 명함 7장</strong></div>
+      <div class="chk">컨퍼런스 세션 2개 이상 참석 — 발표자가 곧 접촉 대상</div>
+      <div class="chk"><strong>당일 저녁 후속 메일</strong> — 48시간 넘기면 잊힌다</div>
+      <div class="chk">메모 카드에 그 자리에서 적기 — 나중에 기억 안 난다</div>
+    </div>
+  </div>
+
+  <div class="foot"><span>팀 내부용 — 배포하지 않음</span><span>KHF 2026 · 현장 카드</span></div>
+</section>
+
+<!-- ============ P4 · 인터뷰 메모 (우리가 쓴다) ============ -->
+<style>
+  /* 메모지는 부스 한 곳당 한 장 — 반드시 1쪽에 들어가야 한다 */
+  .memo{padding:9mm 13mm}
+  .memo h1{font-size:19pt; margin-bottom:5pt}
+  .memo h3{margin:7pt 0 3pt; font-size:9.5pt}
+  .memo .eyebrow{margin-bottom:5pt}
+  .memo .qbox{margin-bottom:3.4mm}
+  .memo .qbox .q{font-size:10pt; margin-bottom:1.2mm}
+  .memo .qbox .why{font-size:8pt; margin-bottom:1.6mm}
+  .memo .fillwide{height:1.3em; margin-bottom:1.3mm}
+  .memo .rule{margin:4pt 0}
+  .memo .rule.dark{margin:5pt 0 4pt}
+  .memo .kv{margin-bottom:2pt}
+  .memo .chk{margin-bottom:2.4pt; font-size:9pt}
+</style>
+<section class="page memo">
+  <p class="eyebrow">팀 내부용 · 부스 한 곳당 한 장</p>
+  <h1>현장 메모</h1>
+
+  <div class="cols">
+    <div>
+      <div class="kv"><b>날짜</b> <span class="fill"></span></div>
+      <div class="kv"><b>부스 · 회사</b> <span class="fill"></span></div>
+    </div>
+    <div>
+      <div class="kv"><b>이름 · 직함</b> <span class="fill"></span></div>
+      <div class="kv"><b>연락처</b> <span class="fill"></span></div>
+    </div>
+  </div>
+  <div class="kv" style="margin-top:2mm"><b>무엇 하는 곳</b> <span class="fill" style="min-width:130mm"></span></div>
+
+  <div class="rule dark"></div>
+
+  <div class="qbox">
+    <div class="q">1. 시설이 새 시스템 도입을 실제로 누가 결정합니까?</div>
+    <span class="fillwide"></span><span class="fillwide"></span>
+  </div>
+
+  <div class="qbox">
+    <div class="q">2. 가족 문의는 어떤 경로로 옵니까? 누가 받습니까?</div>
+    <span class="fillwide"></span><span class="fillwide"></span>
+  </div>
+
+  <div class="qbox">
+    <div class="q">3. 가족이 제일 많이 묻는 게 뭡니까?</div>
+    <span class="fillwide"></span><span class="fillwide"></span>
+  </div>
+
+  <div class="qbox">
+    <div class="q">4. 가족앱을 만들어놔도 안 쓰이는 이유가 뭐라고 보십니까?</div>
+    <span class="fillwide"></span><span class="fillwide"></span>
+  </div>
+
+  <div class="qbox">
+    <div class="q">5. 기록이 자동으로 가족에게 간다면, 뭐가 걱정되십니까?</div>
+    <div class="why"><strong>가장 중요.</strong> 우리 서비스에 대한 반박을 미리 수집한다 — "항의가 늘 것"이라는 답도 성과다</div>
+    <span class="fillwide"></span><span class="fillwide"></span>
+  </div>
+
+  <div class="rule"></div>
+
+  <h3 class="first">상대가 시설 실무자면 두 개 더</h3>
+  <div class="cols">
+    <div>
+      <div class="q" style="font-size:9.5pt">기록을 하루 몇 번, 어떤 도구로 쓰십니까?</div>
+      <span class="fillwide"></span>
+    </div>
+    <div>
+      <div class="q" style="font-size:9.5pt">지금 시스템에서 제일 불편한 게 뭡니까?</div>
+      <span class="fillwide"></span>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="cols">
+    <div>
+      <h3 class="first">반응</h3>
+      <div class="chk">화면을 실제로 봤다</div>
+      <div class="chk">환자 본인 앱에 반응했다</div>
+      <div class="chk">먼저 질문을 했다</div>
+      <div class="chk">명함을 줬다</div>
+      <div class="chk">다시 연락해도 된다고 했다</div>
+    </div>
+    <div>
+      <h3 class="first">후속</h3>
+      <div class="chk">당일 저녁 메일 발송</div>
+      <div class="chk">추가 자료 요청받음 — 무엇: <span class="fill" style="min-width:26mm"></span></div>
+      <div class="chk">미팅 약속 — 일시: <span class="fill" style="min-width:30mm"></span></div>
+      <div class="chk">가망 없음 (이유 아래)</div>
+    </div>
+  </div>
+
+  <h3>한 줄 요약 — 이 사람에게서 배운 것</h3>
+  <span class="fillwide"></span><span class="fillwide"></span>
+
+  <div class="foot"><span>팀 내부용 — 배포하지 않음</span><span>KHF 2026 · 현장 메모</span></div>
+</section>
+
+</body>
+</html>

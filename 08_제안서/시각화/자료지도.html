@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>하루안부 — 제안 자료 지도</title>
+<link rel="stylesheet" href="../../07_디자인/tokens/tokens.css">
+<style>
+  :root{
+    --ink:#15181C; --ink-strong:#000; --ink-mute:#5A6068; --ink-faint:#8B929A;
+    --rule:#E3E6EA; --accent:#1E5FD6; --stop:#B3241F; --ok:#15803D;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink); background:#fff;
+    font-family:var(--font-family-base, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif);
+    font-size:10.5pt; line-height:1.62; letter-spacing:-0.01em;
+    -webkit-font-smoothing:antialiased; word-break:keep-all;
+  }
+  .page{padding:11mm 14mm; max-width:210mm; margin:0 auto; min-height:297mm; position:relative}
+  .page + .page{border-top:1px dashed #CFD4DA}
+
+  .eyebrow{font-size:8.5pt; font-weight:700; letter-spacing:.16em; color:var(--ink-faint); margin:0 0 8pt}
+  h1{font-size:22pt; line-height:1.1; letter-spacing:-0.045em; font-weight:800; margin:0 0 10pt; color:var(--ink-strong)}
+  h2{font-size:12.5pt; line-height:1.2; letter-spacing:-0.035em; font-weight:800; margin:0 0 8pt; color:var(--ink-strong)}
+  h3{font-size:10pt; font-weight:800; letter-spacing:.02em; margin:14pt 0 5pt; color:var(--ink-strong)}
+  h3.first{margin-top:0}
+  p{margin:0 0 7pt}
+  .lede{font-size:10.5pt; font-weight:500; line-height:1.45; margin:0 0 8pt; color:var(--ink)}
+  .mute{color:var(--ink-mute)}
+  .small{font-size:9pt; line-height:1.55}
+  .xs{font-size:8pt; line-height:1.5; color:var(--ink-faint)}
+  strong{font-weight:700; color:var(--ink-strong)}
+  .rule{height:1px; background:var(--rule); margin:8pt 0}
+  .rule.dark{height:2px; background:var(--ink-strong); margin:8pt 0 7pt}
+
+  /* 화면 4장 */
+  .shots{display:grid; grid-template-columns:repeat(4,1fr); gap:6mm; margin:6mm 0 4mm}
+  .shot img{width:100%; aspect-ratio:500/940; object-fit:cover; object-position:top center; display:block; border-radius:3mm; background:#F4F5F7}
+  .shot .no{font-size:8pt; font-weight:800; letter-spacing:.1em; color:var(--accent); margin-top:4mm}
+  .shot .nm{font-size:10pt; font-weight:800; margin-top:1.5mm; color:var(--ink-strong)}
+  .shot .ds{font-size:8.5pt; line-height:1.45; color:var(--ink-mute); margin-top:1mm}
+
+  /* 2단 */
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:9mm}
+  .cols3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:7mm}
+
+  ul{margin:0 0 8pt; padding-left:0; list-style:none}
+  li{position:relative; padding-left:11pt; margin-bottom:3.5pt; font-size:9.5pt; line-height:1.5}
+  li::before{content:""; position:absolute; left:0; top:6.5pt; width:3.5pt; height:3.5pt; border-radius:50%; background:var(--ink-faint)}
+  li.y::before{background:var(--ok)}
+  li.n::before{background:var(--stop)}
+  li.a::before{background:var(--accent)}
+
+  .kv{font-size:9.5pt; margin-bottom:3pt; display:flex; gap:6pt; align-items:baseline}
+  .kv b{flex:0 0 46pt; color:var(--ink-strong)}
+  .kv > span{flex:1 1 auto; min-width:0}
+
+  /* 연락처 · QR */
+  .contact{display:grid; grid-template-columns:1fr 26mm; gap:8mm; align-items:end; margin-top:6mm}
+  .qr img{width:26mm; height:26mm; display:block}
+  .qr .cap{font-size:7pt; letter-spacing:.06em; color:var(--ink-faint); text-align:center; margin-top:1.5mm}
+  .fill{display:inline-block; min-width:42mm; border-bottom:1px solid var(--ink-faint); height:1.05em}
+  .fillwide{display:block; border-bottom:1px solid var(--rule); height:1.35em; margin-bottom:2mm}
+
+  .foot{position:absolute; left:15mm; right:15mm; bottom:10mm; font-size:7.5pt; color:var(--ink-faint);
+        display:flex; justify-content:space-between; letter-spacing:.04em}
+
+  /* 대사 박스 */
+  .line{font-size:14pt; font-weight:800; line-height:1.4; letter-spacing:-0.03em; color:var(--ink-strong); margin:3mm 0 2mm}
+  .qbox{margin-bottom:7mm}
+  .qbox .q{font-size:11pt; font-weight:800; color:var(--ink-strong); margin-bottom:2mm}
+  .qbox .why{font-size:8.5pt; color:var(--ink-mute); margin-bottom:3mm}
+
+  .num{font-size:8pt; font-weight:800; letter-spacing:.12em; color:var(--accent)}
+  .chk{font-size:9.5pt; margin-bottom:3.5pt; padding-left:14pt; position:relative}
+  .chk::before{content:""; position:absolute; left:0; top:3.4pt; width:8pt; height:8pt; border:1px solid var(--ink-faint); border-radius:1pt}
+
+  @page{ size:A4; margin:0 }
+  @media print{
+    .page{break-after:page; min-height:auto; height:297mm}
+    .page + .page{border-top:0}
+    .page:last-child{break-after:auto}
+    a{color:inherit; text-decoration:none}
+  }
+</style>
+
+</head>
+<style>
+  body{font-size:10pt; line-height:1.5}
+  .page{padding:11mm 13mm}
+  h1{font-size:20pt; margin-bottom:6pt}
+  h2{font-size:11.5pt; margin:0 0 5pt}
+  h3{font-size:9.5pt; margin:0 0 3pt}
+  .lede{font-size:9.6pt; line-height:1.4; margin-bottom:6pt}
+  .rule{margin:5pt 0} .rule.dark{margin:6pt 0 5pt}
+
+  /* PDF 목록 */
+  .tbl{width:100%; border-collapse:collapse}
+  .tbl th{font-size:7.5pt; letter-spacing:.1em; color:var(--ink-faint); text-align:left; font-weight:700; padding:0 6pt 2mm 0}
+  .tbl td{font-size:8.8pt; line-height:1.4; padding:1.9mm 6pt 1.9mm 0; vertical-align:top}
+  .tbl tr + tr td{border-top:1px solid var(--rule)}
+  .tbl td.nm{width:33%; font-weight:800; color:var(--ink-strong)}
+  .tbl td.pg{width:8%; color:var(--accent); font-weight:800; white-space:nowrap}
+  .tbl td.use{color:var(--ink-mute)}
+  /* 2026-08-07 — PDF가 8종에서 11종이 되며 P1이 57px 넘쳤다.
+     P1의 표와 타임라인만 조여서 되돌린다. P2는 건드리지 않는다. */
+  .page:first-of-type .tbl td{padding:1.35mm 6pt 1.35mm 0; font-size:8.5pt; line-height:1.34}
+  .page:first-of-type .tl .row{padding:1.25mm 0}
+
+  /* 타임라인 */
+  .tl{margin:2mm 0 0}
+  .tl .row{display:grid; grid-template-columns:24mm 1fr; gap:0 6pt; padding:1.7mm 0; align-items:baseline}
+  .tl .row + .row{border-top:1px solid var(--rule)}
+  .tl .d{font-size:9pt; font-weight:800; color:var(--ink-strong); letter-spacing:-.02em}
+  .tl .d.hot{color:var(--stop)}
+  .tl .t{font-size:8.8pt; line-height:1.4}
+  .tl .t .mute{color:var(--ink-mute)}
+
+  /* 원고 지도 */
+  .map{display:grid; grid-template-columns:1fr 1fr; gap:0 9mm}
+  .grp{margin-bottom:3.5mm}
+  .grp .hd{font-size:8pt; font-weight:800; letter-spacing:.1em; color:var(--accent); margin-bottom:1.5mm}
+  .grp .it{font-size:8.6pt; line-height:1.42; display:grid; grid-template-columns:15pt 1fr; gap:0 4pt; margin-bottom:.9mm}
+  .grp .it b{color:var(--ink-faint); font-weight:700}
+  .grp .it span strong{color:var(--ink-strong)}
+
+  .lock{display:grid; grid-template-columns:32% 1fr; gap:0 7pt; font-size:8.6pt; line-height:1.42; padding:1.5mm 0}
+  .lock + .lock{border-top:1px solid var(--rule)}
+  .lock b{color:var(--ink-faint); font-weight:700}
+
+  .stop{font-size:8.6pt; line-height:1.5; color:var(--ink-mute); margin-top:2mm}
+  .stop strong{color:var(--stop)}
+  .flow{display:grid; grid-template-columns:1fr 1fr 1fr; gap:6mm; margin:3mm 0 1mm}
+  .flow .s .n{font-size:7.5pt; font-weight:800; letter-spacing:.12em; color:var(--accent); margin-bottom:1.5mm}
+  .flow .s .h{font-size:11pt; font-weight:800; letter-spacing:-.03em; color:var(--ink-strong); line-height:1.2; margin-bottom:1.5mm}
+  .flow .s .b{font-size:8.4pt; line-height:1.42; color:var(--ink-mute)}
+</style>
+<body>
+
+<!-- ============ P1 ============ -->
+<section class="page">
+  <p class="eyebrow">08_제안서 · 한눈에 보는 지도 · 2026-08-13 기준</p>
+  <h1>무엇이 있고, 언제 쓰나</h1>
+  <p class="lede">읽을 것은 <strong>PDF 12종</strong>뿐이다. 원고 24종은 그걸 만드는 재료이고,
+  시각화 12종은 PDF를 뽑는 소스다. <strong>이름이 같은 것끼리 짝이다.</strong></p>
+
+  <div class="rule dark"></div>
+
+  <h2>PDF 12종 — 상황이 정해지면 파일도 정해진다</h2>
+  <table class="tbl">
+    <tr><th>파일</th><th>쪽</th><th>언제 쓰나</th></tr>
+    <tr><td class="nm">하루안부_의료진화면_결정지</td><td class="pg">2</td><td class="use"><strong>8/12에 사람이 정할 것 하나.</strong> 지금 화면과 A안 적용 화면을 나란히 찍어 놓았다 — 읽지 말고 보면 된다</td></tr>
+    <tr><td class="nm">하루안부_종합보고</td><td class="pg">70</td><td class="use"><strong>교수님께 보내는 유일한 첨부.</strong> 아래 세 개를 한 권으로 묶고 앞에 요약 4쪽을 붙였다</td></tr>
+    <tr><td class="nm">하루안부_짧은제안서</td><td class="pg">8</td><td class="use"><strong>명함 받은 뒤 D+3에 보낸다.</strong> 부스 A4 한 장과 70쪽 사이를 메우는 유일한 문서</td></tr>
+    <tr><td class="nm">하루안부_KHF팀브리핑</td><td class="pg">2</td><td class="use"><strong>가기 전에 3인이 외우는 것.</strong> 현장에서 필요한 건 이것뿐</td></tr>
+    <tr><td class="nm">하루안부_KHF인쇄물</td><td class="pg">4</td><td class="use">앞 2쪽 = 상대에게 주는 A4 한 장(양면 <strong>20부</strong>) · 뒤 2쪽 = 우리용 카드·메모지</td></tr>
+    <tr><td class="nm">하루안부_KHF현장실행팩</td><td class="pg">14</td><td class="use">사흘 라우트 · 스크립트 · 반론카드 7종. <strong>사전 숙지용</strong></td></tr>
+    <tr><td class="nm">하루안부_의향확인서</td><td class="pg">1</td><td class="use"><strong>현장에서 받는 서식.</strong> 넉넉히 인쇄. 법적 구속력 없음을 첫 줄에 밝힌다</td></tr>
+    <tr><td class="nm">하루안부_데이터파기확인서</td><td class="pg">1</td><td class="use"><strong>"정보 어떻게 되냐"의 답.</strong> 끝날 때가 아니라 <strong>시작 전에</strong> 보여준다</td></tr>
+    <tr><td class="nm">하루안부_제안서</td><td class="pg">32</td><td class="use">종합보고 1부의 원본. <strong>따로 보낼 일은 없다</strong> — 콕 집어 요청받을 때만</td></tr>
+    <tr><td class="nm">하루안부_한계와법적리스크</td><td class="pg">16</td><td class="use">종합보고 2부의 원본. 먼저 꺼내지 않는다 — 질문이 오면 답으로</td></tr>
+    <tr><td class="nm">하루안부_제출전략</td><td class="pg">18</td><td class="use">종합보고 3부의 원본. 대외 발송용이 아니라 <strong>우리가 보는 것</strong></td></tr>
+    <tr><td class="nm">하루안부_자료지도</td><td class="pg">2</td><td class="use">이 문서. 오랜만에 열었을 때 여기부터 본다</td></tr>
+  </table>
+
+  <div class="rule"></div>
+
+  <h2>상황이 셋뿐이다</h2>
+  <div class="flow">
+    <div class="s">
+      <div class="n">교수님께</div>
+      <div class="h">종합보고 하나만<br>첨부한다</div>
+      <div class="b">3개를 보내면 어느 걸 먼저 열지부터<br>정해야 하고, 그 순간 안 읽힌다.<br>메일·카톡 초안은 원고 15번</div>
+    </div>
+    <div class="s">
+      <div class="n">KHF 현장</div>
+      <div class="h">브리핑 외우고<br>A4 한 장만 들고 간다</div>
+      <div class="b">목표는 제안서를 <strong>넣는</strong> 게 아니라<br><strong>보낼 허락(명함)</strong>을 받는 것.<br>대화 20 · 기록 15 · 명함 10</div>
+    </div>
+    <div class="s">
+      <div class="n">명함 받은 뒤</div>
+      <div class="h">사흘 안에<br>짧은제안서 8쪽</div>
+      <div class="b"><strong>진짜 제안은 여기서 간다.</strong><br>70쪽은 달라고 하실 때만.<br>영문이면 원고 20번</div>
+    </div>
+  </div>
+
+  <div class="rule dark"></div>
+
+  <h2>8~9월 — 날짜가 박힌 것만</h2>
+  <div class="tl">
+    <div class="row"><span class="d hot">8/13 목</span><span class="t"><strong>MUSE 접수 마감 — 낼지 말지</strong> <span class="mute">— 학생 할인 없이 <strong>$219 + 연간 행정비 $30 = $249</strong>(공식 FAQ 2026-08-09). IDA 학생 €40의 약 6배다. <strong>8/10 결정 예정일은 지났다</strong> — 이제 마감일이 결정일이다</span></span></div>
+    <div class="row"><span class="d">8/12 수</span><span class="t">명함 + NFC 인쇄 · IDA 계정 생성 · 이미지 10장 확정 <span class="mute">— 팀 이메일이 확정돼야 움직인다</span></span></div>
+    <div class="row"><span class="d hot">8/14 금</span><span class="t"><strong>인쇄물 20부 출력 — 마지막 영업일</strong> <span class="mute">— <strong>8/15(토) 광복절 · 8/17(월) 대체공휴일이라 8/15~17은 인쇄소가 닫힌다.</strong> 밀리면 남는 날은 8/18(화) 하루뿐이고 KHF는 8/19 개막</span></span></div>
+    <div class="row"><span class="d hot">8/15 토</span><span class="t"><strong>IDA 제출 마감</strong> <span class="mute">— 학생 €40. 온라인 제출이라 공휴일 무관. 다음은 최종 10/15, 중간 연장 없음. 자료는 이미 다 있다</span></span></div>
+    <div class="row"><span class="d">8/18 화</span><span class="t"><strong>경남 K-디자인 접수 개시</strong>(무료, ~9/11) <span class="mute">— 요강의 기수상작 조항 한 줄 확인. KHF 사전등록은 8/9 완료</span></span></div>
+    <div class="row"><span class="d hot">8/19~21</span><span class="t"><strong>KHF 2026 · COEX C·D홀</strong> <span class="mute">— 수 정찰 / 목 본전(12~16시가 핵심) / 금 회수</span></span></div>
+    <div class="row"><span class="d">8/22~24</span><span class="t">명함 받은 곳 전부에 <strong>후속 메일</strong> <span class="mute">— 진짜 제안은 여기서 간다. 3일 안</span></span></div>
+    <div class="row"><span class="d">9/1 화</span><span class="t">UX Design Awards 접수 개시 <span class="mute">— New Talent €70. 정합성 최상. ~11/15</span></span></div>
+    <div class="row"><span class="d">9/11 · 9/18</span><span class="t">경남 마감 · iF Design 2027 Regular <span class="mute">— iF는 €300~이라 비용 판단 필요</span></span></div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>사람이 결정해야 움직이는 것</h2>
+  <div class="map">
+    <div>
+      <div class="it" style="font-size:8.8pt; grid-template-columns:1fr; margin-bottom:1.4mm"><span><strong>팀 이메일</strong> — 명함 · 인쇄물 · 의향서가 전부 여기 물려 있다</span></div>
+      <div class="it" style="font-size:8.8pt; grid-template-columns:1fr; margin-bottom:1.4mm"><span><strong>전화번호</strong> — 없어서 <b>인쇄물·의향서·파기서에서 그 줄을 뺐다(8/9)</b>. 생기면 세 파일 주석 해제</span></div>
+      <div class="it" style="font-size:8.8pt; grid-template-columns:1fr; margin-bottom:1.4mm"><span><strong>KHF 사전등록</strong> — <strong>완료(8/9)</strong>. 3인 전원인지만 확인</span></div>
+      <div class="it" style="font-size:8.8pt; grid-template-columns:1fr"><span><strong>meet.html 배포</strong> — NFC 목적지. 브랜치 push가 필요하다</span></div>
+    </div>
+    <div>
+      <div class="it" style="font-size:8.8pt; grid-template-columns:1fr; margin-bottom:1.4mm"><span><strong>6/30 어워드를 실제로 냈는가</strong> — 서울디자인어워드 · 대한민국디자인전람회. 문서로 확인되지 않는다</span></div>
+      <div class="it" style="font-size:8.8pt; grid-template-columns:1fr; margin-bottom:1.4mm"><span><strong>데모 영상</strong> — 촬영 필요</span></div>
+      <div class="it" style="font-size:8.8pt; grid-template-columns:1fr"><span>의료진웹 호실 체계 — 302호 vs A-3</span></div>
+    </div>
+  </div>
+
+  <div class="foot"><span>하루안부 HARU ANBU · 제안 자료 지도</span><span>2026-08-13 · 1/2</span></div>
+</section>
+
+<!-- ============ P2 ============ -->
+<section class="page">
+  <p class="eyebrow">재료가 어디 있는지 · 그리고 절대 틀리면 안 되는 것</p>
+  <h1>원고 24종 지도</h1>
+
+  <div class="map">
+    <div>
+      <div class="grp">
+        <div class="hd">기반 — 사실과 수치</div>
+        <div class="it"><b>00</b><span>자료색인 <strong>— 저장소 전체 자료 위치·신선도</strong></span></div>
+        <div class="it"><b>01</b><span>수치검증대장 <strong>— 인용 금지 판정 포함 전수</strong></span></div>
+        <div class="it"><b>02</b><span>추가리서치 20260802 — 신규 검증·공공 채널</span></div>
+        <div class="it"><b>08</b><span>구자료 정정표 — 수정분과 인용 금지분 구분</span></div>
+        <div class="it"><b>14</b><span>시장근거 2026 <strong>— 쓸 수 있는 수치만</strong></span></div>
+      </div>
+      <div class="grp">
+        <div class="hd">본체 — 제안 그 자체</div>
+        <div class="it"><b>03</b><span>제안서 본문 v1 <strong>— 32쪽 PDF의 원본</strong></span></div>
+        <div class="it"><b>04</b><span>실증계획 v1 — 백엔드 부재를 정면으로</span></div>
+        <div class="it"><b>07</b><span>1페이지 소개서 <strong>— 산업 접촉의 첫 문서</strong></span></div>
+        <div class="it"><b>11</b><span>강점과 한계 <strong>— 표현 통일 대장</strong></span></div>
+        <div class="it"><b>12</b><span>한계와 법적리스크 — 검증 등급 표기</span></div>
+      </div>
+      <div class="grp">
+        <div class="hd">질문에 답하는 문서</div>
+        <div class="it"><b>16</b><span>수익모델과 비용 <strong>— "얼마죠?"</strong></span></div>
+        <div class="it"><b>17</b><span>착수조건과 일정 <strong>— "언제 시작하나?"</strong></span></div>
+        <div class="it"><b>18</b><span>구조점검과 제출서식 — PSST 대조·필요 서식</span></div>
+        <div class="it"><b>21</b><span>데이터파기확인서 <strong>— "정보 어떻게 되나?"</strong></span></div>
+      </div>
+    </div>
+    <div>
+      <div class="grp">
+        <div class="hd">어디로 가는가</div>
+        <div class="it"><b>05</b><span>제출처 리스트 — 후보 전체 지도</span></div>
+        <div class="it"><b>09</b><span>8월 실행판 <strong>— 이번 달에 손에 잡히는 것</strong></span></div>
+        <div class="it"><b>10</b><span>기관별 제출양식 — 수신자 9유형별 분량·톤</span></div>
+        <div class="it"><b>19</b><span>공모전 재조사 <strong>— 어워드 마감 최신판</strong></span></div>
+        <div class="it"><b>22</b><span>지자체 정책제안 창구 <strong>— 경기 1순위·의왕시 조례·초안 2종</strong></span></div>
+      </div>
+      <div class="grp">
+        <div class="hd">현장에서 쓰는 것</div>
+        <div class="it"><b>13</b><span>KHF 현장실행팩 <strong>— 대본·라우트·반론</strong></span></div>
+        <div class="it"><b>15</b><span>교수님 보고 <strong>— 메일 초안·3분 대본</strong></span></div>
+        <div class="it"><b>20</b><span>영문 소개서 <strong>— 출품문·부스 영어·영문 메일</strong></span></div>
+      </div>
+      <div class="grp">
+        <div class="hd">기록</div>
+        <div class="it"><b>06</b><span>점검 이슈로그 — 발견한 결함과 처리 현황</span></div>
+      </div>
+      <div class="grp">
+        <div class="hd">PDF를 다시 뽑으려면</div>
+        <div class="it"><b></b><span><strong>먼저</strong> <code>python3 08_제안서/점검.py</code> 를 돌린다 — 확정 표현 위반을 잡는다.<br>
+        <strong>그다음</strong> 시각화/의 HTML을 헤드리스 크롬으로 인쇄한다. 이름이 같은 것끼리 짝이다.<br>
+        순서가 반대면 틀린 PDF를 배포하게 된다. 명령은 <strong>README §3-B · §4</strong>.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule dark"></div>
+
+  <h2>지금 말하는 방식 — 여기만은 틀리면 안 된다</h2>
+  <div class="lock"><b>요청</b><span><strong>2단계다.</strong> 지금 = 현장 인터뷰 2시간 · 자문 &nbsp;/&nbsp; 나중 = 8주 파일럿(개발 2~4개월 후)</span></div>
+  <div class="lock"><b>시장 규모</b><span>문서엔 <strong>6,361개소</strong>(2025.12 통계연보), 구두엔 <strong>6,370개소</strong>(2026 1분기 경영공시)</span></div>
+  <div class="lock"><b>인력 전망</b><span><strong>1.5~1.9명 → 3.0~3.7명</strong>(KDI 2026.4). "최대 3.7"로 쓰지 않는다</span></div>
+  <div class="lock"><b>차별점</b><span><strong>"장기요양 입소시설을 대상으로는"</strong> 본인 앱을 확인하지 못했다 — 한정어 필수</span></div>
+  <div class="lock"><b>입력 부담</b><span>시행규칙 <strong>별지 제16호서식</strong>이 이미 요구하는 항목이다</span></div>
+  <div class="lock"><b>가격</b><span>아직 안 정했다. <strong>다만 시장이 월 3만 원대인 건 안다</strong></span></div>
+  <div class="lock"><b>감시 우려</b><span>입력 통계 · 미입력 알림 · 작성자 비교는 <strong>만들지 않는다</strong></span></div>
+  <div class="lock"><b>영문 용어</b><span>Family / Caregiver / Clinician / Resident <span class="mute">— 사이트는 Patient. 통일 여부는 팀 판단</span></span></div>
+
+  <p class="stop"><strong>쓰지 않는 수치</strong> &nbsp;KB "10개소·208억" · Brenna "민원 0건·85%" · Nourish "14개 표준" · "14,000개 기관"
+  — 전부 벤더·시설 <strong>자기보고</strong>이거나 재확인에 실패했다.
+  <br><strong>원칙</strong> &nbsp;출처와 연도가 확인되지 않은 숫자는 쓰지 않는다. 말할 때는 기관명을 문장 안에 넣는다 — "건보공단 기준 6,361개소입니다".</p>
+
+  <div class="foot"><span>하루안부 HARU ANBU · 제안 자료 지도</span><span>2026-08-13 · 2/2</span></div>
+</section>
+
+</body>
+</html>

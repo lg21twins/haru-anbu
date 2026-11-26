@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하루안부 — 짧은 제안서 (8쪽)</title>
+<link rel="stylesheet" href="../../07_디자인/tokens/tokens.css">
+<style>
+  /* 이 문서의 용도
+     부스에서 A4 한 장을 드린 뒤, 명함을 주고받은 상대에게 사흘 안에 메일로 보내는 것.
+     70쪽 종합보고는 "달라고 하실 때" 드리고, 그 사이를 이 8쪽이 메운다.
+
+     2026-08-07 개정 — 초판은 8쪽 중 서비스 소개가 1쪽뿐이고 나머지가 전부
+     우리 상태·한계·부탁이었다. 받는 쪽은 "그래서 이게 뭐 하는 건데"를 한 장으로만 알게 된다.
+     화면 39개를 만들어 놓고 화면이 한 장도 없던 것도 문제였다.
+     → 서비스를 2~5쪽 넉 장으로 늘리고 실제 화면을 넣었다. 한계는 7쪽 한 장으로 압축.
+
+     의료진 화면(shot_doctor.png)은 의도적으로 넣지 않았다 — 화면의 "AI 판단 · 오늘의 우선순위"가
+     6쪽의 SaMD 경계 주장과 정면으로 충돌한다. 화면 문구가 정리되기 전까지는 넣지 않는다.
+
+     A4 8쪽 고정 — 쪽마다 height를 박아 조판이 흔들리지 않게 했다. 내용을 늘리면 잘린다. */
+  :root{
+    --ink:        var(--color-text-primary, #111827);
+    --ink-strong: #0A0A0C;
+    --ink-mute:   var(--color-text-secondary, #6B7280);
+    --ink-faint:  #9CA3AF;
+    --canvas:     #FFFFFF;
+    --rule:       #E8EAED;
+    --accent:     var(--brand-blue-500, #2C7AFC);
+    --warn:       var(--palette-amber-700, #B45309);
+    --stop:       var(--palette-red-600, #C8231E);
+    --ok:         var(--brand-green-700, #15803D);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:#EEF0F3; color:var(--ink);
+    font-family:var(--font-family-base, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif);
+    font-size:15px; line-height:1.7; letter-spacing:-0.01em;
+    -webkit-font-smoothing:antialiased;
+  }
+  body, h1, h2, h3, h4, p, li, td, th, .lede, .stat, .cap, .note{
+    word-break:keep-all; overflow-wrap:break-word;
+  }
+  .page{
+    width:210mm; min-height:297mm; height:297mm; margin:0 auto 20px;
+    background:var(--canvas); padding:20mm 18mm 16mm;
+    position:relative; overflow:hidden;
+  }
+  .eyebrow{font-size:11px; font-weight:700; letter-spacing:.14em; color:var(--ink-faint); margin:0 0 14px}
+  h1{font-size:44px; line-height:1.06; letter-spacing:-0.045em; font-weight:800; margin:0 0 18px; color:var(--ink-strong)}
+  h2{font-size:30px; line-height:1.14; letter-spacing:-0.035em; font-weight:800; margin:0 0 14px; color:var(--ink-strong)}
+  h3{font-size:15.5px; line-height:1.4; letter-spacing:-0.02em; font-weight:700; margin:20px 0 8px; color:var(--ink-strong)}
+  p{margin:0 0 11px}
+  .lede{font-size:17.5px; line-height:1.58; font-weight:500; margin:0 0 20px}
+  .mute{color:var(--ink-mute)}
+  .small{font-size:12.5px; line-height:1.62; color:var(--ink-mute)}
+  strong{font-weight:700; color:var(--ink-strong)}
+  ul{margin:0 0 11px; padding-left:0; list-style:none}
+  li{margin-bottom:6px; padding-left:15px; position:relative}
+  li::before{content:""; position:absolute; left:0; top:10px; width:5px; height:5px; border-radius:50%; background:var(--ink-faint)}
+  li.yes::before{background:var(--ok)} li.no::before{background:var(--stop)}
+
+  /* 화면 — 이 문서의 중심. 크게 보여준다 */
+  .shot{margin:0}
+  .shot img{display:block; width:100%; height:auto; border-radius:10px}
+  .shot .cap{font-size:11.5px; line-height:1.5; color:var(--ink-faint); margin-top:8px}
+  .shot .cap b{color:var(--ink-strong); font-weight:700}
+  .split{display:grid; gap:26px; align-items:start}
+  .split.s55{grid-template-columns:1fr 1.25fr}
+  .split.s45{grid-template-columns:1.25fr 1fr}
+
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:22px 18px; margin:6px 0 4px}
+  .stat .n{font-size:35px; font-weight:800; letter-spacing:-0.045em; line-height:1; color:var(--ink-strong)}
+  .stat .n em{font-style:normal; font-size:.42em; font-weight:700; margin-left:3px}
+  .stat .l{font-size:12.5px; font-weight:600; margin-top:8px; line-height:1.45}
+  .stat .s{font-size:11px; color:var(--ink-faint); margin-top:4px; line-height:1.5}
+
+  table{border-collapse:collapse; width:100%; font-size:12.8px; margin:10px 0}
+  th,td{text-align:left; padding:8px 12px 8px 0; vertical-align:top; line-height:1.55}
+  thead th{font-size:11px; letter-spacing:.06em; color:var(--ink-faint); font-weight:700; padding-bottom:6px}
+  tbody tr{border-top:1px solid var(--rule)}
+  td.k{font-weight:700; color:var(--ink-strong); white-space:nowrap}
+
+  .note{margin:18px 0; padding-top:13px; border-top:2px solid var(--ink-strong)}
+  .note .t{font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--ink-faint); margin-bottom:6px}
+  .note p{font-size:14.5px; font-weight:500; margin:0}
+  .note.warn{border-top-color:var(--stop)} .note.warn .t{color:var(--stop)}
+
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:18px 28px; margin:12px 0}
+  .cols h3{margin-top:0}
+  .tick{height:3px; width:28px; background:var(--accent); border-radius:2px; margin-bottom:9px}
+  .tick.g{background:var(--ok)} .tick.r{background:var(--stop)} .tick.o{background:var(--warn)} .tick.d{background:var(--ink-strong)}
+
+  .flow{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:16px 0 4px}
+  .flow .h{font-size:13px; font-weight:700; color:var(--ink-strong); margin-top:2px}
+  .flow .d{font-size:11.5px; color:var(--ink-mute); margin-top:4px; line-height:1.5}
+  .flow .r{font-size:10px; font-weight:700; letter-spacing:.1em; color:var(--ink-faint); margin-bottom:7px}
+
+  /* 하루의 흐름 — 시간축 */
+  .tl{margin:14px 0 4px}
+  .tl .r{display:grid; grid-template-columns:60px 1fr; gap:0 16px; padding:9px 0; border-top:1px solid var(--rule); align-items:baseline}
+  .tl .t{font-size:12.5px; font-weight:800; color:var(--ink-strong); white-space:nowrap}
+  .tl .b{font-size:13px; line-height:1.55}
+  .tl .who{font-size:10.5px; font-weight:700; letter-spacing:.06em; color:var(--accent)}
+
+  .foot{position:absolute; left:18mm; right:18mm; bottom:11mm; display:flex; justify-content:space-between;
+        font-size:10.5px; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:8px}
+  .cover-foot{position:absolute; left:18mm; right:18mm; bottom:18mm}
+
+  @media print{
+    @page{ size:A4; margin:0 }
+    body{background:#fff; font-size:10.2pt}
+    :root{--ink:#1A1D21; --ink-strong:#000; --ink-mute:#4B5158; --ink-faint:#7A8189;
+          --rule:#D8DBDF; --accent:#1E5FD6; --stop:#B3241F; --ok:#15803D; --warn:#8A5A00}
+    .page{margin:0; box-shadow:none; break-after:page; height:297mm}
+    .page:last-child{break-after:auto}
+    a{color:inherit; text-decoration:none}
+    .shot img{border:1px solid var(--rule)}
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== 1 · 표지 ========== -->
+<section class="page">
+  <div class="split s55">
+    <div>
+      <p class="eyebrow">요양시설 케어 커뮤니케이션 · 2026</p>
+      <h1>한 번 입력하면<br>네 방향으로<br>도착합니다</h1>
+      <p class="lede">요양시설의 <strong>보호자 · 어르신 · 요양보호사 · 의료진</strong>
+        네 역할을 하루 한 번의 안부로 잇습니다.</p>
+      <p class="small">요양보호사가 이미 매일 남기는 기록을 재사용해
+        가족 · 어르신 · 의료진에게 <strong>각자의 언어로</strong> 전달합니다.
+        현장에 새 입력을 요구하지 않는 것이 설계의 전제입니다.</p>
+    </div>
+    <div class="shot">
+      <img src="../assets/shot_family.png" alt="보호자 앱 홈 — 일일 리포트">
+      <p class="cap"><b>보호자(가족) 앱.</b> 하루 한 번 도착하는 일일 리포트.
+        요양보호사가 남긴 기록이 사진 · 코멘트 · 투약 · 활력징후로 정리돼 있습니다.</p>
+    </div>
+  </div>
+
+  <div class="cover-foot">
+    <table style="margin:0">
+      <tbody>
+        <tr><td class="k" style="width:96px">지금 상태</td>
+            <td>네 역할의 앱 <strong>화면 39개</strong>를 만들어 공개 배포했습니다. 서버는 아직 없습니다.</td></tr>
+        <tr><td class="k">데모</td>
+            <td><strong>haruanbu.site</strong> — 설치 없이 브라우저에서 바로 열립니다. 폰에서도 됩니다</td></tr>
+        <tr><td class="k">팀</td>
+            <td>하루안부 · 김지욱 · 손예찬 · 고해은 &nbsp;|&nbsp; 담당 손예찬 &nbsp;|&nbsp; team@haruanbu.site</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ========== 2 · 입력 ========== -->
+<section class="page">
+  <p class="eyebrow">01 · 어떻게 동작하나</p>
+  <h2>입력하는 사람은<br>한 명뿐입니다</h2>
+  <p class="lede mute">요양보호사가 하던 기록을 그대로 합니다. 그 한 번이 세 곳으로 갈라져 도착합니다.</p>
+
+  <div class="flow">
+    <div><div class="tick d"></div><div class="r">01 · 입력</div>
+      <div class="h">요양보호사</div><div class="d">식사 · 투약 · 활동 · 위생 · 특이사항. 하루 5분 이내</div></div>
+    <div><div class="tick"></div><div class="r">02 · 도착</div>
+      <div class="h">보호자 (가족)</div><div class="d">하루 한 번 일일 리포트. 사진 · 요양보호사와 대화</div></div>
+    <div><div class="tick g"></div><div class="r">03 · 도착</div>
+      <div class="h">어르신 본인</div><div class="d">큰 버튼 안부 확인. 가족 메시지 수신</div></div>
+    <div><div class="tick o"></div><div class="r">04 · 도착</div>
+      <div class="h">의료진</div><div class="d">상태 변화 타임라인. 확인 · 지시</div></div>
+  </div>
+
+  <div class="split s45" style="margin-top:20px">
+    <div>
+      <h3>기록은 이미 법으로 정해져 있습니다</h3>
+      <p class="small">요양보호사가 남기는 항목은 저희가 만든 것이 아닙니다.
+        <strong>노인장기요양보험법 시행규칙 별지 제16호서식</strong>이 이미 요구하는 항목입니다.
+        저희는 그 기록을 <strong>다시 쓰게 하지 않고, 도착하게</strong> 합니다.</p>
+
+      <h3>화면이 하는 일은 세 가지뿐입니다</h3>
+      <ul>
+        <li>지금 누구를 봐야 하는지 <strong>순서를 보여준다</strong></li>
+        <li>기록할 항목을 <strong>미리 열어 둔다</strong> — 찾아 들어가지 않게</li>
+        <li>남긴 기록을 <strong>가족의 말로 바꿔 보낸다</strong></li>
+      </ul>
+
+      <div class="note">
+        <p class="t">한 줄로 줄이면</p>
+        <p>기록은 기존 시스템이 합니다. <strong>저희가 하는 것은 소통입니다.</strong></p>
+      </div>
+    </div>
+    <div class="shot">
+      <img src="../assets/shot_caregiver.png" alt="요양보호사 앱 오늘 화면">
+      <p class="cap"><b>요양보호사 앱.</b> 근무 진행률 · 지금 할 일 · 담당 어르신 4명의 진행 상태.
+        <b>"지금 기록 시작"</b> 버튼 하나로 해당 항목이 열립니다.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>하루안부 HARU ANBU</span><span>2 / 8</span></div>
+</section>
+
+<!-- ========== 3 · 가족 ========== -->
+<section class="page">
+  <p class="eyebrow">02 · 가족이 받는 것</p>
+  <h2>"오늘 어떠셨어요"를<br>묻지 않아도 됩니다</h2>
+  <p class="lede mute">가족이 알고 싶은 것은 수치가 아니라 <strong>오늘 어땠는지</strong>입니다.
+    그래서 숫자보다 문장을 먼저 놓았습니다.</p>
+
+  <div class="split s55">
+    <div>
+      <h3>하루 한 번, 정해진 시간에</h3>
+      <p class="small">전화를 대신하려는 것이 아닙니다.
+        <strong>전화가 없어도 불안하지 않게</strong> 만드는 것이 목표입니다.
+        요양보호사에게 전화가 오면 그건 좋은 소식이 아닌 경우가 많습니다.
+        일일 리포트는 <strong>아무 일 없는 날에도 도착합니다.</strong></p>
+
+      <h3>리포트에 들어가는 것</h3>
+      <table>
+        <tbody>
+          <tr><td class="k" style="width:74px">사진</td><td>그날의 모습 한 장</td></tr>
+          <tr><td class="k">코멘트</td><td>요양보호사가 남긴 한두 문장. <strong>작성자 이름과 시각이 함께 갑니다</strong></td></tr>
+          <tr><td class="k">투약</td><td>복용 진행률 · 다음 복용 시각</td></tr>
+          <tr><td class="k">활력징후</td><td>맥박 · 체온 등 그날 측정한 것</td></tr>
+          <tr><td class="k">대화</td><td>요양보호사에게 바로 답장</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p class="t">이 화면에서 가장 중요한 것</p>
+        <p><strong>"김서연 간호사 · 10:24"</strong> — 누가 언제 썼는지가 붙습니다.
+          기계가 만든 요약이 아니라 <strong>사람이 본 것</strong>이라는 표시입니다.</p>
+      </div>
+    </div>
+    <div class="shot">
+      <img src="../assets/shot_family.png" alt="보호자 앱 홈 — 일일 리포트 상세">
+      <p class="cap">사진과 코멘트가 맨 위에 오고 수치는 그 아래입니다.
+        <b>순서가 곧 우선순위입니다</b> — 가족은 대시보드를 보러 오는 것이 아닙니다.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>하루안부 HARU ANBU</span><span>3 / 8</span></div>
+</section>
+
+<!-- ========== 4 · 어르신 ========== -->
+<section class="page">
+  <p class="eyebrow">03 · 어르신이 보는 것</p>
+  <h2>어르신 본인에게도<br>화면이 있습니다</h2>
+  <p class="lede mute">가족에게만 보내는 서비스가 아닙니다.
+    조사한 범위에서 <strong>장기요양 입소시설을 대상으로 어르신 본인 앱을 가진 사례는 확인하지 못했습니다.</strong></p>
+
+  <div class="split" style="grid-template-columns:1.5fr 1fr; margin-top:4px">
+    <div class="shot">
+      <img src="../assets/shot_patient.png" alt="어르신 앱 홈 — 가족 사진 · 지금 할 일 · 가족에게 전화">
+      <p class="cap">태블릿 화면. 왼쪽은 <b>가족이 보낸 것</b>, 오른쪽은 <b>오늘 해야 할 것</b>.
+        아래 두 버튼은 화면 폭의 절반씩을 씁니다.</p>
+    </div>
+    <div>
+      <h3>글자와 버튼을<br>먼저 정했습니다</h3>
+      <p class="small">기능을 정하고 화면을 그린 것이 아니라,
+        <strong>읽히는 크기와 누를 수 있는 크기를 먼저 고정</strong>하고
+        거기 들어가는 것만 남겼습니다. 그래서 한 화면에 올린 항목이 적습니다.
+        <strong>"눌러서 말하기"</strong>를 크게 둔 것도 같은 이유입니다.</p>
+
+      <h3>가족 → 어르신 방향도<br>열려 있습니다</h3>
+      <p class="small">딸이 보낸 사진과 문자가 그대로 도착하고,
+        <strong>"예쁘구나, 잘 다녀왔네"</strong> 같은 답장은 누르기만 하면 됩니다.
+        <strong>직접 쓰지 않아도 대답이 가게</strong> 만든 것입니다.</p>
+
+      <h3>도움이 필요할 때</h3>
+      <p class="small">오른쪽 아래 <strong>"도움이 필요해요"</strong>는
+        요양보호사 앱의 호출로 이어집니다. 어르신이 누를 수 있는 유일한 긴급 경로입니다.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <p class="t">왜 이 화면이 필요한가</p>
+    <p>가족이 안심하는 것과 <strong>어르신이 외롭지 않은 것은 다른 문제</strong>입니다.
+      돌봄 기록만 보내면 앞엣것만 풀립니다.</p>
+  </div>
+
+  <div class="foot"><span>하루안부 HARU ANBU</span><span>4 / 8</span></div>
+</section>
+
+<!-- ========== 5 · 왜 이렇게 만들었나 ========== -->
+<section class="page">
+  <p class="eyebrow">04 · 설계의 전제</p>
+  <h2>기능보다 먼저<br>정한 것들</h2>
+  <p class="lede mute">못 만든 것이 아니라 <strong>넣지 않기로 한 것</strong>들입니다.
+    이 선을 먼저 긋고 나머지를 만들었습니다.</p>
+
+  <table>
+    <thead><tr><th style="width:184px">넣지 않은 것</th><th>이유</th></tr></thead>
+    <tbody>
+      <tr><td class="k">요양보호사의<br>추가 입력 화면</td>
+          <td><strong>업무가 늘면 현장에서 쓰이지 않습니다.</strong>
+              요양보호사 한 분이 돌보는 어르신은 지금 1.5~1.9명인데 2040년에는 3.0~3.7명이 됩니다(KDI, 2026.4).
+              입력을 하나라도 더하는 설계는 그 자체로 실패합니다.</td></tr>
+      <tr><td class="k">종사자별 입력 통계<br>미입력 알림 · 작성자 비교</td>
+          <td>기록이 <strong>일하는 사람을 평가하는 도구</strong>가 되면 현장이 거부합니다.
+              만들 수 있어도 만들지 않았습니다. 이게 도입 여부를 가르는 지점이라고 봤습니다.</td></tr>
+      <tr><td class="k">이상 감지 · 위험도 판정<br>복약 판단</td>
+          <td>넣는 순간 <strong>의료기기(SaMD) 허가 대상</strong>이 됩니다.
+              AI는 요약 · 전달 · 검색까지만 하고 <strong>판단은 전부 의료진이 합니다.</strong></td></tr>
+      <tr><td class="k">진료기록 연동</td>
+          <td>의료법상 열람 범위를 저희가 정할 수 없습니다.
+              저희가 다루는 것은 <strong>시설이 생성한 돌봄 기록</strong>뿐입니다.</td></tr>
+      <tr><td class="k">기록 시스템 자체 구축</td>
+          <td>시설에는 이미 백오피스 표준이 있습니다.
+              기록은 기존 시스템, <strong>소통은 하루안부</strong>입니다. 갈아엎자는 제안이 아닙니다.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>입력하는 쪽도 고령입니다</h3>
+  <p class="small">요양보호사 중 60세 이상 비중은 <strong>2023년 63.1% → 2043년 72.6%</strong>로 전망됩니다(KDI).
+    이건 부가 정보가 아니라 설계 전제를 바꾸는 사실입니다.
+    글자 크기 · 터치 영역 · 단계 수를 어르신 화면과 같은 기준으로 잡았습니다.</p>
+
+  <div class="note warn">
+    <p class="t">개인정보에 대해</p>
+    <p><strong>준비가 끝나기 전까지 실제 어르신 정보를 받지 않습니다.</strong>
+      암호화 · 접근통제 · 접속기록 시스템을 먼저 만든 뒤에 시작합니다.
+      데이터를 저희가 보관하지 않는 구조도 함께 검토할 수 있습니다.</p>
+  </div>
+
+  <div class="foot"><span>하루안부 HARU ANBU</span><span>5 / 8</span></div>
+</section>
+
+<!-- ========== 6 · 왜 지금인가 ========== -->
+<section class="page">
+  <p class="eyebrow">05 · 왜 지금인가</p>
+  <h2>정보가 없는 게 아니라<br>만들어진 정보가 이동하지 않습니다</h2>
+  <p class="lede mute">현장은 이미 기록하고 있습니다. 그 기록이 가족에게 도착하지 않을 뿐입니다.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="n">2<em>배</em></div><div class="l">2040년 요양보호사 1인당 부담</div>
+      <div class="s">지금 1.5~1.9명 → 3.0~3.7명 · KDI 2026.4</div></div>
+    <div class="stat"><div class="n">99<em>만명</em></div><div class="l">2043년 요양보호사 부족</div>
+      <div class="s">2033년 33.2만 → 2038년 62.5만 · 같은 출처</div></div>
+    <div class="stat"><div class="n">51.6<em>%</em></div><div class="l">가족이 "여전히 돌봄 부담을 느낀다"</div>
+      <div class="s">보건복지부 2025년 장기요양실태조사 (2026.8 발표)</div></div>
+  </div>
+
+  <h3>제도는 잘 작동하는데 절반이 남았습니다</h3>
+  <p>같은 조사에서 <strong>제도 만족도는 84.6%</strong>, "부양 부담이 완화됐다"는 응답도 <strong>70% 이상</strong>입니다.
+    돌봄의 양은 채워지고 있습니다. 그런데도 <strong>절반이 여전히 부담을 느낍니다.</strong>
+    저희가 보는 자리가 여기입니다.</p>
+  <p class="small">단, 그 51.6%의 원인이 소통 부재라는 것은 조사 결과가 아니라 <strong>저희 해석</strong>입니다.
+    조사는 "절반이 여전히 부담을 느낀다"까지만 말합니다.</p>
+
+  <h3>사람을 더 뽑아 풀 수 있는 규모가 아닙니다</h3>
+  <p><strong>가족에게 전화할 시간은 줄어드는 게 아니라 구조적으로 사라집니다.</strong>
+    같은 인력이 같은 시간에 더 많은 것을 전달하게 만드는 것 외에 선택지가 좁습니다.</p>
+
+  <table>
+    <thead><tr><th style="width:146px">시장 규모</th><th>수치</th><th style="width:158px">출처</th></tr></thead>
+    <tbody>
+      <tr><td class="k">입소형 장기요양기관</td><td><strong>6,361개소</strong> · 어르신으로는 약 24만 명</td><td class="small">건보공단 2025 통계연보</td></tr>
+      <tr><td class="k">장기요양 급여비</td><td><strong>17조 6,840억원</strong> (2025년, +9.3%)</td><td class="small">건보공단 · 인정자 123.5만명</td></tr>
+      <tr><td class="k">노인이 꼽은 1순위 지원</td><td><strong>29.5%</strong> — "노인 맞춤형 스마트기기·앱 개발"</td><td class="small">2023년 노인실태조사</td></tr>
+    </tbody>
+  </table>
+
+  <div class="foot"><span>하루안부 HARU ANBU</span><span>6 / 8</span></div>
+</section>
+
+<!-- ========== 7 · 저희 상태 ========== -->
+<section class="page">
+  <p class="eyebrow">06 · 저희 상태</p>
+  <h2>지금 어디까지 왔고<br>무엇이 안 됐는가</h2>
+  <p class="lede mute">먼저 솔직하게 말씀드립니다. 앞의 화면은 전부 <strong>동작하는 프로토타입</strong>이지만
+    <strong>실제 데이터로 움직이지 않습니다.</strong></p>
+
+  <div class="cols">
+    <div>
+      <div class="tick g"></div>
+      <h3>되어 있는 것</h3>
+      <ul>
+        <li class="yes">4역할 화면과 사용자 흐름 — 고유 <strong>39개 화면</strong></li>
+        <li class="yes">공개 배포 중 — haruanbu.site, 클릭해서 넘어갑니다</li>
+        <li class="yes">디자인 시스템(토큰 357개)과 자동 검사 도구 9종</li>
+        <li class="yes">개인정보 동의 화면 · 권한 분리 설계</li>
+        <li class="yes">법 조문 24개 대조 — 국내 5개 법률</li>
+        <li class="yes">한국어 · 영어 · 중국어 화면 (일부)</li>
+      </ul>
+    </div>
+    <div>
+      <div class="tick r"></div>
+      <h3>아직 안 된 것</h3>
+      <ul>
+        <li class="no">서버 · 데이터베이스 — <strong>앱의 서버 호출 0건</strong></li>
+        <li class="no">로그인 · 인증 · 실제 권한 통제</li>
+        <li class="no">AI 요약 자동 생성 — 현재 문구는 <strong>사람이 쓴 예시</strong>입니다</li>
+        <li class="no">법인 · 사업자 — <strong>계약 주체가 될 수 없습니다</strong></li>
+        <li class="no">도입 레퍼런스 — 실제 운영 데이터로 검증한 적 없음</li>
+        <li class="no">고령 사용자 대상 사용성 테스트</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>한계는 네 층인데, 그중 하나는 돈으로 안 됩니다</h3>
+  <table>
+    <thead><tr><th style="width:82px">층</th><th>내용</th><th style="width:164px">돈으로 해결되나</th></tr></thead>
+    <tbody>
+      <tr><td class="k">기술</td><td>서버 · 인증 · AI 미구현</td><td>됩니다 — 시간과 인력</td></tr>
+      <tr><td class="k">법 · 제도</td><td>민감정보 처리 의무, 의료기기 규제 경계, 기록 열람 권한</td><td><strong>안 됩니다 — 설계와 절차의 문제</strong></td></tr>
+      <tr><td class="k">조직</td><td>법인 없음 → 계약 주체가 될 수 없음</td><td>됩니다 — 설립하면</td></tr>
+      <tr><td class="k">검증</td><td>실사용 데이터 · 고령 사용자 테스트 없음</td><td>부분 — 시간과 현장 접근</td></tr>
+    </tbody>
+  </table>
+
+  <p class="small">법 검토는 공개된 법령과 가이드라인을 대조한 <strong>학생팀의 자체 검토</strong>이며
+    변호사 검토를 받은 적은 없습니다. 전문가 확인이 필요한 항목 10가지를 따로 정리해 두었습니다.</p>
+
+  <div class="foot"><span>하루안부 HARU ANBU</span><span>7 / 8</span></div>
+</section>
+
+<!-- ========== 8 · 부탁 + 연락 ========== -->
+<section class="page">
+  <p class="eyebrow">07 · 부탁드리는 것</p>
+  <h2>지금 부탁드리는 것은<br>파일럿이 아닙니다</h2>
+  <p class="lede mute">시스템 개발에 2~4개월이 필요하므로 오늘 시작하자는 말씀을 드릴 수 없습니다.
+    지금 필요한 것은 훨씬 작습니다.</p>
+
+  <table>
+    <thead><tr><th style="width:96px">단계</th><th>무엇</th><th style="width:120px">언제</th></tr></thead>
+    <tbody>
+      <tr><td class="k">지금</td>
+          <td><strong>현장 인터뷰 2시간과 자문.</strong> 앞의 화면을 보시고
+              "이건 현장에서 안 쓴다"를 짚어 주시는 것이 가장 큰 도움입니다.</td>
+          <td>바로 가능합니다</td></tr>
+      <tr><td class="k">그 다음</td>
+          <td>최소 동작 시스템 개발 — 서버 · 인증 · 권한 통제</td><td>2~4개월</td></tr>
+      <tr><td class="k">그 뒤</td>
+          <td><strong>시설 한 곳에서 8주 무상 파일럿.</strong> 네 역할 전부가 아니라
+              <strong>요양보호사 입력 → 가족 일일 리포트</strong> 한 축만.</td>
+          <td>시스템이 된 뒤</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cols" style="margin-top:16px">
+    <div>
+      <h3>파일럿을 하게 된다면</h3>
+      <table style="margin-top:4px">
+        <tbody>
+          <tr><td class="k" style="width:52px">범위</td><td>한 축만. 확대는 결과를 보고</td></tr>
+          <tr><td class="k">형태</td><td>학교 · 지도교수를 경유한 <strong>연구 협력</strong></td></tr>
+          <tr><td class="k">비용</td><td>무상. 저희가 필요한 것은 매출이 아니라 <strong>안 되는 이유</strong>입니다</td></tr>
+          <tr><td class="k">중단</td><td><strong>언제든.</strong> 데이터는 파기하고 확인서를 드립니다</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>더 보시겠다면</h3>
+      <table style="margin-top:4px">
+        <tbody>
+          <tr><td class="k" style="width:96px">종합보고</td><td>70쪽 — 아래 셋을 묶은 것</td></tr>
+          <tr><td class="k">서비스 제안서</td><td>32쪽 — 구조 · 차별화 · 로드맵</td></tr>
+          <tr><td class="k">한계와 법적 리스크</td><td>16쪽 — 조문 대조 · 검증 등급</td></tr>
+          <tr><td class="k">제출 전략</td><td>18쪽 — 우리가 보는 것</td></tr>
+        </tbody>
+      </table>
+      <p class="small" style="margin-top:6px">말씀 주시면 보내드립니다.
+        <strong>요청하지 않으신 것은 보내지 않습니다.</strong></p>
+    </div>
+  </div>
+
+  <div class="note">
+    <p class="t">저희 위치를 분명히 하면</p>
+    <p>완성품을 팔러 온 것이 아닙니다. <strong>설계와 규제 경계선은 가지고 왔고, 만들 힘이 없으니
+      만들 힘이 있는 곳을 찾고 있습니다.</strong></p>
+  </div>
+
+  <table style="margin-top:14px">
+    <tbody>
+      <tr><td class="k" style="width:96px">데모</td><td><strong>haruanbu.site</strong> — 설치 없이 브라우저에서 바로 열립니다</td></tr>
+      <tr><td class="k">팀 · 담당</td><td>하루안부 · 김지욱 · 손예찬 · 고해은 &nbsp;|&nbsp; 담당 손예찬</td></tr>
+      <tr><td class="k">이메일</td><td>team@haruanbu.site</td></tr>
+    </tbody>
+  </table>
+
+  <p class="small">이 문서의 모든 수치는 <strong>출처와 연도가 확인된 것만</strong> 썼습니다.
+    재확인에 실패한 수치는 원문에 "인용하지 않는다"고 명시하고 빼 두었습니다.</p>
+
+  <div class="foot"><span>하루안부 HARU ANBU · 2026</span><span>8 / 8</span></div>
+</section>
+
+</body>
+</html>

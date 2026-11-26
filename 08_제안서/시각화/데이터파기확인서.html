@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>하루안부 — 개인정보 파기 확인서</title>
+<link rel="stylesheet" href="../../07_디자인/tokens/tokens.css">
+<style>
+  :root{
+    --ink:#15181C; --ink-strong:#000; --ink-mute:#5A6068; --ink-faint:#8B929A;
+    --rule:#E3E6EA; --accent:#1E5FD6; --stop:#B3241F; --ok:#15803D;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink); background:#fff;
+    font-family:var(--font-family-base, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif);
+    font-size:10.5pt; line-height:1.62; letter-spacing:-0.01em;
+    -webkit-font-smoothing:antialiased; word-break:keep-all;
+  }
+  .page{padding:11mm 14mm; max-width:210mm; margin:0 auto; min-height:297mm; position:relative}
+  .page + .page{border-top:1px dashed #CFD4DA}
+
+  .eyebrow{font-size:8.5pt; font-weight:700; letter-spacing:.16em; color:var(--ink-faint); margin:0 0 8pt}
+  h1{font-size:22pt; line-height:1.1; letter-spacing:-0.045em; font-weight:800; margin:0 0 10pt; color:var(--ink-strong)}
+  h2{font-size:12.5pt; line-height:1.2; letter-spacing:-0.035em; font-weight:800; margin:0 0 8pt; color:var(--ink-strong)}
+  h3{font-size:10pt; font-weight:800; letter-spacing:.02em; margin:14pt 0 5pt; color:var(--ink-strong)}
+  h3.first{margin-top:0}
+  p{margin:0 0 7pt}
+  .lede{font-size:10.5pt; font-weight:500; line-height:1.45; margin:0 0 8pt; color:var(--ink)}
+  .mute{color:var(--ink-mute)}
+  .small{font-size:9pt; line-height:1.55}
+  .xs{font-size:8pt; line-height:1.5; color:var(--ink-faint)}
+  strong{font-weight:700; color:var(--ink-strong)}
+  .rule{height:1px; background:var(--rule); margin:8pt 0}
+  .rule.dark{height:2px; background:var(--ink-strong); margin:8pt 0 7pt}
+
+  /* 화면 4장 */
+  .shots{display:grid; grid-template-columns:repeat(4,1fr); gap:6mm; margin:6mm 0 4mm}
+  .shot img{width:100%; aspect-ratio:500/940; object-fit:cover; object-position:top center; display:block; border-radius:3mm; background:#F4F5F7}
+  .shot .no{font-size:8pt; font-weight:800; letter-spacing:.1em; color:var(--accent); margin-top:4mm}
+  .shot .nm{font-size:10pt; font-weight:800; margin-top:1.5mm; color:var(--ink-strong)}
+  .shot .ds{font-size:8.5pt; line-height:1.45; color:var(--ink-mute); margin-top:1mm}
+
+  /* 2단 */
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:9mm}
+  .cols3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:7mm}
+
+  ul{margin:0 0 8pt; padding-left:0; list-style:none}
+  li{position:relative; padding-left:11pt; margin-bottom:3.5pt; font-size:9.5pt; line-height:1.5}
+  li::before{content:""; position:absolute; left:0; top:6.5pt; width:3.5pt; height:3.5pt; border-radius:50%; background:var(--ink-faint)}
+  li.y::before{background:var(--ok)}
+  li.n::before{background:var(--stop)}
+  li.a::before{background:var(--accent)}
+
+  .kv{font-size:9.5pt; margin-bottom:3pt; display:flex; gap:6pt; align-items:baseline}
+  .kv b{flex:0 0 46pt; color:var(--ink-strong)}
+  .kv > span{flex:1 1 auto; min-width:0}
+
+  /* 연락처 · QR */
+  .contact{display:grid; grid-template-columns:1fr 26mm; gap:8mm; align-items:end; margin-top:6mm}
+  .qr img{width:26mm; height:26mm; display:block}
+  .qr .cap{font-size:7pt; letter-spacing:.06em; color:var(--ink-faint); text-align:center; margin-top:1.5mm}
+  .fill{display:inline-block; min-width:42mm; border-bottom:1px solid var(--ink-faint); height:1.05em}
+  .fillwide{display:block; border-bottom:1px solid var(--rule); height:1.35em; margin-bottom:2mm}
+
+  .foot{position:absolute; left:15mm; right:15mm; bottom:10mm; font-size:7.5pt; color:var(--ink-faint);
+        display:flex; justify-content:space-between; letter-spacing:.04em}
+
+  /* 대사 박스 */
+  .line{font-size:14pt; font-weight:800; line-height:1.4; letter-spacing:-0.03em; color:var(--ink-strong); margin:3mm 0 2mm}
+  .qbox{margin-bottom:7mm}
+  .qbox .q{font-size:11pt; font-weight:800; color:var(--ink-strong); margin-bottom:2mm}
+  .qbox .why{font-size:8.5pt; color:var(--ink-mute); margin-bottom:3mm}
+
+  .num{font-size:8pt; font-weight:800; letter-spacing:.12em; color:var(--accent)}
+  .chk{font-size:9.5pt; margin-bottom:3.5pt; padding-left:14pt; position:relative}
+  .chk::before{content:""; position:absolute; left:0; top:3.4pt; width:8pt; height:8pt; border:1px solid var(--ink-faint); border-radius:1pt}
+
+  @page{ size:A4; margin:0 }
+  @media print{
+    .page{break-after:page; min-height:auto; height:297mm}
+    .page + .page{border-top:0}
+    .page:last-child{break-after:auto}
+    a{color:inherit; text-decoration:none}
+  }
+</style>
+
+<style>
+  .frm{display:grid; grid-template-columns:52pt 1fr; gap:0 8pt; margin-bottom:2.5mm; align-items:baseline}
+  .frm b{font-size:9pt; color:var(--ink-strong)}
+  .frm .ln{border-bottom:1px solid var(--rule); height:1.3em}
+  .tbl{width:100%; border-collapse:collapse; margin:2mm 0 3mm}
+  .tbl th{font-size:8pt; letter-spacing:.08em; color:var(--ink-faint); text-align:left; font-weight:700; padding:0 0 2mm}
+  .tbl td{font-size:9pt; padding:2.6mm 0; vertical-align:bottom}
+  .tbl tr + tr td{border-top:1px solid var(--rule)}
+  .tbl td.w{width:34%} .tbl td.n{width:20%}
+  .tbl td .ln{display:block; border-bottom:1px solid var(--rule); height:1.15em; max-width:26mm}
+  .grp{margin:0 0 4mm}
+  .grp > .chk{font-weight:800; margin-bottom:2mm}
+  .sub{padding-left:14pt}
+  .sub .row{display:grid; grid-template-columns:1fr auto auto; gap:0 6pt; font-size:9pt; align-items:baseline; margin-bottom:1.6mm}
+  .sub .row .c{white-space:nowrap; padding-left:13pt; position:relative; color:var(--ink-mute)}
+  .sub .row .c::before{content:""; position:absolute; left:0; top:2.9pt; width:7.5pt; height:7.5pt; border:1px solid var(--ink-faint); border-radius:1pt}
+  .sub .row .lbl{color:var(--ink-strong)}
+  .note{font-size:8pt; color:var(--ink-faint); line-height:1.5; margin:1mm 0 0}
+  .sign{display:grid; grid-template-columns:1fr 1fr; gap:9mm; margin-top:3mm}
+
+  /* 1쪽에 맞추기 — 서명 서식은 넘기면 못 쓴다 */
+  body{font-size:10pt; line-height:1.5}
+  .page{padding:8mm 13mm}
+  .eyebrow{margin-bottom:5pt}
+  h1{font-size:18pt; margin-bottom:6pt}
+  h2{font-size:11pt; margin-bottom:5pt}
+  h3{margin:0 0 3.5pt; font-size:9.5pt}
+  .lede{font-size:9.5pt; line-height:1.38; margin-bottom:5pt}
+  .rule{margin:5pt 0}
+  .rule.dark{margin:5pt 0 4pt}
+  li{margin-bottom:2pt; font-size:8.8pt; line-height:1.42}
+  .tbl td{padding:1.7mm 0; font-size:8.8pt}
+  .grp{margin-bottom:2.4mm}
+  .frm{margin-bottom:1.6mm}
+  .sub .row{margin-bottom:1.2mm; font-size:8.8pt; grid-template-columns:1fr 23mm 23mm}
+  .foot{bottom:6mm}
+  .note{margin-top:0.6mm}
+  .sign{margin-top:2.5mm}
+  .contact{margin-top:2.5mm}
+</style>
+</head>
+<body>
+
+<section class="page">
+  <p class="eyebrow">개인정보 보호법 제21조 · 같은 법 시행령 제16조</p>
+  <h1>개인정보 파기 확인서</h1>
+  <p class="lede">아래 파일럿에서 처리한 개인정보를 <strong>복원 불가능한 방법으로 파기하였음</strong>을 확인합니다.</p>
+
+  <div class="rule dark"></div>
+
+  <h2>파일럿 개요</h2>
+  <div class="cols">
+    <div>
+      <div class="frm"><b>기관명</b><span class="ln"></span></div>
+      <div class="frm"><b>파일럿</b><span class="small">하루안부 케어 커뮤니케이션 파일럿</span></div>
+      <div class="frm"><b>수행 주체</b><span class="small">하루안부 팀 &middot; 김지욱 · 손예찬 · 고해은</span></div>
+    </div>
+    <div>
+      <div class="frm"><b>기간</b><span class="ln"></span></div>
+      <div class="frm"><b>파기 사유</b><span class="small">처리 목적 달성 (파일럿 종료)</span></div>
+      <div class="frm"><b>파기 실시일</b><span class="ln"></span></div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>파기 대상</h2>
+  <table class="tbl">
+    <tr><th>구분</th><th>항목</th><th>건수</th></tr>
+    <tr><td class="w"><strong>입소자 정보</strong></td><td>성명 · 연령 · 호실 · 건강 상태 기록</td><td class="n"><span class="ln"></span></td></tr>
+    <tr><td class="w"><strong>종사자 정보</strong></td><td>성명 · 소속 · 계정 정보</td><td class="n"><span class="ln"></span></td></tr>
+    <tr><td class="w"><strong>보호자 정보</strong></td><td>성명 · 관계 · 연락처</td><td class="n"><span class="ln"></span></td></tr>
+    <tr><td class="w"><strong>기타</strong></td><td>현장 인터뷰 기록 · 촬영물</td><td class="n"><span class="ln"></span></td></tr>
+  </table>
+
+  <div class="rule"></div>
+
+  <h2>파기 방법 — 해당하는 곳에 표시</h2>
+
+  <div class="grp">
+    <div class="chk">전자적 파일 — 복원 불가능한 방법으로 영구 삭제 <span class="small mute">(시행령 제16조 제1항 제1호)</span></div>
+    <div class="sub">
+      <div class="row"><span class="lbl">운영 데이터베이스</span><span class="c">삭제 완료</span><span class="c">해당 없음</span></div>
+      <div class="row"><span class="lbl">백업본 &nbsp;<span class="mute small">보존주기 __________</span></span><span class="c">삭제 완료</span><span class="c">해당 없음</span></div>
+      <div class="row"><span class="lbl">클라우드 스냅샷</span><span class="c">삭제 완료</span><span class="c">해당 없음</span></div>
+      <div class="row"><span class="lbl">팀원 개인기기 사본</span><span class="c">삭제 완료</span><span class="c">미보유</span></div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="chk">종이 기록물 · 인쇄물 — 파쇄 또는 소각 <span class="small mute">(시행령 제16조 제1항 제2호)</span></div>
+    <div class="sub">
+      <div class="row"><span class="lbl">현장 메모 · 출력물</span><span class="c">파쇄 완료</span><span class="c">해당 없음</span></div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="chk">익명처리 후 보존 <span class="small mute">(개인정보 보호법 제58조의2)</span></div>
+    <div class="sub">
+      <div class="frm"><b>대상</b><span class="ln"></span></div>
+      <p class="note">특정 개인을 알아볼 수 없도록 처리하였으며, <strong>재식별을 시도하지 않습니다.</strong>
+      가명처리는 익명처리에 해당하지 않으므로 이 항목으로 처리하지 않습니다.</p>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>제3자 제공 여부</h2>
+  <div class="sub" style="padding-left:0">
+    <div class="row" style="grid-template-columns:auto auto 1fr"><span class="c">제공한 사실이 없음</span><span class="c">제공분 회수 · 파기 완료 (내역 별첨)</span><span></span></div>
+  </div>
+
+  <div class="rule dark"></div>
+
+  <h2>확인 사항</h2>
+  <div class="cols">
+    <ul>
+      <li class="a">위 개인정보를 <strong>파일럿 목적 외의 용도로 이용하지 않았습니다.</strong></li>
+      <li class="a">파기 후 <strong>복원 가능한 사본을 보유하고 있지 않습니다.</strong></li>
+    </ul>
+    <ul>
+      <li class="a">결과 공개 시 <strong>기관명 공개 여부는 기관이 결정</strong>합니다.</li>
+      <li class="a">기관이 요청하면 파기 관련 추가 자료를 제출합니다.</li>
+    </ul>
+  </div>
+
+  <div class="sign">
+    <div>
+      <h3 class="first">파기 책임자 — 하루안부 팀</h3>
+      <div class="frm"><b>성명</b><span class="ln"></span></div>
+      <div class="frm"><b>서명</b><span class="ln"></span></div>
+      <div class="frm"><b>작성일</b><span class="ln"></span></div>
+    </div>
+    <div>
+      <h3 class="first">기관 확인</h3>
+      <div class="frm"><b>기관명</b><span class="ln"></span></div>
+      <div class="frm"><b>담당자</b><span class="ln"></span></div>
+      <div class="frm"><b>서명</b><span class="ln"></span></div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+  <div class="contact" style="align-items:center">
+    <div>
+      <!-- 전화 표기 제거 (2026-08-09) — 사유와 복원법은 KHF_인쇄물.html 같은 자리 주석 참조.
+           번호가 생기면 ` &middot; 전화 010-0000-0000` 을 이메일 뒤에 붙인다. -->
+      <div class="kv"><b>담당</b> <span>하루안부 팀 손예찬 &middot; team@haruanbu.site</span></div>
+      <p class="xs" style="margin:2pt 0 0">본 확인서는 기관과 하루안부 팀이 각 1부씩 보관합니다. 파기 관련 문의는 위 연락처로 받습니다.</p>
+    </div>
+    <div class="qr">
+      <img src="../assets/qr_haruanbu.svg" alt="haruanbu.site QR" style="width:19mm;height:19mm">
+      <div class="cap">haruanbu.site</div>
+    </div>
+  </div>
+
+  <div class="foot"><span>하루안부 HARU ANBU · 개인정보 파기 확인서</span><span>2026</span></div>
+</section>
+
+</body>
+</html>
