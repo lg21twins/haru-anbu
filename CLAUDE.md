@@ -109,7 +109,7 @@ Absent now: `하루안부v2` (only a stale `.gitignore` rule remains); the old D
 
 - `main` = PR #9 (2026-09-03, 로컬 Pretendard 서브셋). 그 뒤 2026-07 의 `chore/cleanup-split-20260712` 계열은 PR #4~#9 로 전부 병합됐다 —
   예전 이 자리에 적혀 있던 "local-only, no PR" 는 더 이상 사실이 아니다.
-- 현재 브랜치 `chore/opus55-refresh-20261115` (← `chore/deep-cleanup-20260925` ← `feat/presentation-tour-20260911`). **upstream 없음, 커밋 안 됨.**
+- 현재 브랜치 `chore/opus55-refresh-20261115` (← `chore/deep-cleanup-20260925` ← `feat/presentation-tour-20260911`). 2026-11-26 커밋·push 완료 → **PR #11** (투어 `c3dc9ba` 포함, 미병합). 작업 폴더 08·09·10 도 이때 처음 올라갔다(편입_포트폴리오·백업·QA 는 `.gitignore`). `main` 은 보호 설정됨 — PR 로만 변경(승인 0명, force push 금지). 저장소는 **공개**다.
   발표용 투어 커밋 `c3dc9ba` 는 main 에 **없다** → haruanbu.site 에는 아직 투어 개선이 나가지 않았다.
 - 이 브랜치의 미커밋 작업(2026-11-15): 쇼케이스 ko·en 최적화/접근성/반응형 수정, 점검 스크립트 6종 + 측정 서버(`07_디자인/scripts/`:
   `showcase_perf.py` · `showcase_sections.py` · `responsive_sweep.py` · `showcase_a11y.py` · `occluded_text.py` · `dead_css.py` · `measure_server.py`), 쇼케이스 README 재작성,
@@ -130,7 +130,7 @@ Absent now: `하루안부v2` (only a stale `.gitignore` rule remains); the old D
 
 ## Pending Work
 
-1. 이 브랜치를 커밋 → push → PR (사용자 요청 시). 다른 세션의 미커밋 파일과 섞지 않는다.
+1. PR #11 병합 여부(병합 = haruanbu.site 배포) — 사용자 결정.
 2. 쇼케이스 남은 사용성: 폰에서 "자세히 알아보기" 텍스트 높이 21px(누르는 면적은 `::after` 로 44px 확보돼 있음), 가로 폰(844×390) 릴레이 양끝 베젤 8px.
    (Space·↓ 투어 가로채기는 2026-11-15 해결 — 투어가 꺼져 있을 땐 Enter 만 깨운다. 푸터는 `--brand-blue-600` 유지로 결정.)
 3. `.claude/settings.local.json` 의 Stop 훅이 없는 경로(`shonz_vibe/care_platform/…`)에 쓴다 — 작업로그에 "세션 종료" 자동 기록 193개가 쌓여 있다. 정리 여부 사용자 확인.
