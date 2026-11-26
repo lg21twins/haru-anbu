@@ -71,3 +71,21 @@ haru-anbu-showcase-v8-bundle/Mockup-templates/iPad Pro 12.9 - Silver - Landscape
 09_포트폴리오/인스타_출력
 # 발표 원본 자료 — 사이트가 쓰는 음성·이미지는 쇼케이스 번들 안 발표/ 에 따로 있다
 05_발표
+
+# ── 2026-11-15 발표/ 의 TTS 제작용 작업 페이지 — 사이트·투어 어디에서도 링크하지 않는다 ──
+# 음성을 뽑을 때 대본을 복붙하고 음원을 맞춰 보던 일회성 도구라 공개 대상이 아니다.
+# 파일은 저장소에 남긴다(음성을 다시 뽑을 때 필요). 발표자가 쓰는 뷰
+# (06_발표뷰·09_나레이션뷰·대본_발표용)와 음성 mp3 는 그대로 서빙된다.
+haru-anbu-showcase-v8-bundle/발표/04_TTS대본_일레븐랩스.html
+haru-anbu-showcase-v8-bundle/발표/05_음원확인.html
+haru-anbu-showcase-v8-bundle/발표/07_TTS_재추출_11개.html
+haru-anbu-showcase-v8-bundle/발표/08_음원매칭_확인.html
+haru-anbu-showcase-v8-bundle/발표/09_나레이션_TTS복붙.html
+
+# ── 2026-11-26 팀 공유용으로 저장소에 새로 올린 작업 폴더 — 배포 진입점에서 참조 0건 ──
+# 저장소(팀원 협업)에는 두되 haruanbu.site 로 서빙할 이유가 없다. 293MB 중 대부분이 여기다.
+10_사업계획서
+09_포트폴리오
+_작업파일
+07_디자인/_리디자인_에디토리얼_20260731
+07_디자인/_리디자인시안_20260731
