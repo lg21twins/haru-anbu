@@ -28,7 +28,7 @@ BUDGET="3"
 DRY_RUN=0
 NAME=""
 BODY=""
-CLAUDE_MODEL="${CLAUDE_MODEL:-claude-sonnet-4-6}"
+CLAUDE_MODEL="${CLAUDE_MODEL:-claude-sonnet-5-5}"
 CODEX_MODEL="${CODEX_MODEL:-}"          # empty = codex default
 CODEX_EFFORT="${CODEX_EFFORT:-medium}"
 WORKTREE_ROOT="${HARU_LOOP_WORKTREE_ROOT:-/tmp/haru-anbu-loops}"
