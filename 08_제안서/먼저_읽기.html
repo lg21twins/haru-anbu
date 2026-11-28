@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하루안부 제안서 — 2026-08-13 묶음</title>
+<style>
+  :root{
+    --ink:#15181C; --ink-strong:#000; --ink-mute:#5A6068; --ink-faint:#8B929A;
+    --rule:#E3E6EA; --accent:#1E5FD6; --stop:#B3241F; --ok:#15803D; --bg:#fff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ink:#E6E9ED; --ink-strong:#fff; --ink-mute:#9AA2AB; --ink-faint:#6E767F;
+      --rule:#2A2E34; --accent:#6FA0FF; --stop:#FF7A73; --ok:#5FCB86; --bg:#111316;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+    font-size:15px; line-height:1.62; letter-spacing:-0.01em;
+    word-break:keep-all; overflow-wrap:break-word;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px; margin:0 auto; padding:56px 28px 100px}
+
+  .eyebrow{font-size:12px; font-weight:700; letter-spacing:.16em; color:var(--ink-faint); margin:0 0 12px}
+  h1{font-size:40px; line-height:1.08; letter-spacing:-0.045em; font-weight:800; margin:0 0 16px; color:var(--ink-strong)}
+  h2{font-size:20px; line-height:1.2; letter-spacing:-0.035em; font-weight:800; margin:0 0 12px; color:var(--ink-strong)}
+  h3{font-size:14px; font-weight:800; margin:0 0 6px; color:var(--ink-strong)}
+  p{margin:0 0 12px}
+  .lede{font-size:17px; line-height:1.5; margin:0 0 20px}
+  .mute{color:var(--ink-mute)}
+  .small{font-size:13px; line-height:1.55}
+  .xs{font-size:12px; line-height:1.5; color:var(--ink-faint)}
+  strong{font-weight:700; color:var(--ink-strong)}
+  .rule{height:1px; background:var(--rule); margin:34px 0 22px}
+  .rule.dark{height:2px; background:var(--ink-strong); margin:34px 0 22px}
+
+  a{color:inherit}
+  .card{display:block; text-decoration:none; color:inherit; padding:14px 0; border-top:1px solid var(--rule)}
+  .card:first-of-type{border-top:0}
+  .card:hover h3{color:var(--accent)}
+  .card .row{display:grid; grid-template-columns:1fr auto; gap:16px; align-items:baseline}
+  .card .pg{font-size:12px; font-weight:800; color:var(--accent); white-space:nowrap}
+  .card .ds{font-size:13px; line-height:1.5; color:var(--ink-mute); margin-top:3px}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:28px}
+  @media (max-width:640px){ .grid{grid-template-columns:1fr} .wrap{padding:36px 20px 80px} h1{font-size:30px} }
+
+  .hero{display:block; text-decoration:none; color:inherit; padding:20px 0 22px; border-top:2px solid var(--ink-strong); border-bottom:1px solid var(--rule)}
+  .hero .k{font-size:11px; font-weight:800; letter-spacing:.14em; color:var(--accent); margin-bottom:8px}
+  .hero h2{font-size:26px; margin-bottom:6px}
+  .hero:hover h2{color:var(--accent)}
+
+  .dday{display:grid; grid-template-columns:64px 1fr; gap:0 14px; padding:9px 0; border-top:1px solid var(--rule); font-size:13.5px; align-items:baseline}
+  .dday .d{font-weight:800; color:var(--ink-strong)}
+  .dday .d.hot{color:var(--stop)}
+
+  .note{font-size:13px; line-height:1.55; color:var(--ink-mute); padding-left:14px; position:relative}
+  .note::before{content:""; position:absolute; left:0; top:6px; bottom:6px; width:2px; background:var(--rule)}
+
+  ul{margin:0 0 12px; padding-left:0; list-style:none}
+  li{position:relative; padding-left:14px; margin-bottom:5px; font-size:13.5px; line-height:1.5}
+  li::before{content:""; position:absolute; left:0; top:8px; width:4px; height:4px; border-radius:50%; background:var(--ink-faint)}
+  li.n::before{background:var(--stop)}
+  li.y::before{background:var(--ok)}
+
+  code{font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12.5px;
+       background:var(--rule); padding:1px 5px; border-radius:3px}
+  .foot{margin-top:56px; padding-top:18px; border-top:1px solid var(--rule); font-size:12px; color:var(--ink-faint)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">하루안부 · 제안서 묶음 · 2026-08-13</p>
+  <h1>여기서 시작한다</h1>
+  <p class="lede">제안 활동 일체를 한 폴더에 담았다.
+  <strong>지금 집어야 할 것은 번호 붙은 폴더 넷뿐이고</strong>, 나머지는 전부 <code>_전체자료/</code> 안에 있다.</p>
+
+  <div class="rule dark"></div>
+
+  <a class="hero" href="1_교수님께_보낼것/하루안부_종합보고.pdf">
+    <div class="k">교수님께는 이거 하나만 보낸다 · A4 70쪽</div>
+    <h2>제안 종합 보고</h2>
+    <p class="small mute" style="margin:0 0 10px">세 문서를 한 권으로 묶고 앞에 요약 4쪽을 붙였다.
+    <strong>앞 4쪽이 단독으로 완결된다</strong> — 거기까지만 읽어도 뭘 했고 뭘 부탁하는지 다 나온다.</p>
+    <p class="xs" style="margin:0">1 표지 · 2 <strong>지금까지 한 일</strong>(숫자) · 3 <strong>한 장 요약</strong> · 4 목차
+    &nbsp;|&nbsp; 1부 5쪽 · 2부 37쪽 · 3부 53쪽</p>
+  </a>
+  <p class="note" style="margin-top:14px"><code>1_교수님께_보낼것/</code> 폴더에
+  <strong>PDF 1개 · 메일 본문 · 카톡 문안</strong>만 들어 있다. 첨부는 그 PDF 하나다.
+  <strong>메일을 먼저 보내고 카톡은 그 뒤에</strong> 보낸다 — 카톡이 먼저 가면 "무슨 메일요?"가 된다.</p>
+
+  <div class="rule"></div>
+  <a class="hero" href="3_명함받고_보낼것/하루안부_짧은제안서.pdf" style="border-top-width:1px">
+    <div class="k">명함 받은 뒤 사흘 안에 보낸다 · A4 8쪽</div>
+    <h2>짧은 제안서</h2>
+    <p class="small mute" style="margin:0 0 10px">부스에서 A4 한 장은 이미 드렸고 70쪽은 아직 부담스럽다.
+    <strong>그 사이를 메우는 유일한 문서다.</strong> 받는 쪽이 시설·사업자라 학교 내부 사정은 빼고 썼다.</p>
+    <p class="xs" style="margin:0">2 지금까지 한 일 · 3 왜 지금인가 · 5 <strong>되어 있는 것 / 안 된 것</strong>
+    · 6 <strong>일부러 안 넣은 것</strong> · 7 부탁드리는 것</p>
+  </a>
+
+  <p class="note" style="margin-top:14px"><code>2_코엑스에_들고갈것/</code> 폴더에
+  인쇄물과 서식이 모여 있다. <strong>부스에서 종이로 주는 것은 A4 한 장이 전부다</strong> —
+  인쇄물 4쪽 중 앞 2쪽이 그 한 장의 앞뒤이고, 뒤 2쪽은 우리가 쓰는 카드와 메모지다.
+  <strong>70쪽은 들고 가지 않는다.</strong></p>
+
+  <div class="rule"></div>
+  <a class="hero" href="4_KB에_보낼것/메일_본문.txt" style="border-top-width:1px">
+    <div class="k">지금 보낼 수 있다 · 메일 본문</div>
+    <h2>KB골든라이프케어</h2>
+    <p class="small mute" style="margin:0 0 10px">조사한 제출처 가운데 <strong>공식 제안 창구가 공개된 유일한 곳</strong>이다
+    — <code>kbglc00610@kbgoldenlifecare.co.kr</code>. 다른 곳은 대표번호로 전화해 부서를 찾아 들어가야 한다.</p>
+    <p class="xs" style="margin:0"><strong>첨부는 붙이지 않는다.</strong> 본문만 보내고, 회신이 오면 그때 짧은제안서 8쪽 하나만.
+    <strong>team@haruanbu.site 메일함이 열리기 전에는 보내지 않는다.</strong></p>
+  </a>
+
+  <div class="rule"></div>
+  <a class="hero" href="_전체자료/08_제안서/PDF/하루안부_자료지도.pdf" style="border-top-width:1px">
+    <div class="k">우리끼리 볼 것 · A4 2쪽</div>
+    <h2>자료지도</h2>
+    <p class="small mute" style="margin:0">무엇이 있고 · 언제 쓰고 · 8~9월 날짜가 뭐고 · 말하는 방식이 뭔지.
+    <strong>교수님께 보내는 문서가 아니다</strong> — 내부 색인이다.</p>
+  </a>
+
+  <div class="rule"></div>
+  <h2>종합보고 안에 뭐가 들어 있나</h2>
+  <p class="small mute">아래 세 개를 1·2·3부로 묶은 것이다. <strong>따로 보낼 일은 없지만</strong> 개별 파일도 남겨 뒀다.
+  만들었다 → 한계를 알았다 → 갈 곳을 찾았다.</p>
+
+  <a class="card" href="_전체자료/08_제안서/PDF/하루안부_제안서.pdf">
+    <div class="row"><h3>1부 · 서비스 제안서</h3><span class="pg">32쪽</span></div>
+    <div class="ds">무엇을 만들었는가. 제출의 본체 — 요청이 온 뒤에 보낸다</div>
+  </a>
+  <a class="card" href="_전체자료/08_제안서/PDF/하루안부_한계와법적리스크.pdf">
+    <div class="row"><h3>2부 · 한계와 법적 리스크</h3><span class="pg">16쪽</span></div>
+    <div class="ds">왜 바로 현업에 못 가는가. 먼저 꺼내지 않는다 — 질문이 오면 답으로</div>
+  </a>
+  <a class="card" href="_전체자료/08_제안서/PDF/하루안부_제출전략.pdf">
+    <div class="row"><h3>3부 · 제출 전략</h3><span class="pg">18쪽</span></div>
+    <div class="ds">그래서 어디로 가는가. 8월 캘린더와 제출처 전수</div>
+  </a>
+
+  <div class="rule"></div>
+  <h2>KHF에 갈 때 — 8/19~21 · COEX C·D홀</h2>
+
+  <a class="card" href="2_코엑스에_들고갈것/하루안부_KHF팀브리핑.pdf">
+    <div class="row"><h3>팀 브리핑</h3><span class="pg">2쪽</span></div>
+    <div class="ds"><strong>팀 3인이 가기 전에 외우는 것.</strong> 현장에서 필요한 건 이 두 장뿐</div>
+  </a>
+  <a class="card" href="2_코엑스에_들고갈것/하루안부_KHF인쇄물.pdf">
+    <div class="row"><h3>KHF 인쇄물</h3><span class="pg">4쪽</span></div>
+    <div class="ds">소개서 양면 <strong>20부</strong> · 현장카드 3부 · 인터뷰 메모지 30부</div>
+  </a>
+  <a class="card" href="2_코엑스에_들고갈것/하루안부_의향확인서.pdf">
+    <div class="row"><h3>파일럿 참여 의향 확인서</h3><span class="pg">1쪽</span></div>
+    <div class="ds">현장에서 받는 서식. 법적 구속력이 없음을 첫 줄에 밝힌다. 넉넉히 인쇄</div>
+  </a>
+  <a class="card" href="2_코엑스에_들고갈것/하루안부_데이터파기확인서.pdf">
+    <div class="row"><h3>개인정보 파기 확인서</h3><span class="pg">1쪽</span></div>
+    <div class="ds"><strong>끝날 때가 아니라 시작 전에 보여주는 서식.</strong> 시설이 망설이는 진짜 이유에 대한 답</div>
+  </a>
+  <a class="card" href="2_코엑스에_들고갈것/하루안부_KHF현장실행팩.pdf">
+    <div class="row"><h3>현장 실행팩</h3><span class="pg">15쪽</span></div>
+    <div class="ds">사흘 라우트 · 30초 스크립트 · 반론 카드 6종. 사전 숙지용</div>
+  </a>
+
+  <div class="rule dark"></div>
+  <h2>남은 날 — 사람이 정해야 움직인다</h2>
+  <div class="dday"><span class="d hot">D-0</span><span>8/13 · <strong>MUSE 마감</strong> <span class="mute">— $219 + 행정비 $30 = $249, 학생 할인 없음(IDA 학생 €40의 약 6배). <strong>결정일로 잡았던 8/10은 지났다</strong> — 안 내는 것으로 두면 그대로 흘러간다</span></span></div>
+  <div class="dday"><span class="d hot">D-1</span><span>8/12 · <strong>명함 + NFC 인쇄 · 의료진 화면 A안/B안 결정</strong> <span class="mute">— 팀 이메일이 정해져야 움직인다. 전화번호는 없어서 인쇄물에서 그 줄을 뺐다</span></span></div>
+  <div class="dday"><span class="d hot">D-1</span><span>8/14(금) · <strong>인쇄물 20부 출력 — 마지막 영업일</strong> <span class="mute">— 8/15(토) 광복절 · 8/17(월) 대체공휴일이라 8/15~17은 인쇄소가 닫힌다. 밀리면 남는 날은 8/18(화) 하루</span></span></div>
+  <div class="dday"><span class="d hot">D-2</span><span>8/15 · <strong>IDA 제출</strong> <span class="mute">— 학생 €40. 온라인이라 공휴일 무관. 자료는 다 있고 계정·카드만 있으면 된다</span></span></div>
+  <div class="dday"><span class="d">D-5</span><span>8/18 · 경남 K-디자인 접수 시작(무료) <span class="mute">— KHF 사전등록은 8/9 완료</span></span></div>
+  <div class="dday"><span class="d">D-6</span><span>8/19~21 · <strong>KHF 2026</strong> <span class="mute">— 수 정찰 / 목 본전(12~16시가 핵심) / 금 회수</span></span></div>
+
+  <p class="note" style="margin-top:18px">가장 급한 건 MUSE 결정이 아니라 <strong>팀 이메일</strong>이다.
+  명함 · 인쇄물 · 의향확인서 · 파기확인서가 전부 거기 물려 있고,
+  8/12 인쇄를 놓치면 KHF에 명함 없이 간다.</p>
+
+  <div class="rule dark"></div>
+  <h2>폴더 구성</h2>
+
+  <p class="small mute">폴더 이름에 번호가 붙은 셋만 실제로 밖으로 나간다.
+  <strong>지금 뭘 집어야 하나</strong>가 문제였지 파일이 많은 게 문제가 아니었다.</p>
+
+  <div class="grid">
+    <div>
+      <h3>밖으로 나가는 것 — 셋뿐</h3>
+      <ul>
+        <li class="y"><code>1_교수님께_보낼것/</code> — <strong>PDF 1개 + 메일 본문 + 카톡 문안</strong></li>
+        <li class="y"><code>2_코엑스에_들고갈것/</code> — 인쇄물·서식 5종 + <code>읽어보기.txt</code>.
+          <strong>인쇄해서 들고 갈 것과 우리가 읽을 것이 갈려 있다</strong></li>
+        <li class="y"><code>3_명함받고_보낼것/</code> — 짧은제안서 8쪽 + <code>읽어보기.txt</code></li>
+      </ul>
+      <p class="xs">폴더마다 <code>읽어보기.txt</code>가 있다. 몇 부 인쇄하고 언제 보내는지가 거기 적혀 있다.</p>
+    </div>
+    <div>
+      <h3>_전체자료/ — 물어보실 때만</h3>
+      <ul>
+        <li><code>08_제안서/PDF/</code> — 완성본 11종 전부</li>
+        <li><code>08_제안서/원고/</code> — 텍스트 원본 24종 (00~23)</li>
+        <li><code>08_제안서/시각화/</code> — PDF를 뽑는 HTML 11종. <strong>이름이 같은 것끼리 짝</strong></li>
+        <li><code>08_제안서/README.md</code> · <code>점검.py</code> — 사용법 · 위반 검사기</li>
+        <li><code>참고리서치/</code> — 제안서의 근거가 된 원자료 10종</li>
+        <li><code>작업기록_제안서.md</code> — <strong>무엇을 왜 그렇게 정했는지</strong></li>
+        <li class="n"><code>07_디자인/tokens/</code> — 시각화 HTML이 참조하는 CSS.
+          <strong>지우면 HTML이 전부 깨진다</strong></li>
+      </ul>
+      <p class="xs">원고와 참고리서치는 <code>.md</code> · <code>.txt</code>다.
+      브라우저 대신 <strong>텍스트 편집기나 VS Code로</strong> 여는 편이 읽기 좋다.</p>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+  <h2>시각화 HTML — 브라우저에서 바로 본다</h2>
+  <p class="small mute">PDF와 같은 내용인데 화면에서 스크롤로 읽힌다. 링크를 누르면 열린다.</p>
+  <div class="grid">
+    <div>
+      <a class="card" href="_전체자료/08_제안서/시각화/짧은_제안서.html"><h3>짧은 제안서</h3><div class="ds">8쪽 PDF의 원본 — A4 8쪽 고정 조판이라 내용을 늘리면 잘린다</div></a>
+      <a class="card" href="_전체자료/08_제안서/시각화/제안서_시각화.html"><h3>제안서</h3><div class="ds">27쪽 PDF의 원본</div></a>
+      <a class="card" href="_전체자료/08_제안서/시각화/한계와_법적리스크_시각화.html"><h3>한계와 법적 리스크</h3><div class="ds">조문 단위 대조 · 검증 등급 표기</div></a>
+      <a class="card" href="_전체자료/08_제안서/시각화/제출전략_시각화.html"><h3>제출전략</h3><div class="ds">8월 캘린더 · 제출처 전수</div></a>
+      <a class="card" href="_전체자료/08_제안서/시각화/자료지도.html"><h3>자료지도</h3><div class="ds">한눈에 보는 지도</div></a>
+      <a class="card" href="_전체자료/08_제안서/시각화/현장실행팩_시각화.html"><h3>현장 실행팩</h3><div class="ds">KHF 사흘 대본</div></a>
+    </div>
+    <div>
+      <a class="card" href="_전체자료/08_제안서/시각화/KHF_팀브리핑.html"><h3>KHF 팀 브리핑</h3><div class="ds">가기 전에 외우는 두 장</div></a>
+      <a class="card" href="_전체자료/08_제안서/시각화/KHF_인쇄물.html"><h3>KHF 인쇄물</h3><div class="ds">소개서 · 현장카드 · 메모지</div></a>
+      <a class="card" href="_전체자료/08_제안서/시각화/의향확인서.html"><h3>의향 확인서</h3><div class="ds">현장에서 받는 서식</div></a>
+      <a class="card" href="_전체자료/08_제안서/시각화/데이터파기확인서.html"><h3>파기 확인서</h3><div class="ds">개인정보보호법 제21조 근거</div></a>
+    </div>
+  </div>
+
+  <div class="rule dark"></div>
+  <h2>말하는 방식 — 여기만은 틀리면 안 된다</h2>
+  <p class="small mute">여러 회차의 검증을 거쳐 확정됐다. 전문은 <code>08_제안서/README.md</code> §3.</p>
+  <ul>
+    <li><strong>요청은 2단계다.</strong> 지금 = 현장 인터뷰 2시간 · 자문 / 나중 = 8주 파일럿(개발 2~4개월 후)</li>
+    <li>시장 규모 — 문서엔 <strong>6,361개소</strong>(2025.12 통계연보), 구두엔 <strong>6,370개소</strong>(2026 1분기 경영공시)</li>
+    <li>인력 전망 — <strong>1.5~1.9명 → 3.0~3.7명</strong>(KDI 2026.4). "최대 3.7"로 쓰지 않는다</li>
+    <li>차별점 — <strong>"장기요양 입소시설을 대상으로는"</strong> 본인 앱을 확인하지 못했다. 한정어 필수</li>
+    <li>입력 부담 — 시행규칙 <strong>별지 제16호서식</strong>이 이미 요구하는 항목이다</li>
+    <li>가격 — 아직 안 정했다. <strong>다만 시장이 월 3만 원대인 건 안다</strong></li>
+    <li>감시 우려 — 입력 통계 · 미입력 알림 · 작성자 비교는 <strong>만들지 않는다</strong></li>
+    <li>영문 용어 — Family / Caregiver / Clinician / Resident</li>
+  </ul>
+  <p class="small" style="margin-top:14px"><strong style="color:var(--stop)">쓰지 않는 수치</strong> &nbsp;
+  KB "10개소·208억" · Brenna "민원 0건·85%" · Nourish "14개 표준" · 케어포 "14,000개 기관"
+  <span class="mute">— 전부 벤더·시설 자기보고이거나 재확인에 실패했다.</span></p>
+  <p class="note">원칙 — <strong>출처와 연도가 확인되지 않은 숫자는 쓰지 않는다.</strong>
+  말할 때는 기관명을 문장 안에 넣는다: "건보공단 기준 6,361개소입니다".</p>
+
+  <div class="rule"></div>
+  <h2>고치고 나면</h2>
+  <p class="small">원고만 고치고 시각화를 안 고치는 사고가 세 번 났다. 그래서 확정 표현을 코드로 박았다.</p>
+  <p class="small"><code>python3 08_제안서/점검.py</code> — 위반이 있으면 파일·줄번호와 올바른 표기를 같이 찍는다.
+  <strong>PDF를 다시 뽑기 전에 이걸 먼저 돌린다.</strong> 순서가 반대면 틀린 PDF를 배포하게 된다.</p>
+
+  <div class="foot">
+    이 묶음은 저장소 <code>Haru Anbu/</code>에서 2026-08-07에 복사했다.
+    원본이 갱신되면 이 폴더는 자동으로 따라오지 않는다.<br>
+    내부 보관본(<code>_원본백업_20260802/</code>, 20MB)은 읽을 값이 없어 뺐다. 필요하면 저장소에 있다.<br>
+    데스크탑의 <code>하루안부_제안서_검토_20260802/</code>는 <strong>8/2 구버전</strong>이다 — PDF 4종이고 전부 갱신됐다.
+  </div>
+
+</div>
+</body>
+</html>

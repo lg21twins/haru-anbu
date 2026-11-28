@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATOMX 레퍼런스 원본 — 확대 보기</title>
+<style>
+:root{--bg:#0e1013;--bar:#16191e;--line:#252a31;--tx:#e8ebef;--mid:#9aa3ae;--dim:#6b737e;--acc:#4d9dff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'SUIT','Pretendard',-apple-system,sans-serif;
+     -webkit-font-smoothing:antialiased;word-break:keep-all;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+header{background:var(--bar);border-bottom:1px solid var(--line);flex:0 0 auto}
+.hin{padding:11px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.brand{font-size:14px;font-weight:800;letter-spacing:-.01em}
+.brand span{color:var(--dim);font-weight:500;font-size:12.5px;margin-left:9px}
+.seg{display:flex;gap:3px;background:#1b2027;padding:3px;border-radius:9px}
+.seg button{background:none;border:0;color:var(--mid);font:inherit;font-size:12.5px;font-weight:600;
+            padding:6px 13px;border-radius:6px;cursor:pointer;transition:.14s;white-space:nowrap}
+.seg button:hover{color:var(--tx)}
+.seg button.on{background:var(--acc);color:#04101f}
+.tools{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tools button,.tools a{background:#1e242c;border:1px solid var(--line);color:var(--tx);font:inherit;
+  font-size:12px;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;text-decoration:none;transition:.14s}
+.tools button:hover,.tools a:hover{background:#262d36;border-color:#39414c}
+.zl{color:var(--mid);font-size:12px;font-variant-numeric:tabular-nums;min-width:52px;text-align:center}
+.hint{padding:0 20px 10px;color:var(--dim);font-size:11.5px}
+
+.stage{flex:1;overflow:auto;background:#0a0c0e;position:relative;cursor:grab}
+.stage.drag{cursor:grabbing}
+.stage img{display:block;margin:0 auto;background:#fff;image-rendering:auto}
+.cap{background:var(--bar);border-top:1px solid var(--line);padding:11px 20px;flex:0 0 auto;
+     display:flex;gap:18px;align-items:baseline;flex-wrap:wrap}
+.cap h2{font-size:13.5px;font-weight:700}
+.cap p{color:var(--mid);font-size:12.5px;max-width:1000px;line-height:1.55}
+.tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(77,157,255,.14);color:#8dc2ff}
+.tag--w{background:rgba(245,165,36,.14);color:#f7c46c}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hin">
+    <div class="brand">ATOMX 레퍼런스 원본<span>3507×2480px · A4 가로 297×210mm @300dpi</span></div>
+    <div class="seg">
+      <button class="on" data-i="0">01 개요·리서치판</button>
+      <button data-i="1">02 화면 갤러리판</button>
+    </div>
+    <div class="tools">
+      <button id="fit">화면맞춤</button>
+      <button id="out">축소</button>
+      <span class="zl" id="zl">100%</span>
+      <button id="in">확대</button>
+      <button id="one">실제크기</button>
+      <a id="raw" href="#" target="_blank">원본 파일 열기</a>
+    </div>
+  </div>
+  <div class="hint">드래그로 이동 · 휠 스크롤 · <b>Cmd/Ctrl + 휠</b> 로 확대축소 · <b>1</b> 실제크기 <b>0</b> 화면맞춤 <b>←/→</b> 판 전환</div>
+</header>
+
+<div class="stage" id="stage"><img id="img" alt=""></div>
+
+<div class="cap" id="cap"></div>
+
+<script>
+const P=[
+ {src:'_레퍼런스/ATOMX-01_개요리서치판_보드1원본.png',
+  t:'ATOMX-01 — 개요·리서치판',
+  d:'XR 소셜 플랫폼 "Tenper" / 프로젝트명 ATOMX. 초대형 고스트 워드마크 · 기울인 폰 2대 + 하늘 배경 + 인물 워터마크 · User Needs→Solution 2열 대응표 · Service Diagram 벤 3원 + 좌우 pill/circle 연결선 · 92% 초대형 수치 + 라인차트 · How/Who/Why/When/Where 5W 카드 그리드 · 중앙 정렬 히어로 문장.',
+  g:['보드1 원본']},
+ {src:'_레퍼런스/ATOMX-02_화면갤러리판_하루안부배치WIP_보드2원본.png',
+  t:'ATOMX-02 — 화면 갤러리판 (하루안부 배치 WIP)',
+  d:'같은 템플릿의 둘째 장인데 하루안부 화면이 이미 배치된 작업 중 상태. 보호자 홈·일일 리포트, 어르신 태블릿, 요양보호사 오늘, 의료진 웹 대시보드, AI 가이드가 들어가 있다. 가져온 장치: 지시선 콜아웃 · 번호 시퀀스 캡션 · 상태 칩 · 컬러 블롭 군집 · 번호 색이 군집의 역할색을 따라가는 규칙.',
+  g:['보드2 원본','헤드라인 카피 미교체 — "칭찬 구슬" 등 원본 템플릿 잔존']}
+];
+const W=3507, H=2480;
+const img=document.getElementById('img'), stage=document.getElementById('stage');
+const zl=document.getElementById('zl'), cap=document.getElementById('cap'), raw=document.getElementById('raw');
+let i=0, z=1;
+
+function apply(){ img.style.width=(W*z)+'px'; img.style.height=(H*z)+'px'; zl.textContent=Math.round(z*100)+'%'; }
+function fit(){ z=Math.min((stage.clientWidth-32)/W,(stage.clientHeight-32)/H); apply();
+                stage.scrollLeft=0; stage.scrollTop=0; }
+function zoomAt(nz,cx,cy){
+  const r=stage.getBoundingClientRect();
+  const px=(stage.scrollLeft+(cx-r.left))/z, py=(stage.scrollTop+(cy-r.top))/z;
+  z=Math.max(.05,Math.min(4,nz)); apply();
+  stage.scrollLeft=px*z-(cx-r.left); stage.scrollTop=py*z-(cy-r.top);
+}
+function load(n){
+  i=n; const p=P[i];
+  img.src=p.src; img.alt=p.t; raw.href=p.src;
+  cap.innerHTML='<h2>'+p.t+'</h2>'+p.g.map((g,k)=>'<span class="tag'+(k?' tag--w':'')+'">'+g+'</span>').join('')+'<p>'+p.d+'</p>';
+  document.querySelectorAll('.seg button').forEach((b,k)=>b.classList.toggle('on',k===i));
+  img.onload=fit;
+}
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>load(+b.dataset.i));
+document.getElementById('fit').onclick=fit;
+document.getElementById('one').onclick=()=>{z=1;apply()};
+document.getElementById('in').onclick=()=>zoomAt(z*1.35,stage.clientWidth/2,stage.clientHeight/2);
+document.getElementById('out').onclick=()=>zoomAt(z/1.35,stage.clientWidth/2,stage.clientHeight/2);
+stage.addEventListener('wheel',e=>{ if(!(e.ctrlKey||e.metaKey))return; e.preventDefault();
+  zoomAt(z*(e.deltaY<0?1.12:1/1.12), e.clientX, e.clientY); },{passive:false});
+let dn=false,sx,sy,sl,st;
+stage.addEventListener('mousedown',e=>{dn=true;stage.classList.add('drag');sx=e.clientX;sy=e.clientY;sl=stage.scrollLeft;st=stage.scrollTop;e.preventDefault()});
+addEventListener('mousemove',e=>{if(!dn)return;stage.scrollLeft=sl-(e.clientX-sx);stage.scrollTop=st-(e.clientY-sy)});
+addEventListener('mouseup',()=>{dn=false;stage.classList.remove('drag')});
+addEventListener('keydown',e=>{
+  if(e.key==='1'){z=1;apply()} else if(e.key==='0'){fit()}
+  else if(e.key==='ArrowRight'){load((i+1)%P.length)} else if(e.key==='ArrowLeft'){load((i+P.length-1)%P.length)}
+});
+addEventListener('resize',()=>{ if(z<0.5) fit(); });
+load(0);
+</script>
+</body>
+</html>

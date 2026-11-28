@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 · 디자인 공모전 출품 리서치</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2/dist/iconify-icon.min.js"></script>
+<style>
+  :root{
+    --ink:#16181c;
+    --ink-2:#3c4047;
+    --ink-3:#6b7079;
+    --ink-4:#9aa0a8;
+    --line:#e7e8ea;
+    --line-2:#f0f1f2;
+    --surface:#ffffff;
+    --surface-2:#f7f8f9;
+    --go:#1f7a5a;       /* 지금 가능 */
+    --go-soft:#eaf4ef;
+    --soon:#9a6a17;     /* 곧 열림 */
+    --soon-soft:#f6efe1;
+    --wait:#3f5478;     /* 다음 사이클 */
+    --wait-soft:#eef1f6;
+    --no:#9a3b3b;       /* 부적격 */
+    --no-soft:#f5ecec;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Pretendard',system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:var(--surface);
+    line-height:1.6;
+    letter-spacing:-0.01em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  a{color:inherit}
+
+  /* ---- header ---- */
+  header{padding:72px 0 40px}
+  .eyebrow{
+    font-size:13px;font-weight:600;color:var(--ink-4);
+    letter-spacing:0.04em;margin-bottom:18px;
+    display:flex;align-items:center;gap:8px;
+  }
+  h1{font-size:40px;line-height:1.18;font-weight:800;letter-spacing:-0.03em}
+  .sub{margin-top:16px;font-size:17px;color:var(--ink-2);max-width:680px}
+  .meta-row{
+    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 28px;
+    font-size:13.5px;color:var(--ink-3);
+  }
+  .meta-row b{color:var(--ink-2);font-weight:600}
+
+  /* ---- urgent strip ---- */
+  .urgent{
+    margin:36px 0 8px;padding:26px 28px;background:var(--surface-2);
+    border-radius:16px;
+  }
+  .urgent h2{font-size:14px;font-weight:700;color:var(--go);
+    display:flex;align-items:center;gap:8px;letter-spacing:0.01em}
+  .urgent-list{margin-top:16px;display:grid;gap:10px}
+  .urgent-item{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .dday{
+    font-weight:800;font-size:14px;color:var(--go);min-width:62px;
+    font-variant-numeric:tabular-nums;
+  }
+  .dday.warn{color:#b0411f}
+  .urgent-item .nm{font-weight:600;font-size:15px}
+  .urgent-item .dt{font-size:13.5px;color:var(--ink-3)}
+
+  /* ---- filters ---- */
+  .filters{position:sticky;top:0;z-index:10;background:var(--surface);
+    padding:22px 0 14px;margin-top:30px}
+  .filters-inner{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .chip{
+    font-family:inherit;font-size:13.5px;font-weight:600;
+    padding:8px 15px;border-radius:999px;background:var(--surface-2);
+    color:var(--ink-2);cursor:pointer;border:none;transition:.15s;
+    display:inline-flex;align-items:center;gap:7px;
+  }
+  .chip:hover{background:#eef0f1}
+  .chip[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .chip .dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+  .dot.go{background:var(--go)}.dot.soon{background:var(--soon)}
+  .dot.wait{background:var(--wait)}.dot.no{background:var(--no)}
+
+  /* ---- group ---- */
+  .group{margin:38px 0}
+  .group-h{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+  .group-h h3{font-size:21px;font-weight:800;letter-spacing:-0.02em}
+  .group-h .cnt{font-size:13px;font-weight:700;color:var(--ink-4);
+    font-variant-numeric:tabular-nums}
+  .group-desc{font-size:14px;color:var(--ink-3);margin-bottom:22px;max-width:760px}
+
+  /* ---- cards ---- */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}}
+  .card{
+    background:var(--surface);border-radius:16px;padding:24px 24px 20px;
+    box-shadow:0 0 0 1px var(--line);transition:.18s;display:flex;flex-direction:column;
+  }
+  .card:hover{box-shadow:0 0 0 1px #d9dadd, 0 8px 28px -16px rgba(0,0,0,.22)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .card-name{font-size:18px;font-weight:800;letter-spacing:-0.02em;line-height:1.3}
+  .card-org{font-size:12.5px;color:var(--ink-4);margin-top:5px;font-weight:500}
+  .tag{
+    flex-shrink:0;font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:8px;
+    white-space:nowrap;display:inline-flex;align-items:center;gap:5px;
+  }
+  .tag.go{background:var(--go-soft);color:var(--go)}
+  .tag.soon{background:var(--soon-soft);color:var(--soon)}
+  .tag.wait{background:var(--wait-soft);color:var(--wait)}
+  .tag.no{background:var(--no-soft);color:var(--no)}
+
+  .country{font-size:12.5px;color:var(--ink-3);margin-top:10px;font-weight:600;
+    display:inline-flex;align-items:center;gap:6px}
+
+  dl.spec{margin-top:16px;display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:13.5px}
+  dl.spec dt{color:var(--ink-4);font-weight:600;white-space:nowrap}
+  dl.spec dd{color:var(--ink-2)}
+  dl.spec dd b{color:var(--ink);font-weight:700}
+  .deadline-em{color:var(--go);font-weight:700}
+  .fee-free{color:var(--go);font-weight:700}
+
+  .flags{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px}
+  .flag{font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:7px;
+    background:var(--surface-2);color:var(--ink-3);display:inline-flex;align-items:center;gap:5px}
+  .flag.yes{color:var(--go)}
+  .flag.warn{color:var(--soon)}
+  .flag.bad{color:var(--no)}
+  .flag iconify-icon{font-size:13px}
+
+  .dup{margin-top:14px;font-size:12.5px;color:var(--ink-2);
+    padding-top:13px;line-height:1.55}
+  .dup .lbl{font-weight:700;color:var(--ink-3)}
+  .card-foot{margin-top:auto;padding-top:16px}
+  .card-foot a{font-size:12.5px;font-weight:700;color:var(--ink-3);
+    text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+  .card-foot a:hover{color:var(--ink)}
+  .fit{display:inline-flex;gap:1px;color:var(--soon)}
+  .fit iconify-icon{font-size:13px}
+
+  /* ---- policy section ---- */
+  .policy{margin:60px 0 20px;padding:34px 32px;background:var(--surface-2);border-radius:18px}
+  .policy h3{font-size:20px;font-weight:800;letter-spacing:-0.02em;
+    display:flex;align-items:center;gap:9px;margin-bottom:8px}
+  .policy p.lead{font-size:14px;color:var(--ink-2);margin-bottom:22px;max-width:780px}
+  .pol-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:760px){.pol-grid{grid-template-columns:1fr}}
+  .pol-col h4{font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+  .pol-col.ok h4{color:var(--go)}
+  .pol-col.risk h4{color:var(--no)}
+  .pol-col ul{list-style:none;display:grid;gap:9px}
+  .pol-col li{font-size:13.5px;color:var(--ink-2);padding-left:22px;position:relative;line-height:1.5}
+  .pol-col li iconify-icon{position:absolute;left:0;top:3px;font-size:15px}
+  .pol-col.ok li iconify-icon{color:var(--go)}
+  .pol-col.risk li iconify-icon{color:var(--no)}
+  .pol-col li b{color:var(--ink);font-weight:700}
+
+  /* ---- footnote ---- */
+  footer{margin:50px 0 80px;padding-top:26px;font-size:12.5px;color:var(--ink-4);line-height:1.7}
+  footer .note{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px}
+  footer iconify-icon{font-size:15px;flex-shrink:0;margin-top:2px;color:var(--ink-4)}
+  .hidden{display:none!important}
+  .divider{height:1px;background:var(--line-2);margin:0}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><iconify-icon icon="fluent:trophy-24-regular"></iconify-icon>하루안부 · 출품 가능 디자인 공모전 리서치</div>
+    <h1>국내·해외 디자인 공모전<br>출품 전략 리서치</h1>
+    <p class="sub">헬스케어 케어소통 플랫폼 UI/UX(보호자·의료진·요양보호사·환자 앱 4종, 컨셉/시안 단계, 미상용화) 기준으로 27곳을 조사했습니다. 마감일·접수비·상금·컨셉/학생 자격·중복출품 정책을 한 번에 정리했습니다.</p>
+    <div class="meta-row">
+      <span><b>조사 기준일</b> 2026년 6월 25일(목)</span>
+      <span><b>지금 출품 가능</b> 7곳</span>
+      <span><b>곧 접수 시작</b> 5곳</span>
+      <span><b>환율</b> 1€≈1,450원 · 1$≈1,380원 · 1 S$≈1,070원 · 100¥≈930원</span>
+    </div>
+  </header>
+
+  <!-- URGENT -->
+  <div class="urgent">
+    <h2><iconify-icon icon="fluent:alert-urgent-24-filled"></iconify-icon>마감 임박 — 이번 주 안에 결정해야 하는 곳</h2>
+    <div class="urgent-list">
+      <div class="urgent-item"><span class="dday warn">D-1</span><span class="nm">iF Design Award 2027 (독일)</span><span class="dt">6/26 Early Bird 마감 — 단계 넘기면 €300 → €400. 단 프로부문은 학생 출품 불가</span></div>
+      <div class="urgent-item"><span class="dday">D-5</span><span class="nm">서울디자인어워드 2026</span><span class="dt">6/30 15:00 마감 · 무료 · '건강과 평화' 부문 정합성 최상</span></div>
+      <div class="urgent-item"><span class="dday">D-5</span><span class="nm">대한민국디자인전람회 제61회</span><span class="dt">6/30 17:00 마감 · 무료 · 이미 전람회 가이드 작업 중</span></div>
+      <div class="urgent-item"><span class="dday">D-5</span><span class="nm">A' Design Award (이탈리아)</span><span class="dt">6/30 Early 마감 · 업로드는 무료 — 일단 올려두고 노미네이션은 나중 결정 가능</span></div>
+      <div class="urgent-item"><span class="dday">D-5</span><span class="nm">K-Design Award 2026 (Late)</span><span class="dt">6/30 24:00 KST 마감 · 학생 $85 · 컨셉 출품 명시 허용</span></div>
+      <div class="urgent-item"><span class="dday">D-14</span><span class="nm">MUSE Design Awards (미국)</span><span class="dt">7/9 Final 마감 · $239 · 컨셉/헬스케어 카테고리 OK</span></div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <div class="filters-inner">
+      <button class="chip" data-f="all" aria-pressed="true"><iconify-icon icon="fluent:apps-list-24-regular"></iconify-icon>전체 27</button>
+      <button class="chip" data-f="go" aria-pressed="false"><span class="dot go"></span>지금 가능 7</button>
+      <button class="chip" data-f="soon" aria-pressed="false"><span class="dot soon"></span>곧 열림 5</button>
+      <button class="chip" data-f="wait" aria-pressed="false"><span class="dot wait"></span>다음 사이클 9</button>
+      <button class="chip" data-f="no" aria-pressed="false"><span class="dot no"></span>부적격·제외 6</button>
+    </div>
+  </div>
+
+  <!-- ========== GROUP 1: 지금 가능 ========== -->
+  <section class="group" data-g="go">
+    <div class="group-h"><h3>지금 출품 가능</h3><span class="cnt">오늘 6/25 기준 · 7곳</span></div>
+    <p class="group-desc">접수창이 열려 있고, 우리 컨셉/시안 단계로도 출품 자격이 되는 곳. 마감순으로 배치했습니다.</p>
+    <div class="cards">
+
+      <!-- 서울디자인어워드 -->
+      <article class="card" data-s="go">
+        <div class="card-top"><div><div class="card-name">서울디자인어워드 2026</div><div class="card-org">서울특별시 · 서울디자인재단</div></div><span class="tag go"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>D-5</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내 · 글로벌 (영어 접수)</span>
+        <dl class="spec">
+          <dt>마감</dt><dd><b class="deadline-em">6/30(화) 15:00</b></dd>
+          <dt>접수비</dt><dd><span class="fee-free">무료</span></dd>
+          <dt>시상</dt><dd>총 약 1.5억원 · 대상 약 5천만원 · 10월 DDP 시상</dd>
+          <dt>맞는 부문</dt><dd>건강과 평화 / 도시·공동체 (사회문제 해결형)</dd>
+        </dl>
+        <div class="flags">
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 우호</span>
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 가능</span>
+          <span class="flag"><iconify-icon icon="fluent:translate-16-regular"></iconify-icon>영어 전용 접수</span>
+        </div>
+        <div class="dup"><span class="lbl">중복출품 </span>가이드라인 명문 확인 권장(확인필요). 어워드 성격상 제안형에 우호적.</div>
+        <div class="card-foot"><span class="fit" title="적합도 높음"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://www.seouldesignaward.or.kr/" target="_blank" rel="noopener">seouldesignaward.or.kr <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <!-- 디자인전람회 -->
+      <article class="card" data-s="go">
+        <div class="card-top"><div><div class="card-name">대한민국디자인전람회 제61회</div><div class="card-org">산업통상자원부 · 한국디자인진흥원(KIDP)</div></div><span class="tag go"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>D-5</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내</span>
+        <dl class="spec">
+          <dt>마감</dt><dd><b class="deadline-em">6/30(화) 17:00</b></dd>
+          <dt>접수비</dt><dd><span class="fee-free">무료</span></dd>
+          <dt>시상</dt><dd>대상 대통령상 3,000만원 · 총상금 8,500만원 · 11월 코엑스 전시</dd>
+          <dt>맞는 부문</dt><dd>디지털미디어/콘텐츠 · 서비스/경험</dd>
+        </dl>
+        <div class="flags">
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 친화</span>
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생·일반</span>
+        </div>
+        <div class="dup"><span class="lbl">중복출품 </span>기수상작 출품 제한이 통상 적용(확인필요). 미발표 작업으로 내는 것이 안전.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://award.kidp.or.kr/" target="_blank" rel="noopener">award.kidp.or.kr <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <!-- A' Design -->
+      <article class="card" data-s="go">
+        <div class="card-top"><div><div class="card-name">A' Design Award</div><div class="card-org">OMC Design Studios · 이탈리아</div></div><span class="tag go"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>D-5</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>이탈리아 · 글로벌</span>
+        <dl class="spec">
+          <dt>마감</dt><dd><b class="deadline-em">Early 6/30</b> → 최종 2027-02-28</dd>
+          <dt>접수비</dt><dd><b>업로드 무료</b> · 노미네이션(본선) €188~ 유료</dd>
+          <dt>시상</dt><dd>트로피·연감·전시·PR (현금상 없음)</dd>
+          <dt>맞는 부문</dt><dd>Interface·Interaction·UX (healthcare 명시 포함)</dd>
+        </dl>
+        <div class="flags">
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 명시 허용</span>
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 가능</span>
+        </div>
+        <div class="dup"><span class="lbl">중복출품 </span><b style="color:var(--go)">매우 관대</b> — 최근 10년 내 공개·타대회 출품·기수상작 전부 허용. 미발표 요건 없음.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://competition.adesignaward.com/" target="_blank" rel="noopener">competition.adesignaward.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <!-- K-Design -->
+      <article class="card" data-s="go">
+        <div class="card-top"><div><div class="card-name">K-Design Award 2026 (Late)</div><div class="card-org">디자인소리 · 글로벌</div></div><span class="tag go"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>D-5</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내 주최 · 글로벌</span>
+        <dl class="spec">
+          <dt>마감</dt><dd><b class="deadline-em">6/30 24:00 KST</b> (Late 단계)</dd>
+          <dt>접수비</dt><dd>학생 $85 · 전문가 $325 · 기업 $360 (파이널 심사비 별도)</dd>
+          <dt>시상</dt><dd>Grand / Gold / Winner 등급제</dd>
+          <dt>맞는 부문</dt><dd>Communication</dd>
+        </dl>
+        <div class="flags">
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 명시 허용</span>
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 가능</span>
+        </div>
+        <div class="dup"><span class="lbl">중복출품 </span>사전발표·기수상 배제 조항 명시 없음(제약 적을 가능성, 확인필요).</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://kdesignaward.com/" target="_blank" rel="noopener">kdesignaward.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <!-- MUSE -->
+      <article class="card" data-s="go">
+        <div class="card-top"><div><div class="card-name">MUSE Design Awards</div><div class="card-org">International Awards Associate · 미국</div></div><span class="tag go"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>D-14</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>미국 · 글로벌</span>
+        <dl class="spec">
+          <dt>마감</dt><dd><b class="deadline-em">7/9 Final</b> → 연장 8/13 ($249)</dd>
+          <dt>접수비</dt><dd>$239~ (추가 출품 $179) · 학생 별도할인 없음</dd>
+          <dt>시상</dt><dd>Platinum/Gold 등급 · 트로피</dd>
+          <dt>맞는 부문</dt><dd>Conceptual → UX/UI · Healthcare · Student</dd>
+        </dl>
+        <div class="flags">
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 전용 카테고리</span>
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 서브카테고리</span>
+        </div>
+        <div class="dup"><span class="lbl">중복출품 </span><b style="color:var(--go)">명시 허용</b> — 기출품·기수상작 모두 OK. 병행 출품에 안전.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://design.museaward.com/" target="_blank" rel="noopener">design.museaward.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <!-- IDA -->
+      <article class="card" data-s="go">
+        <div class="card-top"><div><div class="card-name">IDA International Design Awards</div><div class="card-org">Farmani Group · 미국 LA</div></div><span class="tag go"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>D-51</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>미국 · 글로벌</span>
+        <dl class="spec">
+          <dt>마감</dt><dd><b class="deadline-em">Regular 8/15</b> → 연장 9/15 → 최종 10/15</dd>
+          <dt>접수비</dt><dd>전문가 €250 · <b>학생 €80</b> (추가 카테고리 50% 할인)</dd>
+          <dt>시상</dt><dd>Gold/Silver/Bronze · IDA Book 게재</dd>
+          <dt>맞는 부문</dt><dd>Interface Design · Mobile/Web App (UI/UX 포함)</dd>
+        </dl>
+        <div class="flags">
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 명시 허용</span>
+          <span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 €80</span>
+        </div>
+        <div class="dup"><span class="lbl">중복출품 </span><b style="color:var(--go)">명시 허용</b> — 타 공모전 기출품·기수상작 출품 가능.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://idesignawards.com/" target="_blank" rel="noopener">idesignawards.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <!-- iF 2027 -->
+      <article class="card" data-s="go">
+        <div class="card-top"><div><div class="card-name">iF Design Award 2027</div><div class="card-org">iF International Forum Design · 독일</div></div><span class="tag go"><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>D-1</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>독일 · 글로벌 (세계 최고 권위)</span>
+        <dl class="spec">
+          <dt>마감</dt><dd><b class="deadline-em">Early Bird 6/26</b> → Regular 9/18 → 최종 11/4</dd>
+          <dt>접수비</dt><dd>€300 → €400 → €500 · <b>수상 시 winner fee €2,900~</b></dd>
+          <dt>시상</dt><dd>iF 라벨·연감·베를린 시상 (현금상 없음)</dd>
+          <dt>맞는 부문</dt><dd>UX → Health & Wellness · 미출시면 Concept 분야</dd>
+        </dl>
+        <div class="flags">
+          <span class="flag warn"><iconify-icon icon="fluent:warning-16-filled"></iconify-icon>미출시는 Concept 분야로만</span>
+          <span class="flag bad"><iconify-icon icon="fluent:dismiss-circle-16-filled"></iconify-icon>프로부문 학생 불가</span>
+        </div>
+        <div class="dup"><span class="lbl">중복출품 </span>배제 조항 명시 없음. 유일 제약은 '2년 이내 완성' 시간 요건(확인필요).</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://ifdesign.com/en/if-design-award-and-jury" target="_blank" rel="noopener">ifdesign.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========== GROUP 2: 곧 열림 ========== -->
+  <section class="group" data-g="soon">
+    <div class="group-h"><h3>곧 접수 시작 — 지금부터 준비</h3><span class="cnt">5곳</span></div>
+    <p class="group-desc">아직 접수창은 안 열렸지만, 일정이 확정돼 있어 미리 자료를 다듬어 두면 좋은 곳.</p>
+    <div class="cards">
+
+      <article class="card" data-s="soon">
+        <div class="card-top"><div><div class="card-name">경남 K-디자인 전람회 2026</div><div class="card-org">경상남도</div></div><span class="tag soon"><iconify-icon icon="fluent:clock-24-filled"></iconify-icon>8/18 시작</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내</span>
+        <dl class="spec">
+          <dt>접수</dt><dd><b>8/18~9/11</b> (1차 온라인) · 10월 창원 전시</dd>
+          <dt>접수비</dt><dd><span class="fee-free">무료</span></dd>
+          <dt>시상</dt><dd>총 3,000만원 · 일반부 대상 1,000만원</dd>
+          <dt>맞는 부문</dt><dd>미디어/인터랙션 (UI/UX 명시)</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 가능</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생·일반</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span>기수상작 금지(국내외 공모 수상작 제한). 미발표 자체 요구는 없음.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://gnk-designaward.net/" target="_blank" rel="noopener">gnk-designaward.net <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="soon">
+        <div class="card-top"><div><div class="card-name">UX Design Awards (Spring 2027)</div><div class="card-org">IDZ Berlin · 독일</div></div><span class="tag soon"><iconify-icon icon="fluent:clock-24-filled"></iconify-icon>9/1 시작</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>독일 · 글로벌 (UX 전문 권위)</span>
+        <dl class="spec">
+          <dt>접수</dt><dd><b>9/1~11/15</b> · 발표 2027-03</dd>
+          <dt>접수비</dt><dd><b>New Talent(학생) €70</b> · Concept €320</dd>
+          <dt>시상</dt><dd>베를린 시상 · 국제 퍼블리시티</dd>
+          <dt>맞는 부문</dt><dd>Concept · New Talent (헬스케어 컨셉 정합성 최상)</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 전용 부문</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 €70</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span>자기 대회 기수상작만 제한. 타 대회 동시출품 제약 미발견(확인 권장).</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://ux-design-awards.com/" target="_blank" rel="noopener">ux-design-awards.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="soon">
+        <div class="card-top"><div><div class="card-name">Indigo Design Award</div><div class="card-org">Marly Group · 포르투갈</div></div><span class="tag soon"><iconify-icon icon="fluent:clock-24-filled"></iconify-icon>9/30 얼리</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>포르투갈 · 글로벌</span>
+        <dl class="spec">
+          <dt>접수</dt><dd>Early 9/30 → 연장 11/30 → 최종 2027-01-31</dd>
+          <dt>접수비</dt><dd><b>학생 $100</b> (얼리 ≈$85) · 프리랜서 $150</dd>
+          <dt>시상</dt><dd>Gold/Silver/Bronze</dd>
+          <dt>맞는 부문</dt><dd>Digital Design (UX/UI·앱) · Design for Social Change</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉/완성 둘다</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 $100</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span>비독점(non-exclusive) 라이선스만, 금지 조항 미발견(확인 권장).</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://indigoaward.com/" target="_blank" rel="noopener">indigoaward.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="soon">
+        <div class="card-top"><div><div class="card-name">핀업 컨셉디자인어워드 2027</div><div class="card-org">한국디자인혁신협회</div></div><span class="tag soon"><iconify-icon icon="fluent:clock-24-filled"></iconify-icon>2027.1 예상</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내 (컨셉 전용 어워드)</span>
+        <dl class="spec">
+          <dt>접수</dt><dd>매년 1월경 (2027 사이클 미공고)</dd>
+          <dt>접수비</dt><dd>1인 20,000원</dd>
+          <dt>시상</dt><dd>총 1,000만원 · Grand Prix 300만원</dd>
+          <dt>맞는 부문</dt><dd>커뮤니케이션 미디어 (디지털·서비스·경험)</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 전용·환영</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생·일반</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span><b style="color:var(--no)">주의</b> — '국내외 공개 발표된 디자인' 출품 불가 = 미발표 원작 요구. <b>haruanbu.site 라이브 배포 이력이 걸릴 수 있음</b> → 사무국 사전 문의 필수.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="http://www.pinup.or.kr/concept/" target="_blank" rel="noopener">pinup.or.kr/concept <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="soon">
+        <div class="card-top"><div><div class="card-name">스마트앱어워드 코리아</div><div class="card-org">한국인터넷전문가협회</div></div><span class="tag soon"><iconify-icon icon="fluent:clock-24-filled"></iconify-icon>9월 접수</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내</span>
+        <dl class="spec">
+          <dt>접수</dt><dd>9월 시작 · 12/17 시상(예정)</dd>
+          <dt>접수비</dt><dd>등록 20~30만원 + 단계별 심사료</dd>
+          <dt>시상</dt><dd>7개 부문 32개 분야</dd>
+          <dt>맞는 부문</dt><dd>공공·생활서비스</dd>
+        </dl>
+        <div class="flags"><span class="flag bad"><iconify-icon icon="fluent:dismiss-circle-16-filled"></iconify-icon>실서비스 필수 — 미출시 컨셉 불가</span></div>
+        <div class="dup"><span class="lbl">조건 </span>'현재 운영 중인 앱'만 출품 가능. 출품하려면 앱스토어 등록/배포 상태가 필요.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://www.i-award.or.kr/Smart/" target="_blank" rel="noopener">i-award.or.kr/Smart <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========== GROUP 3: 다음 사이클 ========== -->
+  <section class="group" data-g="wait">
+    <div class="group-h"><h3>이번 사이클 마감 — 다음 회차 대기</h3><span class="cnt">9곳</span></div>
+    <p class="group-desc">2026 접수는 끝났지만 우리 프로젝트에 잘 맞아, 다음 사이클을 노릴 만한 곳.</p>
+    <div class="cards">
+
+      <article class="card" data-s="wait">
+        <div class="card-top"><div><div class="card-name">Red Dot Design Concept 2027</div><div class="card-org">Red Dot · 싱가포르</div></div><span class="tag wait"><iconify-icon icon="fluent:history-24-regular"></iconify-icon>~12월 오픈</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>싱가포르 · 글로벌 (빅3)</span>
+        <dl class="spec">
+          <dt>다음 접수</dt><dd>2026년 12월경 추정 (2026 사이클 4/29 마감)</dd>
+          <dt>접수비</dt><dd>Next Gen(만30세 미만 학생) 30% 할인</dd>
+          <dt>맞는 부문</dt><dd>Health & Wellness · UI&UX · Accessibility</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉이 본질</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 30%↓</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span>시판/양산 여부만 결격 기준. 타대회 명시 배제 없음(약관 PDF 확인 권장).</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://www.red-dot.org/design-concept" target="_blank" rel="noopener">red-dot.org/design-concept <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="wait">
+        <div class="card-top"><div><div class="card-name">iF Design Student Award 2027</div><div class="card-org">iF · 독일</div></div><span class="tag wait"><iconify-icon icon="fluent:history-24-regular"></iconify-icon>~1월말 예상</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>독일 · 학생 전용</span>
+        <dl class="spec">
+          <dt>다음 접수</dt><dd>2027년 1월 말 예상 (미공고)</dd>
+          <dt>접수비</dt><dd><span class="fee-free">무료</span></dd>
+          <dt>시상</dt><dd>총 €50,000 + 마케팅 지원</dd>
+          <dt>맞는 부문</dt><dd>UN SDG 3 (건강과 웰빙) 정렬</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉이 본질</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 전용·무료</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span>외부 배제 조항 없음. 어워드 내부 복수 카테고리 중복만 금지.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://ifdesign.com/en/if-design-student-award" target="_blank" rel="noopener">ifdesign.com/student <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="wait">
+        <div class="card-top"><div><div class="card-name">Good Design Award (G-Mark)</div><div class="card-org">JDP · 일본</div></div><span class="tag wait"><iconify-icon icon="fluent:history-24-regular"></iconify-icon>~4월 오픈</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>일본 · 글로벌 (G마크)</span>
+        <dl class="spec">
+          <dt>다음 접수</dt><dd>2027년 4월경 예상 (2026 사이클 5/21 마감)</dd>
+          <dt>접수비</dt><dd>1차 16,500엔 · 수상 시 합계 약 250만원</dd>
+          <dt>맞는 부문</dt><dd>디지털 / UX</dd>
+        </dl>
+        <div class="flags"><span class="flag warn"><iconify-icon icon="fluent:warning-16-filled"></iconify-icon>출시예정 필요(컨셉 조건부)</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span><b style="color:var(--go)">제약 없음</b> — "타 어워드 제한 없음" 명시. 기출시·기공개작 OK.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://www.g-mark.org/en/" target="_blank" rel="noopener">g-mark.org <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="wait">
+        <div class="card-top"><div><div class="card-name">Core77 Design Awards</div><div class="card-org">Core77 · 미국</div></div><span class="tag wait"><iconify-icon icon="fluent:history-24-regular"></iconify-icon>~12월 오픈</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>미국 · 글로벌</span>
+        <dl class="spec">
+          <dt>다음 접수</dt><dd>2026년 12월경 추정 (봄 마감)</dd>
+          <dt>접수비</dt><dd><b>학생 $70~</b> · 전문가 $235~</dd>
+          <dt>맞는 부문</dt><dd>Medical & Healthcare · Interaction · Apps</dd>
+        </dl>
+        <div class="flags"><span class="flag warn"><iconify-icon icon="fluent:warning-16-filled"></iconify-icon>컨셉은 학생 트랙/Speculative만</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 $70</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span><b style="color:var(--go)">명시 허용</b> — 타 공모전 기수상작 출품 가능.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://designawards.core77.com/" target="_blank" rel="noopener">designawards.core77.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="wait">
+        <div class="card-top"><div><div class="card-name">Fast Company Innovation by Design</div><div class="card-org">Fast Company · 미국</div></div><span class="tag wait"><iconify-icon icon="fluent:history-24-regular"></iconify-icon>~1월말 오픈</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>미국 · 글로벌 (미디어 노출 큼)</span>
+        <dl class="spec">
+          <dt>다음 접수</dt><dd>2027년 1월 말 추정 (4월 초 마감)</dd>
+          <dt>접수비</dt><dd><b>학생 $40~50</b> · 일반 $395~</dd>
+          <dt>맞는 부문</dt><dd>Health & Wellness · UX · Experimental · Students</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉(Experimental)</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 $40</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span>중복·사전공개 금지 조항 없음(확인 권장).</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://www.fastcompany.com/apply/innovation-by-design" target="_blank" rel="noopener">fastcompany.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="wait">
+        <div class="card-top"><div><div class="card-name">DNA Paris Design Awards</div><div class="card-org">Farmani · 프랑스</div></div><span class="tag wait"><iconify-icon icon="fluent:history-24-regular"></iconify-icon>2027 대기</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>프랑스 · 글로벌</span>
+        <dl class="spec">
+          <dt>다음 접수</dt><dd>2027 일정 미공고 (2026 사이클 5/22 마감)</dd>
+          <dt>접수비</dt><dd>일반 €100 · <b>학생 €75</b> (추가 −50%)</dd>
+          <dt>맞는 부문</dt><dd>Graphic → Online (Apps/UI/UX)</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 명시</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 €75</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span>관련 규정 명문 전무(확인 권장).</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://dna.paris/" target="_blank" rel="noopener">dna.paris <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="wait">
+        <div class="card-top"><div><div class="card-name">대한민국 공공디자인대상 (아이디어)</div><div class="card-org">문체부 · 공예디자인문화진흥원</div></div><span class="tag wait"><iconify-icon icon="fluent:history-24-regular"></iconify-icon>~3월 오픈</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내</span>
+        <dl class="spec">
+          <dt>다음 접수</dt><dd>2027년 3~4월경 추정 (2026 사이클 4/24 마감)</dd>
+          <dt>접수비</dt><dd><span class="fee-free">무료(추정)</span></dd>
+          <dt>시상</dt><dd>총 5,400만원 · 대상 1,000만원</dd>
+          <dt>맞는 부문</dt><dd>아이디어 부문 (미실현 컨셉이 정상)</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>미실현 컨셉 환영</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span>장관상급 이상 기수상작 배제. 이미 실현된 아이디어 불가.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://www.publicdesign.kr/" target="_blank" rel="noopener">publicdesign.kr <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="wait">
+        <div class="card-top"><div><div class="card-name">부산국제디자인어워드 (IBDA)</div><div class="card-org">부산광역시 · 부산디자인진흥원</div></div><span class="tag wait"><iconify-icon icon="fluent:history-24-regular"></iconify-icon>2027 대기</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내</span>
+        <dl class="spec">
+          <dt>다음 접수</dt><dd>2027년 1~4월경 예상 (2026 사이클 4/17 마감)</dd>
+          <dt>접수비</dt><dd><span class="fee-free">대학(원)생·일반 무료</span></dd>
+          <dt>시상</dt><dd>일반부 총 5,100만원 · 대상 2,000만원</dd>
+          <dt>맞는 부문</dt><dd>커뮤니케이션 & 서비스디자인 (사회혁신)</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 가능</span><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>학생 무료</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span>기수상작(입상물) 금지. 사전발표 명시 없음.</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://adp.dcb.or.kr/" target="_blank" rel="noopener">adp.dcb.or.kr <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="wait">
+        <div class="card-top"><div><div class="card-name">London Design Awards (DRIVENxDESIGN)</div><div class="card-org">Better Future · 호주</div></div><span class="tag wait"><iconify-icon icon="fluent:history-24-regular"></iconify-icon>~11월 오픈</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>호주 운영 · 글로벌</span>
+        <dl class="spec">
+          <dt>다음 접수</dt><dd>LON27 — 2026년 11월경 개시 추정</dd>
+          <dt>접수비</dt><dd>카테고리당 ≈£300~450 (4건+ 할인) · 학생할인 없음</dd>
+          <dt>맞는 부문</dt><dd>UX → Medical · Health/Wellness · Service Design</dd>
+        </dl>
+        <div class="flags"><span class="flag yes"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon>컨셉 가능</span></div>
+        <div class="dup"><span class="lbl">중복출품 </span>같은 London 프로그램 동일작 재출품만 금지. 타 어워드는 OK(장려).</div>
+        <div class="card-foot"><span class="fit"><iconify-icon icon="fluent:star-16-filled"></iconify-icon><iconify-icon icon="fluent:star-16-filled"></iconify-icon></span> &nbsp; <a href="https://betterfutureawards.com/" target="_blank" rel="noopener">betterfutureawards.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========== GROUP 4: 부적격 ========== -->
+  <section class="group" data-g="no">
+    <div class="group-h"><h3>부적격 · 제외</h3><span class="cnt">6곳</span></div>
+    <p class="group-desc">자격 요건상 현재 컨셉/미출시 상태로는 출품이 어렵거나, 운영이 종료된 곳. 시간 낭비를 막기 위해 명시합니다.</p>
+    <div class="cards">
+
+      <article class="card" data-s="no">
+        <div class="card-top"><div><div class="card-name">우수디자인(GD)어워드</div><div class="card-org">산업부 · KIDP</div></div><span class="tag no"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon>부적격</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내</span>
+        <div class="dup"><span class="lbl">사유 </span>'판매 중·판매 예정 상품' + '상품 소유권 보유 기업'만 출품 가능. 순수 컨셉·학생 단독 출품 불가. (심사료 88만원) → 대신 같은 KIDP의 <b>디자인전람회</b> 권장.</div>
+        <div class="card-foot"><a href="https://award.kidp.or.kr/" target="_blank" rel="noopener">award.kidp.or.kr <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="no">
+        <div class="card-top"><div><div class="card-name">코리아디자인어워드</div><div class="card-org">월간디자인 · 디자인하우스</div></div><span class="tag no"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon>부적격</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내</span>
+        <div class="dup"><span class="lbl">사유 </span>출품 조건이 '직전 약 12개월 내 발표(released)된 프로젝트'. 미출시 컨셉/목업은 요건 미충족. (다음 접수 10월경)</div>
+        <div class="card-foot"><a href="https://design.co.kr/" target="_blank" rel="noopener">design.co.kr <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="no">
+        <div class="card-top"><div><div class="card-name">웹어워드코리아</div><div class="card-org">한국인터넷전문가협회</div></div><span class="tag no"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon>부적격</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내</span>
+        <div class="dup"><span class="lbl">사유 </span>'현재 운영 중인 웹사이트'만 대상. 앱 4종 프로젝트라 매체 적합도도 낮음.</div>
+        <div class="card-foot"><a href="https://www.i-award.or.kr/web/" target="_blank" rel="noopener">i-award.or.kr/web <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="no">
+        <div class="card-top"><div><div class="card-name">앱어워드코리아</div><div class="card-org">디지털조선일보</div></div><span class="tag no"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon>출시앱 추정</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국내</span>
+        <div class="dup"><span class="lbl">사유 </span>'우수 모바일 앱(기업) 선정' 취지상 출시·운영 앱 대상 가능성 높음. 2026 일정·자격 미공고(확인필요).</div>
+        <div class="card-foot"><a href="https://www.appkorea.org/" target="_blank" rel="noopener">appkorea.org <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="no">
+        <div class="card-top"><div><div class="card-name">Awwwards / CSS Design Awards</div><div class="card-org">스페인 · 국제</div></div><span class="tag no"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon>라이브 URL 필수</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국제 (웹 어워드)</span>
+        <div class="dup"><span class="lbl">사유 </span>작동하는 라이브 웹사이트 URL이 사실상 필수(운영팀 수동 검수·라이브 기반 채점). 컨셉/목업만으로는 출품 불가. 향후 웹 쇼케이스를 실도메인 배포 시 재검토.</div>
+        <div class="card-foot"><a href="https://www.awwwards.com/" target="_blank" rel="noopener">awwwards.com <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+      <article class="card" data-s="no">
+        <div class="card-top"><div><div class="card-name">IxDA Interaction Awards</div><div class="card-org">Interaction Design Association</div></div><span class="tag no"><iconify-icon icon="fluent:dismiss-circle-24-filled"></iconify-icon>운영 종료</span></div>
+        <span class="country"><iconify-icon icon="fluent:location-24-regular"></iconify-icon>국제</span>
+        <div class="dup"><span class="lbl">사유 </span>2024년이 마지막 에디션, 운영 법인(IxDA) 해산 확정. 부활 계획 없음 → 영구 제외.</div>
+        <div class="card-foot"><a href="https://ixda.org/" target="_blank" rel="noopener">ixda.org <iconify-icon icon="fluent:open-24-regular"></iconify-icon></a></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========== POLICY ========== -->
+  <div class="policy">
+    <h3><iconify-icon icon="fluent:document-copy-24-regular"></iconify-icon>같은 작품을 여러 곳에 동시 출품해도 될까?</h3>
+    <p class="lead">대부분의 어워드는 "다른 대회에 이미 낸/수상한 작품"을 막지 않습니다. 오히려 <b>받는 쪽이 '미발표·미공개·독점'을 요구하는 경우</b>가 더 흔하니, 출품 순서와 공개 범위를 먼저 정하는 것이 핵심입니다.</p>
+    <div class="pol-grid">
+      <div class="pol-col ok">
+        <h4><iconify-icon icon="fluent:checkmark-circle-24-filled"></iconify-icon>중복출품 OK (명시 허용)</h4>
+        <ul>
+          <li><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon><b>A' Design Award</b> — 최근 10년 내 공개·타대회·기수상 전부 허용. 가장 관대.</li>
+          <li><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon><b>Good Design (일본)</b> — "타 어워드 제한 없음" 명시.</li>
+          <li><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon><b>MUSE · IDA · Core77</b> — 기출품·기수상작 출품 가능 명문.</li>
+          <li><iconify-icon icon="fluent:checkmark-16-filled"></iconify-icon><b>London(DRIVENxDESIGN)</b> — 같은 프로그램 재출품만 금지, 타 대회는 장려.</li>
+        </ul>
+      </div>
+      <div class="pol-col risk">
+        <h4><iconify-icon icon="fluent:warning-24-filled"></iconify-icon>주의 — 미발표/독점/기수상 배제</h4>
+        <ul>
+          <li><iconify-icon icon="fluent:dismiss-16-filled"></iconify-icon><b>핀업 컨셉어워드</b> — '국내외 공개 발표작' 출품 불가. <b>haruanbu.site 라이브 배포가 걸릴 수 있음.</b></li>
+          <li><iconify-icon icon="fluent:dismiss-16-filled"></iconify-icon><b>공공디자인대상 · 부산 IBDA · 경남전람회 · 디자인전람회</b> — 기수상작(수상 이력) 배제.</li>
+          <li><iconify-icon icon="fluent:dismiss-16-filled"></iconify-icon><b>UX Design Awards</b> — 자기 대회 기수상작만 제한(타 대회는 무관, 확인 권장).</li>
+          <li><iconify-icon icon="fluent:dismiss-16-filled"></iconify-icon><b>전략</b> — 권위·상금 큰 곳을 먼저, 공개 발표는 그 다음. 라이브 배포 이력은 사무국에 사전 확인.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTNOTE -->
+  <footer>
+    <div class="note"><iconify-icon icon="fluent:info-24-regular"></iconify-icon><span>모든 일정·금액은 2026년 6월 25일 기준 조사값입니다. '~예상/추정'으로 표기한 다음 사이클 일정과 '확인필요' 항목(접수비·상금·컨셉/중복 정책 세부)은 최종 결정 전 각 공식 요강·사무국에 반드시 재확인하세요.</span></div>
+    <div class="note"><iconify-icon icon="fluent:target-24-regular"></iconify-icon><span><b>추천 우선순위</b> — ① 이번 주: 서울디자인어워드 + 디자인전람회(둘 다 무료·6/30) ② A' Design은 무료 업로드만 먼저 해두기 ③ 가을: UX Design Awards(헬스케어 컨셉 정합성 최상) ④ 학생팀이면 iF Student Award(무료·€50,000) 다음 사이클 대비.</span></div>
+    <div class="note"><iconify-icon icon="fluent:translate-24-regular"></iconify-icon><span>해외 어워드와 서울디자인어워드는 영어 접수가 필요합니다. 이미 제작 중인 .en.html 영문 자산을 활용하면 유리합니다.</span></div>
+  </footer>
+
+</div>
+
+<script>
+  const chips = document.querySelectorAll('.chip');
+  const groups = document.querySelectorAll('.group');
+  const cards = document.querySelectorAll('.card');
+  chips.forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      chips.forEach(c=>c.setAttribute('aria-pressed','false'));
+      chip.setAttribute('aria-pressed','true');
+      const f = chip.dataset.f;
+      if(f==='all'){
+        groups.forEach(g=>g.classList.remove('hidden'));
+      } else {
+        groups.forEach(g=>{
+          g.classList.toggle('hidden', g.dataset.g !== f);
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>

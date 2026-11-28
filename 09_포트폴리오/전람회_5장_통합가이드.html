@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 — 대한민국 디자인 전람회 5장 가이드 + 옵션 A 미리보기</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+  :root{
+    /* ---- base ink / paper (가이드 베이스) ---- */
+    --ink:#16201d; --ink-2:#4a544f; --ink-3:#939b96;
+    --paper:#f6f5f1; --card:#ffffff; --surface:#efeee8; --surface-2:#e6e5dd;
+    --accent:#1f6b5e; --accent-soft:#e3efeb; --accent-ink:#134a40;
+    --amber:#9a6716; --amber-soft:#f3e9d6;
+    --line:#e4e3db;
+    --shadow:0 1px 2px rgba(22,32,29,.04), 0 6px 20px rgba(22,32,29,.06);
+    --shadow-sm:0 1px 3px rgba(20,32,29,.10);
+    --shadow-lg:0 2px 6px rgba(22,32,29,.06), 0 18px 50px rgba(22,32,29,.10);
+    --r:14px; --r-sm:9px;
+    /* ---- 역할 컬러 (옵션 A 보드) ---- */
+    --fam:#2563eb;   /* 가족(보호자) */
+    --med:#0e9f6e;   /* 의료진 */
+    --care:#0a7155;  /* 요양보호사 */
+    --pat:#e07b39;   /* 환자 */
+    --ai:#15403a;    /* AI 안부 엔진 */
+    --ai-soft:#e2efeb;
+    --page:#e9e7df; --ivory:#f5f2ea;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Pretendard',-apple-system,system-ui,sans-serif;
+    background:var(--paper); color:var(--ink);
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+    letter-spacing:-.01em;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 28px}
+
+  /* ---- top nav ---- */
+  nav{position:sticky;top:0;z-index:50;background:rgba(246,245,241,.86);backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:22px;height:60px}
+  .brand{font-weight:800;font-size:15px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+  .brand iconify-icon{color:var(--accent);font-size:20px}
+  nav ul{display:flex;gap:4px;list-style:none;margin-left:auto;flex-wrap:wrap}
+  nav a{font-size:13.5px;color:var(--ink-2);font-weight:600;padding:7px 12px;border-radius:8px;transition:.15s}
+  nav a:hover{background:var(--surface);color:var(--ink)}
+  @media(max-width:880px){nav ul{display:none}}
+
+  /* ---- hero ---- */
+  header{padding:64px 0 40px}
+  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:6px 13px;border-radius:100px;margin-bottom:22px}
+  h1{font-size:clamp(30px,4.6vw,50px);font-weight:800;letter-spacing:-.035em;line-height:1.08}
+  h1 .dim{color:var(--ink-3)}
+  .lead{font-size:18px;color:var(--ink-2);max-width:680px;margin-top:20px;line-height:1.7}
+
+  /* key facts strip */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-radius:var(--r);overflow:hidden;margin-top:36px;box-shadow:var(--shadow)}
+  .fact{background:var(--card);padding:20px 18px}
+  .fact .n{font-size:25px;font-weight:800;letter-spacing:-.03em;color:var(--accent-ink)}
+  .fact .l{font-size:12.5px;color:var(--ink-2);margin-top:3px;font-weight:600}
+  @media(max-width:760px){.facts{grid-template-columns:repeat(2,1fr)}}
+
+  /* ---- section frame ---- */
+  section{padding:54px 0;border-top:1px solid var(--line)}
+  section#preview{background:var(--surface)}
+  .sec-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:32px}
+  .sec-num{font-size:13px;font-weight:800;color:var(--accent);background:var(--accent-soft);min-width:34px;height:34px;display:grid;place-items:center;border-radius:9px;margin-top:4px}
+  .sec-head h2{font-size:clamp(23px,3vw,31px);font-weight:800;letter-spacing:-.03em;line-height:1.15}
+  .sec-head p{font-size:15px;color:var(--ink-2);margin-top:7px;max-width:720px}
+
+  /* ---- callout ---- */
+  .callout{display:flex;gap:14px;background:var(--card);border-radius:var(--r);padding:22px 24px;box-shadow:var(--shadow);margin:22px 0}
+  .callout iconify-icon{font-size:24px;flex-shrink:0;margin-top:1px}
+  .callout.key{background:var(--accent-soft)}
+  .callout.key iconify-icon{color:var(--accent)}
+  .callout.warn{background:var(--amber-soft)}
+  .callout.warn iconify-icon{color:var(--amber)}
+  .callout h4{font-size:15.5px;font-weight:800;margin-bottom:4px}
+  .callout p{font-size:14.5px;color:var(--ink-2)}
+  .callout b{color:var(--ink);font-weight:700}
+  .callout a.inlink{color:var(--accent);font-weight:700}
+
+  /* ---- rule cards ---- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .rule{background:var(--card);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+  .rule .top{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+  .rule .top iconify-icon{font-size:20px;color:var(--accent)}
+  .rule h3{font-size:16px;font-weight:800}
+  .rule ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .rule li{font-size:14px;color:var(--ink-2);display:flex;gap:9px;align-items:flex-start}
+  .rule li iconify-icon{color:var(--accent);font-size:16px;flex-shrink:0;margin-top:3px}
+  .rule li b{color:var(--ink);font-weight:700}
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;vertical-align:middle}
+  .b-high{background:var(--accent-soft);color:var(--accent-ink)}
+  .b-mid{background:var(--amber-soft);color:var(--amber)}
+  .b-check{background:#e8efe5;color:#3a6b2e}
+
+  /* ---- gallery ---- */
+  .gal-group{margin-bottom:30px}
+  .gal-group > .gl{font-size:13px;font-weight:800;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:860px){.cards{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:9px;transition:.18s}
+  .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+  .card .ico{width:38px;height:38px;border-radius:10px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent);font-size:20px}
+  .card h3{font-size:15.5px;font-weight:800;line-height:1.3}
+  .card p{font-size:13px;color:var(--ink-2);line-height:1.55;flex:1}
+  .card .go{font-size:12.5px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:5px;margin-top:2px;word-break:break-all}
+  .card .go iconify-icon{font-size:14px}
+  .tag{font-size:10.5px;font-weight:700;color:var(--ink-3);background:var(--surface);padding:3px 8px;border-radius:6px;align-self:flex-start}
+
+  /* ---- option / panels (구성안 요약) ---- */
+  .opt{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:26px;margin-bottom:24px}
+  .opt.rec{box-shadow:var(--shadow-lg);outline:2px solid var(--accent)}
+  .opt-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:6px;flex-wrap:wrap}
+  .opt-tag{font-size:12px;font-weight:800;color:#fff;background:var(--accent);padding:5px 11px;border-radius:8px;flex-shrink:0}
+  .opt-tag.alt{background:var(--ink);}
+  .opt-head h3{font-size:20px;font-weight:800;letter-spacing:-.02em}
+  .opt-head .rec-pill{font-size:11.5px;font-weight:800;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:100px;display:inline-flex;align-items:center;gap:5px}
+  .opt-desc{font-size:14.5px;color:var(--ink-2);margin:8px 0 20px;max-width:780px}
+  .opt-desc b{color:var(--ink)}
+
+  .panel-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  @media(max-width:960px){.panel-row{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.panel-row{grid-template-columns:1fr}}
+  .panel{display:flex;flex-direction:column;gap:8px}
+  .panel .pnum{font-size:11px;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:6px}
+  .panel .pnum .req{font-size:9px;color:#fff;background:var(--accent);padding:1px 6px;border-radius:5px;font-weight:700}
+  .panel h4{font-size:13.5px;font-weight:800;line-height:1.25}
+  .panel .pd{font-size:11.5px;color:var(--ink-2);line-height:1.5}
+  .panel .pmap{font-size:10px;color:var(--ink-3);font-weight:700;display:flex;align-items:center;gap:4px;margin-top:auto;padding-top:4px}
+  .panel .pmap iconify-icon{font-size:12px;color:var(--accent)}
+
+  /* wireframe 16:9 (구성안 요약용 미니) */
+  .wf{aspect-ratio:16/9;background:var(--surface);border-radius:var(--r-sm);padding:7px;display:flex;flex-direction:column;gap:4px;position:relative;overflow:hidden}
+  .wf .z{background:var(--card);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:7.5px;font-weight:700;color:var(--ink-3);text-align:center;line-height:1.15;padding:2px}
+  .wf .row{display:flex;gap:4px;flex:1}
+  .wf .col{display:flex;flex-direction:column;gap:4px;flex:1}
+  .wf .title-z{background:var(--accent);color:#fff;font-size:8px}
+  .wf .accent-z{background:var(--accent-soft);color:var(--accent-ink)}
+  .wf .phone{flex:1;background:var(--card);border-radius:5px;display:flex;flex-direction:column;gap:2px;padding:3px 2px;align-items:center;justify-content:flex-start}
+  .wf .phone i{display:block;width:62%;height:3px;border-radius:2px;background:var(--surface-2)}
+  .wf .phone i:first-child{width:46%;background:var(--accent-soft)}
+  .wf .dot{width:11px;height:11px;border-radius:50%;background:var(--accent-soft);border:1.5px solid var(--accent)}
+  .wf .center-node{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+  .wf .hub{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:7px;font-weight:800;z-index:2}
+  .wf .nodes{position:absolute;inset:7px;display:flex;justify-content:space-between;align-items:center}
+  .wf .step{flex:1;background:var(--card);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:7px;color:var(--ink-3);font-weight:700;position:relative}
+  .wf .arrow{width:10px;display:grid;place-items:center;color:var(--accent);font-size:9px;flex-shrink:0}
+  .wf .stat{flex:1;background:var(--card);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+  .wf .stat b{font-size:10px;color:var(--accent-ink);font-weight:800}
+  .wf .stat span{font-size:6px;color:var(--ink-3)}
+  .wf .inset{position:absolute;right:7px;bottom:7px;width:34%;height:46%;background:var(--card);border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,.12);display:flex;flex-direction:column;gap:2px;padding:4px;z-index:3}
+  .wf .inset i{display:block;height:2.5px;border-radius:2px;background:var(--surface-2)}
+  .wf .inset i:first-child{width:60%;background:var(--accent)}
+
+  .compare{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);font-size:13.5px}
+  .compare th,.compare td{padding:13px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  .compare th{background:var(--surface);font-size:12.5px;font-weight:800;color:var(--ink-2)}
+  .compare td:first-child{font-weight:700}
+  .compare tr:last-child td{border-bottom:none}
+  .compare .yes{color:var(--accent);font-weight:700}
+
+  /* misconceptions */
+  .myth{background:var(--card);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow);margin-bottom:14px;display:flex;gap:16px;align-items:flex-start}
+  .myth .x{color:#b54a3a;font-size:22px;flex-shrink:0;margin-top:2px}
+  .myth .body .q{font-size:14.5px;font-weight:800;color:var(--ink);text-decoration:line-through;text-decoration-color:#cdb;text-decoration-thickness:1px}
+  .myth .body .a{font-size:14px;color:var(--ink-2);margin-top:6px}
+  .myth .body .a b{color:var(--accent-ink)}
+
+  /* checklist */
+  .check{background:var(--card);border-radius:var(--r);padding:8px 8px;box-shadow:var(--shadow)}
+  .check label{display:flex;gap:12px;align-items:flex-start;padding:13px 16px;border-radius:10px;font-size:14.5px;color:var(--ink-2);cursor:pointer;transition:.12s}
+  .check label:hover{background:var(--surface)}
+  .check input{margin-top:4px;width:17px;height:17px;accent-color:var(--accent);flex-shrink:0;cursor:pointer}
+  .check label b{color:var(--ink);font-weight:700}
+
+  .oq{display:flex;flex-direction:column;gap:10px}
+  .oq .item{display:flex;gap:11px;font-size:14px;color:var(--ink-2);background:var(--card);padding:15px 18px;border-radius:var(--r-sm);box-shadow:var(--shadow)}
+  .oq .item iconify-icon{color:var(--amber);font-size:18px;flex-shrink:0;margin-top:2px}
+
+  /* ============================================================
+     옵션 A 상세 미리보기 — 실제 16:9 보드 (구성미리보기 파일에서 통합)
+     ============================================================ */
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:4px;padding:16px 20px;background:var(--card);border-radius:12px;box-shadow:var(--shadow);font-size:13px;font-weight:600;align-items:center}
+  .legend .l{display:flex;align-items:center;gap:7px;color:var(--ink-2)}
+  .legend .sw{width:13px;height:13px;border-radius:4px}
+  .legend .meta{margin-left:auto;color:var(--ink-3);font-weight:600;font-size:12.5px}
+  @media(max-width:640px){.legend .meta{margin-left:0;width:100%}}
+
+  .note{display:flex;gap:11px;background:#f3ecda;border-radius:11px;padding:14px 18px;margin-top:16px;font-size:13.5px;color:#6a5a2e}
+  .note iconify-icon{color:#9a7a1c;font-size:19px;flex-shrink:0;margin-top:1px}
+
+  /* board block */
+  .block{padding:34px 0;border-top:1px solid var(--line)}
+  .bhead{display:flex;align-items:baseline;gap:13px;margin-bottom:6px;flex-wrap:wrap}
+  .bnum{font-size:13px;font-weight:800;color:#fff;background:var(--ai);width:30px;height:30px;border-radius:8px;display:grid;place-items:center;flex-shrink:0}
+  .bhead h2{font-size:21px;font-weight:800;letter-spacing:-.02em}
+  .bhead .req{font-size:11px;font-weight:800;color:#fff;background:var(--pat);padding:3px 9px;border-radius:6px}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 18px}
+  .chip{font-size:11.5px;font-weight:700;color:var(--ai);background:var(--ai-soft);padding:4px 10px;border-radius:100px;display:inline-flex;align-items:center;gap:5px}
+  .chip iconify-icon{font-size:13px}
+
+  /* 16:9 board */
+  .board{aspect-ratio:16/9;background:var(--ivory);border-radius:14px;box-shadow:var(--shadow);position:relative;overflow:hidden;padding:clamp(46px,6vw,66px) clamp(16px,3vw,34px) clamp(30px,4vw,42px);display:flex;flex-direction:column}
+  .b-wm{position:absolute;top:clamp(14px,2.4vw,24px);left:clamp(16px,3vw,34px);font-size:clamp(11px,1.5vw,15px);font-weight:800;letter-spacing:-.02em;color:var(--ink);display:flex;align-items:center;gap:6px;z-index:5}
+  .b-wm iconify-icon{color:var(--ai)}
+  .b-sec{position:absolute;top:clamp(14px,2.4vw,24px);right:clamp(16px,3vw,34px);font-size:clamp(9px,1.3vw,12px);font-weight:700;color:var(--ink-3);letter-spacing:.04em;z-index:5}
+  .b-page{position:absolute;bottom:clamp(12px,2.2vw,22px);right:clamp(16px,3vw,34px);font-size:clamp(9px,1.3vw,12px);font-weight:700;color:var(--ink-3);z-index:5}
+  .b-foot{position:absolute;bottom:clamp(12px,2.2vw,22px);left:clamp(16px,3vw,34px);font-size:clamp(8.5px,1.2vw,11px);color:var(--ink-3);z-index:5}
+
+  .b-head{font-size:clamp(15px,2.6vw,27px);font-weight:800;letter-spacing:-.03em;line-height:1.18}
+  .b-head .accent{color:var(--ai)}
+  .b-tag{font-size:clamp(10px,1.6vw,15px);color:var(--ink-2);margin-top:6px;font-weight:600}
+  .b-id{font-size:clamp(8px,1.25vw,12px);color:var(--ink-3);margin-top:4px}
+
+  /* phone */
+  .phone{background:#fff;border-radius:10px;box-shadow:var(--shadow-sm);overflow:hidden;display:flex;flex-direction:column}
+  .phone .top{height:14%;min-height:10px;display:flex;align-items:center;padding:0 7%;gap:4px}
+  .phone .top i{display:block;height:4px;border-radius:3px;background:rgba(255,255,255,.9);width:38%}
+  .phone .scr{flex:1;padding:7% 7% ;display:flex;flex-direction:column;gap:6%;background:#fff}
+  .phone .ln{height:6px;border-radius:3px;background:#eceae3}
+  .phone .blk{flex:1;border-radius:6px;background:#f1efe8}
+  .phone .lbl{position:absolute;left:50%;transform:translateX(-50%);bottom:-19px;font-size:10px;font-weight:800;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .phone .lbl .role{padding:2px 8px;border-radius:100px;color:#fff;font-size:9.5px}
+  .phone .lbl .file{font-size:8.5px;color:var(--ink-3);font-weight:700}
+
+  /* ---- panel 1 constellation ---- */
+  .constel{flex:1;position:relative;margin-top:2%}
+  .constel svg{position:absolute;inset:0;width:100%;height:100%}
+  .node{position:absolute;transform:translate(-50%,-50%);width:13%;z-index:2}
+  .node .phone{position:relative;aspect-ratio:9/17}
+  .hub{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:3;background:var(--ai);color:#fff;border-radius:50%;width:clamp(48px,9vw,96px);height:clamp(48px,9vw,96px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 6px 22px rgba(21,64,58,.35)}
+  .hub iconify-icon{font-size:clamp(16px,2.6vw,28px)}
+  .hub b{font-size:clamp(8px,1.3vw,13px);font-weight:800;margin-top:1px}
+  .hub span{font-size:clamp(6px,1vw,9px);opacity:.85}
+
+  /* ---- panel 2 personas ---- */
+  .personas{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:2.4%;margin-top:2.5%}
+  .persona{background:#fff;border-radius:10px;box-shadow:var(--shadow-sm);padding:5% 5.5%;display:flex;flex-direction:column;gap:5%;position:relative;overflow:hidden}
+  .persona .cap{height:5px;border-radius:3px;width:34%}
+  .persona .who{display:flex;align-items:center;gap:5px;font-weight:800;font-size:clamp(9px,1.5vw,14px)}
+  .persona .who iconify-icon{font-size:clamp(13px,2vw,19px)}
+  .persona .quote{font-size:clamp(8px,1.3vw,12.5px);color:var(--ink-2);line-height:1.45;flex:1}
+  .persona .pain{font-size:clamp(8px,1.15vw,11px);font-weight:800;align-self:flex-start;padding:3px 9px;border-radius:100px;color:#fff}
+  .brokenrow{display:flex;align-items:center;justify-content:center;gap:3%;margin-top:3%;height:13%}
+  .brokenrow .dot{width:clamp(9px,1.6vw,16px);height:clamp(9px,1.6vw,16px);border-radius:50%;flex-shrink:0}
+  .brokenrow .gap{flex:0 0 7%;border-top:2px dashed #c9c6bb;height:0;position:relative}
+  .brokenrow .gap iconify-icon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#bf5b48;font-size:clamp(11px,1.8vw,16px);background:var(--ivory);border-radius:50%}
+  .brokenrow .blab{font-size:clamp(8px,1.2vw,11px);font-weight:800;color:#bf5b48;margin-left:8px}
+  .datatag{position:absolute;right:5%;bottom:5%;display:flex;gap:7px;z-index:4}
+  .datatag .d{background:#fff;border-radius:8px;box-shadow:var(--shadow-sm);padding:5px 10px;text-align:center}
+  .datatag .d b{font-size:clamp(11px,1.7vw,16px);font-weight:800;color:var(--ai)}
+  .datatag .d span{display:block;font-size:clamp(6.5px,.95vw,9px);color:var(--ink-3);font-weight:700}
+
+  /* ---- panel 3 flow ---- */
+  .flow{flex:1;display:flex;flex-direction:column;justify-content:center;gap:5%;margin-top:2%}
+  .steps{display:flex;align-items:flex-start;gap:0;justify-content:space-between}
+  .step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;padding-bottom:18px}
+  .step .phone{width:62%;aspect-ratio:9/15;position:relative}
+  .step .sn{font-size:clamp(7px,1.1vw,10.5px);font-weight:800;color:var(--ink-2);text-align:center;line-height:1.3}
+  .step .sn .num{display:inline-block;color:#fff;border-radius:50%;width:15px;height:15px;font-size:9px;line-height:15px;margin-bottom:3px}
+  .arrow{align-self:flex-start;margin-top:9%;color:var(--ai);font-size:clamp(13px,2.2vw,22px);flex-shrink:0;padding:0 .3%}
+  .engine{background:var(--ai);border-radius:11px;padding:2.4% 4%;display:flex;align-items:center;gap:3%;color:#fff}
+  .engine .etitle{font-size:clamp(9px,1.4vw,13.5px);font-weight:800;display:flex;align-items:center;gap:6px;flex-shrink:0}
+  .engine .etitle iconify-icon{font-size:clamp(14px,2vw,20px)}
+  .engine .esteps{display:flex;flex:1;justify-content:space-between;gap:2%}
+  .engine .es{font-size:clamp(8px,1.2vw,12px);font-weight:700;opacity:.92;display:flex;align-items:center;gap:5px}
+  .engine .es iconify-icon{opacity:.6;font-size:clamp(9px,1.3vw,13px)}
+
+  /* ---- panel 4 showcase ---- */
+  .showcase{flex:1;display:flex;align-items:center;gap:3%;margin-top:3%;position:relative}
+  .row4{display:flex;gap:3%;flex:1;justify-content:center}
+  .row4 .pcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;max-width:18%}
+  .row4 .phone{width:100%;aspect-ratio:9/17;position:relative}
+  .row4 .cap{text-align:center}
+  .row4 .cap .role{font-size:clamp(8px,1.3vw,12px);font-weight:800;color:#fff;padding:2px 9px;border-radius:100px;display:inline-block}
+  .row4 .cap .acc{font-size:clamp(6.5px,1vw,9.5px);color:var(--ink-3);font-weight:700;margin-top:3px}
+  .inset{width:24%;flex-shrink:0;background:#fff;border-radius:11px;box-shadow:var(--shadow);padding:4%;display:flex;flex-direction:column;gap:6px}
+  .inset .it{font-size:clamp(7px,1.1vw,10px);font-weight:800;color:var(--fam)}
+  .inset .photo{aspect-ratio:16/10;border-radius:7px;background:#eceae3;display:grid;place-items:center;color:#c3c0b6}
+  .inset .photo iconify-icon{font-size:clamp(14px,2.4vw,26px)}
+  .inset .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+  .inset .w{background:#f4f2ea;border-radius:6px;padding:6px 5px;text-align:center}
+  .inset .w b{font-size:clamp(8px,1.3vw,13px);font-weight:800;color:var(--ink)}
+  .inset .w span{display:block;font-size:clamp(6px,.9vw,8.5px);color:var(--ink-3);font-weight:700}
+  .inset .ilab{font-size:clamp(6.5px,1vw,9px);color:var(--ink-3);font-weight:700;text-align:center}
+
+  /* ---- panel 5 impact ---- */
+  .impact{flex:1;display:flex;flex-direction:column;gap:3.5%;margin-top:2.5%}
+  .ba{display:flex;align-items:stretch;gap:2.5%;flex:0 0 38%}
+  .ba .col{flex:1;background:#fff;border-radius:10px;box-shadow:var(--shadow-sm);padding:2.4% 3%;display:flex;flex-direction:column;gap:7px}
+  .ba .col .h{font-size:clamp(8px,1.3vw,12px);font-weight:800;display:flex;align-items:center;gap:6px}
+  .ba .col.before .h{color:var(--ink-3)}
+  .ba .col.after .h{color:var(--ai)}
+  .ba .col .vis{flex:1;display:flex;align-items:center;justify-content:center;gap:6%}
+  .ba .col .nodeS{width:clamp(8px,1.5vw,15px);height:clamp(8px,1.5vw,15px);border-radius:50%}
+  .ba .col.before .conn{flex:0 0 8%;border-top:2px dashed #ccc9be;height:0}
+  .ba .col.after .conn{flex:0 0 8%;border-top:2px solid var(--ai);height:0}
+  .ba .arrow-mid{align-self:center;color:var(--ai);font-size:clamp(15px,2.4vw,24px);flex-shrink:0}
+  .improw{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:2.5%}
+  .impc{background:#fff;border-radius:10px;box-shadow:var(--shadow-sm);padding:3% 4%;display:flex;flex-direction:column;gap:5px;justify-content:center}
+  .impc .ico{width:clamp(26px,4vw,40px);height:clamp(26px,4vw,40px);border-radius:10px;display:grid;place-items:center;color:#fff;font-size:clamp(15px,2.4vw,22px)}
+  .impc b{font-size:clamp(10px,1.6vw,15px);font-weight:800}
+  .impc span{font-size:clamp(8px,1.2vw,11.5px);color:var(--ink-2)}
+
+  /* annotation footer per board */
+  .anno{margin-top:16px;background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:18px 20px}
+  .anno h4{font-size:13px;font-weight:800;color:var(--ink-2);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+  .anno h4 iconify-icon{color:var(--ai);font-size:16px}
+  .anno ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .anno li{font-size:13.5px;color:var(--ink-2);display:flex;gap:9px;align-items:flex-start}
+  .anno li iconify-icon{color:var(--ai);font-size:15px;flex-shrink:0;margin-top:3px}
+  .anno li b{color:var(--ink);font-weight:700}
+  .anno .scr-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+  .anno .scr-list a{font-size:11.5px;font-weight:700;color:var(--ai);background:var(--ai-soft);padding:4px 10px;border-radius:7px}
+
+  footer{padding:48px 0 70px;border-top:1px solid var(--line);color:var(--ink-3);font-size:12.5px}
+  footer .src{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 22px}
+  footer .src a{font-size:12px;color:var(--ink-2);background:var(--card);padding:6px 11px;border-radius:7px;box-shadow:var(--shadow);font-weight:600}
+  footer .src a:hover{color:var(--accent)}
+  .micro{font-size:11.5px;color:var(--ink-3);line-height:1.7}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon> 하루안부 · 전람회 가이드</div>
+    <ul>
+      <li><a href="#rules">출품 규정</a></li>
+      <li><a href="#gallery">우수작 보기</a></li>
+      <li><a href="#options">5장 구성안</a></li>
+      <li><a href="#preview">옵션 A 미리보기</a></li>
+      <li><a href="#myth">오해 바로잡기</a></li>
+      <li><a href="#check">체크리스트</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <span class="eyebrow"><iconify-icon icon="fluent:beaker-24-filled"></iconify-icon> 검증된 딥리서치 기반 · 출처 22건 · 주장 25건 적대적 검증</span>
+    <h1>대한민국 디자인 전람회<br><span class="dim">5장 패널로 ‘하루안부’ 소개하기</span></h1>
+    <p class="lead">한국디자인진흥원(KIDP) 공식 규정·심사기준과 글로벌 어워드(iF·Red Dot·UX Design Awards) 수상작 패턴을 교차 검증해, <b>16:9 이미지 5장</b>을 가장 설득력 있게 짜는 방법을 정리했습니다. 규정 요약 → 우수작 직접 보기 → 5장 구성 옵션 → <b>추천안(옵션 A) 실제 레이아웃 미리보기</b> 순서로 보세요.</p>
+
+    <div class="facts">
+      <div class="fact"><div class="n">최대 5장</div><div class="l">대표 1장 필수 + 보조 4장 선택</div></div>
+      <div class="fact"><div class="n">각 3MB</div><div class="l">jpg / png / gif</div></div>
+      <div class="fact"><div class="n">제한 없음</div><div class="l">비율·해상도·텍스트·레이아웃</div></div>
+      <div class="fact"><div class="n">7개 부문</div><div class="l">하루안부 → 서비스·경험 / 디지털미디어</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ SECTION 1 : RULES ============ -->
+<section id="rules">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <div>
+        <h2>출품 규정 — 무엇을 꼭 지켜야 하나</h2>
+        <p>제60회(2025년) 공고문·접수 페이지 1차 출처 기준. 등급/배지는 검증 신뢰도입니다.</p>
+      </div>
+    </div>
+
+    <div class="callout key">
+      <iconify-icon icon="fluent:lightbulb-filament-24-filled"></iconify-icon>
+      <div>
+        <h4>가장 중요한 발견 — “16:9 5장”은 KIDP 규정이 아닙니다 <span class="badge b-high">검증 3-0</span></h4>
+        <p>KIDP 1차 온라인 접수가 강제하는 건 <b>① 최대 5장(대표 1장 필수+보조 4장 선택) ② 각 이미지 3MB 이내(jpg/png/gif)</b> 뿐입니다. 공고문에 “<b>표현방식 및 레이아웃 제한 없음</b>”이 명시돼 있어, 비율·해상도·DPI·텍스트 비중 규정이 전혀 없습니다. → 즉 <b>16:9는 우리 자체 출력 제약</b>일 뿐이라, 패널에 <b>설명 텍스트·배경 합성·번호 시나리오를 자유롭게</b> 넣어도 됩니다.</p>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="rule">
+        <div class="top"><iconify-icon icon="fluent:document-checkmark-24-filled"></iconify-icon><h3>1차 온라인 제출물 <span class="badge b-high">high</span></h3></div>
+        <ul>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span><b>이미지 패널 최대 5장</b> — 대표 이미지 1장 필수, 보조 4장 선택</span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>파일: jpg / png / gif, <b>각 3MB 이내</b></span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>(선택) 영상 mp4, <b>50MB · 5분 이내</b></span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>비율·해상도·텍스트 비중 <b>규정 없음</b> = 레이아웃 자유</span></li>
+        </ul>
+      </div>
+      <div class="rule">
+        <div class="top"><iconify-icon icon="fluent:apps-list-24-filled"></iconify-icon><h3>하루안부에 맞는 부문 <span class="badge b-high">high</span></h3></div>
+        <ul>
+          <li><iconify-icon icon="fluent:star-16-filled"></iconify-icon><span><b>⑥ 서비스·경험 디자인</b> — “보건의료, 경험디자인(UX·CX)” 명시. <b>가장 정합성 높음</b></span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span><b>③ 디지털미디어·콘텐츠 디자인</b> — 앱·UI·HCI. 4역할 앱 화면 강조 시 적합</span></li>
+          <li><iconify-icon icon="fluent:info-16-filled"></iconify-icon><span>총 7개 부문 체계 (제품 / 시각·정보 / 디지털미디어 / 공간·환경 / 패션 / 서비스·경험 / 산업공예)</span></li>
+          <li><iconify-icon icon="fluent:warning-16-filled"></iconify-icon><span>부문 <b>번호(③/⑥)는 매년 재번호</b>될 수 있음 — 해당연도 공고 확인</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:16px">
+      <div class="rule">
+        <div class="top"><iconify-icon icon="fluent:trophy-24-filled"></iconify-icon><h3>심사가 보는 것 <span class="badge b-high">high</span></h3></div>
+        <ul>
+          <li><iconify-icon icon="fluent:arrow-right-16-filled"></iconify-icon><span><b>실제 사용자 리서치 근거</b>는 필수(must) — 예쁜 UI만으론 부족 (UX Design Awards)</span></li>
+          <li><iconify-icon icon="fluent:arrow-right-16-filled"></iconify-icon><span>iF 5기준: <b>Idea · Form · Function · Differentiation · Impact</b> (2025년부터 5번째는 Sustainability)</span></li>
+          <li><iconify-icon icon="fluent:arrow-right-16-filled"></iconify-icon><span>첫 장 = <b>키/대표 이미지</b> — 가장 강한 시각을 1번에</span></li>
+          <li><iconify-icon icon="fluent:arrow-right-16-filled"></iconify-icon><span>5장만으로 <b>독립적으로 이해 가능</b>해야 (심사위원이 이해 못 하면 투표 불가) <span class="badge b-mid">mid</span></span></li>
+        </ul>
+      </div>
+      <div class="rule">
+        <div class="top"><iconify-icon icon="fluent:eye-tracking-24-filled"></iconify-icon><h3>표현 원칙 <span class="badge b-mid">mid</span></h3></div>
+        <ul>
+          <li><iconify-icon icon="fluent:arrow-right-16-filled"></iconify-icon><span><b>체감 경험(felt experience)</b>을 전면에 — “보호자가 가족 하루를 받아보는 순간”</span></li>
+          <li><iconify-icon icon="fluent:arrow-right-16-filled"></iconify-icon><span>핵심 UI·인터랙션 <b>클로즈업</b> + 개요샷 균형 (클로즈업이 지배 X)</span></li>
+          <li><iconify-icon icon="fluent:arrow-right-16-filled"></iconify-icon><span>내러티브 정설: <b>문제 → 사용자 → 리서치/맥락 → 솔루션 → 임팩트</b></span></li>
+          <li><iconify-icon icon="fluent:arrow-right-16-filled"></iconify-icon><span>정량 지표는 <b>권장(필수 아님)</b> — 있으면 설득력↑</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <iconify-icon icon="fluent:calendar-clock-24-filled"></iconify-icon>
+      <div>
+        <h4>출품 전 반드시 재확인 — 2026 제61회 공고</h4>
+        <p>위 규정은 모두 <b>제60회(2025년, 접수 5.1~6.30)</b> 기준입니다. 2026년 제61회 공고에서 <b>5장·3MB·부문 분류·번호</b>가 동일하게 유지되는지 <a href="https://award.kidp.or.kr" class="inlink" style="color:var(--amber)">award.kidp.or.kr</a> 공식 요강 PDF로 한 번 더 대조하세요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2 : GALLERY ============ -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <div>
+        <h2>우수작 직접 보기</h2>
+        <p>전람회 공식 수상작 갤러리와, 패널/보드 구성이 잘 된 글로벌 UX·서비스 수상작 사례입니다. 새 탭으로 열어 참고하세요.</p>
+      </div>
+    </div>
+
+    <div class="gal-group">
+      <div class="gl"><iconify-icon icon="fluent:building-government-24-filled"></iconify-icon> 대한민국 디자인 전람회 — 공식</div>
+      <div class="cards">
+        <a class="card" href="https://award.kidp.or.kr/Exhibit/winners.do" target="_blank" rel="noopener">
+          <div class="ico"><iconify-icon icon="fluent:search-24-filled"></iconify-icon></div>
+          <h3>역대 수상작 검색 (2019~)</h3>
+          <p>연도·등급·부문별로 검색. <b>「서비스·경험디자인」「디지털미디어·콘텐츠 디자인」</b> 부문을 골라 우리와 같은 결의 수상작을 보세요. <b>※ 2025 수상작은 11월 14일 이후 공개</b>, 2019~2024는 지금 검색 가능.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> award.kidp.or.kr/Exhibit/winners.do</span>
+        </a>
+        <a class="card" href="https://award.kidp.or.kr/Exhibit/gallery.do" target="_blank" rel="noopener">
+          <div class="ico"><iconify-icon icon="fluent:image-multiple-24-filled"></iconify-icon></div>
+          <h3>전람회 갤러리</h3>
+          <p>전람회 수상작 이미지 갤러리. 실제 출품 패널이 어떤 톤·밀도로 만들어졌는지 시각 레퍼런스로 훑기 좋습니다.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> award.kidp.or.kr/Exhibit/gallery.do</span>
+        </a>
+        <a class="card" href="https://award.kidp.or.kr/Exhibit/previous_winners.do" target="_blank" rel="noopener">
+          <div class="ico"><iconify-icon icon="fluent:history-24-filled"></iconify-icon></div>
+          <h3>역대 수상작 (2018 이전)</h3>
+          <p>2018년 이전 아카이브. 장기 트렌드와 부문별 단골 표현 방식을 비교할 때 참고.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> award.kidp.or.kr/Exhibit/previous_winners.do</span>
+        </a>
+        <a class="card" href="https://award.kidp.or.kr/KoreaDesign/info.do" target="_blank" rel="noopener">
+          <div class="ico"><iconify-icon icon="fluent:apps-list-detail-24-filled"></iconify-icon></div>
+          <h3>전람회 안내 · 부문 분류</h3>
+          <p>7개 부문 정의와 세부 카테고리. 하루안부를 어느 부문으로 낼지 결정할 때 1차 근거.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> award.kidp.or.kr/KoreaDesign/info.do</span>
+        </a>
+        <a class="card" href="https://award.kidp.or.kr/KoreaDesign/receipt_info.do" target="_blank" rel="noopener">
+          <div class="ico"><iconify-icon icon="fluent:clipboard-task-24-filled"></iconify-icon></div>
+          <h3>접수 안내 (제출물 규정)</h3>
+          <p>“이미지 패널 최대 5장·각 3MB·표현방식 제한 없음” 원문 규정 페이지. 출품 직전 최종 확인용.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> award.kidp.or.kr/KoreaDesign/receipt_info.do</span>
+        </a>
+        <a class="card" href="https://youth.kidp.or.kr/user/gallary.asp" target="_blank" rel="noopener">
+          <div class="ico"><iconify-icon icon="fluent:people-team-24-filled"></iconify-icon></div>
+          <h3>청소년·대학 갤러리</h3>
+          <p>학생/청년 부문 갤러리. 학생 출품이라면 눈높이·완성도 기준을 가늠하기 좋음.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> youth.kidp.or.kr/user/gallary.asp</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="gal-group">
+      <div class="gl"><iconify-icon icon="fluent:globe-24-filled"></iconify-icon> 글로벌 UX·서비스 수상작 — 패널 구성 레퍼런스</div>
+      <div class="cards">
+        <a class="card" href="https://ux-design-awards.com/" target="_blank" rel="noopener">
+          <span class="tag">검증 high</span>
+          <div class="ico"><iconify-icon icon="fluent:ribbon-star-24-filled"></iconify-icon></div>
+          <h3>UX Design Awards — 수상작</h3>
+          <p>문제→사용자→리서치→솔루션→임팩트 흐름의 모범 사례가 가장 많은 곳. 우리 5장 내러티브의 직접 본보기.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> ux-design-awards.com</span>
+        </a>
+        <a class="card" href="https://ux-design-awards.com/jury/judging-criteria" target="_blank" rel="noopener">
+          <span class="tag">검증 high</span>
+          <div class="ico"><iconify-icon icon="fluent:gavel-24-filled"></iconify-icon></div>
+          <h3>UX Awards 심사기준 6개</h3>
+          <p>Relevance·Empowerment·Innovation·Outcome·Holistic·Quality. “실제 리서치 근거 필수”의 원문.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> /jury/judging-criteria</span>
+        </a>
+        <a class="card" href="https://www.red-dot.org/magazine/communication-design-at-the-highest-level-awarded-interface-user-experience-design" target="_blank" rel="noopener">
+          <span class="tag">검증 high</span>
+          <div class="ico"><iconify-icon icon="fluent:premium-24-filled"></iconify-icon></div>
+          <h3>Red Dot — Interface & UX 수상작</h3>
+          <p>심사평이 “기능 나열”이 아닌 <b>체감 경험</b>을 강조한 사례. 패널에서 ‘느낌’을 어떻게 파는지 학습용.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> red-dot.org · magazine</span>
+        </a>
+        <a class="card" href="https://www.uxstudioteam.com/oxa-nanoleq-case-study" target="_blank" rel="noopener">
+          <span class="tag">검증 high</span>
+          <div class="ico"><iconify-icon icon="fluent:phone-screen-time-24-filled"></iconify-icon></div>
+          <h3>Oxa(Nanoleq) — Red Dot 수상 케이스</h3>
+          <p>앱 목업으로 시작→리서치(다이어리 스터디)→디자인 진화→임팩트. 5장 매핑 그대로 따라할 만한 구조.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> uxstudioteam.com</span>
+        </a>
+        <a class="card" href="https://ifdesign.com/en/winners" target="_blank" rel="noopener">
+          <span class="tag">검증 high</span>
+          <div class="ico"><iconify-icon icon="fluent:award-24-filled"></iconify-icon></div>
+          <h3>iF Design Award — Winners</h3>
+          <p>UI/UX·서비스 디자인 수상작 검색. 첫 장(key image) 활용법과 5기준 표현을 비교 학습.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> ifdesign.com/en/winners</span>
+        </a>
+        <a class="card" href="https://competition.adesignaward.com/theory-presentation.html" target="_blank" rel="noopener">
+          <span class="tag">검증 mid</span>
+          <div class="ico"><iconify-icon icon="fluent:slide-layout-24-filled"></iconify-icon></div>
+          <h3>A′ Design — 패널 표현 가이드</h3>
+          <p>클로즈업·개요샷 균형, “이해 못 하면 투표 못 한다” 원칙의 출처. 패널 제작 실무 팁.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> competition.adesignaward.com</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="gal-group">
+      <div class="gl"><iconify-icon icon="fluent:book-open-24-filled"></iconify-icon> 출품 가이드 · 실수 모음</div>
+      <div class="cards">
+        <a class="card" href="https://medium.com/@hooncho/ux-ui-디자인-제품을-디자인-어워드에-출품하기-cae9f6e252b9" target="_blank" rel="noopener">
+          <span class="tag">한국어</span>
+          <div class="ico"><iconify-icon icon="fluent:document-text-24-filled"></iconify-icon></div>
+          <h3>UX/UI 제품 어워드 출품기 (국문)</h3>
+          <p>Red Dot·iF·IDEA·G디자인 등 주요 어워드별 출품 절차·비용을 한국어로 정리.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> medium · @hooncho</span>
+        </a>
+        <a class="card" href="https://www.thedesignerstoolbox.com/ux-portfolio/how-to-present-a-ux-case-study/" target="_blank" rel="noopener">
+          <div class="ico"><iconify-icon icon="fluent:presenter-24-filled"></iconify-icon></div>
+          <h3>UX 케이스스터디 발표법</h3>
+          <p>한정된 장수로 스토리를 압축하는 구성·정보 위계 가이드.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> thedesignerstoolbox.com</span>
+        </a>
+        <a class="card" href="https://www.nativeadvertisinginstitute.com/blog/award-entry-mistakes" target="_blank" rel="noopener">
+          <div class="ico"><iconify-icon icon="fluent:error-circle-24-filled"></iconify-icon></div>
+          <h3>어워드 출품 흔한 실수</h3>
+          <p>탈락을 부르는 전형적 실수들 — 제출 전 자가 점검 체크리스트로 활용.</p>
+          <span class="go"><iconify-icon icon="fluent:open-24-regular"></iconify-icon> nativeadvertisinginstitute.com</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 3 : OPTIONS ============ -->
+<section id="options">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <div>
+        <h2>5장 구성안 — 3가지 옵션</h2>
+        <p>각 장의 제목·담을 내용·레이아웃 방향을 16:9 와이어프레임으로 제시합니다. 같은 5장이라도 ‘이야기를 푸는 축’이 다릅니다.</p>
+      </div>
+    </div>
+
+    <!-- OPTION A -->
+    <div class="opt rec">
+      <div class="opt-head">
+        <span class="opt-tag">A</span>
+        <div>
+          <h3>정석 내러티브 — 문제→솔루션→임팩트 &nbsp;<span class="rec-pill"><iconify-icon icon="fluent:star-16-filled"></iconify-icon> 추천</span></h3>
+        </div>
+      </div>
+      <p class="opt-desc">리서치로 검증된 어워드 공통 흐름을 그대로 따른 <b>가장 안전하고 설득력 높은</b> 구성. 심사위원이 5장만 봐도 “왜 필요한지→무엇인지→무슨 효과인지”가 자동으로 읽힙니다. 4개 앱은 4번 패널에 한 번에 시연. <a href="#preview" class="inlink" style="color:var(--accent)">↓ 아래 04에서 실제 레이아웃으로 보기</a></p>
+      <div class="panel-row">
+        <!-- 1 hero -->
+        <div class="panel">
+          <div class="pnum">PANEL 01 <span class="req">필수·대표</span></div>
+          <div class="wf">
+            <div class="z title-z" style="flex:0 0 22%">하루안부 워드마크 + 태그라인</div>
+            <div class="row" style="position:relative">
+              <div class="nodes">
+                <div class="col" style="justify-content:space-between"><div class="dot"></div><div class="dot"></div></div>
+                <div class="col" style="justify-content:space-between;align-items:flex-end"><div class="dot"></div><div class="dot"></div></div>
+              </div>
+              <div class="center-node"><div class="hub">AI</div></div>
+            </div>
+          </div>
+          <h4>대표 — 4역할을 잇는 키 비주얼</h4>
+          <p class="pd">중앙 AI 허브에 가족·의료진·요양보호사·환자 4노드 연결. 한 줄 가치제안 + “독거노인용 아닌 시설 케어 소통”.</p>
+          <div class="pmap"><iconify-icon icon="fluent:target-arrow-16-filled"></iconify-icon> Idea · Key image</div>
+        </div>
+        <!-- 2 problem -->
+        <div class="panel">
+          <div class="pnum">PANEL 02</div>
+          <div class="wf">
+            <div class="z" style="flex:0 0 18%">단절된 소통 — 문제 정의</div>
+            <div class="row">
+              <div class="col"><div class="z" style="flex:1">가족<br>불안</div></div>
+              <div class="col"><div class="z" style="flex:1">의료진<br>인계부담</div></div>
+              <div class="col"><div class="z" style="flex:1">보호사<br>기록부담</div></div>
+              <div class="col"><div class="z" style="flex:1">환자<br>고립</div></div>
+            </div>
+          </div>
+          <h4>문제·사용자 — 4역할 페인포인트</h4>
+          <p class="pd">시설 케어 소통 단절을 페르소나+인용으로. 가능하면 정량 데이터 1~2개로 근거 강화(리서치 must).</p>
+          <div class="pmap"><iconify-icon icon="fluent:target-arrow-16-filled"></iconify-icon> Relevance · Users</div>
+        </div>
+        <!-- 3 flow -->
+        <div class="panel">
+          <div class="pnum">PANEL 03</div>
+          <div class="wf">
+            <div class="z" style="flex:0 0 18%">AI 안부·리포트 작동 흐름</div>
+            <div class="row" style="align-items:center">
+              <div class="step">환자<br>일상</div><div class="arrow">›</div>
+              <div class="step">AI<br>안부</div><div class="arrow">›</div>
+              <div class="step">리포트</div><div class="arrow">›</div>
+              <div class="step">가족<br>확인</div>
+            </div>
+          </div>
+          <h4>솔루션 흐름 — 1개 시나리오</h4>
+          <p class="pd">“환자의 하루가 AI 안부로 정리돼 가족·의료진에게 닿는” end-to-end 1스토리를 타임라인/스텝으로.</p>
+          <div class="pmap"><iconify-icon icon="fluent:target-arrow-16-filled"></iconify-icon> Function · Solution</div>
+        </div>
+        <!-- 4 ui -->
+        <div class="panel">
+          <div class="pnum">PANEL 04</div>
+          <div class="wf">
+            <div class="z" style="flex:0 0 16%">4개 앱 화면 시연</div>
+            <div class="row">
+              <div class="phone"><i></i><i></i><i></i></div>
+              <div class="phone"><i></i><i></i><i></i></div>
+              <div class="phone"><i></i><i></i><i></i></div>
+              <div class="phone"><i></i><i></i><i></i></div>
+            </div>
+            <div class="inset"><i></i><i></i><i></i><i></i></div>
+          </div>
+          <h4>UI 시연 — 4앱 목업 + 클로즈업</h4>
+          <p class="pd">보호자·의료진·보호사·환자 대표 화면을 폰 목업으로 나란히. AI 안부/리포트 카드를 확대 인셋으로.</p>
+          <div class="pmap"><iconify-icon icon="fluent:target-arrow-16-filled"></iconify-icon> Form · Felt experience</div>
+        </div>
+        <!-- 5 impact -->
+        <div class="panel">
+          <div class="pnum">PANEL 05</div>
+          <div class="wf">
+            <div class="z accent-z" style="flex:0 0 22%">왜 새로운가 — 다역할 통합 + AI 안부</div>
+            <div class="row">
+              <div class="stat"><b>안심</b><span>보호자 신뢰</span></div>
+              <div class="stat"><b>−부담</b><span>의료·보호사</span></div>
+              <div class="stat"><b>연속</b><span>돌봄 연속성</span></div>
+            </div>
+          </div>
+          <h4>차별점·임팩트</h4>
+          <p class="pd">기존 대비 차별점(통합+AI) + 기대 임팩트 3개. before/after나 사회적 가치로 마무리.</p>
+          <div class="pmap"><iconify-icon icon="fluent:target-arrow-16-filled"></iconify-icon> Differentiation · Impact</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION B -->
+    <div class="opt">
+      <div class="opt-head">
+        <span class="opt-tag alt">B</span>
+        <div><h3>역할 여정 중심 — 4명의 주인공</h3></div>
+      </div>
+      <p class="opt-desc">“이 서비스가 <b>누구의 하루를 어떻게 바꾸는가</b>”를 역할별 여정으로 보여주는 구성. 4개 앱을 각각 깊게 보여줄 수 있어 <b>UI 완성도가 강점일 때</b> 유리. 단, 전체 그림(임팩트)이 약해지지 않게 5번에서 묶어줘야 함.</p>
+      <div class="panel-row">
+        <div class="panel">
+          <div class="pnum">PANEL 01 <span class="req">필수·대표</span></div>
+          <div class="wf">
+            <div class="z title-z" style="flex:0 0 24%">하루안부 — 4역할 케어 소통</div>
+            <div class="row" style="position:relative">
+              <div class="center-node"><div class="hub">AI</div></div>
+              <div class="nodes"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+          </div>
+          <h4>대표 — 키 비주얼</h4>
+          <p class="pd">옵션 A와 동일한 표지. 4역할 + AI 허브 + 태그라인.</p>
+          <div class="pmap"><iconify-icon icon="fluent:target-arrow-16-filled"></iconify-icon> Key image</div>
+        </div>
+        <div class="panel">
+          <div class="pnum">PANEL 02</div>
+          <div class="wf">
+            <div class="z" style="flex:0 0 18%">가족(보호자)의 하루</div>
+            <div class="row">
+              <div class="col" style="flex:.8"><div class="z" style="flex:1">불안</div><div class="z accent-z" style="flex:1">안심</div></div>
+              <div class="phone" style="flex:1.2"><i></i><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <h4>가족 — 불안에서 안심으로</h4>
+          <p class="pd">보호자앱 중심. AI 리포트로 가족 하루를 받아보는 체감 순간을 클로즈업.</p>
+          <div class="pmap"><iconify-icon icon="fluent:target-arrow-16-filled"></iconify-icon> Felt experience</div>
+        </div>
+        <div class="panel">
+          <div class="pnum">PANEL 03</div>
+          <div class="wf">
+            <div class="z" style="flex:0 0 18%">현장 — 의료진 · 요양보호사</div>
+            <div class="row">
+              <div class="phone"><i></i><i></i><i></i></div>
+              <div class="phone"><i></i><i></i><i></i></div>
+              <div class="col" style="flex:.7"><div class="z" style="flex:1">인계·기록 자동화</div></div>
+            </div>
+          </div>
+          <h4>현장 — 인계·기록 부담 해소</h4>
+          <p class="pd">의료진앱+요양보호사앱 2개를 함께. 핸드오버·기록이 어떻게 가벼워지는지.</p>
+          <div class="pmap"><iconify-icon icon="fluent:target-arrow-16-filled"></iconify-icon> Function</div>
+        </div>
+        <div class="panel">
+          <div class="pnum">PANEL 04</div>
+          <div class="wf">
+            <div class="z" style="flex:0 0 18%">환자 + AI 안부 엔진</div>
+            <div class="row">
+              <div class="phone" style="flex:1"><i></i><i></i><i></i></div>
+              <div class="col" style="flex:1.2;position:relative"><div class="z accent-z" style="flex:1">AI가 일상을<br>안부로 변환</div></div>
+            </div>
+          </div>
+          <h4>환자 · AI 코어</h4>
+          <p class="pd">환자앱 + 모두를 잇는 AI 안부 엔진 구조. 서비스의 ‘심장’을 설명.</p>
+          <div class="pmap"><iconify-icon icon="fluent:target-arrow-16-filled"></iconify-icon> Innovation</div>
+        </div>
+        <div class="panel">
+          <div class="pnum">PANEL 05</div>
+          <div class="wf">
+            <div class="z accent-z" style="flex:0 0 22%">하나로 이어진 케어</div>
+            <div class="row">
+              <div class="stat"><b>안심</b><span>가족</span></div>
+              <div class="stat"><b>−부담</b><span>현장</span></div>
+              <div class="stat"><b>연속</b><span>돌봄</span></div>
+            </div>
+          </div>
+          <h4>통합·임팩트</h4>
+          <p class="pd">4개 여정이 하나의 플랫폼으로 묶이는 그림 + 임팩트 3.</p>
+          <div class="pmap"><iconify-icon icon="fluent:target-arrow-16-filled"></iconify-icon> Impact</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION C -->
+    <div class="opt">
+      <div class="opt-head">
+        <span class="opt-tag alt">C</span>
+        <div><h3>iF 심사기준 매핑 — Idea·Form·Function·Differentiation·Impact</h3></div>
+      </div>
+      <p class="opt-desc">5장을 <b>심사 채점표 5개 기준에 1:1로 정렬</b>하는 구성. 심사위원이 “찾는 항목”을 패널 순서대로 떠먹여 주는 전략이라 <b>글로벌 어워드(iF 등) 동시 출품</b> 시 특히 유리. (2025년부터 5번째 기준은 Sustainability — 임팩트를 ‘지속가능성/사회가치’로 강화)</p>
+      <div class="panel-row">
+        <div class="panel">
+          <div class="pnum">PANEL 01 <span class="req">필수·대표</span></div>
+          <div class="wf">
+            <div class="z title-z" style="flex:0 0 26%">왜 필요한가 — 문제 + 아이디어</div>
+            <div class="row"><div class="z" style="flex:1">시설 케어 소통의 공백 → 하루안부</div></div>
+          </div>
+          <h4>Idea — 과제와 관련성</h4>
+          <p class="pd">무엇을 풀려 했고 왜 중요한가. 대표 이미지를 겸하되 한 줄 문제선언을 또렷이.</p>
+          <div class="pmap"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon> Idea</div>
+        </div>
+        <div class="panel">
+          <div class="pnum">PANEL 02</div>
+          <div class="wf">
+            <div class="z" style="flex:0 0 18%">디자인 시스템 · 비주얼</div>
+            <div class="row">
+              <div class="phone"><i></i><i></i><i></i></div>
+              <div class="col"><div class="z accent-z" style="flex:1">컬러</div><div class="z" style="flex:1">타이포</div></div>
+            </div>
+          </div>
+          <h4>Form — 미감·완성도</h4>
+          <p class="pd">UI 톤·디자인 시스템·감성. 일관된 비주얼 언어를 한 장으로 증명.</p>
+          <div class="pmap"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon> Form</div>
+        </div>
+        <div class="panel">
+          <div class="pnum">PANEL 03</div>
+          <div class="wf">
+            <div class="z" style="flex:0 0 16%">핵심 기능 · 사용성</div>
+            <div class="row">
+              <div class="phone"><i></i><i></i><i></i></div>
+              <div class="phone"><i></i><i></i><i></i></div>
+              <div class="phone"><i></i><i></i><i></i></div>
+              <div class="phone"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <h4>Function — 기능·사용성</h4>
+          <p class="pd">4앱 핵심 기능 시연. AI 안부/리포트가 실제로 어떻게 쓰이는지.</p>
+          <div class="pmap"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon> Function</div>
+        </div>
+        <div class="panel">
+          <div class="pnum">PANEL 04</div>
+          <div class="wf">
+            <div class="z" style="flex:0 0 20%">무엇이 새로운가</div>
+            <div class="row">
+              <div class="col"><div class="z" style="flex:1">기존: 단방향·분절</div></div>
+              <div class="arrow" style="width:14px">›</div>
+              <div class="col"><div class="z accent-z" style="flex:1">하루안부: 통합+AI</div></div>
+            </div>
+          </div>
+          <h4>Differentiation — 차별점</h4>
+          <p class="pd">다역할 통합 + AI 안부 자동화. before/after 대비로 신규성 강조.</p>
+          <div class="pmap"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon> Differentiation</div>
+        </div>
+        <div class="panel">
+          <div class="pnum">PANEL 05</div>
+          <div class="wf">
+            <div class="z accent-z" style="flex:0 0 22%">사회적 가치 · 지속가능성</div>
+            <div class="row">
+              <div class="stat"><b>안심</b><span>가족</span></div>
+              <div class="stat"><b>연속</b><span>돌봄</span></div>
+              <div class="stat"><b>효율</b><span>현장</span></div>
+            </div>
+          </div>
+          <h4>Impact / Sustainability</h4>
+          <p class="pd">돌봄 연속성·현장 효율·가족 신뢰의 사회적 가치. 정량 지표 있으면 삽입.</p>
+          <div class="pmap"><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon> Impact</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- compare -->
+    <h3 style="font-size:17px;font-weight:800;margin:30px 0 14px;letter-spacing:-.02em">세 옵션 비교</h3>
+    <div style="overflow-x:auto">
+    <table class="compare">
+      <thead><tr><th>구분</th><th>A · 정석 내러티브</th><th>B · 역할 여정</th><th>C · iF 기준 매핑</th></tr></thead>
+      <tbody>
+        <tr><td>이야기 축</td><td>문제→솔루션→임팩트</td><td>4역할의 하루 변화</td><td>심사 채점 5기준</td></tr>
+        <tr><td>4개 앱 노출</td><td>4번 패널에 한 번에</td><td class="yes">3·4번에 깊게 (강점)</td><td>3번 Function에 집약</td></tr>
+        <tr><td>강점</td><td class="yes">가장 안전·이해 쉬움</td><td>공감·UI 완성도 어필</td><td class="yes">심사 정합·글로벌 동시출품</td></tr>
+        <tr><td>주의</td><td>UI 디테일 노출 제한적</td><td>전체 임팩트 약해질 위험</td><td>스토리 감정선 약함</td></tr>
+        <tr><td>추천 상황</td><td class="yes">전람회 본 출품 (기본)</td><td>UI가 압도적으로 좋을 때</td><td>iF·Red Dot 병행 출품</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="callout key" style="margin-top:24px">
+      <iconify-icon icon="fluent:lightbulb-filament-24-filled"></iconify-icon>
+      <div>
+        <h4>추천 종합</h4>
+        <p>전람회 본 출품은 <b>옵션 A(정석)</b>를 기본으로, <b>4번(UI 시연) 패널에 옵션 B의 역할 여정 감각</b>을 한 스푼 섞는 것이 가장 강합니다. 글로벌 어워드까지 노린다면 같은 소스로 <b>옵션 C 순서</b>만 재배열해 한 벌 더 만드세요. 어느 안이든 <b>1번=대표 키 이미지, 2번=리서치 근거 있는 문제</b>는 고정입니다. → <a href="#preview" class="inlink">아래 04에서 옵션 A를 실제 보드로 펼쳐봤습니다.</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4 : OPTION A LIVE PREVIEW (구성미리보기 통합) ============ -->
+<section id="preview">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <div>
+        <h2>옵션 A 상세 미리보기 — 5장 실제 레이아웃</h2>
+        <p>위에서 추천한 <b>옵션 A(정석 내러티브)</b>를 실제 패널 초안으로 펼친 버전입니다. 각 16:9 보드는 들어갈 앱 화면 자리와 제안 카피를 보여주고, 보드 아래 주석에 “무슨 화면·왜 이 배치”가 정리돼 있어요.</p>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span class="l"><span class="sw" style="background:var(--fam)"></span>가족(보호자)</span>
+      <span class="l"><span class="sw" style="background:var(--med)"></span>의료진</span>
+      <span class="l"><span class="sw" style="background:var(--care)"></span>요양보호사</span>
+      <span class="l"><span class="sw" style="background:var(--pat)"></span>환자</span>
+      <span class="l"><span class="sw" style="background:var(--ai)"></span>AI 안부 엔진</span>
+      <span class="meta">5장 내내 같은 색 = 같은 역할</span>
+    </div>
+
+    <div class="note">
+      <iconify-icon icon="fluent:info-24-filled"></iconify-icon>
+      <span>이 보드들은 <b>배치 미리보기</b>입니다. 실제 앱 캡처·사진·확정 카피·정량 데이터는 다음 단계에서 채웁니다. 톤·구도만 봐 주세요.</span>
+    </div>
+
+    <!-- ===== BOARD 1 ===== -->
+    <div class="block">
+      <div class="bhead"><span class="bnum">1</span><h2>대표 — 키 이미지</h2><span class="req">필수</span></div>
+      <div class="chips">
+        <span class="chip"><iconify-icon icon="fluent:image-sparkle-24-filled"></iconify-icon> 가장 강한 한 컷</span>
+        <span class="chip"><iconify-icon icon="fluent:trophy-24-filled"></iconify-icon> iF Image No.1 / KIDP 대표</span>
+        <span class="chip"><iconify-icon icon="fluent:fingerprint-24-filled"></iconify-icon> 정체성 각인</span>
+      </div>
+
+      <div class="board">
+        <div class="b-wm"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon> 하루안부</div>
+        <div class="b-sec">01 · IDENTITY</div>
+        <div class="b-page">1 / 5</div>
+
+        <div class="constel">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line x1="50" y1="46" x2="13" y2="20" stroke="#c7d3cf" stroke-width=".5"/>
+            <line x1="50" y1="46" x2="87" y2="20" stroke="#c7d3cf" stroke-width=".5"/>
+            <line x1="50" y1="46" x2="13" y2="80" stroke="#c7d3cf" stroke-width=".5"/>
+            <line x1="50" y1="46" x2="87" y2="80" stroke="#c7d3cf" stroke-width=".5"/>
+          </svg>
+          <!-- hub -->
+          <div class="hub"><iconify-icon icon="fluent:sparkle-24-filled"></iconify-icon><b>AI 안부</b><span>엔진</span></div>
+          <!-- 4 nodes -->
+          <div class="node" style="left:13%;top:20%">
+            <div class="phone"><div class="top" style="background:var(--fam)"><i></i></div><div class="scr"><div class="ln"></div><div class="blk"></div></div></div>
+            <div class="lbl"><span class="role" style="background:var(--fam)">가족</span></div>
+          </div>
+          <div class="node" style="left:87%;top:20%">
+            <div class="phone"><div class="top" style="background:var(--med)"><i></i></div><div class="scr"><div class="ln"></div><div class="blk"></div></div></div>
+            <div class="lbl"><span class="role" style="background:var(--med)">의료진</span></div>
+          </div>
+          <div class="node" style="left:13%;top:80%">
+            <div class="phone"><div class="top" style="background:var(--care)"><i></i></div><div class="scr"><div class="ln"></div><div class="blk"></div></div></div>
+            <div class="lbl"><span class="role" style="background:var(--care)">요양보호사</span></div>
+          </div>
+          <div class="node" style="left:87%;top:80%">
+            <div class="phone"><div class="top" style="background:var(--pat)"><i></i></div><div class="scr"><div class="ln"></div><div class="blk"></div></div></div>
+            <div class="lbl"><span class="role" style="background:var(--pat)">환자</span></div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:1%">
+          <div class="b-head">흩어진 돌봄을, <span class="accent">하나의 안부</span>로.</div>
+          <div class="b-id">독거노인 돌봄이 아닙니다 — 요양시설의 가족·의료진·요양보호사·환자를 잇는 AI 케어 소통 플랫폼</div>
+        </div>
+        <div class="b-foot">Haru Anbu · Care Communication Platform</div>
+      </div>
+
+      <div class="anno">
+        <h4><iconify-icon icon="fluent:notepad-24-filled"></iconify-icon> 이 패널이 하는 일</h4>
+        <ul>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>중앙 <b>AI 안부 엔진</b>에 4개 앱 홈이 연결된 “제품 성좌(constellation)”로 한눈에 구조를 각인 — 가장 강한 시각, 카피 최소</span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>태그라인 + “독거노인용 아님” 정체성 한 줄로 차별화 못 박기</span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>4역할 컬러 범례를 여기서 확립 → 2~5번 패널에서 동일하게 반복</span></li>
+        </ul>
+        <div class="scr-list">
+          <a href="v11_보호자앱/g-guardian-live.html">g-guardian-live</a>
+          <a href="v15_의료진앱/d01-home.html">d01-home</a>
+          <a href="v11_요양보호사앱/c01-today.html">c01-today</a>
+          <a href="v12_환자앱/p05-voice.html">p05-voice</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BOARD 2 ===== -->
+    <div class="block">
+      <div class="bhead"><span class="bnum">2</span><h2>문제 · 사용자</h2></div>
+      <div class="chips">
+        <span class="chip"><iconify-icon icon="fluent:people-error-24-filled"></iconify-icon> 시설 케어 소통 단절</span>
+        <span class="chip"><iconify-icon icon="fluent:search-info-24-filled"></iconify-icon> UX Awards · Relevance(리서치 필수)</span>
+      </div>
+
+      <div class="board">
+        <div class="b-wm"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon> 하루안부</div>
+        <div class="b-sec">02 · PROBLEM</div>
+        <div class="b-page">2 / 5</div>
+
+        <div class="b-head" style="max-width:78%">한 사람의 하루가, <span class="accent">네 곳으로 흩어집니다.</span></div>
+        <div class="b-tag">가족은 불안하고, 현장은 벅차고, 환자는 외롭다</div>
+
+        <div class="personas">
+          <div class="persona">
+            <span class="cap" style="background:var(--fam)"></span>
+            <span class="who" style="color:var(--fam)"><iconify-icon icon="fluent:people-home-24-filled"></iconify-icon> 가족</span>
+            <span class="quote">“면회 못 가는 날엔, 엄마가 잘 지냈는지 알 길이 없어요.”</span>
+            <span class="pain" style="background:var(--fam)">정보 단절 · 불안</span>
+          </div>
+          <div class="persona">
+            <span class="cap" style="background:var(--med)"></span>
+            <span class="who" style="color:var(--med)"><iconify-icon icon="fluent:stethoscope-24-filled"></iconify-icon> 의료진</span>
+            <span class="quote">“교대마다 환자 상태를 처음부터 다시 파악해야 해요.”</span>
+            <span class="pain" style="background:var(--med)">인계 부담</span>
+          </div>
+          <div class="persona">
+            <span class="cap" style="background:var(--care)"></span>
+            <span class="who" style="color:var(--care)"><iconify-icon icon="fluent:hand-open-heart-24-filled"></iconify-icon> 요양보호사</span>
+            <span class="quote">“돌보랴 종이기록 쓰랴, 손이 두 개론 모자라요.”</span>
+            <span class="pain" style="background:var(--care)">기록 이중부담</span>
+          </div>
+          <div class="persona">
+            <span class="cap" style="background:var(--pat)"></span>
+            <span class="who" style="color:var(--pat)"><iconify-icon icon="fluent:person-24-filled"></iconify-icon> 환자</span>
+            <span class="quote">“온종일 말 한마디 나눌 사람이 없어요.”</span>
+            <span class="pain" style="background:var(--pat)">고립 · 외로움</span>
+          </div>
+        </div>
+
+        <div class="brokenrow">
+          <span class="dot" style="background:var(--fam)"></span>
+          <span class="gap"><iconify-icon icon="fluent:dismiss-circle-12-filled"></iconify-icon></span>
+          <span class="dot" style="background:var(--med)"></span>
+          <span class="gap"><iconify-icon icon="fluent:dismiss-circle-12-filled"></iconify-icon></span>
+          <span class="dot" style="background:var(--care)"></span>
+          <span class="gap"><iconify-icon icon="fluent:dismiss-circle-12-filled"></iconify-icon></span>
+          <span class="dot" style="background:var(--pat)"></span>
+          <span class="blab">끊어진 소통</span>
+        </div>
+
+        <div class="datatag">
+          <div class="d"><b>?? %</b><span>가족 불안도</span></div>
+          <div class="d"><b>?? 분</b><span>일일 기록시간</span></div>
+        </div>
+        <div class="b-foot">실데이터·인용 출처 확보 후 삽입</div>
+      </div>
+
+      <div class="anno">
+        <h4><iconify-icon icon="fluent:notepad-24-filled"></iconify-icon> 이 패널이 하는 일</h4>
+        <ul>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>4역할 페르소나 + 실제 목소리(인용)로 <b>“이 문제는 진짜다”</b>를 증명 — 심사에서 리서치 근거는 <b>필수(must)</b></span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>하단 “끊어진 소통” 다이어그램으로 단절을 시각화 → 3번 솔루션에서 이 선이 ‘이어지는’ 대비를 예고</span></li>
+          <li><iconify-icon icon="fluent:warning-16-filled"></iconify-icon><span>우하단 수치는 <b>자리표시</b> — 인용 가능한 실제 통계가 있을 때만 채우기(가짜 수치 금지)</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== BOARD 3 ===== -->
+    <div class="block">
+      <div class="bhead"><span class="bnum">3</span><h2>솔루션 흐름 — AI 안부가 잇는 하루</h2></div>
+      <div class="chips">
+        <span class="chip"><iconify-icon icon="fluent:flow-24-filled"></iconify-icon> end-to-end 1 시나리오</span>
+        <span class="chip"><iconify-icon icon="fluent:heart-24-filled"></iconify-icon> 체감 경험(felt experience)</span>
+      </div>
+
+      <div class="board">
+        <div class="b-wm"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon> 하루안부</div>
+        <div class="b-sec">03 · SOLUTION</div>
+        <div class="b-page">3 / 5</div>
+
+        <div class="b-head">환자의 하루가, <span class="accent">저절로 안부가 됩니다.</span></div>
+        <div class="b-tag">아무도 따로 보고서를 쓰지 않아도, 돌봄이 안부가 되어 닿습니다</div>
+
+        <div class="flow">
+          <div class="steps">
+            <div class="step">
+              <div class="phone"><div class="top" style="background:var(--pat)"><i></i></div><div class="scr"><div class="ln"></div><div class="blk"></div></div></div>
+              <div class="sn"><span class="num" style="background:var(--pat)">1</span><br>환자가 말벗과<br>하루를 나눈다</div>
+            </div>
+            <div class="arrow"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></div>
+            <div class="step">
+              <div class="phone"><div class="top" style="background:var(--care)"><i></i></div><div class="scr"><div class="ln"></div><div class="blk"></div></div></div>
+              <div class="sn"><span class="num" style="background:var(--care)">2</span><br>보호사가 체크·사진<br>→ ‘오늘의 순간’</div>
+            </div>
+            <div class="arrow"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></div>
+            <div class="step">
+              <div class="phone"><div class="top" style="background:var(--med)"><i></i></div><div class="scr"><div class="ln"></div><div class="blk"></div></div></div>
+              <div class="sn"><span class="num" style="background:var(--med)">3</span><br>의료진이 AI 요약으로<br>상태·인계 확인</div>
+            </div>
+            <div class="arrow"><iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon></div>
+            <div class="step">
+              <div class="phone"><div class="top" style="background:var(--fam)"><i></i></div><div class="scr"><div class="ln"></div><div class="blk"></div></div></div>
+              <div class="sn"><span class="num" style="background:var(--fam)">4</span><br>가족이 일일 리포트로<br>하루를 받아본다</div>
+            </div>
+          </div>
+
+          <div class="engine">
+            <span class="etitle"><iconify-icon icon="fluent:sparkle-24-filled"></iconify-icon> AI 안부 엔진</span>
+            <div class="esteps">
+              <span class="es">수집 <iconify-icon icon="fluent:chevron-right-16-filled"></iconify-icon></span>
+              <span class="es">분석 <iconify-icon icon="fluent:chevron-right-16-filled"></iconify-icon></span>
+              <span class="es">요약 <iconify-icon icon="fluent:chevron-right-16-filled"></iconify-icon></span>
+              <span class="es">맞춤 전달</span>
+            </div>
+          </div>
+        </div>
+        <div class="b-foot">현장 입력은 자연스럽게 · 출력은 역할 맞춤</div>
+      </div>
+
+      <div class="anno">
+        <h4><iconify-icon icon="fluent:notepad-24-filled"></iconify-icon> 이 패널이 하는 일</h4>
+        <ul>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>4역할을 가로 타임라인 <b>한 흐름</b>으로 묶어 “돌봄이 안부로 전환되는” 핵심 시나리오를 보여줌</span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>하단 <b>AI 안부 엔진 바</b>(수집→분석→요약→전달)가 전체를 관통 → 서비스의 ‘심장’이 무엇인지 명확</span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>2번의 ‘끊어진 선’이 여기서 ‘이어진 흐름’으로 → 문제↔솔루션 시각적 대비 완성</span></li>
+        </ul>
+        <div class="scr-list">
+          <a href="v12_환자앱/p05-voice.html">p05-voice</a>
+          <a href="v11_요양보호사앱/c02-checklist.html">c02-checklist</a>
+          <a href="v15_의료진앱/d04-handover.html">d04-handover</a>
+          <a href="v11_보호자앱/g02-ai-report.html">g02-ai-report</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BOARD 4 ===== -->
+    <div class="block">
+      <div class="bhead"><span class="bnum">4</span><h2>UI 시연 — 4앱 화면 + 클로즈업</h2></div>
+      <div class="chips">
+        <span class="chip"><iconify-icon icon="fluent:phone-24-filled"></iconify-icon> 완성도(Form)</span>
+        <span class="chip"><iconify-icon icon="fluent:accessibility-24-filled"></iconify-icon> 접근성 설계</span>
+        <span class="chip"><iconify-icon icon="fluent:zoom-in-24-filled"></iconify-icon> 핵심 UI 클로즈업</span>
+      </div>
+
+      <div class="board">
+        <div class="b-wm"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon> 하루안부</div>
+        <div class="b-sec">04 · INTERFACE</div>
+        <div class="b-page">4 / 5</div>
+
+        <div class="b-head">역할마다 꼭 맞는, <span class="accent">하나의 안부.</span></div>
+
+        <div class="showcase">
+          <div class="row4">
+            <div class="pcol">
+              <div class="phone"><div class="top" style="background:var(--fam)"><i></i></div><div class="scr"><div class="ln"></div><div class="blk"></div><div class="ln" style="width:60%"></div></div></div>
+              <div class="cap"><span class="role" style="background:var(--fam)">가족</span><div class="acc">AI 오브 · 리포트 시트</div></div>
+            </div>
+            <div class="pcol">
+              <div class="phone"><div class="top" style="background:var(--med)"><i></i></div><div class="scr"><div class="ln"></div><div class="blk"></div><div class="ln" style="width:60%"></div></div></div>
+              <div class="cap"><span class="role" style="background:var(--med)">의료진</span><div class="acc">환자 리스트 · AI 요약</div></div>
+            </div>
+            <div class="pcol">
+              <div class="phone"><div class="top" style="background:var(--care)"><i></i></div><div class="scr"><div class="ln" style="height:9px"></div><div class="blk"></div><div class="ln" style="width:70%;height:9px"></div></div></div>
+              <div class="cap"><span class="role" style="background:var(--care)">요양보호사</span><div class="acc">큰 글씨 18px · 터치 48px</div></div>
+            </div>
+            <div class="pcol">
+              <div class="phone"><div class="top" style="background:var(--pat)"><i></i></div><div class="scr"><div class="ln" style="height:10px"></div><div class="blk"></div><div class="ln" style="width:70%;height:10px"></div></div></div>
+              <div class="cap"><span class="role" style="background:var(--pat)">환자</span><div class="acc">말벗 음성 · 26px</div></div>
+            </div>
+          </div>
+
+          <div class="inset">
+            <div class="it">AI 일일 리포트 · 클로즈업</div>
+            <div class="photo"><iconify-icon icon="fluent:image-24-regular"></iconify-icon></div>
+            <div class="ilab">오늘의 순간</div>
+            <div class="wgrid">
+              <div class="w"><b>좋음</b><span>기분</span></div>
+              <div class="w"><b>3/3</b><span>투약</span></div>
+              <div class="w"><b>7h</b><span>수면</span></div>
+              <div class="w"><b>완료</b><span>식사</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="b-foot">각 앱 고유 컬러 보존 · 프레임만 통일</div>
+      </div>
+
+      <div class="anno">
+        <h4><iconify-icon icon="fluent:notepad-24-filled"></iconify-icon> 이 패널이 하는 일</h4>
+        <ul>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>4앱 실제 홈 화면을 나란히 → <b>“역할별로 다르지만 하나의 시스템”</b> 완성도 증명</span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>우측 <b>클로즈업 인셋</b>(오늘의 순간 + 기분/투약/수면/식사 위젯)으로 AI 리포트의 디테일·체감 강조</span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>각 폰 아래 <b>접근성 수치</b>(환자 26px·보호사 18px·터치 48px)로 “배려한 설계”를 한 줄로 어필</span></li>
+        </ul>
+        <div class="scr-list">
+          <a href="v11_보호자앱/g-guardian-live.html">g-guardian-live</a>
+          <a href="v15_의료진앱/d01-home.html">d01-home</a>
+          <a href="v11_요양보호사앱/c01-today.html">c01-today</a>
+          <a href="v12_환자앱/p05-voice.html">p05-voice</a>
+          <a href="v11_보호자앱/g02-ai-report.html">g02-ai-report (인셋)</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BOARD 5 ===== -->
+    <div class="block">
+      <div class="bhead"><span class="bnum">5</span><h2>차별점 · 임팩트</h2></div>
+      <div class="chips">
+        <span class="chip"><iconify-icon icon="fluent:star-emphasis-24-filled"></iconify-icon> Differentiation</span>
+        <span class="chip"><iconify-icon icon="fluent:earth-24-filled"></iconify-icon> Impact · 사회적 가치</span>
+      </div>
+
+      <div class="board">
+        <div class="b-wm"><iconify-icon icon="fluent:heart-pulse-24-filled"></iconify-icon> 하루안부</div>
+        <div class="b-sec">05 · IMPACT</div>
+        <div class="b-page">5 / 5</div>
+
+        <div class="b-head">돌봄은 이어지고, <span class="accent">가족은 안심합니다.</span></div>
+        <div class="b-tag">흩어진 네 역할을, AI 안부가 하나로</div>
+
+        <div class="impact">
+          <div class="ba">
+            <div class="col before">
+              <span class="h"><iconify-icon icon="fluent:history-24-filled"></iconify-icon> 기존</span>
+              <div class="vis">
+                <span class="nodeS" style="background:#cfccc2"></span><span class="conn"></span>
+                <span class="nodeS" style="background:#cfccc2"></span><span class="conn"></span>
+                <span class="nodeS" style="background:#cfccc2"></span>
+              </div>
+              <span style="font-size:11px;color:var(--ink-3);font-weight:700;text-align:center">단방향·수기·분절</span>
+            </div>
+            <span class="arrow-mid"><iconify-icon icon="fluent:arrow-right-24-filled"></iconify-icon></span>
+            <div class="col after">
+              <span class="h"><iconify-icon icon="fluent:checkmark-starburst-24-filled"></iconify-icon> 하루안부</span>
+              <div class="vis">
+                <span class="nodeS" style="background:var(--fam)"></span><span class="conn"></span>
+                <span class="nodeS" style="background:var(--med)"></span><span class="conn"></span>
+                <span class="nodeS" style="background:var(--care)"></span><span class="conn"></span>
+                <span class="nodeS" style="background:var(--pat)"></span>
+              </div>
+              <span style="font-size:11px;color:var(--ai);font-weight:800;text-align:center">통합 + AI 안부 자동화</span>
+            </div>
+          </div>
+
+          <div class="improw">
+            <div class="impc">
+              <span class="ico" style="background:var(--fam)"><iconify-icon icon="fluent:heart-24-filled"></iconify-icon></span>
+              <b>가족, 안심</b>
+              <span>면회 없는 날에도 매일 닿는 안부</span>
+            </div>
+            <div class="impc">
+              <span class="ico" style="background:var(--med)"><iconify-icon icon="fluent:clock-24-filled"></iconify-icon></span>
+              <b>현장, 부담 경감</b>
+              <span>수기 기록·인계 시간을 자동화</span>
+            </div>
+            <div class="impc">
+              <span class="ico" style="background:var(--care)"><iconify-icon icon="fluent:link-24-filled"></iconify-icon></span>
+              <b>돌봄, 연속성</b>
+              <span>교대·역할이 바뀌어도 끊기지 않는 케어</span>
+            </div>
+          </div>
+        </div>
+        <div class="b-foot">초고령사회, 시설 케어 커뮤니케이션의 새로운 기준</div>
+      </div>
+
+      <div class="anno">
+        <h4><iconify-icon icon="fluent:notepad-24-filled"></iconify-icon> 이 패널이 하는 일</h4>
+        <ul>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>상단 <b>before/after</b>로 “끊어짐 → 이어짐” 차별점을 1초 만에 전달</span></li>
+          <li><iconify-icon icon="fluent:checkmark-circle-16-filled"></iconify-icon><span>하단 <b>임팩트 3블록</b>(가족 안심 · 현장 부담 경감 · 돌봄 연속성)으로 사회적 가치 마무리</span></li>
+          <li><iconify-icon icon="fluent:warning-16-filled"></iconify-icon><span>정량 지표가 있으면 각 블록에 수치 추가 → 설득력↑ (없으면 정성으로 유지)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 5 : MYTHS ============ -->
+<section id="myth">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <div>
+        <h2>오해 바로잡기</h2>
+        <p>리서치에서 <b>반증(refuted)된 통념</b>들. 이걸 알고 있으면 불필요한 제약에 갇히지 않습니다.</p>
+      </div>
+    </div>
+    <div class="myth">
+      <iconify-icon class="x" icon="fluent:dismiss-circle-24-filled"></iconify-icon>
+      <div class="body">
+        <div class="q">“패널 이미지 위에 글자(설명 텍스트)를 넣으면 안 된다”</div>
+        <div class="a">→ 그건 <b>iF Design Award</b> 같은 일부 해외 어워드의 규칙입니다. <b>KIDP 전람회는 “표현방식·레이아웃 제한 없음”</b>이라 설명 텍스트·캡션·번호 시나리오를 자유롭게 얹어도 됩니다.</div>
+      </div>
+    </div>
+    <div class="myth">
+      <iconify-icon class="x" icon="fluent:dismiss-circle-24-filled"></iconify-icon>
+      <div class="body">
+        <div class="q">“A1 실물 패널과 별도 PDF 작품설명서도 함께 내야 한다”</div>
+        <div class="a">→ KIDP <b>1차는 온라인 이미지 5장(+선택 영상)만</b> 강제됩니다. ‘A1 실물 패널’은 건축·공간 등 별도 부문의 물리 제출 규정으로 우리와 무관. (단, <b>2차 본심사 추가 제출물 여부는 해당연도 공고로 재확인</b>)</div>
+      </div>
+    </div>
+    <div class="myth">
+      <iconify-icon class="x" icon="fluent:dismiss-circle-24-filled"></iconify-icon>
+      <div class="body">
+        <div class="q">“정량 성과 수치(측정된 결과)가 반드시 있어야 한다”</div>
+        <div class="a">→ 정량 지표는 <b>권장이지 필수가 아닙니다</b>(검증서 반증됨). 다만 있으면 설득력이 크게 올라가니, 확보 가능한 지표는 2·5번 패널에 넣으세요.</div>
+      </div>
+    </div>
+    <div class="myth">
+      <iconify-icon class="x" icon="fluent:dismiss-circle-24-filled"></iconify-icon>
+      <div class="body">
+        <div class="q">“비율은 무조건 16:9여야 한다”</div>
+        <div class="a">→ KIDP는 비율 규정이 없습니다. 16:9는 우리 자체 기준일 뿐. 가독성에 더 좋은 비율(예: 3:2, 4:3)이 있으면 바꿔도 무방합니다. <b>5장·각 3MB</b>만 지키면 됩니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 6 : CHECKLIST + OPEN Q ============ -->
+<section id="check">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <div>
+        <h2>제출 전 체크리스트 · 남은 확인사항</h2>
+      </div>
+    </div>
+
+    <div class="grid2" style="align-items:start">
+      <div>
+        <h3 style="font-size:15px;font-weight:800;margin-bottom:12px;color:var(--ink-2)">제작 체크리스트</h3>
+        <div class="check">
+          <label><input type="checkbox"><span><b>1번이 대표 키 이미지</b>인가 — 4역할+AI를 한눈에, 카피 최소</span></label>
+          <label><input type="checkbox"><span><b>2번에 실제 리서치 근거</b>(페인포인트·인용·데이터)가 있는가</span></label>
+          <label><input type="checkbox"><span>5장만 보고 <b>설명 없이 이해</b>되는가 (제3자 테스트)</span></label>
+          <label><input type="checkbox"><span>핵심 UI <b>클로즈업과 개요</b>가 균형 잡혀 있는가</span></label>
+          <label><input type="checkbox"><span><b>체감 경험</b>(느끼는 순간)이 기능 나열보다 앞서는가</span></label>
+          <label><input type="checkbox"><span>“독거노인용 아님 · <b>시설 케어 소통</b>” 정체성이 분명한가</span></label>
+          <label><input type="checkbox"><span>각 이미지 <b>3MB 이내</b> · jpg/png/gif · <b>최대 5장</b></span></label>
+          <label><input type="checkbox"><span>이모지 없이 <b>아이콘(iconify)</b>으로 통일됐는가</span></label>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-weight:800;margin-bottom:12px;color:var(--ink-2)">남은 확인사항 (당신이 결정/조사)</h3>
+        <div class="oq">
+          <div class="item"><iconify-icon icon="fluent:question-circle-24-filled"></iconify-icon><span><b>2026 제61회 공고</b>에서 5장·3MB·부문 번호가 동일한가?</span></div>
+          <div class="item"><iconify-icon icon="fluent:question-circle-24-filled"></iconify-icon><span><b>1차 통과 후 2차</b>에 추가 제출물(실물·PDF·영상)이 있는가?</span></div>
+          <div class="item"><iconify-icon icon="fluent:question-circle-24-filled"></iconify-icon><span><b>③ 디지털미디어 vs ⑥ 서비스·경험</b> 중 어디로 낼까 (경쟁 강도·심사위원)?</span></div>
+          <div class="item"><iconify-icon icon="fluent:question-circle-24-filled"></iconify-icon><span>인용 가능한 <b>실제 사용자 리서치·통계</b>가 우리에게 있는가?</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div style="font-weight:800;color:var(--ink);font-size:14px;margin-bottom:6px">출처 (1차·검증 통과분 중심)</div>
+    <div class="src">
+      <a href="https://award.kidp.or.kr/KoreaDesign/receipt_info.do" target="_blank" rel="noopener">KIDP 접수규정</a>
+      <a href="https://award.kidp.or.kr/KoreaDesign/info.do" target="_blank" rel="noopener">KIDP 부문안내</a>
+      <a href="https://award.kidp.or.kr/Exhibit/winners.do" target="_blank" rel="noopener">KIDP 수상작검색</a>
+      <a href="https://ux-design-awards.com/jury/judging-criteria" target="_blank" rel="noopener">UX Awards 심사기준</a>
+      <a href="https://ux-design-awards.com/enter/faq" target="_blank" rel="noopener">UX Awards FAQ</a>
+      <a href="https://www.red-dot.org/magazine/communication-design-at-the-highest-level-awarded-interface-user-experience-design" target="_blank" rel="noopener">Red Dot Interface/UX</a>
+      <a href="https://www.uxstudioteam.com/oxa-nanoleq-case-study" target="_blank" rel="noopener">Oxa 케이스</a>
+      <a href="https://competition.adesignaward.com/theory-presentation.html" target="_blank" rel="noopener">A′ 패널 가이드</a>
+    </div>
+    <p class="micro">
+      <b>가이드(01~03·05·06)</b>는 KIDP 규정·심사기준 딥리서치 정리이고, <b>04 옵션 A 미리보기</b>는 추천안의 배치 초안(실제 앱 캡처·사진·확정 카피·정량 데이터는 다음 단계에서 교체)입니다.<br>
+      모든 KIDP 규정은 <b>제60회(2025년)</b> 공고 기준 — 2026 제61회 출품 전 공식 요강 재확인 필수. iF 5번째 심사기준은 2025년부터 Impact→Sustainability로 변경됨.<br>
+      신뢰도 표기: <span class="badge b-high">high</span> 정부·어워드 공식 1차 출처 · <span class="badge b-mid">mid</span> 상업/2차 출처(적용성 한계). 5장 구성안은 검증된 사실들의 종합 추론이며 KIDP가 특정 장 구성을 규정하진 않음.<br>
+      딥리서치 검증: 출처 22건 · 주장 100건 추출 → 25건 적대적 검증(3표) → 15건 확정 / 10건 반증. 통합본 생성일 2026-06-28.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

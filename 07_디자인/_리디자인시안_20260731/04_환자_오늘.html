@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="patient" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시안 · 환자 본인앱 · 오늘</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="_kit.css">
+  <script src="../_iconify-icon.min.js"></script>
+  <style>
+    /* 환자(시니어) 전용 — 큰 타이포·큰 터치타깃 */
+    .p-head h1 { font-size: var(--font-32); line-height: 1.2; }
+    .med-hero { background: var(--color-bg-surface); border-radius: var(--radius-6); padding: 24px 20px 20px; text-align: center; box-shadow: var(--shadow-card-borderless, 0 2px 10px rgba(16,24,40,0.08)); }
+    .med-hero .mh-icon { width: 76px; height: 76px; border-radius: 50%; background: var(--color-accent-soft); color: var(--color-accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+    .med-hero .mh-icon iconify-icon { font-size: 40px; }
+    .med-hero .mh-time { font-size: var(--font-16); font-weight: var(--weight-bold); color: var(--color-accent); }
+    .med-hero .mh-title { font-size: var(--font-28); font-weight: var(--weight-bold); letter-spacing: -0.02em; margin-top: 2px; }
+    .med-hero .mh-sub { font-size: var(--font-16); color: var(--color-text-secondary); margin-top: 6px; }
+    .med-hero .btn-row { margin-top: 20px; }
+
+    .big-item { display: flex; align-items: center; gap: 14px; background: var(--color-bg-surface); border-radius: var(--radius-5); padding: 16px 18px; box-shadow: var(--shadow-hairline, 0 1px 2px rgba(16,24,40,0.05)); }
+    .big-item + .big-item { margin-top: 12px; }
+    .big-item .bi-ic { width: 52px; height: 52px; border-radius: 50%; background: var(--color-bg-surface-muted); color: var(--color-accent); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+    .big-item .bi-ic iconify-icon { font-size: 27px; }
+    .big-item.done .bi-ic { background: var(--color-accent); color: #fff; }
+    .big-item .bi-t { font-size: var(--font-20); font-weight: var(--weight-bold); letter-spacing: -0.01em; }
+    .big-item .bi-m { font-size: var(--font-16); color: var(--color-text-secondary); margin-top: 2px; }
+    .big-item.done .bi-t { color: var(--color-text-tertiary); }
+
+    .fam { display: flex; align-items: center; gap: 14px; background: var(--color-bg-surface); border-radius: var(--radius-6); padding: 18px; box-shadow: var(--shadow-hairline, 0 1px 2px rgba(16,24,40,0.05)); }
+    .fam .av { width: 56px; height: 56px; border-radius: 50%; background: var(--color-accent-soft); color: var(--color-accent); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+    .fam .av iconify-icon { font-size: 30px; }
+    .fam .fi { flex: 1; }
+    .fam .fi .fn { font-size: var(--font-20); font-weight: var(--weight-bold); }
+    .fam .fi .fm { font-size: var(--font-15); color: var(--color-text-secondary); margin-top: 2px; }
+    .fam .fbtn { width: 56px; height: 56px; border-radius: 50%; background: var(--color-accent); color: #fff; border: 0; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+    .fam .fbtn iconify-icon { font-size: 26px; }
+  </style>
+</head>
+<body>
+  <div class="proto-cap"><b>환자 본인앱 · 오늘</b> — 큰 타이포 · 한 개의 큰 카드 · 대형 버튼 (리디자인 시안 v1)</div>
+
+  <div class="phone">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="sb-icons">
+        <iconify-icon icon="material-symbols:signal-cellular-4-bar"></iconify-icon>
+        <iconify-icon icon="material-symbols:wifi"></iconify-icon>
+        <iconify-icon icon="material-symbols:battery-full"></iconify-icon>
+      </span>
+    </div>
+
+    <div class="screen">
+      <div class="app-head p-head">
+        <div class="kicker">7월 31일 목요일</div>
+        <h1>박영자 님,<br>안녕하세요</h1>
+      </div>
+
+      <!-- 히어로: 다음 할 일 -->
+      <div class="med-hero">
+        <div class="mh-icon"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon></div>
+        <div class="mh-time">오전 9:00</div>
+        <div class="mh-title">약 드실 시간이에요</div>
+        <div class="mh-sub">혈압약 · 아침 식사 후</div>
+        <div class="btn-row">
+          <button class="bigbtn primary"><iconify-icon icon="mingcute:check-fill"></iconify-icon> 먹었어요</button>
+          <button class="bigbtn ghost">아직이요</button>
+        </div>
+      </div>
+
+      <div class="sec-title">오늘 일정</div>
+      <div>
+        <div class="big-item done">
+          <div class="bi-ic"><iconify-icon icon="mingcute:check-fill"></iconify-icon></div>
+          <div><div class="bi-t">아침 산책</div><div class="bi-m">완료 · 오전 8:30</div></div>
+        </div>
+        <div class="big-item">
+          <div class="bi-ic"><iconify-icon icon="ph:bowl-food-fill"></iconify-icon></div>
+          <div><div class="bi-t">점심 식사</div><div class="bi-m">낮 12:00</div></div>
+        </div>
+        <div class="big-item">
+          <div class="bi-ic"><iconify-icon icon="material-symbols:videocam-rounded"></iconify-icon></div>
+          <div><div class="bi-t">딸과 영상통화</div><div class="bi-m">오후 3:00</div></div>
+        </div>
+      </div>
+
+      <div class="sec-title">가족</div>
+      <div class="fam">
+        <div class="av"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon></div>
+        <div class="fi">
+          <div class="fn">딸 이영희</div>
+          <div class="fm">연결됨 · 어제 통화</div>
+        </div>
+        <button class="fbtn" aria-label="영상통화"><iconify-icon icon="material-symbols:videocam-rounded"></iconify-icon></button>
+      </div>
+    </div>
+
+    <nav class="tabbar">
+      <a class="on"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon>오늘</a>
+      <a><iconify-icon icon="mingcute:capsule-fill"></iconify-icon>약</a>
+      <a><iconify-icon icon="material-symbols:family-restroom-rounded"></iconify-icon>가족</a>
+      <a><iconify-icon icon="material-symbols:help-rounded"></iconify-icon>도움</a>
+    </nav>
+  </div>
+</body>
+</html>

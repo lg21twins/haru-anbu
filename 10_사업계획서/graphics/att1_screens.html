@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=908"><title>붙임 1. 실제 구현 화면 — 같은 하루, 네 사람의 화면 · 하루안부</title>
+<!-- 붙임 1 · 실제 구현 화면 (2026-11-25). 폭 820 = 본문 164mm(5px/mm), render.py 가 2배로 찍는다.
+     "AI 판단" · "AI 케어 분석" 표시가 있는 화면(d-home · g-report)은 본문 "앱은 의료적 판단을 하지 않습니다"와 부딪혀 쓰지 않는다 -->
+<style>
+*{box-sizing:border-box;margin:0}
+body{width:820px;overflow:hidden;background:#fff;font-family:'Pretendard JP','Apple SD Gothic Neo',sans-serif;color:#111827;padding:6px 0 4px}
+.lead{font-size:14px;line-height:1.6;color:#374151;margin-bottom:22px}
+.lead b{color:#2C7AFC}
+.row{display:flex;justify-content:space-between;padding:0 4px}
+.col{width:262px}
+.ph{height:520px;display:flex;justify-content:center}
+.ph img{height:100%;width:auto;border-radius:22px;box-shadow:0 6px 20px rgba(17,24,39,.14)}
+.role{margin-top:16px;font-size:12px;font-weight:700;color:#2C7AFC;letter-spacing:.2px}
+.lab{margin-top:3px;font-size:16.5px;font-weight:700;letter-spacing:-.3px}
+.sub{margin-top:5px;font-size:13.5px;line-height:1.55;color:#4B5563}
+.row2{display:flex;gap:26px;margin-top:34px;align-items:flex-start}
+.tab{padding-left:4px}.tab img{width:516px;height:auto;display:block;border-radius:16px;box-shadow:0 6px 20px rgba(17,24,39,.14)}
+.side{flex:1;padding-top:2px}
+.qr{display:flex;gap:12px;align-items:center;margin-top:26px;background:#F3F6FB;border-radius:12px;padding:12px}
+.qr img{width:78px;height:78px;background:#fff;border-radius:6px;padding:4px}
+.qr b{display:block;font-size:15px;letter-spacing:-.2px}
+.qr span{font-size:12.5px;color:#4B5563;line-height:1.5}
+.note{margin-top:22px;font-size:12px;color:#6B7280;line-height:1.5}
+/* 브라우저로 볼 때만 가운데 · 회색 바탕(render.py 는 폭 820 으로 찍어 해당 안 됨) */
+@media screen and (min-width:900px){html{background:#EEF0F3}.scr{display:block !important}body{margin:40px auto;padding:40px 44px;width:908px;border-radius:14px}}
+.scr{display:none;font-size:20px;font-weight:700;letter-spacing:-.4px;margin:0 0 18px}
+</style></head><body>
+<h1 class="scr">붙임 1. 실제 구현 화면 — 같은 하루, 네 사람의 화면</h1>
+<p class="lead">네 화면은 같은 시설, 같은 입소자 네 명(박영자 · 최명자 · 김순자 · 이정숙)의 하루를 보여 줍니다.
+요양보호사가 한 번 남긴 기록이 <b>가족에게는 안부로, 의료진에게는 확인할 변화로, 어르신에게는 큰 글씨 한 화면으로</b> 도착합니다.</p>
+<div class="row">
+  <div class="col">
+    <div class="ph"><img src="../../09_포트폴리오/패널/assets/screens/c-check.png"></div>
+    <div class="role">요양보호사 앱</div><div class="lab">케어 기록</div>
+    <div class="sub">지금 해야 할 일이 맨 위에. 담당 입소자별 진행을 보며 버튼 하나로 기록을 시작합니다.</div>
+  </div>
+  <div class="col">
+    <div class="ph"><img src="../../09_포트폴리오/패널/assets/screens/g-live.png"></div>
+    <div class="role">가족(보호자) 앱</div><div class="lab">일일 리포트</div>
+    <div class="sub">요양보호사가 남긴 사진과 한마디가 매일 도착합니다. 전화로 묻지 않아도 오늘을 압니다.</div>
+  </div>
+  <div class="col">
+    <div class="ph"><img src="../../08_제안서/assets/decide_doc_after.png"></div>
+    <div class="role">의료진 앱</div><div class="lab">요양보호사 보고 확인</div>
+    <div class="sub">현장 보고와 측정값을 시간순으로 모읍니다. 앱은 판단하지 않고, 확인과 판단은 의료진이 합니다.</div>
+  </div>
+</div>
+<div class="row2">
+  <div class="tab"><img src="../../09_포트폴리오/패널/assets/screens/p-today.png"></div>
+  <div class="side">
+    <div class="role" style="margin-top:0">어르신 태블릿</div><div class="lab">오늘</div>
+    <div class="sub">큰 글씨와 큰 버튼. 가족이 보낸 사진, 약 먹을 시간, 가족에게 전화, 말로 하기, 도움 요청을 한 화면에 둡니다.</div>
+    <div class="qr"><img src="../../08_제안서/assets/qr_haruanbu.svg"><div><b>haruanbu.site</b><span>4역할 39개 화면을 공개 배포했습니다. 휴대폰으로 직접 눌러 볼 수 있습니다.</span></div></div>
+  </div>
+</div>
+<p class="note">화면은 팀이 직접 구현한 공개 프로토타입입니다. 화면 속 인물 사진은 AI 생성 이미지입니다.</p>
+</body></html>

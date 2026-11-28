@@ -38,7 +38,6 @@ import argparse
 import datetime as dt
 import re
 import subprocess
-import sys
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field

@@ -791,7 +791,7 @@ Vercel Cron (매일 저녁)     Supabase          Claude API         FCM
 
 // 케어 가이드 — 백과사전 모드
 {
-  model: "claude-sonnet-4-6",
+  model: "claude-sonnet-5-5",   // 2026-11-15 갱신 (이전: claude-sonnet-4-6)
   max_tokens: 1024,
   system: CARE_GUIDE_SYSTEM_PROMPT,
   messages: conversationHistory,
@@ -800,7 +800,7 @@ Vercel Cron (매일 저녁)     Supabase          Claude API         FCM
 
 // 일일 리포트 생성
 {
-  model: "claude-haiku-4-5-20251001",  // 비용 절감
+  model: "claude-haiku-5-5",   // 비용 절감 · 2026-11-15 갱신 (이전: claude-haiku-4-5-20251001)
   max_tokens: 512,
   system: DAILY_REPORT_SYSTEM_PROMPT,
   messages: [
@@ -818,6 +818,9 @@ Vercel Cron (매일 저녁)     Supabase          Claude API         FCM
 | 응답 캐싱 | FAQ성 질문 (등급 신청 절차 등) | 반복 호출 50% 절감 |
 | max_tokens 제한 | 전체 | 불필요한 장문 방지 |
 | 대화 히스토리 제한 | 케어 가이드 | 최근 10턴만 포함 |
+
+> **확인필요 (2026-11-15)**: 위 절감률(90%·50%)은 모델 ID 를 5.5 세대로 올리기 전, 이전 세대 단가 기준으로 적은 값이다.
+> 5.5 세대(`claude-sonnet-5-5` · `claude-haiku-5-5`) 단가와 캐시 단가를 공식 가격표에서 확인하기 전까지는 근거 있는 수치로 인용하지 않는다.
 
 ---
 

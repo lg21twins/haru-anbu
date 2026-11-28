@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="caregiver" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>에디토리얼 · 요양보호사 · 오늘</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="_editorial.css">
+  <script src="../_iconify-icon.min.js"></script>
+</head>
+<body>
+  <div class="proto-cap"><b>요양보호사 · 오늘</b> — 에디토리얼 프리미엄 리디자인</div>
+
+  <div class="phone">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="sb">
+        <iconify-icon icon="material-symbols:signal-cellular-4-bar"></iconify-icon>
+        <iconify-icon icon="material-symbols:wifi"></iconify-icon>
+        <iconify-icon icon="material-symbols:battery-full"></iconify-icon>
+      </span>
+    </div>
+
+    <div class="screen">
+      <div class="top">
+        <span class="eyebrow">요양보호사 · 오전 근무</span>
+        <span class="ics">
+          <button aria-label="알림"><iconify-icon icon="mingcute:notification-line"></iconify-icon><span class="dot-badge"></span></button>
+          <a aria-label="마이"><iconify-icon icon="mingcute:user-3-line"></iconify-icon></a>
+        </span>
+      </div>
+
+      <h1 class="title">오늘</h1>
+      <div class="subtitle">7월 31일 목요일 · <b>07:00 – 15:00</b> 근무</div>
+
+      <div class="hero">
+        <div class="big">4<em> / 8</em></div>
+        <div class="cap"><b>케어 완료</b> · 4건 남음 · 피크 08–10</div>
+        <div class="bar"><i style="width:50%"></i></div>
+      </div>
+
+      <div class="wk">
+        <div class="d"><span class="lab">월</span><span class="num">28</span></div>
+        <div class="d"><span class="lab">화</span><span class="num">29</span></div>
+        <div class="d"><span class="lab">수</span><span class="num">30</span></div>
+        <div class="d on"><span class="lab">목</span><span class="num">31</span></div>
+        <div class="d"><span class="lab">금</span><span class="num">1</span></div>
+        <div class="d"><span class="lab">토</span><span class="num">2</span></div>
+        <div class="d"><span class="lab">일</span><span class="num">3</span></div>
+      </div>
+
+      <div class="sec-label">타임라인</div>
+      <div class="tl">
+
+        <div class="ev done">
+          <div class="time">08:00</div>
+          <div>
+            <div class="task"><span class="st"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>혈압·체온 측정</div>
+            <div class="who">박영자 <span class="rm">78 · A-3</span></div>
+          </div>
+        </div>
+
+        <div class="ev done">
+          <div class="time">08:30</div>
+          <div>
+            <div class="task"><span class="st"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>아침 투약</div>
+            <div class="who">최명자 <span class="rm">82 · B-1</span></div>
+          </div>
+        </div>
+
+        <div class="ev done">
+          <div class="time">09:00</div>
+          <div>
+            <div class="task"><span class="st"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>체위 변경</div>
+            <div class="who">최명자 <span class="rm">82 · B-1</span></div>
+          </div>
+        </div>
+
+        <div class="ev done">
+          <div class="time">10:00</div>
+          <div>
+            <div class="task"><span class="st"><iconify-icon icon="mingcute:check-fill"></iconify-icon></span>산책 보조</div>
+            <div class="who">김순자 <span class="rm">79 · B-2</span></div>
+          </div>
+        </div>
+
+        <div class="ev now">
+          <div class="time">10:15</div>
+          <div>
+            <div class="task"><span class="st"></span>혈압 측정</div>
+            <div class="who">박영자 <span class="rm">78 · A-3</span> · 혈압약 08:00 복용 2h 경과</div>
+            <div class="act"><button type="button" class="pill">지금 기록 시작<iconify-icon icon="material-symbols:arrow-forward-rounded"></iconify-icon></button></div>
+          </div>
+        </div>
+
+        <div class="ev up">
+          <div class="time">11:00</div>
+          <div>
+            <div class="task"><span class="st"></span>복약</div>
+            <div class="who">김순자 <span class="rm">79 · B-2</span></div>
+          </div>
+        </div>
+
+        <div class="ev warn">
+          <div class="time">13:00</div>
+          <div>
+            <div class="task"><span class="st"></span>체온 재확인</div>
+            <div class="who">이정숙 <span class="rm">85 · A-7</span></div>
+            <div class="flag"><iconify-icon icon="ph:thermometer-fill"></iconify-icon>미열 관찰 — 오전 37.4℃</div>
+            <svg class="spark" width="104" height="24" viewBox="0 0 104 24" preserveAspectRatio="none"><polyline points="4,17 34,16 66,12 100,5"/><circle cx="100" cy="5" r="2.6"/></svg>
+          </div>
+        </div>
+
+        <div class="ev up">
+          <div class="time">15:00</div>
+          <div>
+            <div class="task"><span class="st"></span>인수인계 기록</div>
+            <div class="who">야간 근무자에게 전달</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <nav class="tab">
+      <a class="on"><iconify-icon icon="mingcute:home-3-fill"></iconify-icon>오늘</a>
+      <a><iconify-icon icon="mingcute:clipboard-line"></iconify-icon>기록</a>
+      <a><iconify-icon icon="mingcute:chat-1-line"></iconify-icon>소통</a>
+      <a><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</a>
+    </nav>
+  </div>
+</body>
+</html>

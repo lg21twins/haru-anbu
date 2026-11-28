@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="caregiver" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시안 · 요양보호사 · 오늘 케어 타임라인</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="_kit.css">
+  <script src="../_iconify-icon.min.js"></script>
+</head>
+<body>
+  <div class="proto-cap"><b>요양보호사 · 오늘 케어</b> — 타임라인 + 진행 카운터 (리디자인 시안 v1)</div>
+
+  <div class="phone">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="sb-icons">
+        <iconify-icon icon="material-symbols:signal-cellular-4-bar"></iconify-icon>
+        <iconify-icon icon="material-symbols:wifi"></iconify-icon>
+        <iconify-icon icon="material-symbols:battery-full"></iconify-icon>
+      </span>
+    </div>
+
+    <div class="screen">
+      <div class="app-head">
+        <div class="eyebrow">요양보호사 · 오늘</div>
+        <div class="kicker">7월 31일 목요일</div>
+        <h1>오늘 케어</h1>
+      </div>
+
+      <!-- 히어로: 진행 카운터 -->
+      <div class="progress">
+        <div class="pg-top">
+          <div class="pg-num"><b>6</b><span> / 10</span></div>
+          <div class="pg-label">완료 · 4건 남음</div>
+        </div>
+        <div class="track"><i style="width:60%"></i></div>
+      </div>
+
+      <div class="sec-title">타임라인</div>
+
+      <div class="tl">
+        <!-- 완료 -->
+        <div class="tl-item is-done">
+          <div class="tl-time">08:00</div>
+          <div class="tl-rail"><div class="tl-dot done"><iconify-icon icon="mingcute:check-fill"></iconify-icon></div></div>
+          <div class="tl-body">
+            <div class="care">
+              <div class="c-title">혈압·체온 측정</div>
+              <div class="c-meta"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon> 박영자 78 · A-3</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item is-done">
+          <div class="tl-time">09:00</div>
+          <div class="tl-rail"><div class="tl-dot done"><iconify-icon icon="mingcute:check-fill"></iconify-icon></div></div>
+          <div class="tl-body">
+            <div class="care">
+              <div class="c-title">아침 투약</div>
+              <div class="c-meta"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon> 최명자 82 · B-1</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item is-done">
+          <div class="tl-time">10:30</div>
+          <div class="tl-rail"><div class="tl-dot done"><iconify-icon icon="mingcute:check-fill"></iconify-icon></div></div>
+          <div class="tl-body">
+            <div class="care">
+              <div class="c-title">산책 보조</div>
+              <div class="c-meta"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon> 김순자 79 · B-2</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 여백 구간 -->
+        <div class="tl-item">
+          <div class="tl-time">11:50</div>
+          <div class="tl-rail"><div class="tl-dot upcoming"></div></div>
+          <div class="tl-body gap"><div class="g">점심 준비까지 · 여유 1시간 10분</div></div>
+        </div>
+
+        <!-- 진행 중 (강조) -->
+        <div class="tl-item">
+          <div class="tl-time">13:00</div>
+          <div class="tl-rail"><div class="tl-dot active"></div></div>
+          <div class="tl-body">
+            <div class="care is-active">
+              <div class="c-title">체온 재확인</div>
+              <div class="c-meta"><iconify-icon icon="mingcute:user-3-fill"></iconify-icon> 이정숙 85 · A-7</div>
+              <div class="c-flag"><iconify-icon icon="ph:thermometer-fill"></iconify-icon> 미열 관찰 — 오전 37.4</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 예정 -->
+        <div class="tl-item">
+          <div class="tl-time">15:00</div>
+          <div class="tl-rail"><div class="tl-dot upcoming"></div></div>
+          <div class="tl-body">
+            <div class="care">
+              <div class="c-title">오후 투약</div>
+              <div class="c-meta"><iconify-icon icon="mingcute:capsule-fill"></iconify-icon> 담당 4명 전체</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-time">17:00</div>
+          <div class="tl-rail"><div class="tl-dot upcoming"></div></div>
+          <div class="tl-body">
+            <div class="care">
+              <div class="c-title">인수인계 기록</div>
+              <div class="c-meta"><iconify-icon icon="mingcute:clipboard-fill"></iconify-icon> 야간 근무자에게 전달</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="tabbar">
+      <a class="on"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon>오늘</a>
+      <a><iconify-icon icon="mingcute:clipboard-fill"></iconify-icon>기록</a>
+      <a><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>소통</a>
+      <a><iconify-icon icon="mingcute:more-1-fill"></iconify-icon>더보기</a>
+    </nav>
+  </div>
+</body>
+</html>

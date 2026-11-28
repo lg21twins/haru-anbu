@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하루안부 — UX·UI 디자인 패널 (A4 가로 2장)</title>
+<style>
+  /* ────────────────────────────────────────────────────────────
+     하루안부 UX·UI 패널 · A4 가로 297×210mm 2장 · 300dpi 인쇄 대응
+     용도: 디자인대학 편입 포트폴리오
+
+     시그니처 — 분기선(分岐線)
+       요양보호사 1인의 기록 하나가 네 방향으로 갈라지는 형태를
+       지면의 구조 장치로 삼는다. 보드1에서는 다이어그램으로,
+       보드2에서는 네 화면이 걸리는 정렬 축으로 반복된다.
+       이 서비스의 유일한 사실이므로 장식이 아니다.
+
+     보드1에는 제품 화면을 싣지 않는다. 화면은 보드2가 전담하고
+     보드1은 '왜'만 말한다. 목업을 양쪽에 반복하지 않는 것이 이 판의 규율.
+
+     레퍼런스(KakaoTalk 002 / NASA 1-9)에서 가져온 것
+       지시선 콜아웃 · 번호 시퀀스 캡션 · 상태 칩(명도만) · 이미지 크기 계급
+     버린 것
+       그라데이션 · 배경 컬러 필 · 컬러 블롭 · 카드 · 기울인 목업 · 다색 강조
+     대체
+       역할 군집은 번호 색으로만 표시한다(배경 필 금지 규칙을 우회)
+
+     타이포 — Pretendard(본문·제목) + 모노(라틴 라벨·수치)
+       국문은 Pretendard, 번호·단위·출처연도·헥사값은 모노로 잡아
+       '기록을 다루는 도구'의 성격을 지면에 남긴다.
+     ──────────────────────────────────────────────────────────── */
+  :root{
+    --ink:        #15181C;
+    --ink-strong: #0B0D10;
+    --ink-mute:   #6E747D;
+    --ink-faint:  #A8AEB6;
+    --rule:       #E4E6E9;
+    --rule-soft:  #F1F2F4;
+    --accent:     #1E5FD6;
+    --role-guard: #2C7AFC;
+    --role-care:  #15803D;
+    --role-pat:   #C2610A;
+    --canvas:     #FFFFFF;
+    --stage:      #F4F4F6;
+    --mono: ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{
+    background:#D8DADE; color:var(--ink);
+    font-family:"Pretendard Variable","Pretendard",-apple-system,BlinkMacSystemFont,
+                "Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:geometricPrecision;
+    padding:14px 0;
+  }
+  body,h1,h2,h3,p,li,div,span{word-break:keep-all; overflow-wrap:break-word}
+
+  .board{
+    width:297mm; height:210mm; background:var(--canvas);
+    margin:0 auto 14px; padding:11mm 14mm 9mm;
+    position:relative; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+
+  /* ── 공통 ───────────────────────────────────── */
+  .runner{display:flex; justify-content:space-between; align-items:baseline;
+          padding-bottom:2.2mm; border-bottom:1px solid var(--ink-strong); flex:none}
+  .wordmark{font-size:10pt; font-weight:800; letter-spacing:.30em; color:var(--ink-strong)}
+  .runner .meta{font-family:var(--mono); font-size:6pt; letter-spacing:.10em;
+                color:var(--ink-faint); text-transform:uppercase}
+
+  .lbl{display:flex; align-items:baseline; gap:2mm; margin-bottom:1.8mm}
+  .lbl .n{font-family:var(--mono); font-size:6.4pt; font-weight:700; color:var(--accent);
+          letter-spacing:.06em}
+  .lbl .t{font-size:6.6pt; font-weight:700; letter-spacing:.22em;
+          text-transform:uppercase; color:var(--ink-faint)}
+  .lbl .t.ko{letter-spacing:.06em}
+
+  h1{font-size:26pt; line-height:1.06; letter-spacing:-.05em; font-weight:800;
+     color:var(--ink-strong)}
+  h2{font-size:13pt; line-height:1.18; letter-spacing:-.04em; font-weight:800;
+     color:var(--ink-strong)}
+  .lede{font-size:9pt; line-height:1.45; letter-spacing:-.02em; font-weight:600;
+        color:var(--ink-strong)}
+  .body{font-size:7.2pt; line-height:1.6; color:var(--ink-mute)}
+  .body b{color:var(--ink-strong); font-weight:700}
+  .cap{font-size:6.3pt; line-height:1.48; color:var(--ink-faint)}
+  .cap b{color:var(--ink); font-weight:700}
+  .src{font-family:var(--mono); font-size:6pt; letter-spacing:.01em; color:var(--ink-faint)}
+  .num{font-family:var(--mono); font-feature-settings:"tnum" 1}
+
+  /* ══════════ 보드 1 ══════════════════════════════ */
+  /* 히어로 — 사진을 왼쪽 지면 끝까지 흘린다(블리드). 이 판에서 유일한 파격 */
+  .b1-hero{display:grid; grid-template-columns:146mm 1fr; gap:11mm;
+           padding-top:4.5mm; height:66mm; flex:none}
+  .b1-hero .shot{margin-left:-14mm; height:100%; overflow:hidden; position:relative}
+  .b1-hero .shot img{width:100%; height:100%; object-fit:cover; object-position:50% 40%;
+                     display:block}
+  .b1-hero .ttl{display:flex; flex-direction:column; justify-content:flex-end}
+
+  .h1-rule{width:20mm; height:2.4px; background:var(--ink-strong); margin:3.6mm 0 3mm}
+
+  .b1-mid{display:grid; grid-template-columns:137mm 1fr; gap:11mm; height:54mm;
+          margin-top:4mm; padding-top:4mm; border-top:1px solid var(--rule); flex:none;
+          overflow:hidden}
+  .b1-midL{display:flex; flex-direction:column; min-height:0}
+  .b1-midR{display:flex; flex-direction:column; min-height:0}
+
+  .credit{display:grid; grid-template-columns:auto 1fr; gap:.7mm 5mm; align-items:baseline}
+  .credit .k{font-family:var(--mono); font-size:6pt; letter-spacing:.12em;
+             text-transform:uppercase; color:var(--ink-faint); white-space:nowrap}
+  .credit .v{font-size:6.5pt; line-height:1.45; color:var(--ink)}
+  .credit .v b{font-weight:800; color:var(--ink-strong)}
+
+  /* 근거 코드 — 장식이 아니라 증거. 전부 실제 파일에서 그대로 */
+  .code{margin-top:auto; padding-top:3.2mm; border-top:1px solid var(--rule)}
+  .code .hd{font-size:6.2pt; font-weight:700; color:var(--ink-strong); margin-bottom:2.2mm;
+            letter-spacing:-.02em}
+  .code-2{display:grid; grid-template-columns:1fr 1fr; gap:7mm}
+  .code .f{font-family:var(--mono); font-size:6pt; letter-spacing:.01em;
+           color:var(--ink-faint); margin-bottom:1.1mm}
+  .code pre{font-family:var(--mono); font-size:6pt; line-height:1.6;
+            color:var(--ink-mute); white-space:pre}
+  .code .c{color:#B7BCC3} .code .v{color:var(--accent)}
+  .code .s{color:var(--ink-strong); font-weight:600}
+
+  /* ── 시그니처: 분기선 ─────────────────────────── */
+  .tree{display:grid; grid-template-columns:28mm 1fr; margin-top:1mm; flex:1; min-height:0}
+  .tree__in{align-self:center; padding-right:5mm; position:relative}
+  .tree__in .k{font-family:var(--mono); font-size:6pt; letter-spacing:.14em;
+               text-transform:uppercase; color:var(--ink-faint)}
+  .tree__in .v{font-size:8.2pt; font-weight:800; letter-spacing:-.03em; margin-top:1mm;
+               color:var(--ink-strong); line-height:1.25}
+  .tree__in .d{font-size:6pt; line-height:1.38; color:var(--ink-mute); margin-top:1.4mm}
+  .tree__in::after{content:""; position:absolute; right:0; top:50%;
+                   width:5mm; height:1px; background:var(--ink-strong)}
+  .tree__outs{border-left:1px solid var(--ink-strong); padding-left:6mm;
+              display:flex; flex-direction:column; justify-content:space-between}
+  .leaf{position:relative; padding:1mm 0; color:var(--ink-faint)}
+  .leaf::before{content:""; position:absolute; left:-6mm; top:50%;
+                width:6mm; height:1.4px; background:currentColor; opacity:.55}
+  .leaf::after{content:""; position:absolute; left:-6.9mm; top:calc(50% - .9mm);
+               width:1.8mm; height:1.8mm; border-radius:50%; background:currentColor}
+  .leaf .r{font-size:6pt; font-weight:800; letter-spacing:.14em; text-transform:uppercase}
+  .leaf .h{font-size:8pt; font-weight:800; letter-spacing:-.03em; color:var(--ink-strong);
+           margin-top:.7mm}
+  .leaf .p{font-size:6pt; line-height:1.38; color:var(--ink-mute); margin-top:.7mm}
+  .leaf.is-guard{color:var(--role-guard)} .leaf.is-care{color:var(--role-care)}
+  .leaf.is-pat{color:var(--role-pat)}
+
+  .b1-prob{display:grid; grid-template-columns:137mm 1fr; gap:11mm; height:42mm;
+           margin-top:4mm; padding-top:3.8mm; border-top:1px solid var(--ink-strong);
+           flex:none}
+  .hook{font-size:14pt; font-weight:800; letter-spacing:-.045em; line-height:1.14;
+        color:var(--ink-strong); margin-bottom:3.4mm}
+  .hook em{font-style:normal; color:var(--ink-faint)}
+  .quotes{display:grid; grid-template-columns:repeat(4,1fr); gap:5mm}
+  .q .r{font-size:6pt; font-weight:800; letter-spacing:.14em; text-transform:uppercase}
+  .q .t{font-size:6.8pt; line-height:1.4; color:var(--ink-strong); font-weight:600;
+        margin-top:1.2mm}
+
+  /* 초대형 수치 — 차트를 대신한다. 같은 사실을 더 크게 말한다 */
+  .mega{display:grid; grid-template-columns:auto 1fr; gap:0 5mm; align-items:end}
+  .mega .fig{font-size:40pt; font-weight:800; letter-spacing:-.07em; line-height:.82;
+             color:var(--ink-strong); font-family:var(--mono)}
+  .mega .fig em{font-style:normal; font-size:.34em; letter-spacing:-.02em; margin-left:.6mm;
+                font-family:"Pretendard Variable","Pretendard",sans-serif}
+  .mega .say{padding-bottom:1.4mm}
+  .mega .say .a{font-size:7pt; font-weight:700; line-height:1.35; color:var(--ink-strong)}
+  .mega .say .b{font-size:6.1pt; line-height:1.4; color:var(--ink-mute); margin-top:1.2mm}
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:5mm; margin-top:auto;
+         padding-top:3.2mm; border-top:1px solid var(--rule)}
+  .stat .n{font-size:13pt; font-weight:800; letter-spacing:-.05em; line-height:1;
+           color:var(--ink-strong); white-space:nowrap}
+  .stat .n em{font-style:normal; font-size:.44em; font-weight:700; margin-left:.6mm;
+              font-family:"Pretendard Variable","Pretendard",sans-serif}
+  .stat .n.sm{font-size:9pt; letter-spacing:-.03em}
+  .stat .l{font-size:6.1pt; font-weight:700; line-height:1.3; margin-top:1.3mm; color:var(--ink)}
+  .stat .s{margin-top:.7mm; display:block}
+
+  .b1-band{margin-top:auto; padding-top:3.4mm; border-top:1px solid var(--rule); flex:none}
+  .nots{display:grid; grid-template-columns:repeat(3,1fr); gap:8mm; margin-top:1.8mm}
+  .not{display:grid; grid-template-columns:3.4mm 1fr; gap:1.6mm; align-items:start}
+  .not .m{font-family:var(--mono); font-size:6pt; color:var(--ink-faint); line-height:1.3}
+  .not .c{font-size:6.2pt; line-height:1.44; color:var(--ink-mute)}
+  .not .c b{color:var(--ink-strong); font-weight:700}
+
+  .foot{position:absolute; left:14mm; right:14mm; bottom:4.2mm;
+        display:flex; justify-content:space-between; align-items:flex-end;
+        font-family:var(--mono); font-size:6pt; letter-spacing:.06em; color:var(--ink-faint)}
+
+  /* ══════════ 보드 2 ══════════════════════════════ */
+  .board--2{padding-bottom:10mm}
+  .b2-head{display:grid; grid-template-columns:1fr 128mm; gap:12mm; align-items:end;
+           padding-top:3.2mm; height:12mm; flex:none}
+
+  .b2-screens{display:grid; grid-template-columns:29mm 29mm 29mm 1fr; gap:6mm;
+              margin-top:3.2mm; height:78mm; flex:none}
+  .scell{display:flex; flex-direction:column; min-height:0}
+  .s-r{font-size:6pt; font-weight:800; letter-spacing:.14em; text-transform:uppercase}
+  .s-h{font-size:7.4pt; font-weight:800; letter-spacing:-.025em; color:var(--ink-strong);
+       margin-top:.6mm}
+  .phone{position:relative; aspect-ratio:1350/2760; flex:none; margin-top:2mm}
+  .phone .scr{position:absolute; left:5.33%; top:2.50%; width:89.26%; height:95.00%;
+              object-fit:cover; object-position:top center;
+              border-radius:10.6%/5.2%; background:var(--stage)}
+  .pad{position:relative; aspect-ratio:2640/1880; flex:none; margin-top:2mm}
+  .pad .scr{position:absolute; left:6.15%; top:8.10%; width:87.7%; height:83.6%;
+            object-fit:cover; object-position:top center;
+            border-radius:1.6%/2.2%; background:var(--stage)}
+  .frm{position:absolute; inset:0; width:100%; height:100%; display:block}
+  .scell .phone{width:29mm}
+
+  .numcap{display:grid; grid-template-columns:auto 1fr; gap:0 1.8mm; align-items:baseline;
+          margin-top:2.4mm}
+  .numcap .n{font-family:var(--mono); font-size:8.6pt; font-weight:700; line-height:1;
+             letter-spacing:-.02em}
+  .numcap .c{font-size:6.2pt; line-height:1.46; color:var(--ink-mute)}
+  .numcap .c b{color:var(--ink-strong); font-weight:700}
+  .n-guard{color:var(--role-guard)} .n-care{color:var(--role-care)} .n-pat{color:var(--role-pat)}
+
+  .padcell{display:grid; grid-template-columns:62mm 1fr; gap:7mm; align-items:start;
+           padding-left:7mm; border-left:1px solid var(--rule)}
+  .padcell .pad{width:62mm}
+
+  /* 지시선 콜아웃 — 레퍼런스 002 실측(선 4.2mm + 점 0.7mm)을 헤어라인으로 번역 */
+  .callouts{padding-top:4mm}
+  .callout{display:grid; grid-template-columns:5.6mm 1fr; align-items:start; gap:0 1.6mm}
+  .callout + .callout{margin-top:4.6mm}
+  .callout .lead{position:relative; height:2.4mm}
+  .callout .lead::before{content:""; position:absolute; left:0; top:1.1mm;
+                         width:4.2mm; height:1px; background:var(--rule)}
+  .callout .lead::after{content:""; position:absolute; left:4.2mm; top:.75mm;
+                        width:.7mm; height:.7mm; border-radius:50%; background:var(--accent)}
+  .callout .k{font-size:6.8pt; font-weight:800; letter-spacing:-.02em; color:var(--accent)}
+  .callout .v{font-size:6.1pt; line-height:1.46; color:var(--ink-mute); margin-top:.9mm}
+
+  .chip{display:inline-block; font-family:var(--mono); font-size:6pt; font-weight:700;
+        letter-spacing:.02em; padding:.6mm 1.4mm; border-radius:.8mm; line-height:1.25}
+  .chip--was{background:var(--stage); color:var(--ink-mute)}
+  .chip--now{background:var(--ink-strong); color:#fff}
+
+  .b2-iter{margin-top:3mm; padding-top:3mm; border-top:1px solid var(--ink-strong);
+           height:34mm; flex:none}
+  .iter-wrap{display:grid; grid-template-columns:66mm 1fr; gap:9mm; margin-top:2mm}
+  .iter{display:grid; grid-template-columns:repeat(3,1fr); gap:3.4mm}
+  .iter .step{display:flex; flex-direction:column; align-items:flex-start}
+  .iter .v{font-family:var(--mono); font-size:6pt; font-weight:700; letter-spacing:.1em;
+           color:var(--ink-faint); margin-bottom:1mm; text-transform:uppercase}
+  .iter img{width:100%; height:18mm; object-fit:cover; object-position:top center;
+            background:var(--stage); display:block}
+  .iter .t{margin-top:2mm}
+  .removed{display:grid; grid-template-columns:repeat(2,1fr); gap:1.8mm 7mm}
+  .rm{display:grid; grid-template-columns:2.8mm 1fr; gap:1.4mm; align-items:start}
+  .rm .m{font-family:var(--mono); font-size:6pt; color:var(--ink-faint); line-height:1.3}
+  .rm .c{font-size:6.1pt; line-height:1.42; color:var(--ink-mute)}
+  .rm .c b{color:var(--ink-strong); font-weight:700}
+
+  /* 조각 재현 — 이미지가 아니라 마크업이라 300dpi에서 텍스트가 선명하다 */
+  .frags{display:grid; grid-template-columns:repeat(2,1fr); gap:5mm; margin-top:2.4mm}
+  .frag{padding-left:3mm; border-left:1px solid var(--rule)}
+  .frag .ft{font-family:var(--mono); font-size:6pt; letter-spacing:.1em;
+            color:var(--ink-faint); text-transform:uppercase}
+  .frag .badge{font-size:6pt; font-weight:800; color:#C8231E; margin-left:1.4mm}
+  .frag .title{font-size:6.9pt; font-weight:800; color:var(--ink-strong);
+               letter-spacing:-.025em; margin-top:1mm}
+  .frag .sub{font-size:6pt; color:var(--ink-mute); margin-top:.8mm; line-height:1.4}
+  .frag .read{font-size:8pt; font-weight:800; color:var(--ink-strong); letter-spacing:-.03em;
+              margin-top:1mm}
+  .frag .read em{font-style:normal; font-size:.52em; font-weight:700; margin-left:.5mm;
+                 color:var(--ink-mute)}
+  .frag-note{font-size:6pt; line-height:1.4; color:var(--ink-faint); margin-top:1.2mm}
+
+  .b2-sys{margin-top:3.4mm; padding-top:3.2mm; border-top:1px solid var(--ink-strong);
+          flex:none}
+  .sysgrid{display:grid; grid-template-columns:52mm 58mm 1fr; gap:9mm; margin-top:1.8mm;
+           align-items:start}
+  .markbox{display:grid; grid-template-columns:16mm 1fr; gap:4mm; align-items:center}
+  .markbox .gridmark{width:16mm; height:16mm}
+  .markbox .gridmark svg{width:100%; height:100%; display:block}
+  .markbox .d{font-size:6pt; line-height:1.44; color:var(--ink-mute)}
+  .markbox .d b{color:var(--ink-strong); font-weight:700}
+
+  .colors{display:grid; grid-template-columns:repeat(3,1fr); gap:3.4mm}
+  .col .sw{height:4mm}
+  .col .nm{font-size:6pt; font-weight:800; color:var(--ink-strong); margin-top:1.2mm}
+  .col .hx{font-family:var(--mono); font-size:6pt; color:var(--ink-faint); margin-top:.4mm;
+           letter-spacing:.02em}
+  .col .us{font-size:6pt; line-height:1.38; color:var(--ink-mute); margin-top:.9mm}
+
+  .iconstrip{display:grid; grid-template-columns:repeat(8,1fr); gap:1.8mm .6mm}
+  .ic{text-align:center}
+  .ic svg{width:3.4mm; height:3.4mm; display:block; margin:0 auto; color:var(--ink)}
+  .ic span{display:block; font-size:6pt; color:var(--ink-faint); margin-top:.7mm;
+           letter-spacing:-.03em; line-height:1.1}
+
+  .metrics{display:grid; grid-template-columns:repeat(4,1fr) auto; gap:6mm; align-items:start; margin-top:1.8mm;
+           padding-top:2mm; border-top:1px solid var(--rule)}
+  .met .n{font-size:12pt; font-weight:800; letter-spacing:-.045em; line-height:1;
+          color:var(--ink-strong)}
+  .met .n em{font-style:normal; font-size:.42em; font-weight:700; margin-left:.6mm}
+  .met .l{font-size:6pt; font-weight:700; margin-top:1.2mm; color:var(--ink)}
+  .met .s{font-size:6pt; line-height:1.38; color:var(--ink-faint); margin-top:.7mm}
+
+  .qr{display:flex; gap:3mm; align-items:flex-start; padding-left:2mm;
+      border-left:1px solid var(--rule)}
+  .qr .one{text-align:center}
+  .qr img{width:9.5mm; height:9.5mm; display:block}
+  .qr .t{font-family:var(--mono); font-size:6pt; color:var(--ink-faint); margin-top:.6mm}
+
+  @media print{
+    @page{size:A4 landscape; margin:0}
+    body{background:#fff; padding:0}
+    .board{margin:0; break-after:page}
+    .board:last-child{break-after:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ 보드 1 · 왜 이렇게 설계했는가 ══════════════ -->
+<section class="board">
+  <div class="runner">
+    <div class="wordmark">HARU ANBU</div>
+    <div class="meta">요양시설 케어 커뮤니케이션 · Service Design / UX · 2026</div>
+  </div>
+
+  <div class="b1-hero">
+    <div class="shot">
+      <img src="assets/photo-family.png" alt="">
+    </div>
+    <div class="ttl">
+      <div class="lbl"><span class="n">01</span><span class="t">Overview</span></div>
+      <h1>한 번 입력하면<br>네 방향으로 도착합니다</h1>
+      <div class="h1-rule"></div>
+      <p class="lede">흩어진 네 시선을<br>하루 한 번의 안부로.</p>
+    </div>
+  </div>
+
+  <div class="b1-mid">
+    <div class="b1-midL">
+      <p class="body" style="max-width:132mm">
+        요양시설의 가족 · 어르신 · 요양보호사 · 의료진. 요양보호사가 <b>이미 매일 남기는 기록</b>을
+        재사용해 나머지 셋에게 각자의 언어로 전달합니다. 현장에 새 입력을 요구하지 않는 것이
+        이 설계의 전제입니다.
+      </p>
+      <div class="credit" style="margin-top:3mm">
+        <span class="k">Team</span>
+        <span class="v">김지욱 · 손예찬 · 고해은 &nbsp;<span class="num" style="color:var(--ink-faint)">3인</span></span>
+        <span class="k">My Role</span>
+        <span class="v"><b>손예찬</b> — 서비스 기획 · UX 구조 설계 · 디자인 시스템 · 전 화면 UI · 프로토타입 구현
+          <span style="color:var(--ink-faint)">〔확정 문구 필요〕</span></span>
+      </div>
+
+      <div class="code">
+        <div class="hd">규칙을 문서가 아니라 코드로 고정했습니다</div>
+        <div class="code-2">
+          <div>
+            <div class="f">07_디자인/tokens/tokens.css</div>
+<pre><span class="c">/* 색은 이름으로만 쓴다 — #hex를 직접 적으면 검사에서 걸린다 */</span>
+<span class="s">--brand-blue-500</span>:  <span class="v">#2C7AFC</span>;   <span class="c">/* 로고 · 가족 */</span>
+<span class="s">--brand-green-700</span>: <span class="v">#15803D</span>;   <span class="c">/* 요양보호사 · 의료진 */</span></pre>
+          </div>
+          <div>
+            <div class="f">07_디자인/scripts/design_audit.py</div>
+<pre><span class="c"># 이모지를 코드가 막는다 — 전 화면 0건 유지</span>
+<span class="s">EMOJI_RE</span> = re.compile(
+    <span class="v">"[\U0001F300-\U0001FAFF"</span>
+    <span class="v">"\U00002600-\U000027BF]"</span>)</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="b1-midR">
+      <div class="lbl"><span class="n">02</span><span class="t ko">하나의 기록, 네 개의 도착지</span></div>
+      <div class="tree">
+        <div class="tree__in">
+          <div class="k">Input</div>
+          <div class="v">요양보호사<br>1인 · 1회</div>
+          <div class="d">노인장기요양보험법 시행규칙 별지 제16호서식이 이미 요구하는 항목입니다.</div>
+        </div>
+        <div class="tree__outs">
+          <div class="leaf is-guard">
+            <div class="r">가족</div>
+            <div class="h">일일 리포트</div>
+            <div class="p">오늘 어떠셨는지 — 사진과 코멘트로</div>
+          </div>
+          <div class="leaf is-pat">
+            <div class="r">어르신</div>
+            <div class="h">큰 글씨 안부</div>
+            <div class="p">본인도 읽는다 — 태블릿 전용 레이아웃</div>
+          </div>
+          <div class="leaf is-care">
+            <div class="r">요양보호사</div>
+            <div class="h">확인 요청</div>
+            <div class="p">판단이 아니라 전달 — 사람에게 넘긴다</div>
+          </div>
+          <div class="leaf is-care">
+            <div class="r">의료진</div>
+            <div class="h">기록 열람</div>
+            <div class="p">회진 전 맥락 — 시간순으로</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="b1-prob">
+    <div>
+      <div class="lbl"><span class="n">03</span><span class="t">Problem</span></div>
+      <div class="hook">잘 계십니다. <em>아마도?</em></div>
+      <div class="quotes">
+        <div class="q"><div class="r" style="color:var(--role-guard)">가족</div>
+          <div class="t">"오늘 밥은 잘 드셨는지 모르겠어요."</div></div>
+        <div class="q"><div class="r" style="color:var(--role-care)">요양보호사</div>
+          <div class="t">"보호자 전화에 하루 두 시간을 써요."</div></div>
+        <div class="q"><div class="r" style="color:var(--role-pat)">어르신</div>
+          <div class="t">"자식들 걱정시키고 싶지 않아요."</div></div>
+        <div class="q"><div class="r" style="color:var(--role-care)">의료진</div>
+          <div class="t">"어르신 상태를 매번 따로 기록해요."</div></div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; min-height:0">
+      <div class="mega">
+        <div class="fig">24<em>년</em></div>
+        <div class="say">
+          <div class="a">한국이 고령화사회(7%)에서<br>초고령사회(20%)에 이르는 데 걸린 시간</div>
+          <div class="b">프랑스 154년 · 미국 88년.
+            <span class="src">통계청 2024 · OECD</span></div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="n num">6,361<em>개소</em></div>
+          <div class="l">입소형 장기요양기관</div>
+          <span class="s src">건보공단 2025-12</span>
+        </div>
+        <div class="stat">
+          <div class="n num">51.6<em>%</em></div>
+          <div class="l">가족이 여전히 돌봄 부담을 느낀다</div>
+          <span class="s src">제도 만족도 84.6%인데도</span>
+        </div>
+        <div class="stat">
+          <div class="n num sm">1.5~1.9 <em>→</em> 3.0~3.7</div>
+          <div class="l">요양보호사 1인당 담당 어르신</div>
+          <span class="s src">2023 → 2040 · KDI 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="b1-band">
+    <div class="lbl"><span class="n">04</span><span class="t ko">일부러 만들지 않은 것</span></div>
+    <div class="nots">
+      <div class="not"><span class="m">01</span><div class="c">
+        <b>이상 감지 · 위험도 판정.</b> 앱이 상태를 판단하면 의료기기(SaMD) 허가 대상이 됩니다.
+        판단은 전부 사람에게 남겼습니다.</div></div>
+      <div class="not"><span class="m">02</span><div class="c">
+        <b>"혈압 이상 감지" → "혈압이 평소보다 높게 측정됐어요".</b>
+        문구를 판정에서 사실 전달로 바꾸고 화면에 실제로 반영했습니다.</div></div>
+      <div class="not"><span class="m">03</span><div class="c">
+        <b>종사자 평가 지표.</b> 입력 통계 · 미입력 알림 · 작성자 비교는
+        현장이 거부하는 기능이라 넣지 않았습니다.</div></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>김지욱 · 손예찬 · 고해은 &nbsp;|&nbsp; 담당 손예찬</span>
+    <span>haruanbu.site</span>
+    <span>01 / 02</span>
+  </div>
+</section>
+
+<!-- ══════════════ 보드 2 · 무엇을 만들었고 어떻게 다듬었나 ══════════════ -->
+<section class="board board--2">
+  <div class="runner">
+    <div class="wordmark">HARU ANBU</div>
+    <div class="meta">Screens &amp; Design System · 고유 화면 39 / 수록 12 · 2026</div>
+  </div>
+
+  <div class="b2-head">
+    <div>
+      <div class="lbl"><span class="n">06</span><span class="t">Four Roles</span></div>
+      <h2>같은 하루를 네 사람이 각자의 언어로 봅니다</h2>
+    </div>
+    <p class="body">
+      네 역할은 필요한 정보와 읽는 속도가 전부 다릅니다. 가족은 안심을, 어르신은 큰 글씨를,
+      요양보호사는 빠른 입력을, 의료진은 맥락을 원합니다. 토큰과 컴포넌트는 공유하되
+      밀도 · 글자 크기 · 기기까지 역할에 맞춰 다르게 잡았습니다.
+    </p>
+  </div>
+
+  <div class="b2-screens">
+    <div class="scell">
+      <div class="s-r" style="color:var(--role-care)">Caregiver</div>
+      <div class="s-h">요양보호사 — 오늘</div>
+      <div class="phone">
+        <img class="scr" src="../편입_포트폴리오/assets/caregiver.png" alt="">
+        <img class="frm" src="../편입_포트폴리오/assets/frame-iphone.png" alt="">
+      </div>
+      <div class="numcap"><span class="n n-care">01</span>
+        <span class="c"><b>입력은 이 한 명뿐.</b> 체크 한 번으로 끝납니다.</span></div>
+    </div>
+
+    <div class="scell">
+      <div class="s-r" style="color:var(--role-guard)">Family</div>
+      <div class="s-h">가족 — 홈</div>
+      <div class="phone">
+        <img class="scr" src="../편입_포트폴리오/assets/family.png" alt="">
+        <img class="frm" src="../편입_포트폴리오/assets/frame-iphone.png" alt="">
+      </div>
+      <div class="numcap"><span class="n n-guard">02</span>
+        <span class="c"><b>멀리 있어도 매일 안부를 받습니다.</b> 맨 위에 옵니다.</span></div>
+    </div>
+
+    <div class="scell">
+      <div class="s-r" style="color:var(--role-care)">Clinician</div>
+      <div class="s-h">의료진 — 홈</div>
+      <div class="phone">
+        <img class="scr" src="../편입_포트폴리오/assets/doctor.png" alt="">
+        <img class="frm" src="../편입_포트폴리오/assets/frame-iphone.png" alt="">
+      </div>
+      <div class="numcap"><span class="n n-care">03</span>
+        <span class="c"><b>판단이 아니라 맥락.</b> 기록을 시간순으로 훑습니다.</span></div>
+    </div>
+
+    <div class="padcell">
+      <div>
+        <div class="s-r" style="color:var(--role-pat)">Resident · Tablet</div>
+        <div class="s-h">어르신 — 오늘</div>
+        <div class="pad">
+          <img class="scr" src="../편입_포트폴리오/assets/patient_pad.png" alt="">
+          <img class="frm" src="../편입_포트폴리오/assets/frame-ipad.png" alt="">
+        </div>
+        <div class="numcap"><span class="n n-pat">04</span>
+          <span class="c"><b>어르신도 사용자입니다.</b> 글자를 키우고 버튼을 손바닥만 하게 만들면 폰에는 정보가 두 개밖에 안 들어갑니다.</span></div>
+      </div>
+
+      <div class="callouts">
+        <div class="callout">
+          <div class="lead"></div>
+          <div>
+            <div class="k">기기를 바꾼 결정</div>
+            <div class="v">글자 크기와 터치 영역을 먼저 정하고 기기를 나중에 골랐습니다.</div>
+          </div>
+        </div>
+        <div class="callout">
+          <div class="lead"></div>
+          <div>
+            <div class="k">좌우 분할</div>
+            <div class="v">왼쪽은 가족이 보낸 것, 오른쪽은 지금 할 일. 시선이 오갈 필요가 없습니다.</div>
+          </div>
+        </div>
+        <div class="callout">
+          <div class="lead"></div>
+          <div>
+            <div class="k">고정된 두 버튼</div>
+            <div class="v">말하기 · 도움은 어느 화면에서든 같은 자리에 있습니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="b2-iter">
+    <div class="lbl"><span class="n">07</span><span class="t ko">결정의 흔적 — 무엇을 지웠는가</span></div>
+    <div class="iter-wrap">
+      <div class="iter">
+        <div class="step">
+          <div class="v">v1 · 초기</div>
+          <img src="../../07_디자인/mockup/v1_초기/app_mobile.png" alt="">
+          <div class="t"><span class="chip chip--was">이모지 · 그라데이션 · 5탭</span></div>
+        </div>
+        <div class="step">
+          <div class="v">v4 · 중간</div>
+          <img src="../../07_디자인/mockup/v4_최신/guardian.png" alt="">
+          <div class="t"><span class="chip chip--was">아이콘 정리 · 컬러 필 잔존</span></div>
+        </div>
+        <div class="step">
+          <div class="v">최종</div>
+          <img src="../편입_포트폴리오/assets/family.png" alt="">
+          <div class="t"><span class="chip chip--now">전부 제거</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="removed">
+          <div class="rm"><span class="m">—</span><span class="c"><b>이모지 30건 · 20종</b>을 단일 아이콘 세트 15종으로. 이후 0건을 코드가 강제합니다.</span></div>
+          <div class="rm"><span class="m">—</span><span class="c"><b>그라데이션 1건과 배경 컬러 필</b>을 지우고 위계를 타이포와 간격으로 옮겼습니다.</span></div>
+          <div class="rm"><span class="m">—</span><span class="c"><b>"케어 완료율 85%"</b>를 삭제. 종사자 평가 지표로 읽히는 수치였습니다.</span></div>
+          <div class="rm"><span class="m">—</span><span class="c"><b>5탭을 4탭으로.</b> 쓰지 않는 탭이 선택지를 늘리고 있었습니다.</span></div>
+        </div>
+
+        <div class="frags">
+          <div class="frag">
+            <div class="ft">가족 앱 · 알림</div>
+            <div class="title">혈압이 평소보다 높게 측정됐어요</div>
+            <div class="read num">150/95<em>mmHg</em></div>
+            <div class="frag-note">"이상 감지"가 아니라 측정 사실만 말합니다. 판정은 앱이 하지 않습니다.</div>
+          </div>
+          <div class="frag">
+            <div class="ft">요양보호사 앱 · 소통<span class="badge">확인 요청</span></div>
+            <div class="title">이정숙 어르신 · 미열</div>
+            <div class="sub">체온 37.4°C — 평소보다 0.8도 높음. 마른기침 3회 동반</div>
+            <div class="frag-note">사람에게 확인을 요청할 뿐, 위험도를 매기지 않습니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="b2-sys">
+    <div class="lbl"><span class="n">08</span><span class="t">Design System</span></div>
+    <div class="sysgrid">
+      <div class="markbox">
+        <div class="gridmark">
+          <svg viewBox="0 0 2526 2526" xmlns="http://www.w3.org/2000/svg" aria-label="브랜드마크 작도">
+            <g stroke="#B4BAC2" stroke-width="55" fill="none">
+              <circle cx="1263" cy="1263" r="1240"/>
+              <circle cx="1263" cy="1263" r="620"/>
+              <line x1="1263" y1="0" x2="1263" y2="2526"/>
+              <line x1="0" y1="1263" x2="2526" y2="1263"/>
+              <line x1="0" y1="0" x2="2526" y2="2526"/>
+              <line x1="2526" y1="0" x2="0" y2="2526"/>
+            </g>
+            <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/>
+            <path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/>
+            <circle cx="1263" cy="1263" r="38" fill="#0B0D10"/>
+          </svg>
+        </div>
+        <div class="d"><b>서로를 향해 굽은 두 곡선.</b>
+          멀리 있는 가족과 가까이 있는 어르신, 그 사이를 잇는 케어팀의 시선이
+          한 점에서 만나는 형태입니다.</div>
+      </div>
+
+      <div class="colors">
+        <div class="col">
+          <div class="sw" style="background:#2C7AFC"></div>
+          <div class="nm">보호자 블루</div><div class="hx">#2C7AFC</div>
+          <div class="us">멀리 있는 가족에게 약속하는 안심의 톤. 로고와 핵심 액션의 기준색.</div>
+        </div>
+        <div class="col">
+          <div class="sw" style="background:#22C55E"></div>
+          <div class="nm">케어 그린</div><div class="hx">#22C55E</div>
+          <div class="us">케어팀이 함께 쓰는 임상 톤. 완료 · 정상 · 안전 신호의 기준.</div>
+        </div>
+        <div class="col">
+          <div class="sw" style="background:#FB923C"></div>
+          <div class="nm">환자 오렌지</div><div class="hx">#FB923C</div>
+          <div class="us">부담 없는 액센트. 큰 글자 · 넓은 터치의 어르신 시점 톤.</div>
+        </div>
+      </div>
+
+      <div class="iconstrip">
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="m10.7 12.725l-.85-1.275q-.125-.2-.35-.325T9.025 11H3.1q-.275 0-.5-.162t-.325-.438q-.15-.475-.213-.937T2 8.5q0-2.35 1.575-3.925T7.5 3q1.3 0 2.475.55T12 5.1q.85-1 2.025-1.55T16.5 3q2.35 0 3.925 1.575T22 8.5q0 .5-.062.963t-.213.937q-.075.275-.312.438T20.9 11h-5.325L13.85 8.45q-.15-.225-.387-.337T12.95 8q-.325 0-.562.188t-.338.487zm.6 7.825q-.35-.125-.625-.4q-2.35-2.1-3.975-3.687T4.075 13.6q-.15-.2-.038-.4t.338-.2h4.05l1.725 2.55q.15.225.388.338t.512.112q.325 0 .563-.187t.337-.488l1.35-4.075l.875 1.3q.125.2.35.325T15 13h4.625q.225 0 .338.2t-.038.4q-1 1.275-2.625 2.863t-3.975 3.687q-.275.275-.625.4t-.7.125t-.7-.125"/></svg><span>안심지수</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" fill-rule="evenodd" d="M4.222 4.222a6 6 0 0 1 8.485 0l7.071 7.071a6 6 0 0 1-8.485 8.486l-7.071-7.071a6 6 0 0 1 0-8.486m7.07 12.728l1.415 1.414a4 4 0 0 0 5.657-5.657l-1.414-1.414h-.001a4 4 0 0 0-5.656 5.657" clip-rule="evenodd"/></svg><span>복약</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M14.826 19A3 3 0 0 1 12 21a3 3 0 0 1-2.825-2zM12 2a7 7 0 0 1 7 7v3.528a1 1 0 0 0 .106.447l1.717 3.433A1.1 1.1 0 0 1 19.838 18H4.162a1.1 1.1 0 0 1-.984-1.592l1.717-3.433A1 1 0 0 0 5 12.528V9a7 7 0 0 1 7-7"/></svg><span>SOS</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h12q.825 0 1.413.588T18 6v4.5l3.15-3.15q.25-.25.55-.125t.3.475v8.6q0 .35-.3.475t-.55-.125L18 13.5V18q0 .825-.587 1.413T16 20z"/></svg><span>영상통화</span></div>
+        <div class="ic"><svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M224 104h-8.37a88 88 0 0 0-175.26 0H32a8 8 0 0 0-8 8a104.35 104.35 0 0 0 56 92.28V208a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-3.72A104.35 104.35 0 0 0 232 112a8 8 0 0 0-8-8m-50.52-47.77q2.75 2.25 5.27 4.75a87.92 87.92 0 0 0-49.15 43h-29.5A72.26 72.26 0 0 1 168 56c1.83 0 3.66.09 5.48.23M148.12 104a71.84 71.84 0 0 1 41.27-29.57A71.45 71.45 0 0 1 199.54 104ZM128 40a72 72 0 0 1 19 2.57A88.36 88.36 0 0 0 83.33 104H56.46A72.08 72.08 0 0 1 128 40"/></svg><span>식사</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M12 8.5a1.5 1.5 0 0 0 1.5 1.5H20v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h6zM9 16a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2zm0-4a1 1 0 1 0 0 2h1a1 1 0 1 0 0-2zm5-9.956a2 2 0 0 1 1 .542L19.414 7a2 2 0 0 1 .541 1H14z"/></svg><span>리포트</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" fill-rule="evenodd" d="M10.8 2.65a2 2 0 0 1 2.4 0l7 5.25a2 2 0 0 1 .8 1.6V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5a2 2 0 0 1 .8-1.6z" clip-rule="evenodd"/></svg><span>방문 케어</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M21 19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7h18zM16 3a1 1 0 0 1 1 1v1h2a2 2 0 0 1 2 2v3H3V7a2 2 0 0 1 2-2h2V4a1 1 0 0 1 2 0v1h6V4a1 1 0 0 1 1-1"/></svg><span>일정</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" fill-rule="evenodd" d="M13.574 3.137a1.01 1.01 0 0 0-1.097 1.408a6 6 0 0 1-7.931 7.931c-.747-.335-1.548.307-1.409 1.098A9 9 0 0 0 21 12c0-4.435-3.206-8.118-7.426-8.863" clip-rule="evenodd"/></svg><span>수면</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M13 22v-5l-2.1-2l-.775 3.45q-.1.4-.437.613t-.738.137L4 18.2q-.425-.075-.65-.425T3.2 17t.425-.662t.775-.138l3.8.8l1.6-8.1l-1.8.7V12q0 .425-.288.713T7 13t-.712-.288T6 12V8.95q0-.3.163-.537T6.6 8.05L9.95 6.6q.875-.375 1.288-.487T12 6q.525 0 .975.275T13.7 7l1 1.6q.525.85 1.363 1.475T18 10.9q.425.075.713.375T19 12t-.288.7t-.687.225q-1.35-.2-2.525-.838t-2-1.587l-.6 3l1.8 1.7q.15.15.225.338t.075.387V22q0 .425-.288.713T14 23t-.712-.288T13 22m-.913-17.088Q11.5 4.325 11.5 3.5t.588-1.412T13.5 1.5t1.413.588T15.5 3.5t-.587 1.413T13.5 5.5t-1.412-.587"/></svg><span>활동</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M7 4a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V3h1a2 2 0 0 1 2 2v11a6 6 0 0 1-6 6H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h1zm2 10a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2zm0-4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2zm5-8a1 1 0 1 1 0 2h-4a1 1 0 0 1 0-2z"/></svg><span>체크리스트</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M1.498 12.083c-.01-1.314 1.45-2.04 2.492-1.337l2.678 1.805c1.463.986.486 3.268-1.238 2.89l-.108-.025a7.504 7.504 0 0 0 13.175.336a1.5 1.5 0 0 1 2.6 1.497c-2.317 4.02-7.119 6.152-11.815 4.894a10.5 10.5 0 0 1-7.784-10.06m1.406-5.331C5.22 2.733 10.022.6 14.718 1.858a10.5 10.5 0 0 1 7.784 10.061c.01 1.314-1.45 2.039-2.492 1.336l-2.678-1.804c-1.464-.986-.487-3.267 1.237-2.89l.108.024a7.48 7.48 0 0 0-4.736-3.83A7.505 7.505 0 0 0 5.503 8.25a1.5 1.5 0 0 1-2.599-1.498"/></svg><span>인계</span></div>
+        <div class="ic"><svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M80 128V64a48 48 0 0 1 96 0v64a48 48 0 0 1-96 0m128 0a8 8 0 0 0-16 0a64 64 0 0 1-128 0a8 8 0 0 0-16 0a80.11 80.11 0 0 0 72 79.6V240a8 8 0 0 0 16 0v-32.4a80.11 80.11 0 0 0 72-79.6"/></svg><span>음성 인계</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M14.826 19A3 3 0 0 1 12 21a3 3 0 0 1-2.825-2zM12 2a7 7 0 0 1 7 7v3.528a1 1 0 0 0 .106.447l1.717 3.433A1.1 1.1 0 0 1 19.838 18H4.162a1.1 1.1 0 0 1-.984-1.592l1.717-3.433A1 1 0 0 0 5 12.528V9a7 7 0 0 1 7-7"/></svg><span>알림</span></div>
+        <div class="ic"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none"><path fill="currentColor" d="M18 6q-.825 0-1.412-.587T16 4t.588-1.412T18 2t1.413.588T20 4t-.587 1.413T18 6m-1 15v-7q0-1-.513-1.8t-1.312-1.25l.875-2.575q.2-.625.738-1T18 7t1.213.375t.737 1l2.1 6.3q.175.5-.137.913T21.1 16H20v5q0 .425-.288.713T19 22h-1q-.425 0-.712-.288T17 21m-5.562-9.937Q11 10.625 11 10t.438-1.062T12.5 8.5t1.063.438T14 10t-.437 1.063t-1.063.437t-1.062-.437M5.5 6q-.825 0-1.412-.587T3.5 4t.588-1.412T5.5 2t1.413.588T7.5 4t-.587 1.413T5.5 6m-2 15v-6H3q-.425 0-.712-.288T2 14V9q0-.825.588-1.412T4 7h3q.825 0 1.413.588T9 9v5q0 .425-.288.713T8 15h-.5v6q0 .425-.288.713T6.5 22h-2q-.425 0-.712-.288T3.5 21m7.5 0v-3q-.425 0-.712-.288T10 17v-3q0-.625.438-1.062T11.5 12.5h2q.625 0 1.063.438T15 14v3q0 .425-.288.713T14 18v3q0 .425-.288.713T13 22h-1q-.425 0-.712-.288T11 21"/></svg><span>가족</span></div>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="met"><div class="n num">357<em>개</em></div><div class="l">디자인 토큰</div>
+        <div class="s">여섯 제품이 같은 규칙을 공유합니다.</div></div>
+      <div class="met"><div class="n num">39<em>개</em></div><div class="l">고유 화면</div>
+        <div class="s">클릭해서 동작하는 고충실도 프로토타입.</div></div>
+      <div class="met"><div class="n num">6<em>개</em></div><div class="l">제품</div>
+        <div class="s">앱 4 + 의료진 웹 + 온보딩.</div></div>
+      <div class="met"><div class="n num">10<em>종</em></div><div class="l">자동화 스크립트</div>
+        <div class="s">검사 5종 + 정리·생성 5종. 사람 눈이 못 잡는 것을 코드가 잡습니다.</div></div>
+      <div class="qr">
+        <div class="one"><img src="assets/qr-site.svg" alt=""><div class="t">haruanbu.site</div></div>
+        <div class="one"><img src="assets/qr-makingof.svg" alt=""><div class="t">making-of</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>완성본 기준 이모지 0 · 그라데이션 0 — 위 v1 시안은 지우기 전의 기록입니다</span>
+    <span>haruanbu.site</span>
+    <span>02 / 02</span>
+  </div>
+</section>
+
+</body>
+</html>

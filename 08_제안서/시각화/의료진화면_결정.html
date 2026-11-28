@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>의료진 화면 — 8/12 결정지 (2쪽)</title>
+<link rel="stylesheet" href="../../07_디자인/tokens/tokens.css">
+<style>
+  /* 이 문서의 용도
+     8/12에 사람이 정해야 하는 것 하나 — 의료진 홈 화면을 A안으로 바꿀 것인가.
+     원고 `23_의료진화면_판단.md` 는 표로 설명한다. 표는 읽어야 알고, 화면은 보면 안다.
+     **그래서 실제로 바꿔 찍어서 나란히 놓았다.** 결정은 왼쪽·오른쪽을 보는 것으로 끝난다.
+
+     오른쪽 화면은 합성이 아니다 — `_작업파일/의료진화면_수정.py` 를 원본 사본에 그대로
+     돌려 찍은 것이다. 결정 후 스크립트를 돌리면 **이 화면이 그대로 나온다.**
+     (사본은 찍고 지웠다. `v15_의료진앱/d01-home.html` 원본은 손대지 않았다.)
+
+     A4 2쪽 고정. */
+  :root{
+    --ink:        var(--color-text-primary, #111827);
+    --ink-strong: #0A0A0C;
+    --ink-mute:   var(--color-text-secondary, #6B7280);
+    --ink-faint:  #9CA3AF;
+    --canvas:     #FFFFFF;
+    --rule:       #E8EAED;
+    --accent:     var(--brand-blue-500, #2C7AFC);
+    --warn:       var(--palette-amber-700, #B45309);
+    --stop:       var(--palette-red-600, #C8231E);
+    --ok:         var(--brand-green-700, #15803D);
+    --wash:       #F5F6F8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:#EEF0F3; color:var(--ink);
+    font-family:var(--font-family-base, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif);
+    font-size:15px; line-height:1.7; letter-spacing:-0.01em;
+    -webkit-font-smoothing:antialiased;
+  }
+  body, h1, h2, h3, p, li, td, th, .lede, .cap{word-break:keep-all; overflow-wrap:break-word}
+  .page{
+    width:210mm; min-height:297mm; height:297mm; margin:0 auto 20px;
+    background:var(--canvas); padding:18mm 16mm 14mm;
+    position:relative; overflow:hidden;
+  }
+  .eyebrow{font-size:11px; font-weight:700; letter-spacing:.14em; color:var(--ink-faint); margin:0 0 12px}
+  h1{font-size:40px; line-height:1.06; letter-spacing:-0.045em; font-weight:800; margin:0 0 14px; color:var(--ink-strong)}
+  h2{font-size:24px; line-height:1.16; letter-spacing:-0.035em; font-weight:800; margin:0 0 12px; color:var(--ink-strong)}
+  h3{font-size:14.5px; line-height:1.4; letter-spacing:-0.02em; font-weight:700; margin:16px 0 7px; color:var(--ink-strong)}
+  p{margin:0 0 10px}
+  .lede{font-size:16.5px; line-height:1.56; font-weight:500; margin:0 0 13px}
+  .mute{color:var(--ink-mute)}
+  .small{font-size:12.5px; line-height:1.6; color:var(--ink-mute)}
+  strong{font-weight:700; color:var(--ink-strong)}
+
+  /* 화면 둘 — 이 문서의 전부 */
+  /* 폰 화면은 세로로 길다(1000×1880). 열 너비를 A4 절반으로 두면 한 장에 안 들어간다 —
+     64mm 로 박아 두 장 나란히 + 아래 표까지 1쪽에 들어오게 했다. */
+  .pair{display:grid; grid-template-columns:61mm 61mm; gap:13mm; justify-content:center; margin:2mm 0 0}
+  .pane .tag{font-size:11px; font-weight:800; letter-spacing:.1em; margin:0 0 6px}
+  .pane.now .tag{color:var(--stop)}
+  .pane.next .tag{color:var(--ok)}
+  .pane .ttl{font-size:17px; font-weight:800; letter-spacing:-0.03em; color:var(--ink-strong); margin:0 0 10px; line-height:1.3}
+  .pane img{display:block; width:100%; height:auto; border-radius:9px}
+  .pane .cap{font-size:11.5px; line-height:1.5; color:var(--ink-faint); margin-top:8px}
+
+  /* 바뀌는 것 — 표가 아니라 줄로 */
+  .rows{margin:0; padding:0; list-style:none}
+  .rows li{
+    display:grid; grid-template-columns:15mm 1fr 1fr; gap:6mm; align-items:baseline;
+    padding:4.5px 0; font-size:12.6px; line-height:1.45;
+  }
+  .rows li + li{border-top:1px solid var(--rule)}
+  .rows .k{font-size:11px; font-weight:700; color:var(--ink-faint); letter-spacing:.04em}
+  .rows .a{color:var(--stop)}
+  .rows .b{color:var(--ink-strong); font-weight:700}
+
+  .box{background:var(--wash); padding:12px 14px; margin:0 0 12px}
+  .box .h{font-size:12.5px; font-weight:800; letter-spacing:.02em; color:var(--ink-strong); margin:0 0 5px}
+  .box p{margin:0; font-size:13px; line-height:1.62}
+  .box.stop{background:#FCF1F0}
+  .box.ok{background:#F0F7F1}
+
+  /* 부스 대화 */
+  .talk{margin:0 0 12px; padding:0; list-style:none}
+  .talk li{font-size:13.5px; line-height:1.6; padding:3px 0 3px 17mm; position:relative}
+  .talk li .who{position:absolute; left:0; font-size:11px; font-weight:700; color:var(--ink-faint); letter-spacing:.04em; top:6px}
+  .talk li.hit{color:var(--stop); font-weight:700}
+
+  /* 결정란 */
+  .pick{display:grid; grid-template-columns:1fr 1fr 1fr; gap:5mm; margin:4mm 0 0}
+  .pick div{background:var(--wash); padding:12px 13px}
+  .pick .n{font-size:13.5px; font-weight:800; color:var(--ink-strong); margin:0 0 4px}
+  .pick .d{font-size:12px; line-height:1.55; color:var(--ink-mute); margin:0}
+  .pick .rec{color:var(--ok)}
+
+  .foot{position:absolute; left:16mm; right:16mm; bottom:9mm; font-size:10.5px; color:var(--ink-faint);
+        border-top:1px solid var(--rule); padding-top:6px}
+
+  @media print{
+    /* 이게 없으면 크롬이 기본 여백을 얹어 297mm 짜리 .page 가 두 장으로 쪼개진다.
+       (넣기 전 2쪽짜리가 4쪽으로 나왔다) */
+    @page{ size:A4; margin:0 }
+    body{background:#fff}
+    .page{margin:0; box-shadow:none; page-break-after:always}
+    .page:last-child{page-break-after:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================== 1쪽 ============================== -->
+<section class="page">
+  <div class="eyebrow">결정 · 2026-08-12 (인쇄 8/14)</div>
+  <h1>의료진 화면 — 바꿀 것인가</h1>
+  <p class="lede">
+    읽지 말고 <strong>두 화면을 보세요.</strong> 오른쪽은 만든 그림이 아니라
+    준비해 둔 스크립트를 원본 사본에 돌려 <strong>실제로 찍은 화면</strong>입니다.
+    “바꾼다”를 고르면 이 화면이 그대로 나옵니다.
+  </p>
+
+  <div class="pair">
+    <div class="pane now">
+      <div class="tag">지금 — 8/14 인쇄물에 들어갈 상태</div>
+      <div class="ttl">앱이 판단한다고 말하는 화면</div>
+      <img src="../assets/decide_doc_before.png" alt="현재 의료진 홈 화면">
+      <p class="cap">즉시 확인 · AI 판단 · 오늘의 우선순위 5 · 권장 재측정 —
+        네 곳이 <b>제안서 §05의 “판정은 만들지 않는다”와 정면으로 어긋난다.</b></p>
+    </div>
+    <div class="pane next">
+      <div class="tag">A안 — 스크립트 적용 결과</div>
+      <div class="ttl">사람이 적었다고 말하는 화면</div>
+      <img src="../assets/decide_doc_after.png" alt="A안 적용 후 의료진 홈 화면">
+      <p class="cap">정보는 그대로 있고 <b>주체만 앱에서 사람으로 돌아왔다.</b>
+        호실 셋과 체온 하나도 캐논에 맞췄다.</p>
+    </div>
+  </div>
+
+  <h3>바뀌는 것 — 열다섯 군데</h3>
+  <ul class="rows">
+    <li><span class="k">태그</span><span class="a">즉시 확인</span><span class="b">요양보호사 보고</span></li>
+    <li><span class="k">근거</span><span class="a">직전 162/96 대비 상승</span><span class="b">13:50 요양보호사 기록</span></li>
+    <li><span class="k">라벨</span><span class="a">AI 판단</span><span class="b">요양보호사 기록</span></li>
+    <li><span class="k">목록</span><span class="a">오늘의 우선순위 5</span><span class="b">오늘 올라온 보고 5</span></li>
+    <li><span class="k">권고</span><span class="a">권장 · 재측정 · 회진 우선순위 상향</span><span class="b">메모 · “재측정 부탁드립니다” — 이수진 요양보호사</span></li>
+    <li><span class="k">분류</span><span class="a">오늘 처리 · 관찰</span><span class="b">확인 전 · 확인함</span></li>
+    <li><span class="k">호실</span><span class="a">최명자 B-2 · 김순자 A-5 · 이정숙 3층 C-1</span><span class="b">B-1 · B-2 · 2층 A-7</span></li>
+    <li><span class="k">체온</span><span class="a">37.8°C 가 김순자에게</span><span class="b">37.4°C 가 이정숙에게</span></li>
+  </ul>
+
+  <div class="foot">하루안부 · 의료진 화면 결정지 1/2 · 근거 원고 <strong>08_제안서/원고/23_의료진화면_판단.md</strong></div>
+</section>
+
+<!-- ============================== 2쪽 ============================== -->
+<section class="page">
+  <div class="eyebrow">왜 지금인가</div>
+  <h2>부스에서 이 한 마디로 무너진다</h2>
+
+  <ul class="talk">
+    <li><span class="who">상대</span>“AI가 위험한 환자를 골라 주는 건가요?”</li>
+    <li><span class="who">우리</span>“아니요, 판단은 하지 않습니다. 의료기기가 되기 때문에 일부러 뺐습니다.”</li>
+    <li class="hit"><span class="who">상대</span>(화면을 보며) “여기 ‘AI 판단’이라고 써 있는데요.”</li>
+  </ul>
+
+  <div class="box stop">
+    <div class="h">숫자를 그렇게 조심해 놓고 화면에서 무너지면 아무 의미가 없다</div>
+    <p>제안서에서 수치를 하나하나 검증해 온 이유가 정확히 이 순간 때문입니다.
+      화면은 <strong>haruanbu.site 에 이미 배포돼 있어</strong> 부스에서 폰으로 열어 보여줄 것도 이 화면입니다.
+      종이에서만 빼는 것은 해결이 아닙니다.</p>
+  </div>
+
+  <h3>덤으로 찾은 것 — 체온이 세 화면에서 달랐다</h3>
+  <p class="small" style="margin-bottom:9px">
+    화면을 찍어 보다가 나왔습니다. 원고를 아무리 읽어도 안 보이는 종류입니다.</p>
+  <ul class="rows" style="margin-bottom:10px">
+    <li><span class="k">요양보호사</span><span class="a">인수인계 “체온 36.9℃ 미열”</span><span class="b">36.9℃는 미열이 아니다 — 정상 체온</span></li>
+    <li><span class="k">요양보호사</span><span class="b" style="grid-column:2 / span 2">관찰 카드·소통·en·zh 등 아홉 곳 모두 <strong>37.4℃</strong></span></li>
+    <li><span class="k">의료진</span><span class="a">37.8°C · 김순자</span><span class="b">이 화면에만 있는 값 · 사람도 다르다</span></li>
+  </ul>
+  <div class="box">
+    <div class="h">그래서 37.4℃ 로 맞춘다 — 지어낸 값이 아니다</div>
+    <p>같은 앱의 소통 화면이 <strong>“체온 37.4°C — 평소보다 0.8도 높음”</strong>이라고 적고 있습니다.
+      평소 36.6 + 0.8 = 37.4. <strong>산수까지 맞는 쪽이 37.4</strong>이고, 36.9와 37.8은 각각 한 곳씩입니다.
+      A안 스크립트가 의료진 화면을 고치고, 요양보호사 인수인계 한 줄은 별도 스크립트로 준비해 뒀습니다.</p>
+  </div>
+
+  <h2 style="margin-top:16px">고르기</h2>
+  <div class="pick">
+    <div>
+      <p class="n rec">A안 — 전부 적용 <span class="small">(권장)</span></p>
+      <p class="d">문구 + 호실 + 체온. 제안서 §05를 그대로 지킬 수 있고, 부스에서 화면을 가리키며 설명할 수 있습니다.
+        의료진 앱이 덜 똑똑해 보이지만 <strong>그게 사실</strong>입니다 — 서버도 AI도 아직 없습니다.</p>
+    </div>
+    <div>
+      <p class="n">호실·체온만</p>
+      <p class="d">틀린 것만 고치고 SaMD 문구는 그대로 둡니다. 판단이 필요 없는 부분입니다.
+        다만 위 대화는 <strong>그대로 일어납니다.</strong></p>
+    </div>
+    <div>
+      <p class="n">B안 — 그대로 두기</p>
+      <p class="d">§05의 SaMD 주장을 뺍니다. 짧은제안서 5쪽 한 면과 2부 16쪽의 뼈대가 사라지고
+        <strong>“화면 잘 만든 학생팀”이 남습니다.</strong> 권장하지 않습니다.</p>
+    </div>
+  </div>
+
+  <div class="box ok" style="margin-top:5mm">
+    <div class="h">고른 뒤 — 사람이 할 것은 한 줄, 나머지는 이어서 처리합니다</div>
+    <p><strong>python3 _작업파일/의료진화면_수정.py</strong> (호실·체온만은 <strong>--호실만</strong>)
+      → 무결성·디자인 검사 → <strong>스크린샷 재촬영 → shot_doctor.png 교체 → 인쇄물 PDF 재생성.</strong>
+      인쇄물에 들어가는 것은 화면이 아니라 PNG 입니다. 재촬영을 빠뜨리면 아무것도 바뀌지 않습니다.</p>
+  </div>
+
+  <div class="foot">하루안부 · 의료진 화면 결정지 2/2 · <strong>인쇄 8/14(금)</strong> — 8/15~17 광복절 연휴로 그 뒤는 8/18 하루뿐</div>
+</section>
+
+</body>
+</html>

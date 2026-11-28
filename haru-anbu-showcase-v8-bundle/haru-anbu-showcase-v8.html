@@ -32,7 +32,7 @@
     @font-face{font-family:'Noto Sans SC';font-style:normal;font-weight:400 700;font-display:swap;
       src:url('../07_디자인/fonts/noto-sans-sc-cjk3.woff2') format('woff2');
       unicode-range:U+4E2D, U+4F60, U+6587;}
-  </style>
+</style>
   <!-- v13: 이 페이지에 쓰이는 한자는 "中你文" 3자뿐인데 전체 서브셋 CSS 91KB 를 받고 있었다.
        Google Fonts 의 text= 파라미터로 필요한 글자만 요청한다(언어 토글 라벨용). -->
   <!-- 디자인 시스템 토큰 (SoT: 07_디자인/tokens/tokens.css) — 색·간격·라운드·그림자·타이포 단일 진실의 원천 -->
@@ -137,8 +137,6 @@
       color:var(--mute);
     }
 
-    .intro-close{display:none !important}
-
     @media (max-width:900px){
       .flow-body{grid-template-columns:1fr;gap:40px;min-height:auto}
       .flow-info{padding-right:0;align-items:flex-start;text-align:left}
@@ -160,8 +158,6 @@
     }
     .notif-app-name{font-size:12px;font-weight:600;color:rgba(0,0,0,.45);letter-spacing:.01em}
 
-    @keyframes fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-
     /* SOS Card — centered popup (large) */
     .intro-sos-card{
       position:relative;
@@ -173,15 +169,6 @@
       opacity:0;
       animation:notif-in .7s cubic-bezier(.34,1.56,.64,1) .1s both;
     }
-    .intro-sos-card .intro-close{
-      position:absolute;top:14px;right:14px;z-index:2;
-      width:30px;height:30px;border-radius:50%;
-      background:rgba(0,0,0,.05);color:rgba(0,0,0,.5);
-      display:flex;align-items:center;justify-content:center;
-      font-size:16px;line-height:1;border:0;cursor:pointer;
-      transition:background .15s ease;
-    }
-    .intro-sos-card .intro-close:hover{background:rgba(0,0,0,.12);color:rgba(0,0,0,.8)}
     @keyframes notif-in{
       from{transform:translateY(32px) scale(.97);opacity:0}
       to{transform:none;opacity:1}
@@ -227,13 +214,7 @@
       position:relative;z-index:1;
     }
     .sos-excl{font-size:38px;font-weight:900;color:white;line-height:1;letter-spacing:-.02em;margin-top:-2px}
-    .sos-who-tag{
-      position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
-      background:white;border:1.5px solid rgba(239,68,68,.2);
-      color:var(--red);font-size:11px;font-weight:700;letter-spacing:.04em;
-      padding:4px 12px;border-radius:var(--radius-full);white-space:nowrap;
-      box-shadow:0 2px 8px rgba(0,0,0,.08);
-    }
+
     .sos-actions{
       display:grid;grid-template-columns:1fr 1.6fr;gap:10px;
       padding:14px 24px 28px;
@@ -386,14 +367,6 @@
     }
 
     /* Dynamic Island overlay */
-    .device-island{
-      position:absolute;
-      top:16px;left:50%;transform:translateX(-50%);
-      width:90px;height:28px;
-      background:#0d0d0f;
-      border-radius:var(--radius-full);
-      z-index:15;pointer-events:none;
-    }
 
     .flow-device.phone .device-screen{
       width:262px;height:566px;
@@ -537,9 +510,7 @@
     @keyframes enter-right  {from{transform:translateX(64px);opacity:0} to{transform:none;opacity:1}}
     @keyframes enter-left   {from{transform:translateX(-64px);opacity:0}to{transform:none;opacity:1}}
     @keyframes enter-center {from{opacity:0;transform:scale(.94)}       to{opacity:1;transform:none}}
-    @keyframes exit-left    {from{transform:none;opacity:1}to{transform:translateX(-80px);opacity:0}}
-    @keyframes exit-right   {from{transform:none;opacity:1}to{transform:translateX(80px);opacity:0}}
-    @keyframes exit-fade    {from{opacity:1}to{opacity:0;transform:scale(.96)}}
+
     .anim-enter-right {animation:enter-right  .45s cubic-bezier(.22,1,.36,1) both}
     .anim-enter-left  {animation:enter-left   .45s cubic-bezier(.22,1,.36,1) both}
     .anim-enter-center{animation:enter-center .45s cubic-bezier(.22,1,.36,1) both}
@@ -621,23 +592,18 @@
     /* 모바일/세로 화면: 벤치의 인물(이미지 오른쪽 ~68% 지점)이 보이도록 위치 조정 (데스크톱 가로화면은 영향 없음) */
     @media (max-width:640px), (orientation:portrait){.hero{background-position:72% 60%}}
     /* 가독성 스크림 — 단색 반투명 한 겹(그라데이션 아님). 흰 글씨 대비 확보 */
-    .hero::before{content:'';position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.10);pointer-events:none}
+    /* 2026-11-15 — 데스크톱 .10 → .24. 밝은 하늘 위 흰 글씨가 1.8:1 이라 한 겹만 짙힌다(폰은 아래 v19 규칙이 .32). 그라데이션은 쓰지 않는다 */
+    .hero::before{content:'';position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.24);pointer-events:none}
     .hero-inner{position:relative;z-index:2;max-width:var(--container);margin:0 auto;padding:100px var(--gutter) 0;flex:1;display:flex;flex-direction:column;width:100%}
     .hero-body{display:flex;flex-direction:column;justify-content:flex-start;flex:1;padding-top:24px;padding-bottom:64px;max-width:680px}
     .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--mute);letter-spacing:.16em;text-transform:uppercase;margin-bottom:32px}
     .hero-title{font-size:clamp(72px,11vw,148px);font-weight:700;line-height:.95;letter-spacing:-.05em;color:var(--ink);margin-bottom:40px}
     .hero-sub{font-size:clamp(17px,1.6vw,20px);font-weight:400;line-height:1.7;color:var(--ink-2);max-width:46ch;letter-spacing:-.01em;margin-bottom:52px}
     .hero-sub strong{font-weight:600;color:var(--ink)}
-    .hero .hero-eyebrow{color:#fff}
+    .hero .hero-eyebrow{color:#fff;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.32)}
     .hero .hero-title{color:#fff}
-    .hero .hero-sub{color:#fff}
+    .hero .hero-sub{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.32)}
     .hero .hero-sub strong{color:#fff}
-    .hero .hero-hint{color:#fff}
-    .hero .hero-persona{color:#fff !important}
-    @keyframes hf-blink{0%,100%{opacity:1}50%{opacity:.3}}
-    .hf-dot.care{background:var(--brand-green-500)}.hf-dot.guardian{background:var(--ink)}.hf-dot.medical{background:var(--mute)}
-    @keyframes hf-pulse{0%{opacity:.7;transform:scale(.7)}100%{opacity:0;transform:scale(2.4)}}
-    .hf-badge.done{color:var(--brand-green-500)}.hf-badge.alert{color:var(--palette-red-500)}
 
     /* ── Floating audio (발표 음성, 우측 하단 — 거의 안 보이는 원형) ── */
     .pa-fab{position:fixed;right:24px;bottom:24px;z-index:300;width:56px;height:56px;border-radius:var(--radius-full);padding:0;background:var(--ink);cursor:pointer;opacity:.05}
@@ -759,6 +725,11 @@
     .closing-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 28px;border:1px solid var(--ink);font-size:13px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);transition:all .2s;border-radius:12px}
     .closing-cta:hover{background:var(--blue);border-color:var(--blue);color:white}
     .closing-cta::after{content:"→"}
+    /* 건너뛰기 링크 — <head> 에 둬야 한다. 문서 끝에 두면 파싱 중엔 스타일 없는 링크가 흐름 안에서
+       28px 를 차지하다 나중에 빠져 화면이 밀린다(계측: CLS 0.019 · LCP 요소가 #hero 로 바뀜). */
+    .skip-link{position:fixed;left:16px;top:-72px;z-index:10000;padding:15px 18px;border-radius:12px;background:var(--ink);color:#fff;font:600 14px/1 var(--font);text-decoration:none;transition:top .2s}
+    .skip-link:focus{top:12px}
+    #main-content:focus{outline:none}
     footer{background:var(--brand-blue-500);padding:80px var(--gutter) 40px var(--gutter);color:#fff}
     .ft-grid{max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px}
     .ft-brand{display:flex;flex-direction:column;gap:14px}
@@ -830,7 +801,7 @@
     .sol-grid.hidden{opacity:0;pointer-events:none;transform:translateY(8px)}
     .sol-card{position:relative;border-radius:24px;padding:28px 22px 22px;background:#fff;cursor:pointer;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;display:flex;flex-direction:column;overflow:hidden;text-align:left;width:100%;font-family:var(--font);box-shadow:var(--shadow-card-floating)}
     .sol-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-3)}
-    .sol-card:hover .sol-card-cta{background:var(--green);color:#fff;border-color:var(--green)}
+
     /* Demo panel */
     .sol-demo-panel{display:none;margin-top:64px;gap:32px;align-items:flex-start;opacity:0;transition:opacity .3s}
     .sol-demo-panel.active{display:flex;opacity:1}
@@ -879,12 +850,6 @@
     .sc-b-url{flex:1;height:20px;background:#fff;border-radius:5px;margin:0 60px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#999;font-family:var(--font)}
     .sc-browser-content{flex:1;overflow:hidden;position:relative}
     .sc-browser-content iframe{width:1200px;height:622px;transform:scale(0.643);transform-origin:top left;border:none;pointer-events:auto;display:block}
-    .conn-node.patient {top:0;left:50%;transform:translateX(-50%)}
-    .conn-node.guardian{bottom:0;left:0}
-    .conn-node.medical {bottom:0;right:0}
-    .conn-node.guardian .conn-circle{background:var(--blue)}
-    .conn-node.medical  .conn-circle{background:var(--green)}
-    .conn-node.patient  .conn-circle{background:var(--orange)}
 
     /* ═══════════════════ DAILY REPORT SECTION ═══════════════════ */
     /* 하단 0: 다음 features-by-role 섹션과 한 흐름으로 이어지도록 (역할별 카드 01→02 간격 통일) */
@@ -914,11 +879,11 @@
     .feat-sub-inner.layout-right .feat-device-side{order:2;justify-content:flex-start}
     .feat-sub-inner.layout-right .feat-info-side{order:1}
     .feat-sub-inner.layout-left .feat-device-side{justify-content:flex-end}
-    .feat-sub-inner.layout-center{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:0}
+
     /* [06-01] 목업 0.75× 축소 후 텍스트↔목업 간격이 좁아져, layout-center 위·아래 여백 확대 */
-    .feat-sub-inner.layout-center .feat-device-side{margin:clamp(40px,4.5vw,68px) 0 clamp(12px,1.8vw,24px)!important;justify-content:center;width:100%}
+
     /* [06-02] layout-aside: 텍스트(역할·제목·본문)는 좌측 1/4 폭 칼럼, 목업은 우측 3/4 칼럼에 나란히 — 환자 태블릿/의료진 웹 */
-    .feat-sub-inner.layout-aside{grid-template-columns:minmax(260px,1fr) 3fr;gap:clamp(40px,5vw,88px);align-items:center;text-align:left}
+    .feat-sub-inner.layout-aside{grid-template-columns:minmax(260px,1fr) minmax(0,3fr);gap:clamp(40px,5vw,88px);align-items:center;text-align:left}
     .feat-sub-inner.layout-aside .feat-info-side{order:1;max-width:none}
     .feat-sub-inner.layout-aside .feat-device-side{order:2;justify-content:center;width:100%;margin:0}
     /* 좁은 1/4 칼럼에서도 제목이 <br> 기준 2행으로 떨어지도록 크기 축소 */
@@ -927,7 +892,7 @@
     .feat-device-side{display:flex;justify-content:center;position:relative}
     .feat-info-side{display:flex;flex-direction:column;max-width:520px}
     .feat-role-tag{align-self:flex-start;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);padding:0;background:none!important;border-radius:0;margin-bottom:28px}
-    .feat-sub-inner.layout-center .feat-role-tag{align-self:flex-start}
+
     .feat-title{font-size:clamp(28px,3.9vw,45px);font-weight:700;letter-spacing:-.03em;line-height:1.3;color:var(--ink);margin-bottom:32px;word-break:keep-all;text-wrap:pretty}
     .feat-desc{font-size:17px;line-height:1.72;color:var(--ink-2);margin-bottom:0;max-width:var(--body-col-wide);word-break:keep-all;text-wrap:balance}
     /* 다국어 언어 전환 세그먼트 (요양보호사 직접 체험) */
@@ -1009,7 +974,6 @@
       0%,100%{box-shadow:0 12px 30px -10px rgba(var(--hint-rgb),.5),0 0 0 0 rgba(var(--hint-rgb),.32)}
       55%{box-shadow:0 12px 30px -10px rgba(var(--hint-rgb),.5),0 0 0 9px rgba(var(--hint-rgb),0)}
     }
-    .feat-tap-hint.is-hidden{display:none}
 
     /* ── 닫기(체험 종료) 버튼 — .interactive 중에만 노출 (기존엔 ESC만 가능했음) ── */
     .feat-exit{
@@ -1078,13 +1042,6 @@
       pointer-events:none;user-select:none;
     }
     @keyframes feat-float-in{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
-    .ff-strip.blue {background:rgba(44,122,252,.06);color:var(--blue)}
-    .ff-strip.blue::before{background:var(--blue)}
-    .ff-strip.green{background:rgba(34,197,94,.06);color:var(--brand-green-500)}
-    .ff-strip.green::before{background:var(--brand-green-500)}
-    .ff-strip.orange{background:rgba(251,146,60,.06);color:var(--brand-orange-400)}
-    .ff-strip.orange::before{background:var(--brand-orange-400)}
-    @keyframes ff-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.7)}}
 
     /* ═══════════════════════════════════════════════════
        Floats now mirror REAL app UI fragments (no .ff-strip)
@@ -1448,7 +1405,7 @@
       .ds-opt-b-card{padding:14px;gap:12px;min-width:0}
       .ds-opt-b-card--brand .ds-opt-b-mega{font-size:46px}
       .ds-opt-b-card--light .ds-opt-b-mega{font-size:46px}
-      .ds-opt-b-spec-top{flex-direction:column;align-items:flex-start;gap:2px;letter-spacing:.05em;font-size:9px}
+      .ds-opt-b-spec-top{flex-direction:column;align-items:flex-start;gap:2px;letter-spacing:.05em;font-size:11px}
       .ds-opt-b-foot{font-size:10px;word-break:break-all}
       .ds-opt-b-foot strong{font-size:13px;word-break:keep-all}
       .ds-opt-b-foot,.ds-opt-b-spec-top span{overflow-wrap:anywhere}
@@ -1718,12 +1675,8 @@
     @media (max-width:560px){
       .ds-iconlib-grid{grid-template-columns:repeat(2,1fr)}
     }
-    .persona-role-badge.guardian{background:rgba(44,122,252,.08);color:var(--blue)}
-    .persona-role-badge.medical {background:rgba(34,197,94,.08);color:var(--green)}
-    .persona-role-badge.patient {background:rgba(251,146,60,.08);color:var(--orange)}
 
     /* CTA buttons (used inside .closing) */
-    .cta-btns{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap}
 
     @media(max-width:900px){
       .topbar-nav{display:none}
@@ -1847,14 +1800,15 @@
       position:absolute;bottom:7px;left:50%;transform:translateX(-50%);
       width:118px;height:4px;background:rgba(255,255,255,.55);border-radius:2px;
     }
-  </style>
+</style>
 </head>
 <body tabindex="-1">
 
 <!-- ══════════════════════════════════ MAIN PAGE ══════════════════════════════════ -->
 <div id="main-page">
+  <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
   <nav class="topbar hide" id="topbar">
-    <a class="topbar-left" href="#hero">
+    <a class="topbar-left" href="#hero" aria-label="하루안부 홈">
       <svg class="logo-mark" viewBox="0 0 2526 2526" fill="none">
         <path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0C2518.68 494.2 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="var(--brand-blue-500)"/>
         <path d="M4.68 19.34C1286.35-131.48 1286.35 630.4 1286.35 1246.66L28.31 2526C7.32 2031.8 3.73 1368.08 867.14 1263.52C-115.88 1211.75 4.68 424.16 4.68 19.34Z" fill="var(--brand-blue-500)"/>
@@ -1880,6 +1834,8 @@
       </div>
     </div>
   </nav>
+
+  <main id="main-content" tabindex="-1">
 
   <!-- ══ 진입 알림 카드 — AI 나레이션 투어 권유 (로드 0.5초 뒤 등장) ══ -->
   <style>
@@ -1912,7 +1868,7 @@
     .np-time{margin-left:auto;font-size:12px;color:var(--mute)}
     .np-title{font-size:20px;font-weight:700;line-height:1.3;letter-spacing:-.02em;color:var(--ink);margin-bottom:8px;word-break:keep-all}
     .np-desc{font-size:14px;line-height:1.6;color:var(--ink-2);letter-spacing:-.01em;word-break:keep-all}
-    .np-meta{font-size:12px;color:var(--mute);margin-top:8px;letter-spacing:-.005em}
+
     .np-guide{margin-top:10px;word-break:keep-all}
     .np-guide-txt{font-size:12.5px;line-height:1.55;font-weight:500;color:var(--mute);letter-spacing:-.005em}
     .np-guide kbd{display:inline-flex;align-items:center;padding:1px 7px;margin:0 1px;border-radius:6px;background:var(--line-soft,#F3F4F6);font-family:var(--font);font-size:11px;font-weight:700;color:var(--blue);letter-spacing:0}
@@ -1938,13 +1894,13 @@
     .narr-hint.show{opacity:1;transform:translateX(-50%) translateY(0)}
     .narr-hint iconify-icon{font-size:18px;color:#fff}
     @media (max-width:480px){.narr-hint{top:68px;font-size:13px;white-space:normal;max-width:calc(100vw - 32px)}}
-  </style>
+</style>
   <div id="narrationBackdrop" class="np-backdrop"></div>
   <div id="narrHint" class="narr-hint" role="status" aria-live="polite">
     <iconify-icon icon="mingcute:arrow-left-fill"></iconify-icon>
     <span>첫 음원이 재생됩니다 · 다음으로 넘어갈 땐 Enter</span>
   </div>
-  <div id="narrationPrompt" class="np-card" role="dialog" aria-label="AI 나레이션 투어 안내">
+  <div id="narrationPrompt" class="np-card" inert role="dialog" aria-modal="true" aria-label="AI 나레이션 투어 안내">
     <div class="np-head">
       <span class="np-app-icon">
         <svg viewBox="0 0 2526 2526" fill="none" aria-hidden="true">
@@ -1989,13 +1945,17 @@
       }
       function show(){
         if(!cardVisible()){ unlockScroll(); return; }   /* CSS 로 숨겨진 기기에서는 아무 것도 하지 않는다 */
+        card.inert = false;
         card.classList.add('show');
         if(backdrop) backdrop.classList.add('show');
         if(topbar){ topbar.classList.remove('hide'); topbar.classList.add('np-front'); }  /* 카드 뜨면 탭바 노출(블러 위로) */
         lockScroll();                                  /* 카드 동안 스크롤 잠금 → 탭바 유지 */
+        try { document.getElementById('npYes').focus({preventScroll:true}); } catch(e){}   /* 키보드 사용자: 바로 Enter/Tab */
       }
       function hide(){
+        try { sessionStorage.setItem(ASKED, '1'); } catch(e){}   /* 한 번 답하면 이 세션에선 다시 묻지 않는다 */
         card.classList.remove('show');
+        card.inert = true;                                       /* 닫힌 카드에 포커스가 남아 Enter 를 가로채지 않게 */
         if(backdrop) backdrop.classList.remove('show');
         if(topbar) topbar.classList.remove('np-front');
         unlockScroll();
@@ -2006,6 +1966,8 @@
       window.addEventListener('resize', function(){ if(!cardVisible()) { hide(); } });
 
       var __isSync = new URLSearchParams(location.search).has('sync');
+      var ASKED = 'haru-tour-asked', asked = false;
+      try { asked = sessionStorage.getItem(ASKED) === '1'; } catch(e){}
       document.getElementById('npNo').addEventListener('click', hide);
       if(backdrop) backdrop.addEventListener('click', hide);  /* 배경 클릭 = 아니요 */
       document.getElementById('npYes').addEventListener('click', function(){
@@ -2018,6 +1980,7 @@
       window.addEventListener('keydown', function(e){
         if(!card.classList.contains('show')) return;
         var t=e.target; if(t && (t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable)) return;
+        if(e.key==='Escape'){ e.preventDefault(); hide(); return; }   /* Esc = 아니요 */
         if(e.key==='Enter' || e.key===' ' || e.key==='ArrowDown'){
           e.preventDefault(); e.stopImmediatePropagation();   /* 같은 Enter 로 두 칸 넘어가지 않게 */
           document.getElementById('npYes').click();
@@ -2042,6 +2005,9 @@
            이 투어는 Enter/Space/방향키로 넘기는 '발표용' 도구라 폰에는 키가 없다.
            카드를 CSS로 숨기기만 하면 lockScroll() 은 그대로 걸리는데 닫을 카드가
            없어 스크롤이 영구히 죽는다. 그래서 폰에서는 카드도, 잠금도 걸지 않는다. */
+      } else if(asked || location.hash.length > 1){
+        /* 2026-11-15 — 이미 답했거나(새로고침·KO↔EN 전환) #섹션 딥링크로 들어온 방문자는 묻지 않는다.
+           답을 기억해도 발표엔 지장이 없다: 카드 없이도 Enter 가 조용한 투어를 깨운다(wakeTour). */
       } else {
         lockScroll();              /* 진입 즉시 잠금 — 카드 뜨기 전부터 스크롤 차단, 알림 닫으면 해제 */
         setTimeout(show, 1500);
@@ -2138,26 +2104,26 @@
           <line x1="0" y1="121" x2="560" y2="121" stroke="var(--palette-gray-100)" stroke-width="1"/>
           <line x1="0" y1="88"  x2="560" y2="88"  stroke="var(--palette-gray-100)" stroke-width="1"/>
           <line x1="0" y1="54"  x2="560" y2="54"  stroke="var(--palette-gray-100)" stroke-width="1"/>
-          <text x="566" y="124" font-size="9" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">10%</text>
-          <text x="566" y="91"  font-size="9" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">20%</text>
-          <text x="566" y="57"  font-size="9" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">30%</text>
+          <text x="566" y="124" font-size="9" fill="var(--mute)" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">10%</text>
+          <text x="566" y="91"  font-size="9" fill="var(--mute)" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">20%</text>
+          <text x="566" y="57"  font-size="9" fill="var(--mute)" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">30%</text>
           <path class="mc-area" d="M 0,131 L 70,124 L 140,118 L 210,111 L 238,108 L 280,102 L 350,87 L 420,69 L 490,53 L 560,39 L 560,155 L 0,155 Z" fill="url(#bdGradProb)"/>
           <polyline class="mc-line" pathLength="1" points="0,131 70,124 140,118 210,111 238,108 280,102 350,87" fill="none" stroke="var(--brand-blue-500)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
           <polyline class="mc-proj" points="350,87 420,69 490,53 560,39" fill="none" stroke="var(--brand-blue-500)" stroke-width="2" stroke-dasharray="4 5" opacity="0.38" stroke-linejoin="round" stroke-linecap="round"/>
           <line x1="0" y1="155" x2="560" y2="155" stroke="var(--palette-gray-200)" stroke-width="1"/>
           <line class="mc-2017" x1="238" y1="108" x2="238" y2="155" stroke="#EBEBEB" stroke-width="1" stroke-dasharray="3 4"/>
           <circle class="mc-2017" cx="238" cy="108" r="3.5" fill="white" stroke="#CCCCCC" stroke-width="1.5"/>
-          <text x="238" y="169" text-anchor="middle" font-size="9" fill="#AAAAAA" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2017</text>
-          <text x="238" y="181" text-anchor="middle" font-size="8" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">고령사회 14%</text>
+          <text x="238" y="169" text-anchor="middle" font-size="9" fill="var(--mute)" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2017</text>
+          <text x="238" y="181" text-anchor="middle" font-size="8" fill="var(--mute)" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">고령사회 14%</text>
           <line class="mc-now" x1="350" y1="87" x2="350" y2="155" stroke="var(--brand-blue-500)" stroke-width="1" stroke-dasharray="3 4" opacity="0.22"/>
           <circle class="mc-now-dot" cx="350" cy="87" r="6" fill="var(--brand-blue-500)" stroke="white" stroke-width="2.5"/>
           <rect class="mc-now" x="323" y="60" width="54" height="18" rx="9" fill="var(--brand-blue-500)"/>
           <text class="mc-now" x="350" y="72.5" text-anchor="middle" font-size="9" fill="white" font-weight="700" letter-spacing="0.06em" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">NOW</text>
           <line class="mc-now" x1="350" y1="81" x2="350" y2="78" stroke="var(--brand-blue-500)" stroke-width="1.5"/>
           <text x="350" y="169" text-anchor="middle" font-size="9" fill="var(--brand-blue-500)" font-weight="700" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2025</text>
-          <text x="350" y="181" text-anchor="middle" font-size="8" fill="var(--brand-blue-500)" opacity="0.75" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">초고령사회 20.3%</text>
-          <text x="0"   y="169" text-anchor="start" font-size="9" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2000</text>
-          <text x="560" y="169" text-anchor="end"   font-size="9" fill="#CCCCCC" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2040 (추계)</text>
+          <text x="350" y="181" text-anchor="middle" font-size="8" fill="var(--brand-blue-600)" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">초고령사회 20.3%</text>
+          <text x="0"   y="169" text-anchor="start" font-size="9" fill="var(--mute)" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2000</text>
+          <text x="560" y="169" text-anchor="end"   font-size="9" fill="var(--mute)" font-family="'Pretendard Variable',Pretendard,-apple-system,sans-serif">2040 (추계)</text>
         </svg>
         <p class="problem-chart-cap">고령화사회(7%)에서 초고령사회(20%)까지, 프랑스 154년, 미국 88년, <strong>한국 24년</strong>.<span class="m-hide"> 65세 이상 1인 가구 <strong>214만 명</strong>, OECD 노인 빈곤율 1위.</span> 돌봄 수요는 폭발하는데, 가족과 의료진이 연결되는 방식은 여전히 전화 한 통에 머물러 있습니다.</p>
       <p class="problem-chart-source">출처: 통계청 2024 · OECD</p>
@@ -2239,11 +2205,6 @@
       box-shadow:0 14px 32px rgba(44,122,252,.22), 0 4px 10px rgba(10,14,26,.08);
     }
     .pv-pill.icon iconify-icon{font-size:32px}
-    .pv-pill.wide{
-      background:var(--brand-blue-100, #DBEAFE);color:var(--blue, #2C7AFC);
-      padding:14px 36px;gap:14px;
-    }
-    .pv-pill.wide iconify-icon{font-size:28px}
 
     /* ── 기능 칩: 스태거 등장 + 아이콘 원형 둥실 + 호버 리프트 ── */
     .pv-pill{
@@ -2325,7 +2286,7 @@
       .preview-bento{grid-template-columns:1fr;grid-template-rows:auto;}
       .pv-phone{grid-row:auto;min-height:480px}
     }
-  </style>
+</style>
   <!-- ══ REAL STORY — 실제 사용 장면 영상 (복원) ══ -->
   <section id="real-film">
     <style>
@@ -2355,7 +2316,7 @@
         #real-film .rf-stage{transform:none;height:auto;aspect-ratio:16/9;border-radius:22px;max-width:var(--container);margin:0 auto}
         #real-film .rf-stage video{position:absolute;inset:0}
       }
-    </style>
+</style>
     <div class="rf-head-wrap">
       <div class="sec-head rf-head reveal">
         <div class="sec-eyebrow">Real Story</div>
@@ -2982,7 +2943,7 @@
         .ps-shot,.ps-copy,.ps-cell,.ps-cell-logo svg path,.ps-role,.ps-copy h2 u::after{transition:none}
         .ps-dot .ps-fill{animation:none;transform:scaleX(1)}
       }
-    </style>
+</style>
     <div class="ps-hero reveal" id="ps-hero" data-active="0">
       <!-- 좌: 로고 (키컬러로 모핑) -->
       <div class="ps-cell ps-cell-logo">
@@ -3186,7 +3147,7 @@
         #service-features .sf-card p{ font-size:12.5px; line-height:1.55 }
         #service-features .sf-eyebrow{ font-size:10px }
       }
-    </style>
+</style>
   </section>
 
   <!-- ══ FEATURE→FLAGSHIP 사이 비주얼 — 보호자앱 사용 장면 ══ -->
@@ -3211,7 +3172,7 @@
       @media (max-width: 900px){
         #feature-bridge-visual .fbv-frame{aspect-ratio: 4 / 3;}
       }
-    </style>
+</style>
     <div class="fbv-frame reveal">
       <img src="img/opt/guardian-usage.webp" data-msrc="img/opt/guardian-usage-900.webp" alt="하루안부 보호자앱 사용 장면" loading="lazy">
     </div>
@@ -3256,34 +3217,8 @@
       #flagship-features .feat-sb img{height:14px}
 
       /* 흐름 펄스 — 한 박자(2.6s) 안에서 phone→콘솔, 콘솔→phone 릴레이 */
-      #flagship-features .ff-sync-wire .pulse{position:absolute;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;opacity:0}
 
       /* 폰 안 micro-interaction 오버레이 — 스크린(overflow:hidden) 안에서 기록→도착이 실제로 움직임. 릴레이 비트(2.6s)와 동기 */
-      #flagship-features .ff-fx{position:absolute;left:0;right:0;z-index:3;pointer-events:none;display:flex;justify-content:center}
-      #flagship-features .ff-fx--caregiver{bottom:64px}
-      #flagship-features .ff-fx--guardian{top:150px}
-      #flagship-features .fx-pill{display:inline-flex;align-items:center;gap:13px;padding:16px 26px;background:#fff;border-radius:999px;box-shadow:0 20px 44px -14px rgba(15,23,42,.3);opacity:0;transform:translateY(22px) scale(.9);animation:ff-fx-care 2.6s cubic-bezier(.4,0,.2,1) infinite}
-      #flagship-features .fx-pill-ico{display:flex}
-      #flagship-features .fx-pill-ico iconify-icon{font-size:36px;color:var(--brand-green-500)}
-      #flagship-features .fx-pill-txt{font-size:27px;font-weight:700;color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
-      #flagship-features .fx-pill-txt b{color:var(--brand-green-600)}
-      #flagship-features .fx-toast{display:flex;align-items:center;gap:16px;width:82%;padding:20px 22px;background:#fff;border-radius:30px;box-shadow:0 22px 48px -16px rgba(15,23,42,.34);opacity:0;transform:translateY(-30px);animation:ff-fx-guard 2.6s cubic-bezier(.4,0,.2,1) infinite}
-      #flagship-features .fx-toast-ico{width:60px;height:60px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:var(--guardian-cream-light,#FFF4E6)}
-      #flagship-features .fx-toast-ico iconify-icon{font-size:32px;color:var(--brand-orange-500,#F97316)}
-      #flagship-features .fx-toast-txt b{display:block;font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.02em}
-      #flagship-features .fx-toast-txt small{display:block;font-size:22px;color:var(--mute);margin-top:3px}
-      @keyframes ff-fx-care{
-        0%{opacity:0;transform:translateY(22px) scale(.9)}
-        8%{opacity:1;transform:translateY(0) scale(1)}
-        34%{opacity:1;transform:translateY(0) scale(1)}
-        46%,100%{opacity:0;transform:translateY(-12px) scale(.97)}
-      }
-      @keyframes ff-fx-guard{
-        0%,54%{opacity:0;transform:translateY(-30px)}
-        64%{opacity:1;transform:translateY(0)}
-        92%{opacity:1;transform:translateY(0)}
-        100%{opacity:0;transform:translateY(-12px)}
-      }
 
       /* ── Realtime Sync 3-phone 시퀀스: 요양보호사+의료진 먼저 → 보호자 추가 ── */
       #flagship-features .ff-relay3{display:flex;flex-direction:column;align-items:center;gap:clamp(22px,2.6vw,38px)}
@@ -3385,10 +3320,6 @@
         #flagship-features .ff-r3-sync.syncing .ff-r3-sync-ico iconify-icon{animation:none}
 
       }
-      @media (prefers-reduced-motion: reduce){
-
-        #flagship-features .fx-pill,#flagship-features .fx-toast{animation:none;opacity:1;transform:none}
-      }
 
       /* 03 trio — 3 mini phones with language badge (ff-ai-summary와 동일 크기로 통일) */
       #flagship-features .ff-trio{display:flex;gap:clamp(24px,3vw,48px);justify-content:center;align-items:flex-start;flex-wrap:wrap}
@@ -3479,7 +3410,7 @@
         #flagship-features .ff-mini .feat-phone-wrap{transform:scale(0.35)}
 
       }
-    </style>
+</style>
 
     <!-- ── 01 — AI Daily Summary (보호자앱 trio: AI 인트로 · 보호자 홈 · AI 채팅) ── -->
     <div class="ff-cut reveal" id="ff-ai-summary">
@@ -3602,7 +3533,7 @@
               <div class="ff-r3-box">
                 <div class="feat-phone-wrap">
                   <div class="feat-phone-screen">
-                    <iframe src="../v15_의료진앱/d01-home.html?embed=1&v=20260531-blur" title="의료진 앱 홈" loading="lazy"></iframe>
+                    <iframe src="../v15_의료진앱/d01-home.html?embed=1&v=20260531-blur" title="의료진 앱 홈 · 릴레이" loading="lazy"></iframe>
                     <div class="feat-sb" aria-hidden="true">
                       <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41" loading="lazy" decoding="async"></div>
                       <div class="feat-sb-mid"></div>
@@ -3663,7 +3594,7 @@
               <div class="feat-imac-wrap">
                 <div class="feat-imac-screen">
                   <div class="feat-browser-content">
-                    <iframe src="../v10_의료진웹/의료진_대시보드_v9.5.html?v=20260531-blur" title="의료진 대시보드" loading="lazy"></iframe>
+                    <iframe src="../v10_의료진웹/의료진_대시보드_v9.5.html?v=20260531-blur" title="의료진 대시보드 · 웹+모바일 통합" loading="lazy"></iframe>
                   </div>
                 </div>
                 <img class="feat-frame-img" src="img/opt/mt-imac.webp" alt="" loading="lazy" decoding="async">
@@ -3672,7 +3603,7 @@
             <div class="ff-mix-phone ff-phone-medical">
               <div class="feat-phone-wrap">
                 <div class="feat-phone-screen">
-                  <iframe src="../v15_의료진앱/d01-home.html?embed=1&v=20260531-blur" title="의료진 앱 홈" loading="lazy"></iframe>
+                  <iframe src="../v15_의료진앱/d01-home.html?embed=1&v=20260531-blur" title="의료진 앱 홈 · 웹+모바일 통합" loading="lazy"></iframe>
                   <div class="feat-sb" aria-hidden="true">
                     <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41" loading="lazy" decoding="async"></div>
                     <div class="feat-sb-mid"></div>
@@ -3886,7 +3817,7 @@
         <div class="feat-device-side reveal">
           <div class="feat-phone-wrap">
             <div class="feat-phone-screen">
-              <iframe id="feat-medical-app-iframe" src="../v15_의료진앱/d01-home.html?embed=1&v=20260531-blur" title="의료진 앱 홈" loading="lazy"></iframe>
+              <iframe id="feat-medical-app-iframe" src="../v15_의료진앱/d01-home.html?embed=1&v=20260531-blur" title="의료진 앱 홈 · 직접 체험" loading="lazy"></iframe>
               <div class="feat-sb" aria-hidden="true">
                 <div class="feat-sb-left"><img src="Mockup-templates/iOS iPadOS 26 Community/Time.svg" alt="9:41" loading="lazy" decoding="async"></div>
                 <div class="feat-sb-mid"></div>
@@ -3920,7 +3851,7 @@
           <div class="feat-imac-wrap">
             <div class="feat-imac-screen">
               <div class="feat-browser-content">
-                <iframe id="feat-medical-iframe" src="../v10_의료진웹/의료진_대시보드_v9.5.html?v=20260531-blur" title="의료진 대시보드" loading="lazy"></iframe>
+                <iframe id="feat-medical-iframe" src="../v10_의료진웹/의료진_대시보드_v9.5.html?v=20260531-blur" title="의료진 대시보드 · 직접 체험" loading="lazy"></iframe>
               </div>
             </div>
             <img class="feat-frame-img" src="img/opt/mt-imac.webp" alt="" loading="lazy" decoding="async">
@@ -4072,7 +4003,7 @@
       @media (max-width:560px){
         #moments-gallery .mg-tier--ui{grid-template-columns:1fr}
       }
-    </style>
+</style>
 
     <div class="mg-head reveal">
       <div class="sec-eyebrow">Gallery</div>
@@ -4118,6 +4049,8 @@
     <p class="closing-line">매일 잊지 않고 안부를 묻는 마음, 그 마음을 한 화면 위로 옮겨 적은 것이 곧 하루안부입니다.<span class="m-hide"> 어제의 흐름이 오늘의 안심으로 이어지도록, 세 시선이 같은 하루 안에서 만납니다.</span></p>
     <a class="closing-cta" href="https://haruanbu.site/making_of" target="_blank" rel="noopener">어떻게 만들었는지 보기</a>
   </section>
+
+  </main>
 
   <footer>
     <div class="ft-grid">
@@ -5362,8 +5295,24 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
 (function normalizePhoneTop(){
   const SEL = '#feat-caregiver-iframe, #feat-medical-app-iframe, #flagship-features .ff-phone-caregiver iframe, #flagship-features .ff-phone-medical iframe';
   const HEADER_TOP = '64px';
-  (function loop(){
-    document.querySelectorAll(SEL).forEach(ifr => {
+  /* 2026-11-15 — 원래는 페이지 내내 매 프레임 돌았다(60회/초 · 히어로를 볼 때도).
+     대상 목업이 화면 두 개 거리 안에 있을 때만 돈다. 그 밖에서 그려진 첫 프레임은
+     어차피 안 보이고, 들어오기 전에 루프가 먼저 잡는다. */
+  const near = new Set();
+  let raf = 0;
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => { e.isIntersecting ? near.add(e.target.__ifr) : near.delete(e.target.__ifr); });
+      if(near.size && !raf) raf = requestAnimationFrame(loop);
+    }, {rootMargin: '200% 0px 200% 0px'});
+    document.querySelectorAll(SEL).forEach(ifr => { const h = ifr.parentElement; if(h){ h.__ifr = ifr; io.observe(h); } });
+  } else {
+    document.querySelectorAll(SEL).forEach(ifr => near.add(ifr));
+    raf = requestAnimationFrame(loop);
+  }
+  function loop(){
+    raf = 0;
+    near.forEach(ifr => {
       try {
         const d = ifr.contentDocument; if(!d) return;
         if(d.body && d.body.style.paddingTop !== '0px') d.body.style.setProperty('padding-top','0px','important');
@@ -5371,8 +5320,8 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
         if(h && h.style.paddingTop !== HEADER_TOP) h.style.setProperty('padding-top', HEADER_TOP, 'important');
       } catch(e){}
     });
-    requestAnimationFrame(loop);
-  })();
+    if(near.size) raf = requestAnimationFrame(loop);
+  }
 })();
 
 /* ────────────────────────────────────────
@@ -5446,6 +5395,16 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
         }
       } catch(err){}
     });
+  });
+
+  /* 2026-11-15 키보드 — 체험 모드가 꺼진 목업 iframe 은 Tab 순서에서 뺀다.
+     (아니면 Tab 이 앱 목업 안으로 끌려 들어가 목업 13개의 내부 요소를 전부 지나야 본문에 닿는다. 영문판은 45번 중 28번이 iframe 안이었다.)
+     켜는 길은 이미 있다 — "직접 다뤄보세요" 버튼(.feat-tap-hint). 켜지면(.interactive) 다시 Tab 으로 들어갈 수 있다.
+     #flagship-features 의 목업은 전시 전용이라 항상 뺀다. */
+  document.querySelectorAll('.feat-phone-wrap, .feat-ipad-wrap, .feat-imac-wrap').forEach(w => {
+    const sync = () => w.querySelectorAll('iframe').forEach(fr => { fr.tabIndex = w.classList.contains('interactive') ? 0 : -1; });
+    sync();
+    new MutationObserver(sync).observe(w, {attributes:true, attributeFilter:['class'], childList:true, subtree:true});
   });
 
   /* 페이지 다른 곳 클릭 시 자동 비활성화 — 제거.
@@ -6205,11 +6164,16 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
 
   fab.addEventListener('click', playNext);
   // Enter / ↓ / Space = 다음 음원, ↑ = 이전 음원 (입력창 포커스 시 무시)
+  //  2026-11-15 — 투어가 꺼져 있을 땐 Enter 만 깨운다(발표자의 키). ↓·Space·↑ 는 방문자의 스크롤 키라 가로채지 않는다.
+  //  꺼져 있을 때 링크·버튼에 포커스가 있으면 Enter 도 그 요소의 것 — 키보드 사용자가 누른 링크가 투어로 바뀌지 않게.
   document.addEventListener('keydown', (e) => {
     const t = e.target;
     if(t && (t.tagName==='INPUT' || t.tagName==='TEXTAREA' || t.isContentEditable)) return;
-    if(e.key==='Enter' || e.key==='ArrowDown' || e.key===' '){ e.preventDefault(); playNext(); }
-    else if(e.key==='ArrowUp'){ e.preventDefault(); playPrev(); }
+    if(e.ctrlKey || e.metaKey || e.altKey) return;
+    const live = narrationEnabled;
+    if(!live && t && t.closest && t.closest('a[href],button,select,summary,[role="button"],[role="tab"],[role="link"]')) return;
+    if(e.key==='Enter' || (live && (e.key==='ArrowDown' || e.key===' '))){ e.preventDefault(); playNext(); }
+    else if(live && e.key==='ArrowUp'){ e.preventDefault(); playPrev(); }
   });
 
   // 현재 스크롤 위치에 해당하는 클립 인덱스 — "켜기" 시 보고 있는 섹션부터 재생하기 위함
@@ -6433,7 +6397,7 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
     #design .ds-color-role{padding:18px !important;justify-content:space-between;min-width:0;overflow:hidden}
     #design .ds-color-role-use{overflow-wrap:anywhere}
     #design .ds-color-role--hero{grid-column:1 / -1 !important;grid-row:auto !important;padding:22px !important}
-    #design .ds-color-role-bg{font-size:88px !important;right:-10px;bottom:-14px}
+
     #design .ds-color-role-name{font-size:19px !important}
     #design .ds-color-role--hero .ds-color-role-name{font-size:26px !important}
     #design .ds-color-role-use{font-size:11px}
@@ -6637,7 +6601,6 @@ document.getElementById('roi-staff')?.addEventListener('input', calcROI);
   .feat-sub-inner.layout-left,
   .feat-sub-inner.layout-right,
   .feat-sub-inner.layout-aside{justify-items:stretch !important}
-  .feat-sub-inner.layout-center{align-items:stretch !important}
 
   /* 목업 아래에 런처 버튼이 붙으므로 세로 스택으로 (기본은 가로 flex 센터정렬) */
   .feat-device-side{min-width:0 !important;max-width:100% !important;
@@ -6874,7 +6837,7 @@ html.m-full-open .topbar{z-index:0 !important}
     note.textContent = kind === 'web' ? T.noteWeb : T.note;
 
     /* embed 파라미터를 떼어 프로토타입 본래 동작(내부 스크롤 포함)으로 실행 */
-    var raw = (f.getAttribute('src') || '').split('?')[0];
+    var raw = (f.getAttribute('src') || f.getAttribute('data-lazy-src') || '').split('?')[0];
     btn.addEventListener('click', function(){
       if(kind === 'web') window.open(raw, '_blank', 'noopener');
       else open(raw, label(f));
@@ -7303,7 +7266,7 @@ html.m-full-open .topbar{z-index:0 !important}
     #design .ds-opt-b-card--light .ds-opt-b-mega{font-size:44px !important}
     #design .ds-opt-b-foot{font-size:11px !important;line-height:1.55}
     #design .ds-opt-b-foot strong{font-size:13px !important}
-    #design .ds-opt-b-spec-top{font-size:9px !important}
+    #design .ds-opt-b-spec-top{font-size:11px !important;line-height:1.35 !important;min-height:4.05em;justify-content:flex-start !important}   /* 2026-11-15 9→11px: 폰 최소 가독 크기. 라벨이 2~3줄로 갈려도 두 카드의 큰 글자 높이가 맞도록 3줄 높이로 고정 */
   }
 
   /* 아이콘 라이브러리 라벨이 8px 이라 사실상 안 읽힌다 → 11px */
@@ -7675,12 +7638,7 @@ html.m-full-open .topbar{z-index:0 !important}
      클래스를 하나씩 나열하다가 태블릿에서 .uik-med-label·.uik-hyg-time 등
      못 잡은 게 계속 나와, 이 구역의 3차 텍스트 토큰(--t3) 자체를 갈아 끼운다.
      토큰을 안 보는 몇 개만 따로 지정한다. */
-  .ds-gallery{ --t2:#5C6270; --t3:#6E6E73 }
-  .uik-msg-sender,.uik-msg-time,.uik-moment-meta,
-  .uik-sleep-labels span{ color:#6E6E73 !important }
-  /* 단 투약 위젯의 "1/3 완료"만은 흰 카드가 아니라 민트 물결 위에 얹힌다.
-     위 !important 가 v18 의 잉크색 지정을 덮어써 2.71:1 로 되돌아갔었다. */
-  .uik-pill .uik-meta{ color:var(--ink) !important }
+  /* (UI 킷 복제본 회색 보정은 색 문제라 전역 블록 global-a11y-v41 로 옮겼다 — 2026-11-15) */
 
   /* ── 3. 컬러 스와치 카드 ───────────────────────────────────────────────
      그린(#22C55E)·오렌지(#FB923C)는 밝아서 흰 글씨가 2.1~2.3:1 밖에 안 나온다.
@@ -7693,9 +7651,7 @@ html.m-full-open .topbar{z-index:0 !important}
   /* ── 4. 페르소나 역할 라벨 ─────────────────────────────────────────────
      --ps-key(블루·오렌지·그린 원색)를 흰 배경 위 10px/700 글자에 그대로 쓰면
      2.26~3.96:1. 배경이 아니라 글자이므로 같은 계열의 진한 단계로 바꾼다. */
-  #ps-hero[data-active="0"] .ps-role{ color:var(--brand-blue-600) }    /* 5.73:1 */
-  #ps-hero[data-active="1"] .ps-role{ color:var(--brand-orange-700) }  /* 5.18:1 */
-  #ps-hero[data-active="2"] .ps-role{ color:var(--brand-green-700) }   /* 5.02:1 */
+  /* (페르소나 역할 라벨 글자색도 전역 블록 global-a11y-v41 로 옮겼다 — 2026-11-15) */
 
   /* ── 5. "눌러보세요" 안내 알약 ─────────────────────────────────────────
      전부 원색 + 흰 글씨로 되돌렸다(2026-08-16) — 스와치 카드·벤 원 라벨과 같은 결정.
@@ -8599,6 +8555,37 @@ html.m-full-open .topbar{z-index:0 !important}
 })();
 </script>
 
+<script>
+/* 반응형 2026-11-15 — 태블릿·웹 목업을 칼럼에 맞춘다(데스크톱 폭).
+   layout-aside 의 우측 칼럼은 원래 '3fr' 이라 목업의 원래 폭(아이맥 1209×.75=907px)
+   만큼 늘어났고, 1100~1300px 창에서 목업이 오른쪽으로 최대 159px 잘렸다.
+   칼럼은 minmax(0,3fr) 로 비율에 묶고, 목업이 칼럼보다 클 때만 칼럼 폭으로 줄인다.
+   그보다 넓은 화면에선 아무것도 쓰지 않는다 — CSS 의 .82/.75 가 그대로 산다.
+   폰 폭은 위 '목업 배율' 스크립트가 맡는다(조건 MQ 동일). */
+(function(){
+  var MQ = window.matchMedia('(max-width:768px), (max-height:520px) and (pointer:coarse)');
+  var ITEMS = [['#features-by-role .feat-ipad-wrap', .82], ['#features-by-role .feat-imac-wrap', .75]];
+  function fit(){
+    ITEMS.forEach(function(it){
+      var el = document.querySelector(it[0]); if(!el) return;
+      el.style.removeProperty('transform'); el.style.removeProperty('margin');
+      if(MQ.matches) return;
+      var side = el.parentElement, a = side ? side.clientWidth : 0;
+      var w = el.offsetWidth, h = el.offsetHeight;
+      if(!a || !w || w * it[1] <= a) return;
+      var k = a / w;
+      el.style.transform = 'scale(' + k.toFixed(4) + ')';
+      el.style.margin = (h * (k - 1) / 2).toFixed(1) + 'px ' + (w * (k - 1) / 2).toFixed(1) + 'px';
+    });
+  }
+  var t = 0;
+  function soon(){ if(t) cancelAnimationFrame(t); t = requestAnimationFrame(function(){ t = 0; fit(); }); }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fit); else fit();
+  window.addEventListener('load', fit);
+  window.addEventListener('resize', soon, {passive:true});
+})();
+</script>
+
 <!-- ═══════════════════════════════════════════════════════════════════════
      모바일 최적화 v37 — 릴레이 도착 첫인상 (2026-08-18)
 
@@ -8637,6 +8624,12 @@ html.m-full-open .topbar{z-index:0 !important}
 
       var track = document.createElement('div'); track.className = 'fx-track';
       var stage = document.createElement('div'); stage.className = 'fx-stage';
+      /* 2026-11-15 — DOM 이동은 lazy 를 무력화한다. 옮겨지는 순간 이 iframe 은 v36 의
+         .emb-idle(display:none) 상태라, 크롬이 '숨은 iframe' 으로 보고 즉시 로드했다
+         (계측: 폰 첫 화면에 보호자·요양보호사·의료진 앱 + 보호자 탭 3장 = 문서 6개).
+         옮기기 전에 주소를 떼어 두고, 무대가 화면 두 개 거리로 들어올 때 붙인다. */
+      var fr = wrap.querySelector('iframe[loading="lazy"][src]');
+      if(fr){ fr.setAttribute('data-lazy-src', fr.getAttribute('src')); fr.removeAttribute('src'); }
       side.insertBefore(track, wrap);
       track.appendChild(stage);
       stage.appendChild(wrap);
@@ -8756,7 +8749,17 @@ html.m-full-open .topbar{z-index:0 !important}
      반드시 처음부터 다시 로드된다. 이걸 load 에서 하면 "다 받고 나서 통째로 한 번 더"
      받는 셈이라, 앱 화면 안의 사진(일일 리포트 등)이 두 번째 로드가 끝날 때까지 빈
      칸으로 남는다. 파싱이 끝나자마자 옮겨 두면 의미 있는 로드가 한 번뿐이다. */
-  function boot(){ if(MQ.matches) build(); }
+  function arm(){
+    var held = [].slice.call(document.querySelectorAll('iframe[data-lazy-src]'));
+    if(!held.length) return;
+    function wake(f){ if(f.hasAttribute('data-lazy-src')){ f.src = f.getAttribute('data-lazy-src'); f.removeAttribute('data-lazy-src'); } }
+    if(!('IntersectionObserver' in window)){ held.forEach(wake); return; }
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ wake(e.target.__fr); io.unobserve(e.target); } });
+    }, {rootMargin: '200% 0px 200% 0px'});
+    held.forEach(function(f){ var h = f.closest('.fx-track') || f.parentElement; h.__fr = f; io.observe(h); });
+  }
+  function boot(){ if(MQ.matches){ build(); arm(); } }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
   window.addEventListener('load', setup);
@@ -9002,5 +9005,61 @@ html.m-full-open .topbar{z-index:0 !important}
 })();
 </script>
 
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     접근성 · 안정성 보정 v41 (2026-11-15) — axe-core 4.10 + 실측 CLS 로 잡은 것
+       · 대비: 폰 전용으로만 걸려 있던 보정(v19)을 폭과 무관하게 넓힌다. 같은 색을 이미
+         폰에 배포해 둔 상태라 새 색을 들이는 게 아니라 데스크톱을 폰에 맞추는 것이다.
+           #8E8E93 on #FFF 3.26:1 → #5C6270 6.11:1 · 푸터 흰 글씨 on blue-500 3.96:1 → blue-600 5.48:1
+         (히어로·기능 칩 등 브랜드 원색 면은 그대로 — 푸터는 '읽는 면'이라 진하게)
+       · CLS: iconify-icon 은 화면에 들어와 그려지기 전까지 높이가 0 이라, 디자인 시스템의
+         아이콘 격자가 43→75px 로 커지며 아래 내용이 64px 밀렸다(모바일 CLS 0.102).
+         자리를 1em 으로 미리 잡는다 — 그려진 뒤 크기와 같아 모양은 그대로다.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style id="global-a11y-v41">
+:root{ --mute:#5C6270 }
+.mkt-chart-hed{ font-size:12px; letter-spacing:.02em }
+.problem-chart-source{ color:var(--mute); font-size:12px }
+footer{ background:var(--brand-blue-600) }
+.ft-desc,.ft-col-h,.ft-bot,.ft-bot div{ color:#fff }
+.ft-col-h,.ft-bot,.ft-bot div{ font-size:12px }                       /* 11px → 12px — 파란 바탕 위 흰 작은 글씨 */
+#service-features .sf-eyebrow{ font-size:11px !important }            /* 폰 10px → 11px */
+.topbar-lang a{ position:relative }
+.topbar-lang a::after{ content:''; position:absolute; inset:-4px -2px }   /* 터치 영역 40 → 48px — 레이아웃은 그대로 */
+iconify-icon{ display:inline-block; width:1em; height:1em }
+/* ── 폭과 무관한 색 문제 두 가지 — 폰 전용(v19)에 갇혀 있던 것을 전역으로 ──
+   (1) 디자인 섹션의 UI 킷 복제본: 앱 원본 메타 회색 #9E9E9E(2.67:1)·#8E8E93(3.26:1)이 10~12px 로 줄면 읽히지 않는다.
+       데스크톱도 같은 크기·같은 색이라 같은 문제였다. 구역의 3차 텍스트 토큰 자체를 갈아 끼운다(5.1~6.1:1).
+   (2) 페르소나 역할 라벨: 글자(배경 아님)가 --ps-key 원색 — 오렌지 2.26 · 그린 2.3 · 블루 3.96:1. 같은 계열의 진한 단계로.
+   일부러 건드리지 않은 것: 역할 색 위 흰 글씨(컬러 스와치·벤 원 라벨·"눌러보세요" 알약·칩)는 2026-08-16 에
+   시각 통일을 위해 유지하기로 한 결정이라 그대로 둔다(global-fix-v24 주석 참고). */
+.ds-gallery{ --t2:#5C6270; --t3:#6E6E73 }
+.uik-msg-sender,.uik-msg-time,.uik-moment-meta,
+.uik-sleep-labels span{ color:#6E6E73 !important }
+/* 단 투약 위젯의 "1/3 완료"만은 흰 카드가 아니라 민트 물결 위에 얹힌다.
+   위 !important 가 v18 의 잉크색 지정을 덮어써 2.71:1 로 되돌아갔었다. */
+.uik-pill .uik-meta{ color:var(--ink) !important }
+#ps-hero[data-active="0"] .ps-role{ color:var(--brand-blue-600) }    /* 5.73:1 */
+#ps-hero[data-active="1"] .ps-role{ color:var(--brand-orange-700) }  /* 5.18:1 */
+#ps-hero[data-active="2"] .ps-role{ color:var(--brand-green-700) }   /* 5.02:1 */
+/* UI 킷 복제본의 나머지 — 같은 이유(작은 글자 + 연한 색). 앱 원본의 의도(단위는 숫자보다 흐리게, 색 태그)는 유지한 채 진하기만 올린다. */
+.uik-display span{ opacity:.62 }                                  /* "7시간 32분" 단위: 2.49 → 4.8:1 */
+.uik-conv-tag{ color:var(--brand-green-900) }                      /* "근무 중" 연두 태그: 2.92 → 8:1 */
+.uik-insight-cta{ color:var(--brand-blue-600) }                    /* "AI에게 물어보기" 링크: 3.96 → 5.5:1 */
+.uik-pill-tag.accent{ color:var(--brand-blue-700) }                /* "프리미엄" 파란 태그: 3.24 → 6:1 */
+/* 에필로그 문단 ↔ CTA — v7 이 .closing-line 아래 여백을 0 으로 지웠는데(그땐 뒤에 아무것도 없었다) 그 뒤에 버튼이 붙어 폰·태블릿에서 0px 로 맞닿아 있었다.
+   문단이 아니라 버튼 쪽에 위 여백을 준다 — 영문판은 이 버튼이 없어 하단 여백이 늘지 않는다 */
+@media (max-width:768px){ .closing-cta{ margin-top:clamp(28px,7vw,40px) } }
+/* Direction 벤 — 가운데·오른쪽 원(케어팀·환자) 라벨의 중심을 '왼쪽 원에 가려지지 않은 부분'의 중심으로 옮긴다.
+   원 중심에 두면 영문 "Care team" 의 C 가 파란 원에 잘렸다(≤768px 전 구간, 한국어 "케어팀" 도 경계에 붙었다).
+   겹침 폭(64 / 48 / 40px)과 같은 값을 padding-left 로 주면 라벨이 그 절반만큼 오른쪽으로 간다. 769~900px 는 세로로 쌓여 가로 이동이 없다. */
+.cc-ring--care,.cc-ring--patient{ padding-left:64px }
+@media (min-width:769px) and (max-width:900px){ .cc-ring--care,.cc-ring--patient{ padding-left:0 } }
+@media (max-width:520px){ .cc-ring--care,.cc-ring--patient{ padding-left:48px } }
+@media (max-width:359px){ .cc-ring--care,.cc-ring--patient{ padding-left:40px } }
+/* 아이콘 라이브러리 라벨 — 영문이 대문자 11px 라 "REASSURANCE" 가 79px 로 셀(66px)을 넘어 옆 라벨과 겹쳤다(≤390px).
+   폰에서는 대문자 변환을 끈다(약 60px). 한국어는 대소문자가 없어 그대로다. */
+@media (max-width:768px){ #design .ds-iconlib-label{ text-transform:none } }
+</style>
 </body>
 </html>

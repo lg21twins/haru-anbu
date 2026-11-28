@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하루안부 — 표지 배치·크기 시도</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard',-apple-system,system-ui,sans-serif;background:#0d1014;color:#fff;-webkit-font-smoothing:antialiased;padding:30px 24px 70px}
+  .head{max-width:1180px;margin:0 auto 24px}
+  .head h1{font-size:24px;font-weight:800;letter-spacing:-.03em}
+  .head p{font-size:14px;color:#9aa6b4;margin-top:7px}
+  .sheet{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+  .vlabel{font-size:14.5px;font-weight:800;color:#e4e9f0;margin-bottom:10px;display:flex;align-items:baseline;gap:9px}
+  .vlabel .tag2{font-size:12.5px;font-weight:600;color:#8b97a6}
+  .board{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#1a1f26;container-type:size;box-shadow:0 16px 46px rgba(0,0,0,.4)}
+  .board .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+  .scrim{position:absolute;inset:0;pointer-events:none}
+  .s-bottom{background:linear-gradient(to top, rgba(8,12,18,.90) 0%, rgba(8,12,18,.62) 16%, rgba(8,12,18,.26) 35%, rgba(8,12,18,0) 56%)}
+  .s-bottom-strong{background:linear-gradient(to top, rgba(8,12,18,.94) 0%, rgba(8,12,18,.7) 22%, rgba(8,12,18,.3) 44%, rgba(8,12,18,0) 64%)}
+  .s-top{background:linear-gradient(to bottom, rgba(8,12,18,.55) 0%, rgba(8,12,18,0) 26%)}
+  .s-left{background:linear-gradient(to right, rgba(8,12,18,.8) 0%, rgba(8,12,18,.34) 30%, rgba(8,12,18,0) 56%)}
+
+  .lk{position:absolute;color:#fff}
+  .lk *{text-shadow:0 1px 8px rgba(0,0,0,.34)}
+  .at-bl{left:4.8cqw;bottom:5.4cqw;max-width:62cqw;text-align:left}
+  .at-br{right:4.8cqw;bottom:5.4cqw;max-width:54cqw;text-align:right}
+  .at-bc{left:50%;bottom:6cqw;transform:translateX(-50%);max-width:82cqw;text-align:center}
+  .at-bc .logo{justify-content:center}
+  .at-bc .sub{margin-left:auto;margin-right:auto}
+  .at-tl{left:4.8cqw;top:5cqw;text-align:left}
+  .at-tr{right:4.8cqw;top:5cqw;text-align:right}
+  .at-ml{left:4.8cqw;top:50%;transform:translateY(-50%);max-width:56cqw;text-align:left}
+  .at-base{bottom:5.4cqw}
+  .w52{max-width:52cqw}.w62{max-width:62cqw}
+
+  .logo{display:inline-flex;align-items:center;gap:.7cqw;margin-bottom:2cqw}
+  .logo svg{height:3.5cqw;width:auto;display:block;filter:drop-shadow(0 2px 7px rgba(0,0,0,.4))}
+  .logo .wm{font-size:2.85cqw;font-weight:800;letter-spacing:-.045em;color:#fff;line-height:1}
+  .lk.at-br .en, .lk.at-base .en{margin-top:.6cqw}
+  .lk.at-br .logo, .lk.at-base .logo{margin-bottom:.7cqw}
+
+  .tag{font-size:4.4cqw;font-weight:800;letter-spacing:-.04em;line-height:1.15}
+  .tag.big{font-size:5.3cqw}
+  .tag.huge{font-size:6.4cqw}
+  .ac{color:#2C7AFC}
+  .sub{font-size:1.5cqw;font-weight:600;letter-spacing:-.01em;line-height:1.5;color:rgba(255,255,255,.92);margin-top:1.7cqw;max-width:46cqw}
+  .at-br .sub{margin-left:auto}
+  .en{font-size:1.1cqw;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.8);margin-top:1cqw}
+</style></head>
+<body>
+  <div class="head"><h1>하루안부 — 표지 배치·크기 시도 9</h1>
+  <p>같은 사진·카피·그라데이션으로 위치/크기만 다르게 · 각진 16:9 · 마음에 드는 L번호(또는 "L3 배치에 태그는 L8 크기" 식 조합) 주세요</p></div>
+  <div class="sheet">
+<div class="item"><div class="vlabel">L1 · 좌하단 통합 <span class="tag2">로고+태그+서브+영문 한 덩어리</span></div><div class="board"><img class="bg" src="wow2.png" alt=""><div class="scrim s-bottom"></div><div class="lk at-bl"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div><div class="tag ">흩어진 하루를,<br><span class="ac">하나의 안부</span>로.</div><div class="sub">가족·의료진·요양보호사·환자를 잇는<br>AI 케어 커뮤니케이션 플랫폼</div><div class="en">AI CARE COMMUNICATION PLATFORM</div></div></div></div>
+<div class="item"><div class="vlabel">L2 · 분할(좌카피/우로고) <span class="tag2">현재 v1 — 좌 카피 / 우 로고·영문</span></div><div class="board"><img class="bg" src="wow2.png" alt=""><div class="scrim s-bottom"></div><div class="lk at-bl w52"><div class="tag ">흩어진 하루를,<br><span class="ac">하나의 안부</span>로.</div><div class="sub">가족·의료진·요양보호사·환자를 잇는<br>AI 케어 커뮤니케이션 플랫폼</div></div><div class="lk at-br"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div><div class="en">AI CARE COMMUNICATION PLATFORM</div></div></div></div>
+<div class="item"><div class="vlabel">L3 · 좌하단 대형 태그 <span class="tag2">태그라인 키움, 영문 생략</span></div><div class="board"><img class="bg" src="wow2.png" alt=""><div class="scrim s-bottom-strong"></div><div class="lk at-bl"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div><div class="tag big">흩어진 하루를,<br><span class="ac">하나의 안부</span>로.</div><div class="sub">가족·의료진·요양보호사·환자를 잇는<br>AI 케어 커뮤니케이션 플랫폼</div></div></div></div>
+<div class="item"><div class="vlabel">L4 · 센터 하단 <span class="tag2">가운데 정렬 포스터</span></div><div class="board"><img class="bg" src="wow2.png" alt=""><div class="scrim s-bottom"></div><div class="lk at-bc"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div><div class="tag ">흩어진 하루를,<br><span class="ac">하나의 안부</span>로.</div><div class="sub">가족·의료진·요양보호사·환자를 잇는<br>AI 케어 커뮤니케이션 플랫폼</div></div></div></div>
+<div class="item"><div class="vlabel">L5 · 로고 좌상단 + 대형 태그 <span class="tag2">로고 위로, 태그 크게 아래</span></div><div class="board"><img class="bg" src="wow2.png" alt=""><div class="scrim s-top"></div><div class="scrim s-bottom"></div><div class="lk at-tl"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div></div><div class="lk at-bl"><div class="tag big">흩어진 하루를,<br><span class="ac">하나의 안부</span>로.</div><div class="sub">가족·의료진·요양보호사·환자를 잇는<br>AI 케어 커뮤니케이션 플랫폼</div><div class="en">AI CARE COMMUNICATION PLATFORM</div></div></div></div>
+<div class="item"><div class="vlabel">L6 · 우하단 전체 <span class="tag2">전부 우측 정렬</span></div><div class="board"><img class="bg" src="wow2.png" alt=""><div class="scrim s-bottom"></div><div class="lk at-br"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div><div class="tag ">흩어진 하루를,<br><span class="ac">하나의 안부</span>로.</div><div class="sub">가족·의료진·요양보호사·환자를 잇는<br>AI 케어 커뮤니케이션 플랫폼</div><div class="en">AI CARE COMMUNICATION PLATFORM</div></div></div></div>
+<div class="item"><div class="vlabel">L7 · 중앙 좌측 <span class="tag2">세로 중앙, 좌측</span></div><div class="board"><img class="bg" src="wow2.png" alt=""><div class="scrim s-left"></div><div class="lk at-ml"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div><div class="tag ">흩어진 하루를,<br><span class="ac">하나의 안부</span>로.</div><div class="sub">가족·의료진·요양보호사·환자를 잇는<br>AI 케어 커뮤니케이션 플랫폼</div><div class="en">AI CARE COMMUNICATION PLATFORM</div></div></div></div>
+<div class="item"><div class="vlabel">L8 · 초대형 태그 + 로고 우상단 <span class="tag2">태그 압도, 로고 사인 우상단</span></div><div class="board"><img class="bg" src="wow2.png" alt=""><div class="scrim s-top"></div><div class="scrim s-bottom-strong"></div><div class="lk at-tr"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div></div><div class="lk at-bl"><div class="tag huge">흩어진 하루를,<br><span class="ac">하나의 안부</span>로.</div><div class="sub">가족·의료진·요양보호사·환자를 잇는<br>AI 케어 커뮤니케이션 플랫폼</div></div></div></div>
+<div class="item"><div class="vlabel">L9 · 풀폭 베이스라인 <span class="tag2">태그 좌하단 + 로고/영문 우하단 같은 줄</span></div><div class="board"><img class="bg" src="wow2.png" alt=""><div class="scrim s-bottom"></div><div class="lk at-bl w62"><div class="tag ">흩어진 하루를,<br><span class="ac">하나의 안부</span>로.</div><div class="sub">가족·의료진·요양보호사·환자를 잇는<br>AI 케어 커뮤니케이션 플랫폼</div></div><div class="lk at-br at-base"><div class="logo"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(50,50) scale(0.163)"><path d="M2521.32 2506.66C1239.65 2657.48 1239.65 1895.6 1239.65 1279.34L2497.69 0.000170058C2518.68 494.198 2522.27 1157.92 1658.86 1262.48C2641.88 1314.25 2521.32 2101.84 2521.32 2506.66Z" fill="#2C7AFC"/><path d="M4.6772 19.3353C1286.35 -131.481 1286.35 630.399 1286.35 1246.66L28.3145 2526C7.32194 2031.8 3.73014 1368.08 867.143 1263.52C-115.881 1211.75 4.6772 424.157 4.6772 19.3353Z" fill="#2C7AFC"/></g></svg><span class="wm">하루안부</span></div><div class="en">AI CARE COMMUNICATION PLATFORM</div></div></div></div>
+  </div>
+</body></html>

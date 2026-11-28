@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="guardian" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시안 · 보호자 · AI 일일 리포트</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="_kit.css">
+  <script src="../_iconify-icon.min.js"></script>
+</head>
+<body>
+  <div class="proto-cap"><b>보호자 · AI 일일 리포트</b> — 지표 트리오 + AI 내러티브 + 모먼트 (리디자인 시안 v1)</div>
+
+  <div class="phone">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="sb-icons">
+        <iconify-icon icon="material-symbols:signal-cellular-4-bar"></iconify-icon>
+        <iconify-icon icon="material-symbols:wifi"></iconify-icon>
+        <iconify-icon icon="material-symbols:battery-full"></iconify-icon>
+      </span>
+    </div>
+
+    <div class="screen">
+      <div class="app-head">
+        <div class="eyebrow">AI 일일 리포트</div>
+        <div class="kicker">7월 31일 목요일</div>
+        <h1>박영자 님의 하루</h1>
+      </div>
+
+      <!-- 지표 트리오 -->
+      <div class="trio">
+        <div class="cell">
+          <iconify-icon icon="ph:bowl-food-fill"></iconify-icon>
+          <div class="v">3<small> / 3</small></div>
+          <div class="l">식사</div>
+        </div>
+        <div class="cell">
+          <iconify-icon icon="mingcute:capsule-fill"></iconify-icon>
+          <div class="v">2<small> / 2</small></div>
+          <div class="l">복약</div>
+        </div>
+        <div class="cell">
+          <iconify-icon icon="material-symbols:directions-run-rounded"></iconify-icon>
+          <div class="v">20<small> 분</small></div>
+          <div class="l">산책</div>
+        </div>
+      </div>
+
+      <!-- AI 내러티브 -->
+      <div class="ai-note" style="margin-top:12px">
+        <div class="chip"><iconify-icon icon="material-symbols:auto-awesome-rounded"></iconify-icon> AI 요약</div>
+        <p>오늘 박영자 님은 <span class="hl">세 끼를 모두</span> 드시고 오전에 <span class="hl">산책 20분</span>을 마치셨어요. 오후 혈압이 평소보다 조금 높게 측정돼, <span class="hl">간호사 김민서 님이 확인</span>하고 저녁에 다시 재보기로 했습니다.</p>
+      </div>
+
+      <div class="sec-title">활력징후 · 최근 7일</div>
+      <div class="stack">
+        <div class="stat">
+          <div class="s-info">
+            <div class="s-l">혈압</div>
+            <div class="s-v">128 / 82 <small>mmHg</small></div>
+          </div>
+          <svg class="spark" width="84" height="34" viewBox="0 0 84 34">
+            <polyline points="2,26 16,23 30,25 44,19 58,22 72,17 82,13"></polyline>
+            <circle class="end" cx="82" cy="13" r="3"></circle>
+          </svg>
+        </div>
+        <div class="stat">
+          <div class="s-info">
+            <div class="s-l">체온</div>
+            <div class="s-v">36.7 <small>°C</small></div>
+          </div>
+          <svg class="spark" width="84" height="34" viewBox="0 0 84 34">
+            <polyline points="2,22 16,23 30,21 44,24 58,20 72,22 82,18"></polyline>
+            <circle class="end" cx="82" cy="18" r="3"></circle>
+          </svg>
+        </div>
+      </div>
+
+      <div class="sec-title">오늘의 모먼트</div>
+      <div class="moment">
+        <div class="photo">
+          <iconify-icon icon="material-symbols:photo-camera-rounded"></iconify-icon>
+          <span class="ph-tag">오전 산책 · 10:30</span>
+        </div>
+        <div class="cap">
+          <div class="txt">볕이 좋아서 마당을 한 바퀴 도셨어요.</div>
+          <div class="by"><iconify-icon icon="material-symbols:stethoscope-rounded"></iconify-icon> 간호사 김민서 · 오늘 10:42</div>
+        </div>
+        <div class="react">
+          <span><iconify-icon icon="material-symbols:favorite-rounded"></iconify-icon> 3</span>
+          <span><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon> 1</span>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <iconify-icon icon="mingcute:shield-fill" style="color:var(--color-accent)"></iconify-icon>
+        <span>AI가 정리한 요약이에요. 판단·조치는 담당 의료진이 확인합니다. 개인정보는 안전하게 보호됩니다.</span>
+      </div>
+    </div>
+
+    <nav class="tabbar">
+      <a class="on"><iconify-icon icon="mingcute:home-1-fill"></iconify-icon>홈</a>
+      <a><iconify-icon icon="mingcute:heartbeat-fill"></iconify-icon>건강</a>
+      <a><iconify-icon icon="material-symbols:chat-rounded"></iconify-icon>소통</a>
+      <a><iconify-icon icon="mingcute:user-3-fill"></iconify-icon>내 정보</a>
+    </nav>
+  </div>
+</body>
+</html>

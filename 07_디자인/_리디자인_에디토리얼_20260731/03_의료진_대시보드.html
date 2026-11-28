@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko" data-role="medical" data-platform="mobile">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>에디토리얼 · 의료진 · 담당 환자</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="_editorial.css">
+  <script src="../_iconify-icon.min.js"></script>
+  <style>
+    .prow { display: grid; grid-template-columns: 1fr auto auto; align-items: center; column-gap: 16px; padding: 20px 0; }
+    .prow + .prow { border-top: 1px solid var(--hair); }
+    .prow .pn { font-size: 18px; font-weight: 750; letter-spacing: -.02em; display: flex; align-items: center; gap: 8px; color: var(--t1); }
+    .prow .pdot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+    .pdot.crit { background: #E5484D; } .pdot.warn { background: var(--amber); } .pdot.ok { background: var(--acc); }
+    .prow .pm { font-size: 13px; color: var(--t2); margin-top: 5px; font-weight: 500; }
+    .prow .pspark polyline { fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .prow .pv { text-align: right; font-size: 19px; font-weight: 800; letter-spacing: -.03em; min-width: 62px; }
+    .prow .pv small { font-size: 12px; color: var(--t3); font-weight: 700; }
+    .crit .pspark polyline, .warn-r .pspark polyline { stroke: var(--amber); } .crit .pspark circle, .warn-r .pspark circle { fill: var(--amber); }
+  </style>
+</head>
+<body>
+  <div class="proto-cap"><b>의료진 · 담당 환자</b> — 에디토리얼 프리미엄 리디자인</div>
+
+  <div class="phone">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="sb">
+        <iconify-icon icon="material-symbols:signal-cellular-4-bar"></iconify-icon>
+        <iconify-icon icon="material-symbols:wifi"></iconify-icon>
+        <iconify-icon icon="material-symbols:battery-full"></iconify-icon>
+      </span>
+    </div>
+
+    <div class="screen">
+      <div class="top">
+        <span class="eyebrow">의료진 · 병동 A</span>
+        <span class="ics">
+          <button aria-label="알림"><iconify-icon icon="mingcute:notification-line"></iconify-icon><span class="dot-badge"></span></button>
+          <a aria-label="마이"><iconify-icon icon="mingcute:user-3-line"></iconify-icon></a>
+        </span>
+      </div>
+
+      <h1 class="title">담당 환자</h1>
+      <div class="subtitle">박지현 간호사 · 오늘 <b>15명</b> · 관찰 필요 <b>2</b></div>
+
+      <div class="sec-label">관찰 필요 — 위로 정렬</div>
+      <div>
+        <div class="prow crit">
+          <div><div class="pn">최명자 <span class="pdot crit"></span></div><div class="pm">82 · B-2 · 즉시 확인</div></div>
+          <svg class="pspark" width="88" height="30" viewBox="0 0 88 30"><polyline points="4,22 24,21 44,18 64,12 84,4"/><circle cx="84" cy="4" r="2.6"/></svg>
+          <div class="pv">180/110</div>
+        </div>
+        <div class="prow warn-r">
+          <div><div class="pn">김순자 <span class="pdot warn"></span></div><div class="pm">79 · A-5 · 미열</div></div>
+          <svg class="pspark" width="88" height="30" viewBox="0 0 88 30"><polyline points="4,20 24,19 44,20 64,14 84,8"/><circle cx="84" cy="8" r="2.6"/></svg>
+          <div class="pv">37.8<small>°C</small></div>
+        </div>
+        <div class="prow">
+          <div><div class="pn">박영자 <span class="pdot ok"></span></div><div class="pm">78 · A-3 · 통증 추이</div></div>
+          <svg class="pspark" width="88" height="30" viewBox="0 0 88 30"><polyline points="4,16 24,15 44,16 64,15 84,13" style="stroke:var(--t3)"/></svg>
+          <div class="pv">VAS 4</div>
+        </div>
+      </div>
+
+      <div class="sec-label">리포트 · 최명자 · AI 초안 확인</div>
+      <div class="edit">
+        <div class="lab ai">AI 초안</div>
+        <div class="draft">혈압 180/110로 직전 대비 상승, 두통 호소. 재측정·담당의 보고 권장.</div>
+        <div class="lab hu">의료진 확정</div>
+        <div class="final">14:20 재측정 후 <b>담당의 유선 보고 완료.</b> 강압제 조정 지시 — 15:00 재확인.</div>
+        <div class="by">박지현 간호사 · 방금 확정</div>
+      </div>
+    </div>
+
+    <nav class="tab">
+      <a class="on"><iconify-icon icon="mingcute:home-3-fill"></iconify-icon>지금</a>
+      <a><iconify-icon icon="mingcute:bed-line"></iconify-icon>회진</a>
+      <a><iconify-icon icon="mingcute:chat-1-line"></iconify-icon>소통</a>
+      <a><iconify-icon icon="mingcute:document-2-line"></iconify-icon>인계</a>
+    </nav>
+  </div>
+</body>
+</html>

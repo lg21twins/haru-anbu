@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>하루안부 — KHF 팀 브리핑</title>
+<link rel="stylesheet" href="../../07_디자인/tokens/tokens.css">
+<style>
+  :root{
+    --ink:#15181C; --ink-strong:#000; --ink-mute:#5A6068; --ink-faint:#8B929A;
+    --rule:#E3E6EA; --accent:#1E5FD6; --stop:#B3241F; --ok:#15803D;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink); background:#fff;
+    font-family:var(--font-family-base, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif);
+    font-size:10.5pt; line-height:1.62; letter-spacing:-0.01em;
+    -webkit-font-smoothing:antialiased; word-break:keep-all;
+  }
+  .page{padding:14mm 15mm; max-width:210mm; margin:0 auto; min-height:297mm; position:relative}
+  .page + .page{border-top:1px dashed #CFD4DA}
+
+  .eyebrow{font-size:8.5pt; font-weight:700; letter-spacing:.16em; color:var(--ink-faint); margin:0 0 8pt}
+  h1{font-size:27pt; line-height:1.1; letter-spacing:-0.045em; font-weight:800; margin:0 0 10pt; color:var(--ink-strong)}
+  h2{font-size:15pt; line-height:1.2; letter-spacing:-0.035em; font-weight:800; margin:0 0 8pt; color:var(--ink-strong)}
+  h3{font-size:10pt; font-weight:800; letter-spacing:.02em; margin:14pt 0 5pt; color:var(--ink-strong)}
+  h3.first{margin-top:0}
+  p{margin:0 0 7pt}
+  .lede{font-size:11.5pt; font-weight:500; line-height:1.55; margin:0 0 12pt; color:var(--ink)}
+  .mute{color:var(--ink-mute)}
+  .small{font-size:9pt; line-height:1.55}
+  .xs{font-size:8pt; line-height:1.5; color:var(--ink-faint)}
+  strong{font-weight:700; color:var(--ink-strong)}
+  .rule{height:1px; background:var(--rule); margin:12pt 0}
+  .rule.dark{height:2px; background:var(--ink-strong); margin:10pt 0 9pt}
+
+  /* 화면 4장 */
+  .shots{display:grid; grid-template-columns:repeat(4,1fr); gap:6mm; margin:6mm 0 4mm}
+  .shot img{width:100%; aspect-ratio:500/940; object-fit:cover; object-position:top center; display:block; border-radius:3mm; background:#F4F5F7}
+  .shot .no{font-size:8pt; font-weight:800; letter-spacing:.1em; color:var(--accent); margin-top:4mm}
+  .shot .nm{font-size:10pt; font-weight:800; margin-top:1.5mm; color:var(--ink-strong)}
+  .shot .ds{font-size:8.5pt; line-height:1.45; color:var(--ink-mute); margin-top:1mm}
+
+  /* 2단 */
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:9mm}
+  .cols3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:7mm}
+  .cols2{display:grid; grid-template-columns:1fr 1fr; gap:7mm}
+
+  ul{margin:0 0 8pt; padding-left:0; list-style:none}
+  li{position:relative; padding-left:11pt; margin-bottom:3.5pt; font-size:9.5pt; line-height:1.5}
+  li::before{content:""; position:absolute; left:0; top:6.5pt; width:3.5pt; height:3.5pt; border-radius:50%; background:var(--ink-faint)}
+  li.y::before{background:var(--ok)}
+  li.n::before{background:var(--stop)}
+  li.a::before{background:var(--accent)}
+
+  .kv{font-size:9.5pt; margin-bottom:3pt; display:flex; gap:6pt; align-items:baseline}
+  .kv b{flex:0 0 46pt; color:var(--ink-strong)}
+  .kv > span{flex:1 1 auto; min-width:0}
+
+  /* 연락처 · QR */
+  .contact{display:grid; grid-template-columns:1fr 26mm; gap:8mm; align-items:end; margin-top:6mm}
+  .qr img{width:26mm; height:26mm; display:block}
+  .qr .cap{font-size:7pt; letter-spacing:.06em; color:var(--ink-faint); text-align:center; margin-top:1.5mm}
+  .fill{display:inline-block; min-width:42mm; border-bottom:1px solid var(--ink-faint); height:1.05em}
+  .fillwide{display:block; border-bottom:1px solid var(--rule); height:1.5em; margin-bottom:3mm}
+
+  .foot{position:absolute; left:15mm; right:15mm; bottom:10mm; font-size:7.5pt; color:var(--ink-faint);
+        display:flex; justify-content:space-between; letter-spacing:.04em}
+
+  /* 대사 박스 */
+  .line{font-size:14pt; font-weight:800; line-height:1.4; letter-spacing:-0.03em; color:var(--ink-strong); margin:3mm 0 2mm}
+  .qbox{margin-bottom:7mm}
+  .qbox .q{font-size:11pt; font-weight:800; color:var(--ink-strong); margin-bottom:2mm}
+  .qbox .why{font-size:8.5pt; color:var(--ink-mute); margin-bottom:3mm}
+
+  .num{font-size:8pt; font-weight:800; letter-spacing:.12em; color:var(--accent)}
+  .chk{font-size:9.5pt; margin-bottom:3.5pt; padding-left:14pt; position:relative}
+  .chk::before{content:""; position:absolute; left:0; top:3.4pt; width:8pt; height:8pt; border:1px solid var(--ink-faint); border-radius:1pt}
+
+  @page{ size:A4; margin:0 }
+  @media print{
+    .page{break-after:page; min-height:auto; height:297mm}
+    .page + .page{border-top:0}
+    .page:last-child{break-after:auto}
+    a{color:inherit; text-decoration:none}
+  }
+</style>
+
+<style>
+  /* 2026-08-07 — 2쪽 설계인데 3쪽으로 인쇄되던 것을 잡는다 (푸터가 1/2·2/2다).
+     압축은 넘치던 2쪽에만 건다 — 1쪽은 원래 여백을 유지한다 */
+  .p2{padding:10mm 13mm}
+  .p2 h1{font-size:23pt; margin-bottom:8pt}
+  .p2 h2{font-size:13.5pt; margin-bottom:6pt}
+  .p2 h3{margin:9pt 0 4pt}
+  .p2 p{margin:0 0 5pt}
+  .p2 .rule{margin:5pt 0}
+  .p2 .rule.dark{margin:7pt 0 6pt}
+  .p2 li{margin-bottom:2pt; line-height:1.42}
+  .p2 .qbox{margin-bottom:2mm}
+  .p2 .qbox .q{font-size:10.5pt; margin-bottom:1.5mm}
+  .p2 .small{line-height:1.45}
+  .p2 .cols,.p2 .cols3,.p2 .cols2{gap:7mm}
+
+  /* 2026-08-07 (2) — 1쪽에 "명함을 보고 두 갈래로" 절을 추가하며 14px 넘쳤다.
+     본문은 그대로 두고 구분선 여백만 줄인다. 2쪽은 이미 압축돼 있어 건드리지 않는다. */
+  .page:first-of-type .rule{margin:9pt 0}
+  .page:first-of-type .rule.dark{margin:8pt 0 7pt}
+</style>
+</head><body>
+
+<!-- ============ P1 · 팀 브리핑 앞면 ============ -->
+<section class="page">
+  <p class="eyebrow">KHF 2026 · 8/19(수)~8/21(금) · COEX C·D홀 · 팀 3인 필독</p>
+  <h1>가기 전에<br>이 한 장만 외운다</h1>
+  <p class="lede">완성 문서가 12종이지만 <strong>현장에서 필요한 건 이 장뿐</strong>이다.
+  나머지는 질문이 왔을 때 찾아보는 자료다.</p>
+
+  <div class="rule dark"></div>
+
+  <h2>왜 가는가 — 목표가 바뀌었다</h2>
+  <div class="cols">
+    <div>
+      <h3 class="first">버린 목표</h3>
+      <ul>
+        <li class="n">제안서를 <strong>넣고</strong> 온다</li>
+        <li class="n">현장에서 파일럿을 성사시킨다</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="first">진짜 목표</h3>
+      <ul>
+        <li class="y">제안서를 <strong>보낼 허락(명함)</strong>을 받는다</li>
+        <li class="y"><strong>현장 인터뷰</strong>를 따 온다 — 지금 우리 제안서의 최대 공백</li>
+      </ul>
+    </div>
+  </div>
+  <p class="small mute">부스 인력은 대부분 영업·단기 스태프다. 결정권자는 부스에 없다.
+  학생이 제안서를 건네면 "검토하겠습니다" 하고 사라진다. 무례해서가 아니라 <strong>구조가 그렇다.</strong>
+  <strong>진짜 제안은 끝난 날 저녁~3일 안, 이메일로 간다.</strong></p>
+
+  <div class="rule"></div>
+
+  <h2>숫자로 된 목표 — 이걸로 성패를 판단한다</h2>
+  <div class="cols3">
+    <div><h3 class="first">대화 20건</h3><p class="small mute">2분 이상. 하루 7건이면 된다</p></div>
+    <div><h3 class="first">인터뷰 기록 15건</h3><p class="small mute">대화 직후 메모지에 즉시</p></div>
+    <div><h3 class="first">명함 10장</h3><p class="small mute">후속 메일 대상</p></div>
+  </div>
+  <p class="small mute" style="margin-top:3mm"><strong>"자료 보내드려도 될까요" 승낙 8건</strong>이 진짜 성과 지표다.
+  파일럿 논의로 이어진 곳이 <strong>1곳</strong>이면 대성공.</p>
+
+  <div class="rule"></div>
+
+  <h2>3인 역할 — 몰려다니지 않는다</h2>
+  <div class="cols3">
+    <div>
+      <h3 class="first">말하는 사람</h3>
+      <p class="small mute">30초 스크립트 · 요청 · 명함 교환.<br><strong>한 명으로 고정</strong></p>
+    </div>
+    <div>
+      <h3 class="first">적는 사람</h3>
+      <p class="small mute">인터뷰 5문항 기록.<br><strong>대화에 끼어들지 않는다</strong></p>
+    </div>
+    <div>
+      <h3 class="first">도는 사람</h3>
+      <p class="small mute">다음 타깃 정찰 · 세션 자리 확보 · 팸플릿 수거</p>
+    </div>
+  </div>
+  <p class="small mute" style="margin-top:3mm">셋이 몰려가면 상대가 부담스러워한다. 부스 앞에는 <strong>둘까지</strong>.</p>
+
+  <div class="rule dark"></div>
+
+  <h2>사흘 계획</h2>
+  <div class="cols3">
+    <div>
+      <h3 class="first">8/19 수 · 정찰</h3>
+      <p class="small mute">오전 전관 한 바퀴, <strong>말은 걸지 않는다.</strong> 타깃만 표시.<br>오후 실증사례 세션.<br>저녁 명함 전원에게 짧은 메일</p>
+    </div>
+    <div>
+      <h3 class="first">8/20 목 · 본전</h3>
+      <p class="small mute">오전 디지털헬스케어 서밋.<br><strong>12~16시 A등급 부스 집중 — 하루의 핵심.</strong><br>오후 정보보호 콘퍼런스</p>
+    </div>
+    <div>
+      <h3 class="first">8/21 금 · 회수</h3>
+      <p class="small mute">오전 간호사회 세션.<br>오후 재방문(마지막 날은 부스가 한가하다).<br><strong>참가업체 디렉터리 전부 챙긴다</strong></p>
+    </div>
+  </div>
+
+  <div class="rule dark"></div>
+
+  <h2>명함을 보고 두 갈래로 간다</h2>
+  <p class="small mute" style="margin-bottom:8px">장기요양기관의 <strong>85.8%가 개인 운영</strong>이고
+  사회복지법인은 8.4%뿐이다(복지부 2025년 장기요양실태조사). <strong>결정하는 사람이 다르다.</strong></p>
+  <div class="cols2">
+    <div>
+      <h3 class="first">"○○요양원 원장" — 85.8%</h3>
+      <p class="small mute"><strong>그 자리에서 결정이 날 수 있는 사람이다. 폰부터 꺼낸다.</strong>
+      품의도 이사회도 없다. 걱정하는 건 <strong>"내 일이 늘어나나 · 직원이 싫어하지 않나"</strong>다 —
+      "추가 입력 없습니다"를 먼저 말한다.</p>
+    </div>
+    <div>
+      <h3 class="first">"○○복지재단 기획팀" — 8.4%</h3>
+      <p class="small mute">문서를 받을 사람이다. <strong>자료 보낼 허락을 받는 데 집중한다.</strong>
+      걱정하는 건 개인정보 · 계약 · 감사라 <strong>파기확인서를 꺼내면 된다.</strong></p>
+    </div>
+  </div>
+  <p class="small" style="margin-top:6px"><strong>개인 운영에 "본사 검토 받으시겠어요"는 금지.</strong>
+  본사가 없다. 그 한마디로 우리가 시장을 모른다는 게 드러난다.</p>
+
+  <div class="foot"><span>하루안부 HARU ANBU · KHF 팀 브리핑</span><span>2026 · 1/2</span></div>
+</section>
+
+<!-- ============ P2 · 팀 브리핑 뒷면 ============ -->
+<section class="page p2">
+  <p class="eyebrow">외울 것은 세 덩어리뿐이다</p>
+  <h1>말하고 · 요청하고<br>· 듣는다</h1>
+
+  <h2>1 · 30초 스크립트 (시설·요양 사업자)</h2>
+  <p class="small">"안녕하세요, 하루안부라고 합니다. 요양시설에서 <strong>요양보호사 선생님이 기록을 한 번 쓰면
+  그게 가족에게 하루 한 번 자동으로 전달되는</strong> 구조를 설계했습니다.
+  네 역할 앱을 화면 39개로 만들어 공개해뒀습니다.
+  저희가 찾는 건 판매처가 아닙니다. <strong>서버를 아직 안 만들어서 오늘 시작하자는 말씀도 못 드립니다.</strong>
+  대신 <strong>현장 이야기를 2시간만</strong> 들려주실 수 있는 곳을 찾습니다."</p>
+
+  <p class="small mute"><strong>실무자에게는 다르게.</strong> "학생 팀인데요, 저희가 제일 경계한 게 현장에 기록이 늘어나는 겁니다.
+  <strong>그리고 이건 선생님들을 감시하는 도구가 아닙니다.</strong> 이게 실제로 가능한 얘긴지 2분만 여쭤봐도 될까요?"
+  — 학생이라 밝히고 조언을 구하는 프레임이 <strong>가장 강하다.</strong> 거절당하기 어렵다.</p>
+
+  <div class="rule"></div>
+
+  <h2>2 · 요청은 두 단계다 (여기가 이번에 바뀐 부분)</h2>
+  <div class="cols">
+    <div>
+      <h3 class="first">오늘 부탁할 것</h3>
+      <ul>
+        <li class="a"><strong>현장 이야기 2시간</strong> — 비용 0, 개인정보 0</li>
+        <li class="a">화면 보여드리고 <strong>"이건 안 됩니다" 듣기</strong></li>
+        <li class="a">마지막에 반드시 — <strong>"자료 메일로 보내드려도 될까요?"</strong></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="first">나중에 부탁할 것</h3>
+      <ul>
+        <li class="n">8주 무상 파일럿 — <strong>개발 2~4개월 뒤</strong></li>
+        <li class="n">현장에선 "그때 문을 열어주실 수 있는지"로만 묻는다</li>
+      </ul>
+    </div>
+  </div>
+  <p class="small mute"><strong>왜 바꿨나</strong>: 오늘 "시작하시죠" 소리를 들어도 우리는 못 한다. 서버가 없다.
+  못 할 것을 요청하면 그게 더 위험하다.</p>
+
+  <div class="rule"></div>
+
+  <h2>3 · 인터뷰 5문항 — <strong>메모지에 그대로 인쇄돼 있다</strong></h2>
+  <ul>
+    <li>시설이 새 시스템 도입을 <strong>실제로 누가 결정</strong>합니까?</li>
+    <li><strong>가족 문의</strong>는 어떤 경로로 옵니까? 누가 받습니까?</li>
+    <li>가족이 <strong>제일 많이 묻는 게</strong> 뭡니까?</li>
+    <li>가족앱을 만들어놔도 <strong>안 쓰이는 이유</strong>가 뭐라고 보십니까?</li>
+    <li><strong>기록이 자동으로 가족에게 간다면, 뭐가 걱정되십니까?</strong> ← 가장 중요</li>
+  </ul>
+  <p class="small mute"><strong>상대가 시설 실무자면 두 개 더</strong> — "기록을 하루 몇 번, 어떤 도구로 쓰십니까?" ·
+  "지금 시스템에서 제일 불편한 게 뭡니까?" (메모지 하단에 칸이 있다)</p>
+  <p class="small mute">5번이 이번 KHF의 진짜 목적이다. "가족이 오히려 항의 전화를 더 할 것"이라는 답이 나오면
+  <strong>그건 실패가 아니라 제안서를 살리는 정보다.</strong> 녹음은 동의 없이 하지 않는다.
+  기록은 <strong>날짜 / 부스 / 직군 / 답변 요지 / 명함 여부</strong>만.</p>
+
+  <div class="rule dark"></div>
+
+  <h2>질문이 오면 — 이 넷은 외운다</h2>
+  <div class="cols">
+    <div>
+      <div class="qbox"><div class="q">"현장이 더 바빠지는 거 아니냐"</div>
+      <p class="small mute">"저희가 받는 입력은 저희가 정한 게 아닙니다. <strong>시행규칙 별지 제16호서식</strong>이 이미 요구하는 항목입니다"</p></div>
+      <div class="qbox"><div class="q">"언제 시작할 수 있는데요"</div>
+      <p class="small mute">"<strong>지금은 못 합니다.</strong> 2~4개월 봅니다. 오늘 여쭙는 건 준비되면 문을 열어주실 수 있는지입니다"</p></div>
+    </div>
+    <div>
+      <div class="qbox"><div class="q">"나중엔 얼마 받으실 건데요"</div>
+      <p class="small mute">"<strong>아직 안 정했습니다.</strong> 다만 시장 가격대는 압니다 — 시설 업무관리 프로그램이 월 3만 원 수준이더군요.
+      저희는 그 위 한 계층이라 <strong>그보다 훨씬 작아야</strong> 합니다"</p></div>
+      <div class="qbox"><div class="q">"가족이 더 항의하지 않겠나"</div>
+      <p class="small mute">"<strong>그건 저희가 모릅니다.</strong> 검증한 적이 없습니다. 실은 그게 오늘 제일 여쭤보고 싶은 겁니다"</p></div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>하지 말 것</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li class="n">"투자" · "구매" · "도입해 주십시오" — <strong>우리는 파는 사람이 아니다</strong></li>
+        <li class="n"><strong>금액을 즉석에서 부르는 것</strong></li>
+        <li class="n">한계 문서(16쪽)를 먼저 꺼내는 것 — <strong>질문이 오면</strong> 답으로</li>
+      </ul>
+    </div>
+    <div>
+      <ul>
+        <li class="n">미공개 화면·파일럿 상세 설계·수익 구조 보여주기</li>
+        <li class="n">모르는 걸 아는 척하기 — <strong>모른다고 하면 대화가 이어진다</strong></li>
+        <li class="n">셋이 몰려다니기</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+  <h3 class="first">챙길 것</h3>
+  <p class="small mute">인쇄물 3종 · 명함 · 태블릿(충전 100%) · 보조배터리 · <strong>볼펜 2자루</strong> · 명함집 · 클립보드
+  <br>데모가 안 열릴 때를 대비해 <strong>화면 캡처본을 폰에 미리 저장</strong>해 둔다. 전시장 와이파이는 믿지 않는다.</p>
+
+  <div class="foot"><span>하루안부 HARU ANBU · KHF 팀 브리핑</span><span>2026 · 2/2</span></div>
+</section>
+
+</body>
+</html>

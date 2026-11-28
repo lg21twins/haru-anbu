@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하루안부 — KHF 2026 현장 실행팩</title>
+<link rel="stylesheet" href="../../07_디자인/tokens/tokens.css">
+<style>
+  :root{
+    --ink:        var(--color-text-primary, #111827);
+    --ink-strong: #0A0A0C;
+    --ink-mute:   var(--color-text-secondary, #6B7280);
+    --ink-faint:  #9CA3AF;
+    --canvas:     #FFFFFF;
+    --surface:    #F6F7F9;
+    --rule:       #E8EAED;
+    --accent:     var(--brand-blue-500, #2C7AFC);
+    --warn:       var(--palette-amber-700, #B45309);
+    --stop:       var(--palette-red-600, #C8231E);
+    --ok:         var(--brand-green-700, #15803D);
+    --maxw: 980px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--canvas); color:var(--ink);
+    font-family:var(--font-family-base, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif);
+    font-size:16px; line-height:1.75; letter-spacing:-0.01em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
+
+  /* nav */
+  nav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.92); backdrop-filter:saturate(180%) blur(12px)}
+  nav .wrap{display:flex; gap:22px; align-items:center; height:56px; overflow-x:auto; white-space:nowrap; scrollbar-width:none}
+  nav .wrap::-webkit-scrollbar{display:none}
+  nav a{color:var(--ink-mute); text-decoration:none; font-size:13px; font-weight:600; letter-spacing:0}
+  nav a:hover{color:var(--ink-strong)}
+  nav .brand{color:var(--ink-strong); font-weight:800; margin-right:6px}
+
+  /* hero */
+  header{padding:96px 0 72px}
+  .eyebrow{font-size:12px; font-weight:700; letter-spacing:.14em; color:var(--ink-faint); margin:0 0 20px}
+  h1{font-size:clamp(40px,7vw,76px); line-height:1.04; letter-spacing:-0.045em; font-weight:800; margin:0 0 24px; color:var(--ink-strong)}
+  .lede{font-size:clamp(18px,2.4vw,22px); line-height:1.6; color:var(--ink); max-width:44ch; margin:0 0 36px; font-weight:500}
+  .meta{font-size:13px; color:var(--ink-faint); display:flex; flex-wrap:wrap; gap:6px 20px}
+
+  /* sections */
+  section{padding:64px 0}
+  .snum{font-size:12px; font-weight:700; letter-spacing:.14em; color:var(--ink-faint); margin:0 0 12px}
+  h2{font-size:clamp(28px,4.2vw,44px); line-height:1.12; letter-spacing:-0.035em; font-weight:800; margin:0 0 20px; color:var(--ink-strong)}
+  h3{font-size:20px; line-height:1.4; letter-spacing:-0.02em; font-weight:700; margin:44px 0 14px}
+  h4{font-size:15px; font-weight:700; margin:26px 0 8px; color:var(--ink)}
+  p{margin:0 0 16px; max-width:68ch}
+  .mute{color:var(--ink-mute)}
+  .small{font-size:13.5px; line-height:1.7}
+  strong{font-weight:700; color:var(--ink-strong)}
+
+  /* data hero */
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:40px 32px; margin:8px 0 12px}
+  .stat .n{font-size:clamp(38px,6vw,60px); font-weight:800; letter-spacing:-0.045em; line-height:1; color:var(--ink-strong)}
+  .stat .n em{font-style:normal; font-size:.44em; font-weight:700; letter-spacing:-0.02em; margin-left:3px}
+  .stat .l{font-size:14px; font-weight:600; margin-top:12px}
+  .stat .s{font-size:12px; color:var(--ink-faint); margin-top:4px; line-height:1.5}
+
+  /* bar chart */
+  .chart{margin:28px 0 8px}
+  .row{display:grid; grid-template-columns:150px 1fr; gap:16px; align-items:center; margin-bottom:14px}
+  .row .k{font-size:13.5px; font-weight:600; color:var(--ink-mute); text-align:right}
+  .bar{position:relative; height:34px; display:flex; align-items:center}
+  .bar i{display:block; height:34px; background:var(--accent); border-radius:2px}
+  .bar.alt i{background:var(--ink-strong)}
+  .bar.soft i{background:#C9D6E8}
+  .bar.stop i{background:var(--stop)}
+  .bar b{margin-left:10px; font-size:14px; font-weight:700; white-space:nowrap}
+  .bar b span{font-weight:500; color:var(--ink-faint); font-size:12.5px; margin-left:6px}
+  .cap{font-size:12px; color:var(--ink-faint); margin-top:12px}
+
+  /* flow diagram */
+  .flow{margin:32px 0}
+  .flow .src{font-size:15px; font-weight:700; padding:14px 0 10px}
+  .flow .lines{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:20px; margin-top:8px}
+  .flow .node{padding-top:14px}
+  .flow .node .h{font-size:14px; font-weight:700; color:var(--ink-strong)}
+  .flow .node .d{font-size:13px; color:var(--ink-mute); margin-top:6px; line-height:1.6}
+  .tick{height:3px; background:var(--accent); width:34px; margin-bottom:12px; border-radius:2px}
+  .tick.g{background:var(--ok)} .tick.o{background:var(--warn)} .tick.d{background:var(--ink-strong)}
+
+  /* tables */
+  .tblwrap{overflow-x:auto; margin:20px 0 8px; -webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse; width:100%; min-width:560px; font-size:14px}
+  th,td{text-align:left; padding:12px 14px 12px 0; vertical-align:top; line-height:1.6; word-break:keep-all; overflow-wrap:anywhere}
+  thead th{font-size:12px; letter-spacing:.06em; color:var(--ink-faint); font-weight:700; padding-bottom:8px; white-space:nowrap}
+  tbody tr{border-top:1px solid var(--rule)}
+  td.num{white-space:nowrap; font-weight:700}
+  .tag{font-size:11.5px; font-weight:700; letter-spacing:.02em; white-space:nowrap}
+  .tag.ok{color:var(--ok)} .tag.warn{color:var(--warn)} .tag.stop{color:var(--stop)} .tag.mute{color:var(--ink-faint)}
+
+  /* callout — 배경 필 대신 상단 규칙선 + 타이포로 위계 */
+  .note{margin:28px 0; padding-top:18px; border-top:2px solid var(--ink-strong)}
+  .note .t{font-size:12px; font-weight:700; letter-spacing:.12em; color:var(--ink-faint); margin-bottom:8px}
+  .note p{font-size:16.5px; font-weight:500; margin:0; max-width:60ch}
+  .note.warn{border-top-color:var(--stop)}
+  .note.warn .t{color:var(--stop)}
+
+  .quote{margin:32px 0; padding-left:20px; border-left:2px solid var(--rule)}
+  .quote p{font-size:17px; line-height:1.65; margin:0 0 8px}
+  .quote .who{font-size:13px; color:var(--ink-faint)}
+
+  ul{margin:0 0 16px; padding-left:20px; max-width:68ch}
+  li{margin-bottom:8px}
+  .plain{list-style:none; padding-left:0}
+  .plain li{padding-left:18px; position:relative}
+  .plain li::before{content:""; position:absolute; left:0; top:11px; width:6px; height:6px; border-radius:50%; background:var(--ink-faint)}
+  .plain li.yes::before{background:var(--ok)}
+  .plain li.no::before{background:var(--stop)}
+
+  /* timeline */
+  .tl{margin:32px 0}
+  .tl .ph{display:grid; grid-template-columns:96px 1fr; gap:22px; padding:22px 0; border-top:1px solid var(--rule)}
+  .tl .ph .p{font-size:13px; font-weight:800; letter-spacing:.06em; color:var(--accent)}
+  .tl .ph .p .w{display:block; font-size:12px; font-weight:600; color:var(--ink-faint); margin-top:4px; letter-spacing:0}
+  .tl .ph .b .h{font-size:17px; font-weight:700; margin-bottom:6px}
+  .tl .ph .b .d{font-size:14px; color:var(--ink-mute); line-height:1.7}
+  .tl .ph.now .p{color:var(--stop)}
+
+  /* ledger */
+  .ledger{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:28px; margin:24px 0}
+  .ledger .c .n{font-size:44px; font-weight:800; letter-spacing:-0.04em; line-height:1}
+  .ledger .c.a .n{color:var(--ok)} .ledger .c.b .n{color:var(--accent)}
+  .ledger .c.c .n{color:var(--warn)} .ledger .c.d .n{color:var(--stop)}
+  .ledger .c .l{font-size:13.5px; font-weight:700; margin-top:8px}
+  .ledger .c .s{font-size:12.5px; color:var(--ink-faint); margin-top:2px; line-height:1.5}
+
+  .qa{margin:28px 0}
+  .qa-item{padding:26px 0; border-top:1px solid var(--rule)}
+  .mt-s{margin-top:14px}
+  .mt-l{margin-top:36px}
+  .mb-xs{margin-bottom:8px}
+  .bar i.full{width:100%}
+  .qa-item .q{font-size:17px; font-weight:700; letter-spacing:-0.02em; color:var(--ink-strong); margin-bottom:10px}
+  .qa-item .a{font-size:15px; line-height:1.75; color:var(--ink-mute); max-width:70ch}
+  .qa-item .a strong{color:var(--ink)}
+
+  footer{padding:64px 0 96px; margin-top:32px; border-top:1px solid var(--rule)}
+  footer .small{color:var(--ink-mute); max-width:72ch}
+  .srcgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:24px; margin-top:20px}
+  .srcgrid h5{font-size:12px; letter-spacing:.1em; color:var(--ink-faint); margin:0 0 8px; font-weight:700}
+  .srcgrid p{font-size:12.5px; line-height:1.7; color:var(--ink-mute); margin:0}
+
+  hr.div{border:0; border-top:1px solid var(--rule); margin:0}
+
+  @media (max-width:640px){
+    header{padding:64px 0 48px}
+    section{padding:48px 0}
+    .row{grid-template-columns:96px 1fr; gap:10px}
+    .row .k{font-size:12px}
+    .tl .ph{grid-template-columns:72px 1fr; gap:14px}
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ink:#E8EAED; --ink-strong:#FFFFFF; --ink-mute:#A0A6AD; --ink-faint:#7C838B;
+      --canvas:#0E1013; --surface:#16191D; --rule:#282C31;
+      --accent:#5B9BFF; --stop:#FF6B63; --ok:#4ADE80; --warn:#FBBF24;
+    }
+    nav{background:rgba(14,16,19,.92)}
+    .bar.soft i{background:#31404F}
+  }
+  @media print{
+    @page{ size:A4; margin:16mm 14mm 18mm; }
+    :root{
+      --ink:#1A1D21; --ink-strong:#000; --ink-mute:#4B5158; --ink-faint:#7A8189;
+      --canvas:#fff; --surface:#F4F5F7; --rule:#D8DBDF;
+      --accent:#1E5FD6; --stop:#B3241F; --ok:#15803D; --warn:#8A5A00;
+    }
+    nav{display:none}
+    body{font-size:10pt; line-height:1.6}
+    .wrap{max-width:none; padding:0}
+    header{padding:0 0 22pt; break-after:page}
+    h1{font-size:34pt; margin-bottom:14pt}
+    .lede{font-size:13pt; margin-bottom:16pt}
+    section{padding:16pt 0; break-inside:auto}
+    h2{font-size:20pt; margin-bottom:10pt; break-after:avoid}
+    h3{font-size:12.5pt; margin:16pt 0 7pt; break-after:avoid}
+    h4{break-after:avoid}
+    p{margin-bottom:8pt; max-width:none}
+    .snum{break-after:avoid}
+    hr.div{display:none}
+    .tblwrap{overflow:visible}
+    table{min-width:0; font-size:9pt}
+    thead{display:table-header-group}
+    tr{break-inside:avoid}
+    th,td{padding:6pt 10pt 6pt 0}
+    .stats{gap:18pt 14pt; margin:6pt 0}
+    .stat .n{font-size:26pt}
+    .stat .l{font-size:9.5pt; margin-top:6pt}
+    .stat .s{font-size:8pt; margin-top:3pt}
+    .row{grid-template-columns:110pt 1fr; margin-bottom:7pt}
+    .bar,.bar i{height:18pt}
+    .bar b{font-size:9.5pt}
+    .note,.quote,.tl .ph,.qa-item{break-inside:avoid}
+    .chart,.stat,.ledger .c,.shot{break-inside:avoid}   /* 차트+캡션은 한 덩어리 */
+    .chart{break-before:avoid}                          /* 앞 제목과 떨어지지 않게 */
+    .note{margin:14pt 0; padding-top:10pt}
+    .note p{font-size:10.5pt}
+    .ledger{gap:14pt}
+    .ledger .c .n{font-size:24pt}
+    .flow .lines{gap:12pt}
+    .qa-item{padding:12pt 0}
+    .qa-item .q{font-size:10.5pt}
+    .qa-item .a{font-size:9.5pt; max-width:none}
+    /* 2026-08-09 — footer 를 강제로 새 쪽에 보내니 앞 쪽(p.14)에 세 줄만 남았다.
+       콜로폰은 흘려보내되 표가 쪼개지지만 않게 한다. 15쪽 → 14쪽. */
+    footer{padding:20pt 0 0; break-before:auto; break-inside:avoid}
+    a{color:inherit; text-decoration:none}
+  }
+
+  /* 2026-08-07 조판 보정
+     (1) keep-all이 표에만 걸려 있어 본문 한국어가 어절 중간에서 끊겼다 — "안부 / 로 잇는", "99 / 만"
+     (2) .cap이 .chart 안에 있는데 .chart에 break-inside가 없어 차트와 캡션이 쪽을 넘어 갈라졌다 */
+  body, h1, h2, h3, h4, p, li, .lede, .stat, .stat .l, .stat .s, .cap, .note, .quote{
+    word-break: keep-all; overflow-wrap: break-word;
+  }
+</style>
+
+<style>
+  .cols2{display:grid; grid-template-columns:1fr 1fr; gap:36px}
+  h3.mt0{margin-top:0}
+  @media (max-width:760px){ .cols2{grid-template-columns:1fr; gap:8px} }
+  @media print{
+    .cols2{grid-template-columns:1fr 1fr; gap:18pt}
+    .cols2 ul{break-inside:avoid}
+    /* 2026-08-09 — 마지막 한 줄만 다음 쪽으로 밀려 p.14 가 통째로 비었다.
+       소제목이 혼자 남거나 문단 꼬리가 떨어지지 않게 한다. */
+    h3{break-after:avoid}
+    p{orphans:2; widows:2}
+    .keep{break-inside:avoid}
+  }
+</style>
+
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="brand">KHF 2026 현장 실행팩</span>
+    <a href="#goal">목표 전환</a>
+    <a href="#route">사흘 라우트</a>
+    <a href="#script">30초 스크립트</a>
+    <a href="#ask">요청</a>
+    <a href="#order">대화 순서</a>
+    <a href="#interview">인터뷰</a>
+    <a href="#guard">보여줄 것</a>
+    <a href="#mail">후속 메일</a>
+    <a href="#fail">실패 시나리오</a>
+    <a href="#check">체크리스트</a>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">2026 국제 병원 및 헬스테크 박람회 · 현장 대본</p>
+    <h1>가서 실제로<br>뭘 하는가</h1>
+    <p class="lede">이 문서는 계획서가 아니라 손에 들고 보는 대본이다.
+    사흘 동안 무엇을 말하고, 무엇을 묻고, 무엇을 가지고 돌아올지를 정해 둔다.</p>
+    <div class="meta">
+      <span>8월 19일(수) ~ 21일(금)</span>
+      <span>COEX 3층 C·D홀</span>
+      <span>사전등록 완료 2026-08-09</span>
+      <span>작성 2026-08-04</span>
+    </div>
+  </div>
+</header>
+
+<!-- 00 목표 전환 -->
+<section id="goal">
+  <div class="wrap">
+    <p class="snum">00 · 전제를 고친다</p>
+    <h2>부스에 있는 사람은<br>사러 온 게 아니다</h2>
+
+    <p>우리 계획은 "KHF에 가서 제안서를 넣고 온다"였다. <strong>이대로 가면 실패한다.</strong></p>
+    <p>전시회 부스 인력은 대부분 영업 담당이거나 단기 스태프다. 결정권자는 부스에 상주하지 않는다.
+    학생 팀이 제안서를 건네면 "검토하겠습니다" 하고 그대로 사라진다.
+    이건 상대가 무례해서가 아니라 <strong>구조가 그렇다.</strong></p>
+
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:22%"></th><th style="width:39%">버리는 목표</th><th style="width:39%">새 목표</th></tr></thead>
+        <tbody>
+          <tr><td>현장에서 하는 일</td><td class="mute">제안서를 <strong>넣는다</strong></td><td>제안서를 <strong>보낼 허락을 받는다</strong></td></tr>
+          <tr><td>가지고 오는 것</td><td class="mute">(없음)</td><td><strong>명함 · 현장 인터뷰 기록</strong></td></tr>
+          <tr><td>진짜 제안 시점</td><td class="mute">현장</td><td><strong>끝난 그날 저녁 ~ 3일 안, 이메일로</strong></td></tr>
+          <tr><td>인쇄물의 역할</td><td class="mute">지금 읽어달라</td><td><strong>내 메일이 왔을 때 나를 기억나게 하는 물건</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <div class="t">한 줄로</div>
+      <p>KHF는 제안하는 자리가 아니라 <strong>제안할 자격을 얻는 자리</strong>다.</p>
+    </div>
+
+    <h3>그리고 절반은 리서치다</h3>
+    <p>지금 우리 제안서의 제일 큰 구멍은 <strong>현장 인터뷰 결과가 0건</strong>이라는 것이다.
+    KHF는 국내에서 요양·병원 실무자가 가장 밀집하는 사흘이다.
+    여기서 인터뷰 15건을 따 오면, 제안서에서 제일 약한 부분이 그 자리에서 메워진다.</p>
+    <p class="small mute">명함보다 이게 더 확실한 소득이다. 명함은 상대가 줘야 생기지만, 인터뷰는 우리가 물어보면 생긴다.</p>
+
+    <h3>목표 숫자 — 이걸로 성패를 판단한다</h3>
+    <div class="stats">
+      <div class="stat"><div class="n">20<em>건</em></div><div class="l">2분 이상 대화</div><div class="s">하루 7건. 어렵지 않다</div></div>
+      <div class="stat"><div class="n">15<em>건</em></div><div class="l">인터뷰 기록</div><div class="s">대화 직후 메모지에 즉시</div></div>
+      <div class="stat"><div class="n">10<em>장</em></div><div class="l">명함</div><div class="s">후속 메일 대상</div></div>
+      <div class="stat"><div class="n">8<em>건</em></div><div class="l">"자료 보내드려도 될까요" 승낙</div><div class="s">실질적 성과 지표</div></div>
+      <div class="stat"><div class="n">1<em>곳</em></div><div class="l">파일럿 논의로 이어진 곳</div><div class="s">이거 하나면 대성공</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 01 라우트 -->
+<section id="route">
+  <div class="wrap">
+    <p class="snum">01 · 사흘 라우트</p>
+    <h2>날짜별로<br>할 일이 다르다</h2>
+
+    <h3>먼저 — 무엇이 확인됐고 무엇이 아닌가</h3>
+    <p>현장 계획을 미확인 수치 위에 세우면 안 된다. 2026-08-05 재대조 결과를 등급으로 나눈다.</p>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:16%">등급</th><th style="width:40%">항목</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag ok">확인</span></td><td>8/19~21 · COEX C·D홀 · 대한병원협회 주최 · <strong>사전등록 무료</strong> · 02-6121-6363</td><td class="small">대한병원협회 공식 공지</td></tr>
+          <tr><td><span class="tag warn">2차</span></td><td>운영 10:00~18:00 (마지막 날 ~17:00)</td><td class="small">전시 포털 경유. <strong>셋째 날 종료 시각이 라우트를 좌우한다</strong></td></tr>
+          <tr><td><span class="tag stop">2차</span></td><td><strong>사전등록 마감 8/18 23:59</strong></td><td class="small"><strong>공식 공지에 마감일이 없다.</strong> 아래 결론 참조</td></tr>
+          <tr><td><span class="tag warn">2차</span></td><td>현장등록 20,000원 · 약 300개사 500부스 · 세미나 32개</td><td class="small">공식 미확인 / 의료 전문지 보도</td></tr>
+          <tr><td><span class="tag warn">2차</span></td><td>아래 4개 세션의 명칭·시간</td><td class="small">라포르시안·청년의사 보도. <strong>공식 프로그램으로 재확인</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <div class="t">마감일에 대한 실질적 결론</div>
+      <p><strong>"8/18 23:59"를 믿고 기다리지 않는다. 오늘 바로 등록한다.</strong>
+      마감이 그날이 맞다면 미리 해서 손해 볼 것이 없고, 아니라면 놓친다. 무료 사전등록은 취소 비용도 없다.
+      <strong>확인할 문제가 아니라 그냥 지금 해버릴 문제다.</strong></p>
+    </div>
+
+    <p class="small mute">일부 세미나는 별도 신청·유료다. <strong>등록할 때 세션 신청도 같이 끝낸다.</strong></p>
+
+    <h3>참가기업 리스트 — 이미 공개돼 있었다 (2026-08-11 확인)</h3>
+    <p>8/17로 미뤄 뒀던 확인인데 <strong>부스 배치도와 참가기업 리스트가 벌써 올라와 있다.</strong>
+    공식 홈페이지 「부스배치도 &amp; 참가기업리스트」 · 배치도 PDF는 2026-08-07판. <strong>총 282개사.</strong>
+    그중 우리와 겹치거나 물어볼 것이 있는 곳만 추렸다.</p>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:12%">부스</th><th style="width:28%">기업</th><th>왜 가는가</th></tr></thead>
+        <tbody>
+          <tr><td><b>J15</b></td><td><b>케어마인더</b> <span class="mute small">스타트업 특별관</span></td><td class="small"><strong>이름부터 돌봄 기록·알림.</strong> 가장 인접할 가능성이 크다 — <b>먼저 확인하고 차별점 문장을 조정한다</b></td></tr>
+          <tr><td><b>K09</b></td><td><b>이지케어텍</b></td><td class="small">국내 대표 <strong>병원정보시스템(EMR)</strong>. 우리가 "기록 시스템은 안 만든다"고 말할 때 <b>그 자리에 있는 쪽</b></td></tr>
+          <tr><td><b>N04</b></td><td><b>환자경험평가 솔루션</b> <span class="mute small">세마컨설팅</span></td><td class="small"><strong>환자경험</strong> — 우리 소통 계층과 가장 가까운 문제의식</td></tr>
+          <tr><td><b>G12</b></td><td><b>한국보건의료정보원</b></td><td class="small">공공기관. <strong>표준·인증을 물어볼 자리</strong> — 우리가 못 푼 "공인된 증명 수단이 없다"의 담당</td></tr>
+          <tr><td>L17</td><td>레몬헬스케어</td><td class="small">환자용 앱(병원 연계)</td></tr>
+          <tr><td>K07</td><td>케어랩스</td><td class="small">헬스케어 플랫폼</td></tr>
+          <tr><td>A21</td><td>케어테크 <span class="mute small">성남시 공동관</span></td><td class="small">이름만으로는 성격 미확인</td></tr>
+          <tr><td>M16</td><td>인피니트헬스케어</td><td class="small">의료영상 — 인접도 낮음. 시간 남으면</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <div class="t">첫날 오전이 통째로 절약된다</div>
+      <p><strong>8/19 정찰의 목표가 바뀐다.</strong> 지도를 처음부터 그리는 게 아니라
+      <strong>위 여덟 곳을 확인하고 나머지를 훑는 것</strong>이다.
+      <strong>큐레이션투어 「코스4 · 환자케어·재활」</strong>도 있다 — 우리가 짤 라우트보다 나을 수 있으니 등록 방법과 시간을 확인한다.
+      <span class="mute small">참가기업은 개최 직전까지 바뀔 수 있다 — 8/18에 같은 페이지를 한 번 더 연다.</span></p>
+    </div>
+
+    <div class="tl">
+      <div class="ph">
+        <div class="p">DAY 1<span class="w">8/19 수</span></div>
+        <div class="b">
+          <div class="h">정찰의 날</div>
+          <div class="d">
+            <strong>10:00~12:00</strong> C·D홀 전체를 한 바퀴. 말은 걸지 않는다. 타깃 부스를 배치도에 표시만 한다<br>
+            <strong>12:00~13:00</strong> 점심 + 타깃 목록 A/B/C 등급 정리<br>
+            <strong>13:00~17:00</strong> 한국보건복지인재원 「의료AI 전환 시대, 병원 현장 적용을 위한 실행전략」 참석<br>
+            <strong>17:00~18:00</strong> A등급 부스 2~3곳만 시험 대화. 스크립트가 먹히는지 확인<br>
+            <strong>저녁</strong> 오늘 받은 명함 전원에게 짧은 메일 발송
+          </div>
+        </div>
+      </div>
+      <div class="ph">
+        <div class="p">DAY 2<span class="w">8/20 목</span></div>
+        <div class="b">
+          <div class="h">본전 뽑는 날</div>
+          <div class="d">
+            <strong>오전</strong> K-디지털헬스케어 서밋 (대한병원협회 디지털정보혁신위원회) — 인맥 밀도가 가장 높다<br>
+            <strong>12:00~16:00</strong> 전날 표시한 A등급 부스 집중 방문. 하루의 핵심. <strong>목표 명함 6장</strong><br>
+            <strong>16:00~18:00</strong> 제17회 디지털헬스 정보보호 콘퍼런스 일부 참석<br>
+            <strong>저녁</strong> 명함 전원 짧은 메일 + 인터뷰 메모 디지털화
+          </div>
+        </div>
+      </div>
+      <div class="ph">
+        <div class="p">DAY 3<span class="w">8/21 금</span></div>
+        <div class="b">
+          <div class="h">회수의 날 · 17:00 종료</div>
+          <div class="d">
+            <strong>오전</strong> 대한병원간호사회 「스마트 간호와 간호 AI 활용 사례」 — 우리 주제와 가장 가깝다<br>
+            <strong>오후</strong> B·C등급 부스 + 전날 결정권자가 없었던 곳 재방문 (마지막 날은 부스가 한가하다)<br>
+            <strong>~17:00</strong> 참가업체 디렉터리·팸플릿을 전부 챙긴다 — 못 만난 곳의 콜드메일 리스트가 된다
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>세션을 이렇게 고른 이유</h3>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:36%">세션</th><th>고른 이유</th></tr></thead>
+        <tbody>
+          <tr><td><strong>의료AI 전환 시대, 병원 현장 적용을 위한 실행전략</strong><br><span class="small mute">8/19 · 한국보건복지인재원</span></td>
+              <td class="small">주제가 <strong>"의료 AI 개념검증(PoC)과 실증 사례"</strong>다. 우리에게 지금 필요한 게 정확히 실증(파일럿)이다. 여기 앉아 있는 사람들이 실증을 굴려본 사람들이다</td></tr>
+          <tr><td><strong>K-디지털헬스케어 서밋</strong><br><span class="small mute">8/20 · 대한병원협회</span></td>
+              <td class="small">대한병원협회 디지털정보혁신위원회 주최. 사흘 중 <strong>인맥 밀도가 가장 높은 자리</strong></td></tr>
+          <tr><td><strong>제17회 디지털헬스 정보보호 콘퍼런스</strong><br><span class="small mute">8/20</span></td>
+              <td class="small">우리의 최대 약점이 개인정보·보안이다. 여기서 들은 걸 반영하면 <strong>"보안은 아직 못 했습니다"가 "보안 요구사항을 이렇게 파악했습니다"로 바뀐다.</strong> 약점을 줄이러 가는 세션</td></tr>
+          <tr><td><strong>스마트 간호와 간호 AI 활용 사례</strong><br><span class="small mute">8/21 · 대한병원간호사회</span></td>
+              <td class="small">"스마트 간호"는 곧 기록 디지털화 이야기다. 요양보호사 입력 부담을 어떻게 다뤘는지 검증받을 수 있는 유일한 자리. <strong>"그건 현장에서 안 됩니다"라는 말을 들으면 그게 KHF 최대의 소득이다</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>부스 등급 기준</h3>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:8%">등급</th><th style="width:34%">대상</th><th>왜</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag stop">A</span></td><td><strong>의료정보시스템 · 병원 SW · 전자기록(EMR/EHR)</strong></td><td class="small">우리 포지션("기록은 기존 시스템, 소통은 하루안부")이 통하는지 검증 + 연동 파트너 후보</td></tr>
+          <tr><td><span class="tag stop">A</span></td><td><strong>요양 · 재활 · 시니어케어</strong></td><td class="small">장기요양 사업자. 파일럿 입구</td></tr>
+          <tr><td><span class="tag warn">B</span></td><td>병원 · 의료법인 부스</td><td class="small">실무자 인터뷰용. 결정권은 없지만 이야기는 제일 잘 해준다</td></tr>
+          <tr><td><span class="tag warn">B</span></td><td>환자경험 · 보호자 소통 솔루션</td><td class="small">유사·경쟁 서비스. <strong>실물 확인 목적</strong>(우리 차별점 검증)</td></tr>
+          <tr><td><span class="tag mute">C</span></td><td>장비 · 건축 · 소모품</td><td class="small">대화 대상 아님. 지나간다</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <div class="t">8/17에 반드시</div>
+      <p>참가업체 디렉터리가 개최 직전에 확정된다. <strong>8월 17일에 공식 홈페이지에서 한 번 더 확인해 라우트를 갱신한다.</strong></p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 02 스크립트 -->
+<section id="script">
+  <div class="wrap">
+    <p class="snum">02 · 30초 스크립트</p>
+    <h2>상대에 따라<br>세 가지</h2>
+    <p>상대는 <strong>30초 안에 "얘네가 나한테 원하는 게 뭐지"를 판단한다.</strong> 그 안에 요청까지 들어가야 한다.</p>
+
+    <h3>그 전에 — 명함을 먼저 본다</h3>
+    <p>A 스크립트를 쓰기 전에 상대가 어느 쪽인지부터 가른다.
+    장기요양기관의 <strong>85.8%가 개인 운영</strong>이고 사회복지법인은 8.4%뿐이다
+    (보건복지부 「2025년 장기요양실태조사」, 2026-08 발표). <strong>결정 구조가 아예 다르다.</strong></p>
+
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th></th><th>"○○요양원 원장" — 85.8%</th><th>"○○복지재단 기획팀" — 8.4%</th></tr></thead>
+        <tbody>
+          <tr><td>이 사람은</td><td><b>그 자리에서 결정이 날 수 있다</b></td><td class="mute">문서를 위로 올릴 사람이다</td></tr>
+          <tr><td>우리가 할 일</td><td><b>폰부터 꺼낸다.</b> 화면을 보여준다</td><td class="mute"><b>자료 보낼 허락</b>을 받는다</td></tr>
+          <tr><td>무엇을 걱정하나</td><td><b>"내 일이 늘어나나"<br>"직원이 싫어하지 않나"</b></td><td class="mute">개인정보 · 계약 · 감사</td></tr>
+          <tr><td>먼저 말할 것</td><td><b>"추가 입력 안 만들었습니다"</b></td><td class="mute">"실제 정보는 준비 끝나기 전까지 안 받습니다"</td></tr>
+          <tr><td>꺼낼 종이</td><td>A4 1장</td><td class="mute">A4 1장 + <b>파기확인서</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <div class="t">개인 운영 시설에서 금지</div>
+      <p><strong>"본사 검토를 받으시겠어요" · "품의 올려주세요"</strong> — 본사가 없다.
+      그 한마디로 우리가 시장을 모른다는 게 드러난다.</p>
+    </div>
+
+    <p class="mute small"><strong>명찰에 직함이 없으면 물어본다</strong> —
+    "혹시 시설 운영하시는 쪽이세요, 아니면 법인 쪽이세요?" 실례가 아니다.
+    상대도 자기에게 맞는 얘기를 듣는 게 낫다.</p>
+
+    <div class="quote">
+      <p><strong>A. 시설 운영자 · 요양 사업자에게</strong></p>
+      <p>"안녕하세요, 하루안부라고 합니다. 요양시설에서 <strong>요양보호사 선생님이 기록을 한 번 쓰면 그게 가족에게 하루 한 번 자동으로 전달되는</strong> 구조를 설계했습니다.
+      가족·어르신·요양보호사·의료진 네 역할 앱을 화면 39개로 만들어서 공개해뒀습니다.
+      저희가 지금 찾는 건 판매처가 아닙니다. <strong>서버를 아직 안 만들어서 오늘 시작하자는 말씀도 못 드립니다.</strong>
+      대신 <strong>현장 이야기를 2시간만</strong> 들려주실 수 있는 곳을 찾습니다.
+      혹시 이런 얘기 나눠볼 만한 분 아실까요?"</p>
+    </div>
+
+    <div class="note">
+      <div class="t">A 스크립트가 바뀐 이유 — 2026-08-07</div>
+      <p>옛 판은 <strong>"한 병동에서 8주만 무상으로 써보게 해주실 곳"</strong>이었다.
+      원고에서 <strong>요청을 2단계로 분리</strong>(지금 = 인터뷰 2시간 · 자문 / 나중 = 8주 파일럿)한 뒤에도
+      이 화면만 옛 문장이 남아 있었다. <strong>서버가 없는데 8주 파일럿을 오늘 요청하면 첫 30초에 거짓말을 하는 것이다.</strong></p>
+    </div>
+
+    <div class="quote">
+      <p><strong>B. 의료정보시스템 · 병원 SW 업체에게</strong></p>
+      <p>"안녕하세요, 하루안부라고 합니다. <strong>기록 시스템을 새로 만들려는 게 아닙니다.</strong>
+      기록은 기존 시스템에 그대로 두고, 그 위에 <strong>가족 소통 레이어만 얹는</strong> 구조로 설계했습니다.
+      그래서 저희 입장에선 귀사 같은 곳이 경쟁자가 아니라 기반입니다.
+      <strong>설계를 한 번 보시고 이게 기술적으로 말이 되는지 의견만 주실 수 있을까요?</strong>"</p>
+    </div>
+
+    <div class="quote">
+      <p><strong>C. 병원 · 간호 실무자에게 (인터뷰용)</strong></p>
+      <p>"안녕하세요, 요양시설 가족 소통 서비스를 설계하고 있는 학생 팀입니다.
+      저희가 제일 경계한 게 <strong>현장에 기록이 늘어나는 것</strong>이라서, 추가 입력 화면을 안 만드는 걸 원칙으로 잡았는데요.
+      <strong>그리고 이건 선생님들을 감시하는 도구가 아닙니다.</strong> 입력 건수 통계나 미입력 알림 같은 건 일부러 안 만들었습니다.
+      <strong>이게 실제로 가능한 얘긴지 2분만 여쭤봐도 될까요?</strong>"</p>
+      <p class="small mute"><strong>"감시가 아니다"를 먼저 말한다.</strong> 요양보호사에게 이 서비스의 첫인상은 "또 뭘 시키려는 앱"이거나
+      <strong>"내가 뭘 안 했는지 위에서 보는 앱"</strong>이다. 후자가 더 무섭다. 물어보기 전에 부정한다.</p>
+    </div>
+
+    <div class="note">
+      <div class="t">C가 가장 강력하다</div>
+      <p>학생이라고 밝히고 조언을 구하는 프레임은 <strong>거절당하기 어렵다.</strong> 그리고 이 대화가 곧 인터뷰가 된다.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 03 요청 -->
+<section id="ask">
+  <div class="wrap">
+    <p class="snum">03 · 요청</p>
+    <h2>하나만,<br>상대마다 다르게</h2>
+
+    <div class="note warn">
+      <div class="t">먼저 — 요청이 우리 능력보다 앞서 있었다</div>
+      <p>모든 문서가 <strong>"8주 무상 파일럿"</strong>을 요청해 왔다. 그런데 최소 동작 시스템 개발에 <strong>2~4개월</strong>이 걸리고,
+      그 일정은 개발 인력 확보 여부에 전적으로 좌우된다.
+      <strong>오늘 시설이 "시작하시죠"라고 하면 우리는 못 한다.</strong></p>
+    </div>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:16%"></th><th style="width:42%">지금 요청 — 오늘 승낙 가능</th><th>나중 요청 — 개발 후</th></tr></thead>
+        <tbody>
+          <tr><td>내용</td><td><strong>현장 인터뷰 2시간 · 요구사항 자문 · 의향 확인</strong></td><td>8주 무상 파일럿</td></tr>
+          <tr><td>시설 부담</td><td>2시간 이내 · 비용 0 · <strong>개인정보 0</strong></td><td>하루 5분 입력</td></tr>
+          <tr><td>시점</td><td><strong>오늘</strong></td><td>2027년 초</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small mute"><strong>현장에서 하는 요청은 왼쪽이다.</strong> 오른쪽은 "그때 문을 열어주실 수 있는지"로 묻는다.</p>
+
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:30%">상대</th><th>현장에서 말하는 요청 (한 문장)</th></tr></thead>
+        <tbody>
+          <tr><td>시설 운영자</td><td>"<strong>현장 이야기를 2시간만</strong> 들려주실 수 있을까요. 그리고 준비가 되면 <strong>그때 한 병동만</strong> 열어주실 수 있는지 여쭙고 싶습니다"</td></tr>
+          <tr><td>요양 사업자 · 케어테크</td><td>"<strong>저희 설계를 보시고 기술 검토 한 번</strong>만 해주실 수 있을까요"</td></tr>
+          <tr><td>병원 SW · EMR 업체</td><td>"<strong>연동이 기술적으로 가능한 구조인지</strong> 의견을 듣고 싶습니다"</td></tr>
+          <tr><td>공공기관 · 협회</td><td>"<strong>이 방향이 정책적으로 말이 되는지</strong> 의견을 듣고 싶습니다"</td></tr>
+          <tr><td>실무자 (간호 · 요양보호사)</td><td>"<strong>2분만</strong> 현장 이야기를 들려주실 수 있을까요"</td></tr>
+          <tr><td><strong>누구든 · 마지막에</strong></td><td>"<strong>자료를 메일로 보내드려도 될까요?</strong>"<br><span class="small mute">이게 실질적 목표. 명함은 여기서 나온다</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <div class="t">금지</div>
+      <p>"투자", "구매", "도입해 주십시오". <strong>우리는 아직 파는 사람이 아니다.</strong>
+      파는 척하는 순간 상대는 우리를 평가하기 시작하고, 그러면 우리가 진다.
+      <strong>배우러 온 사람의 자리에 서면 상대가 도와준다.</strong></p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 04 대화 순서 -->
+<section id="order">
+  <div class="wrap">
+    <p class="snum">04 · 대화 순서</p>
+    <h2>한계는<br>먼저 꺼내지 않는다</h2>
+
+    <p>이건 우리 방식에서 하나 고쳐야 할 부분이다.
+    <strong>한계를 아는 건 강점이지만, 먼저 꺼내면 "그래서 못 한다는 거네"로 읽힌다.</strong> 특히 첫 30초에서는 치명적이다.</p>
+
+    <div class="flow">
+      <div class="lines">
+        <div class="node"><div class="tick"></div><div class="h">1 · 무엇을 만들었는가</div><div class="d">강점 · 실물<br><strong>30초</strong></div></div>
+        <div class="node"><div class="tick"></div><div class="h">2 · 무엇을 요청하는가</div><div class="d">한 문장<br><strong>10초</strong></div></div>
+        <div class="node"><div class="tick g"></div><div class="h">3 · 상대의 이야기를 듣는다</div><div class="d">인터뷰 5문항<br><strong>2분</strong></div></div>
+        <div class="node"><div class="tick o"></div><div class="h">4 · 질문이 오면 한계를</div><div class="d">이때 무기가 된다<br><strong>필요할 때만</strong></div></div>
+      </div>
+    </div>
+
+    <h3>4번이 핵심이다</h3>
+    <p>"규제는 어떻게 하실 건데요?", "서버는 있나요?" 같은 질문이 오면 그때 이렇게 답한다.</p>
+
+    <div class="quote">
+      <p>"서버는 아직 없습니다. 화면 설계까지 끝난 단계입니다.
+      대신 <strong>뭘 만들면 안 되는지는 조문 단위로 정리해뒀습니다.</strong>
+      이상 감지나 위험도 판정은 일부러 안 넣었습니다. 넣는 순간 의료기기 허가 대상이 되니까요.
+      저희가 가져온 건 완성품이 아니라 <strong>설계와 규제 경계선</strong>입니다."</p>
+    </div>
+
+    <div class="note">
+      <div class="t">같은 내용, 다른 효과</div>
+      <p>질문 없이 우리가 먼저 "저희는 서버가 없습니다"로 시작하면 그건 그냥 약점 고백이다.
+      <strong>같은 내용도 답변으로 나오면 준비된 사람으로 읽힌다.</strong>
+      한계 문서 16쪽은 현장에서 꺼내지 않는다. 메일 첨부용이다.</p>
+    </div>
+
+    <h3>자주 나올 반박과 답 — 외워 간다</h3>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:30%">반박</th><th>답</th></tr></thead>
+        <tbody>
+          <tr><td><strong>"현장이 더 바빠지는 거 아니냐"</strong></td>
+              <td class="small">"저희가 받는 입력은 저희가 정한 게 아닙니다. <strong>노인장기요양보험법 시행규칙 별지 제16호서식이 이미 요구하는 항목</strong>입니다.
+              특이사항, 상태변화 시 조치사항, 작성자 서명 — 다 법정 서식에 있는 겁니다. 저희는 그걸 재사용합니다"</td></tr>
+          <tr><td>"서버도 없는데 뭘 하겠다는 거냐"</td>
+              <td class="small">"맞습니다. 그래서 파는 게 아니라 만들 힘이 있는 곳을 찾으러 왔습니다. 저희가 가져온 건 <strong>설계와 규제 경계선</strong>입니다"</td></tr>
+          <tr><td>"이미 그런 거 있지 않나"</td>
+              <td class="small">"운영 관리 시스템은 이미 있습니다. 저희는 그 위의 <strong>소통 계층</strong>입니다. <strong>장기요양 입소시설을 대상으로는</strong> 어르신 본인 앱을 가진 사례를 확인하지 못했습니다. <strong>시니어타운 쪽으로는 케어닥 케어옵스가 올해 6월에 입주자 앱을 포함해 나왔고요</strong>"<br><span class="mute">— 먼저 알고 먼저 말한다. 상대가 먼저 꺼내면 신뢰를 잃는다</span></td></tr>
+          <tr><td>"개인정보는 어쩔 건데"</td>
+              <td class="small">"준비가 끝나기 전까지 <strong>실제 어르신 정보를 안 받습니다.</strong> 암호화·접근통제·접속기록을 먼저 만들고 시작합니다"</td></tr>
+          <tr><td>"학생이 뭘 하겠나"</td>
+              <td class="small">"그래서 파는 게 아니라 배우러 왔습니다. 2분만 말씀 들려주시면 그게 저희한테 제일 큰 도움입니다"</td></tr>
+          <tr><td><strong>"이거 우리 감시하는 거 아니냐"</strong><br><span class="mute small">요양보호사</span></td>
+              <td class="small">"<strong>아닙니다. 그래서 일부러 안 만든 게 있습니다.</strong> 선생님별 입력 건수 통계, 미입력 알림, 작성자별 비교 —
+              이 세 가지는 만들지 않기로 설계서에 못 박았습니다. 복지부 CCTV 가이드라인도 <strong>종사자 노동 감시 목적 모니터링은 금지</strong>라고 명시하고 있고요"</td></tr>
+          <tr><td><strong>"언제 시작할 수 있는데요"</strong></td>
+              <td class="small">"<strong>지금 바로는 못 합니다.</strong> 최소 동작 시스템 만드는 데 2~4개월 봅니다.
+              그래서 오늘 여쭙는 건 파일럿이 아니라 <strong>준비되면 문을 열어주실 수 있는지</strong>입니다.
+              <strong>오늘 부탁드릴 건 현장 이야기 2시간입니다</strong>"</td></tr>
+          <tr><td><strong>"그래서 나중엔 얼마 받으실 건데요"</strong></td>
+              <td class="small">"<strong>아직 정하지 않았습니다.</strong> 실제 운영 원가와 누가 내는 게 자연스러운지, 둘 다 지금 모릅니다.
+              다만 <strong>시장 가격대는 압니다</strong> — 시설 업무관리 프로그램이 월 3만 원 수준이더군요.
+              저희는 그 위 한 계층이니 그보다 훨씬 작아야 합니다. <strong>거기서 벗어나는 제안은 저희도 안 합니다</strong>"</td></tr>
+          <tr><td><strong>"시설 입장에서 뭐가 좋은데요"</strong></td>
+              <td class="small">"지금 보호자가 CCTV 열람 청구하면 <strong>10일 안에 서면 통지하고 열람대장 3년 보관</strong>하셔야 하잖아요.
+              그 청구가 왜 들어오냐면 불안해서입니다. <strong>매일 안부가 가면 그 청구 자체가 줄어듭니다.</strong>
+              저희 추정이고 아직 검증은 못 했는데, 파일럿에서 그걸 재보고 싶습니다"</td></tr>
+          <tr><td><strong>"요즘 다 재가 선호 아니냐"</strong></td>
+              <td class="small"><strong>먼저 인정한다</strong> — "맞습니다. 복지부 2025년 실태조사에서 재가 수급자 <strong>69.4%</strong>가 집에 계속 살겠다고 했고, 3년 전엔 49.8%였습니다."
+              <strong>그다음</strong> — "그런데 입소형 기관은 계속 늘고 있고(6,361 → 6,370개소), <strong>원해서 들어가신 게 아닐수록 가족 죄책감이 큽니다.</strong>
+              미안한 선택일수록 오늘 하루가 궁금해집니다. 저희가 푸는 게 그 지점입니다"<br>
+              <span class="mute">수치는 언론 인용이라 <strong>구두로만</strong> 쓴다. 인쇄물에 넣지 않는다</span></td></tr>
+          <tr><td><strong>"가족이 오히려 항의 전화를 더 하지 않겠나"</strong></td>
+              <td class="small"><strong>"그건 저희가 모릅니다. 검증한 적이 없습니다. 실은 그게 오늘 제일 여쭤보고 싶은 겁니다"</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <div class="t">"언제"와 "얼마"는 진지한 상대일수록 반드시 묻는다</div>
+      <p>둘 다 <strong>못 한다 · 안 정했다가 정답</strong>이다. 다만 <strong>왜 그런지 설명 못 하면</strong> 준비 안 된 팀이 된다.
+      가격은 특히 그렇다 — 값을 안 부르면서도 <strong>"비싸게 부를 생각 없다"는 신호</strong>를 줘야 한다. 상대의 진짜 걱정은 그거다.</p>
+    </div>
+
+    <div class="note">
+      <div class="t">시설 쪽 실익을 말할 수 있게 됐다</div>
+      <p>"시설 입장에서 뭐가 좋은데요"는 반드시 나온다. 운영자에게 <strong>정서적 편익은 구매 이유가 아니다.</strong> CCTV 열람 청구는 법정 절차(노인장기요양보험법 제33조의2·제33조의3)이고 실제 행정 부담이다. 이걸 알고 말하면 "현장을 좀 아는구나"가 된다. 다만 <strong>줄어든다는 건 우리 추정</strong>이라고 반드시 덧붙인다.</p>
+    </div>
+
+    <div class="note">
+      <div class="t">마지막 항목이 제일 중요하다</div>
+      <p>모르는 걸 아는 척하면 그 자리에서 끝난다. <strong>모른다고 말하고 되물으면 대화가 이어진다.</strong>
+      그리고 그 답이 인터뷰 5번 문항의 답이 된다.</p>
+    </div>
+
+    <p class="small mute">첫 번째 항목(별지 제16호서식)은 <strong>2026-08-05에 국가법령정보센터 원문으로 대조 완료</strong>한 것이다.
+    <strong>현행 시행규칙(보건복지부령 제1138호, 2025-12-12)에도 이 서식이 그대로 있다.</strong> 옛 서식이 아니다. 다만 항목까지 읽은 파일은 2019-09-27 개정본이므로, 캐묻는 상대에게는 <strong>"서식 존재는 현행본으로 확인했고, 세부 항목은 2019년 판을 봤습니다"</strong>라고 정확히 말한다. 이 정도 정밀함이 신뢰를 만든다.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 05 인터뷰 -->
+<section id="interview">
+  <div class="wrap">
+    <p class="snum">05 · 인터뷰</p>
+    <h2>다섯 문항,<br>2분이면 끝난다</h2>
+    <p class="small mute">현장 메모지에 받아 적는다. <strong>녹음은 동의 없이 하지 않는다.</strong></p>
+
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:5%">#</th><th style="width:45%">질문</th><th>이걸 왜 묻는가</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>"기록을 <strong>하루 몇 번</strong>, 어떤 도구로 쓰십니까?"</td><td class="small">입력 부담의 실제 크기. 우리 "하루 5분" 가정이 맞는지</td></tr>
+          <tr><td class="num">2</td><td>"<strong>가족 문의</strong>는 주로 어떤 경로로 옵니까? 누가 받습니까?"</td><td class="small">우리가 대체하려는 그 통신이 실제로 어떻게 일어나는지</td></tr>
+          <tr><td class="num">3</td><td>"가족이 <strong>제일 많이 묻는 게</strong> 뭡니까?"</td><td class="small">일일 리포트에 뭘 담아야 하는지. <strong>설계에 바로 반영된다</strong></td></tr>
+          <tr><td class="num">4</td><td>"지금 쓰는 시스템에서 <strong>제일 불편한 게</strong> 뭡니까?"</td><td class="small">연동 전략. 그리고 경쟁 제품의 실제 약점</td></tr>
+          <tr><td class="num">5</td><td>"만약 기록이 <strong>자동으로 가족에게 간다면, 뭐가 걱정되실까요?</strong>"</td><td class="small"><strong>가장 중요.</strong> 우리 서비스에 대한 반박을 미리 수집한다</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <div class="t">5번이 이번 KHF의 진짜 목적이다</div>
+      <p>지금 우리는 "가족이 알면 좋아할 것"이라고 가정하고 설계했다. 검증한 적이 없다.
+      현장에서 "가족이 오히려 항의 전화를 더 많이 할 것"이라는 답이 나오면,
+      <strong>그건 실패가 아니라 제안서를 살리는 정보다.</strong> 그 답을 그대로 제안서에 넣으면 신뢰도가 올라간다.</p>
+    </div>
+
+    <p class="small">기록 시 반드시 남길 것 — <strong>날짜 / 부스·소속 / 직군(직함 아님) / 답변 요지 / 명함 여부</strong>.
+    이름은 명함이 있으면 명함으로 갈음한다. <strong>명함 없이 개인 신상을 적지 않는다.</strong></p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 06 보호 -->
+<section id="guard">
+  <div class="wrap">
+    <p class="snum">06 · 아이디어 보호</p>
+    <h2>뭘 보여주고<br>뭘 안 보여주는가</h2>
+
+    <p>우리는 <strong>주는 쪽</strong>이다. 학생 팀이 기업에 설계를 보여주는 구도라 비밀유지계약을 요구할 처지가 아니다.
+    그래서 <strong>보여줄 것을 미리 정해두는 방식</strong>으로 방어한다.</p>
+
+    <div class="cols2">
+      <div>
+        <h4>보여준다</h4>
+        <ul class="plain">
+          <li class="yes">haruanbu.site — 이미 공개 배포됨</li>
+          <li class="yes">인쇄물 앞면 · 뒷면</li>
+          <li class="yes">39개 화면 데모</li>
+          <li class="yes">규제 대응 원칙 — 무엇을 안 만들었는가</li>
+        </ul>
+      </div>
+      <div>
+        <h4>안 보여준다</h4>
+        <ul class="plain">
+          <li class="no">파일럿 상세 설계 · 개발 일정</li>
+          <li class="no">수익 구조 · 가격</li>
+          <li class="no">미공개 화면</li>
+          <li class="no">기술 구현 방식의 구체</li>
+        </ul>
+      </div>
+    </div>
+
+    <p><strong>근거</strong>: 공개된 것만 보여주면 <strong>공개 시점이 배포 기록으로 남는다.</strong>
+    haruanbu.site는 이미 서비스 중이고 저장소 이력에 날짜가 있다. 이게 우리가 가진 유일한 선행 증거이자 충분한 증거다.</p>
+
+    <div class="quote">
+      <p class="small mute">"저희 설계 좀 자세히 볼 수 있을까요"라는 요청이 오면</p>
+      <p>"<strong>공개 사이트에 다 올려뒀습니다. 메일로 정리해서 보내드릴게요.</strong>"</p>
+      <p class="small mute">— 거절이 아니라 후속 접촉의 명분으로 바꾼다.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 07 후속 메일 -->
+<section id="mail">
+  <div class="wrap">
+    <p class="snum">07 · 후속 메일</p>
+    <h2>여기가<br>진짜 제안이다</h2>
+
+    <h3>당일 저녁 — 3줄, 기억이 살아 있을 때</h3>
+    <div class="quote">
+      <p class="small"><strong>제목</strong> 오늘 KHF에서 인사드린 하루안부입니다</p>
+      <p class="small">안녕하세요, 오늘 [부스명]에서 잠깐 인사드린 하루안부 팀 손예찬입니다.<br>
+      <strong>[상대가 해준 말 한 가지를 그대로 인용]</strong> 해주신 말씀이 특히 도움이 됐습니다.<br><br>
+      정리해서 자료 한 부 보내드리겠습니다. 감사합니다.</p>
+    </div>
+    <p class="small mute"><strong>[상대가 해준 말 한 가지]가 이 메일의 전부다.</strong> 이게 없으면 스팸과 구별되지 않는다.
+    그래서 현장 메모를 꼭 쓴다.</p>
+
+    <h3>D+3 — 본 제안 · 첨부 포함</h3>
+    <p>1페이지 소개서의 본문을 쓰되, <strong>첫 문단만 KHF 맥락으로 바꾼다.</strong></p>
+    <div class="quote">
+      <p class="small">지난주 KHF에서 [부스명]에서 뵙고 인사드렸던 하루안부 팀입니다.<br>
+      말씀 주셨던 [상대의 지적]을 반영해서 정리했습니다.</p>
+    </div>
+    <p class="small">첨부는 <strong>하루안부_짧은제안서.pdf (8쪽) 하나뿐</strong>이다. 32쪽 제안서는 종합보고 1부의 원본이라 따로 보내지 않는다 — <strong>수신자가 다르고 학교 내부 사정이 들어 있다.</strong><br><strong>첫 메일에 PDF를 여러 개 붙이지 않는다.</strong> 하나만 붙이고, 요청이 오면 그때 나머지를 보낸다.</p>
+
+    <h3>D+10 — 답이 없을 때</h3>
+    <p class="small">한 번만 더 보낸다. <strong>그 후엔 보내지 않는다.</strong></p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 08 실패 -->
+<section id="fail">
+  <div class="wrap">
+    <p class="snum">08 · 실패 시나리오</p>
+    <h2>아무도<br>관심 없으면</h2>
+
+    <p>솔직히 말해서, <strong>명함 0장으로 돌아올 가능성도 있다.</strong>
+    그때를 위한 계획이 없으면 사흘이 통째로 손해가 된다.</p>
+
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:24%">상황</th><th style="width:30%">그래도 남는 것</th><th>다음 수</th></tr></thead>
+        <tbody>
+          <tr><td><strong>명함 0장</strong></td><td>인터뷰 기록 · 참가업체 디렉터리</td><td class="small">디렉터리를 콜드메일 리스트로 전환. <strong>"KHF에서 부스를 뵀습니다"는 유효한 첫 문장이다</strong></td></tr>
+          <tr><td><strong>인터뷰도 안 됨</strong></td><td>32개 세션의 내용</td><td class="small">업계가 지금 무슨 말을 하는지 = 제안서 언어 교정 재료</td></tr>
+          <tr><td><strong>"그건 안 됩니다" 소리만</strong></td><td>반박 목록</td><td class="small">제안서 한계 항목에 그대로 추가. <strong>가장 값진 결과일 수 있다</strong></td></tr>
+          <tr><td><strong>유사 서비스 발견</strong></td><td>실물 확인</td><td class="small">차별점을 재정의. "해외 미확인 차별점"으로 적어둔 환자앱 논거를 검증</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <div class="t">이 표의 목적</div>
+      <p><strong>어떤 경우에도 사흘이 헛되지 않는 구조</strong>로 만들어 두는 것.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 09 체크리스트 -->
+<section id="check">
+  <div class="wrap">
+    <p class="snum">09 · 마감</p>
+    <h2>체크리스트</h2>
+
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:14%">마감</th><th style="width:46%">항목</th><th>상태</th></tr></thead>
+        <tbody>
+          <tr><td class="num">8/12</td><td>명함 3인분 인쇄 (NFC 태그 포함)</td><td class="small">미완 — QR 벡터 준비됨</td></tr>
+          <tr><td class="num">8/12</td><td><strong>NFC/QR 목적지 랜딩 페이지 배포</strong></td><td class="small">페이지 작성 완료 → <strong>배포 필요</strong></td></tr>
+          <tr><td class="num">8/14<br><span class="mute small">금</span></td><td>인쇄물 출력 — 소개서 양면 20부, 현장카드 3부, 메모지 30부<br><span class="mute small"><strong>8/15(토) 광복절 · 8/17(월) 대체공휴일 — 8/15~17은 인쇄소가 닫힌다.</strong> 밀리면 남는 날은 8/18(화) 하루뿐이고 KHF는 8/19 개막</span></td><td class="small">PDF 완성</td></tr>
+          <tr><td class="num">8/17</td><td>참가업체 디렉터리 확인 → 라우트 갱신</td><td class="small">미완</td></tr>
+          <tr><td class="num">8/17</td><td>태블릿·폰 데모 즉시 열기 연습 (오프라인 대비 캡처본도)</td><td class="small">미완</td></tr>
+          <tr><td class="num">8/18</td><td><strong>KHF 사전등록 3인 + 세션 신청</strong> · 23:59 마감</td><td class="small"><span class="tag stop">미완 — 놓치면 인당 2만원</span></td></tr>
+          <tr><td class="num">8/18</td><td>팀 3인 역할 분담</td><td class="small">미완</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>팀 역할 — 3인</h3>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:22%">역할</th><th>하는 일</th></tr></thead>
+        <tbody>
+          <tr><td><strong>말하는 사람</strong></td><td class="small">30초 스크립트 · 요청 · 명함 교환</td></tr>
+          <tr><td><strong>적는 사람</strong></td><td class="small">인터뷰 기록. <strong>대화에 끼어들지 않는다</strong></td></tr>
+          <tr><td><strong>도는 사람</strong></td><td class="small">다음 타깃 부스 정찰 · 세션 자리 확보 · 팸플릿 수거</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small mute">셋이 몰려다니면 상대가 부담스러워한다. <strong>말하는 사람은 한 명으로 고정한다.</strong></p>
+
+    <div class="keep">
+      <h3>현장 소지품</h3>
+      <p class="small">인쇄물 3종 · 명함 · 태블릿(충전 100%) · 보조배터리 · <strong>볼펜 2자루</strong> · 명함집 · 메모지 클립보드
+      <span class="mute">— 볼펜을 진짜로 챙긴다. 서서 메모할 일이 사흘 내내 생긴다.</span></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="snum">이 문서가 고친 것</p>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th style="width:30%">기존 계획</th><th style="width:32%">문제</th><th>수정</th></tr></thead>
+        <tbody>
+          <tr><td>KHF에서 제안서를 넣는다</td><td class="small mute">부스 인력은 결정권이 없다</td><td class="small"><strong>명함 + 후속 메일 허락</strong>으로 목표 전환</td></tr>
+          <tr><td>한계 파악 → 제출처 → 제안</td><td class="small mute">그 사이 현장 검증 단계가 없다</td><td class="small">KHF를 <strong>인터뷰 15건 확보</strong>의 장으로</td></tr>
+          <tr><td>제안서를 설명한다</td><td class="small mute">요청이 무엇인지 상대가 모른다</td><td class="small"><strong>상대별 요청 한 문장</strong> 6종</td></tr>
+          <tr><td>한계를 정직하게 먼저 밝힌다</td><td class="small mute">첫 30초에서는 약점 고백이 된다</td><td class="small"><strong>질문이 오면 답변으로</strong> 꺼낸다</td></tr>
+          <tr><td>NFC 명함</td><td class="small mute">랜딩이 쇼케이스면 학생 포폴로 읽힌다</td><td class="small"><strong>업계인 전용 랜딩</strong> 별도 제작</td></tr>
+          <tr><td>(없음)</td><td class="small mute">실패 시 대안 없음</td><td class="small"><strong>실패 시나리오 4종</strong></td></tr>
+          <tr><td>(없음)</td><td class="small mute">아이디어를 그냥 준다</td><td class="small"><strong>공개된 것만 보여주는 규칙</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small mute" style="margin-top:24px">하루안부 · 2026 국제 병원 및 헬스테크 박람회 현장 실행팩 · 2026-08-04</p>
+  </div>
+</footer>
+
+</body>
+</html>

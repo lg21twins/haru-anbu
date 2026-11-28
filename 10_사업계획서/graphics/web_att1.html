@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>붙임 1 · 실제 구현 화면 — 하루안부</title>
+<!-- 2026-11-25 웹 붙임 1. 사용자 "뭐가 뭔지 보기 힘들다" · "분류되어 보이게": 역할마다 한 구역, 화면 위 번호 = 옆 설명 번호.
+     "AI 판단" · "AI 케어 분석"이 있는 화면(d-home · g-report)은 계획서 본문 "앱은 의료적 판단을 하지 않습니다"와 부딪혀 쓰지 않는다.
+     인쇄(HWP)용은 att1_screens.html -->
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#111827;--sub:#4B5563;--mute:#6B7280;--bg:#F4F4F6;--care:#16A34A;--fam:#2C7AFC;--pat:#EA7A1E}
+html{background:var(--bg)}
+body{font-family:'Pretendard JP','Pretendard','Apple SD Gothic Neo',sans-serif;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:56px 32px 80px}
+.eyebrow{font-size:14px;font-weight:700;color:var(--fam);letter-spacing:.2px}
+h1{font-size:34px;line-height:1.3;letter-spacing:-.8px;margin-top:8px}
+.lead{font-size:17px;color:var(--sub);margin-top:14px;max-width:760px}
+.lead b{color:var(--ink)}
+/* 목차: 네 역할 */
+.toc{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:32px}
+.toc a{display:block;background:#fff;border-radius:16px;padding:18px 18px 16px;text-decoration:none;color:inherit;box-shadow:0 1px 3px rgba(17,24,39,.06)}
+.toc a:hover{box-shadow:0 6px 18px rgba(17,24,39,.10)}
+.toc .n{font-size:13px;font-weight:700}
+.toc .r{font-size:19px;font-weight:700;letter-spacing:-.4px;margin-top:2px}
+.toc .d{font-size:14px;color:var(--mute);margin-top:4px;line-height:1.45}
+.flow{margin-top:14px;font-size:14px;color:var(--mute)}
+/* 역할 구역 */
+.sec{background:#fff;border-radius:24px;margin-top:28px;padding:48px;display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:start;box-shadow:0 1px 3px rgba(17,24,39,.06);scroll-margin-top:24px}
+.sec.wide{grid-template-columns:1fr}
+.tag{font-size:14px;font-weight:700;letter-spacing:.2px}
+.tag .num{display:inline-block;margin-right:8px}
+h2{font-size:28px;line-height:1.3;letter-spacing:-.6px;margin-top:6px}
+.one{font-size:17px;color:var(--sub);margin-top:10px}
+.pts{list-style:none;margin-top:28px;display:grid;gap:18px}
+.wide .pts{grid-template-columns:repeat(4,1fr);gap:20px}
+.pts li{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start}
+.pts b{display:block;font-size:17px;letter-spacing:-.3px;line-height:1.4}
+.pts span{display:block;font-size:15px;color:var(--sub);margin-top:2px;line-height:1.55}
+.dot{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(17,24,39,.35)}
+/* 화면 + 번호 */
+.shot{position:relative;display:inline-block}
+.shot img{display:block;border-radius:28px;box-shadow:0 10px 32px rgba(17,24,39,.16)}
+.phone img{height:640px;width:auto}
+.tab img{width:100%;height:auto;border-radius:20px}
+.shot .dot{position:absolute;transform:translate(-50%,-50%)}
+.wide .shot{display:block;margin-top:32px}
+.foot{display:flex;gap:20px;align-items:center;background:#fff;border-radius:20px;margin-top:28px;padding:24px 28px;box-shadow:0 1px 3px rgba(17,24,39,.06)}
+.foot img{width:96px;height:96px}
+.foot b{font-size:19px;letter-spacing:-.3px}
+.foot p{font-size:15px;color:var(--sub)}
+.note{font-size:13px;color:var(--mute);margin-top:18px}
+@media (max-width:900px){
+  .wrap{padding:32px 16px 56px}
+  h1{font-size:26px}
+  .toc{grid-template-columns:repeat(2,1fr)}
+  .sec{grid-template-columns:1fr;padding:28px 20px;gap:28px}
+  .phone{justify-self:center}
+  .phone img{height:520px}
+  .wide .pts{grid-template-columns:1fr}
+  h2{font-size:23px}
+}
+</style></head><body><div class="wrap">
+
+<p class="eyebrow">하루안부 · 붙임 1</p>
+<h1>실제 구현 화면 — 같은 하루, 네 사람의 화면</h1>
+<p class="lead">요양보호사가 <b>한 번 남긴 기록</b>이 가족에게는 안부로, 의료진에게는 확인할 변화로, 어르신에게는 큰 글씨 한 화면으로 도착합니다. 네 화면 모두 같은 시설, 같은 입소자 네 명(박영자 · 최명자 · 김순자 · 이정숙)의 하루입니다.</p>
+
+<nav class="toc">
+  <a href="#care"><div class="n" style="color:var(--care)">01</div><div class="r">요양보호사</div><div class="d">기록을 남기는 사람</div></a>
+  <a href="#family"><div class="n" style="color:var(--fam)">02</div><div class="r">가족</div><div class="d">매일 안부를 받는 사람</div></a>
+  <a href="#medical"><div class="n" style="color:var(--care)">03</div><div class="r">의료진</div><div class="d">변화를 확인하고 판단하는 사람</div></a>
+  <a href="#elder"><div class="n" style="color:var(--pat)">04</div><div class="r">어르신</div><div class="d">가족과 이어지는 사람</div></a>
+</nav>
+<p class="flow">화면 위 번호와 오른쪽 설명 번호가 같습니다.</p>
+
+<section class="sec" id="care">
+  <div class="shot phone"><img src="../../09_포트폴리오/패널/assets/screens/c-check.png" alt="요양보호사 앱 케어 기록 화면">
+    <span class="dot" style="left:93%;top:9%">1</span><span class="dot" style="left:6%;top:15.5%">2</span><span class="dot" style="left:6%;top:40.5%">3</span><span class="dot" style="left:6%;top:55%">4</span></div>
+  <div>
+    <p class="tag" style="color:var(--care)"><span class="num">01</span>요양보호사 앱</p>
+    <h2>케어 기록</h2>
+    <p class="one">할 일 순서대로 기록하고, 남긴 기록이 나머지 세 화면의 재료가 됩니다.</p>
+    <ul class="pts">
+      <li><span class="dot">1</span><div><b>말로 기록</b><span>손이 바쁠 때는 마이크로 말해서 남깁니다.</span></div></li>
+      <li><span class="dot">2</span><div><b>지금 해야 할 일</b><span>급한 일이 맨 위에, 이유와 함께 뜹니다. 예: 박영자 · 혈당 재측정(아침 혈당 142 주의).</span></div></li>
+      <li><span class="dot">3</span><div><b>버튼 하나로 기록 시작</b><span>다음 할 일을 바로 기록합니다.</span></div></li>
+      <li><span class="dot">4</span><div><b>입소자별 진행</b><span>담당 4명의 오늘 기록이 얼마나 남았는지(3/8, 5/8 …) 한눈에 봅니다.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="family">
+  <div class="shot phone"><img src="../../09_포트폴리오/패널/assets/screens/g-live.png" alt="가족 앱 일일 리포트 화면">
+    <span class="dot" style="left:6%;top:21%">1</span><span class="dot" style="left:6%;top:60%">2</span><span class="dot" style="left:6%;top:76%">3</span><span class="dot" style="left:6%;top:87.5%">4</span></div>
+  <div>
+    <p class="tag" style="color:var(--fam)"><span class="num">02</span>가족(보호자) 앱</p>
+    <h2>일일 리포트</h2>
+    <p class="one">전화로 묻지 않아도, 매일 오늘의 부모님을 압니다.</p>
+    <ul class="pts">
+      <li><span class="dot">1</span><div><b>오늘의 안부 한 줄</b><span>"영자님 옆에서 꼼꼼히 챙기고 있어요"처럼 가장 먼저 안심할 말을 둡니다.</span></div></li>
+      <li><span class="dot">2</span><div><b>오늘의 사진</b><span>요양보호사가 남긴 순간이 그대로 도착합니다.</span></div></li>
+      <li><span class="dot">3</span><div><b>돌본 사람의 한마디</b><span>누가, 몇 시에 남긴 말인지 함께 보여 줍니다.</span></div></li>
+      <li><span class="dot">4</span><div><b>오늘의 케어 요약</b><span>투약 · 맥박 같은 기록을 카드로 이어서 봅니다.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="medical">
+  <div class="shot phone"><img src="../../08_제안서/assets/decide_doc_after.png" alt="의료진 앱 요양보호사 보고 확인 화면">
+    <span class="dot" style="left:6%;top:25%">1</span><span class="dot" style="left:94%;top:45%">2</span><span class="dot" style="left:6%;top:50%">3</span><span class="dot" style="left:6%;top:61.5%">4</span></div>
+  <div>
+    <p class="tag" style="color:var(--care)"><span class="num">03</span>의료진 앱</p>
+    <h2>요양보호사 보고 확인</h2>
+    <p class="one">앱은 판단하지 않습니다. 현장 기록을 모아 보여 주고, 판단은 의료진이 합니다.</p>
+    <ul class="pts">
+      <li><span class="dot">1</span><div><b>요양보호사 보고</b><span>누가 언제 무엇을 기록했는지 그대로 올라옵니다. 예: 최명자 · 혈압 180/110, 13:50 요양보호사 기록.</span></div></li>
+      <li><span class="dot">2</span><div><b>현장 메모</b><span>"혈압이 높아 재측정 부탁드립니다" — 이수진 요양보호사. 앱이 만든 경고가 아니라 사람이 남긴 말입니다.</span></div></li>
+      <li><span class="dot">3</span><div><b>지금 확인 · 회진 카드</b><span>확인과 다음 조치는 의료진이 직접 누릅니다.</span></div></li>
+      <li><span class="dot">4</span><div><b>오늘 올라온 보고</b><span>확인 전 · 확인함으로 나눠, 놓친 보고가 없게 합니다.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec wide" id="elder">
+  <div>
+    <p class="tag" style="color:var(--pat)"><span class="num">04</span>어르신 태블릿</p>
+    <h2>오늘</h2>
+    <p class="one">큰 글씨와 큰 버튼. 가족 소식, 할 일, 연락이 한 화면에 있습니다.</p>
+  </div>
+  <div class="shot tab"><img src="../../09_포트폴리오/패널/assets/screens/p-today.png" alt="어르신 태블릿 오늘 화면">
+    <span class="dot" style="left:3%;top:15%">1</span><span class="dot" style="left:71%;top:15%">2</span><span class="dot" style="left:71%;top:58%">3</span><span class="dot" style="left:2.5%;top:93%">4</span></div>
+  <ul class="pts">
+    <li><span class="dot">1</span><div><b>가족 소식</b><span>딸이 보낸 사진과 문자를 크게 봅니다. 답장도 버튼으로 고릅니다.</span></div></li>
+    <li><span class="dot">2</span><div><b>지금 할 일</b><span>약 먹을 시간에 "먹었어요" 큰 버튼 하나.</span></div></li>
+    <li><span class="dot">3</span><div><b>가족에게 전화</b><span>얼굴을 보고 바로 영상통화를 겁니다.</span></div></li>
+    <li><span class="dot">4</span><div><b>말로 하기 · 도움 요청</b><span>화면 맨 아래 가장 큰 두 버튼입니다.</span></div></li>
+  </ul>
+</section>
+
+<div class="foot"><img src="../../08_제안서/assets/qr_haruanbu.svg" alt="haruanbu.site QR">
+  <div><b>haruanbu.site</b><p>4역할 39개 화면을 공개 배포했습니다. 휴대폰으로 직접 눌러 볼 수 있습니다.</p></div></div>
+<p class="note">화면은 팀이 직접 구현한 공개 프로토타입입니다. 화면 속 인물 사진은 AI 생성 이미지입니다.</p>
+</div></body></html>

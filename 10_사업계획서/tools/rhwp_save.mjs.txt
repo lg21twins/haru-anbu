@@ -1,0 +1,5 @@
+// ego-browser nodejs 에 붙여 쓰는 rhwp 저장 조각 (참고용). TaskSpace 번호와 파일명만 바꾼다.
+// const task = await taskSpace(9); const page = task.page("p1");
+// await page.evaluate(() => { window.showSaveFilePicker = undefined; });
+// await page.evaluate(() => window.rhwpStudio.automation.execute("file:save-as-hwp"));
+// 파일 이름 textbox fill → const dl = page.waitForEvent("download"); 확인 버튼(@ref) 클릭 → (await dl).saveAs(경로)

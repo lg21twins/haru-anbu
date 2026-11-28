@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>하루안부 · 리디자인 시안 v1 (2026-07-31)</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <script src="../_iconify-icon.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-family-base); background: #EEF1F5; color: var(--color-text-primary); -webkit-font-smoothing: antialiased; padding: 56px 24px 80px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    .h { font-size: 30px; font-weight: 700; letter-spacing: -0.025em; }
+    .sub { font-size: 15px; color: var(--color-text-secondary); margin-top: 8px; line-height: 1.6; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 32px; }
+    a.card { display: block; text-decoration: none; color: inherit; background: #fff; border-radius: 18px; padding: 22px; box-shadow: 0 1px 3px rgba(16,24,40,0.06), 0 8px 24px rgba(16,24,40,0.05); transition: transform .12s ease; }
+    a.card:hover { transform: translateY(-2px); }
+    .card .ic { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; }
+    .card .no { font-size: 12px; font-weight: 700; color: var(--color-text-tertiary); letter-spacing: 0.06em; margin-top: 16px; }
+    .card .ti { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin-top: 4px; }
+    .card .de { font-size: 13px; color: var(--color-text-secondary); margin-top: 6px; line-height: 1.5; }
+    .doc { margin-top: 30px; font-size: 14px; color: var(--color-text-secondary); }
+    .doc a { color: var(--color-accent); font-weight: 600; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="h">하루안부 · 리디자인 시안 v1</div>
+    <div class="sub">2026-07-31 · "임팩트 = 정보 시각화" 방향. 4역할 화면을 하나의 컴포넌트 킷으로 통일.<br>기존 앱 파일은 그대로, 새 시안만 별도 폴더. 토큰·아이콘·데이터 캐논 준수.</div>
+
+    <div class="grid">
+      <a class="card" href="01_요양_일정표.html">
+        <div class="ic" style="background:var(--brand-green-500)"><iconify-icon icon="mingcute:schedule-fill"></iconify-icon></div>
+        <div class="no">01 · 요양보호사</div>
+        <div class="ti">오늘 케어 타임라인</div>
+        <div class="de">진행 카운터 + 세로 타임라인(완료·진행·예정 노드)</div>
+      </a>
+
+      <a class="card" href="02_보호자_일일리포트.html">
+        <div class="ic" style="background:var(--brand-blue-500)"><iconify-icon icon="material-symbols:auto-awesome-rounded"></iconify-icon></div>
+        <div class="no">02 · 보호자</div>
+        <div class="ti">AI 일일 리포트</div>
+        <div class="de">지표 트리오 + AI 내러티브 + 스파크라인 + 모먼트</div>
+      </a>
+
+      <a class="card" href="03_의료진_환자대시보드.html">
+        <div class="ic" style="background:var(--brand-green-500)"><iconify-icon icon="mingcute:heartbeat-fill"></iconify-icon></div>
+        <div class="no">03 · 의료진</div>
+        <div class="ti">담당 환자 대시보드</div>
+        <div class="de">스파크라인 트리아지 + AI 초안→사람 확정 편집</div>
+      </a>
+
+      <a class="card" href="04_환자_오늘.html">
+        <div class="ic" style="background:var(--brand-orange-400)"><iconify-icon icon="mingcute:sun-fill"></iconify-icon></div>
+        <div class="no">04 · 환자 본인앱</div>
+        <div class="ti">오늘</div>
+        <div class="de">큰 타이포 · 한 개의 큰 카드 · 대형 버튼(시니어)</div>
+      </a>
+    </div>
+
+    <div class="doc">근거 문서: <a href="../UI_리디자인_레퍼런스_20260731.md">UI_리디자인_레퍼런스_20260731.md</a> · 공통 킷: <a href="_kit.css">_kit.css</a></div>
+  </div>
+</body>
+</html>
